@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BuyDi — E-Commerce เพื่อเกษตรกรไทย</title>
+  <meta name="description" content="Portfolio: BuyDi — แพลตฟอร์ม E-Commerce ที่เชื่อมเกษตรกรไทยกับผู้บริโภคโดยตรง Buyer / Seller / Affiliate / Admin ใน 3 เดือน">
+  <link rel="icon" type="image/png" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=64&height=64">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --accent: #126c62;
+      --accent-light: #ecfdf5;
+      --accent-dark: #0d5a52;
+      --accent-glow: rgba(18,108,98,0.12);
+      --gold: #c69b57;
+      --gold-light: #fef9ee;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #ef4444;
+      --red-light: #fef2f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #065f46 0%, #126c62 40%, #10b981 80%, #34d399 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(198,155,87,0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(16,185,129,0.2) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #126c62, #c69b57, #10b981);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #34d399;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .gold {
+      color: #fcd34d;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.88;
+      max-width: 560px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.8);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #065f46, #126c62);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.15;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.6;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Role Cards (4 roles) ===== */
+    .role-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .role-tab {
+      padding: 8px 20px;
+      border-radius: 50px;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text-secondary);
+    }
+    .role-tab:hover { border-color: var(--accent); color: var(--accent); }
+    .role-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .role-panels .role-panel { display: none; }
+    .role-panels .role-panel.active { display: block; }
+    .role-content {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+    }
+    .role-content h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .role-content h3 .emoji { font-size: 1.3rem; }
+    .role-features {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .role-features li {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      padding: 8px 12px;
+      background: var(--bg);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .role-features li::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.82rem;
+      flex-shrink: 0;
+    }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.scale::before { background: var(--accent-light); color: var(--accent); }
+    .hack-card.deadline::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.collab::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.ux::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 80px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(18,108,98,0.2); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--gold-light); color: #92651e; border: 1px solid rgba(198,155,87,0.3); }
+    .arch-layer.infra { background: #f1f5f9; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 40px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img { width: 100%; height: auto; display: block; }
+    .closing h2 { font-size: 1.4rem; margin-bottom: 8px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 480px;
+      margin: 0 auto 20px;
+    }
+    .stack-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(4,120,87,0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(4,120,87,0.95); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .role-features { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        E-Commerce Platform · 3 Months
+      </div>
+      <h1>BuyDi<br><span class="gold">E-Commerce เพื่อเกษตรกรไทย</span></h1>
+      <p>แพลตฟอร์มที่เชื่อมเกษตรกรกับผู้บริโภคโดยตรง — Buyer / Seller / Affiliate / Admin ครบทุก Role ใน 3 เดือน</p>
+      <div class="hero-tags">
+        <span class="hero-tag">UX/UI Design</span>
+        <span class="hero-tag">E-Commerce</span>
+        <span class="hero-tag">4 User Roles</span>
+        <span class="hero-tag">Responsive Web</span>
+        <span class="hero-tag">Figma</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="https://buydi.app/" target="_blank" rel="noopener">
+          ดูเว็บจริง
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l6 5-6 5"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Empathize ===== -->
+    <section class="section-intro">
+      <h2>ปัญหาที่เจอ</h2>
+      <p>ทำไมเกษตรกรไทยถึงต้องมี Platform ของตัวเอง?</p>
+    </section>
+
+    <div class="quote-block">
+      <p>เกษตรกรไทยปลูกของดี แต่ขายได้แค่ผ่านพ่อค้าคนกลาง — ผู้บริโภคอยากได้ของสดจากสวน แต่ไม่รู้จะซื้อจากไหน Platform ที่มีก็ไม่ได้ออกแบบมาสำหรับสินค้าเกษตรโดยเฉพาะ</p>
+      <div class="author">— Insight จาก Research ก่อนเริ่มโปรเจกต์</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="emoji">🌾</span>
+        <h3>เกษตรกรเข้าไม่ถึงช่องทางขายออนไลน์</h3>
+        <p>Platform อย่าง Shopee/Lazada ซับซ้อนเกินไปสำหรับเกษตรกร — ต้องถ่ายรูปสวย ตั้งค่า Shipping เอง จัดการ Promotion เอง ค่าคอมมิชชันสูง</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">🛒</span>
+        <h3>ผู้บริโภคไม่มั่นใจเรื่องคุณภาพ</h3>
+        <p>ซื้อผักผลไม้ออนไลน์ — ไม่รู้มาจากไหน สดไหม ปลอดภัยไหม ไม่มีระบบรับรองคุณภาพที่น่าเชื่อถือ</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">💰</span>
+        <h3>พ่อค้าคนกลางกินส่วนต่างเยอะ</h3>
+        <p>ผักจากสวนราคา 20 บาท ถึงมือผู้บริโภคกลายเป็น 80 บาท — เกษตรกรได้น้อย ผู้บริโภคจ่ายแพง ระบบไม่ยุติธรรม</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Define + Ideate ===== -->
+    <section class="section-intro">
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>สร้าง Ecosystem ที่ทุกฝ่ายได้ประโยชน์</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <span class="emoji">🤝</span>
+        <h3>Direct-to-Consumer — ตัดคนกลางออก</h3>
+        <p>เกษตรกรลงสินค้าเอง ตั้งราคาเอง ส่งตรงถึงผู้บริโภค — ได้เงินเต็มเม็ด ผู้บริโภคได้ราคาถูกกว่า</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">📍</span>
+        <h3>สินค้าตามภูมิภาค + OTOP</h3>
+        <p>แบ่งตามภาค (เหนือ อีสาน กลาง ตะวันออก ตะวันตก ใต้) + สินค้า OTOP — ให้ผู้บริโภคค้นหาของดีประจำถิ่นได้ง่าย</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">👥</span>
+        <h3>Affiliate System — ชวนคนมาช่วยขาย</h3>
+        <p>ใครก็เป็น Affiliate ได้ แชร์ลิงก์สินค้า ได้ค่าคอมมิชชัน — สร้างเครือข่ายขายแบบไม่ต้องสต็อกของ</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">🛡️</span>
+        <h3>Admin Dashboard — ดูแลระบบครบ</h3>
+        <p>จัดการ User, ตรวจสินค้า, ดู Analytics, จัดการ Order — ให้ทีมดูแล Platform ได้อย่างมีประสิทธิภาพ</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture ===== -->
+    <section class="section-intro">
+      <h2>Architecture Overview</h2>
+      <p>4 Roles, 1 Platform — ออกแบบให้ทุกฝ่ายทำงานร่วมกันได้</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Users: 4 Roles
+          <div class="arch-sub">
+            <span>Buyer</span>
+            <span>Seller</span>
+            <span>Affiliate</span>
+            <span>Admin</span>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer platform">
+          BuyDi Platform
+          <div class="arch-sub">
+            <span>Product Catalog</span>
+            <span>Order Management</span>
+            <span>Payment</span>
+            <span>Commission</span>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer services">
+          Services
+          <div class="arch-sub">
+            <span>Regional Filter</span>
+            <span>OTOP Badge</span>
+            <span>Affiliate Tracking</span>
+            <span>Analytics</span>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer infra">
+          Infrastructure
+          <div class="arch-sub">
+            <span>AWS S3</span>
+            <span>Responsive Web</span>
+            <span>SEO</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== 4 Roles Interactive ===== -->
+    <section class="section-intro">
+      <h2>สิ่งที่สร้าง — 4 User Roles</h2>
+      <p>แต่ละ Role มี Flow และ Features เฉพาะตัว</p>
+    </section>
+
+    <div class="role-tabs">
+      <button class="role-tab active" data-role="buyer">Buyer</button>
+      <button class="role-tab" data-role="seller">Seller</button>
+      <button class="role-tab" data-role="affiliate">Affiliate</button>
+      <button class="role-tab" data-role="admin">Admin</button>
+    </div>
+
+    <div class="role-panels">
+      <div class="role-panel active" id="buyer">
+        <div class="role-content">
+          <h3><span class="emoji">🛒</span> Buyer — ผู้ซื้อ</h3>
+          <ul class="role-features">
+            <li>Browse สินค้า 18+ หมวดหมู่</li>
+            <li>ค้นหาตามภูมิภาค 6 ภาค</li>
+            <li>Wishlist / Favorites</li>
+            <li>Shopping Cart + Checkout</li>
+            <li>Order Tracking</li>
+            <li>Review & Rating</li>
+            <li>OTOP Products Filter</li>
+            <li>Account Management</li>
+          </ul>
+        </div>
+      </div>
+      <div class="role-panel" id="seller">
+        <div class="role-content">
+          <h3><span class="emoji">🌾</span> Seller — เกษตรกร/ผู้ขาย</h3>
+          <ul class="role-features">
+            <li>สร้าง Store Profile</li>
+            <li>ลงสินค้า + จัดการ Inventory</li>
+            <li>ตั้งราคา + Promotion</li>
+            <li>จัดการ Order</li>
+            <li>Dashboard ยอดขาย</li>
+            <li>ระบุภูมิภาค + OTOP</li>
+            <li>จัดการ Shipping</li>
+            <li>รายงานรายได้</li>
+          </ul>
+        </div>
+      </div>
+      <div class="role-panel" id="affiliate">
+        <div class="role-content">
+          <h3><span class="emoji">📣</span> Affiliate — คนชวนซื้อ</h3>
+          <ul class="role-features">
+            <li>สมัครเป็น Affiliate</li>
+            <li>สร้าง Referral Link</li>
+            <li>แชร์สินค้าผ่าน Social</li>
+            <li>Dashboard ค่าคอมมิชชัน</li>
+            <li>Tracking ยอดคลิก/ซื้อ</li>
+            <li>ถอนเงินค่าคอมฯ</li>
+          </ul>
+        </div>
+      </div>
+      <div class="role-panel" id="admin">
+        <div class="role-content">
+          <h3><span class="emoji">⚙️</span> Admin — ผู้ดูแลระบบ</h3>
+          <ul class="role-features">
+            <li>จัดการ User ทุก Role</li>
+            <li>ตรวจสอบ/อนุมัติสินค้า</li>
+            <li>Analytics Dashboard</li>
+            <li>จัดการ Order ทั้งระบบ</li>
+            <li>Commission Management</li>
+            <li>Category & Banner Mgmt</li>
+            <li>Report & Export</li>
+            <li>System Settings</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack ===== -->
+    <section class="section-intro">
+      <h2>Hack กับปัญหา</h2>
+      <p>3 เดือนกับ 4 Roles — ไม่มีอะไรง่าย</p>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card scale" data-label="Scale">
+        <span class="emoji">📐</span>
+        <h3>4 Roles = 4 เท่าของ Complexity</h3>
+        <p>ทุก Feature ต้องคิดจากมุมมอง 4 คน — Buyer เห็นอะไร Seller จัดการยังไง Affiliate Track ยังไง Admin ดูแลยังไง Screen เดียวอาจต้อง Design 4 Version</p>
+        <div class="highlight">แก้ด้วย Shared Component Library — ใช้ Component เดียวกัน ปรับ Content ตาม Role</div>
+      </div>
+      <div class="hack-card deadline" data-label="Deadline">
+        <span class="emoji">⏰</span>
+        <h3>3 เดือน ต้อง Ship ทั้ง Platform</h3>
+        <p>Deadline แน่นมาก — ต้อง Prioritize อะไรก่อนหลัง ตัด Feature ที่ไม่จำเป็นออก เน้น Core Flow ที่ทำให้ Business ทำงานได้จริง</p>
+        <div class="highlight">ใช้ MoSCoW Method — Must/Should/Could/Won't แบ่งชัด ทำ Must ก่อน</div>
+      </div>
+      <div class="hack-card ux" data-label="UX Challenge">
+        <span class="emoji">👨‍🌾</span>
+        <h3>User หลากหลาย — ตั้งแต่เกษตรกรถึง Admin</h3>
+        <p>เกษตรกรบางคนไม่คุ้นเคยกับ Tech — UI ต้องง่ายมากๆ แต่ Admin ต้องมี Power Tools ครบ ออกแบบให้ตอบโจทย์ทุกกลุ่มพร้อมกันยากมาก</p>
+        <div class="highlight">ออกแบบ Seller Flow ให้ Step-by-step กดทีละขั้น ส่วน Admin ใช้ Dashboard + Data Table</div>
+      </div>
+      <div class="hack-card collab" data-label="Collab">
+        <span class="emoji">🔄</span>
+        <h3>ประสานงานกับ Dev ให้ทัน Sprint</h3>
+        <p>Design ต้องเสร็จก่อน Dev อย่างน้อย 1 Sprint — ถ้าช้า Dev ไม่มีงานทำ ถ้าเร็วเกินก็อาจต้องแก้ทีหลัง</p>
+        <div class="highlight">ใช้ Design Handoff ที่ชัดเจน + Spec Sheet ทุกหน้า ลดเวลาถามกลับ</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Key Takeaways ===== -->
+    <section class="section-intro">
+      <h2>Key Takeaways</h2>
+      <p>สิ่งที่ได้เรียนรู้จาก BuyDi</p>
+    </section>
+
+    <div class="learning-card">
+      <strong>Multi-Role Design ต้องคิดเป็น System:</strong>
+      <p>ไม่ใช่ออกแบบทีละหน้า — ต้องคิดเป็น Flow ทั้งระบบ ว่า Action ของ Role หนึ่งส่งผลต่อ Role อื่นยังไง (Buyer สั่ง → Seller เห็น Order → Admin Track ทั้งหมด)</p>
+    </div>
+    <div class="learning-card">
+      <strong>Deadline สอนให้ Prioritize:</strong>
+      <p>3 เดือนทำให้เรียนรู้ว่า "ไม่ต้องทำทุกอย่าง" — เน้น Core Flow ที่ทำให้ Business ทำงานได้ก่อน แล้วค่อยเพิ่ม Nice-to-have ทีหลัง</p>
+    </div>
+    <div class="learning-card">
+      <strong>เกษตรกร ≠ Tech Savvy:</strong>
+      <p>ออกแบบ Seller Flow ให้ง่ายที่สุด — ลดขั้นตอน ใช้ภาษาง่ายๆ ปุ่มใหญ่ชัดเจน เพราะ User จริงคือเกษตรกรที่อาจไม่คุ้นกับ App</p>
+    </div>
+    <div class="learning-card">
+      <strong>Design Handoff ดี = Dev ทำงานเร็ว:</strong>
+      <p>Spec Sheet ที่ชัดเจน + Component ที่ Reusable ลดเวลาที่ Dev ต้องมาถามกลับ — ประหยัดเวลาทั้งทีม</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">4</div>
+        <div class="label">User Roles</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">18+</div>
+        <div class="label">หมวดหมู่สินค้า</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">6</div>
+        <div class="label">ภูมิภาคทั่วไทย</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">3</div>
+        <div class="label">เดือน Ship</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>เกษตรกรไทย ขายได้ทั่วประเทศ</h2>
+    <p>BuyDi ไม่ใช่แค่ E-Commerce — แต่เป็นการออกแบบ Ecosystem ที่ทุกฝ่ายได้ประโยชน์ ตั้งแต่เกษตรกรไปจนถึงผู้บริโภค</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Figma</span>
+      <span class="stack-icon">E-Commerce</span>
+      <span class="stack-icon">Multi-Role</span>
+      <span class="stack-icon">Responsive</span>
+      <span class="stack-icon">Design System</span>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    // Back to top
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+    // Role tabs
+    var tabs=document.querySelectorAll('.role-tab');
+    var panels=document.querySelectorAll('.role-panel');
+    tabs.forEach(function(tab){
+      tab.addEventListener('click',function(){
+        tabs.forEach(function(t){t.classList.remove('active')});
+        panels.forEach(function(p){p.classList.remove('active')});
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.role).classList.add('active');
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
