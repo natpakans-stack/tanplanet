@@ -331,6 +331,29 @@
       height: 18px;
     }
 
+    /* ===== Twinkling Stars ===== */
+    .stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle var(--duration) ease-in-out infinite;
+      opacity: 0;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: var(--brightness); transform: scale(1.2); }
+    }
+
     /* ===== Animations ===== */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -357,6 +380,7 @@
 
   <!-- Hero -->
   <section class="hero">
+    <div class="stars" id="stars"></div>
     <img class="avatar" src="https://avatars.githubusercontent.com/u/256731825?v=4" alt="tanθ">
     <h1><span>TanPlanet</span></h1>
     <p>รวมผลงาน Side Projects — ตั้งแต่ LINE Bot, Travel Guide, Dashboard ไปจนถึง Design Thinking Case Study</p>
@@ -525,6 +549,21 @@
     </div>
   </footer>
   </div>
+
+  <script>
+    const container = document.getElementById('stars');
+    for (let i = 0; i < 80; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.setProperty('--duration', (2 + Math.random() * 4) + 's');
+      star.style.setProperty('--brightness', (0.4 + Math.random() * 0.6));
+      star.style.animationDelay = Math.random() * 5 + 's';
+      star.style.width = star.style.height = (1 + Math.random() * 2) + 'px';
+      container.appendChild(star);
+    }
+  </script>
 
 </body>
 </html>
