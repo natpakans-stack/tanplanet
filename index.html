@@ -199,24 +199,101 @@
       margin-bottom: 0;
     }
 
-    /* ===== Toolbar ===== */
-    .toolbar-top {
+    /* ===== Floating Search ===== */
+    .search-float {
+      position: relative;
+      z-index: 10;
+      max-width: 560px;
+      margin: -28px auto 0;
+      padding: 0 24px;
+    }
+    .search-float .search-box {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+      border: 1px solid #e5e5e7;
+    }
+    .search-float .search-box input {
+      border: none;
+      border-radius: 16px;
+      font-size: 1rem;
+      padding: 16px 44px 16px 48px;
+      background: transparent;
+    }
+    .search-float .search-box input:focus {
+      box-shadow: none;
+      border: none;
+    }
+    .search-float .search-box .search-icon {
+      left: 18px;
+      width: 20px;
+      height: 20px;
+    }
+    .search-clear {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
+      background: #e5e5e7;
+      color: #86868b;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .search-clear:hover { background: #d2d2d7; color: #1d1d1f; }
+    .search-clear.visible { display: flex; }
+
+    /* ===== Toolbar (Filters + View Toggle same row) ===== */
+    .toolbar {
       display: flex;
       align-items: center;
       gap: 12px;
+      margin-bottom: 24px;
     }
 
-    .toolbar-bottom {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    .filters-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 0;
     }
 
     .filters {
       display: flex;
       gap: 6px;
-      flex-wrap: wrap;
-      flex: 1;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      padding-right: 32px;
+    }
+    .filters::-webkit-scrollbar { display: none; }
+
+    .filters-fade {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 48px;
+      background: linear-gradient(90deg, transparent, #f5f5f7 70%);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      pointer-events: none;
+    }
+    .filters-fade svg {
+      width: 18px;
+      height: 18px;
+      color: #86868b;
+      transition: transform 0.2s;
+    }
+    .filters-fade.scrolled svg {
+      transform: rotate(180deg);
     }
 
     .filter-btn {
@@ -230,6 +307,8 @@
       color: #86868b;
       cursor: pointer;
       transition: all 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .filter-btn:hover {
@@ -242,8 +321,6 @@
       border-color: #1d1d1f;
       color: #fff;
     }
-
-    .search-box { flex: 1; }
 
     .view-toggle {
       display: flex;
@@ -788,13 +865,9 @@
       .mascot-half { width: 140px; height: 94px; }
       .footer-links { gap: 16px; }
 
-      .section-header-top { flex-wrap: wrap; }
-      .toolbar-top { width: 100%; }
-      .search-box input { width: 100%; font-size: 1rem; padding: 12px 16px 12px 42px; }
-      .search-box input:focus { width: 100%; }
-      .filters { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 4px; }
-      .filters::-webkit-scrollbar { display: none; }
-      .filter-btn { white-space: nowrap; flex-shrink: 0; }
+      .search-float { margin-top: -22px; padding: 0 16px; }
+      .search-float .search-box input { padding: 14px 40px 14px 44px; font-size: 0.95rem; }
+      .toolbar { flex-wrap: nowrap; gap: 8px; }
       .view-toggle { flex-shrink: 0; }
       .pagination { gap: 4px; flex-wrap: wrap; }
       .page-arrow { padding: 6px 10px; font-size: 0.8rem; }
@@ -855,35 +928,43 @@
     </div>
   </section>
 
+  <!-- Floating Search (between hero & content) -->
+  <div class="search-float">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
+      <input type="text" id="searchInput" placeholder="อยากเห็นซักวันที่พิมอะไรก็เจอ..." autocomplete="off">
+      <button class="search-clear" id="searchClear" aria-label="ล้างคำค้นหา">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+      </button>
+    </div>
+  </div>
+
   <!-- Projects + Footer (Light Theme) -->
   <div class="light-section">
   <section class="section">
     <div class="section-header">
-      <div class="section-header-top">
+      <div class="toolbar">
         <div class="section-title">Projects</div>
-        <div class="toolbar-top">
-          <div class="search-box">
-            <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
-            <input type="text" id="searchInput" placeholder="ค้นหา project..." autocomplete="off">
+        <div class="filters-wrap">
+          <div class="filters" id="filters">
+            <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
+            <button class="filter-btn" data-filter="web-app">Web App</button>
+            <button class="filter-btn" data-filter="automation">Automation</button>
+            <button class="filter-btn" data-filter="design-thinking">Design Thinking</button>
+            <button class="filter-btn" data-filter="tooling">Tooling</button>
+            <button class="filter-btn" data-filter="content">Content</button>
           </div>
-          <div class="view-toggle">
-            <button class="view-btn active" data-view="grid" title="Grid view">
-              <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
-            </button>
-            <button class="view-btn" data-view="list" title="List view">
-              <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="2" width="14" height="3" rx="1"/><rect x="1" y="7" width="14" height="3" rx="1"/><rect x="1" y="12" width="14" height="3" rx="1"/></svg>
-            </button>
+          <div class="filters-fade" id="filtersFade">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 3l5 5-5 5"/></svg>
           </div>
         </div>
-      </div>
-      <div class="toolbar-bottom">
-        <div class="filters" id="filters">
-          <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
-          <button class="filter-btn" data-filter="web-app">Web App</button>
-          <button class="filter-btn" data-filter="automation">Automation</button>
-          <button class="filter-btn" data-filter="design-thinking">Design Thinking</button>
-          <button class="filter-btn" data-filter="tooling">Tooling</button>
-          <button class="filter-btn" data-filter="content">Content</button>
+        <div class="view-toggle">
+          <button class="view-btn active" data-view="grid" title="Grid view">
+            <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+          </button>
+          <button class="view-btn" data-view="list" title="List view">
+            <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="2" width="14" height="3" rx="1"/><rect x="1" y="7" width="14" height="3" rx="1"/><rect x="1" y="12" width="14" height="3" rx="1"/></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -1457,15 +1538,25 @@
         grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
 
-      // Search
+      // Search + Clear button
+      const searchClear = document.getElementById('searchClear');
       let searchTimeout;
       searchInput.addEventListener('input', () => {
         clearTimeout(searchTimeout);
+        searchClear.classList.toggle('visible', searchInput.value.length > 0);
         searchTimeout = setTimeout(() => {
           currentSearch = searchInput.value.toLowerCase().trim();
           currentPage = 1;
           render();
         }, 200);
+      });
+      searchClear.addEventListener('click', () => {
+        searchInput.value = '';
+        searchClear.classList.remove('visible');
+        currentSearch = '';
+        currentPage = 1;
+        render();
+        searchInput.focus();
       });
 
       // Clear search button in empty state
@@ -1491,6 +1582,17 @@
 
       // Initial render
       render();
+
+      // Filter scroll fade indicator
+      const filtersEl = document.getElementById('filters');
+      const fadeEl = document.getElementById('filtersFade');
+      function checkScroll() {
+        if (!filtersEl || !fadeEl) return;
+        const atEnd = filtersEl.scrollLeft + filtersEl.clientWidth >= filtersEl.scrollWidth - 8;
+        fadeEl.style.opacity = atEnd ? '0' : '1';
+      }
+      filtersEl.addEventListener('scroll', checkScroll, { passive: true });
+      checkScroll();
     })();
   </script>
 
