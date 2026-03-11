@@ -134,20 +134,32 @@
       gap: 6px;
       padding: 8px 16px;
       border-radius: 50px;
-      background: rgba(201,66,119,0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #fff;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.5);
       font-size: 0.82rem;
       font-weight: 600;
       text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: all 0.3s ease;
     }
-
     .btn-home:hover {
-      background: rgba(201,66,119,0.95);
+      background: rgba(255,255,255,0.18);
+      border-color: rgba(255,255,255,0.3);
+      color: #fff;
       transform: translateY(-1px);
+    }
+    /* Invert on light background */
+    .btn-home.on-light {
+      background: rgba(0,0,0,0.04);
+      border-color: rgba(0,0,0,0.08);
+      color: rgba(0,0,0,0.35);
+    }
+    .btn-home.on-light:hover {
+      background: rgba(0,0,0,0.1);
+      border-color: rgba(0,0,0,0.15);
+      color: rgba(0,0,0,0.7);
     }
     .btn-home svg { flex-shrink: 0; }
 
@@ -1446,10 +1458,21 @@
 })();
 </script>
 
-<a class="btn-home" href="https://tanplanet.info/">
+<a class="btn-home" id="btnHome" href="https://tanplanet.info/">
   <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14V9h4v5"/><path d="M2 8l6-6 6 6v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/></svg>
   Home
 </a>
+<script>
+(function(){
+  var btn=document.getElementById('btnHome');
+  var light=document.querySelector('.light-section');
+  if(!btn||!light)return;
+  window.addEventListener('scroll',function(){
+    var top=light.getBoundingClientRect().top;
+    btn.classList.toggle('on-light',top<40);
+  },{passive:true});
+})();
+</script>
 
 </body>
 </html>
