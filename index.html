@@ -70,14 +70,59 @@
       pointer-events: none;
     }
 
+    .avatar-wrap {
+      position: relative;
+      z-index: 1;
+      width: 96px;
+      height: 96px;
+      margin-bottom: 24px;
+    }
     .avatar {
       width: 96px;
       height: 96px;
       border-radius: 50%;
       border: 3px solid var(--border);
-      margin-bottom: 24px;
       position: relative;
+      z-index: 2;
+    }
+    /* Saturn ring - back (behind avatar) */
+    .avatar-ring-back {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 160px;
+      height: 60px;
+      margin-top: -30px;
+      margin-left: -80px;
+      border-radius: 50%;
+      border: 3px solid var(--accent-magenta);
+      transform: rotate(-25deg);
       z-index: 1;
+      pointer-events: none;
+      filter: drop-shadow(0 0 8px rgba(201,66,119,0.6));
+      animation: ring-pulse 3s ease-in-out infinite;
+    }
+    /* Saturn ring - front (in front of avatar) */
+    .avatar-ring-front {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 160px;
+      height: 60px;
+      margin-top: -30px;
+      margin-left: -80px;
+      border-radius: 50%;
+      border: 3px solid var(--accent-magenta);
+      transform: rotate(-25deg);
+      z-index: 3;
+      pointer-events: none;
+      filter: drop-shadow(0 0 8px rgba(201,66,119,0.6));
+      clip-path: polygon(0 0, 55% 0, 55% 50%, 0 50%);
+      animation: ring-pulse 3s ease-in-out infinite;
+    }
+    @keyframes ring-pulse {
+      0%, 100% { filter: drop-shadow(0 0 6px rgba(201,66,119,0.4)); border-color: var(--accent-magenta); }
+      50% { filter: drop-shadow(0 0 14px rgba(201,66,119,0.8)); border-color: #e85a9c; }
     }
 
     .hero h1 {
@@ -940,7 +985,11 @@
   <!-- Hero -->
   <section class="hero">
     <div class="stars" id="stars"></div>
-    <img class="avatar" src="avatar.webp" alt="tanθ">
+    <div class="avatar-wrap">
+      <div class="avatar-ring-back"></div>
+      <img class="avatar" src="avatar.webp" alt="tanθ">
+      <div class="avatar-ring-front"></div>
+    </div>
     <h1><span>TanPlanet</span></h1>
     <p>รวมผลงาน Side Projects — ตั้งแต่ LINE Bot, Travel Guide, Dashboard ไปจนถึง Design Thinking Case Study</p>
     <div class="hero-tags">
