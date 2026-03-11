@@ -54,7 +54,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 80px 24px 60px;
+      padding: 80px 24px 48px;
       position: relative;
       overflow: hidden;
     }
@@ -203,9 +203,11 @@
     .search-float {
       position: relative;
       z-index: 10;
-      max-width: 560px;
+      max-width: 720px;
       margin: -28px auto 0;
       padding: 0 24px;
+      transform: translateY(-50%);
+      margin-top: 0;
     }
     .search-float .search-box {
       background: #fff;
@@ -229,6 +231,27 @@
       width: 20px;
       height: 20px;
     }
+    .typing-placeholder {
+      position: absolute;
+      left: 48px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #b4b4be;
+      font-size: 1rem;
+      pointer-events: none;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .typing-placeholder::after {
+      content: '|';
+      animation: blink 0.8s step-end infinite;
+      color: #86868b;
+      margin-left: 1px;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
     .search-clear {
       position: absolute;
       right: 14px;
@@ -865,7 +888,7 @@
       .mascot-half { width: 140px; height: 94px; }
       .footer-links { gap: 16px; }
 
-      .search-float { margin-top: -22px; padding: 0 16px; }
+      .search-float { padding: 0 16px; }
       .search-float .search-box input { padding: 14px 40px 14px 44px; font-size: 0.95rem; }
       .toolbar { flex-wrap: nowrap; gap: 8px; }
       .view-toggle { flex-shrink: 0; }
@@ -932,7 +955,8 @@
   <div class="search-float">
     <div class="search-box">
       <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
-      <input type="text" id="searchInput" placeholder="อยากเห็นซักวันที่พิมอะไรก็เจอ..." autocomplete="off">
+      <input type="text" id="searchInput" placeholder="" autocomplete="off">
+      <span class="typing-placeholder" id="typingPlaceholder"></span>
       <button class="search-clear" id="searchClear" aria-label="ล้างคำค้นหา">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
       </button>
@@ -1593,6 +1617,73 @@
       }
       filtersEl.addEventListener('scroll', checkScroll, { passive: true });
       checkScroll();
+
+      // Typing placeholder animation
+      const typingEl = document.getElementById('typingPlaceholder');
+      const phrases = [
+        'ค้นหาโปรเจกต์...',
+        'ทำไรเยอะแยะเนี่ย 👀',
+        'นอนน้อยแต่นอนบ้าง 😴',
+        'ลอง search "LINE Bot" ดู',
+        'Side project อีกแล้วเหรอ?',
+        'กดดูเลย ฟรีไม่มีค่าใช้จ่าย',
+        'พิมพ์อะไรก็ได้ จะหาให้',
+        'มีอะไรดีๆ ซ่อนอยู่น้า 🔍',
+        'ลอง "Figma" สิ มีเซอร์ไพรส์',
+        'คนทำคนเดียวจริงๆ นะ 🫠',
+      ];
+      let phraseIdx = 0, charIdx = 0, deleting = false;
+      let typeTimer;
+      function typeStep() {
+        if (!typingEl) return;
+        const phrase = phrases[phraseIdx];
+        if (!deleting) {
+          charIdx++;
+          typingEl.textContent = phrase.slice(0, charIdx);
+          if (charIdx >= phrase.length) {
+            deleting = true;
+            typeTimer = setTimeout(typeStep, 2000);
+            return;
+          }
+          typeTimer = setTimeout(typeStep, 70 + Math.random() * 40);
+        } else {
+          charIdx--;
+          typingEl.textContent = phrase.slice(0, charIdx);
+          if (charIdx <= 0) {
+            deleting = false;
+            phraseIdx = (phraseIdx + 1) % phrases.length;
+            typeTimer = setTimeout(typeStep, 400);
+            return;
+          }
+          typeTimer = setTimeout(typeStep, 30);
+        }
+      }
+      typeStep();
+
+      // Hide typing placeholder when user focuses or types
+      searchInput.addEventListener('focus', () => {
+        clearTimeout(typeTimer);
+        typingEl.style.display = 'none';
+      });
+      searchInput.addEventListener('blur', () => {
+        if (!searchInput.value) {
+          typingEl.style.display = '';
+          charIdx = 0;
+          deleting = false;
+          typeStep();
+        }
+      });
+      // Also hide when clear button resets
+      const origClear = searchClear.onclick;
+      searchClear.addEventListener('click', () => {
+        typingEl.style.display = '';
+        clearTimeout(typeTimer);
+        charIdx = 0;
+        deleting = false;
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+        // Don't restart typing since focus stays on input
+      });
+
     })();
   </script>
 
