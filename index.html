@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TanPlanet — Portfolio by tanθ</title>
+  <meta name="description" content="Portfolio รวมผลงาน Side Projects ของ tanθ — LINE Bot, Travel Guide, Dashboard, Design Thinking">
+  <meta property="og:title" content="TanPlanet — Portfolio by tanθ">
+  <meta property="og:description" content="รวมผลงาน Side Projects — LINE Bot, Travel Guide, Dashboard, Design Thinking">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f14;
+      --bg-card: #1a1a24;
+      --bg-card-hover: #22223a;
+      --text: #e8e8ed;
+      --text-dim: #8b8ba0;
+      --text-muted: #5a5a72;
+      --accent-magenta: #c94277;
+      --accent-blue: #3b82f6;
+      --accent-cyan: #22d3ee;
+      --accent-green: #34d399;
+      --accent-yellow: #fbbf24;
+      --accent-orange: #f97316;
+      --accent-red: #ef4444;
+      --accent-purple: #a78bfa;
+      --border: #2a2a3e;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.3);
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 600px 400px at 30% 20%, rgba(201,66,119,0.15), transparent),
+        radial-gradient(ellipse 500px 350px at 70% 60%, rgba(59,130,246,0.1), transparent),
+        radial-gradient(ellipse 400px 300px at 50% 80%, rgba(34,211,238,0.08), transparent);
+      pointer-events: none;
+    }
+
+    .avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: 3px solid var(--border);
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent-magenta), var(--accent-blue), var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-dim);
+      max-width: 520px;
+      margin-top: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-tag {
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+
+    /* ===== Projects Grid ===== */
+    .section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .section-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    /* ===== Project Card ===== */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-magenta);
+      box-shadow: 0 8px 32px rgba(201,66,119,0.15);
+    }
+
+    .card-visual {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-visual .icon {
+      font-size: 3rem;
+      opacity: 0.9;
+    }
+
+    .card-body {
+      padding: 20px 24px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-type {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .card p {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    .card-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .card-footer {
+      padding: 14px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .card-footer svg {
+      width: 16px;
+      height: 16px;
+      opacity: 0.6;
+    }
+
+    /* ===== Color Variants ===== */
+    .card--magenta .card-visual { background: linear-gradient(135deg, #2a1525, #1a1a24); }
+    .card--magenta .card-type { color: var(--accent-magenta); }
+    .card--magenta:hover { border-color: var(--accent-magenta); box-shadow: 0 8px 32px rgba(201,66,119,0.12); }
+
+    .card--blue .card-visual { background: linear-gradient(135deg, #152038, #1a1a24); }
+    .card--blue .card-type { color: var(--accent-blue); }
+    .card--blue:hover { border-color: var(--accent-blue); box-shadow: 0 8px 32px rgba(59,130,246,0.12); }
+
+    .card--cyan .card-visual { background: linear-gradient(135deg, #0f2a30, #1a1a24); }
+    .card--cyan .card-type { color: var(--accent-cyan); }
+    .card--cyan:hover { border-color: var(--accent-cyan); box-shadow: 0 8px 32px rgba(34,211,238,0.12); }
+
+    .card--green .card-visual { background: linear-gradient(135deg, #0f2a1f, #1a1a24); }
+    .card--green .card-type { color: var(--accent-green); }
+    .card--green:hover { border-color: var(--accent-green); box-shadow: 0 8px 32px rgba(52,211,153,0.12); }
+
+    .card--orange .card-visual { background: linear-gradient(135deg, #2a1a0f, #1a1a24); }
+    .card--orange .card-type { color: var(--accent-orange); }
+    .card--orange:hover { border-color: var(--accent-orange); box-shadow: 0 8px 32px rgba(249,115,22,0.12); }
+
+    .card--purple .card-visual { background: linear-gradient(135deg, #1f1535, #1a1a24); }
+    .card--purple .card-type { color: var(--accent-purple); }
+    .card--purple:hover { border-color: var(--accent-purple); box-shadow: 0 8px 32px rgba(167,139,250,0.12); }
+
+    /* ===== Footer ===== */
+    .footer {
+      text-align: center;
+      padding: 40px 24px 60px;
+      border-top: 1px solid var(--border);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .footer a {
+      color: var(--accent-cyan);
+      text-decoration: none;
+    }
+
+    .footer a:hover { text-decoration: underline; }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .footer-links a {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    .footer-links svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card { animation: fadeUp 0.5s ease both; }
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.10s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.20s; }
+    .card:nth-child(5) { animation-delay: 0.25s; }
+    .card:nth-child(6) { animation-delay: 0.30s; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { min-height: 50vh; padding: 60px 20px 40px; }
+      .projects { grid-template-columns: 1fr; }
+      .section { padding: 0 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <img class="avatar" src="https://avatars.githubusercontent.com/u/256731825?v=4" alt="tanθ">
+    <h1><span>TanPlanet</span></h1>
+    <p>รวมผลงาน Side Projects — ตั้งแต่ LINE Bot, Travel Guide, Dashboard ไปจนถึง Design Thinking Case Study</p>
+    <div class="hero-tags">
+      <span class="hero-tag">UX/UI Design</span>
+      <span class="hero-tag">LINE Bot</span>
+      <span class="hero-tag">React</span>
+      <span class="hero-tag">Google Apps Script</span>
+      <span class="hero-tag">Design Thinking</span>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="section">
+    <div class="section-title">Projects</div>
+    <div class="projects">
+
+      <!-- 1. Taiwan V1.0 -->
+      <a class="card card--magenta" href="https://natpakans-stack.github.io/taiwan-guidebook/" target="_blank" rel="noopener">
+        <div class="card-visual">
+          <span class="icon">🇹🇼</span>
+        </div>
+        <div class="card-body">
+          <div class="card-type">Interactive Travel Guide</div>
+          <h3>คู่มือเที่ยวไต้หวัน 6D5N</h3>
+          <p>Taiwan Travel Guide แบบ Interactive — Taipei → Kaohsiung via HSR พร้อม Budget Calculator, Transit Map และ Daily Itinerary แบบ Bilingual (TH/EN)</p>
+          <div class="card-tags">
+            <span class="tag">HTML5</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">Vercel</span>
+            <span class="tag">Bilingual</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+          <span>natpakans-stack/taiwan-guidebook</span>
+        </div>
+      </a>
+
+      <!-- 2. LINE Messaging (น้องกริ่ง + Daily Blessing) -->
+      <a class="card card--green" href="https://natpakans-stack.github.io/line-messaging-portfolio/" target="_blank" rel="noopener">
+        <div class="card-visual">
+          <span class="icon">⚽</span>
+        </div>
+        <div class="card-body">
+          <div class="card-type">LINE Bot Automation</div>
+          <h3>น้องกริ่ง EPL Bot + Daily Blessing</h3>
+          <p>LINE Bot ส่งผลบอล EPL + ตาราง + Top Scorers ทุกเช้า พร้อม AI Daily Blessing สร้างคำอวยพรด้วย GPT-4o-mini และ Color Card ตามวัน</p>
+          <div class="card-tags">
+            <span class="tag">Google Apps Script</span>
+            <span class="tag">LINE API</span>
+            <span class="tag">OpenAI GPT-4o</span>
+            <span class="tag">Football API</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+          <span>natpakans-stack/line-messaging-portfolio</span>
+        </div>
+      </a>
+
+      <!-- 3. Carpark Dashboard -->
+      <a class="card card--blue" href="https://natpakans-stack.github.io/carpark-live-dashboard/" target="_blank" rel="noopener">
+        <div class="card-visual">
+          <span class="icon">🅿️</span>
+        </div>
+        <div class="card-body">
+          <div class="card-type">Web App — Data Visualization</div>
+          <h3>Carpark Live Dashboard</h3>
+          <p>Dashboard แสดงสถิติจอดรถ Real-time จาก Google Sheets — กราฟ Location, Floor Distribution, Arrival Time Trends พร้อม Auto-refresh ทุก 5 นาที</p>
+          <div class="card-tags">
+            <span class="tag">React</span>
+            <span class="tag">Recharts</span>
+            <span class="tag">Vite</span>
+            <span class="tag">Google Sheets</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+          <span>natpakans-stack/carpark-live-dashboard</span>
+        </div>
+      </a>
+
+      <!-- 4. Cody Bot -->
+      <a class="card card--orange" href="https://natpakans-stack.github.io/cody-bot-portfolio/" target="_blank" rel="noopener">
+        <div class="card-visual">
+          <span class="icon">🤖</span>
+        </div>
+        <div class="card-body">
+          <div class="card-type">Design Thinking Case Study</div>
+          <h3>Cody — LINE Bot for Football Fans</h3>
+          <p>Portfolio เล่ากระบวนการ Design Thinking ในการสร้าง LINE Bot สำหรับแฟนบอล Liverpool/EPL ตั้งแต่ Research จนถึง Implementation</p>
+          <div class="card-tags">
+            <span class="tag">Design Thinking</span>
+            <span class="tag">LINE Bot</span>
+            <span class="tag">UX Research</span>
+            <span class="tag">Case Study</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+          <span>natpakans-stack/cody-bot-portfolio</span>
+        </div>
+      </a>
+
+      <!-- 5. Parking Reminder -->
+      <a class="card card--purple" href="https://natpakans-stack.github.io/parking-reminder-portfolio/" target="_blank" rel="noopener">
+        <div class="card-visual">
+          <span class="icon">📍</span>
+        </div>
+        <div class="card-body">
+          <div class="card-type">Design Thinking Case Study</div>
+          <h3>วันนี้จอดรถที่ไหน?</h3>
+          <p>Portfolio เล่ากระบวนการ Design Thinking ของ Parking Reminder App — ตั้งแต่ Pain Points, User Research, Ideation ไปจนถึง Prototype</p>
+          <div class="card-tags">
+            <span class="tag">Design Thinking</span>
+            <span class="tag">UX Research</span>
+            <span class="tag">Prototype</span>
+            <span class="tag">Case Study</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+          <span>natpakans-stack/parking-reminder-portfolio</span>
+        </div>
+      </a>
+
+      <!-- 6. Taiwan Guidebook Portfolio -->
+      <a class="card card--cyan" href="https://natpakans-stack.github.io/taiwan-guidebook-portfolio/" target="_blank" rel="noopener">
+        <div class="card-visual">
+          <span class="icon">✈️</span>
+        </div>
+        <div class="card-body">
+          <div class="card-type">Design Thinking Case Study</div>
+          <h3>Taiwan Guidebook — Design Process</h3>
+          <p>Portfolio เล่ากระบวนการออกแบบ Taiwan Travel Guidebook ตั้งแต่ Research, Persona, Pain Points ไปจนถึง Solution Design</p>
+          <div class="card-tags">
+            <span class="tag">Design Thinking</span>
+            <span class="tag">UX Research</span>
+            <span class="tag">Travel</span>
+            <span class="tag">Case Study</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+          <span>natpakans-stack/taiwan-guidebook-portfolio</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Made with ❤️ by <a href="https://github.com/natpakans-stack" target="_blank">tanθ</a></p>
+    <div class="footer-links">
+      <a href="https://github.com/natpakans-stack" target="_blank">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </footer>
+
+</body>
+</html>
