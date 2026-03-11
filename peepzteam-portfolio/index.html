@@ -16,9 +16,9 @@
         }
 
         :root {
-            --accent: #e94560;
-            --accent-dark: #c73e54;
-            --accent-light: rgba(233, 69, 96, 0.12);
+            --accent: #e84c1e;
+            --accent-dark: #c43d14;
+            --accent-light: rgba(232, 76, 30, 0.12);
             --bg: #f8f9fb;
             --bg-card: #ffffff;
             --text-primary: #1a1a2e;
@@ -52,7 +52,7 @@
             top: 20px;
             left: 20px;
             z-index: 100;
-            background: rgba(233, 69, 96, 0.8);
+            background: rgba(232, 76, 30, 0.8);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             color: #fff;
@@ -67,7 +67,7 @@
             gap: 6px;
         }
         .back-nav:hover {
-            background: rgba(233, 69, 96, 0.95);
+            background: rgba(232, 76, 30, 0.95);
             transform: translateX(-2px);
         }
         .back-nav svg {
@@ -95,7 +95,7 @@
             visibility: hidden;
             transform: translateY(10px);
             transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(233, 69, 96, 0.35);
+            box-shadow: 0 4px 16px rgba(232, 76, 30, 0.35);
         }
         .back-to-top.visible {
             opacity: 1;
@@ -113,7 +113,7 @@
 
         /* ======================== HERO ======================== */
         .hero {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #e94560 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #e84c1e 100%);
             color: #fff;
             padding: 120px 24px 80px;
             text-align: center;
@@ -299,7 +299,7 @@
             transition: opacity 0.3s ease;
         }
         .problem-card:hover {
-            border-color: rgba(233, 69, 96, 0.2);
+            border-color: rgba(232, 76, 30, 0.2);
             box-shadow: var(--shadow-md);
         }
         .problem-card:hover::before {
@@ -346,7 +346,7 @@
             transition: all 0.3s ease;
         }
         .solution-list li:hover {
-            border-color: rgba(233, 69, 96, 0.2);
+            border-color: rgba(232, 76, 30, 0.2);
             box-shadow: var(--shadow-sm);
         }
         .solution-check {
@@ -421,7 +421,7 @@
             top: 32px;
             bottom: 32px;
             width: 2px;
-            background: linear-gradient(to bottom, var(--accent), rgba(233,69,96,0.1));
+            background: linear-gradient(to bottom, var(--accent), rgba(232,76,30,0.1));
         }
         .step {
             display: flex;
@@ -445,7 +445,7 @@
             color: #fff;
             font-weight: 700;
             font-size: 18px;
-            box-shadow: 0 4px 12px rgba(233,69,96,0.3);
+            box-shadow: 0 4px 12px rgba(232,76,30,0.3);
             position: relative;
             z-index: 1;
         }
@@ -615,7 +615,7 @@
             right: -30px;
             width: 80px;
             height: 80px;
-            background: rgba(233, 69, 96, 0.15);
+            background: rgba(232, 76, 30, 0.15);
             border-radius: 50%;
         }
         .stat-number {
@@ -660,18 +660,19 @@
         /* ======================== CLOSING / MASCOT ======================== */
         .closing {
             text-align: center;
-            margin-top: 140px;
             padding: 40px 24px 64px;
+            border-top: 1px solid var(--border);
+            margin-top: 140px;
             position: relative;
         }
         .mascot-half {
-            position: absolute;
-            top: -90px;
-            left: 50%;
-            transform: translateX(-50%);
             width: 180px;
             height: 120px;
             overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -100%);
         }
         .mascot-half img {
             width: 100%;
@@ -679,43 +680,33 @@
             display: block;
         }
         .closing h2 {
-            font-size: 24px;
+            font-size: 1.4rem;
             font-weight: 700;
             margin-bottom: 12px;
             color: var(--text-primary);
         }
         .closing p {
             color: var(--text-secondary);
-            font-size: 15px;
-            max-width: 480px;
+            font-size: 0.95rem;
+            max-width: 520px;
             margin: 0 auto;
             line-height: 1.7;
         }
-        .closing-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--accent);
-            color: #fff;
-            padding: 14px 32px;
-            border-radius: 999px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 16px;
+        .stack-icons {
             margin-top: 24px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(233, 69, 96, 0.3);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
-        .closing-cta:hover {
-            background: var(--accent-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(233, 69, 96, 0.4);
-        }
-        .closing-cta .arrow {
-            transition: transform 0.3s ease;
-        }
-        .closing-cta:hover .arrow {
-            transform: translateX(4px);
+        .stack-icon {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-secondary);
         }
 
         .footer-note {
@@ -1097,14 +1088,14 @@
         </div>
         <h2>เว็บที่ดีคือเว็บที่ปิดการขายได้</h2>
         <p>PeepzTeam เป็นตัวอย่างว่าเว็บ agency ที่ดี ไม่ใช่แค่สวย แต่ต้องสื่อสารชัด มี social proof แข็งแรง และให้ลูกค้าตัดสินใจได้ทันที</p>
-        <a href="https://www.peepzteam.com/" target="_blank" rel="noopener" class="closing-cta">
-            ดู Live Website <span class="arrow">&rsaquo;</span>
-        </a>
+        <div class="stack-icons">
+            <span class="stack-icon">Webflow</span>
+            <span class="stack-icon">Live Commerce</span>
+            <span class="stack-icon">Influencer Marketing</span>
+            <span class="stack-icon">Event</span>
+            <span class="stack-icon">Content Production</span>
+        </div>
     </div>
-</div>
-
-<div class="footer-note">
-    Made with Webflow &amp; a lot of marketing insights
 </div>
 
 <!-- ==================== SCRIPTS ==================== -->
