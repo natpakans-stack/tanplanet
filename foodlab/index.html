@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=64&height=64">
+    <link rel="apple-touch-icon" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=180&height=180">
+    <title>FoodLab — Template to Fine Dining | Portfolio</title>
+    <meta name="description" content="ทดลองเอา ThemeForest template เปล่ามาสร้างเว็บ Fine Dining Restaurant ด้วย AI — เรียนรู้อะไรจากการท้าทายระบบ">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #faf9f6;
+            --surface: #ffffff;
+            --text: #1a1a1a;
+            --text-secondary: #5c5c5c;
+            --accent: #c9a96e;
+            --accent-dark: #a68945;
+            --accent-light: #fdf8ef;
+            --purple: #7c3aed;
+            --purple-light: #f5f3ff;
+            --blue: #3b82f6;
+            --blue-light: #eff6ff;
+            --green: #059669;
+            --green-light: #ecfdf5;
+            --red: #ef4444;
+            --red-light: #fef2f2;
+            --border: #e8e4de;
+            --code-bg: #1e1e2e;
+            --code-text: #cdd6f4;
+            --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --max-w: 780px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'IBM Plex Sans Thai', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2319 50%, #1a1610 100%);
+            color: #ffffff;
+            padding: 80px 24px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 60% 40%, rgba(201,169,110,0.12) 0%, transparent 50%);
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #c9a96e, #e8d5a8, #c9a96e, #a68945);
+        }
+        .hero-inner {
+            position: relative;
+            max-width: var(--max-w);
+            margin: 0 auto;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(201,169,110,0.2);
+            backdrop-filter: blur(10px);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--accent);
+            border: 1px solid rgba(201,169,110,0.3);
+        }
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 2.6rem);
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 16px;
+        }
+        .hero h1 .gold { color: var(--accent); }
+        .hero p {
+            font-size: 1.05rem;
+            opacity: 0.85;
+            max-width: 580px;
+            margin: 0 auto 24px;
+        }
+        .hero-tags {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .hero-tags span {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(6px);
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* ===== CTA ===== */
+        .cta-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .cta-btn:hover { transform: translateY(-2px); }
+        .cta-primary {
+            background: var(--accent);
+            color: #1a1a1a;
+        }
+        .cta-primary:hover { box-shadow: 0 8px 24px rgba(201,169,110,0.4); }
+        .cta-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .cta-secondary:hover { background: rgba(255,255,255,0.15); }
+
+        /* ===== ARTICLE ===== */
+        article {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+        .section-intro { margin-bottom: 24px; }
+        .section-intro h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .section-intro p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        hr.divider {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 48px 0;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        .card::before {
+            content: attr(data-label);
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--accent);
+            color: #1a1a1a;
+            padding: 2px 14px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .card.purple::before { background: var(--purple); color: white; }
+        .card.blue::before { background: var(--blue); color: white; }
+        .card.green::before { background: var(--green); color: white; }
+        .card.red::before { background: var(--red); color: white; }
+        .card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+        .card p, .card li {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+        .card ul { list-style: none; margin-top: 12px; }
+        .card ul li::before {
+            content: '▸ ';
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .highlight {
+            background: var(--accent-light);
+            border-left: 3px solid var(--accent);
+            padding: 12px 16px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--accent-dark);
+            font-weight: 500;
+        }
+
+        /* ===== BEFORE/AFTER ===== */
+        .compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .compare-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            box-shadow: var(--shadow);
+        }
+        .compare-box .label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .compare-box.before .label { color: var(--text-secondary); }
+        .compare-box.after .label { color: var(--accent-dark); }
+        .compare-box ul { list-style: none; }
+        .compare-box ul li {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            padding: 4px 0;
+            line-height: 1.6;
+        }
+        .compare-box.after ul li { color: var(--text); }
+
+        /* ===== INSIGHTS ===== */
+        .insight-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .insight-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            box-shadow: var(--shadow);
+        }
+        .insight-card .emoji { font-size: 1.6rem; margin-bottom: 8px; display: block; }
+        .insight-card h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .insight-card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ===== QUOTE ===== */
+        .quote-block {
+            background: linear-gradient(135deg, #1a1a1a, #2d2319);
+            color: #fff;
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .quote-block::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--accent);
+            position: absolute;
+            top: 8px;
+            left: 20px;
+            opacity: 0.5;
+            line-height: 1;
+        }
+        .quote-block p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            padding-left: 32px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* ===== LEARNING CARDS ===== */
+        .learning-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .learning-card strong { color: var(--text); }
+
+        /* ===== TECH STACK ===== */
+        .stack-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 16px 0;
+        }
+        .stack-pill {
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 50px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        /* ===== CLOSING ===== */
+        .closing {
+            text-align: center;
+            padding: 40px 24px 64px;
+            border-top: 1px solid var(--border);
+            margin-top: 140px;
+            position: relative;
+        }
+        .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+        .closing p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        .closing .stack-icons {
+            margin-top: 24px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .closing .stack-icon {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .mascot-half {
+            width: 180px;
+            height: 120px;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -100%);
+        }
+        .mascot-half img { width: 100%; height: auto; display: block; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 680px) {
+            .hero { padding: 60px 20px 40px; }
+            .hero h1 { font-size: 1.6rem; }
+            article { padding: 32px 16px; }
+            .compare { grid-template-columns: 1fr; }
+            .insight-grid { grid-template-columns: 1fr; }
+            .cta-row { flex-direction: column; align-items: center; }
+            .cta-btn { width: 100%; max-width: 280px; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge">EXPERIMENT / POC</div>
+        <h1>🍽️ FoodLab — <span class="gold">Template to Fine Dining</span></h1>
+        <p>ถ้าเอา template เปล่าจาก ThemeForest มาลองเข้าหน้าที่ตัวเอง จะเป็นยังไง? ได้อะไร? เสียอะไร? — บันทึกจากการท้าทายระบบ</p>
+        <div class="hero-tags">
+            <span>ThemeForest</span>
+            <span>AI-Assisted</span>
+            <span>Web Customization</span>
+            <span>POC</span>
+        </div>
+        <div class="cta-row">
+            <a class="cta-btn cta-primary" href="https://natpakans-stack.github.io/Muniverse/Preview/poc/projects/foodlab/" target="_blank" rel="noopener">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l6 5-6 5"/></svg>
+                ดู Live Demo
+            </a>
+            <a class="cta-btn cta-secondary" href="https://projects.tanplanet.info/" rel="noopener">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3L3 8l5 5M3 8h10"/></svg>
+                กลับ Projects
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ARTICLE ===== -->
+<article>
+
+    <!-- THE CHALLENGE -->
+    <section class="section-intro">
+        <h2>The Challenge</h2>
+        <p>คำถามเดียวที่อยากรู้คำตอบ</p>
+    </section>
+
+    <div class="quote-block">
+        <p>ถ้าซื้อ template เปล่าจาก ThemeForest แล้วใช้ AI ช่วยปรับหน้าตา — จะได้เว็บที่ "เป็นเรา" จริงๆ ไหม? หรือจะได้แค่เว็บที่ "พอใช้ได้" แต่ขาดจิตวิญญาณ?</p>
+    </div>
+
+    <div class="card" data-label="CONTEXT">
+        <h3>Education Theme → Fine Dining Restaurant</h3>
+        <ul>
+            <li>ใช้ ThemeForest template: Education & Learning theme (HTML)</li>
+            <li>เป้าหมาย: สร้างเว็บ Fine Dining Restaurant "FoodLab" ที่ดูหรูและน่าเชื่อถือ</li>
+            <li>วิธี: ให้ AI ช่วย customize layout, content, สี, typography ทั้งหมด</li>
+            <li>ข้อจำกัด: ห้ามเขียน code เองตั้งแต่ศูนย์ ต้องใช้โครงสร้าง template เดิม</li>
+        </ul>
+    </div>
+
+    <hr class="divider">
+
+    <!-- BEFORE / AFTER -->
+    <section class="section-intro">
+        <h2>Before → After</h2>
+        <p>จาก template การศึกษา กลายเป็นร้านอาหาร fine dining</p>
+    </section>
+
+    <div class="compare">
+        <div class="compare-box before">
+            <div class="label">📦 Before — Template เดิม</div>
+            <ul>
+                <li>Education & Learning theme</li>
+                <li>หน้า Course Listing</li>
+                <li>สีฟ้า-ขาว แนวการศึกษา</li>
+                <li>Layout สำหรับ LMS</li>
+                <li>Typography ธรรมดา</li>
+            </ul>
+        </div>
+        <div class="compare-box after">
+            <div class="label">✨ After — FoodLab</div>
+            <ul>
+                <li>Fine Dining Restaurant</li>
+                <li>Hero + Story + Menu + Chef</li>
+                <li>สีทอง-ดำ luxury aesthetic</li>
+                <li>Scroll animation + Parallax</li>
+                <li>Thai + EN bilingual content</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card green" data-label="RESULT">
+        <h3>ผลลัพธ์: เว็บ 9 sections ที่ใช้งานได้จริง</h3>
+        <ul>
+            <li>Hero — "The Art of Taste" พร้อม booking CTA</li>
+            <li>Our Story — เรื่องราว 15 ปีของ FoodLab</li>
+            <li>Testimonials — Guest reviews แบบ carousel</li>
+            <li>Chef Spotlight — แนะนำเชฟและแรงบันดาลใจ</li>
+            <li>Menu — อาหาร signature พร้อมราคา (฿2,200–฿6,500)</li>
+            <li>Reservation — Omakase & tasting menu</li>
+            <li>Blog — เนื้อหาจาก kitchen</li>
+            <li>Gallery — รูปอาหารและบรรยากาศ</li>
+            <li>Contact — แผนที่และเวลาเปิดปิด</li>
+        </ul>
+    </div>
+
+    <hr class="divider">
+
+    <!-- KEY INSIGHTS -->
+    <section class="section-intro">
+        <h2>Key Insights</h2>
+        <p>สิ่งที่ค้นพบจากการทดลองนี้</p>
+    </section>
+
+    <div class="insight-grid">
+        <div class="insight-card">
+            <span class="emoji">⚡</span>
+            <h4>Layout ไวขึ้นจริง</h4>
+            <p>โครงสร้าง grid, responsive, animation ได้มาฟรี — ไม่ต้องเขียนจากศูนย์</p>
+        </div>
+        <div class="insight-card">
+            <span class="emoji">🎨</span>
+            <h4>แต่ต้องใส่ตัวเราเข้าไป</h4>
+            <p>Template ให้โครงร่าง แต่ "จิตวิญญาณ" ต้องมาจากคนออกแบบ — สี, tone, content ทุกอย่าง</p>
+        </div>
+        <div class="insight-card">
+            <span class="emoji">🧠</span>
+            <h4>ต้องรู้จักงานตัวเองกว่าเดิม</h4>
+            <p>การสื่อสารกับ AI บังคับให้เราต้องชัดเจนกับ vision — เข้าใจ brand เราเองมากขึ้น</p>
+        </div>
+        <div class="insight-card">
+            <span class="emoji">🔧</span>
+            <h4>ได้รู้จัก tools ใหม่ทุกวัน</h4>
+            <p>กระบวนการนี้ทำให้ค้นพบ workflow, plugins, และเทคนิคใหม่ๆ ที่ไม่เคยใช้มาก่อน</p>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- THE HONEST TRUTH -->
+    <section class="section-intro">
+        <h2>The Honest Truth</h2>
+        <p>สิ่งที่ได้เรียนรู้จริงๆ</p>
+    </section>
+
+    <div class="card" data-label="FASTER">
+        <h3>⚡ เร็วขึ้นในแง่ Layout</h3>
+        <p>Grid, responsive breakpoints, scroll animation — ของพวกนี้ template ให้มาหมด จากที่ต้องเขียน CSS เองทั้งหมด กลายเป็นแค่ปรับค่า</p>
+        <div class="highlight">Layout ที่ปกติใช้เวลา 2-3 วัน เหลือไม่กี่ชั่วโมง</div>
+    </div>
+
+    <div class="card purple" data-label="BUT...">
+        <h3>🎯 แต่ต้องใส่ "ความเป็นเรา" เข้าไปมากกว่าเดิม</h3>
+        <p>Template ทำให้ Layout เหมือนกันหมด — ความต่างอยู่ที่ content, tone of voice, สีที่เลือก, รูปที่ใช้ ผลคือต้อง <strong>เผลอใส่ตัวเองเข้าไปมากกว่าตอนเขียนเอง</strong> เพราะโครงสร้างมันเหมือนกันหมดแล้ว</p>
+    </div>
+
+    <div class="card blue" data-label="COMMUNICATE">
+        <h3>💬 ต้องสื่อสารกับ AI ให้ชัด = เข้าใจงานตัวเองดีขึ้น</h3>
+        <p>พอต้องอธิบายให้ AI ว่า "อยากให้หน้าตาเป็นแบบไหน" — มันบังคับให้คิดให้ชัดกว่าเดิมเยอะ <strong>ได้รู้จักตัวเองในฐานะ designer มากขึ้น</strong> ว่าจริงๆ แล้ว visual identity ที่ต้องการคืออะไร</p>
+    </div>
+
+    <div class="card red" data-label="TOOLS">
+        <h3>🔧 ได้รู้จัก Tools ใหม่ทุกวัน</h3>
+        <p>กระบวนการ template → customize ด้วย AI ทำให้เจอ workflow ใหม่ เช่น CSS custom properties, scroll-driven animation, AI image generation — ทุกวันมีของใหม่ให้เรียน</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- LEARNINGS -->
+    <section class="section-intro">
+        <h2>Takeaways</h2>
+        <p>ข้อสรุปหลังจบการทดลอง</p>
+    </section>
+
+    <div class="learning-card">
+        <strong>Template ไม่ใช่ shortcut — มันเป็น starting point</strong> ที่ดี แต่ output สุดท้ายยังต้องอาศัย design thinking, brand understanding, และ content strategy เหมือนเดิม
+    </div>
+
+    <div class="learning-card">
+        <strong>AI เก่งเรื่อง execution แต่ direction ต้องมาจากคน</strong> — บอกให้ "ทำให้สวย" ไม่พอ ต้องบอกว่า "สวยแบบไหน" ถึงจะได้ผลที่ต้องการ
+    </div>
+
+    <div class="learning-card">
+        <strong>เร็วขึ้น ≠ ง่ายขึ้น</strong> — ใช้เวลาน้อยลงกับ code แต่ใช้เวลามากขึ้นกับ decision-making ผลรวมคือได้งานที่ดีขึ้นในเวลาเท่าๆ กัน
+    </div>
+
+    <div class="learning-card">
+        <strong>การทดลองแบบนี้ควรทำเรื่อยๆ</strong> — ทุกครั้งที่ลอง workflow ใหม่ ได้ perspective ใหม่กลับมาเสมอ ไม่มีครั้งไหนเสียเวลาเปล่า
+    </div>
+
+    <hr class="divider">
+
+    <!-- TECH STACK -->
+    <section class="section-intro">
+        <h2>Stack</h2>
+        <p>เครื่องมือที่ใช้ในการทดลองนี้</p>
+    </section>
+
+    <div class="stack-row">
+        <span class="stack-pill">ThemeForest Template</span>
+        <span class="stack-pill">HTML/CSS/JS</span>
+        <span class="stack-pill">AI-Assisted Customization</span>
+        <span class="stack-pill">GitHub Pages</span>
+        <span class="stack-pill">Scroll Animation</span>
+        <span class="stack-pill">Responsive Design</span>
+    </div>
+
+</article>
+
+<!-- ===== CLOSING ===== -->
+<div class="closing">
+    <div class="mascot-half">
+        <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>🍽️ Template เป็นแค่จุดเริ่มต้น</h2>
+    <p>สิ่งที่ทำให้เว็บ "เป็นเรา" ไม่ใช่โค้ด — แต่เป็นการตัดสินใจทุกจุดว่า "อยากให้คนรู้สึกอะไร"</p>
+    <div class="stack-icons">
+        <span class="stack-icon">ThemeForest</span>
+        <span class="stack-icon">AI Workflow</span>
+        <span class="stack-icon">Fine Dining</span>
+        <span class="stack-icon">POC</span>
+    </div>
+</div>
+
+</body>
+</html>

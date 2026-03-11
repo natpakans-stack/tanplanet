@@ -159,19 +159,310 @@
       padding: 60px 24px 80px;
     }
 
+    .section-header {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .section-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
     .section-title {
       font-size: 0.85rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: #86868b;
-      margin-bottom: 32px;
+      margin-bottom: 0;
     }
+
+    /* ===== Toolbar ===== */
+    .toolbar-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toolbar-bottom {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+
+    .filter-btn {
+      font-family: var(--font);
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid #d2d2d7;
+      background: transparent;
+      color: #86868b;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      border-color: #1d1d1f;
+      color: #1d1d1f;
+    }
+
+    .filter-btn.active {
+      background: #1d1d1f;
+      border-color: #1d1d1f;
+      color: #fff;
+    }
+
+    .search-box { flex: 1; }
+
+    .view-toggle {
+      display: flex;
+      border: 1px solid #d2d2d7;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .view-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: #86868b;
+      transition: all 0.2s;
+    }
+
+    .view-btn:hover { color: #1d1d1f; }
+    .view-btn.active { background: #1d1d1f; color: #fff; }
+    .view-btn + .view-btn { border-left: 1px solid #d2d2d7; }
+    .view-btn svg { width: 16px; height: 16px; }
 
     .projects {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 20px;
+    }
+
+    /* ===== List View ===== */
+    .projects.list-view {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .projects.list-view .card {
+      flex-direction: row;
+      align-items: stretch;
+    }
+
+    .projects.list-view .card-visual {
+      width: 120px;
+      min-width: 120px;
+      height: auto;
+      min-height: 100px;
+      border-radius: var(--radius) 0 0 var(--radius);
+    }
+
+    .projects.list-view .card-body {
+      padding: 16px 20px;
+    }
+
+    .projects.list-view .card-body { flex: 1; min-width: 0; }
+    .projects.list-view .card h3 { font-size: 1.05rem; }
+    .projects.list-view .card p { font-size: 0.84rem; }
+    .projects.list-view .card-footer { border-top: none; border-left: 1px solid #e5e5e7; padding: 16px 20px; flex-direction: column; justify-content: center; width: 260px; flex-shrink: 0; }
+
+    /* Card hidden by filter */
+    .card.hidden-card {
+      display: none !important;
+    }
+
+    /* ===== Pagination ===== */
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 40px;
+    }
+
+    .page-btn {
+      font-family: var(--font);
+      font-size: 0.85rem;
+      font-weight: 500;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid #d2d2d7;
+      background: #fff;
+      color: #1d1d1f;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .page-btn:hover { border-color: #1d1d1f; }
+    .page-btn.active { background: #1d1d1f; color: #fff; border-color: #1d1d1f; }
+    .page-btn:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+
+    .page-arrow {
+      font-family: var(--font);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid #d2d2d7;
+      background: #fff;
+      color: #1d1d1f;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .page-arrow:hover { border-color: #1d1d1f; }
+    .page-arrow:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+    .page-arrow svg { width: 14px; height: 14px; }
+
+    .page-info {
+      font-size: 0.82rem;
+      color: #86868b;
+      margin: 0 8px;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 80px 24px;
+      color: #86868b;
+      font-size: 0.95rem;
+      display: none;
+    }
+
+    .no-results .empty-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      background: #f0f0f2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+
+    .no-results h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-bottom: 8px;
+    }
+
+    .no-results p {
+      color: #86868b;
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+    }
+
+    .no-results .clear-search-btn {
+      font-family: var(--font);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 8px 20px;
+      border-radius: 8px;
+      border: 1px solid #d2d2d7;
+      background: #fff;
+      color: #1d1d1f;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .no-results .clear-search-btn:hover { border-color: #1d1d1f; }
+
+    /* ===== Search Box ===== */
+    .search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box .search-icon {
+      position: absolute;
+      left: 14px;
+      width: 18px;
+      height: 18px;
+      color: #86868b;
+      pointer-events: none;
+    }
+
+    .search-box input {
+      font-family: var(--font);
+      font-size: 0.95rem;
+      padding: 10px 16px 10px 40px;
+      border: 1px solid #d2d2d7;
+      border-radius: 12px;
+      background: #fff;
+      color: #1d1d1f;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: #1d1d1f;
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
+    }
+
+    .search-box input::placeholder {
+      color: #b4b4be;
+    }
+
+    /* ===== Search Highlight ===== */
+    mark.search-hl {
+      background: #fef08a;
+      color: #1d1d1f;
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+
+    /* ===== NEW Badge ===== */
+    .badge-new {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: linear-gradient(135deg, #ef4444, #f97316);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: 50px;
+      text-transform: uppercase;
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(239,68,68,0.3);
+      animation: badgePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes badgePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
 
     /* ===== Project Card (Light) ===== */
@@ -303,6 +594,10 @@
     .card--red .card-type { color: #dc2626; }
     .card--red:hover { border-color: #dc2626; box-shadow: 0 12px 40px rgba(220,38,38,0.1); }
 
+    .card--gold .card-visual { background: linear-gradient(135deg, #fdf8ef, #f5e6c8); }
+    .card--gold .card-type { color: #a68945; }
+    .card--gold:hover { border-color: #c9a96e; box-shadow: 0 12px 40px rgba(201,169,110,0.15); }
+
     /* ===== Footer (Light) ===== */
     .footer {
       text-align: center;
@@ -386,6 +681,40 @@
       50% { opacity: var(--brightness); transform: scale(1.2); }
     }
 
+    /* ===== Shooting Stars / Meteors ===== */
+    .meteor {
+      position: absolute;
+      width: var(--len, 80px);
+      height: 1.5px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0.3) 40%, transparent);
+      border-radius: 50px;
+      opacity: 0;
+      transform: rotate(var(--angle, 35deg));
+      animation: shootingStar var(--speed, 1.2s) ease-in var(--delay, 0s) infinite;
+      pointer-events: none;
+      filter: drop-shadow(0 0 3px rgba(255,255,255,0.5));
+    }
+
+    .meteor::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 6px 2px rgba(200,180,255,0.6);
+    }
+
+    @keyframes shootingStar {
+      0% { opacity: 0; transform: rotate(var(--angle, 35deg)) translateX(0); }
+      5% { opacity: 1; }
+      60% { opacity: 0.6; }
+      100% { opacity: 0; transform: rotate(var(--angle, 35deg)) translateX(var(--dist, 300px)); }
+    }
+
     /* ===== Animations ===== */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -410,6 +739,11 @@
       .projects { grid-template-columns: repeat(2, 1fr); }
       .section { padding: 48px 24px 60px; }
       .footer { margin: 100px auto 0; }
+      .search-box input { width: 100%; }
+      .search-box input:focus { width: 100%; }
+      .projects.list-view .card { flex-direction: column; }
+      .projects.list-view .card-visual { width: 100%; min-height: 120px; border-radius: var(--radius) var(--radius) 0 0; }
+      .projects.list-view .card-footer { border-left: none; border-top: 1px solid #e5e5e7; width: auto; flex-direction: row; }
     }
 
     /* Mobile */
@@ -426,7 +760,6 @@
 
       .projects { grid-template-columns: 1fr; gap: 16px; }
       .section { padding: 40px 16px 48px; }
-      .section-title { margin-bottom: 24px; }
 
       .card-visual { height: 120px; }
       .card-body { padding: 16px 20px 20px; }
@@ -437,6 +770,20 @@
       .footer { margin: 80px auto 0; padding: 32px 20px 48px; }
       .mascot-half { width: 140px; height: 94px; }
       .footer-links { gap: 16px; }
+
+      .section-header-top { flex-wrap: wrap; }
+      .toolbar-top { width: 100%; }
+      .search-box input { width: 100%; font-size: 1rem; padding: 12px 16px 12px 42px; }
+      .search-box input:focus { width: 100%; }
+      .filters { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 4px; }
+      .filters::-webkit-scrollbar { display: none; }
+      .filter-btn { white-space: nowrap; flex-shrink: 0; }
+      .view-toggle { flex-shrink: 0; }
+      .pagination { gap: 4px; flex-wrap: wrap; }
+      .page-arrow { padding: 6px 10px; font-size: 0.8rem; }
+      .page-info { font-size: 0.75rem; width: 100%; text-align: center; }
+      .projects.list-view .card-footer { width: auto; }
+      .badge-new { top: 8px; right: 8px; font-size: 0.6rem; padding: 2px 8px; }
     }
 
     /* Small Mobile */
@@ -472,11 +819,68 @@
   <!-- Projects + Footer (Light Theme) -->
   <div class="light-section">
   <section class="section">
-    <div class="section-title">Projects</div>
-    <div class="projects">
+    <div class="section-header">
+      <div class="section-header-top">
+        <div class="section-title">Projects</div>
+        <div class="toolbar-top">
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
+            <input type="text" id="searchInput" placeholder="ค้นหา project..." autocomplete="off">
+          </div>
+          <div class="view-toggle">
+            <button class="view-btn active" data-view="grid" title="Grid view">
+              <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+            </button>
+            <button class="view-btn" data-view="list" title="List view">
+              <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="2" width="14" height="3" rx="1"/><rect x="1" y="7" width="14" height="3" rx="1"/><rect x="1" y="12" width="14" height="3" rx="1"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="toolbar-bottom">
+        <div class="filters" id="filters">
+          <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
+          <button class="filter-btn" data-filter="web-app">Web App</button>
+          <button class="filter-btn" data-filter="automation">Automation</button>
+          <button class="filter-btn" data-filter="design-thinking">Design Thinking</button>
+          <button class="filter-btn" data-filter="tooling">Tooling</button>
+          <button class="filter-btn" data-filter="content">Content</button>
+        </div>
+      </div>
+    </div>
+    <div class="no-results" id="noResults">
+      <div class="empty-icon">🔍</div>
+      <h3>ไม่พบ project ที่ตรงกับคำค้นหา</h3>
+      <p id="noResultsHint">ลองค้นด้วยคำอื่น หรือเปลี่ยน filter ดู</p>
+      <button class="clear-search-btn" id="clearSearchBtn">ล้างคำค้นหา</button>
+    </div>
+    <div class="projects" id="projectsGrid">
+
+      <!-- 10. FoodLab — Template to Fine Dining (NEWEST) -->
+      <a class="card card--gold" data-category="web-app" data-new="true" data-keywords="foodlab fine dining restaurant template themeforest ai customization poc experiment ร้านอาหาร template to production" href="foodlab/" target="_blank" rel="noopener">
+        <div class="card-visual">
+          <span class="badge-new">New</span>
+          <span class="icon">🍽️</span>
+        </div>
+        <div class="card-body">
+          <div class="card-type">Experiment / POC</div>
+          <h3>FoodLab — Template to Fine Dining</h3>
+          <p>ทดลองเอา ThemeForest template เปล่ามาสร้างเว็บ Fine Dining Restaurant ด้วย AI — ได้เรียนรู้ว่า Layout ไวขึ้น แต่ต้องใส่ตัวตนเข้าไปมากกว่าเดิม</p>
+          <div class="card-tags">
+            <span class="tag">ThemeForest</span>
+            <span class="tag">AI-Assisted</span>
+            <span class="tag">Web Customization</span>
+            <span class="tag">POC</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+          <span>tanplanet/foodlab</span>
+        </div>
+      </a>
 
       <!-- 1. Taiwan V1.0 -->
-      <a class="card card--magenta" href="https://natpakans-stack.github.io/taiwan-guidebook/" target="_blank" rel="noopener">
+      <a class="card card--magenta" data-category="web-app" data-keywords="taiwan travel guide interactive bilingual html css javascript vercel คู่มือเที่ยวไต้หวัน" href="https://natpakans-stack.github.io/taiwan-guidebook/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="icon">🇹🇼</span>
         </div>
@@ -499,7 +903,7 @@
       </a>
 
       <!-- 2. LINE Messaging (น้องกริ่ง + Daily Blessing) -->
-      <a class="card card--green" href="https://natpakans-stack.github.io/line-messaging-portfolio/" target="_blank" rel="noopener">
+      <a class="card card--green" data-category="automation" data-keywords="line bot automation น้องกริ่ง epl football soccer daily blessing gpt openai google apps script ส่งผลบอล" href="https://natpakans-stack.github.io/line-messaging-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="icon">⚽</span>
         </div>
@@ -521,7 +925,7 @@
       </a>
 
       <!-- 3. Carpark Dashboard -->
-      <a class="card card--blue" href="https://natpakans-stack.github.io/carpark-live-dashboard/" target="_blank" rel="noopener">
+      <a class="card card--blue" data-category="web-app" data-keywords="carpark parking dashboard data visualization react recharts vite google sheets real-time สถิติจอดรถ" href="https://natpakans-stack.github.io/carpark-live-dashboard/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="icon">🅿️</span>
         </div>
@@ -543,7 +947,7 @@
       </a>
 
       <!-- 4. Cody Bot -->
-      <a class="card card--orange" href="https://natpakans-stack.github.io/cody-bot-portfolio/" target="_blank" rel="noopener">
+      <a class="card card--orange" data-category="design-thinking" data-keywords="cody bot line football fans liverpool epl design thinking case study ux research" href="https://natpakans-stack.github.io/cody-bot-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="icon">🤖</span>
         </div>
@@ -565,7 +969,7 @@
       </a>
 
       <!-- 5. Parking Reminder -->
-      <a class="card card--purple" href="https://natpakans-stack.github.io/parking-reminder-portfolio/" target="_blank" rel="noopener">
+      <a class="card card--purple" data-category="design-thinking" data-keywords="parking reminder จอดรถ design thinking case study ux research prototype pain points" href="https://natpakans-stack.github.io/parking-reminder-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="icon">📍</span>
         </div>
@@ -587,7 +991,7 @@
       </a>
 
       <!-- 6. Taiwan Guidebook Portfolio -->
-      <a class="card card--cyan" href="https://natpakans-stack.github.io/taiwan-guidebook-portfolio/" target="_blank" rel="noopener">
+      <a class="card card--cyan" data-category="design-thinking" data-keywords="taiwan guidebook design thinking case study ux research travel persona pain points ออกแบบ" href="https://natpakans-stack.github.io/taiwan-guidebook-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="icon">✈️</span>
         </div>
@@ -609,7 +1013,7 @@
       </a>
 
       <!-- 7. Talk to Figma MCP -->
-      <a class="card card--yellow" href="https://natpakans-stack.github.io/talk-to-figma-mcp/" target="_blank" rel="noopener">
+      <a class="card card--yellow" data-category="tooling" data-keywords="talk to figma mcp claude code ai design skills open source ux review design system" href="https://natpakans-stack.github.io/talk-to-figma-mcp/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="icon">🎨</span>
         </div>
@@ -631,7 +1035,7 @@
       </a>
 
       <!-- 8. Mandala Capture -->
-      <a class="card card--green" href="https://natpakans-stack.github.io/mandala-capture-portfolio/" target="_blank" rel="noopener">
+      <a class="card card--green" data-category="automation" data-keywords="mandala capture playwright node.js web scraping automation screenshot แคปโพส cosmostrend" href="https://natpakans-stack.github.io/mandala-capture-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="icon">📸</span>
         </div>
@@ -653,7 +1057,7 @@
       </a>
 
       <!-- 9. A Little Archive -->
-      <a class="card card--red" href="https://a-little-archive.webflow.io/" target="_blank" rel="noopener">
+      <a class="card card--red" data-category="content" data-keywords="a little archive webflow content branding writing เพจ คอนเทนต์ บทความ" href="https://a-little-archive.webflow.io/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="icon">📚</span>
         </div>
@@ -675,6 +1079,7 @@
       </a>
 
     </div>
+    <div class="pagination" id="pagination"></div>
   </section>
 
   <!-- Footer -->
@@ -693,7 +1098,8 @@
   </div>
 
   <script>
-    const container = document.getElementById('stars');
+    // ===== Stars =====
+    const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 80; i++) {
       const star = document.createElement('div');
       star.className = 'star';
@@ -703,8 +1109,237 @@
       star.style.setProperty('--brightness', (0.4 + Math.random() * 0.6));
       star.style.animationDelay = Math.random() * 5 + 's';
       star.style.width = star.style.height = (1 + Math.random() * 2) + 'px';
-      container.appendChild(star);
+      starsContainer.appendChild(star);
     }
+
+    // ===== Shooting Stars / Meteors =====
+    function spawnMeteor() {
+      const m = document.createElement('div');
+      m.className = 'meteor';
+      const len = 60 + Math.random() * 100;
+      const angle = 25 + Math.random() * 25;
+      const speed = 0.8 + Math.random() * 0.8;
+      const dist = 200 + Math.random() * 300;
+      m.style.left = (10 + Math.random() * 70) + '%';
+      m.style.top = (Math.random() * 50) + '%';
+      m.style.setProperty('--len', len + 'px');
+      m.style.setProperty('--angle', angle + 'deg');
+      m.style.setProperty('--speed', speed + 's');
+      m.style.setProperty('--dist', dist + 'px');
+      m.style.setProperty('--delay', '0s');
+      starsContainer.appendChild(m);
+      setTimeout(() => m.remove(), speed * 1000 + 100);
+    }
+    // Spawn a meteor every 3-7 seconds
+    setInterval(() => spawnMeteor(), 3000 + Math.random() * 4000);
+    // Spawn 2 immediately for first impression
+    setTimeout(spawnMeteor, 500);
+    setTimeout(spawnMeteor, 2000);
+
+    // ===== Portfolio: Filter + Search + Pagination + View Toggle + Highlight =====
+    (() => {
+      const ITEMS_PER_PAGE = 9;
+      const grid = document.getElementById('projectsGrid');
+      const allCards = Array.from(grid.querySelectorAll('.card'));
+      const pagination = document.getElementById('pagination');
+      const noResults = document.getElementById('noResults');
+      const noResultsHint = document.getElementById('noResultsHint');
+      const searchInput = document.getElementById('searchInput');
+
+      let currentFilter = 'all';
+      let currentSearch = '';
+      let currentPage = 1;
+
+      // Store original text for each card (to restore after highlight)
+      const originals = allCards.map(card => ({
+        title: card.querySelector('h3')?.innerHTML || '',
+        desc: card.querySelector('.card-body p')?.innerHTML || '',
+        tags: Array.from(card.querySelectorAll('.tag')).map(t => t.innerHTML),
+        type: card.querySelector('.card-type')?.innerHTML || ''
+      }));
+
+      // Highlight search terms in text
+      function highlightText(text, terms) {
+        if (!terms.length) return text;
+        const escaped = terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        const regex = new RegExp(`(${escaped.join('|')})`, 'gi');
+        return text.replace(regex, '<mark class="search-hl">$1</mark>');
+      }
+
+      // Apply highlights to visible cards
+      function applyHighlights(visibleCards) {
+        const terms = currentSearch ? currentSearch.split(/\s+/).filter(Boolean) : [];
+
+        allCards.forEach((card, i) => {
+          const orig = originals[i];
+          const h3 = card.querySelector('h3');
+          const desc = card.querySelector('.card-body p');
+          const tags = card.querySelectorAll('.tag');
+          const type = card.querySelector('.card-type');
+
+          if (terms.length && visibleCards.has(card)) {
+            if (h3) h3.innerHTML = highlightText(orig.title, terms);
+            if (desc) desc.innerHTML = highlightText(orig.desc, terms);
+            if (type) type.innerHTML = highlightText(orig.type, terms);
+            tags.forEach((tag, j) => {
+              if (orig.tags[j]) tag.innerHTML = highlightText(orig.tags[j], terms);
+            });
+          } else {
+            // Restore originals
+            if (h3) h3.innerHTML = orig.title;
+            if (desc) desc.innerHTML = orig.desc;
+            if (type) type.innerHTML = orig.type;
+            tags.forEach((tag, j) => {
+              if (orig.tags[j]) tag.innerHTML = orig.tags[j];
+            });
+          }
+        });
+      }
+
+      // Get filtered cards
+      function getFilteredCards() {
+        return allCards.filter(card => {
+          const cat = card.dataset.category || '';
+          const keywords = (card.dataset.keywords || '').toLowerCase();
+          const title = (card.querySelector('h3')?.textContent || '').toLowerCase();
+          const desc = (card.querySelector('.card-body p')?.textContent || '').toLowerCase();
+          const tags = Array.from(card.querySelectorAll('.tag')).map(t => t.textContent.toLowerCase()).join(' ');
+          const type = (card.querySelector('.card-type')?.textContent || '').toLowerCase();
+
+          const matchFilter = currentFilter === 'all' || cat === currentFilter;
+          const searchText = `${title} ${desc} ${tags} ${type} ${keywords}`;
+          const matchSearch = !currentSearch || currentSearch.split(/\s+/).every(term => searchText.includes(term));
+
+          return matchFilter && matchSearch;
+        });
+      }
+
+      // Render
+      function render() {
+        const filtered = getFilteredCards();
+        const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
+        const visible = new Set(filtered.slice(start, end));
+
+        // Show/hide cards
+        allCards.forEach((card) => {
+          if (visible.has(card)) {
+            card.classList.remove('hidden-card');
+            card.style.animationDelay = ((Array.from(visible).indexOf(card)) * 0.05) + 's';
+            card.style.animation = 'none';
+            card.offsetHeight;
+            card.style.animation = '';
+          } else {
+            card.classList.add('hidden-card');
+          }
+        });
+
+        // Apply search highlights
+        applyHighlights(visible);
+
+        // No results with context-aware hint
+        if (filtered.length === 0) {
+          noResults.style.display = 'block';
+          grid.style.display = 'none';
+          const filterName = document.querySelector('.filter-btn.active')?.textContent || '';
+          if (currentSearch && currentFilter !== 'all') {
+            noResultsHint.textContent = `ไม่พบ "${currentSearch}" ในหมวด ${filterName} — ลองค้นคำอื่น หรือเลือก "ทั้งหมด"`;
+          } else if (currentSearch) {
+            noResultsHint.textContent = `ไม่พบ "${currentSearch}" — ลองค้นด้วยคำอังกฤษ/ไทย หรือชื่อเทคโนโลยี`;
+          } else {
+            noResultsHint.textContent = `ไม่มี project ในหมวด ${filterName} — ลองเลือกหมวดอื่น`;
+          }
+        } else {
+          noResults.style.display = 'none';
+          grid.style.display = '';
+        }
+
+        // Pagination
+        renderPagination(totalPages, filtered.length);
+      }
+
+      function renderPagination(totalPages, totalItems) {
+        if (totalPages <= 1) { pagination.innerHTML = ''; return; }
+
+        let html = '';
+
+        html += `<button class="page-arrow" ${currentPage === 1 ? 'disabled' : ''} data-page="${currentPage - 1}">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3L5 8l5 5"/></svg>
+        </button>`;
+
+        for (let p = 1; p <= totalPages; p++) {
+          html += `<button class="page-btn ${p === currentPage ? 'active' : ''}" data-page="${p}">${p}</button>`;
+        }
+
+        html += `<button class="page-arrow" ${currentPage === totalPages ? 'disabled' : ''} data-page="${currentPage + 1}">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5"/></svg>
+        </button>`;
+
+        const s = (currentPage - 1) * ITEMS_PER_PAGE + 1;
+        const e = Math.min(currentPage * ITEMS_PER_PAGE, totalItems);
+        html += `<span class="page-info">${s}–${e} จาก ${totalItems}</span>`;
+
+        pagination.innerHTML = html;
+      }
+
+      // Filter buttons
+      document.getElementById('filters').addEventListener('click', e => {
+        const btn = e.target.closest('.filter-btn');
+        if (!btn) return;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        currentPage = 1;
+        render();
+      });
+
+      // Pagination clicks
+      pagination.addEventListener('click', e => {
+        const btn = e.target.closest('[data-page]');
+        if (!btn || btn.disabled) return;
+        currentPage = parseInt(btn.dataset.page);
+        render();
+        grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      // Search
+      let searchTimeout;
+      searchInput.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          currentSearch = searchInput.value.toLowerCase().trim();
+          currentPage = 1;
+          render();
+        }, 200);
+      });
+
+      // Clear search button in empty state
+      document.getElementById('clearSearchBtn').addEventListener('click', () => {
+        searchInput.value = '';
+        currentSearch = '';
+        currentFilter = 'all';
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+        currentPage = 1;
+        render();
+        searchInput.focus();
+      });
+
+      // View toggle
+      document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          grid.classList.toggle('list-view', btn.dataset.view === 'list');
+        });
+      });
+
+      // Initial render
+      render();
+    })();
   </script>
 
 </body>
