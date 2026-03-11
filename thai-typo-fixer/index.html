@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=64&height=64">
+    <link rel="apple-touch-icon" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=180&height=180">
+    <title>Thai Typo Fixer — แก้ปัญหาลืมเปลี่ยนภาษา | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f9fb;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #475569;
+            --accent: #7c3aed;
+            --accent-dark: #5b21b6;
+            --accent-light: #f5f3ff;
+            --green: #10b981;
+            --green-light: #e8faf0;
+            --orange: #f59e0b;
+            --orange-light: #fffbeb;
+            --red: #dc2626;
+            --red-light: #fee2e2;
+            --blue: #3b82f6;
+            --blue-light: #eff6ff;
+            --border: #e2e8f0;
+            --code-bg: #1e1e2e;
+            --code-text: #cdd6f4;
+            --tag-bg: #f1f5f9;
+            --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --max-w: 780px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, #5b21b6 0%, #7c3aed 50%, #a78bfa 100%);
+            color: #ffffff;
+            padding: 80px 24px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.06) 0%, transparent 50%);
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #7c3aed, #3b82f6, #10b981, #f59e0b);
+        }
+        .hero-inner {
+            position: relative;
+            max-width: var(--max-w);
+            margin: 0 auto;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 2.6rem);
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 16px;
+        }
+        .hero h1 .emoji { font-size: clamp(2rem, 5.5vw, 3rem); }
+        .hero p {
+            font-size: 1.05rem;
+            opacity: 0.9;
+            max-width: 580px;
+            margin: 0 auto 24px;
+        }
+        .hero-tags {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .hero-tags span {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(6px);
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* ===== ARTICLE ===== */
+        article {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+        .section-intro { margin-bottom: 24px; }
+        .section-intro h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .section-intro p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        hr.divider {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 48px 0;
+        }
+
+        /* ===== DESIGN THINKING CARDS ===== */
+        .dt-step {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        .dt-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 2px 14px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .dt-step h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            margin-top: 8px;
+        }
+        .dt-step p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+        .dt-step .highlight {
+            background: var(--accent-light);
+            border-left: 3px solid var(--accent);
+            padding: 12px 16px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--accent-dark);
+            font-weight: 500;
+        }
+
+        /* ===== TYPO DEMO ===== */
+        .typo-demo {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px 24px;
+            margin: 24px 0;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+        .typo-demo .demo-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+        .typo-input {
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--red);
+            background: var(--red-light);
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            display: inline-block;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+        .typo-arrow {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+            display: block;
+        }
+        .typo-output {
+            font-size: clamp(1.4rem, 4vw, 2.2rem);
+            font-weight: 700;
+            color: var(--green);
+            background: var(--green-light);
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            display: inline-block;
+        }
+        .typo-shortcut {
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .typo-shortcut kbd {
+            background: var(--tag-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 3px 10px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.82rem;
+            font-weight: 600;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+        }
+
+        /* ===== ARCHITECTURE DIAGRAM ===== */
+        .arch-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 24px 0;
+        }
+        .arch-node {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .arch-node .node-icon {
+            font-size: 1.6rem;
+            margin-bottom: 6px;
+        }
+        .arch-node .node-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+        .arch-node .node-desc {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+        .arch-node.highlight-node {
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+        .arch-arrow {
+            text-align: center;
+            padding: 4px 0;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+        @media (min-width: 600px) {
+            .arch-flow.horizontal {
+                display: grid;
+                grid-template-columns: 1fr auto 1fr auto 1fr;
+                align-items: center;
+                gap: 0;
+            }
+            .arch-flow.horizontal .arch-arrow { padding: 0 4px; }
+        }
+
+        /* ===== KEYBOARD MAP ===== */
+        .keyboard-map {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin: 24px 0;
+            box-shadow: var(--shadow);
+        }
+        .keyboard-map h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .key-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        .key-pair {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .key-en, .key-th {
+            width: 48px;
+            height: 44px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .key-en {
+            background: var(--red-light);
+            color: var(--red);
+            border: 1px solid #fca5a5;
+        }
+        .key-th {
+            background: var(--green-light);
+            color: var(--green);
+            border: 1px solid #6ee7b7;
+        }
+        .key-arrow {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== LEARNING ALGO VISUAL ===== */
+        .learning-visual {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin: 24px 0;
+            box-shadow: var(--shadow);
+        }
+        .learning-visual h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .learn-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            font-size: 0.88rem;
+        }
+        .learn-step .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .learn-step .step-text {
+            color: var(--text-secondary);
+        }
+        .learn-step .step-text strong {
+            color: var(--text);
+        }
+        .learn-step.active {
+            background: var(--accent-light);
+            border: 1px solid #c4b5fd;
+        }
+        .count-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--tag-bg);
+            border-radius: var(--radius-sm);
+        }
+        .count-bar .bar-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            min-width: 80px;
+        }
+        .count-bar .bar-track {
+            flex: 1;
+            height: 24px;
+            background: #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        .count-bar .bar-fill {
+            height: 100%;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: white;
+            transition: width 0.6s ease;
+        }
+        .count-bar .bar-fill.low { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+        .count-bar .bar-fill.ready { background: linear-gradient(90deg, #10b981, #059669); }
+        .count-bar .bar-threshold {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        /* ===== FEATURE CARDS ===== */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        .feature-card .feat-icon { font-size: 2.4rem; margin-bottom: 10px; }
+        .feature-card .feat-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+        .feature-card .feat-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .feature-card.phase1 { border-top: 3px solid var(--accent); }
+        .feature-card.phase2 { border-top: 3px solid var(--blue); }
+        .feature-card.phase3 { border-top: 3px solid var(--orange); }
+
+        /* ===== APP LIST ===== */
+        .app-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 24px 0;
+        }
+        .app-chip {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            box-shadow: var(--shadow);
+        }
+
+        /* ===== CODE BLOCK ===== */
+        .code-block {
+            position: relative;
+            background: var(--code-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: var(--shadow-md);
+        }
+        .code-header {
+            background: #313244;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .code-header .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .code-header .dot.r { background: #f38ba8; }
+        .code-header .dot.y { background: #f9e2af; }
+        .code-header .dot.g { background: #a6e3a1; }
+        .code-header .filename {
+            color: #bac2de;
+            font-size: 0.8rem;
+            margin-left: auto;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+        .code-body {
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            color: var(--code-text);
+        }
+        .code-body .kw { color: #cba6f7; }
+        .code-body .str { color: #a6e3a1; }
+        .code-body .num { color: #fab387; }
+        .code-body .cm { color: #6c7086; }
+        .code-body .fn { color: #89b4fa; }
+        .code-body .op { color: #89dceb; }
+
+        /* ===== METRICS ===== */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .metric-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        .metric-card .num {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .metric-card .num.green { color: var(--green); }
+        .metric-card .num.orange { color: var(--orange); }
+        .metric-card .num.blue { color: var(--blue); }
+        .metric-card .label {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* ===== ROADMAP ===== */
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+            margin: 24px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--surface);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+        .timeline-item.future::before {
+            background: var(--border);
+            box-shadow: 0 0 0 2px var(--border);
+        }
+        .timeline-item .tl-date {
+            font-size: 0.78rem;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .timeline-item.future .tl-date {
+            color: var(--text-secondary);
+        }
+        .timeline-item .tl-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .timeline-item .tl-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ===== LEARNING CARDS ===== */
+        .learning-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        .learning-card strong {
+            color: var(--text);
+        }
+
+        /* ===== CLOSING ===== */
+        .closing {
+            text-align: center;
+            padding: 40px 24px 64px;
+            border-top: 1px solid var(--border);
+            margin-top: 140px;
+            position: relative;
+        }
+        .closing h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .closing p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        .closing .stack-icons {
+            margin-top: 24px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .closing .stack-icon {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .mascot-half {
+            width: 180px;
+            height: 120px;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -100%);
+        }
+        .mascot-half img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ===== BACK NAV ===== */
+        .back-nav {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: rgba(91,33,182,0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .back-nav:hover { background: rgba(91,33,182,0.95); transform: translateY(-1px); }
+        .back-nav svg { flex-shrink: 0; }
+
+        /* ===== BACK TO TOP ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1000;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+        }
+        .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-to-top:hover { background: var(--accent-dark); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .hero { padding: 60px 20px 48px; }
+            article { padding: 32px 16px; }
+            .dt-step { padding: 24px 18px; }
+            .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+            .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+            .key-en, .key-th { width: 40px; height: 38px; font-size: 0.88rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge">Concept / macOS Utility</div>
+        <h1><span class="emoji">&#9000;</span> Thai Typo Fixer</h1>
+        <p>เครื่องมือแก้ปัญหาที่คนไทยเจอทุกวัน — ลืมเปลี่ยนภาษาแล้วพิมพ์ไปทั้งประโยค กดปุ่มเดียวแปลงกลับเป็นภาษาไทยทันที</p>
+        <div class="hero-tags">
+            <span>Python</span>
+            <span>Swift</span>
+            <span>macOS</span>
+            <span>Accessibility API</span>
+            <span>Self-Learning</span>
+        </div>
+    </div>
+</div>
+
+<article>
+
+    <!-- ===== LIVE DEMO ===== -->
+    <section class="section-intro">
+        <h2>ก่อนอื่น — ลองดูสิ่งที่เกิดขึ้น</h2>
+        <p>ทุกคนเคยเจอแบบนี้...</p>
+    </section>
+
+    <div class="typo-demo">
+        <div class="demo-label">ตั้งใจจะพิมพ์ "สวัสดีครับ" แต่ลืมเปลี่ยนภาษา</div>
+        <div class="typo-input">l;ylfu8iy[</div>
+        <span class="typo-arrow">&#11015;</span>
+        <div class="typo-output">สวัสดีครับ</div>
+        <div class="typo-shortcut">
+            กด <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>T</kbd> แปลงทันที
+        </div>
+    </div>
+
+    <div class="typo-demo">
+        <div class="demo-label">หรือจะพิมพ์ "ทดสอบ"</div>
+        <div class="typo-input">kgx'iyd</div>
+        <span class="typo-arrow">&#11015;</span>
+        <div class="typo-output">ทดสอบ</div>
+        <div class="typo-shortcut">
+            ใช้ได้ทุก app — <kbd>Browser</kbd> <kbd>Slack</kbd> <kbd>LINE</kbd> <kbd>VS Code</kbd>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== DESIGN THINKING ===== -->
+    <section class="section-intro">
+        <h2>Design Thinking Process</h2>
+        <p>จากปัญหาเล็กๆ ที่เจอทุกวัน — สู่ไอเดียเครื่องมือที่ช่วยคนไทยทุกคน</p>
+    </section>
+
+    <!-- EMPATHIZE -->
+    <div class="dt-step" data-step="01 EMPATHIZE">
+        <h3>ทุกคนเคยเจอ — พิมพ์ไปครึ่งประโยคแล้วรู้ตัวว่าลืมเปลี่ยนภาษา</h3>
+        <p>คนไทยใช้ 2 ภาษาบนคีย์บอร์ดเดียวกัน สลับไปมาวันละหลายสิบครั้ง บางทีพิมพ์ไปแล้ว 10-20 ตัวอักษร ถึงรู้ตัวว่าอยู่โหมดอังกฤษ — ต้องลบทั้งหมดแล้วพิมพ์ใหม่ ซึ่งเสียเวลาและหงุดหงิดมาก</p>
+        <div class="highlight">Pain Point: ทุกครั้งที่ลืมเปลี่ยนภาษา ต้อง ลบ → เปลี่ยนภาษา → พิมพ์ใหม่ทั้งหมด = เสียเวลา + เสียอารมณ์</div>
+    </div>
+
+    <!-- DEFINE -->
+    <div class="dt-step" data-step="02 DEFINE">
+        <h3>"ทำไมต้องลบแล้วพิมพ์ใหม่ ทั้งที่นิ้วกดตำแหน่งถูกแล้ว?"</h3>
+        <p>จริงๆ แล้วตัวอักษรที่พิมพ์ออกมา <strong>ตรงกับตำแหน่งบนคีย์บอร์ด Kedmanee ทุกตัว</strong> เช่น กดปุ่ม <code>l</code> = ตำแหน่งเดียวกับ <code>ส</code> ดังนั้นแค่ "แปลง" กลับก็ได้ข้อความภาษาไทยที่ต้องการ ไม่ต้องพิมพ์ใหม่</p>
+        <div class="highlight">HMW: How might we แปลงข้อความที่พิมพ์ผิดภาษา กลับเป็นภาษาที่ตั้งใจจะพิมพ์ ด้วยการกดปุ่มเดียว?</div>
+    </div>
+
+    <!-- IDEATE -->
+    <div class="dt-step" data-step="03 IDEATE">
+        <h3>Mapping Table + Self-Learning Dictionary</h3>
+        <p>ไอเดียหลักมี 2 ส่วน:</p>
+        <p style="margin-top: 8px;">
+            &#8226; <strong>Keyboard Mapping</strong> — lookup table 1:1 จาก EN key → TH character (Kedmanee layout)<br>
+            &#8226; <strong>Learning Engine</strong> — จำคู่ที่เคยแปลง ยิ่งใช้บ่อยยิ่งเก่ง ถ้าแปลงซ้ำ &#8805;3 ครั้ง ระบบจะ auto-replace ไม่ต้องกดปุ่มลัด
+        </p>
+        <div class="highlight">Key Idea: ระบบที่ "ยิ่งใช้ยิ่งฉลาด" — เรียนรู้จากพฤติกรรมจริงของผู้ใช้ ไม่ต้องตั้งค่าอะไร</div>
+    </div>
+
+    <!-- PROTOTYPE -->
+    <div class="dt-step" data-step="04 PROTOTYPE">
+        <h3>Lean Prototype — Python ก่อน, Swift ทีหลัง</h3>
+        <p>เริ่มจาก prototype ด้วย Python เพราะทำได้เร็ว:</p>
+        <p style="margin-top: 8px;">
+            &#8226; <strong>pynput</strong> — จับ hotkey (Ctrl+Shift+T) แบบ system-wide<br>
+            &#8226; <strong>pyperclip</strong> — capture text ผ่าน clipboard (select → copy → convert → paste)<br>
+            &#8226; <strong>JSON file</strong> — เก็บ dictionary ง่ายๆ ที่ ~/Library/Application Support/ThaiTypoFix/
+        </p>
+        <div class="highlight">Strategy: ทำ Python prototype ให้ใช้ได้จริงก่อน แล้วค่อย port เป็น Swift menu bar app สำหรับ production</div>
+    </div>
+
+    <!-- TEST -->
+    <div class="dt-step" data-step="05 TEST">
+        <h3>ใช้เองทุกวัน — dogfooding ที่ดีที่สุด</h3>
+        <p>ทดสอบด้วยการใช้เองในการทำงานจริง — พิมพ์ chat, เขียนโค้ด, ตอบอีเมล ดูว่าจับ text ได้ถูกต้องทุก app ไหม dictionary เรียนรู้เร็วพอไหม และ shortcut ไม่ชนกับ app อื่น</p>
+        <div class="highlight">Validation: ถ้าตัวเองใช้ทุกวันแล้วรู้สึกว่า "ขาดไม่ได้" = ผ่าน</div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== KEYBOARD MAPPING ===== -->
+    <section class="section-intro">
+        <h2>Keyboard Mapping — หัวใจของระบบ</h2>
+        <p>EN key → TH character ตาม Kedmanee layout (1:1 mapping)</p>
+    </section>
+
+    <div class="keyboard-map">
+        <h4>&#9000; ตัวอย่าง: l;ylfu8iy[ → สวัสดีครับ</h4>
+        <div class="key-grid">
+            <div class="key-pair">
+                <div class="key-en">l</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ส</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">;</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ว</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">y</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ั</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">l</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ส</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">f</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ด</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">u</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ี</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">8</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ค</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">i</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ร</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">y</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ั</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">[</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">บ</div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== SYSTEM ARCHITECTURE ===== -->
+    <section class="section-intro">
+        <h2>System Architecture</h2>
+        <p>Data flow ตั้งแต่ผู้ใช้กด shortcut จนได้ข้อความภาษาไทย</p>
+    </section>
+
+    <div class="arch-flow">
+        <div class="arch-node">
+            <div class="node-icon">&#9000;</div>
+            <div class="node-title">Shortcut Listener</div>
+            <div class="node-desc">จับ Ctrl+Shift+T แบบ system-wide</div>
+        </div>
+        <div class="arch-arrow">&#8595;</div>
+        <div class="arch-node">
+            <div class="node-icon">&#128203;</div>
+            <div class="node-title">Text Capture</div>
+            <div class="node-desc">คัดลอก text ที่เลือกอยู่ผ่าน clipboard</div>
+        </div>
+        <div class="arch-arrow">&#8595;</div>
+        <div class="arch-node highlight-node">
+            <div class="node-icon">&#128260;</div>
+            <div class="node-title">Mapping Engine</div>
+            <div class="node-desc">เช็ค Dictionary ก่อน → ถ้าไม่มี ใช้ Kedmanee mapping</div>
+        </div>
+        <div class="arch-arrow">&#8595;</div>
+        <div class="arch-node">
+            <div class="node-icon">&#128221;</div>
+            <div class="node-title">Text Replace</div>
+            <div class="node-desc">วางข้อความภาษาไทยแทนที่</div>
+        </div>
+        <div class="arch-arrow">&#8595;</div>
+        <div class="arch-node">
+            <div class="node-icon">&#129504;</div>
+            <div class="node-title">Learning Engine</div>
+            <div class="node-desc">บันทึกคู่ EN→TH ลง dictionary.json</div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== LEARNING ALGORITHM ===== -->
+    <section class="section-intro">
+        <h2>Self-Learning Dictionary</h2>
+        <p>ระบบที่ยิ่งใช้ยิ่งเก่ง — เรียนรู้จากพฤติกรรมผู้ใช้จริง</p>
+    </section>
+
+    <div class="learning-visual">
+        <h4>&#129504; วิธีการเรียนรู้</h4>
+        <div class="learn-step">
+            <span class="step-num">1</span>
+            <span class="step-text">ผู้ใช้พิมพ์ <strong>kgx'iyd</strong> แล้วกด shortcut แปลง</span>
+        </div>
+        <div class="learn-step">
+            <span class="step-num">2</span>
+            <span class="step-text">ระบบแปลงได้ <strong>ทดสอบ</strong> → บันทึกคู่ลง dictionary (count = 1)</span>
+        </div>
+        <div class="learn-step">
+            <span class="step-num">3</span>
+            <span class="step-text">ใช้ซ้ำอีกครั้ง → <strong>count += 1</strong> เพิ่มความมั่นใจ</span>
+        </div>
+        <div class="learn-step active">
+            <span class="step-num">4</span>
+            <span class="step-text">เมื่อ <strong>count &#8805; 3</strong> → Auto-replace ไม่ต้องกดปุ่มลัด!</span>
+        </div>
+
+        <div class="count-bar">
+            <span class="bar-label">count = 1</span>
+            <div class="bar-track">
+                <div class="bar-fill low" style="width: 33%;">1/3</div>
+            </div>
+            <span class="bar-threshold">Manual</span>
+        </div>
+        <div class="count-bar">
+            <span class="bar-label">count = 2</span>
+            <div class="bar-track">
+                <div class="bar-fill low" style="width: 66%;">2/3</div>
+            </div>
+            <span class="bar-threshold">Manual</span>
+        </div>
+        <div class="count-bar">
+            <span class="bar-label">count = 3</span>
+            <div class="bar-track">
+                <div class="bar-fill ready" style="width: 100%;">3/3 &#10003;</div>
+            </div>
+            <span class="bar-threshold">Auto!</span>
+        </div>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span class="dot r"></span>
+            <span class="dot y"></span>
+            <span class="dot g"></span>
+            <span class="filename">dictionary.json</span>
+        </div>
+        <div class="code-body">
+{
+  <span class="str">"kgx'iyd"</span>: {
+    <span class="fn">"value"</span>: <span class="str">"ทดสอบ"</span>,
+    <span class="fn">"count"</span>: <span class="num">5</span>
+  },
+  <span class="str">"l;ylfu8iy["</span>: {
+    <span class="fn">"value"</span>: <span class="str">"สวัสดีครับ"</span>,
+    <span class="fn">"count"</span>: <span class="num">12</span>
+  }
+}
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== WORKS EVERYWHERE ===== -->
+    <section class="section-intro">
+        <h2>ใช้ได้ทุกที่บน macOS</h2>
+        <p>ทำงานแบบ system-wide — ไม่ว่าจะอยู่ app ไหนก็กดปุ่มลัดแปลงได้</p>
+    </section>
+
+    <div class="app-grid">
+        <span class="app-chip">&#127760; Safari / Chrome</span>
+        <span class="app-chip">&#128172; Slack</span>
+        <span class="app-chip">&#128994; LINE</span>
+        <span class="app-chip">&#128221; Notion</span>
+        <span class="app-chip">&#128187; VS Code</span>
+        <span class="app-chip">&#9000; Terminal</span>
+        <span class="app-chip">&#128196; Word / Pages</span>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== ROADMAP ===== -->
+    <section class="section-intro">
+        <h2>Roadmap</h2>
+        <p>แผนพัฒนา 3 เฟส — จากแปลงง่ายๆ สู่ AI ที่เข้าใจบริบท</p>
+    </section>
+
+    <div class="feature-grid">
+        <div class="feature-card phase1">
+            <div class="feat-icon">&#9000;</div>
+            <div class="feat-title">Phase 1 — Core</div>
+            <div class="feat-desc">Keyboard mapping + Shortcut trigger + Dictionary learning</div>
+        </div>
+        <div class="feature-card phase2">
+            <div class="feat-icon">&#129504;</div>
+            <div class="feat-title">Phase 2 — Smart</div>
+            <div class="feat-desc">Auto-detection + Pattern learning + Thai spell check</div>
+        </div>
+        <div class="feature-card phase3">
+            <div class="feat-icon">&#10024;</div>
+            <div class="feat-title">Phase 3 — AI</div>
+            <div class="feat-desc">AI typo prediction + Context-aware correction</div>
+        </div>
+    </div>
+
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="tl-date">Phase 1 — MVP</div>
+            <div class="tl-title">Keyboard Layout Conversion</div>
+            <div class="tl-desc">Kedmanee mapping table + hotkey trigger + clipboard-based text capture + JSON dictionary ที่เรียนรู้จากการใช้งาน</div>
+        </div>
+        <div class="timeline-item future">
+            <div class="tl-date">Phase 2 — Smart Detection</div>
+            <div class="tl-title">รู้เองว่าพิมพ์ผิดภาษา</div>
+            <div class="tl-desc">วิเคราะห์ pattern ของ text ที่พิมพ์ — ถ้าเจอ EN characters ที่ไม่ใช่คำอังกฤษ แนะนำให้แปลงอัตโนมัติ + Thai spell checking</div>
+        </div>
+        <div class="timeline-item future">
+            <div class="tl-date">Phase 3 — AI-Powered</div>
+            <div class="tl-title">เข้าใจบริบท ทำนายล่วงหน้า</div>
+            <div class="tl-desc">ใช้ AI ทำนายว่าผู้ใช้กำลังจะพิมพ์ผิดภาษา ก่อนที่จะพิมพ์เสร็จ + แก้ไขตามบริบทของประโยค</div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== METRICS ===== -->
+    <section class="section-intro">
+        <h2>Target Metrics</h2>
+        <p>เป้าหมายประสิทธิภาพของระบบ</p>
+    </section>
+
+    <div class="metrics">
+        <div class="metric-card">
+            <div class="num">&lt;50ms</div>
+            <div class="label">Conversion Latency</div>
+        </div>
+        <div class="metric-card">
+            <div class="num green">&lt;50MB</div>
+            <div class="label">Memory Usage</div>
+        </div>
+        <div class="metric-card">
+            <div class="num orange">&#8805;3</div>
+            <div class="label">Auto-replace Threshold</div>
+        </div>
+        <div class="metric-card">
+            <div class="num blue">100%</div>
+            <div class="label">Kedmanee Coverage</div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== LEARNINGS ===== -->
+    <section class="section-intro">
+        <h2>Key Takeaways</h2>
+        <p>สิ่งที่ได้เรียนรู้จากการคิดโปรเจกต์นี้</p>
+    </section>
+
+    <div class="learning-card">
+        <strong>ปัญหาเล็กที่ทุกคนชินชา = โอกาสที่ดี</strong> — การลืมเปลี่ยนภาษาเป็นเรื่องที่คนไทยเจอทุกวัน แต่ไม่มีใครคิดว่า "แก้ได้" เพราะชินกับการลบแล้วพิมพ์ใหม่ ถ้ามองปัญหาเล็กๆ ที่คนยอมรับว่าเป็นเรื่องปกติ จะเจอโอกาสสร้างเครื่องมือที่มีคุณค่า
+    </div>
+
+    <div class="learning-card">
+        <strong>1:1 Mapping ทำให้ปัญหาที่ดูยากกลายเป็นง่าย</strong> — ตอนแรกคิดว่าต้องใช้ NLP หรือ ML ซับซ้อน แต่พอวิเคราะห์จริงๆ Kedmanee layout เป็น 1:1 mapping ตรงๆ แค่ lookup table ก็แปลงได้ 100% — บทเรียนคือ "เข้าใจปัญหาให้ลึกก่อนคิดวิธีแก้"
+    </div>
+
+    <div class="learning-card">
+        <strong>Self-Learning ไม่ต้องซับซ้อน</strong> — Learning algorithm ที่ใช้คือ "นับจำนวนครั้ง" ง่ายมาก แต่ effective เพราะ pattern การพิมพ์ซ้ำของคนเป็น signal ที่ชัดเจน ไม่ต้อง neural network ก็สร้างระบบที่ "ยิ่งใช้ยิ่งเก่ง" ได้
+    </div>
+
+    <div class="learning-card">
+        <strong>Prototype ก่อน Production เสมอ</strong> — Python prototype ทำให้ validate idea ได้เร็วโดยไม่ต้องเรียนรู้ Swift + Accessibility API ทั้งหมดก่อน ถ้า prototype ใช้ได้ดี ค่อย invest เวลาทำ native app
+    </div>
+
+</article>
+
+<!-- ===== CLOSING ===== -->
+<div class="closing">
+    <div class="mascot-half">
+        <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>&#9000; พิมพ์ผิดภาษา? ไม่ต้องลบแล้ว</h2>
+    <p>โปรเจกต์นี้เกิดจากความหงุดหงิดเล็กๆ ที่เจอทุกวัน — ลืมเปลี่ยนภาษาแล้วต้องลบทั้งหมด ถ้าแค่กดปุ่มเดียวแล้วแปลงกลับได้ ชีวิตจะง่ายขึ้นเยอะ</p>
+    <div class="stack-icons">
+        <span class="stack-icon">Python</span>
+        <span class="stack-icon">Swift</span>
+        <span class="stack-icon">macOS Accessibility API</span>
+        <span class="stack-icon">pynput</span>
+        <span class="stack-icon">Kedmanee Layout</span>
+    </div>
+</div>
+
+<!-- ===== BACK NAV + BACK TO TOP ===== -->
+<a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+</a>
+<button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+</button>
+<script>
+(function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+})();
+</script>
+</body>
+</html>
