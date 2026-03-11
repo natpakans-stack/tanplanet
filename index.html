@@ -125,15 +125,21 @@
     }
 
     .btn-home {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      margin-top: 32px;
-      padding: 12px 28px;
+      gap: 6px;
+      padding: 8px 16px;
       border-radius: 50px;
-      background: linear-gradient(135deg, var(--accent-magenta), var(--accent-blue));
+      background: rgba(201,66,119,0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
       color: #fff;
-      font-size: 0.9rem;
+      font-size: 0.82rem;
       font-weight: 600;
       text-decoration: none;
       position: relative;
@@ -142,9 +148,10 @@
     }
 
     .btn-home:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(201,66,119,0.3);
+      background: rgba(201,66,119,0.95);
+      transform: translateY(-1px);
     }
+    .btn-home svg { flex-shrink: 0; }
 
     /* ===== Light Section Wrapper ===== */
     .light-section {
@@ -756,7 +763,7 @@
       .hero p { font-size: 1rem; }
       .hero-tags { gap: 6px; }
       .hero-tag { font-size: 0.72rem; padding: 5px 12px; }
-      .btn-home { padding: 10px 24px; font-size: 0.85rem; margin-top: 24px; }
+      .btn-home { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
 
       .projects { grid-template-columns: 1fr; gap: 16px; }
       .section { padding: 40px 16px 48px; }
@@ -836,10 +843,6 @@
       <span class="hero-tag">Google Apps Script</span>
       <span class="hero-tag">Design Thinking</span>
     </div>
-    <a class="btn-home" href="https://tanplanet.info/">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14V9h4v5"/><path d="M2 8l6-6 6 6v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/></svg>
-      Back to Home
-    </a>
   </section>
 
   <!-- Projects + Footer (Light Theme) -->
@@ -1444,6 +1447,11 @@
     window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
 })();
 </script>
+
+<a class="btn-home" href="https://tanplanet.info/">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14V9h4v5"/><path d="M2 8l6-6 6 6v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/></svg>
+  Home
+</a>
 
 </body>
 </html>
