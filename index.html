@@ -8,6 +8,7 @@
   <meta property="og:title" content="TanPlanet — Portfolio by tanθ">
   <meta property="og:description" content="รวมผลงาน Side Projects — LINE Bot, Travel Guide, Dashboard, Design Thinking">
   <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%23c94277'/><stop offset='50%25' stop-color='%233b82f6'/><stop offset='100%25' stop-color='%2322d3ee'/></linearGradient></defs><circle cx='50' cy='50' r='40' fill='url(%23g)'/><ellipse cx='50' cy='50' rx='58' ry='12' fill='none' stroke='%2322d3ee' stroke-width='3' opacity='0.6' transform='rotate(-20 50 50)'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -401,10 +402,47 @@
     .card:nth-child(8) { animation-delay: 0.40s; }
 
     /* ===== Responsive ===== */
+
+    /* Tablet */
+    @media (max-width: 1024px) {
+      .projects { grid-template-columns: repeat(2, 1fr); }
+      .section { padding: 48px 24px 60px; }
+      .footer { margin: 100px auto 0; }
+    }
+
+    /* Mobile */
     @media (max-width: 680px) {
-      .hero { min-height: 50vh; padding: 60px 20px 40px; }
-      .projects { grid-template-columns: 1fr; }
-      .section { padding: 0 16px 60px; }
+      .hero {
+        min-height: auto;
+        padding: 60px 20px 40px;
+      }
+      .hero h1 { font-size: 2.2rem; }
+      .hero p { font-size: 1rem; }
+      .hero-tags { gap: 6px; }
+      .hero-tag { font-size: 0.72rem; padding: 5px 12px; }
+      .btn-home { padding: 10px 24px; font-size: 0.85rem; margin-top: 24px; }
+
+      .projects { grid-template-columns: 1fr; gap: 16px; }
+      .section { padding: 40px 16px 48px; }
+      .section-title { margin-bottom: 24px; }
+
+      .card-visual { height: 120px; }
+      .card-body { padding: 16px 20px 20px; }
+      .card h3 { font-size: 1.05rem; }
+      .card p { font-size: 0.84rem; }
+      .card-footer { padding: 12px 20px; font-size: 0.75rem; }
+
+      .footer { margin: 80px auto 0; padding: 32px 20px 48px; }
+      .mascot-half { width: 140px; height: 94px; }
+      .footer-links { gap: 16px; }
+    }
+
+    /* Small Mobile */
+    @media (max-width: 380px) {
+      .hero h1 { font-size: 1.8rem; }
+      .hero-tags { gap: 4px; }
+      .hero-tag { font-size: 0.68rem; padding: 4px 10px; }
+      .card-body { padding: 14px 16px 18px; }
     }
   </style>
 </head>
