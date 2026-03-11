@@ -579,6 +579,10 @@
           ดูเว็บจริง
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l6 5-6 5"/></svg>
         </a>
+        <a class="cta-btn" href="https://dev.buydi.app/seller/index.php" target="_blank" rel="noopener" style="background:rgba(255,255,255,0.15); color:#fff;">
+          หน้าสนใจขาย
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l6 5-6 5"/></svg>
+        </a>
       </div>
     </div>
   </header>
@@ -810,6 +814,56 @@
 
     <hr class="divider">
 
+    <!-- ===== Strategic Partners ===== -->
+    <section class="section-intro">
+      <h2>Strategic Partners</h2>
+      <p>ไม่ได้ทำคนเดียว — BuyDi ร่วมมือกับหน่วยงานภาครัฐที่แข็งแกร่ง</p>
+    </section>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>สิ่งที่ทำให้ BuyDi ไม่ใช่แค่ "แอปขายของ" แต่เป็น "โครงสร้างพื้นฐานดิจิทัลเพื่อเกษตรกร" คือการได้ทำงานร่วมกับหน่วยงานภาครัฐจริงๆ — ตั้งแต่กระทรวงเกษตรฯ ไปจนถึงไปรษณีย์ไทยที่ดูแลเรื่อง logistics ทั่วประเทศ</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">🏛️</strong><br>
+        <strong>กระทรวงเกษตรและสหกรณ์</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">สนับสนุนนโยบาย + เชื่อมต่อกลุ่มเกษตรกร</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">📮</strong><br>
+        <strong>ไปรษณีย์ไทย</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Logistics ส่งสินค้าเกษตรทั่วประเทศ</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">🌾</strong><br>
+        <strong>กรมส่งเสริมการเกษตร</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ฝึกอบรม + ช่วยเกษตรกรลงทะเบียน</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">🐄</strong><br>
+        <strong>กรมปศุสัตว์</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ผลิตภัณฑ์จากปศุสัตว์ + มาตรฐานคุณภาพ</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">🐟</strong><br>
+        <strong>กรมประมง</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">สินค้าประมง + ควบคุมคุณภาพ</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">🌿</strong><br>
+        <strong>กรมส่งเสริมสหกรณ์</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">เชื่อมต่อสหกรณ์การเกษตรทั่วไทย</p>
+      </div>
+    </div>
+
+    <div class="learning-card" style="border-left: 3px solid var(--accent);">
+      <strong>ทำไม Partner ถึงสำคัญ?</strong>
+      <p>เกษตรกรหลายคนไม่มี smartphone ดีๆ ไม่รู้จะเริ่มขายออนไลน์ยังไง — การมีกรมส่งเสริมฯ ช่วย onboard + ไปรษณีย์ไทยดูแล logistics ทำให้ BuyDi เข้าถึงเกษตรกรได้จริง ไม่ใช่แค่ทำ app แล้วรอ — แต่ลงไปหาเกษตรกรถึงพื้นที่</p>
+    </div>
+
+    <hr class="divider">
+
     <!-- ===== Key Takeaways ===== -->
     <section class="section-intro">
       <h2>Key Takeaways</h2>
@@ -817,20 +871,20 @@
     </section>
 
     <div class="learning-card">
-      <strong>Multi-Role Design ต้องคิดเป็น System:</strong>
-      <p>ไม่ใช่ออกแบบทีละหน้า — ต้องคิดเป็น Flow ทั้งระบบ ว่า Action ของ Role หนึ่งส่งผลต่อ Role อื่นยังไง (Buyer สั่ง → Seller เห็น Order → Admin Track ทั้งหมด)</p>
+      <strong>ออกแบบ 4 Roles พร้อมกัน เหมือนเล่นหมากรุก — ขยับตัวนึง กระทบทุกตัว:</strong>
+      <p>Buyer กดสั่งซื้อ 1 ครั้ง → Seller ต้องเห็น notification → Affiliate ต้องได้ค่า commission → Admin ต้อง track ทั้งหมด ถ้าออกแบบทีละหน้าโดยไม่คิด flow ข้ามกัน จะเจอปัญหาทีหลังเยอะมาก — ต้องวาด System Flow ก่อน แล้วค่อย design ทีละหน้า</p>
     </div>
     <div class="learning-card">
-      <strong>Deadline สอนให้ Prioritize:</strong>
-      <p>3 เดือนทำให้เรียนรู้ว่า "ไม่ต้องทำทุกอย่าง" — เน้น Core Flow ที่ทำให้ Business ทำงานได้ก่อน แล้วค่อยเพิ่ม Nice-to-have ทีหลัง</p>
+      <strong>"ไม่ต้องเก่งเทคโนโลยี ทำตามได้เลย" — ประโยคที่เปลี่ยน UX ทั้งแอป:</strong>
+      <p>User จริงคือลุงป้าเกษตรกรที่อาจเพิ่งใช้ smartphone ไม่กี่ปี ตอนแรก Seller Flow มี 8 ขั้นตอน ปุ่มเล็ก ข้อความเป็นศัพท์เทคนิค — พอไป user test กับเกษตรกรจริง ถึงรู้ว่าต้องลดเหลือ 3 ขั้นตอน: ลงทะเบียน → ถ่ายรูปตั้งราคา → รับเงิน แค่นี้พอ</p>
     </div>
     <div class="learning-card">
-      <strong>เกษตรกร ≠ Tech Savvy:</strong>
-      <p>ออกแบบ Seller Flow ให้ง่ายที่สุด — ลดขั้นตอน ใช้ภาษาง่ายๆ ปุ่มใหญ่ชัดเจน เพราะ User จริงคือเกษตรกรที่อาจไม่คุ้นกับ App</p>
+      <strong>Partner ภาครัฐ = ทางลัดเข้าถึง User ที่ไม่มีทาง reach ด้วย digital marketing:</strong>
+      <p>เกษตรกรหลายคนไม่ได้เล่น Facebook ไม่เห็น ads แต่พอกรมส่งเสริมฯ จัดอบรมให้ใช้ BuyDi ถึงพื้นที่ — คนลงทะเบียนทะลัก สิ่งที่ได้เรียนรู้คือ ไม่ใช่ทุก product ต้อง growth hack ด้วย online — บางทีการไปหา user ถึงที่ ทรงพลังกว่า</p>
     </div>
     <div class="learning-card">
-      <strong>Design Handoff ดี = Dev ทำงานเร็ว:</strong>
-      <p>Spec Sheet ที่ชัดเจน + Component ที่ Reusable ลดเวลาที่ Dev ต้องมาถามกลับ — ประหยัดเวลาทั้งทีม</p>
+      <strong>Deadline 3 เดือน บังคับให้เลือก — และนั่นคือสิ่งที่ดีที่สุดที่เกิดขึ้น:</strong>
+      <p>ตอนแรกอยาก design ทุกอย่าง — wishlist, review, chat, coupon, gamification... แต่ 3 เดือนทำไม่ทัน ต้องเลือก ผลคือได้ Core Flow ที่ใช้งานจริงก่อน (สั่ง → จ่าย → ส่ง) แล้วค่อยเพิ่มที่เหลือ — "ทำน้อยแต่ได้จริง" ดีกว่า "ทำเยอะแต่ไม่เสร็จ"</p>
     </div>
 
     <!-- Metrics -->
