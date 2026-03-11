@@ -686,10 +686,10 @@
       position: absolute;
       width: var(--len, 80px);
       height: 1.5px;
-      background: linear-gradient(270deg, rgba(255,255,255,0.8), rgba(255,255,255,0.3) 40%, transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3) 60%, rgba(255,255,255,0.8));
       border-radius: 50px;
       opacity: 0;
-      transform: rotate(var(--angle, 145deg));
+      transform: rotate(var(--angle, 35deg));
       animation: shootingStar var(--speed, 1.2s) ease-in var(--delay, 0s) infinite;
       pointer-events: none;
       filter: drop-shadow(0 0 3px rgba(255,255,255,0.5));
@@ -709,10 +709,10 @@
     }
 
     @keyframes shootingStar {
-      0% { opacity: 0; transform: rotate(var(--angle, 145deg)) translateX(0); }
+      0% { opacity: 0; transform: rotate(var(--angle, 35deg)) translateX(0); }
       5% { opacity: 1; }
       60% { opacity: 0.6; }
-      100% { opacity: 0; transform: rotate(var(--angle, 145deg)) translateX(var(--dist, 300px)); }
+      100% { opacity: 0; transform: rotate(var(--angle, 35deg)) translateX(var(--dist, 300px)); }
     }
 
     /* ===== Animations ===== */
@@ -1210,11 +1210,11 @@
       const m = document.createElement('div');
       m.className = 'meteor';
       const len = 60 + Math.random() * 100;
-      const angle = 145 + Math.random() * 20;
+      const angle = 30 + Math.random() * 20;
       const speed = 0.8 + Math.random() * 0.8;
       const dist = 200 + Math.random() * 300;
-      m.style.left = (55 + Math.random() * 40) + '%';
-      m.style.top = (5 + Math.random() * 30) + '%';
+      m.style.left = (5 + Math.random() * 40) + '%';
+      m.style.top = (3 + Math.random() * 25) + '%';
       m.style.setProperty('--len', len + 'px');
       m.style.setProperty('--angle', angle + 'deg');
       m.style.setProperty('--speed', speed + 's');
