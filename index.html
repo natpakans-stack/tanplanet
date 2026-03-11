@@ -122,6 +122,28 @@
       color: var(--text-dim);
     }
 
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 32px;
+      padding: 12px 28px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, var(--accent-magenta), var(--accent-blue));
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-home:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(201,66,119,0.3);
+    }
+
     /* ===== Light Section Wrapper ===== */
     .light-section {
       background: #f5f5f7;
@@ -391,6 +413,10 @@
       <span class="hero-tag">Google Apps Script</span>
       <span class="hero-tag">Design Thinking</span>
     </div>
+    <a class="btn-home" href="https://tanplanet.info/">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14V9h4v5"/><path d="M2 8l6-6 6 6v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/></svg>
+      Back to Home
+    </a>
   </section>
 
   <!-- Projects + Footer (Light Theme) -->
