@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voraya's Bloom — Online Flower Shop</title>
+  <meta name="description" content="Portfolio: Voraya's Bloom — แพลตฟอร์มขายดอกไม้ออนไลน์ ออกแบบช่อเอง ส่งตรงถึงคนพิเศษ | Buyer Portal + Seller Portal">
+  <link rel="icon" type="image/png" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=64&height=64">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --accent: #2a9d8f;
+      --accent-light: #e6f5f3;
+      --accent-dark: #1a7a6e;
+      --accent-glow: rgba(42,157,143,0.12);
+      --green: #4a7c59;
+      --green-light: #e8f5e9;
+      --green-dark: #2e5e3e;
+      --gold: #d4a574;
+      --gold-light: #fef9ee;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #ef4444;
+      --red-light: #fef2f2;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #1a5c53 0%, #1a7a6e 30%, #2a9d8f 60%, #6ec6b8 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(110,198,184,0.2) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(42,157,143,0.15) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #1a7a6e, #6ec6b8, #2a9d8f);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #6ec6b8;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero-flowers {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      letter-spacing: 8px;
+      animation: bloom 3s ease-in-out infinite;
+    }
+    @keyframes bloom {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .rose-gold {
+      color: #ffd4e0;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.88;
+      max-width: 560px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.8);
+    }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #1a5c53, #1a7a6e);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.15;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.6;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .solution-card.seller { border-left-color: var(--green); }
+
+    /* ===== Portal Tabs ===== */
+    .portal-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .portal-tab {
+      padding: 10px 24px;
+      border-radius: 50px;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text-secondary);
+    }
+    .portal-tab:hover { border-color: var(--accent); color: var(--accent); }
+    .portal-tab.active[data-portal="buyer"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .portal-tab.active[data-portal="seller"] { background: var(--green); color: #fff; border-color: var(--green); }
+    .portal-panels .portal-panel { display: none; }
+    .portal-panels .portal-panel.active { display: block; }
+    .portal-content {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+    }
+    .portal-content h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .portal-content h3 .emoji { font-size: 1.3rem; }
+    .portal-features {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .portal-features li {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      padding: 10px 14px;
+      background: var(--bg);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .portal-features li .feat-icon {
+      font-size: 1rem;
+      flex-shrink: 0;
+      width: 24px;
+      text-align: center;
+    }
+    .buyer-portal .portal-features li::before {
+      content: none;
+    }
+    .seller-portal .portal-features li::before {
+      content: none;
+    }
+
+    /* ===== Order Flow Diagram ===== */
+    .flow-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+      margin-top: 24px;
+    }
+    .flow-diagram h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+    }
+    .flow-steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+    .flow-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 8px;
+      min-width: 80px;
+    }
+    .flow-step .step-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      position: relative;
+    }
+    .flow-step .step-icon.pink { background: var(--accent-light); }
+    .flow-step .step-icon.rose { background: #fce4ec; }
+    .flow-step .step-icon.green { background: var(--green-light); }
+    .flow-step .step-icon.gold { background: var(--gold-light); }
+    .flow-step .step-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 1.3;
+    }
+    .flow-arrow {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      padding: 0 2px;
+    }
+
+    /* ===== Flower Customizer ===== */
+    .customizer-preview {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-top: 16px;
+    }
+    .customizer-preview h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .customizer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .customizer-option {
+      text-align: center;
+    }
+    .customizer-option .option-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+    .customizer-choices {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .choice-chip {
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .choice-chip:hover { border-color: var(--accent); color: var(--accent); }
+    .choice-chip.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .color-chip {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 3px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .color-chip:hover { transform: scale(1.15); }
+    .color-chip.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
+    .bouquet-preview {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 24px;
+      background: linear-gradient(135deg, #fce4ec, #f8f9fb);
+      border-radius: var(--radius);
+      margin-top: 4px;
+    }
+    .bouquet-emoji {
+      font-size: 3.5rem;
+      margin-bottom: 8px;
+      display: block;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .bouquet-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .bouquet-price {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+
+    /* ===== Dashboard Preview ===== */
+    .dashboard-preview {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-top: 16px;
+    }
+    .dashboard-preview h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dashboard-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .dash-stat {
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 16px 12px;
+      text-align: center;
+    }
+    .dash-stat .stat-icon { font-size: 1.2rem; margin-bottom: 4px; }
+    .dash-stat .stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--green-dark);
+    }
+    .dash-stat .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .dash-stat .stat-change {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #16a34a;
+      margin-top: 2px;
+    }
+    .dash-orders {
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .dash-orders h5 {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .order-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
+    }
+    .order-row:last-child { border-bottom: none; }
+    .order-info { display: flex; align-items: center; gap: 10px; }
+    .order-info .emoji { font-size: 1.1rem; }
+    .order-detail { color: var(--text-secondary); }
+    .order-detail strong { color: var(--text); }
+    .order-status {
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+    .order-status.pending { background: #fff3cd; color: #856404; }
+    .order-status.preparing { background: var(--accent-light); color: var(--accent-dark); }
+    .order-status.delivering { background: var(--blue-light); color: var(--blue); }
+    .order-status.done { background: var(--green-light); color: var(--green-dark); }
+
+    /* ===== Screen Cards ===== */
+    .screen-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .screen-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .screen-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+    .screen-card .screen-icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+    .screen-card h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+    .screen-card p { font-size: 0.78rem; color: var(--text-muted); }
+    .screen-card.buyer-screen { border-top: 3px solid var(--accent); }
+    .screen-card.seller-screen { border-top: 3px solid var(--green); }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 40px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img { width: 100%; height: auto; display: block; }
+    .closing h2 { font-size: 1.4rem; margin-bottom: 8px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 480px;
+      margin: 0 auto 20px;
+    }
+    .stack-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(42,157,143,0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(42,157,143,0.95); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Mini Bar Chart (Dashboard) ===== */
+    .mini-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 48px;
+      justify-content: center;
+      margin-top: 12px;
+      padding: 0 16px;
+    }
+    .mini-bar {
+      width: 100%;
+      border-radius: 3px 3px 0 0;
+      transition: height 0.5s ease;
+    }
+    .mini-chart-labels {
+      display: flex;
+      gap: 4px;
+      padding: 0 16px;
+      margin-top: 4px;
+    }
+    .mini-chart-labels span {
+      width: 100%;
+      text-align: center;
+      font-size: 0.6rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .hero-flowers { font-size: 2rem; letter-spacing: 4px; }
+      .portal-features { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .screen-grid { grid-template-columns: 1fr; }
+      .customizer-grid { grid-template-columns: 1fr; }
+      .dashboard-stats { grid-template-columns: 1fr; }
+      .flow-steps { gap: 0; }
+      .flow-step { min-width: 60px; padding: 8px 4px; }
+      .flow-step .step-icon { width: 42px; height: 42px; font-size: 1.1rem; }
+      .flow-step .step-label { font-size: 0.68rem; }
+      .flow-arrow { font-size: 0.9rem; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        UI/UX Design Project
+      </div>
+      <div class="hero-flowers">&#127800; &#127799; &#128144; &#127801; &#127804;</div>
+      <h1>Voraya's Bloom<br><span class="rose-gold">Online Flower Shop</span></h1>
+      <p>&#127803; &#3626;&#3633;&#3656;&#3591;&#3594;&#3656;&#3629;&#3604;&#3629;&#3585;&#3652;&#3617;&#3657;&#3629;&#3629;&#3609;&#3652;&#3621;&#3609;&#3660; &#3629;&#3629;&#3585;&#3649;&#3610;&#3610;&#3648;&#3629;&#3591;&#3652;&#3604;&#3657; &#3626;&#3656;&#3591;&#3605;&#3619;&#3591;&#3606;&#3638;&#3591;&#3588;&#3609;&#3614;&#3636;&#3648;&#3624;&#3625;</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Figma</span>
+        <span class="hero-tag">UI/UX Design</span>
+        <span class="hero-tag">E-commerce</span>
+        <span class="hero-tag">Buyer Portal</span>
+        <span class="hero-tag">Seller Portal</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Section 2: Empathize ===== -->
+    <section class="section-intro">
+      <h2>&#127800; ปัญหาที่เจอ</h2>
+      <p>ทำไมการสั่งดอกไม้ออนไลน์ในไทยถึงยังไม่ง่ายอย่างที่ควรจะเป็น?</p>
+    </section>
+
+    <div class="quote-block">
+      <p>อยากส่งดอกไม้ให้แฟนวันเกิด แต่ต้อง DM ร้านทีละร้าน รอตอบทีละคน เลือกจากแบบที่ร้านมี ไม่ได้เลือกสีหรือดอกที่อยากได้ สุดท้ายไม่รู้ด้วยซ้ำว่าดอกไม้ถึงหรือยัง</p>
+      <div class="author">-- Insight จากการพูดคุยกับผู้ใช้จริง</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="emoji">&#128172;</span>
+        <h3>ต้อง Chat หาร้านเอง ไม่มีระบบสั่งซื้อ</h3>
+        <p>ร้านดอกไม้ส่วนใหญ่ขายผ่าน Social Media ลูกค้าต้อง DM ทีละร้าน รอตอบ รอราคา รอยืนยัน ไม่มีหน้าเว็บให้กดสั่งได้เลย</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#127912;</span>
+        <h3>Customize ช่อดอกไม้ไม่ได้</h3>
+        <p>ต้องเลือกจากแบบที่ร้านทำไว้เท่านั้น อยากเปลี่ยนสี เพิ่มดอก หรือเลือกขนาดเอง ทำไม่ได้ ได้แต่บอกร้าน "ขอคล้ายๆ แบบนี้"</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128203;</span>
+        <h3>ร้านเล็กไม่มี Platform จัดการ</h3>
+        <p>ร้านดอกไม้เล็กๆ ใช้ Excel จดออเดอร์ นับสต็อกดอกไม้ด้วยมือ พอออเดอร์เยอะก็สับสน ตกหล่น ลูกค้าไม่ได้ดอกไม้ตามเวลา</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128666;</span>
+        <h3>ไม่มีระบบ Tracking การจัดส่ง</h3>
+        <p>สั่งดอกไม้แล้วไม่รู้ว่าถึงหรือยัง อยากส่งเซอร์ไพรส์แต่ต้องโทรถามร้านเอง ร้านก็ต้องโทรถาม rider เสียเวลาทุกฝ่าย</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Section 3: Define + Ideate ===== -->
+    <section class="section-intro">
+      <h2>&#128161; วิธีแก้ปัญหา</h2>
+      <p>ออกแบบ 2 Portals ให้ทั้งคนซื้อและคนขายได้ประสบการณ์ที่ดีที่สุด</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <span class="emoji">&#128144;</span>
+        <h3>Buyer Portal -- สั่งซื้อ + Customize ได้เลย</h3>
+        <p>เว็บที่ลูกค้าสั่งช่อดอกไม้ได้ทันที เลือกดอก เลือกสี กำหนดขนาด เพิ่มการ์ดข้อความ เลือกวันส่ง ทั้งหมดทำได้บนหน้าจอเดียว ไม่ต้อง DM ใคร</p>
+      </div>
+      <div class="solution-card seller">
+        <span class="emoji">&#127793;</span>
+        <h3>Seller Portal -- จัดการร้านครบจบ</h3>
+        <p>Dashboard สำหรับร้านดอกไม้ ดูยอดขาย รับออเดอร์ จัดการสต็อกดอกไม้ ดูรายงานรายได้ ทั้งหมดในที่เดียว ไม่ต้อง Excel อีกต่อไป</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128229;</span>
+        <h3>Real-time Order Tracking</h3>
+        <p>ทั้งลูกค้าและร้านเห็น status ออเดอร์แบบ real-time ตั้งแต่รับออเดอร์ จัดช่อ ออกส่ง จนถึงมือผู้รับ สร้าง trust ให้ทุกฝ่าย</p>
+      </div>
+      <div class="solution-card seller">
+        <span class="emoji">&#127912;</span>
+        <h3>Flower Customization UX</h3>
+        <p>ออกแบบ UX ให้ลูกค้า customize ช่อดอกไม้ได้ง่าย ใช้ Progressive Disclosure ค่อยๆ เลือกทีละขั้น ไม่ overwhelming แม้มีตัวเลือกเยอะ</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Section 4: Prototype + Test ===== -->
+    <section class="section-intro">
+      <h2>&#127912; สิ่งที่สร้าง</h2>
+      <p>ออกแบบ UI/UX ครบทั้ง 2 Portals ใน Figma กด Tab เพื่อดู Features</p>
+    </section>
+
+    <!-- Portal Tabs -->
+    <div class="portal-tabs">
+      <button class="portal-tab active" data-portal="buyer">&#127800; Buyer Portal</button>
+      <button class="portal-tab" data-portal="seller">&#127793; Seller Portal</button>
+    </div>
+
+    <div class="portal-panels">
+      <!-- Buyer Panel -->
+      <div class="portal-panel active" id="panel-buyer">
+        <div class="portal-content buyer-portal">
+          <h3><span class="emoji">&#128144;</span> Buyer Portal -- ประสบการณ์สั่งดอกไม้แบบใหม่</h3>
+          <ul class="portal-features">
+            <li><span class="feat-icon">&#127803;</span> เลือกช่อดอกไม้สำเร็จรูป</li>
+            <li><span class="feat-icon">&#127912;</span> Customize ช่อเอง (ดอก/สี/ขนาด)</li>
+            <li><span class="feat-icon">&#128140;</span> เพิ่มการ์ดข้อความส่วนตัว</li>
+            <li><span class="feat-icon">&#128197;</span> เลือกวันส่ง + ช่วงเวลา</li>
+            <li><span class="feat-icon">&#128179;</span> Payment หลายช่องทาง</li>
+            <li><span class="feat-icon">&#128230;</span> Order Tracking แบบ real-time</li>
+            <li><span class="feat-icon">&#128260;</span> สั่งซ้ำจากประวัติ</li>
+            <li><span class="feat-icon">&#11088;</span> Review + Rating ร้านดอกไม้</li>
+          </ul>
+        </div>
+
+        <!-- Flower Customizer Preview -->
+        <div class="customizer-preview">
+          <h4>&#127912; ตัวอย่าง Flower Customizer</h4>
+          <div class="customizer-grid">
+            <div class="customizer-option">
+              <div class="option-label">เลือกดอกไม้</div>
+              <div class="customizer-choices">
+                <span class="choice-chip selected">&#127801; กุหลาบ</span>
+                <span class="choice-chip">&#127799; ทิวลิป</span>
+                <span class="choice-chip">&#127804; ซากุระ</span>
+                <span class="choice-chip">&#127803; ทานตะวัน</span>
+              </div>
+            </div>
+            <div class="customizer-option">
+              <div class="option-label">เลือกสีโทน</div>
+              <div class="customizer-choices">
+                <span class="color-chip selected" style="background:#f48fb1;" title="ชมพู"></span>
+                <span class="color-chip" style="background:#ef5350;" title="แดง"></span>
+                <span class="color-chip" style="background:#fff176;" title="เหลือง"></span>
+                <span class="color-chip" style="background:#ce93d8;" title="ม่วง"></span>
+                <span class="color-chip" style="background:#e0e0e0;" title="ขาว"></span>
+              </div>
+            </div>
+            <div class="customizer-option">
+              <div class="option-label">ขนาดช่อ</div>
+              <div class="customizer-choices">
+                <span class="choice-chip">S</span>
+                <span class="choice-chip selected">M</span>
+                <span class="choice-chip">L</span>
+                <span class="choice-chip">XL</span>
+              </div>
+            </div>
+            <div class="customizer-option">
+              <div class="option-label">เพิ่มเติม</div>
+              <div class="customizer-choices">
+                <span class="choice-chip selected">&#128140; การ์ด</span>
+                <span class="choice-chip">&#127873; กล่อง</span>
+                <span class="choice-chip">&#129527; ริบบิ้น</span>
+              </div>
+            </div>
+            <div class="bouquet-preview">
+              <span class="bouquet-emoji">&#128144;</span>
+              <div class="bouquet-desc">ช่อกุหลาบชมพู ขนาด M + การ์ดข้อความ</div>
+              <div class="bouquet-price">&#3647;890</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seller Panel -->
+      <div class="portal-panel" id="panel-seller">
+        <div class="portal-content seller-portal">
+          <h3><span class="emoji">&#127793;</span> Seller Portal -- จัดการร้านดอกไม้ครบจบ</h3>
+          <ul class="portal-features">
+            <li><span class="feat-icon">&#128202;</span> Dashboard ยอดขาย + รายได้</li>
+            <li><span class="feat-icon">&#127800;</span> จัดการสินค้า (เพิ่ม/แก้/ลบ)</li>
+            <li><span class="feat-icon">&#128230;</span> จัดการออเดอร์ (รับ/จัด/ส่ง)</li>
+            <li><span class="feat-icon">&#128230;</span> สต็อกวัตถุดิบ (ดอกไม้แต่ละชนิด)</li>
+            <li><span class="feat-icon">&#128176;</span> รายงานรายได้ + สถิติ</li>
+            <li><span class="feat-icon">&#128276;</span> แจ้งเตือนออเดอร์ใหม่</li>
+            <li><span class="feat-icon">&#11088;</span> ดู Review จากลูกค้า</li>
+            <li><span class="feat-icon">&#9881;&#65039;</span> ตั้งค่าร้าน + เวลาเปิด-ปิด</li>
+          </ul>
+        </div>
+
+        <!-- Dashboard Preview -->
+        <div class="dashboard-preview">
+          <h4>&#128202; ตัวอย่าง Seller Dashboard</h4>
+          <div class="dashboard-stats">
+            <div class="dash-stat">
+              <div class="stat-icon">&#128176;</div>
+              <div class="stat-value">&#3647;12,450</div>
+              <div class="stat-label">รายได้วันนี้</div>
+              <div class="stat-change">&#9650; 18%</div>
+            </div>
+            <div class="dash-stat">
+              <div class="stat-icon">&#128230;</div>
+              <div class="stat-value">8</div>
+              <div class="stat-label">ออเดอร์วันนี้</div>
+              <div class="stat-change">&#9650; 3 จากเมื่อวาน</div>
+            </div>
+            <div class="dash-stat">
+              <div class="stat-icon">&#11088;</div>
+              <div class="stat-value">4.8</div>
+              <div class="stat-label">Rating เฉลี่ย</div>
+              <div class="stat-change">จาก 156 รีวิว</div>
+            </div>
+          </div>
+
+          <!-- Mini Bar Chart -->
+          <div style="background:var(--bg);border-radius:10px;padding:16px;">
+            <div style="font-size:0.82rem;font-weight:700;color:var(--text-secondary);margin-bottom:8px;">ยอดขาย 7 วันล่าสุด</div>
+            <div class="mini-chart">
+              <div class="mini-bar" style="height:55%;background:var(--green-light);"></div>
+              <div class="mini-bar" style="height:70%;background:var(--green-light);"></div>
+              <div class="mini-bar" style="height:45%;background:var(--green-light);"></div>
+              <div class="mini-bar" style="height:85%;background:var(--green-light);"></div>
+              <div class="mini-bar" style="height:60%;background:var(--green-light);"></div>
+              <div class="mini-bar" style="height:92%;background:var(--green);"></div>
+              <div class="mini-bar" style="height:78%;background:var(--green);"></div>
+            </div>
+            <div class="mini-chart-labels">
+              <span>จ</span><span>อ</span><span>พ</span><span>พฤ</span><span>ศ</span><span>ส</span><span>อา</span>
+            </div>
+          </div>
+
+          <div class="dash-orders" style="margin-top:12px;">
+            <h5>&#128230; ออเดอร์ล่าสุด</h5>
+            <div class="order-row">
+              <div class="order-info">
+                <span class="emoji">&#128144;</span>
+                <div class="order-detail"><strong>#VB-0047</strong><br>ช่อกุหลาบแดง XL + การ์ด</div>
+              </div>
+              <span class="order-status pending">รอรับ</span>
+            </div>
+            <div class="order-row">
+              <div class="order-info">
+                <span class="emoji">&#127799;</span>
+                <div class="order-detail"><strong>#VB-0046</strong><br>ช่อทิวลิปชมพู M</div>
+              </div>
+              <span class="order-status preparing">กำลังจัด</span>
+            </div>
+            <div class="order-row">
+              <div class="order-info">
+                <span class="emoji">&#127803;</span>
+                <div class="order-detail"><strong>#VB-0045</strong><br>ช่อทานตะวัน L + กล่อง</div>
+              </div>
+              <span class="order-status delivering">กำลังส่ง</span>
+            </div>
+            <div class="order-row">
+              <div class="order-info">
+                <span class="emoji">&#127804;</span>
+                <div class="order-detail"><strong>#VB-0044</strong><br>ช่อดอกซากุระ S</div>
+              </div>
+              <span class="order-status done">ส่งแล้ว</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Flow Diagram -->
+    <div class="flow-diagram">
+      <h4>Order Flow</h4>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="step-icon pink">&#128105;</div>
+          <div class="step-label">ลูกค้า<br>สั่งช่อ</div>
+        </div>
+        <div class="flow-arrow">&#10132;</div>
+        <div class="flow-step">
+          <div class="step-icon rose">&#128179;</div>
+          <div class="step-label">ชำระ<br>เงิน</div>
+        </div>
+        <div class="flow-arrow">&#10132;</div>
+        <div class="flow-step">
+          <div class="step-icon green">&#127793;</div>
+          <div class="step-label">ร้าน<br>รับออเดอร์</div>
+        </div>
+        <div class="flow-arrow">&#10132;</div>
+        <div class="flow-step">
+          <div class="step-icon green">&#128144;</div>
+          <div class="step-label">จัดช่อ<br>ดอกไม้</div>
+        </div>
+        <div class="flow-arrow">&#10132;</div>
+        <div class="flow-step">
+          <div class="step-icon gold">&#128666;</div>
+          <div class="step-label">ออก<br>จัดส่ง</div>
+        </div>
+        <div class="flow-arrow">&#10132;</div>
+        <div class="flow-step">
+          <div class="step-icon pink">&#128149;</div>
+          <div class="step-label">ถึงมือ<br>คนพิเศษ</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Screens -->
+    <div style="margin-top:32px;">
+      <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;">Key Screens ที่ออกแบบ</h3>
+      <div class="screen-grid">
+        <div class="screen-card buyer-screen">
+          <span class="screen-icon">&#127968;</span>
+          <h4>Home + Browse</h4>
+          <p>หน้าแรก แสดงช่อยอดนิยม หมวดหมู่ โปรโมชัน</p>
+        </div>
+        <div class="screen-card buyer-screen">
+          <span class="screen-icon">&#127912;</span>
+          <h4>Flower Customizer</h4>
+          <p>เลือกดอก สี ขนาด ห่อ การ์ด ออกแบบช่อเอง</p>
+        </div>
+        <div class="screen-card buyer-screen">
+          <span class="screen-icon">&#128722;</span>
+          <h4>Cart + Checkout</h4>
+          <p>ตะกร้า เลือกวันส่ง ที่อยู่ ชำระเงิน</p>
+        </div>
+        <div class="screen-card buyer-screen">
+          <span class="screen-icon">&#128230;</span>
+          <h4>Order Tracking</h4>
+          <p>ติดตามสถานะ real-time ตั้งแต่สั่งจนถึงมือ</p>
+        </div>
+        <div class="screen-card seller-screen">
+          <span class="screen-icon">&#128202;</span>
+          <h4>Seller Dashboard</h4>
+          <p>ยอดขาย รายได้ ออเดอร์วันนี้ กราฟสถิติ</p>
+        </div>
+        <div class="screen-card seller-screen">
+          <span class="screen-icon">&#127800;</span>
+          <h4>Product Management</h4>
+          <p>เพิ่ม แก้ไข ลบช่อดอกไม้ จัดการหมวดหมู่</p>
+        </div>
+        <div class="screen-card seller-screen">
+          <span class="screen-icon">&#128203;</span>
+          <h4>Order Management</h4>
+          <p>รับออเดอร์ อัปเดตสถานะ จัดการการจัดส่ง</p>
+        </div>
+        <div class="screen-card seller-screen">
+          <span class="screen-icon">&#127793;</span>
+          <h4>Inventory</h4>
+          <p>สต็อกดอกไม้แต่ละชนิด แจ้งเตือนใกล้หมด</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Section 5: Key Takeaways ===== -->
+    <section class="section-intro">
+      <h2>&#128218; Key Takeaways</h2>
+      <p>สิ่งที่ได้เรียนรู้จากการออกแบบ Voraya's Bloom</p>
+    </section>
+
+    <div class="learning-card">
+      <strong>ออกแบบ 2 ฝั่งพร้อมกัน เหมือนออกแบบ "เหรียญ 2 ด้าน":</strong>
+      <p>ตอนแรกโฟกัส Buyer Portal อย่างเดียว ทำสวยมาก แต่พอเริ่มทำ Seller Portal ถึงรู้ว่าฟีเจอร์บางอย่างที่ Buyer ใช้สะดวก กลับทำให้ Seller ทำงานยากขึ้น เช่น "เลือกเวลาส่งได้ทุกช่วง" ฟังดูดีสำหรับลูกค้า แต่ร้านดอกไม้มีเวลาจัดช่อจำกัด — บทเรียนคือ ต้องคิดทั้ง 2 ฝั่งตั้งแต่ต้น ไม่ใช่ทำทีหลัง</p>
+    </div>
+    <div class="learning-card">
+      <strong>"เลือกดอก → เลือกสี → เลือกขนาด" — ง่ายแค่ 3 คลิก ได้ช่อที่ใช่:</strong>
+      <p>ตอน wireframe แรก ยัดทุก option ลงหน้าเดียว — ดอก 15 ชนิด, สี 8 สี, ขนาด 4 แบบ, ห่อ 3 แบบ, การ์ด, ริบบิ้น... ลูกค้าดูแล้วงง ไม่รู้จะเริ่มจากไหน พอเปลี่ยนเป็น Progressive Disclosure ค่อยๆ โชว์ทีละ step พร้อม preview สดๆ ว่าช่อจะหน้าตาเป็นยังไง — user test ผ่านฉลุย คนชอบมากเพราะรู้สึกเหมือน "สร้างช่อดอกไม้ของตัวเอง"</p>
+    </div>
+    <div class="learning-card">
+      <strong>Dashboard ที่ดีไม่ได้โชว์ "ตัวเลข" แต่โชว์ "สิ่งที่ต้องทำต่อ":</strong>
+      <p>เวอร์ชันแรกของ Seller Dashboard มีกราฟสวยมาก — รายได้รายเดือน, ยอดขายเปรียบเทียบ, funnel chart... แต่ร้านดอกไม้ตื่นมาตอน 6 โมงเช้า มีเวลาแป๊บเดียวก่อนลูกค้าสั่ง ไม่ได้นั่งวิเคราะห์ data พอเปลี่ยนหน้าแรกเป็น "3 ออเดอร์รอรับ / 2 ออเดอร์กำลังจัด / ดอกกุหลาบเหลือ 12 ดอก" — ร้านรู้เลยว่าต้องทำอะไรก่อน</p>
+    </div>
+    <div class="learning-card">
+      <strong>ดอกไม้ไม่เหมือนพัสดุ — "ถึงตอนไหน" สำคัญกว่า "ถึงหรือยัง":</strong>
+      <p>ส่งพัสดุช้าไป 1 วันก็ไม่เป็นไร แต่ดอกไม้วันเกิดถ้าถึงหลังเที่ยงคืน = เสียทุกอย่าง Order Tracking ที่ดีต้องบอก "ช่อกำลังจัด → กำลังส่ง → ถึงใน 30 นาที" ให้ทั้งคนส่งและคนรับรู้ — โดยเฉพาะออเดอร์เซอร์ไพรส์ ลูกค้าอยากรู้ว่าดอกไม้ถึงมือคนรับ moment ไหน เพื่อโทรอวยพรตามหลังได้พอดี</p>
+    </div>
+    <div class="learning-card">
+      <strong>Design System เดียว แต่ "บุคลิก" ต่างกันได้:</strong>
+      <p>Buyer Portal ต้องดูสวย อบอุ่น รู้สึกเหมือนเดินเข้าร้านดอกไม้ แต่ Seller Portal ต้อง clean, functional, ใช้งานเร็ว — ทั้งสองฝั่งใช้ Component Library เดียวกัน (ปุ่ม, การ์ด, input, spacing) แต่เปลี่ยนสี เปลี่ยน layout ผลคือรู้สึกเป็น "แพลตฟอร์มเดียวกัน" แม้หน้าตาต่าง — Design System ที่ดีไม่ได้แปลว่าทุกหน้าต้องเหมือนกัน แต่ต้อง "เป็นญาติกัน"</p>
+    </div>
+
+    <!-- ===== Section 6: Metrics ===== -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">30+</div>
+        <div class="label">หน้าจอที่ออกแบบ</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">2</div>
+        <div class="label">Portals</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">5</div>
+        <div class="label">User Flows หลัก</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">100+</div>
+        <div class="label">Components</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>&#127800; ส่งดอกไม้ ส่งความรู้สึก</h2>
+    <p>Voraya's Bloom ไม่ใช่แค่ร้านดอกไม้ออนไลน์ แต่เป็นการออกแบบประสบการณ์ที่ทำให้ "การส่งดอกไม้ถึงคนพิเศษ" เป็นเรื่องง่ายและมีความหมาย</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Figma</span>
+      <span class="stack-icon">UI/UX Design</span>
+      <span class="stack-icon">E-commerce</span>
+      <span class="stack-icon">Design System</span>
+      <span class="stack-icon">2 Portals</span>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+
+  <script>
+  (function(){
+    // Back to top
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+
+    // Portal tabs
+    var tabs=document.querySelectorAll('.portal-tab');
+    var panels=document.querySelectorAll('.portal-panel');
+    tabs.forEach(function(tab){
+      tab.addEventListener('click',function(){
+        tabs.forEach(function(t){t.classList.remove('active')});
+        panels.forEach(function(p){p.classList.remove('active')});
+        tab.classList.add('active');
+        document.getElementById('panel-'+tab.dataset.portal).classList.add('active');
+      });
+    });
+
+    // Flower customizer interactivity
+    document.querySelectorAll('.customizer-choices').forEach(function(group){
+      var chips=group.querySelectorAll('.choice-chip');
+      if(chips.length){
+        chips.forEach(function(chip){
+          chip.addEventListener('click',function(){
+            chips.forEach(function(c){c.classList.remove('selected')});
+            chip.classList.add('selected');
+          });
+        });
+      }
+      var colors=group.querySelectorAll('.color-chip');
+      if(colors.length){
+        colors.forEach(function(color){
+          color.addEventListener('click',function(){
+            colors.forEach(function(c){c.classList.remove('selected')});
+            color.classList.add('selected');
+          });
+        });
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

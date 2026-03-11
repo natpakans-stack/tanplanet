@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeepzTeam — Digital Marketing Agency Website | Portfolio</title>
+    <meta name="description" content="Portfolio: PeepzTeam Digital Marketing Agency Website สร้างด้วย Webflow — Live Commerce, Influencer Marketing, Event Organization">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --accent: #e94560;
+            --accent-dark: #c73e54;
+            --accent-light: rgba(233, 69, 96, 0.12);
+            --bg: #f8f9fb;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a2e;
+            --text-secondary: #555770;
+            --text-tertiary: #8a8da0;
+            --border: #e8e9ee;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 32px rgba(0,0,0,0.1);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --max-w: 780px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ======================== BACK NAV ======================== */
+        .back-nav {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(233, 69, 96, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .back-nav:hover {
+            background: rgba(233, 69, 96, 0.95);
+            transform: translateX(-2px);
+        }
+        .back-nav svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* ======================== BACK TO TOP ======================== */
+        .back-to-top {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 100;
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(233, 69, 96, 0.35);
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .back-to-top:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+        .back-to-top svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* ======================== HERO ======================== */
+        .hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #e94560 100%);
+            color: #fff;
+            padding: 120px 24px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        .hero-inner {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(8px);
+            padding: 8px 20px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 28px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse-dot 2s ease infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .hero h1 {
+            font-size: 44px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        .hero h1 span {
+            display: block;
+            font-size: 20px;
+            font-weight: 500;
+            opacity: 0.8;
+            margin-top: 8px;
+            letter-spacing: 0;
+        }
+        .hero-tagline {
+            font-size: 18px;
+            opacity: 0.85;
+            max-width: 560px;
+            margin: 20px auto 32px;
+            line-height: 1.7;
+        }
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 36px;
+        }
+        .hero-tag {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.18);
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            color: var(--text-primary);
+            padding: 14px 32px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(0,0,0,0.2);
+        }
+        .hero-cta .arrow {
+            transition: transform 0.3s ease;
+        }
+        .hero-cta:hover .arrow {
+            transform: translateX(4px);
+        }
+
+        /* ======================== CONTENT SECTIONS ======================== */
+        .content {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section {
+            margin-top: 72px;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+        .section-label::before {
+            content: '';
+            width: 20px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .section h2 {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.35;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .section p, .section li {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .section p + p {
+            margin-top: 16px;
+        }
+
+        /* ======================== PROBLEM CARDS ======================== */
+        .problem-grid {
+            display: grid;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .problem-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent);
+            border-radius: 0 4px 4px 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .problem-card:hover {
+            border-color: rgba(233, 69, 96, 0.2);
+            box-shadow: var(--shadow-md);
+        }
+        .problem-card:hover::before {
+            opacity: 1;
+        }
+        .problem-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--accent-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+        .problem-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        .problem-card p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ======================== SOLUTION SECTION ======================== */
+        .solution-list {
+            list-style: none;
+            margin-top: 24px;
+            display: grid;
+            gap: 12px;
+        }
+        .solution-list li {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 20px 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: all 0.3s ease;
+        }
+        .solution-list li:hover {
+            border-color: rgba(233, 69, 96, 0.2);
+            box-shadow: var(--shadow-sm);
+        }
+        .solution-check {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+        }
+        .solution-check svg {
+            width: 13px;
+            height: 13px;
+            color: #fff;
+        }
+        .solution-text {
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        .solution-text strong {
+            color: var(--text-primary);
+        }
+
+        /* ======================== PROTOTYPE / BUILD SECTION ======================== */
+        .build-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .build-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .build-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .build-emoji {
+            font-size: 32px;
+            margin-bottom: 14px;
+            display: block;
+        }
+        .build-card h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        .build-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ======================== PROCESS STEPS ======================== */
+        .process-steps {
+            margin-top: 32px;
+            position: relative;
+        }
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            left: 23px;
+            top: 32px;
+            bottom: 32px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), rgba(233,69,96,0.1));
+        }
+        .step {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            margin-bottom: 28px;
+            position: relative;
+        }
+        .step:last-child {
+            margin-bottom: 0;
+        }
+        .step-number {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(233,69,96,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        .step-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 20px 24px;
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+        .step-content:hover {
+            box-shadow: var(--shadow-sm);
+        }
+        .step-content h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+        .step-content p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ======================== PRICING PREVIEW ======================== */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .pricing-card.featured {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent);
+        }
+        .pricing-card.featured::after {
+            content: 'POPULAR';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: #fff;
+            padding: 4px 16px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .pricing-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        .pricing-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+        .pricing-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+        .pricing-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 12px 0;
+        }
+        .pricing-price span {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-tertiary);
+        }
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin-top: 16px;
+        }
+        .pricing-features li {
+            font-size: 14px;
+            color: var(--text-secondary);
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+        .pricing-features li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ======================== TAKEAWAYS ======================== */
+        .takeaway-list {
+            margin-top: 24px;
+            display: grid;
+            gap: 16px;
+        }
+        .takeaway {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .takeaway-num {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            background: var(--accent-light);
+            color: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .takeaway p {
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        .takeaway strong {
+            color: var(--text-primary);
+        }
+
+        /* ======================== STATS / METRICS ======================== */
+        .stats-section {
+            margin-top: 72px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: var(--radius);
+            padding: 28px 20px;
+            text-align: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 80px;
+            height: 80px;
+            background: rgba(233, 69, 96, 0.15);
+            border-radius: 50%;
+        }
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+            color: var(--accent);
+        }
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.8;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        /* ======================== TECH STACK ======================== */
+        .tech-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 24px;
+        }
+        .tech-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+        .tech-badge:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        /* ======================== CLOSING / MASCOT ======================== */
+        .closing {
+            text-align: center;
+            margin-top: 140px;
+            padding: 40px 24px 64px;
+            position: relative;
+        }
+        .mascot-half {
+            position: absolute;
+            top: -90px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 120px;
+            overflow: hidden;
+        }
+        .mascot-half img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .closing h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        .closing p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            max-width: 480px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        .closing-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent);
+            color: #fff;
+            padding: 14px 32px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            margin-top: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(233, 69, 96, 0.3);
+        }
+        .closing-cta:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(233, 69, 96, 0.4);
+        }
+        .closing-cta .arrow {
+            transition: transform 0.3s ease;
+        }
+        .closing-cta:hover .arrow {
+            transform: translateX(4px);
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 24px;
+            font-size: 13px;
+            color: var(--text-tertiary);
+            border-top: 1px solid var(--border);
+            margin-top: 48px;
+        }
+
+        /* ======================== ANIMATIONS ======================== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes count-up {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .stat-card.animated .stat-number {
+            animation: count-up 0.5s ease forwards;
+        }
+
+        /* ======================== RESPONSIVE ======================== */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 100px 20px 60px;
+            }
+            .hero h1 {
+                font-size: 30px;
+            }
+            .hero h1 span {
+                font-size: 16px;
+            }
+            .hero-tagline {
+                font-size: 16px;
+            }
+            .section h2 {
+                font-size: 24px;
+            }
+            .build-grid {
+                grid-template-columns: 1fr;
+            }
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 360px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .pricing-card.featured::after {
+                top: -11px;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .process-steps::before {
+                left: 19px;
+            }
+            .step-number {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            .back-nav {
+                top: 12px;
+                left: 12px;
+                padding: 6px 14px;
+                font-size: 13px;
+            }
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 42px;
+                height: 42px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 26px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .stat-number {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Back Navigation -->
+<a href="https://projects.tanplanet.info" class="back-nav">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    All Projects
+</a>
+
+<!-- Back to Top -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge">
+            <span class="dot"></span>
+            Webflow Website
+        </div>
+        <h1>
+            PeepzTeam
+            <span>Digital Marketing Agency Website</span>
+        </h1>
+        <p class="hero-tagline">
+            เพิ่มยอดขายออนไลน์ด้วย Live Commerce, Influencer &amp; Event
+            <br>ออกแบบเว็บไซต์ที่สื่อสารบริการได้ชัด ปิดการขายได้จริง
+        </p>
+        <div class="hero-tags">
+            <span class="hero-tag">Webflow</span>
+            <span class="hero-tag">Live Commerce</span>
+            <span class="hero-tag">Influencer Marketing</span>
+            <span class="hero-tag">Event</span>
+            <span class="hero-tag">Content Production</span>
+        </div>
+        <a href="https://www.peepzteam.com/" target="_blank" rel="noopener" class="hero-cta">
+            ดู Live Website <span class="arrow">&rsaquo;</span>
+        </a>
+    </div>
+</section>
+
+<!-- ==================== CONTENT ==================== -->
+<div class="content">
+
+    <!-- Section 1: Empathize -->
+    <section class="section fade-in">
+        <div class="section-label">Empathize</div>
+        <h2>ปัญหาที่แบรนด์เจอจริงๆ</h2>
+        <p>ก่อนจะออกแบบอะไร ต้องเข้าใจก่อนว่าแบรนด์ E-commerce ในไทยกำลังเจอปัญหาอะไรบ้าง เราคุยกับทีม PeepzTeam แล้วพบ pain points หลักๆ 3 เรื่อง</p>
+
+        <div class="problem-grid">
+            <div class="problem-card fade-in">
+                <div class="problem-icon">&#127909;</div>
+                <h3>Live Selling ดูง่าย แต่ทำจริงยากกว่าที่คิด</h3>
+                <p>แบรนด์หลายเจ้าอยากทำ Live Commerce แต่ไม่มีพิธีกร ไม่มี studio ไม่รู้จะเริ่มจากตรงไหน ลองทำเองก็ไม่ได้ยอด ลงทุนไปเยอะแต่ผลตอบรับไม่ดี</p>
+            </div>
+            <div class="problem-card fade-in">
+                <div class="problem-icon">&#129333;</div>
+                <h3>หา Influencer เองเหมือนเดาสุ่ม</h3>
+                <p>ติดต่อ Influencer เอง เสี่ยงได้คนไม่ตรงกลุ่มเป้าหมาย follower อาจไม่ใช่ลูกค้าจริง จ่ายแพงแต่ยอดไม่มา เปรียบเทียบ ROI ก็ยาก</p>
+            </div>
+            <div class="problem-card fade-in">
+                <div class="problem-icon">&#128187;</div>
+                <h3>เว็บเก่าสื่อสารบริการไม่ชัด</h3>
+                <p>ลูกค้าเข้ามาแล้วไม่เข้าใจว่า PeepzTeam ทำอะไรได้บ้าง ราคาเท่าไหร่ ขั้นตอนยังไง ต้องทักมาถาม กว่าจะปิดจ็อบใช้เวลานาน</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Define + Ideate -->
+    <section class="section fade-in">
+        <div class="section-label">Define + Ideate</div>
+        <h2>วิธีแก้ปัญหาด้วย Design</h2>
+        <p>จาก pain points ที่เจอ เราวาง strategy ในการออกแบบเว็บไซต์ให้ตอบโจทย์ทั้งเรื่อง branding และ conversion</p>
+
+        <ul class="solution-list">
+            <li class="fade-in">
+                <span class="solution-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                <span class="solution-text"><strong>สื่อสาร Value Proposition ชัดเจน</strong> — ตั้งแต่ hero section ลูกค้าต้องรู้เลยว่า PeepzTeam ช่วยเพิ่มยอดขายผ่าน Live, Influencer, Event ได้ยังไง</span>
+            </li>
+            <li class="fade-in">
+                <span class="solution-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                <span class="solution-text"><strong>Dark Theme + สีสดที่ Bold แต่ Professional</strong> — ใช้โทนดำ-น้ำเงินเข้มเป็นหลัก สลับสีแดงสดเป็น accent ให้ดู agency style น่าเชื่อถือแต่ไม่น่าเบื่อ</span>
+            </li>
+            <li class="fade-in">
+                <span class="solution-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                <span class="solution-text"><strong>Pricing Packages ที่เปรียบเทียบง่าย</strong> — มี 3 แพ็กเกจชัดเจน ลูกค้าเห็นราคาแล้วตัดสินใจได้ทันที ลด friction ไม่ต้องทักมาถาม</span>
+            </li>
+            <li class="fade-in">
+                <span class="solution-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                <span class="solution-text"><strong>Social Proof ที่แข็งแรง</strong> — Stat counters (461M+ revenue), client logos, testimonials จริง ทำให้ลูกค้าใหม่มั่นใจ</span>
+            </li>
+            <li class="fade-in">
+                <span class="solution-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                <span class="solution-text"><strong>Process Flow 4 ขั้นตอน</strong> — ลูกค้าเห็น flow การทำงานชัดเจน ลดความกังวล เข้าใจว่าจ้างแล้วจะเกิดอะไรขึ้นบ้าง</span>
+            </li>
+            <li class="fade-in">
+                <span class="solution-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+                <span class="solution-text"><strong>Responsive Design ทุก Device</strong> — ลูกค้าส่วนใหญ่เปิดจากมือถือ ต้องดูดีและใช้งานง่ายทั้ง desktop และ mobile</span>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Section 3: Prototype + Test -->
+    <section class="section fade-in">
+        <div class="section-label">Prototype + Test</div>
+        <h2>สิ่งที่สร้างขึ้นมาจริง</h2>
+        <p>เราใช้ Webflow เป็นเครื่องมือหลักในการ build เพราะ iterate ได้เร็ว ปรับ design แล้วเห็นผลทันที ไม่ต้องเขียน code จากศูนย์</p>
+
+        <div class="build-grid">
+            <div class="build-card fade-in">
+                <span class="build-emoji">&#127912;</span>
+                <h3>Dark Theme Design</h3>
+                <p>สีดำ-น้ำเงินเข้มเป็นพื้นหลัก สลับสีสดดึงดูดสายตา ให้ดู bold แต่ยังคงความ professional</p>
+            </div>
+            <div class="build-card fade-in">
+                <span class="build-emoji">&#9889;</span>
+                <h3>Animated Elements</h3>
+                <p>Hover effects, transition, stat counter animation ทำให้เว็บมีชีวิต ไม่ใช่แค่หน้า static</p>
+            </div>
+            <div class="build-card fade-in">
+                <span class="build-emoji">&#128176;</span>
+                <h3>Pricing Comparison</h3>
+                <p>3 แพ็กเกจเปรียบเทียบข้างกัน ลูกค้าเลือกได้เลย ไม่ต้องอ่านยาว</p>
+            </div>
+            <div class="build-card fade-in">
+                <span class="build-emoji">&#11088;</span>
+                <h3>Testimonials + Logos</h3>
+                <p>Reviews จากลูกค้าจริง + โลโก้แบรนด์ที่เคยร่วมงาน สร้าง trust ตั้งแต่แรกเห็น</p>
+            </div>
+        </div>
+
+        <!-- Process Steps -->
+        <h3 style="font-size: 20px; font-weight: 700; margin-top: 40px; margin-bottom: 8px;">Process ที่ออกแบบให้ลูกค้าเข้าใจง่าย</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 8px;">เราออกแบบ 4-step process ให้ลูกค้าเห็นภาพว่าจ้าง PeepzTeam แล้วจะเกิดอะไรขึ้นบ้าง</p>
+
+        <div class="process-steps">
+            <div class="step fade-in">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Brief &amp; Consult</h3>
+                    <p>คุยกับทีม PeepzTeam เพื่อทำความเข้าใจสินค้า กลุ่มเป้าหมาย และเป้าหมายที่ต้องการ วางแผน campaign ร่วมกัน</p>
+                </div>
+            </div>
+            <div class="step fade-in">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Strategy &amp; Planning</h3>
+                    <p>วางกลยุทธ์ เลือก influencer/MC ที่เหมาะสม กำหนด timeline และ KPI ที่วัดผลได้</p>
+                </div>
+            </div>
+            <div class="step fade-in">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Production &amp; Execution</h3>
+                    <p>ลงมือทำจริง ไม่ว่าจะเป็นไลฟ์ ถ่าย content รีวิวสินค้า หรือจัดอีเวนต์ ทีม PeepzTeam ดูแลครบจบ</p>
+                </div>
+            </div>
+            <div class="step fade-in">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Report &amp; Optimize</h3>
+                    <p>สรุปผล วิเคราะห์ข้อมูล ปรับปรุงกลยุทธ์สำหรับ campaign ถัดไปให้ดียิ่งขึ้น</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing Preview -->
+        <h3 style="font-size: 20px; font-weight: 700; margin-top: 48px; margin-bottom: 8px;">Pricing Packages ที่ออกแบบ</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 8px;">แสดงราคาชัดเจนบนเว็บ ลดการถาม-ตอบ ลูกค้าเปรียบเทียบแล้วตัดสินใจได้เลย</p>
+
+        <div class="pricing-grid">
+            <div class="pricing-card fade-in">
+                <div class="pricing-icon">&#127909;</div>
+                <h3>Live Commerce</h3>
+                <div class="pricing-price">19,900+ <span>บาท</span></div>
+                <ul class="pricing-features">
+                    <li>พิธีกรมืออาชีพ</li>
+                    <li>Studio + อุปกรณ์ครบ</li>
+                    <li>วางแผน script</li>
+                    <li>รายงานสรุปยอด</li>
+                </ul>
+            </div>
+            <div class="pricing-card featured fade-in">
+                <div class="pricing-icon">&#129333;</div>
+                <h3>Influencer Review</h3>
+                <div class="pricing-price">22,000+ <span>บาท</span></div>
+                <ul class="pricing-features">
+                    <li>คัดเลือก Influencer ตรงกลุ่ม</li>
+                    <li>Brief + ดูแล content</li>
+                    <li>Track performance</li>
+                    <li>รายงาน ROI</li>
+                </ul>
+            </div>
+            <div class="pricing-card fade-in">
+                <div class="pricing-icon">&#127881;</div>
+                <h3>Event Organization</h3>
+                <div class="pricing-price">19,900+ <span>บาท</span></div>
+                <ul class="pricing-features">
+                    <li>วางแผนอีเวนต์ A-Z</li>
+                    <li>ทีมงานครบจบ</li>
+                    <li>Venue + Setup</li>
+                    <li>ถ่ายภาพ/วิดีโอ</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="section fade-in">
+        <div class="section-label">Tech Stack</div>
+        <h2>เทคโนโลยีที่ใช้</h2>
+        <div class="tech-row">
+            <span class="tech-badge">Webflow</span>
+            <span class="tech-badge">Custom CSS</span>
+            <span class="tech-badge">Google Tag Manager</span>
+            <span class="tech-badge">Responsive Design</span>
+            <span class="tech-badge">SEO Optimization</span>
+            <span class="tech-badge">Analytics Integration</span>
+        </div>
+    </section>
+
+    <!-- Section 4: Key Takeaways -->
+    <section class="section fade-in">
+        <div class="section-label">Key Takeaways</div>
+        <h2>บทเรียนจากโปรเจกต์นี้</h2>
+
+        <div class="takeaway-list">
+            <div class="takeaway fade-in">
+                <div class="takeaway-num">1</div>
+                <p><strong>เว็บ Agency ที่ดีต้อง "ว้าว" แล้วก็ "เข้าใจ" ภายใน 3 วินาที</strong> — ตอนแรกออกแบบ dark theme สวยมาก แต่ลูกค้าเข้ามาแล้วไม่รู้ว่าขายอะไร จนเพิ่ม stat counters + pricing ชัดๆ ลูกค้าเริ่มกดติดต่อเอง ไม่ต้องรอ salesman ตาม — สิ่งที่เจ๋งคือ Visual กับ Message ไม่ขัดกัน มันช่วยกันได้</p>
+            </div>
+            <div class="takeaway fade-in">
+                <div class="takeaway-num">2</div>
+                <p><strong>"บอกราคาเลย" กล้าๆ หน่อย — lead quality ดีขึ้นทันที</strong> — หลาย agency ซ่อนราคาเพราะกลัวลูกค้าหนี แต่พอ PeepzTeam โชว์ราคาเริ่มต้น 19,900 บาทชัดเจนบนเว็บ กลับได้ผลตรงข้าม คนที่ทักมาคือคนพร้อมจ่ายจริง ไม่เสียเวลาคุยกับคนแค่ถามราคา — Pricing Transparency ไม่ได้ไล่ลูกค้า มัน filter ลูกค้าให้</p>
+            </div>
+            <div class="takeaway fade-in">
+                <div class="takeaway-num">3</div>
+                <p><strong>ตัวเลข 461 ล้าน บนหน้าเว็บ ทำให้คนหยุดอ่าน</strong> — Social proof แบบ "เราทำให้ลูกค้าสร้างรายได้ 461M+" ทรงพลังกว่า "เราเก่ง เราเป็นมืออาชีพ" หลายเท่า ผสมกับ logo ลูกค้าจริง + testimonials = ลูกค้าใหม่ไม่ต้องคิดนาน รู้สึกว่า "เจ้านี้ทำได้จริง" — บทเรียนคือ ให้ผลงานพูดแทน อย่าพูดเอง</p>
+            </div>
+            <div class="takeaway fade-in">
+                <div class="takeaway-num">4</div>
+                <p><strong>Webflow ทำให้ designer ส่งงาน production ได้เอง — เร็วกว่า dev cycle 3 เท่า</strong> — ปกติต้องออกแบบใน Figma แล้วส่ง dev build อีก 2-3 สัปดาห์ แต่ Webflow ให้ designer สร้าง responsive site จริงได้เลย เปลี่ยน copy, ปรับ layout, เพิ่ม animation ไม่ต้องรอใคร — สิ่งที่ได้คือ ownership ของงานตัวเอง ตั้งแต่ design ยัน deploy</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Metrics -->
+    <section class="stats-section fade-in">
+        <div class="section-label">Metrics</div>
+        <h2>ตัวเลขที่พูดแทน</h2>
+        <p style="color: var(--text-secondary);">ผลงานจริงที่ PeepzTeam สร้างให้ลูกค้า แสดงบนเว็บไซต์เป็น social proof</p>
+
+        <div class="stats-grid">
+            <div class="stat-card fade-in">
+                <div class="stat-number" data-target="461" data-suffix="M+">0</div>
+                <div class="stat-label">Generated Revenue</div>
+            </div>
+            <div class="stat-card fade-in">
+                <div class="stat-number" data-target="155" data-suffix="+">0</div>
+                <div class="stat-label">Campaigns</div>
+            </div>
+            <div class="stat-card fade-in">
+                <div class="stat-number" data-target="16" data-suffix="+">0</div>
+                <div class="stat-label">Clients</div>
+            </div>
+            <div class="stat-card fade-in">
+                <div class="stat-number" data-target="5" data-suffix="">0</div>
+                <div class="stat-label">Testimonials</div>
+            </div>
+        </div>
+    </section>
+
+</div><!-- end .content -->
+
+<!-- ==================== CLOSING ==================== -->
+<div class="content">
+    <div class="closing">
+        <div class="mascot-half">
+            <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+        </div>
+        <h2>เว็บที่ดีคือเว็บที่ปิดการขายได้</h2>
+        <p>PeepzTeam เป็นตัวอย่างว่าเว็บ agency ที่ดี ไม่ใช่แค่สวย แต่ต้องสื่อสารชัด มี social proof แข็งแรง และให้ลูกค้าตัดสินใจได้ทันที</p>
+        <a href="https://www.peepzteam.com/" target="_blank" rel="noopener" class="closing-cta">
+            ดู Live Website <span class="arrow">&rsaquo;</span>
+        </a>
+    </div>
+</div>
+
+<div class="footer-note">
+    Made with Webflow &amp; a lot of marketing insights
+</div>
+
+<!-- ==================== SCRIPTS ==================== -->
+<script>
+    // Back to Top
+    const backToTopBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopBtn.classList.add('visible');
+        } else {
+            backToTopBtn.classList.remove('visible');
+        }
+    });
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+
+                // Trigger counter animation for stat cards
+                if (entry.target.classList.contains('stat-card')) {
+                    entry.target.classList.add('animated');
+                    const numEl = entry.target.querySelector('.stat-number');
+                    if (numEl && !numEl.dataset.counted) {
+                        numEl.dataset.counted = 'true';
+                        animateCounter(numEl);
+                    }
+                }
+            }
+        });
+    }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Counter animation
+    function animateCounter(el) {
+        const target = parseInt(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const duration = 1500;
+        const steps = 40;
+        const stepTime = duration / steps;
+        let current = 0;
+        const increment = target / steps;
+
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            el.textContent = Math.floor(current) + suffix;
+        }, stepTime);
+    }
+</script>
+
+</body>
+</html>
