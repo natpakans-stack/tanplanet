@@ -122,11 +122,17 @@
       color: var(--text-dim);
     }
 
+    /* ===== Light Section Wrapper ===== */
+    .light-section {
+      background: #f5f5f7;
+      color: #1d1d1f;
+    }
+
     /* ===== Projects Grid ===== */
     .section {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 0 24px 80px;
+      padding: 60px 24px 80px;
     }
 
     .section-title {
@@ -134,7 +140,7 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: var(--text-muted);
+      color: #86868b;
       margin-bottom: 32px;
     }
 
@@ -144,23 +150,23 @@
       gap: 20px;
     }
 
-    /* ===== Project Card ===== */
+    /* ===== Project Card (Light) ===== */
     .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+      background: #ffffff;
+      border: 1px solid #e5e5e7;
       border-radius: var(--radius);
       overflow: hidden;
       transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
       text-decoration: none;
-      color: inherit;
+      color: #1d1d1f;
       display: flex;
       flex-direction: column;
     }
 
     .card:hover {
       transform: translateY(-4px);
-      border-color: var(--accent-magenta);
-      box-shadow: 0 8px 32px rgba(201,66,119,0.15);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      border-color: #d2d2d7;
     }
 
     .card-visual {
@@ -197,11 +203,12 @@
       font-weight: 700;
       margin-bottom: 8px;
       line-height: 1.35;
+      color: #1d1d1f;
     }
 
     .card p {
       font-size: 0.88rem;
-      color: var(--text-dim);
+      color: #6e6e73;
       line-height: 1.55;
       flex: 1;
     }
@@ -218,68 +225,85 @@
       font-weight: 500;
       padding: 4px 10px;
       border-radius: 6px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
+      background: #f5f5f7;
+      border: 1px solid #e5e5e7;
+      color: #86868b;
     }
 
     .card-footer {
       padding: 14px 24px;
-      border-top: 1px solid var(--border);
+      border-top: 1px solid #e5e5e7;
       display: flex;
       align-items: center;
       gap: 8px;
       font-size: 0.8rem;
-      color: var(--text-muted);
+      color: #86868b;
     }
 
     .card-footer svg {
       width: 16px;
       height: 16px;
-      opacity: 0.6;
+      opacity: 0.5;
     }
 
-    /* ===== Color Variants ===== */
-    .card--magenta .card-visual { background: linear-gradient(135deg, #2a1525, #1a1a24); }
+    /* ===== Color Variants (Light) ===== */
+    .card--magenta .card-visual { background: linear-gradient(135deg, #fdf2f8, #fce7f3); }
     .card--magenta .card-type { color: var(--accent-magenta); }
-    .card--magenta:hover { border-color: var(--accent-magenta); box-shadow: 0 8px 32px rgba(201,66,119,0.12); }
+    .card--magenta:hover { border-color: var(--accent-magenta); box-shadow: 0 12px 40px rgba(201,66,119,0.1); }
 
-    .card--blue .card-visual { background: linear-gradient(135deg, #152038, #1a1a24); }
+    .card--blue .card-visual { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
     .card--blue .card-type { color: var(--accent-blue); }
-    .card--blue:hover { border-color: var(--accent-blue); box-shadow: 0 8px 32px rgba(59,130,246,0.12); }
+    .card--blue:hover { border-color: var(--accent-blue); box-shadow: 0 12px 40px rgba(59,130,246,0.1); }
 
-    .card--cyan .card-visual { background: linear-gradient(135deg, #0f2a30, #1a1a24); }
-    .card--cyan .card-type { color: var(--accent-cyan); }
-    .card--cyan:hover { border-color: var(--accent-cyan); box-shadow: 0 8px 32px rgba(34,211,238,0.12); }
+    .card--cyan .card-visual { background: linear-gradient(135deg, #ecfeff, #cffafe); }
+    .card--cyan .card-type { color: #0891b2; }
+    .card--cyan:hover { border-color: #0891b2; box-shadow: 0 12px 40px rgba(8,145,178,0.1); }
 
-    .card--green .card-visual { background: linear-gradient(135deg, #0f2a1f, #1a1a24); }
-    .card--green .card-type { color: var(--accent-green); }
-    .card--green:hover { border-color: var(--accent-green); box-shadow: 0 8px 32px rgba(52,211,153,0.12); }
+    .card--green .card-visual { background: linear-gradient(135deg, #ecfdf5, #d1fae5); }
+    .card--green .card-type { color: #059669; }
+    .card--green:hover { border-color: #059669; box-shadow: 0 12px 40px rgba(5,150,105,0.1); }
 
-    .card--orange .card-visual { background: linear-gradient(135deg, #2a1a0f, #1a1a24); }
-    .card--orange .card-type { color: var(--accent-orange); }
-    .card--orange:hover { border-color: var(--accent-orange); box-shadow: 0 8px 32px rgba(249,115,22,0.12); }
+    .card--orange .card-visual { background: linear-gradient(135deg, #fff7ed, #ffedd5); }
+    .card--orange .card-type { color: #ea580c; }
+    .card--orange:hover { border-color: #ea580c; box-shadow: 0 12px 40px rgba(234,88,12,0.1); }
 
-    .card--purple .card-visual { background: linear-gradient(135deg, #1f1535, #1a1a24); }
-    .card--purple .card-type { color: var(--accent-purple); }
-    .card--purple:hover { border-color: var(--accent-purple); box-shadow: 0 8px 32px rgba(167,139,250,0.12); }
+    .card--purple .card-visual { background: linear-gradient(135deg, #f5f3ff, #ede9fe); }
+    .card--purple .card-type { color: #7c3aed; }
+    .card--purple:hover { border-color: #7c3aed; box-shadow: 0 12px 40px rgba(124,58,237,0.1); }
 
-    /* ===== Footer ===== */
+    /* ===== Footer (Light) ===== */
     .footer {
       text-align: center;
-      padding: 40px 24px 60px;
-      border-top: 1px solid var(--border);
+      padding: 84px 24px 64px;
+      border-top: 1px solid #e5e5e7;
       max-width: 1100px;
       margin: 0 auto;
+      position: relative;
+    }
+
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+
+    .mascot-half img {
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
     .footer p {
       font-size: 0.85rem;
-      color: var(--text-muted);
+      color: #86868b;
     }
 
     .footer a {
-      color: var(--accent-cyan);
+      color: #0071e3;
       text-decoration: none;
     }
 
@@ -294,13 +318,13 @@
 
     .footer-links a {
       font-size: 0.85rem;
-      color: var(--text-dim);
+      color: #6e6e73;
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    .footer-links a:hover { color: var(--text); }
+    .footer-links a:hover { color: #1d1d1f; }
 
     .footer-links svg {
       width: 18px;
@@ -345,7 +369,8 @@
     </div>
   </section>
 
-  <!-- Projects -->
+  <!-- Projects + Footer (Light Theme) -->
+  <div class="light-section">
   <section class="section">
     <div class="section-title">Projects</div>
     <div class="projects">
@@ -488,6 +513,9 @@
 
   <!-- Footer -->
   <footer class="footer">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
     <p>Made with ❤️ by <a href="https://github.com/natpakans-stack" target="_blank">tanθ</a></p>
     <div class="footer-links">
       <a href="https://github.com/natpakans-stack" target="_blank">
@@ -496,6 +524,7 @@
       </a>
     </div>
   </footer>
+  </div>
 
 </body>
 </html>
