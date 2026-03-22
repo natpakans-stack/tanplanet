@@ -119,7 +119,7 @@
     .hero p { font-size: 1.05rem; opacity: 0.85; max-width: 580px; margin: 0 auto; }
 
     /* ===== Content ===== */
-    .content { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .content { max-width: var(--max-w); margin: 0 auto; padding: 40px 24px 0; }
 
     /* ===== Floating Search ===== */
     .search-float {
@@ -250,15 +250,35 @@
 
     mark { background: var(--highlight); color: inherit; padding: 1px 2px; border-radius: 3px; font-weight: 600; }
 
-    /* ===== Footer ===== */
-    .footer {
+    /* ===== Closing / Footer ===== */
+    .closing {
       text-align: center; padding: 40px 24px 64px;
-      border-top: 1px solid var(--border); margin-top: 60px; position: relative;
+      border-top: 1px solid var(--border); margin-top: 100px;
+      position: relative;
     }
-    .footer p { color: var(--text-secondary); font-size: 0.9rem; max-width: 520px; margin: 0 auto; line-height: 1.7; }
-    .footer a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
-    .footer a:hover { opacity: 0.7; text-decoration: underline; }
-    .footer-version { margin-top: 12px; opacity: 0.6; }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary); font-size: 0.95rem;
+      max-width: 520px; margin: 0 auto; line-height: 1.7;
+    }
+    .closing a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
+    .closing a:hover { opacity: 0.7; text-decoration: underline; }
+    .closing .stack-icons {
+      margin-top: 24px; display: flex; justify-content: center;
+      flex-wrap: wrap; gap: 10px;
+    }
+    .closing .stack-icon {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 8px 16px; border-radius: 50px;
+      font-size: 0.82rem; font-weight: 500; color: var(--text-secondary);
+    }
+    .mascot-half {
+      width: 180px; height: 120px; overflow: hidden;
+      position: absolute; top: 0; left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img { width: 100%; height: auto; display: block; }
+    .closing-version { margin-top: 16px; opacity: 0.5; font-size: 0.82rem; color: var(--text-muted); }
 
     /* ===== Changelog ===== */
     .changelog {
@@ -281,7 +301,7 @@
       .grid { grid-template-columns: 1fr; }
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
-      .footer { margin-top: 40px; padding: 32px 16px 48px; }
+      .closing { margin-top: 60px; padding: 32px 16px 48px; }
     }
   </style>
 </head>
@@ -559,16 +579,28 @@
 
 </div>
 
-<!-- Footer -->
-<footer class="footer">
-  <p><strong>Claude Code Skills Registry</strong> — รวมทุกสกิลที่ติดตั้งไว้ใน Claude Code เป็น source of truth</p>
-  <p style="margin-top:12px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+<!-- Closing -->
+<div class="closing">
+  <div class="mascot-half">
+    <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+  </div>
+  <h2>🧠 ทุกสกิลอยู่ที่นี่</h2>
+  <p>Claude Code Skills Registry — รวมทุกเครื่องมือที่ติดตั้งไว้ให้ดูได้ในที่เดียว อัปเดตได้ตลอด</p>
+  <div class="stack-icons">
+    <span class="stack-icon">Plugins</span>
+    <span class="stack-icon">MCP Servers</span>
+    <span class="stack-icon">BMAD</span>
+    <span class="stack-icon">Custom Skills</span>
+    <span class="stack-icon">LSP</span>
+    <span class="stack-icon">Tools</span>
+  </div>
+  <p style="margin-top:20px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
     <a href="https://projects.tanplanet.info/talk-to-figma-mcp/">Talk to Figma MCP</a>
     <a href="https://projects.tanplanet.info/thai-typo-fixer/">Thai Typo Fixer</a>
     <a href="https://projects.tanplanet.info/">All Projects</a>
   </p>
-  <p class="footer-version">v1.1.0 — มี.ค. 2569</p>
-</footer>
+  <p class="closing-version">v1.2.0 — มี.ค. 2569</p>
+</div>
 
 <script>
 (function(){
