@@ -118,8 +118,11 @@
     }
     .hero p { font-size: 1.05rem; opacity: 0.85; max-width: 580px; margin: 0 auto; }
 
+    /* ===== Light Section (matches index.html pattern) ===== */
+    .light-section { background: var(--bg); padding-top: 48px; }
+
     /* ===== Content ===== */
-    .content { max-width: var(--max-w); margin: 0 auto; padding: 40px 24px 0; }
+    .content { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
 
     /* ===== Floating Search ===== */
     .search-float {
@@ -327,18 +330,20 @@
   </div>
 </section>
 
-<div class="content">
-
-  <!-- Floating Search -->
-  <div class="search-float">
-    <div class="search-box">
-      <svg class="s-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
-      <input type="text" id="search" placeholder="ค้นหาสกิล เช่น figma, ตรวจ, sprint..." autocomplete="off">
-      <button class="search-clear" id="searchClear" aria-label="ล้างคำค้นหา">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
-      </button>
-    </div>
+<!-- Floating Search (between hero & content) -->
+<div class="search-float">
+  <div class="search-box">
+    <svg class="s-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
+    <input type="text" id="search" placeholder="ค้นหาสกิล เช่น figma, ตรวจ, sprint..." autocomplete="off">
+    <button class="search-clear" id="searchClear" aria-label="ล้างคำค้นหา">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+    </button>
   </div>
+</div>
+
+<!-- Content (Light Section) -->
+<div class="light-section">
+<div class="content">
 
   <!-- Toolbar -->
   <div class="toolbar">
@@ -577,7 +582,8 @@
     </div>
   </div>
 
-</div>
+</div><!-- /content -->
+</div><!-- /light-section -->
 
 <!-- Closing -->
 <div class="closing">
