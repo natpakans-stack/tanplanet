@@ -121,62 +121,83 @@
     /* ===== Content ===== */
     .content { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
 
-    /* ===== Search ===== */
-    .search-section { padding: 32px 0 0; }
-    .search-wrap { position: relative; max-width: 560px; margin: 0 auto; }
-    .search-icon {
-      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
-      color: var(--text-muted); font-size: 18px; pointer-events: none;
+    /* ===== Floating Search ===== */
+    .search-float {
+      position: relative; z-index: 10;
+      max-width: 720px; margin: 0 auto;
+      padding: 0 24px; margin-top: -30px; margin-bottom: -30px;
     }
-    .search-input {
-      width: 100%; padding: 14px 16px 14px 48px;
-      border: 2px solid var(--border); border-radius: 50px;
-      font-size: 1rem; font-family: inherit; background: var(--surface);
-      transition: all 0.2s; box-shadow: var(--shadow);
+    .search-box {
+      position: relative; display: flex; align-items: center;
+      background: #fff; border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
     }
-    .search-input:focus {
-      outline: none; border-color: var(--accent);
-      box-shadow: 0 0 0 4px var(--accent-glow), var(--shadow-md);
+    .search-box .s-icon {
+      position: absolute; left: 18px; width: 20px; height: 20px;
+      color: var(--text-muted); pointer-events: none;
     }
-    .search-input::placeholder { color: var(--text-muted); }
+    .search-box input {
+      font-family: var(--font); font-size: 1rem;
+      padding: 16px 44px 16px 48px;
+      border: none; border-radius: 16px; background: transparent;
+      color: var(--text); outline: none; width: 100%;
+    }
+    .search-box input::placeholder { color: var(--text-muted); }
+    .search-clear {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      width: 28px; height: 28px; border-radius: 50%; border: none;
+      background: #e5e5e7; color: #86868b; cursor: pointer;
+      display: none; align-items: center; justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .search-clear:hover { background: #d2d2d7; color: var(--text); }
+    .search-clear.visible { display: flex; }
     .search-count {
-      text-align: center; font-size: 0.85rem; color: var(--text-muted);
-      margin-top: 10px; min-height: 20px;
+      text-align: center; font-size: 0.82rem; color: var(--text-muted);
+      margin-top: 16px; min-height: 20px;
     }
 
-    /* ===== Filter Cards ===== */
-    .filter-section { padding: 20px 0 8px; }
-    .filter-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;
+    /* ===== Toolbar (Filters) ===== */
+    .toolbar {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 24px; margin-top: 8px;
     }
-    .filter-card {
-      background: var(--surface); border: 2px solid var(--border);
-      border-radius: var(--radius); padding: 14px 8px;
-      cursor: pointer; transition: all 0.2s ease-out;
-      text-align: center; user-select: none;
+    .toolbar-label {
+      font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-muted); flex-shrink: 0;
     }
-    .filter-card:hover { border-color: var(--text-muted); transform: translateY(-1px); box-shadow: var(--shadow); }
-    .filter-card.active { box-shadow: var(--shadow); }
-    .filter-card .f-icon { font-size: 22px; margin-bottom: 4px; }
-    .filter-card .f-num { font-size: 20px; font-weight: 700; color: var(--accent); margin-top: 2px; line-height: 1; }
-    .filter-card .f-label { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); }
+    .filters {
+      display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
+      -webkit-overflow-scrolling: touch; flex-wrap: wrap;
+    }
+    .filters::-webkit-scrollbar { display: none; }
+    .fbtn {
+      font-family: var(--font); font-size: 0.78rem; font-weight: 500;
+      padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border);
+      background: transparent; color: var(--text-muted); cursor: pointer;
+      transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+    }
+    .fbtn:hover { border-color: var(--text); color: var(--text); }
+    .fbtn.active { background: var(--text); border-color: var(--text); color: #fff; }
 
-    .filter-card[data-filter="all"].active { border-color: #2D2B2A; background: #2D2B2A; }
-    .filter-card[data-filter="all"].active .f-label, .filter-card[data-filter="all"].active .f-num { color: #fff; }
-    .filter-card[data-filter="plugin"].active { border-color: var(--accent); background: var(--accent-light); }
-    .filter-card[data-filter="plugin"] .f-num { color: var(--accent); }
-    .filter-card[data-filter="mcp"].active { border-color: var(--secondary); background: var(--secondary-light); }
-    .filter-card[data-filter="mcp"] .f-num { color: var(--secondary); }
-    .filter-card[data-filter="custom"].active { border-color: var(--success); background: var(--success-light); }
-    .filter-card[data-filter="custom"] .f-num { color: var(--success); }
-    .filter-card[data-filter="bmad"].active { border-color: var(--warning); background: var(--warning-light); }
-    .filter-card[data-filter="bmad"] .f-num { color: var(--warning); }
-    .filter-card[data-filter="lsp"].active { border-color: #5B4BC7; background: #F3EEFF; }
-    .filter-card[data-filter="lsp"] .f-num { color: #5B4BC7; }
-    .filter-card[data-filter="reference"].active { border-color: var(--info); background: var(--info-light); }
-    .filter-card[data-filter="reference"] .f-num { color: var(--info); }
-    .filter-card[data-filter="tool"].active { border-color: #e44d90; background: #fdf0f5; }
-    .filter-card[data-filter="tool"] .f-num { color: #e44d90; }
+    /* ===== No Results ===== */
+    .no-results {
+      text-align: center; padding: 80px 24px; display: none;
+    }
+    .no-results .empty-icon {
+      width: 80px; height: 80px; margin: 0 auto 20px;
+      background: var(--border); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 2rem;
+    }
+    .no-results h3 { font-size: 1.1rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .no-results p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px; }
+    .no-results .clear-btn {
+      font-family: var(--font); font-size: 0.85rem; font-weight: 500;
+      padding: 8px 20px; border-radius: 8px; border: 1px solid var(--border);
+      background: #fff; color: var(--text); cursor: pointer; transition: all 0.2s;
+    }
+    .no-results .clear-btn:hover { border-color: var(--text); }
+
     .sk-tag-tool { background: #fdf0f5; color: #e44d90; }
 
     /* ===== Categories & Cards ===== */
@@ -255,8 +276,8 @@
     @media (max-width: 640px) {
       .hero { padding: 72px 16px 48px; }
       .hero h1 { font-size: 1.5rem; }
-      .filter-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-      .filter-card { padding: 10px 6px; }
+      .search-float { padding: 0 16px; margin-bottom: -30px; }
+      .search-box input { padding: 14px 40px 14px 44px; font-size: 0.95rem; }
       .grid { grid-template-columns: 1fr; }
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
@@ -288,27 +309,40 @@
 
 <div class="content">
 
-  <!-- Search -->
-  <div class="search-section">
-    <div class="search-wrap">
-      <span class="search-icon">🔍</span>
-      <input type="text" class="search-input" id="search" placeholder="ค้นหาสกิล เช่น figma, ตรวจ, sprint..." autocomplete="off">
+  <!-- Floating Search -->
+  <div class="search-float">
+    <div class="search-box">
+      <svg class="s-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
+      <input type="text" id="search" placeholder="ค้นหาสกิล เช่น figma, ตรวจ, sprint..." autocomplete="off">
+      <button class="search-clear" id="searchClear" aria-label="ล้างคำค้นหา">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+      </button>
     </div>
-    <div class="search-count" id="searchCount"></div>
   </div>
 
-  <!-- Filter Cards -->
-  <div class="filter-section">
-    <div class="filter-grid">
-      <div class="filter-card active" data-filter="all"><div class="f-icon">✦</div><div class="f-num" id="count-all">0</div><div class="f-label">ทั้งหมด</div></div>
-      <div class="filter-card" data-filter="plugin"><div class="f-icon">🧩</div><div class="f-num">19</div><div class="f-label">Plugins</div></div>
-      <div class="filter-card" data-filter="mcp"><div class="f-icon">🔌</div><div class="f-num">23</div><div class="f-label">MCP</div></div>
-      <div class="filter-card" data-filter="custom"><div class="f-icon">✨</div><div class="f-num">17</div><div class="f-label">Custom</div></div>
-      <div class="filter-card" data-filter="bmad"><div class="f-icon">🤖</div><div class="f-num">40</div><div class="f-label">BMAD</div></div>
-      <div class="filter-card" data-filter="lsp"><div class="f-icon">📝</div><div class="f-num">12</div><div class="f-label">LSP</div></div>
-      <div class="filter-card" data-filter="reference"><div class="f-icon">📚</div><div class="f-num">15</div><div class="f-label">Refs</div></div>
-      <div class="filter-card" data-filter="tool"><div class="f-icon">🛸</div><div class="f-num">4</div><div class="f-label">Tools</div></div>
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-label">Skills</div>
+    <div class="filters">
+      <button class="fbtn active" data-filter="all">ทั้งหมด</button>
+      <button class="fbtn" data-filter="plugin">Plugins</button>
+      <button class="fbtn" data-filter="mcp">MCP</button>
+      <button class="fbtn" data-filter="custom">Custom</button>
+      <button class="fbtn" data-filter="bmad">BMAD</button>
+      <button class="fbtn" data-filter="lsp">LSP</button>
+      <button class="fbtn" data-filter="reference">Refs</button>
+      <button class="fbtn" data-filter="tool">Tools</button>
     </div>
+  </div>
+
+  <div class="search-count" id="searchCount"></div>
+
+  <!-- No Results -->
+  <div class="no-results" id="noResults">
+    <div class="empty-icon">🔍</div>
+    <h3>ไม่พบสกิลที่ตรงกับคำค้นหา</h3>
+    <p id="noResultsHint">ลองค้นด้วยคำอื่น หรือเปลี่ยน filter ดู</p>
+    <button class="clear-btn" id="clearBtn">ล้างคำค้นหา</button>
   </div>
 
   <!-- Results -->
@@ -545,36 +579,72 @@
 })();
 
 var searchInput = document.getElementById('search');
+var searchClear = document.getElementById('searchClear');
 var searchCountEl = document.getElementById('searchCount');
+var noResults = document.getElementById('noResults');
+var noResultsHint = document.getElementById('noResultsHint');
+var clearBtn = document.getElementById('clearBtn');
 var cards = document.querySelectorAll('.sk');
 var categories = document.querySelectorAll('.category');
-var filterCards = document.querySelectorAll('.filter-card');
+var filterBtns = document.querySelectorAll('.fbtn');
+var resultsEl = document.getElementById('results');
 var activeFilter = 'all';
 
 function escapeRegex(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
 function hl(text,q){if(!q)return text;return text.replace(new RegExp('('+escapeRegex(q)+')','gi'),'<mark>$1</mark>');}
 
+function clearSearch(){
+  searchInput.value='';
+  searchClear.classList.remove('visible');
+  apply();
+  searchInput.focus();
+}
+
 function apply(){
   var q = searchInput.value.toLowerCase().trim();
   var matchCount = 0;
+  var totalVisible = 0;
+
+  searchClear.classList.toggle('visible', q.length > 0);
+
   cards.forEach(function(c){
     var name = c.getAttribute('data-name').toLowerCase();
     var desc = c.getAttribute('data-desc').toLowerCase();
     var tags = c.getAttribute('data-tags');
     if(activeFilter !== 'all' && tags.indexOf(activeFilter) === -1){c.classList.add('hidden');c.classList.remove('matched','dimmed');return;}
     c.classList.remove('hidden');
+    totalVisible++;
     if(!q){c.classList.remove('matched','dimmed');c.querySelector('.sk-desc').textContent=c.getAttribute('data-desc');return;}
     var m = name.indexOf(q)!==-1 || desc.indexOf(q)!==-1;
     if(m){c.classList.add('matched');c.classList.remove('dimmed');matchCount++;c.querySelector('.sk-desc').innerHTML=hl(c.getAttribute('data-desc'),q);var ne=c.querySelector('.sk-name');ne.innerHTML=hl(ne.textContent,q);}
     else{c.classList.remove('matched');c.classList.add('dimmed');c.querySelector('.sk-desc').textContent=c.getAttribute('data-desc');}
   });
+
   categories.forEach(function(cat){cat.style.display=cat.querySelectorAll('.sk:not(.hidden)').length===0?'none':'';});
-  searchCountEl.textContent=q?(matchCount>0?'พบ '+matchCount+' สกิลที่ตรงกับ "'+searchInput.value+'"':'ไม่พบสกิลที่ตรงกับ "'+searchInput.value+'"'):'';
+
+  // No results state
+  if(q && matchCount === 0){
+    noResults.style.display='block';
+    resultsEl.style.display='none';
+    noResultsHint.textContent='ไม่พบ "'+searchInput.value+'" — ลองค้นด้วยคำอังกฤษ/ไทย หรือชื่อเทคโนโลยี';
+    searchCountEl.textContent='';
+  } else {
+    noResults.style.display='none';
+    resultsEl.style.display='';
+    searchCountEl.textContent=q?'พบ '+matchCount+' จาก '+totalVisible+' สกิล':'';
+  }
 }
 
 searchInput.addEventListener('input', apply);
-filterCards.forEach(function(fc){fc.addEventListener('click',function(){filterCards.forEach(function(c){c.classList.remove('active');});fc.classList.add('active');activeFilter=fc.getAttribute('data-filter');apply();});});
-document.getElementById('count-all').textContent = cards.length;
+searchClear.addEventListener('click', clearSearch);
+clearBtn.addEventListener('click', clearSearch);
+
+filterBtns.forEach(function(btn){btn.addEventListener('click',function(){
+  filterBtns.forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  activeFilter=btn.getAttribute('data-filter');
+  apply();
+});});
 </script>
 </body>
 </html>
