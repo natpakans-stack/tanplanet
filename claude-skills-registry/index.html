@@ -1,860 +1,567 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claude Code Skills Registry</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code Skills Registry — Source of Truth</title>
 
-  :root {
-    --primary: #D97757;
-    --primary-light: #FDF2ED;
-    --primary-dark: #B8573A;
-    --secondary: #6B5CE7;
-    --secondary-light: #F0EEFF;
-    --text-primary: #1A1A1A;
-    --text-secondary: #5C5C5C;
-    --text-tertiary: #8C8C8C;
-    --bg-white: #FFFFFF;
-    --bg-light: #FAF9F7;
-    --bg-mid: #EEECEA;
-    --border: #E5E2DF;
-    --warning: #B8860B;
-    --warning-bg: #FEF9EB;
-    --success: #2E7D32;
-    --success-bg: #EDF7ED;
-    --info: #0277BD;
-    --info-bg: #E8F4FD;
-    --highlight: #FFEAA7;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-    --shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-xl: 16px;
-    --radius-2xl: 20px;
-    --radius-full: 9999px;
-  }
+  <link rel="icon" type="image/png" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=64&height=64">
+  <link rel="apple-touch-icon" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=180&height=180">
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta name="description" content="รวมทุก Skill, Plugin, MCP Server ที่ติดตั้งไว้ใน Claude Code — Source of Truth พร้อม Search, Filter, Highlight">
+  <meta property="og:url" content="https://projects.tanplanet.info/claude-skills-registry/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Claude Code Skills Registry — Source of Truth">
+  <meta property="og:description" content="รวมทุก Skill, Plugin, MCP Server ที่ติดตั้งไว้ใน Claude Code — Source of Truth">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Claude Code Skills Registry">
+  <meta name="twitter:description" content="รวมทุก Skill, Plugin, MCP Server ที่ติดตั้งไว้ใน Claude Code">
 
-  body {
-    font-family: 'IBM Plex Sans Thai', -apple-system, system-ui, sans-serif;
-    background: var(--bg-light);
-    color: var(--text-primary);
-    line-height: 1.6;
-  }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  /* ===== HEADER ===== */
-  .header {
-    background: linear-gradient(135deg, #2D2B2A, #4A3F38);
-    color: white;
-    padding: 40px 24px 32px;
-    text-align: center;
-  }
-  .header h1 { font-size: 28px; font-weight: 700; }
-  .header-sub { font-size: 15px; opacity: 0.75; margin-top: 4px; }
-  .version-badge {
-    display: inline-block;
-    background: rgba(255,255,255,0.12);
-    padding: 4px 14px;
-    border-radius: var(--radius-full);
-    font-size: 13px;
-    font-weight: 600;
-    margin-top: 12px;
-    border: 1px solid rgba(255,255,255,0.2);
-  }
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-  /* ===== LAYOUT ===== */
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    :root {
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --accent: #D97757;
+      --accent-light: #FDF2ED;
+      --accent-dark: #B8573A;
+      --accent-glow: rgba(217,119,87,0.12);
+      --secondary: #6B5CE7;
+      --secondary-light: #F0EEFF;
+      --success: #2E7D32;
+      --success-light: #EDF7ED;
+      --warning: #B8860B;
+      --warning-light: #FEF9EB;
+      --info: #0277BD;
+      --info-light: #E8F4FD;
+      --highlight: #FFEAA7;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 960px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+    }
 
-  /* ===== SEARCH ===== */
-  .search-section { padding: 24px 0 0; }
-  .search-wrap {
-    position: relative;
-    max-width: 560px;
-    margin: 0 auto;
-  }
-  .search-icon {
-    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
-    color: var(--text-tertiary); font-size: 18px; pointer-events: none;
-  }
-  .search-input {
-    width: 100%;
-    padding: 14px 16px 14px 48px;
-    border: 2px solid var(--border);
-    border-radius: var(--radius-xl);
-    font-size: 16px;
-    font-family: inherit;
-    background: var(--bg-white);
-    transition: all 0.2s;
-    box-shadow: var(--shadow-sm);
-  }
-  .search-input:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px var(--primary-light), var(--shadow-md);
-  }
-  .search-input::placeholder { color: var(--text-tertiary); }
-  .search-count {
-    text-align: center;
-    font-size: 13px;
-    color: var(--text-tertiary);
-    margin-top: 10px;
-    min-height: 20px;
-    transition: opacity 0.2s;
-  }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  /* ===== FILTER CARDS ===== */
-  .filter-section { padding: 20px 0 8px; }
-  .filter-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 10px;
-  }
-  .filter-card {
-    background: var(--bg-white);
-    border: 2px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 16px;
-    cursor: pointer;
-    transition: all 0.2s ease-out;
-    text-align: center;
-    user-select: none;
-  }
-  .filter-card:hover {
-    border-color: var(--text-tertiary);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-sm);
-  }
-  .filter-card.active {
-    border-color: var(--primary);
-    background: var(--primary-light);
-    box-shadow: var(--shadow-sm);
-  }
-  .filter-card .filter-icon { font-size: 24px; margin-bottom: 6px; }
-  .filter-card .filter-label { font-size: 13px; font-weight: 600; color: var(--text-primary); }
-  .filter-card .filter-count {
-    font-size: 22px; font-weight: 700; color: var(--primary);
-    margin-top: 2px; line-height: 1;
-  }
-  .filter-card.active .filter-label { color: var(--primary-dark); }
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed; top: 16px; left: 16px; z-index: 1000;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px;
+      background: rgba(217,119,87,0.85);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px; color: #fff; text-decoration: none;
+      font-size: 0.82rem; font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(217,119,87,0.95); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
 
-  /* Color variants for filter cards */
-  .filter-card[data-filter="plugin"].active { border-color: var(--primary); background: var(--primary-light); }
-  .filter-card[data-filter="plugin"] .filter-count { color: var(--primary); }
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed; bottom: 24px; right: 24px; z-index: 1000;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--accent); color: #fff; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0; visibility: hidden; transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
 
-  .filter-card[data-filter="mcp"].active { border-color: var(--secondary); background: var(--secondary-light); }
-  .filter-card[data-filter="mcp"] .filter-count { color: var(--secondary); }
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #2D2B2A 0%, #4A3F38 50%, #5C4A3A 100%);
+      color: #fff; padding: 80px 24px 60px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(217,119,87,0.12) 0%, transparent 50%);
+    }
+    .hero::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, #D97757, #6B5CE7, #2E7D32, #B8860B);
+    }
+    .hero-inner { position: relative; max-width: var(--max-w); margin: 0 auto; }
+    .hero-badge {
+      display: inline-block; background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      padding: 6px 16px; border-radius: 50px; font-size: 0.85rem;
+      font-weight: 600; margin-bottom: 20px; letter-spacing: 0.5px;
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 5vw, 2.4rem); font-weight: 700;
+      line-height: 1.3; margin-bottom: 12px;
+    }
+    .hero p { font-size: 1.05rem; opacity: 0.85; max-width: 580px; margin: 0 auto; }
 
-  .filter-card[data-filter="custom"].active { border-color: var(--success); background: var(--success-bg); }
-  .filter-card[data-filter="custom"] .filter-count { color: var(--success); }
+    /* ===== Content ===== */
+    .content { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
 
-  .filter-card[data-filter="bmad"].active { border-color: var(--warning); background: var(--warning-bg); }
-  .filter-card[data-filter="bmad"] .filter-count { color: var(--warning); }
+    /* ===== Search ===== */
+    .search-section { padding: 32px 0 0; }
+    .search-wrap { position: relative; max-width: 560px; margin: 0 auto; }
+    .search-icon {
+      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); font-size: 18px; pointer-events: none;
+    }
+    .search-input {
+      width: 100%; padding: 14px 16px 14px 48px;
+      border: 2px solid var(--border); border-radius: 50px;
+      font-size: 1rem; font-family: inherit; background: var(--surface);
+      transition: all 0.2s; box-shadow: var(--shadow);
+    }
+    .search-input:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-glow), var(--shadow-md);
+    }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-count {
+      text-align: center; font-size: 0.85rem; color: var(--text-muted);
+      margin-top: 10px; min-height: 20px;
+    }
 
-  .filter-card[data-filter="lsp"].active { border-color: #5B4BC7; background: #F3EEFF; }
-  .filter-card[data-filter="lsp"] .filter-count { color: #5B4BC7; }
+    /* ===== Filter Cards ===== */
+    .filter-section { padding: 20px 0 8px; }
+    .filter-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;
+    }
+    .filter-card {
+      background: var(--surface); border: 2px solid var(--border);
+      border-radius: var(--radius); padding: 14px 8px;
+      cursor: pointer; transition: all 0.2s ease-out;
+      text-align: center; user-select: none;
+    }
+    .filter-card:hover { border-color: var(--text-muted); transform: translateY(-1px); box-shadow: var(--shadow); }
+    .filter-card.active { box-shadow: var(--shadow); }
+    .filter-card .f-icon { font-size: 22px; margin-bottom: 4px; }
+    .filter-card .f-num { font-size: 20px; font-weight: 700; color: var(--accent); margin-top: 2px; line-height: 1; }
+    .filter-card .f-label { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); }
 
-  .filter-card[data-filter="reference"].active { border-color: var(--info); background: var(--info-bg); }
-  .filter-card[data-filter="reference"] .filter-count { color: var(--info); }
+    .filter-card[data-filter="all"].active { border-color: #2D2B2A; background: #2D2B2A; }
+    .filter-card[data-filter="all"].active .f-label, .filter-card[data-filter="all"].active .f-num { color: #fff; }
+    .filter-card[data-filter="plugin"].active { border-color: var(--accent); background: var(--accent-light); }
+    .filter-card[data-filter="plugin"] .f-num { color: var(--accent); }
+    .filter-card[data-filter="mcp"].active { border-color: var(--secondary); background: var(--secondary-light); }
+    .filter-card[data-filter="mcp"] .f-num { color: var(--secondary); }
+    .filter-card[data-filter="custom"].active { border-color: var(--success); background: var(--success-light); }
+    .filter-card[data-filter="custom"] .f-num { color: var(--success); }
+    .filter-card[data-filter="bmad"].active { border-color: var(--warning); background: var(--warning-light); }
+    .filter-card[data-filter="bmad"] .f-num { color: var(--warning); }
+    .filter-card[data-filter="lsp"].active { border-color: #5B4BC7; background: #F3EEFF; }
+    .filter-card[data-filter="lsp"] .f-num { color: #5B4BC7; }
+    .filter-card[data-filter="reference"].active { border-color: var(--info); background: var(--info-light); }
+    .filter-card[data-filter="reference"] .f-num { color: var(--info); }
 
-  .filter-card[data-filter="all"].active { border-color: #2D2B2A; background: #2D2B2A; }
-  .filter-card[data-filter="all"].active .filter-label,
-  .filter-card[data-filter="all"].active .filter-count { color: white; }
-  .filter-card[data-filter="all"] .filter-count { color: #2D2B2A; }
+    /* ===== Categories & Cards ===== */
+    .results-section { padding: 24px 0 0; }
+    .category { margin-bottom: 28px; }
+    .cat-header {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 12px; padding-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+    }
+    .cat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .cat-title { font-size: 0.95rem; font-weight: 700; color: var(--text-secondary); }
+    .cat-count {
+      font-size: 0.72rem; color: var(--text-muted);
+      background: var(--border); padding: 1px 8px;
+      border-radius: 50px; font-weight: 600; margin-left: auto;
+    }
 
-  /* ===== RESULTS ===== */
-  .results-section { padding: 20px 0 48px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; }
 
-  .category { margin-bottom: 28px; }
-  .category-header {
-    display: flex; align-items: center; gap: 8px;
-    margin-bottom: 12px; padding-bottom: 8px;
-    border-bottom: 2px solid var(--bg-mid);
-  }
-  .category-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%; flex-shrink: 0;
-  }
-  .category-title { font-size: 16px; font-weight: 700; color: var(--text-secondary); }
-  .category-count {
-    font-size: 12px; color: var(--text-tertiary);
-    background: var(--bg-mid); padding: 1px 8px;
-    border-radius: var(--radius-full); font-weight: 600;
-    margin-left: auto;
-  }
+    .sk {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 16px;
+      transition: all 0.15s ease-out; display: flex; flex-direction: column; gap: 4px;
+    }
+    .sk:hover { box-shadow: var(--shadow-md); border-color: #ccc; }
+    .sk.matched { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow); }
+    .sk.dimmed { opacity: 0.3; }
+    .sk.hidden { display: none; }
 
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 10px;
-  }
+    .sk-top { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .sk-name {
+      font-size: 0.82rem; font-weight: 700;
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      color: var(--text);
+    }
+    .sk-tag {
+      font-size: 0.62rem; font-weight: 600; padding: 2px 7px;
+      border-radius: 50px; white-space: nowrap;
+    }
+    .sk-tag-plugin { background: var(--accent-light); color: var(--accent-dark); }
+    .sk-tag-mcp { background: var(--secondary-light); color: var(--secondary); }
+    .sk-tag-custom { background: var(--success-light); color: var(--success); }
+    .sk-tag-bmad { background: var(--warning-light); color: var(--warning); }
+    .sk-tag-lsp { background: #F3EEFF; color: #5B4BC7; }
+    .sk-tag-reference { background: var(--info-light); color: var(--info); }
+    .sk-tag-agent { background: var(--accent-light); color: var(--accent-dark); }
 
-  .skill-card {
-    background: var(--bg-white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 14px 16px;
-    transition: all 0.15s ease-out;
-    cursor: default;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .skill-card:hover {
-    box-shadow: var(--shadow-md);
-    border-color: #ccc;
-  }
-  .skill-card.matched {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 1px var(--primary), var(--shadow-sm);
-  }
-  .skill-card.dimmed { opacity: 0.35; }
-  .skill-card.hidden { display: none; }
+    .sk-desc { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; }
 
-  .skill-top { display: flex; align-items: center; gap: 8px; }
-  .skill-name {
-    font-size: 14px; font-weight: 700;
-    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-    color: var(--text-primary);
-    flex: 1;
-  }
-  .skill-tag {
-    font-size: 10px; font-weight: 600;
-    padding: 2px 7px; border-radius: var(--radius-full);
-    white-space: nowrap; flex-shrink: 0;
-  }
-  .skill-tag-plugin { background: var(--primary-light); color: var(--primary-dark); }
-  .skill-tag-mcp { background: var(--secondary-light); color: var(--secondary); }
-  .skill-tag-custom { background: var(--success-bg); color: var(--success); }
-  .skill-tag-bmad { background: var(--warning-bg); color: var(--warning); }
-  .skill-tag-lsp { background: #F3EEFF; color: #5B4BC7; }
-  .skill-tag-reference { background: var(--info-bg); color: var(--info); }
-  .skill-tag-agent { background: #FDF2ED; color: #B8573A; }
+    mark { background: var(--highlight); color: inherit; padding: 1px 2px; border-radius: 3px; font-weight: 600; }
 
-  .skill-desc {
-    font-size: 13px; color: var(--text-secondary);
-    line-height: 22px;
-  }
+    /* ===== Footer ===== */
+    .footer {
+      text-align: center; padding: 40px 24px 64px;
+      border-top: 1px solid var(--border); margin-top: 60px; position: relative;
+    }
+    .footer p { color: var(--text-secondary); font-size: 0.9rem; max-width: 520px; margin: 0 auto; line-height: 1.7; }
+    .footer a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
+    .footer a:hover { opacity: 0.7; text-decoration: underline; }
+    .footer-version { margin-top: 12px; opacity: 0.6; }
 
-  mark {
-    background: var(--highlight);
-    color: inherit;
-    padding: 1px 2px;
-    border-radius: 3px;
-    font-weight: 600;
-    box-shadow: 0 0 0 1px rgba(0,0,0,0.04);
-  }
+    /* ===== Changelog ===== */
+    .changelog {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 24px; margin-top: 40px;
+    }
+    .changelog h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
+    .cl-entry { padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .cl-entry:last-child { border-bottom: none; }
+    .cl-ver { font-weight: 700; color: var(--accent); font-size: 0.85rem; }
+    .cl-date { font-size: 0.75rem; color: var(--text-muted); margin-left: 8px; }
+    .cl-items { margin-top: 4px; padding-left: 16px; font-size: 0.82rem; color: var(--text-secondary); }
+    .cl-items li { margin-top: 2px; }
 
-  .no-results {
-    text-align: center; padding: 64px 24px;
-    color: var(--text-tertiary);
-  }
-  .no-results-icon { font-size: 48px; margin-bottom: 12px; }
-  .no-results-text { font-size: 16px; }
-  .no-results-hint { font-size: 13px; margin-top: 4px; }
-
-  /* ===== CHANGELOG ===== */
-  .changelog {
-    background: var(--bg-white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
-    padding: 24px;
-    margin-bottom: 32px;
-  }
-  .changelog h2 { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
-  .changelog-entry { padding: 8px 0; }
-  .changelog-version { font-weight: 700; color: var(--primary); font-size: 14px; }
-  .changelog-date { font-size: 12px; color: var(--text-tertiary); margin-left: 8px; }
-  .changelog-items { margin-top: 4px; padding-left: 16px; font-size: 13px; color: var(--text-secondary); }
-  .changelog-items li { margin-top: 2px; }
-
-  .footer {
-    text-align: center; padding: 20px;
-    font-size: 12px; color: var(--text-tertiary);
-  }
-
-  @media (max-width: 640px) {
-    .header h1 { font-size: 22px; }
-    .filter-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .filter-card { padding: 12px 8px; }
-    .filter-card .filter-icon { font-size: 20px; }
-    .filter-card .filter-count { font-size: 18px; }
-    .skills-grid { grid-template-columns: 1fr; }
-  }
-</style>
+    @media (max-width: 640px) {
+      .hero { padding: 72px 16px 48px; }
+      .hero h1 { font-size: 1.5rem; }
+      .filter-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .filter-card { padding: 10px 6px; }
+      .grid { grid-template-columns: 1fr; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+      .footer { margin-top: 40px; padding: 32px 16px 48px; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>Claude Code Skills Registry</h1>
-  <div class="header-sub">ทุกสกิลที่ติดตั้งไว้ รวมไว้ที่เดียว</div>
-  <div class="version-badge">v1.1.0 — 22 มี.ค. 2569</div>
-</div>
+<!-- Back Nav -->
+<a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+  Projects
+</a>
 
-<div class="container">
+<!-- Back to Top -->
+<button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+</button>
 
-  <!-- SEARCH -->
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">🧠 Source of Truth</div>
+    <h1>Claude Code Skills Registry</h1>
+    <p>ทุกสกิลที่ติดตั้งไว้ รวมไว้ที่เดียว — ค้นหา กรอง ไฮไลท์ได้ทันที</p>
+  </div>
+</section>
+
+<div class="content">
+
+  <!-- Search -->
   <div class="search-section">
     <div class="search-wrap">
-      <span class="search-icon">&#x1F50D;</span>
+      <span class="search-icon">🔍</span>
       <input type="text" class="search-input" id="search" placeholder="ค้นหาสกิล เช่น figma, ตรวจ, sprint..." autocomplete="off">
     </div>
     <div class="search-count" id="searchCount"></div>
   </div>
 
-  <!-- FILTER CARDS -->
+  <!-- Filter Cards -->
   <div class="filter-section">
     <div class="filter-grid">
-      <div class="filter-card active" data-filter="all">
-        <div class="filter-icon">&#x2726;</div>
-        <div class="filter-count" id="count-all">121</div>
-        <div class="filter-label">ทั้งหมด</div>
-      </div>
-      <div class="filter-card" data-filter="plugin">
-        <div class="filter-icon">&#x1F9E9;</div>
-        <div class="filter-count">19</div>
-        <div class="filter-label">Plugins</div>
-      </div>
-      <div class="filter-card" data-filter="mcp">
-        <div class="filter-icon">&#x1F50C;</div>
-        <div class="filter-count">23</div>
-        <div class="filter-label">MCP Servers</div>
-      </div>
-      <div class="filter-card" data-filter="custom">
-        <div class="filter-icon">&#x2728;</div>
-        <div class="filter-count">17</div>
-        <div class="filter-label">Custom Skills</div>
-      </div>
-      <div class="filter-card" data-filter="bmad">
-        <div class="filter-icon">&#x1F916;</div>
-        <div class="filter-count">40</div>
-        <div class="filter-label">BMAD</div>
-      </div>
-      <div class="filter-card" data-filter="lsp">
-        <div class="filter-icon">&#x1F4DD;</div>
-        <div class="filter-count">12</div>
-        <div class="filter-label">LSP</div>
-      </div>
-      <div class="filter-card" data-filter="reference">
-        <div class="filter-icon">&#x1F4DA;</div>
-        <div class="filter-count">15</div>
-        <div class="filter-label">References</div>
-      </div>
+      <div class="filter-card active" data-filter="all"><div class="f-icon">✦</div><div class="f-num" id="count-all">0</div><div class="f-label">ทั้งหมด</div></div>
+      <div class="filter-card" data-filter="plugin"><div class="f-icon">🧩</div><div class="f-num">19</div><div class="f-label">Plugins</div></div>
+      <div class="filter-card" data-filter="mcp"><div class="f-icon">🔌</div><div class="f-num">23</div><div class="f-label">MCP</div></div>
+      <div class="filter-card" data-filter="custom"><div class="f-icon">✨</div><div class="f-num">17</div><div class="f-label">Custom</div></div>
+      <div class="filter-card" data-filter="bmad"><div class="f-icon">🤖</div><div class="f-num">40</div><div class="f-label">BMAD</div></div>
+      <div class="filter-card" data-filter="lsp"><div class="f-icon">📝</div><div class="f-num">12</div><div class="f-label">LSP</div></div>
+      <div class="filter-card" data-filter="reference"><div class="f-icon">📚</div><div class="f-num">15</div><div class="f-label">Refs</div></div>
     </div>
   </div>
 
-  <!-- RESULTS -->
+  <!-- Results -->
   <div class="results-section" id="results">
 
-    <!-- ===== PLUGINS ===== -->
-    <div class="category" data-cat="plugin">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--primary);"></div>
-        <div class="category-title">ออกแบบ & หน้าบ้าน</div>
-        <span class="category-count">4</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="plugin" data-name="frontend-design" data-desc="ช่วยเขียนโค้ดหน้าบ้านจากดีไซน์ — แปลง UI ที่ออกแบบไว้เป็น HTML/CSS/JS">
-          <div class="skill-top"><span class="skill-name">frontend-design</span><span class="skill-tag skill-tag-plugin">Plugin</span></div>
-          <div class="skill-desc">ช่วยเขียนโค้ดหน้าบ้านจากดีไซน์ — แปลง UI ที่ออกแบบไว้เป็น HTML/CSS/JS</div>
-        </div>
-        <div class="skill-card" data-tags="plugin" data-name="code-simplifier" data-desc="ทำโค้ดให้สะอาดขึ้น อ่านง่ายขึ้น ลดความซ้ำซ้อน เหมือนจัดบ้านให้เป็นระเบียบ">
-          <div class="skill-top"><span class="skill-name">code-simplifier</span><span class="skill-tag skill-tag-plugin">Plugin</span><span class="skill-tag skill-tag-agent">Agent</span></div>
-          <div class="skill-desc">ทำโค้ดให้สะอาดขึ้น อ่านง่ายขึ้น ลดความซ้ำซ้อน เหมือนจัดบ้านให้เป็นระเบียบ</div>
-        </div>
-        <div class="skill-card" data-tags="plugin" data-name="explanatory-output-style" data-desc="Claude จะอธิบายเหตุผลว่าทำไมถึงเลือกวิธีนี้ — เหมาะตอนอยากเข้าใจว่าโค้ดทำงานยังไง">
-          <div class="skill-top"><span class="skill-name">explanatory-output-style</span><span class="skill-tag skill-tag-plugin">Plugin</span></div>
-          <div class="skill-desc">Claude จะอธิบายเหตุผลว่าทำไมถึงเลือกวิธีนี้ — เหมาะตอนอยากเข้าใจว่าโค้ดทำงานยังไง</div>
-        </div>
-        <div class="skill-card" data-tags="plugin" data-name="learning-output-style" data-desc="โหมดเรียนรู้ — Claude จะถามก่อนทำ ให้เราตัดสินใจเอง เหมาะตอนอยากฝึกคิด">
-          <div class="skill-top"><span class="skill-name">learning-output-style</span><span class="skill-tag skill-tag-plugin">Plugin</span></div>
-          <div class="skill-desc">โหมดเรียนรู้ — Claude จะถามก่อนทำ ให้เราตัดสินใจเอง เหมาะตอนอยากฝึกคิด</div>
-        </div>
-      </div>
-    </div>
+    <!-- PLUGINS -->
+    <div class="category" data-cat="plugin"><div class="cat-header"><div class="cat-dot" style="background:var(--accent)"></div><div class="cat-title">ออกแบบ & หน้าบ้าน</div><span class="cat-count">4</span></div><div class="grid">
+      <div class="sk" data-tags="plugin" data-name="frontend-design" data-desc="ช่วยเขียนโค้ดหน้าบ้านจากดีไซน์ — แปลง UI ที่ออกแบบไว้เป็น HTML/CSS/JS"><div class="sk-top"><span class="sk-name">frontend-design</span><span class="sk-tag sk-tag-plugin">Plugin</span></div><div class="sk-desc">ช่วยเขียนโค้ดหน้าบ้านจากดีไซน์ — แปลง UI ที่ออกแบบไว้เป็น HTML/CSS/JS</div></div>
+      <div class="sk" data-tags="plugin" data-name="code-simplifier" data-desc="ทำโค้ดให้สะอาดขึ้น อ่านง่ายขึ้น ลดความซ้ำซ้อน เหมือนจัดบ้านให้เป็นระเบียบ"><div class="sk-top"><span class="sk-name">code-simplifier</span><span class="sk-tag sk-tag-plugin">Plugin</span><span class="sk-tag sk-tag-agent">Agent</span></div><div class="sk-desc">ทำโค้ดให้สะอาดขึ้น อ่านง่ายขึ้น ลดความซ้ำซ้อน เหมือนจัดบ้านให้เป็นระเบียบ</div></div>
+      <div class="sk" data-tags="plugin" data-name="explanatory-output-style" data-desc="Claude จะอธิบายเหตุผลว่าทำไมถึงเลือกวิธีนี้ — เหมาะตอนอยากเข้าใจว่าโค้ดทำงานยังไง"><div class="sk-top"><span class="sk-name">explanatory-output-style</span><span class="sk-tag sk-tag-plugin">Plugin</span></div><div class="sk-desc">Claude จะอธิบายเหตุผลว่าทำไมถึงเลือกวิธีนี้ — เหมาะตอนอยากเข้าใจว่าโค้ดทำงานยังไง</div></div>
+      <div class="sk" data-tags="plugin" data-name="learning-output-style" data-desc="โหมดเรียนรู้ — Claude จะถามก่อนทำ ให้เราตัดสินใจเอง เหมาะตอนอยากฝึกคิด"><div class="sk-top"><span class="sk-name">learning-output-style</span><span class="sk-tag sk-tag-plugin">Plugin</span></div><div class="sk-desc">โหมดเรียนรู้ — Claude จะถามก่อนทำ ให้เราตัดสินใจเอง เหมาะตอนอยากฝึกคิด</div></div>
+    </div></div>
 
-    <div class="category" data-cat="plugin">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--primary);"></div>
-        <div class="category-title">พัฒนา & ตรวจโค้ด</div>
-        <span class="category-count">4</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="plugin" data-name="feature-dev" data-desc="สร้างฟีเจอร์ใหม่แบบครบวงจร — มี 3 ผู้ช่วย AI คอยวางโครงสร้าง สำรวจโค้ด และตรวจคุณภาพ">
-          <div class="skill-top"><span class="skill-name">feature-dev</span><span class="skill-tag skill-tag-plugin">Plugin</span><span class="skill-tag skill-tag-agent">3 Agents</span></div>
-          <div class="skill-desc">สร้างฟีเจอร์ใหม่แบบครบวงจร — มี 3 ผู้ช่วย AI คอยวางโครงสร้าง สำรวจโค้ด และตรวจคุณภาพ</div>
-        </div>
-        <div class="skill-card" data-tags="plugin" data-name="code-review" data-desc="ตรวจโค้ดอัตโนมัติก่อนส่งงาน — หาบั๊ก ปัญหาด้านความปลอดภัย จุดที่ปรับปรุงได้">
-          <div class="skill-top"><span class="skill-name">code-review</span><span class="skill-tag skill-tag-plugin">Plugin</span><span class="skill-tag skill-tag-agent">Agents</span></div>
-          <div class="skill-desc">ตรวจโค้ดอัตโนมัติก่อนส่งงาน — หาบั๊ก ปัญหาด้านความปลอดภัย จุดที่ปรับปรุงได้</div>
-        </div>
-        <div class="skill-card" data-tags="plugin" data-name="pr-review-toolkit" data-desc="ตรวจ PR ละเอียดสุด — มี 6 ผู้ช่วยดูตั้งแต่โค้ด เทสต์ comment จนถึง type design">
-          <div class="skill-top"><span class="skill-name">pr-review-toolkit</span><span class="skill-tag skill-tag-plugin">Plugin</span><span class="skill-tag skill-tag-agent">6 Agents</span></div>
-          <div class="skill-desc">ตรวจ PR ละเอียดสุด — มี 6 ผู้ช่วยดูตั้งแต่โค้ด เทสต์ comment จนถึง type design</div>
-        </div>
-        <div class="skill-card" data-tags="plugin" data-name="commit-commands" data-desc="จัดการ Git ให้เร็วขึ้น — commit สร้าง PR ลบ branch ที่ไม่ใช้แล้ว ในคำสั่งเดียว">
-          <div class="skill-top"><span class="skill-name">commit-commands</span><span class="skill-tag skill-tag-plugin">Plugin</span></div>
-          <div class="skill-desc">จัดการ Git ให้เร็วขึ้น — commit สร้าง PR ลบ branch ที่ไม่ใช้แล้ว ในคำสั่งเดียว</div>
-        </div>
-      </div>
-    </div>
+    <div class="category" data-cat="plugin"><div class="cat-header"><div class="cat-dot" style="background:var(--accent)"></div><div class="cat-title">พัฒนา & ตรวจโค้ด</div><span class="cat-count">4</span></div><div class="grid">
+      <div class="sk" data-tags="plugin" data-name="feature-dev" data-desc="สร้างฟีเจอร์ใหม่แบบครบวงจร — มี 3 ผู้ช่วย AI คอยวางโครงสร้าง สำรวจโค้ด และตรวจคุณภาพ"><div class="sk-top"><span class="sk-name">feature-dev</span><span class="sk-tag sk-tag-plugin">Plugin</span><span class="sk-tag sk-tag-agent">3 Agents</span></div><div class="sk-desc">สร้างฟีเจอร์ใหม่แบบครบวงจร — มี 3 ผู้ช่วย AI คอยวางโครงสร้าง สำรวจโค้ด และตรวจคุณภาพ</div></div>
+      <div class="sk" data-tags="plugin" data-name="code-review" data-desc="ตรวจโค้ดอัตโนมัติก่อนส่งงาน — หาบั๊ก ปัญหาด้านความปลอดภัย จุดที่ปรับปรุงได้"><div class="sk-top"><span class="sk-name">code-review</span><span class="sk-tag sk-tag-plugin">Plugin</span><span class="sk-tag sk-tag-agent">Agents</span></div><div class="sk-desc">ตรวจโค้ดอัตโนมัติก่อนส่งงาน — หาบั๊ก ปัญหาด้านความปลอดภัย จุดที่ปรับปรุงได้</div></div>
+      <div class="sk" data-tags="plugin" data-name="pr-review-toolkit" data-desc="ตรวจ PR ละเอียดสุด — มี 6 ผู้ช่วยดูตั้งแต่โค้ด เทสต์ comment จนถึง type design"><div class="sk-top"><span class="sk-name">pr-review-toolkit</span><span class="sk-tag sk-tag-plugin">Plugin</span><span class="sk-tag sk-tag-agent">6 Agents</span></div><div class="sk-desc">ตรวจ PR ละเอียดสุด — มี 6 ผู้ช่วยดูตั้งแต่โค้ด เทสต์ comment จนถึง type design</div></div>
+      <div class="sk" data-tags="plugin" data-name="commit-commands" data-desc="จัดการ Git ให้เร็วขึ้น — commit สร้าง PR ลบ branch ที่ไม่ใช้แล้ว ในคำสั่งเดียว"><div class="sk-top"><span class="sk-name">commit-commands</span><span class="sk-tag sk-tag-plugin">Plugin</span></div><div class="sk-desc">จัดการ Git ให้เร็วขึ้น — commit สร้าง PR ลบ branch ที่ไม่ใช้แล้ว ในคำสั่งเดียว</div></div>
+    </div></div>
 
-    <div class="category" data-cat="plugin">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--primary);"></div>
-        <div class="category-title">สร้าง Plugin & Skill</div>
-        <span class="category-count">4</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="plugin" data-name="plugin-dev" data-desc="ชุดเครื่องมือสร้าง plugin ใหม่ให้ Claude — ตั้งแต่วางโครงสร้าง เขียน skill สร้าง agent ตั้ง hook">
-          <div class="skill-top"><span class="skill-name">plugin-dev</span><span class="skill-tag skill-tag-plugin">Plugin</span><span class="skill-tag skill-tag-agent">3 Agents</span></div>
-          <div class="skill-desc">ชุดเครื่องมือสร้าง plugin ใหม่ให้ Claude — ตั้งแต่วางโครงสร้าง เขียน skill สร้าง agent ตั้ง hook</div>
-        </div>
-        <div class="skill-card" data-tags="plugin" data-name="skill-creator" data-desc="สร้างสกิลใหม่ ปรับปรุงสกิลเดิม วัดผลว่าทำงานดีแค่ไหน แล้วเปรียบเทียบกัน">
-          <div class="skill-top"><span class="skill-name">skill-creator</span><span class="skill-tag skill-tag-plugin">Plugin</span></div>
-          <div class="skill-desc">สร้างสกิลใหม่ ปรับปรุงสกิลเดิม วัดผลว่าทำงานดีแค่ไหน แล้วเปรียบเทียบกัน</div>
-        </div>
-        <div class="skill-card" data-tags="plugin" data-name="mcp-server-dev" data-desc="สร้าง MCP Server เอง — เชื่อมต่อ Claude กับเครื่องมือภายนอกที่ต้องการ">
-          <div class="skill-top"><span class="skill-name">mcp-server-dev</span><span class="skill-tag skill-tag-plugin">Plugin</span></div>
-          <div class="skill-desc">สร้าง MCP Server เอง — เชื่อมต่อ Claude กับเครื่องมือภายนอกที่ต้องการ</div>
-        </div>
-        <div class="skill-card" data-tags="plugin" data-name="agent-sdk-dev" data-desc="สร้างแอปที่ใช้ Claude Agent SDK — ทำ AI agent ของตัวเอง">
-          <div class="skill-top"><span class="skill-name">agent-sdk-dev</span><span class="skill-tag skill-tag-plugin">Plugin</span></div>
-          <div class="skill-desc">สร้างแอปที่ใช้ Claude Agent SDK — ทำ AI agent ของตัวเอง</div>
-        </div>
-      </div>
-    </div>
+    <div class="category" data-cat="plugin"><div class="cat-header"><div class="cat-dot" style="background:var(--accent)"></div><div class="cat-title">สร้าง Plugin & Skill</div><span class="cat-count">4</span></div><div class="grid">
+      <div class="sk" data-tags="plugin" data-name="plugin-dev" data-desc="ชุดเครื่องมือสร้าง plugin ใหม่ให้ Claude — ตั้งแต่วางโครงสร้าง เขียน skill สร้าง agent ตั้ง hook"><div class="sk-top"><span class="sk-name">plugin-dev</span><span class="sk-tag sk-tag-plugin">Plugin</span><span class="sk-tag sk-tag-agent">3 Agents</span></div><div class="sk-desc">ชุดเครื่องมือสร้าง plugin ใหม่ให้ Claude — ตั้งแต่วางโครงสร้าง เขียน skill สร้าง agent ตั้ง hook</div></div>
+      <div class="sk" data-tags="plugin" data-name="skill-creator" data-desc="สร้างสกิลใหม่ ปรับปรุงสกิลเดิม วัดผลว่าทำงานดีแค่ไหน แล้วเปรียบเทียบกัน"><div class="sk-top"><span class="sk-name">skill-creator</span><span class="sk-tag sk-tag-plugin">Plugin</span></div><div class="sk-desc">สร้างสกิลใหม่ ปรับปรุงสกิลเดิม วัดผลว่าทำงานดีแค่ไหน แล้วเปรียบเทียบกัน</div></div>
+      <div class="sk" data-tags="plugin" data-name="mcp-server-dev" data-desc="สร้าง MCP Server เอง — เชื่อมต่อ Claude กับเครื่องมือภายนอกที่ต้องการ"><div class="sk-top"><span class="sk-name">mcp-server-dev</span><span class="sk-tag sk-tag-plugin">Plugin</span></div><div class="sk-desc">สร้าง MCP Server เอง — เชื่อมต่อ Claude กับเครื่องมือภายนอกที่ต้องการ</div></div>
+      <div class="sk" data-tags="plugin" data-name="agent-sdk-dev" data-desc="สร้างแอปที่ใช้ Claude Agent SDK — ทำ AI agent ของตัวเอง"><div class="sk-top"><span class="sk-name">agent-sdk-dev</span><span class="sk-tag sk-tag-plugin">Plugin</span></div><div class="sk-desc">สร้างแอปที่ใช้ Claude Agent SDK — ทำ AI agent ของตัวเอง</div></div>
+    </div></div>
 
-    <div class="category" data-cat="plugin">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--primary);"></div>
-        <div class="category-title">ตั้งค่า & จัดการ</div>
-        <span class="category-count">3</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="plugin" data-name="claude-code-setup" data-desc="วิเคราะห์โปรเจกต์แล้วแนะนำว่าควรติดตั้งอะไรเพิ่ม — เหมือนที่ปรึกษาตั้งค่า Claude">
-          <div class="skill-top"><span class="skill-name">claude-code-setup</span><span class="skill-tag skill-tag-plugin">Plugin</span></div>
-          <div class="skill-desc">วิเคราะห์โปรเจกต์แล้วแนะนำว่าควรติดตั้งอะไรเพิ่ม — เหมือนที่ปรึกษาตั้งค่า Claude</div>
-        </div>
-        <div class="skill-card" data-tags="plugin" data-name="claude-md-management" data-desc="จัดการไฟล์ CLAUDE.md (ไฟล์สั่งงาน Claude) — ปรับปรุงให้ดีขึ้น แก้ไข จัดระเบียบ">
-          <div class="skill-top"><span class="skill-name">claude-md-management</span><span class="skill-tag skill-tag-plugin">Plugin</span></div>
-          <div class="skill-desc">จัดการไฟล์ CLAUDE.md (ไฟล์สั่งงาน Claude) — ปรับปรุงให้ดีขึ้น แก้ไข จัดระเบียบ</div>
-        </div>
-        <div class="skill-card" data-tags="plugin" data-name="hookify" data-desc="สร้างกฎอัตโนมัติ — เช่น ทุกครั้งที่ commit ให้ตรวจโค้ดก่อน หรือ ห้ามลบไฟล์สำคัญ">
-          <div class="skill-top"><span class="skill-name">hookify</span><span class="skill-tag skill-tag-plugin">Plugin</span></div>
-          <div class="skill-desc">สร้างกฎอัตโนมัติ — เช่น ทุกครั้งที่ commit ให้ตรวจโค้ดก่อน หรือ ห้ามลบไฟล์สำคัญ</div>
-        </div>
-      </div>
-    </div>
+    <div class="category" data-cat="plugin"><div class="cat-header"><div class="cat-dot" style="background:var(--accent)"></div><div class="cat-title">ตั้งค่า & จัดการ</div><span class="cat-count">3</span></div><div class="grid">
+      <div class="sk" data-tags="plugin" data-name="claude-code-setup" data-desc="วิเคราะห์โปรเจกต์แล้วแนะนำว่าควรติดตั้งอะไรเพิ่ม — เหมือนที่ปรึกษาตั้งค่า Claude"><div class="sk-top"><span class="sk-name">claude-code-setup</span><span class="sk-tag sk-tag-plugin">Plugin</span></div><div class="sk-desc">วิเคราะห์โปรเจกต์แล้วแนะนำว่าควรติดตั้งอะไรเพิ่ม — เหมือนที่ปรึกษาตั้งค่า Claude</div></div>
+      <div class="sk" data-tags="plugin" data-name="claude-md-management" data-desc="จัดการไฟล์ CLAUDE.md (ไฟล์สั่งงาน Claude) — ปรับปรุงให้ดีขึ้น แก้ไข จัดระเบียบ"><div class="sk-top"><span class="sk-name">claude-md-management</span><span class="sk-tag sk-tag-plugin">Plugin</span></div><div class="sk-desc">จัดการไฟล์ CLAUDE.md (ไฟล์สั่งงาน Claude) — ปรับปรุงให้ดีขึ้น แก้ไข จัดระเบียบ</div></div>
+      <div class="sk" data-tags="plugin" data-name="hookify" data-desc="สร้างกฎอัตโนมัติ — เช่น ทุกครั้งที่ commit ให้ตรวจโค้ดก่อน หรือ ห้ามลบไฟล์สำคัญ"><div class="sk-top"><span class="sk-name">hookify</span><span class="sk-tag sk-tag-plugin">Plugin</span></div><div class="sk-desc">สร้างกฎอัตโนมัติ — เช่น ทุกครั้งที่ commit ให้ตรวจโค้ดก่อน หรือ ห้ามลบไฟล์สำคัญ</div></div>
+    </div></div>
 
-    <div class="category" data-cat="plugin">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--primary);"></div>
-        <div class="category-title">เครื่องมือทั่วไป</div>
-        <span class="category-count">4</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="plugin" data-name="playground" data-desc="สร้างหน้าทดลองเล่นแบบ interactive — เหมือน mini app ไฟล์เดียวที่กดเล่นได้เลย">
-          <div class="skill-top"><span class="skill-name">playground</span><span class="skill-tag skill-tag-plugin">Plugin</span></div>
-          <div class="skill-desc">สร้างหน้าทดลองเล่นแบบ interactive — เหมือน mini app ไฟล์เดียวที่กดเล่นได้เลย</div>
-        </div>
-        <div class="skill-card" data-tags="plugin" data-name="ralph-loop" data-desc="ให้ Claude วนทำงานซ้ำ ๆ อัตโนมัติ — ปรับปรุงผลลัพธ์ไปเรื่อย ๆ จนพอใจ">
-          <div class="skill-top"><span class="skill-name">ralph-loop</span><span class="skill-tag skill-tag-plugin">Plugin</span></div>
-          <div class="skill-desc">ให้ Claude วนทำงานซ้ำ ๆ อัตโนมัติ — ปรับปรุงผลลัพธ์ไปเรื่อย ๆ จนพอใจ</div>
-        </div>
-        <div class="skill-card" data-tags="plugin" data-name="math-olympiad" data-desc="แก้โจทย์คณิตศาสตร์ระดับแข่งขัน — IMO Putnam พร้อมตรวจคำตอบซ้ำหลายรอบ">
-          <div class="skill-top"><span class="skill-name">math-olympiad</span><span class="skill-tag skill-tag-plugin">Plugin</span></div>
-          <div class="skill-desc">แก้โจทย์คณิตศาสตร์ระดับแข่งขัน — IMO Putnam พร้อมตรวจคำตอบซ้ำหลายรอบ</div>
-        </div>
-        <div class="skill-card" data-tags="plugin" data-name="security-guidance" data-desc="เตือนเรื่องความปลอดภัยอัตโนมัติ — ถ้าเจอโค้ดที่อาจมีช่องโหว่จะแจ้งเตือนทันที">
-          <div class="skill-top"><span class="skill-name">security-guidance</span><span class="skill-tag skill-tag-plugin">Plugin</span></div>
-          <div class="skill-desc">เตือนเรื่องความปลอดภัยอัตโนมัติ — ถ้าเจอโค้ดที่อาจมีช่องโหว่จะแจ้งเตือนทันที</div>
-        </div>
-      </div>
-    </div>
+    <div class="category" data-cat="plugin"><div class="cat-header"><div class="cat-dot" style="background:var(--accent)"></div><div class="cat-title">เครื่องมือทั่วไป</div><span class="cat-count">4</span></div><div class="grid">
+      <div class="sk" data-tags="plugin" data-name="playground" data-desc="สร้างหน้าทดลองเล่นแบบ interactive — เหมือน mini app ไฟล์เดียวที่กดเล่นได้เลย"><div class="sk-top"><span class="sk-name">playground</span><span class="sk-tag sk-tag-plugin">Plugin</span></div><div class="sk-desc">สร้างหน้าทดลองเล่นแบบ interactive — เหมือน mini app ไฟล์เดียวที่กดเล่นได้เลย</div></div>
+      <div class="sk" data-tags="plugin" data-name="ralph-loop" data-desc="ให้ Claude วนทำงานซ้ำ ๆ อัตโนมัติ — ปรับปรุงผลลัพธ์ไปเรื่อย ๆ จนพอใจ"><div class="sk-top"><span class="sk-name">ralph-loop</span><span class="sk-tag sk-tag-plugin">Plugin</span></div><div class="sk-desc">ให้ Claude วนทำงานซ้ำ ๆ อัตโนมัติ — ปรับปรุงผลลัพธ์ไปเรื่อย ๆ จนพอใจ</div></div>
+      <div class="sk" data-tags="plugin" data-name="math-olympiad" data-desc="แก้โจทย์คณิตศาสตร์ระดับแข่งขัน — IMO Putnam พร้อมตรวจคำตอบซ้ำหลายรอบ"><div class="sk-top"><span class="sk-name">math-olympiad</span><span class="sk-tag sk-tag-plugin">Plugin</span></div><div class="sk-desc">แก้โจทย์คณิตศาสตร์ระดับแข่งขัน — IMO Putnam พร้อมตรวจคำตอบซ้ำหลายรอบ</div></div>
+      <div class="sk" data-tags="plugin" data-name="security-guidance" data-desc="เตือนเรื่องความปลอดภัยอัตโนมัติ — ถ้าเจอโค้ดที่อาจมีช่องโหว่จะแจ้งเตือนทันที"><div class="sk-top"><span class="sk-name">security-guidance</span><span class="sk-tag sk-tag-plugin">Plugin</span></div><div class="sk-desc">เตือนเรื่องความปลอดภัยอัตโนมัติ — ถ้าเจอโค้ดที่อาจมีช่องโหว่จะแจ้งเตือนทันที</div></div>
+    </div></div>
 
-    <!-- ===== MCP ===== -->
-    <div class="category" data-cat="mcp">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--secondary);"></div>
-        <div class="category-title">เชื่อมต่อแชทกับทีม</div>
-        <span class="category-count">3</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="mcp" data-name="slack" data-desc="เชื่อม Slack — Claude อ่านข้อความ ค้นหาแชท ดู thread ได้"><div class="skill-top"><span class="skill-name">slack</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">เชื่อม Slack — Claude อ่านข้อความ ค้นหาแชท ดู thread ได้</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="discord" data-desc="เชื่อม Discord — เข้าถึง channel และตั้งค่าการเชื่อมต่อ"><div class="skill-top"><span class="skill-name">discord</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">เชื่อม Discord — เข้าถึง channel และตั้งค่าการเชื่อมต่อ</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="telegram" data-desc="เชื่อม Telegram — เข้าถึง channel และตั้งค่าการเชื่อมต่อ"><div class="skill-top"><span class="skill-name">telegram</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">เชื่อม Telegram — เข้าถึง channel และตั้งค่าการเชื่อมต่อ</div></div>
-      </div>
-    </div>
+    <!-- MCP -->
+    <div class="category" data-cat="mcp"><div class="cat-header"><div class="cat-dot" style="background:var(--secondary)"></div><div class="cat-title">เชื่อมต่อแชทกับทีม</div><span class="cat-count">3</span></div><div class="grid">
+      <div class="sk" data-tags="mcp" data-name="slack" data-desc="เชื่อม Slack — Claude อ่านข้อความ ค้นหาแชท ดู thread ได้"><div class="sk-top"><span class="sk-name">slack</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">เชื่อม Slack — Claude อ่านข้อความ ค้นหาแชท ดู thread ได้</div></div>
+      <div class="sk" data-tags="mcp" data-name="discord" data-desc="เชื่อม Discord — เข้าถึง channel และตั้งค่าการเชื่อมต่อ"><div class="sk-top"><span class="sk-name">discord</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">เชื่อม Discord — เข้าถึง channel และตั้งค่าการเชื่อมต่อ</div></div>
+      <div class="sk" data-tags="mcp" data-name="telegram" data-desc="เชื่อม Telegram — เข้าถึง channel และตั้งค่าการเชื่อมต่อ"><div class="sk-top"><span class="sk-name">telegram</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">เชื่อม Telegram — เข้าถึง channel และตั้งค่าการเชื่อมต่อ</div></div>
+    </div></div>
 
-    <div class="category" data-cat="mcp">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--secondary);"></div>
-        <div class="category-title">เชื่อมต่อเครื่องมือ Dev</div>
-        <span class="category-count">5</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="mcp" data-name="github" data-desc="เชื่อม GitHub — ดู repo สร้าง PR จัดการ issue review โค้ดได้จาก Claude เลย"><div class="skill-top"><span class="skill-name">github</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">เชื่อม GitHub — ดู repo สร้าง PR จัดการ issue review โค้ดได้จาก Claude เลย</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="gitlab" data-desc="เชื่อม GitLab — จัดการ repo merge request ดู CI/CD pipeline"><div class="skill-top"><span class="skill-name">gitlab</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">เชื่อม GitLab — จัดการ repo merge request ดู CI/CD pipeline</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="greptile" data-desc="AI ตรวจโค้ดอัตโนมัติ — เปิด PR ปุ๊บ Greptile review ให้ปั๊บ"><div class="skill-top"><span class="skill-name">greptile</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">AI ตรวจโค้ดอัตโนมัติ — เปิด PR ปุ๊บ Greptile review ให้ปั๊บ</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="serena" data-desc="วิเคราะห์โค้ดแบบเข้าใจความหมาย — หาว่าฟังก์ชันนี้ถูกเรียกจากตรงไหนบ้าง"><div class="skill-top"><span class="skill-name">serena</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">วิเคราะห์โค้ดแบบเข้าใจความหมาย — หาว่าฟังก์ชันนี้ถูกเรียกจากตรงไหนบ้าง</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="context7" data-desc="ค้นหา documentation ล่าสุดของ library ต่าง ๆ — ไม่ต้องกลัวว่าข้อมูลเก่า"><div class="skill-top"><span class="skill-name">context7</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">ค้นหา documentation ล่าสุดของ library ต่าง ๆ — ไม่ต้องกลัวว่าข้อมูลเก่า</div></div>
-      </div>
-    </div>
+    <div class="category" data-cat="mcp"><div class="cat-header"><div class="cat-dot" style="background:var(--secondary)"></div><div class="cat-title">เชื่อมต่อเครื่องมือ Dev</div><span class="cat-count">5</span></div><div class="grid">
+      <div class="sk" data-tags="mcp" data-name="github" data-desc="เชื่อม GitHub — ดู repo สร้าง PR จัดการ issue review โค้ดได้จาก Claude เลย"><div class="sk-top"><span class="sk-name">github</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">เชื่อม GitHub — ดู repo สร้าง PR จัดการ issue review โค้ดได้จาก Claude เลย</div></div>
+      <div class="sk" data-tags="mcp" data-name="gitlab" data-desc="เชื่อม GitLab — จัดการ repo merge request ดู CI/CD pipeline"><div class="sk-top"><span class="sk-name">gitlab</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">เชื่อม GitLab — จัดการ repo merge request ดู CI/CD pipeline</div></div>
+      <div class="sk" data-tags="mcp" data-name="greptile" data-desc="AI ตรวจโค้ดอัตโนมัติ — เปิด PR ปุ๊บ Greptile review ให้ปั๊บ"><div class="sk-top"><span class="sk-name">greptile</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">AI ตรวจโค้ดอัตโนมัติ — เปิด PR ปุ๊บ Greptile review ให้ปั๊บ</div></div>
+      <div class="sk" data-tags="mcp" data-name="serena" data-desc="วิเคราะห์โค้ดแบบเข้าใจความหมาย — หาว่าฟังก์ชันนี้ถูกเรียกจากตรงไหนบ้าง"><div class="sk-top"><span class="sk-name">serena</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">วิเคราะห์โค้ดแบบเข้าใจความหมาย — หาว่าฟังก์ชันนี้ถูกเรียกจากตรงไหนบ้าง</div></div>
+      <div class="sk" data-tags="mcp" data-name="context7" data-desc="ค้นหา documentation ล่าสุดของ library ต่าง ๆ — ไม่ต้องกลัวว่าข้อมูลเก่า"><div class="sk-top"><span class="sk-name">context7</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">ค้นหา documentation ล่าสุดของ library ต่าง ๆ — ไม่ต้องกลัวว่าข้อมูลเก่า</div></div>
+    </div></div>
 
-    <div class="category" data-cat="mcp">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--secondary);"></div>
-        <div class="category-title">จัดการโปรเจกต์ & Ticket</div>
-        <span class="category-count">3</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="mcp" data-name="jira" data-desc="เชื่อม Jira — อ่าน ticket ดู sprint อัปเดตสถานะงานได้จาก Claude"><div class="skill-top"><span class="skill-name">jira</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">เชื่อม Jira — อ่าน ticket ดู sprint อัปเดตสถานะงานได้จาก Claude</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="linear" data-desc="เชื่อม Linear — สร้าง issue จัดการโปรเจกต์ ค้นหางานทั้ง workspace"><div class="skill-top"><span class="skill-name">linear</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">เชื่อม Linear — สร้าง issue จัดการโปรเจกต์ ค้นหางานทั้ง workspace</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="asana" data-desc="เชื่อม Asana — ดู task ติดตามความคืบหน้า มอบหมายงาน"><div class="skill-top"><span class="skill-name">asana</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">เชื่อม Asana — ดู task ติดตามความคืบหน้า มอบหมายงาน</div></div>
-      </div>
-    </div>
+    <div class="category" data-cat="mcp"><div class="cat-header"><div class="cat-dot" style="background:var(--secondary)"></div><div class="cat-title">จัดการโปรเจกต์ & Ticket</div><span class="cat-count">3</span></div><div class="grid">
+      <div class="sk" data-tags="mcp" data-name="jira" data-desc="เชื่อม Jira — อ่าน ticket ดู sprint อัปเดตสถานะงานได้จาก Claude"><div class="sk-top"><span class="sk-name">jira</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">เชื่อม Jira — อ่าน ticket ดู sprint อัปเดตสถานะงานได้จาก Claude</div></div>
+      <div class="sk" data-tags="mcp" data-name="linear" data-desc="เชื่อม Linear — สร้าง issue จัดการโปรเจกต์ ค้นหางานทั้ง workspace"><div class="sk-top"><span class="sk-name">linear</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">เชื่อม Linear — สร้าง issue จัดการโปรเจกต์ ค้นหางานทั้ง workspace</div></div>
+      <div class="sk" data-tags="mcp" data-name="asana" data-desc="เชื่อม Asana — ดู task ติดตามความคืบหน้า มอบหมายงาน"><div class="sk-top"><span class="sk-name">asana</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">เชื่อม Asana — ดู task ติดตามความคืบหน้า มอบหมายงาน</div></div>
+    </div></div>
 
-    <div class="category" data-cat="mcp">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--secondary);"></div>
-        <div class="category-title">Backend & ฐานข้อมูล</div>
-        <span class="category-count">3</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="mcp" data-name="firebase" data-desc="เชื่อม Firebase — จัดการฐานข้อมูล Firestore ระบบ login hosting storage"><div class="skill-top"><span class="skill-name">firebase</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">เชื่อม Firebase — จัดการฐานข้อมูล Firestore ระบบ login hosting storage</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="supabase" data-desc="เชื่อม Supabase — ฐานข้อมูล PostgreSQL ระบบ login storage real-time"><div class="skill-top"><span class="skill-name">supabase</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">เชื่อม Supabase — ฐานข้อมูล PostgreSQL ระบบ login storage real-time</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="laravel-boost" data-desc="เครื่องมือช่วย Laravel — สร้าง migration จัดการ route ใช้ Artisan ง่ายขึ้น"><div class="skill-top"><span class="skill-name">laravel-boost</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">เครื่องมือช่วย Laravel — สร้าง migration จัดการ route ใช้ Artisan ง่ายขึ้น</div></div>
-      </div>
-    </div>
+    <div class="category" data-cat="mcp"><div class="cat-header"><div class="cat-dot" style="background:var(--secondary)"></div><div class="cat-title">Backend & ฐานข้อมูล</div><span class="cat-count">3</span></div><div class="grid">
+      <div class="sk" data-tags="mcp" data-name="firebase" data-desc="เชื่อม Firebase — จัดการฐานข้อมูล Firestore ระบบ login hosting storage"><div class="sk-top"><span class="sk-name">firebase</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">เชื่อม Firebase — จัดการฐานข้อมูล Firestore ระบบ login hosting storage</div></div>
+      <div class="sk" data-tags="mcp" data-name="supabase" data-desc="เชื่อม Supabase — ฐานข้อมูล PostgreSQL ระบบ login storage real-time"><div class="sk-top"><span class="sk-name">supabase</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">เชื่อม Supabase — ฐานข้อมูล PostgreSQL ระบบ login storage real-time</div></div>
+      <div class="sk" data-tags="mcp" data-name="laravel-boost" data-desc="เครื่องมือช่วย Laravel — สร้าง migration จัดการ route ใช้ Artisan ง่ายขึ้น"><div class="sk-top"><span class="sk-name">laravel-boost</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">เครื่องมือช่วย Laravel — สร้าง migration จัดการ route ใช้ Artisan ง่ายขึ้น</div></div>
+    </div></div>
 
-    <div class="category" data-cat="mcp">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--secondary);"></div>
-        <div class="category-title">ดีไซน์ & อื่น ๆ</div>
-        <span class="category-count">4</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="mcp" data-name="figma" data-desc="เชื่อม Figma — ดึงดีไซน์มาทำโค้ด จับภาพหน้าจอ อ่านข้อมูล component"><div class="skill-top"><span class="skill-name">figma (official)</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">เชื่อม Figma — ดึงดีไซน์มาทำโค้ด จับภาพหน้าจอ อ่านข้อมูล component</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="html-to-design" data-desc="แปลง HTML กลับเป็นดีไซน์ใน Figma — เอาเว็บจริงไปใส่ Figma ได้"><div class="skill-top"><span class="skill-name">html-to-design</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">แปลง HTML กลับเป็นดีไซน์ใน Figma — เอาเว็บจริงไปใส่ Figma ได้</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="playwright" data-desc="ควบคุมเบราว์เซอร์อัตโนมัติ — ทดสอบเว็บ กรอกฟอร์ม จับภาพหน้าจอ"><div class="skill-top"><span class="skill-name">playwright</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">ควบคุมเบราว์เซอร์อัตโนมัติ — ทดสอบเว็บ กรอกฟอร์ม จับภาพหน้าจอ</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="fakechat" data-desc="จำลองหน้าแชท iMessage — ไว้ทดสอบ UI แชทหรือทำ prototype"><div class="skill-top"><span class="skill-name">fakechat</span><span class="skill-tag skill-tag-mcp">MCP</span></div><div class="skill-desc">จำลองหน้าแชท iMessage — ไว้ทดสอบ UI แชทหรือทำ prototype</div></div>
-      </div>
-    </div>
+    <div class="category" data-cat="mcp"><div class="cat-header"><div class="cat-dot" style="background:var(--secondary)"></div><div class="cat-title">ดีไซน์ & อื่น ๆ</div><span class="cat-count">4</span></div><div class="grid">
+      <div class="sk" data-tags="mcp" data-name="figma" data-desc="เชื่อม Figma — ดึงดีไซน์มาทำโค้ด จับภาพหน้าจอ อ่านข้อมูล component"><div class="sk-top"><span class="sk-name">figma (official)</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">เชื่อม Figma — ดึงดีไซน์มาทำโค้ด จับภาพหน้าจอ อ่านข้อมูล component</div></div>
+      <div class="sk" data-tags="mcp" data-name="html-to-design" data-desc="แปลง HTML กลับเป็นดีไซน์ใน Figma — เอาเว็บจริงไปใส่ Figma ได้"><div class="sk-top"><span class="sk-name">html-to-design</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">แปลง HTML กลับเป็นดีไซน์ใน Figma — เอาเว็บจริงไปใส่ Figma ได้</div></div>
+      <div class="sk" data-tags="mcp" data-name="playwright" data-desc="ควบคุมเบราว์เซอร์อัตโนมัติ — ทดสอบเว็บ กรอกฟอร์ม จับภาพหน้าจอ"><div class="sk-top"><span class="sk-name">playwright</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">ควบคุมเบราว์เซอร์อัตโนมัติ — ทดสอบเว็บ กรอกฟอร์ม จับภาพหน้าจอ</div></div>
+      <div class="sk" data-tags="mcp" data-name="fakechat" data-desc="จำลองหน้าแชท iMessage — ไว้ทดสอบ UI แชทหรือทำ prototype"><div class="sk-top"><span class="sk-name">fakechat</span><span class="sk-tag sk-tag-mcp">MCP</span></div><div class="sk-desc">จำลองหน้าแชท iMessage — ไว้ทดสอบ UI แชทหรือทำ prototype</div></div>
+    </div></div>
 
-    <div class="category" data-cat="mcp">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--secondary);"></div>
-        <div class="category-title">มาพร้อม claude.ai (Built-in)</div>
-        <span class="category-count">5</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="mcp" data-name="atlassian-builtin" data-desc="Jira + Confluence ผ่าน claude.ai — อ่าน ticket ค้นหาเอกสาร comment"><div class="skill-top"><span class="skill-name">Atlassian</span><span class="skill-tag skill-tag-mcp">Built-in</span></div><div class="skill-desc">Jira + Confluence ผ่าน claude.ai — อ่าน ticket ค้นหาเอกสาร comment</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="gmail-builtin" data-desc="อ่านอีเมล ค้นหา ร่างอีเมลใหม่ผ่าน Claude"><div class="skill-top"><span class="skill-name">Gmail</span><span class="skill-tag skill-tag-mcp">Built-in</span></div><div class="skill-desc">อ่านอีเมล ค้นหา ร่างอีเมลใหม่ผ่าน Claude</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="gcal-builtin" data-desc="ดูนัด หาเวลาว่าง สร้างนัดใหม่ ตอบรับนัดผ่าน Claude"><div class="skill-top"><span class="skill-name">Google Calendar</span><span class="skill-tag skill-tag-mcp">Built-in</span></div><div class="skill-desc">ดูนัด หาเวลาว่าง สร้างนัดใหม่ ตอบรับนัดผ่าน Claude</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="webflow-builtin" data-desc="จัดการเว็บ Webflow — แก้ไขหน้า element style CMS ผ่าน Claude"><div class="skill-top"><span class="skill-name">Webflow</span><span class="skill-tag skill-tag-mcp">Built-in</span></div><div class="skill-desc">จัดการเว็บ Webflow — แก้ไขหน้า element style CMS ผ่าน Claude</div></div>
-        <div class="skill-card" data-tags="mcp" data-name="asana-builtin" data-desc="จัดการ Asana ผ่าน claude.ai — ดูโปรเจกต์ task portfolio สถานะงาน"><div class="skill-top"><span class="skill-name">Asana (Built-in)</span><span class="skill-tag skill-tag-mcp">Built-in</span></div><div class="skill-desc">จัดการ Asana ผ่าน claude.ai — ดูโปรเจกต์ task portfolio สถานะงาน</div></div>
-      </div>
-    </div>
+    <div class="category" data-cat="mcp"><div class="cat-header"><div class="cat-dot" style="background:var(--secondary)"></div><div class="cat-title">มาพร้อม claude.ai (Built-in)</div><span class="cat-count">5</span></div><div class="grid">
+      <div class="sk" data-tags="mcp" data-name="atlassian-builtin" data-desc="Jira + Confluence ผ่าน claude.ai — อ่าน ticket ค้นหาเอกสาร comment"><div class="sk-top"><span class="sk-name">Atlassian</span><span class="sk-tag sk-tag-mcp">Built-in</span></div><div class="sk-desc">Jira + Confluence ผ่าน claude.ai — อ่าน ticket ค้นหาเอกสาร comment</div></div>
+      <div class="sk" data-tags="mcp" data-name="gmail-builtin" data-desc="อ่านอีเมล ค้นหา ร่างอีเมลใหม่ผ่าน Claude"><div class="sk-top"><span class="sk-name">Gmail</span><span class="sk-tag sk-tag-mcp">Built-in</span></div><div class="sk-desc">อ่านอีเมล ค้นหา ร่างอีเมลใหม่ผ่าน Claude</div></div>
+      <div class="sk" data-tags="mcp" data-name="gcal-builtin" data-desc="ดูนัด หาเวลาว่าง สร้างนัดใหม่ ตอบรับนัดผ่าน Claude"><div class="sk-top"><span class="sk-name">Google Calendar</span><span class="sk-tag sk-tag-mcp">Built-in</span></div><div class="sk-desc">ดูนัด หาเวลาว่าง สร้างนัดใหม่ ตอบรับนัดผ่าน Claude</div></div>
+      <div class="sk" data-tags="mcp" data-name="webflow-builtin" data-desc="จัดการเว็บ Webflow — แก้ไขหน้า element style CMS ผ่าน Claude"><div class="sk-top"><span class="sk-name">Webflow</span><span class="sk-tag sk-tag-mcp">Built-in</span></div><div class="sk-desc">จัดการเว็บ Webflow — แก้ไขหน้า element style CMS ผ่าน Claude</div></div>
+      <div class="sk" data-tags="mcp" data-name="asana-builtin" data-desc="จัดการ Asana ผ่าน claude.ai — ดูโปรเจกต์ task portfolio สถานะงาน"><div class="sk-top"><span class="sk-name">Asana (Built-in)</span><span class="sk-tag sk-tag-mcp">Built-in</span></div><div class="sk-desc">จัดการ Asana ผ่าน claude.ai — ดูโปรเจกต์ task portfolio สถานะงาน</div></div>
+    </div></div>
 
-    <!-- ===== CUSTOM SKILLS ===== -->
-    <div class="category" data-cat="custom">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--success);"></div>
-        <div class="category-title">สกิลที่สร้างเอง — ดีไซน์ & QA</div>
-        <span class="category-count">11</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="custom" data-name="design-pipeline" data-desc="ออกแบบครบจบใน 1 คำสั่ง — ดึง Jira → วาง User Flow → ออกแบบ UI → เขียน UX Copy → ตรวจ QA"><div class="skill-top"><span class="skill-name">/design-pipeline</span><span class="skill-tag skill-tag-custom">Custom</span></div><div class="skill-desc">ออกแบบครบจบใน 1 คำสั่ง — ดึง Jira → วาง User Flow → ออกแบบ UI → เขียน UX Copy → ตรวจ QA</div></div>
-        <div class="skill-card" data-tags="custom" data-name="design-review" data-desc="ตรวจดีไซน์ครบทุกมิติ — ดูความสวย accessibility ตาม guidelines ของ Vercel"><div class="skill-top"><span class="skill-name">/design-review</span><span class="skill-tag skill-tag-custom">Custom</span></div><div class="skill-desc">ตรวจดีไซน์ครบทุกมิติ — ดูความสวย accessibility ตาม guidelines ของ Vercel</div></div>
-        <div class="skill-card" data-tags="custom" data-name="qa-pipeline" data-desc="ตรวจ HTML 2 ชั้น — ชั้น 1 ตรวจโค้ด (100+ กฎ) ชั้น 2 ตรวจดีไซน์ พร้อมแก้ให้อัตโนมัติ"><div class="skill-top"><span class="skill-name">/qa-pipeline</span><span class="skill-tag skill-tag-custom">Custom</span></div><div class="skill-desc">ตรวจ HTML 2 ชั้น — ชั้น 1 ตรวจโค้ด (100+ กฎ) ชั้น 2 ตรวจดีไซน์ พร้อมแก้ให้อัตโนมัติ</div></div>
-        <div class="skill-card" data-tags="custom" data-name="design-handoff-spec" data-desc="สร้างเอกสารส่งงานให้ dev — spec ละเอียดถึงขนาดที่ dev ไม่ต้องถามอะไรเพิ่ม"><div class="skill-top"><span class="skill-name">/design-handoff-spec</span><span class="skill-tag skill-tag-custom">Custom</span></div><div class="skill-desc">สร้างเอกสารส่งงานให้ dev — spec ละเอียดถึงขนาดที่ dev ไม่ต้องถามอะไรเพิ่ม</div></div>
-        <div class="skill-card" data-tags="custom" data-name="component-state-generator" data-desc="สร้าง state ต่าง ๆ ของ component อัตโนมัติ — Default Hover Focus Disabled Error Loading"><div class="skill-top"><span class="skill-name">/component-state-generator</span><span class="skill-tag skill-tag-custom">Custom</span></div><div class="skill-desc">สร้าง state ต่าง ๆ ของ component อัตโนมัติ — Default Hover Focus Disabled Error Loading</div></div>
-        <div class="skill-card" data-tags="custom" data-name="token-validation" data-desc="ตรวจว่าใช้สีและ spacing ตรงกับ Design Tokens ไหม — หาค่าที่ไม่อยู่ในระบบ"><div class="skill-top"><span class="skill-name">/token-validation</span><span class="skill-tag skill-tag-custom">Custom</span></div><div class="skill-desc">ตรวจว่าใช้สีและ spacing ตรงกับ Design Tokens ไหม — หาค่าที่ไม่อยู่ในระบบ</div></div>
-        <div class="skill-card" data-tags="custom" data-name="interaction-design-spec" data-desc="กำหนด animation & interaction — เช่น ปุ่มกดแล้วเด้งยังไง transition ใช้กี่ ms"><div class="skill-top"><span class="skill-name">/interaction-design-spec</span><span class="skill-tag skill-tag-custom">Custom</span></div><div class="skill-desc">กำหนด animation & interaction — เช่น ปุ่มกดแล้วเด้งยังไง transition ใช้กี่ ms</div></div>
-        <div class="skill-card" data-tags="custom" data-name="usability-testing-plan" data-desc="วางแผนทดสอบกับผู้ใช้จริง — เขียน task scenario กำหนดกลุ่มเป้าหมาย วิธีวัดผล"><div class="skill-top"><span class="skill-name">/usability-testing-plan</span><span class="skill-tag skill-tag-custom">Custom</span></div><div class="skill-desc">วางแผนทดสอบกับผู้ใช้จริง — เขียน task scenario กำหนดกลุ่มเป้าหมาย วิธีวัดผล</div></div>
-        <div class="skill-card" data-tags="custom" data-name="mobile-ux-audit" data-desc="ตรวจ UX มือถือเจาะลึก — thumb zone gesture bottom nav ใช้มือเดียวได้ไหม"><div class="skill-top"><span class="skill-name">/mobile-ux-audit</span><span class="skill-tag skill-tag-custom">Custom</span></div><div class="skill-desc">ตรวจ UX มือถือเจาะลึก — thumb zone gesture bottom nav ใช้มือเดียวได้ไหม</div></div>
-        <div class="skill-card" data-tags="custom" data-name="conversion-ux-review" data-desc="ตรวจ UX เพื่อเพิ่มยอดขาย — checkout ปุ่ม CTA ฟอร์มสมัคร landing page"><div class="skill-top"><span class="skill-name">/conversion-ux-review</span><span class="skill-tag skill-tag-custom">Custom</span></div><div class="skill-desc">ตรวจ UX เพื่อเพิ่มยอดขาย — checkout ปุ่ม CTA ฟอร์มสมัคร landing page</div></div>
-        <div class="skill-card" data-tags="custom" data-name="clone-web" data-desc="โคลนเว็บต้นแบบเป็น HTML — ดึงสี ฟอนต์ รูปจากเว็บจริงมาทำ pixel-perfect"><div class="skill-top"><span class="skill-name">/clone-web</span><span class="skill-tag skill-tag-custom">Custom</span></div><div class="skill-desc">โคลนเว็บต้นแบบเป็น HTML — ดึงสี ฟอนต์ รูปจากเว็บจริงมาทำ pixel-perfect</div></div>
-      </div>
-    </div>
+    <!-- CUSTOM -->
+    <div class="category" data-cat="custom"><div class="cat-header"><div class="cat-dot" style="background:var(--success)"></div><div class="cat-title">สกิลที่สร้างเอง — ดีไซน์ & QA</div><span class="cat-count">11</span></div><div class="grid">
+      <div class="sk" data-tags="custom" data-name="design-pipeline" data-desc="ออกแบบครบจบใน 1 คำสั่ง — ดึง Jira → วาง User Flow → ออกแบบ UI → เขียน UX Copy → ตรวจ QA"><div class="sk-top"><span class="sk-name">/design-pipeline</span><span class="sk-tag sk-tag-custom">Custom</span></div><div class="sk-desc">ออกแบบครบจบใน 1 คำสั่ง — ดึง Jira → วาง User Flow → ออกแบบ UI → เขียน UX Copy → ตรวจ QA</div></div>
+      <div class="sk" data-tags="custom" data-name="design-review" data-desc="ตรวจดีไซน์ครบทุกมิติ — ดูความสวย accessibility ตาม guidelines ของ Vercel"><div class="sk-top"><span class="sk-name">/design-review</span><span class="sk-tag sk-tag-custom">Custom</span></div><div class="sk-desc">ตรวจดีไซน์ครบทุกมิติ — ดูความสวย accessibility ตาม guidelines ของ Vercel</div></div>
+      <div class="sk" data-tags="custom" data-name="qa-pipeline" data-desc="ตรวจ HTML 2 ชั้น — ชั้น 1 ตรวจโค้ด (100+ กฎ) ชั้น 2 ตรวจดีไซน์ พร้อมแก้ให้อัตโนมัติ"><div class="sk-top"><span class="sk-name">/qa-pipeline</span><span class="sk-tag sk-tag-custom">Custom</span></div><div class="sk-desc">ตรวจ HTML 2 ชั้น — ชั้น 1 ตรวจโค้ด (100+ กฎ) ชั้น 2 ตรวจดีไซน์ พร้อมแก้ให้อัตโนมัติ</div></div>
+      <div class="sk" data-tags="custom" data-name="design-handoff-spec" data-desc="สร้างเอกสารส่งงานให้ dev — spec ละเอียดถึงขนาดที่ dev ไม่ต้องถามอะไรเพิ่ม"><div class="sk-top"><span class="sk-name">/design-handoff-spec</span><span class="sk-tag sk-tag-custom">Custom</span></div><div class="sk-desc">สร้างเอกสารส่งงานให้ dev — spec ละเอียดถึงขนาดที่ dev ไม่ต้องถามอะไรเพิ่ม</div></div>
+      <div class="sk" data-tags="custom" data-name="component-state-generator" data-desc="สร้าง state ต่าง ๆ ของ component อัตโนมัติ — Default Hover Focus Disabled Error Loading"><div class="sk-top"><span class="sk-name">/component-state-generator</span><span class="sk-tag sk-tag-custom">Custom</span></div><div class="sk-desc">สร้าง state ต่าง ๆ ของ component อัตโนมัติ — Default Hover Focus Disabled Error Loading</div></div>
+      <div class="sk" data-tags="custom" data-name="token-validation" data-desc="ตรวจว่าใช้สีและ spacing ตรงกับ Design Tokens ไหม — หาค่าที่ไม่อยู่ในระบบ"><div class="sk-top"><span class="sk-name">/token-validation</span><span class="sk-tag sk-tag-custom">Custom</span></div><div class="sk-desc">ตรวจว่าใช้สีและ spacing ตรงกับ Design Tokens ไหม — หาค่าที่ไม่อยู่ในระบบ</div></div>
+      <div class="sk" data-tags="custom" data-name="interaction-design-spec" data-desc="กำหนด animation & interaction — เช่น ปุ่มกดแล้วเด้งยังไง transition ใช้กี่ ms"><div class="sk-top"><span class="sk-name">/interaction-design-spec</span><span class="sk-tag sk-tag-custom">Custom</span></div><div class="sk-desc">กำหนด animation & interaction — เช่น ปุ่มกดแล้วเด้งยังไง transition ใช้กี่ ms</div></div>
+      <div class="sk" data-tags="custom" data-name="usability-testing-plan" data-desc="วางแผนทดสอบกับผู้ใช้จริง — เขียน task scenario กำหนดกลุ่มเป้าหมาย วิธีวัดผล"><div class="sk-top"><span class="sk-name">/usability-testing-plan</span><span class="sk-tag sk-tag-custom">Custom</span></div><div class="sk-desc">วางแผนทดสอบกับผู้ใช้จริง — เขียน task scenario กำหนดกลุ่มเป้าหมาย วิธีวัดผล</div></div>
+      <div class="sk" data-tags="custom" data-name="mobile-ux-audit" data-desc="ตรวจ UX มือถือเจาะลึก — thumb zone gesture bottom nav ใช้มือเดียวได้ไหม"><div class="sk-top"><span class="sk-name">/mobile-ux-audit</span><span class="sk-tag sk-tag-custom">Custom</span></div><div class="sk-desc">ตรวจ UX มือถือเจาะลึก — thumb zone gesture bottom nav ใช้มือเดียวได้ไหม</div></div>
+      <div class="sk" data-tags="custom" data-name="conversion-ux-review" data-desc="ตรวจ UX เพื่อเพิ่มยอดขาย — checkout ปุ่ม CTA ฟอร์มสมัคร landing page"><div class="sk-top"><span class="sk-name">/conversion-ux-review</span><span class="sk-tag sk-tag-custom">Custom</span></div><div class="sk-desc">ตรวจ UX เพื่อเพิ่มยอดขาย — checkout ปุ่ม CTA ฟอร์มสมัคร landing page</div></div>
+      <div class="sk" data-tags="custom" data-name="clone-web" data-desc="โคลนเว็บต้นแบบเป็น HTML — ดึงสี ฟอนต์ รูปจากเว็บจริงมาทำ pixel-perfect"><div class="sk-top"><span class="sk-name">/clone-web</span><span class="sk-tag sk-tag-custom">Custom</span></div><div class="sk-desc">โคลนเว็บต้นแบบเป็น HTML — ดึงสี ฟอนต์ รูปจากเว็บจริงมาทำ pixel-perfect</div></div>
+    </div></div>
 
-    <div class="category" data-cat="custom">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--success);"></div>
-        <div class="category-title">สกิลที่สร้างเอง — อื่น ๆ</div>
-        <span class="category-count">3</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="custom" data-name="prompt-rewriter" data-desc="เขียน prompt ใหม่ให้ดีขึ้น — ไม่ตอบคำถาม แค่ปรับวิธีถามให้ได้ผลลัพธ์ดีกว่าเดิม"><div class="skill-top"><span class="skill-name">/prompt-rewriter</span><span class="skill-tag skill-tag-custom">Custom</span></div><div class="skill-desc">เขียน prompt ใหม่ให้ดีขึ้น — ไม่ตอบคำถาม แค่ปรับวิธีถามให้ได้ผลลัพธ์ดีกว่าเดิม</div></div>
-        <div class="skill-card" data-tags="custom" data-name="playwright-skill" data-desc="สั่งเปิดเบราว์เซอร์ทำอะไรก็ได้ — ทดสอบเว็บ กรอกฟอร์ม จับภาพหน้าจอ"><div class="skill-top"><span class="skill-name">/playwright-skill</span><span class="skill-tag skill-tag-custom">Custom</span></div><div class="skill-desc">สั่งเปิดเบราว์เซอร์ทำอะไรก็ได้ — ทดสอบเว็บ กรอกฟอร์ม จับภาพหน้าจอ</div></div>
-        <div class="skill-card" data-tags="custom" data-name="github-portfolio-page" data-desc="สร้างหน้า Portfolio บน GitHub Pages — ใส่ผลงาน ลิงก์ รูปภาพ"><div class="skill-top"><span class="skill-name">/github-portfolio-page</span><span class="skill-tag skill-tag-custom">Custom</span></div><div class="skill-desc">สร้างหน้า Portfolio บน GitHub Pages — ใส่ผลงาน ลิงก์ รูปภาพ</div></div>
-      </div>
-    </div>
+    <div class="category" data-cat="custom"><div class="cat-header"><div class="cat-dot" style="background:var(--success)"></div><div class="cat-title">สกิลที่สร้างเอง — อื่น ๆ & Vercel</div><span class="cat-count">6</span></div><div class="grid">
+      <div class="sk" data-tags="custom" data-name="prompt-rewriter" data-desc="เขียน prompt ใหม่ให้ดีขึ้น — ไม่ตอบคำถาม แค่ปรับวิธีถามให้ได้ผลลัพธ์ดีกว่าเดิม"><div class="sk-top"><span class="sk-name">/prompt-rewriter</span><span class="sk-tag sk-tag-custom">Custom</span></div><div class="sk-desc">เขียน prompt ใหม่ให้ดีขึ้น — ไม่ตอบคำถาม แค่ปรับวิธีถามให้ได้ผลลัพธ์ดีกว่าเดิม</div></div>
+      <div class="sk" data-tags="custom" data-name="playwright-skill" data-desc="สั่งเปิดเบราว์เซอร์ทำอะไรก็ได้ — ทดสอบเว็บ กรอกฟอร์ม จับภาพหน้าจอ"><div class="sk-top"><span class="sk-name">/playwright-skill</span><span class="sk-tag sk-tag-custom">Custom</span></div><div class="sk-desc">สั่งเปิดเบราว์เซอร์ทำอะไรก็ได้ — ทดสอบเว็บ กรอกฟอร์ม จับภาพหน้าจอ</div></div>
+      <div class="sk" data-tags="custom" data-name="github-portfolio-page" data-desc="สร้างหน้า Portfolio บน GitHub Pages — ใส่ผลงาน ลิงก์ รูปภาพ"><div class="sk-top"><span class="sk-name">/github-portfolio-page</span><span class="sk-tag sk-tag-custom">Custom</span></div><div class="sk-desc">สร้างหน้า Portfolio บน GitHub Pages — ใส่ผลงาน ลิงก์ รูปภาพ</div></div>
+      <div class="sk" data-tags="custom" data-name="vercel-react" data-desc="แนวทางเขียน React & Next.js ให้เร็ว — จาก Vercel Engineering โดยตรง"><div class="sk-top"><span class="sk-name">vercel-react-best-practices</span><span class="sk-tag sk-tag-custom">Built-in</span></div><div class="sk-desc">แนวทางเขียน React & Next.js ให้เร็ว — จาก Vercel Engineering โดยตรง</div></div>
+      <div class="sk" data-tags="custom" data-name="vercel-composition" data-desc="วิธีแบ่ง component ที่ดี — compound components context render props"><div class="sk-top"><span class="sk-name">vercel-composition-patterns</span><span class="sk-tag sk-tag-custom">Built-in</span></div><div class="sk-desc">วิธีแบ่ง component ที่ดี — compound components context render props</div></div>
+      <div class="sk" data-tags="custom" data-name="vercel-rn" data-desc="เขียน React Native ให้ลื่น — animation performance native modules"><div class="sk-top"><span class="sk-name">vercel-react-native-skills</span><span class="sk-tag sk-tag-custom">Built-in</span></div><div class="sk-desc">เขียน React Native ให้ลื่น — animation performance native modules</div></div>
+    </div></div>
 
-    <div class="category" data-cat="custom">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--success);"></div>
-        <div class="category-title">Vercel Best Practices</div>
-        <span class="category-count">3</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="custom" data-name="vercel-react" data-desc="แนวทางเขียน React & Next.js ให้เร็ว — จาก Vercel Engineering โดยตรง"><div class="skill-top"><span class="skill-name">vercel-react-best-practices</span><span class="skill-tag skill-tag-custom">Built-in</span></div><div class="skill-desc">แนวทางเขียน React & Next.js ให้เร็ว — จาก Vercel Engineering โดยตรง</div></div>
-        <div class="skill-card" data-tags="custom" data-name="vercel-composition" data-desc="วิธีแบ่ง component ที่ดี — compound components context render props"><div class="skill-top"><span class="skill-name">vercel-composition-patterns</span><span class="skill-tag skill-tag-custom">Built-in</span></div><div class="skill-desc">วิธีแบ่ง component ที่ดี — compound components context render props</div></div>
-        <div class="skill-card" data-tags="custom" data-name="vercel-rn" data-desc="เขียน React Native ให้ลื่น — animation performance native modules"><div class="skill-top"><span class="skill-name">vercel-react-native-skills</span><span class="skill-tag skill-tag-custom">Built-in</span></div><div class="skill-desc">เขียน React Native ให้ลื่น — animation performance native modules</div></div>
-      </div>
-    </div>
+    <!-- BMAD -->
+    <div class="category" data-cat="bmad"><div class="cat-header"><div class="cat-dot" style="background:var(--warning)"></div><div class="cat-title">BMAD — ทีม AI จำลอง</div><span class="cat-count">9</span></div><div class="grid">
+      <div class="sk" data-tags="bmad" data-name="bmad-master" data-desc="หัวหน้าทีม — สั่งงาน agent ตัวอื่น ๆ ทั้งหมด เหมือน project lead"><div class="sk-top"><span class="sk-name">bmad-master</span><span class="sk-tag sk-tag-bmad">BMAD</span><span class="sk-tag sk-tag-agent">Agent</span></div><div class="sk-desc">หัวหน้าทีม — สั่งงาน agent ตัวอื่น ๆ ทั้งหมด เหมือน project lead</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-pm" data-desc="Product Manager — วางแผนผลิตภัณฑ์ จัดลำดับความสำคัญ เขียน PRD"><div class="sk-top"><span class="sk-name">bmad-pm</span><span class="sk-tag sk-tag-bmad">BMAD</span><span class="sk-tag sk-tag-agent">Agent</span></div><div class="sk-desc">Product Manager — วางแผนผลิตภัณฑ์ จัดลำดับความสำคัญ เขียน PRD</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-analyst" data-desc="นักวิเคราะห์ — วิจัยตลาด วิเคราะห์คู่แข่ง หา insight จากข้อมูล"><div class="sk-top"><span class="sk-name">bmad-analyst</span><span class="sk-tag sk-tag-bmad">BMAD</span><span class="sk-tag sk-tag-agent">Agent</span></div><div class="sk-desc">นักวิเคราะห์ — วิจัยตลาด วิเคราะห์คู่แข่ง หา insight จากข้อมูล</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-architect" data-desc="สถาปนิกระบบ — ออกแบบโครงสร้างเทคนิค เลือก stack วาง architecture"><div class="sk-top"><span class="sk-name">bmad-architect</span><span class="sk-tag sk-tag-bmad">BMAD</span><span class="sk-tag sk-tag-agent">Agent</span></div><div class="sk-desc">สถาปนิกระบบ — ออกแบบโครงสร้างเทคนิค เลือก stack วาง architecture</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-ux-designer" data-desc="UX Designer — วาง user flow ออกแบบ wireframe กำหนด UX pattern"><div class="sk-top"><span class="sk-name">bmad-ux-designer</span><span class="sk-tag sk-tag-bmad">BMAD</span><span class="sk-tag sk-tag-agent">Agent</span></div><div class="sk-desc">UX Designer — วาง user flow ออกแบบ wireframe กำหนด UX pattern</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-dev" data-desc="Developer — เขียนโค้ดตาม story implement ฟีเจอร์"><div class="sk-top"><span class="sk-name">bmad-dev</span><span class="sk-tag sk-tag-bmad">BMAD</span><span class="sk-tag sk-tag-agent">Agent</span></div><div class="sk-desc">Developer — เขียนโค้ดตาม story implement ฟีเจอร์</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-qa" data-desc="QA Tester — ทดสอบระบบ หาบั๊ก เขียน test case"><div class="sk-top"><span class="sk-name">bmad-qa</span><span class="sk-tag sk-tag-bmad">BMAD</span><span class="sk-tag sk-tag-agent">Agent</span></div><div class="sk-desc">QA Tester — ทดสอบระบบ หาบั๊ก เขียน test case</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-sm" data-desc="Scrum Master — จัดการ sprint ติดตามงาน แก้ปัญหาที่ติดขัด"><div class="sk-top"><span class="sk-name">bmad-sm</span><span class="sk-tag sk-tag-bmad">BMAD</span><span class="sk-tag sk-tag-agent">Agent</span></div><div class="sk-desc">Scrum Master — จัดการ sprint ติดตามงาน แก้ปัญหาที่ติดขัด</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-tech-writer" data-desc="นักเขียนเทคนิค — เขียนเอกสาร API doc user guide"><div class="sk-top"><span class="sk-name">bmad-tech-writer</span><span class="sk-tag sk-tag-bmad">BMAD</span><span class="sk-tag sk-tag-agent">Agent</span></div><div class="sk-desc">นักเขียนเทคนิค — เขียนเอกสาร API doc user guide</div></div>
+    </div></div>
 
-    <!-- ===== BMAD ===== -->
-    <div class="category" data-cat="bmad">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--warning);"></div>
-        <div class="category-title">BMAD — ทีม AI จำลอง</div>
-        <span class="category-count">9</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="bmad" data-name="bmad-master" data-desc="หัวหน้าทีม — สั่งงาน agent ตัวอื่น ๆ ทั้งหมด เหมือน project lead"><div class="skill-top"><span class="skill-name">bmad-master</span><span class="skill-tag skill-tag-bmad">BMAD</span><span class="skill-tag skill-tag-agent">Agent</span></div><div class="skill-desc">หัวหน้าทีม — สั่งงาน agent ตัวอื่น ๆ ทั้งหมด เหมือน project lead</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-pm" data-desc="Product Manager — วางแผนผลิตภัณฑ์ จัดลำดับความสำคัญ เขียน PRD"><div class="skill-top"><span class="skill-name">bmad-pm</span><span class="skill-tag skill-tag-bmad">BMAD</span><span class="skill-tag skill-tag-agent">Agent</span></div><div class="skill-desc">Product Manager — วางแผนผลิตภัณฑ์ จัดลำดับความสำคัญ เขียน PRD</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-analyst" data-desc="นักวิเคราะห์ — วิจัยตลาด วิเคราะห์คู่แข่ง หา insight จากข้อมูล"><div class="skill-top"><span class="skill-name">bmad-analyst</span><span class="skill-tag skill-tag-bmad">BMAD</span><span class="skill-tag skill-tag-agent">Agent</span></div><div class="skill-desc">นักวิเคราะห์ — วิจัยตลาด วิเคราะห์คู่แข่ง หา insight จากข้อมูล</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-architect" data-desc="สถาปนิกระบบ — ออกแบบโครงสร้างเทคนิค เลือก stack วาง architecture"><div class="skill-top"><span class="skill-name">bmad-architect</span><span class="skill-tag skill-tag-bmad">BMAD</span><span class="skill-tag skill-tag-agent">Agent</span></div><div class="skill-desc">สถาปนิกระบบ — ออกแบบโครงสร้างเทคนิค เลือก stack วาง architecture</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-ux-designer" data-desc="UX Designer — วาง user flow ออกแบบ wireframe กำหนด UX pattern"><div class="skill-top"><span class="skill-name">bmad-ux-designer</span><span class="skill-tag skill-tag-bmad">BMAD</span><span class="skill-tag skill-tag-agent">Agent</span></div><div class="skill-desc">UX Designer — วาง user flow ออกแบบ wireframe กำหนด UX pattern</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-dev" data-desc="Developer — เขียนโค้ดตาม story implement ฟีเจอร์"><div class="skill-top"><span class="skill-name">bmad-dev</span><span class="skill-tag skill-tag-bmad">BMAD</span><span class="skill-tag skill-tag-agent">Agent</span></div><div class="skill-desc">Developer — เขียนโค้ดตาม story implement ฟีเจอร์</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-qa" data-desc="QA Tester — ทดสอบระบบ หาบั๊ก เขียน test case"><div class="skill-top"><span class="skill-name">bmad-qa</span><span class="skill-tag skill-tag-bmad">BMAD</span><span class="skill-tag skill-tag-agent">Agent</span></div><div class="skill-desc">QA Tester — ทดสอบระบบ หาบั๊ก เขียน test case</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-sm" data-desc="Scrum Master — จัดการ sprint ติดตามงาน แก้ปัญหาที่ติดขัด"><div class="skill-top"><span class="skill-name">bmad-sm</span><span class="skill-tag skill-tag-bmad">BMAD</span><span class="skill-tag skill-tag-agent">Agent</span></div><div class="skill-desc">Scrum Master — จัดการ sprint ติดตามงาน แก้ปัญหาที่ติดขัด</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-tech-writer" data-desc="นักเขียนเทคนิค — เขียนเอกสาร API doc user guide"><div class="skill-top"><span class="skill-name">bmad-tech-writer</span><span class="skill-tag skill-tag-bmad">BMAD</span><span class="skill-tag skill-tag-agent">Agent</span></div><div class="skill-desc">นักเขียนเทคนิค — เขียนเอกสาร API doc user guide</div></div>
-      </div>
-    </div>
+    <div class="category" data-cat="bmad"><div class="cat-header"><div class="cat-dot" style="background:var(--warning)"></div><div class="cat-title">BMAD — ขั้นตอนทำงาน</div><span class="cat-count">24</span></div><div class="grid">
+      <div class="sk" data-tags="bmad" data-name="bmad-create-product-brief" data-desc="สร้าง Product Brief — ตอบคำถามทีละข้อแล้วได้เอกสารสรุปไอเดียผลิตภัณฑ์"><div class="sk-top"><span class="sk-name">/bmad-bmm-create-product-brief</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">สร้าง Product Brief — ตอบคำถามทีละข้อแล้วได้เอกสารสรุปไอเดียผลิตภัณฑ์</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-create-prd" data-desc="สร้าง PRD (เอกสารความต้องการ) — ระบุฟีเจอร์ user story acceptance criteria"><div class="sk-top"><span class="sk-name">/bmad-bmm-create-prd</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">สร้าง PRD (เอกสารความต้องการ) — ระบุฟีเจอร์ user story acceptance criteria</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-edit-prd" data-desc="แก้ไข PRD ที่มีอยู่แล้ว — เพิ่ม ลบ ปรับเนื้อหา"><div class="sk-top"><span class="sk-name">/bmad-bmm-edit-prd</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">แก้ไข PRD ที่มีอยู่แล้ว — เพิ่ม ลบ ปรับเนื้อหา</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-validate-prd" data-desc="ตรวจ PRD ว่าครบถ้วนตามมาตรฐานไหม — หาส่วนที่ขาดหาย"><div class="sk-top"><span class="sk-name">/bmad-bmm-validate-prd</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">ตรวจ PRD ว่าครบถ้วนตามมาตรฐานไหม — หาส่วนที่ขาดหาย</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-domain-research" data-desc="วิจัยอุตสาหกรรม — เข้าใจ domain ก่อนออกแบบหรือพัฒนา"><div class="sk-top"><span class="sk-name">/bmad-bmm-domain-research</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">วิจัยอุตสาหกรรม — เข้าใจ domain ก่อนออกแบบหรือพัฒนา</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-market-research" data-desc="วิจัยตลาด — ดูคู่แข่ง กลุ่มลูกค้า โอกาสทางธุรกิจ"><div class="sk-top"><span class="sk-name">/bmad-bmm-market-research</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">วิจัยตลาด — ดูคู่แข่ง กลุ่มลูกค้า โอกาสทางธุรกิจ</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-technical-research" data-desc="วิจัยเทคนิค — เปรียบเทียบเทคโนโลยี เลือก stack ที่เหมาะ"><div class="sk-top"><span class="sk-name">/bmad-bmm-technical-research</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">วิจัยเทคนิค — เปรียบเทียบเทคโนโลยี เลือก stack ที่เหมาะ</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-create-architecture" data-desc="ออกแบบโครงสร้างระบบ — วาง architecture เลือก database กำหนด API"><div class="sk-top"><span class="sk-name">/bmad-bmm-create-architecture</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">ออกแบบโครงสร้างระบบ — วาง architecture เลือก database กำหนด API</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-create-ux-design" data-desc="วางแผน UX — กำหนด pattern user flow wireframe spec"><div class="sk-top"><span class="sk-name">/bmad-bmm-create-ux-design</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">วางแผน UX — กำหนด pattern user flow wireframe spec</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-create-epics" data-desc="แบ่งงานใหญ่เป็นชิ้นเล็ก — Epic → Story พร้อม acceptance criteria"><div class="sk-top"><span class="sk-name">/bmad-bmm-create-epics-and-stories</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">แบ่งงานใหญ่เป็นชิ้นเล็ก — Epic → Story พร้อม acceptance criteria</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-create-story" data-desc="สร้างไฟล์ Story พร้อม context ครบ — dev เปิดอ่านแล้วทำงานได้เลย"><div class="sk-top"><span class="sk-name">/bmad-bmm-create-story</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">สร้างไฟล์ Story พร้อม context ครบ — dev เปิดอ่านแล้วทำงานได้เลย</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-dev-story" data-desc="เขียนโค้ดตาม Story ที่เตรียมไว้ — อ่าน spec แล้ว implement ให้"><div class="sk-top"><span class="sk-name">/bmad-bmm-dev-story</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">เขียนโค้ดตาม Story ที่เตรียมไว้ — อ่าน spec แล้ว implement ให้</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-quick-dev" data-desc="ทำงานเล็ก ๆ แบบเร็ว — ไม่ต้อง spec ละเอียด แก้ไขเล็กน้อย"><div class="sk-top"><span class="sk-name">/bmad-bmm-quick-dev</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">ทำงานเล็ก ๆ แบบเร็ว — ไม่ต้อง spec ละเอียด แก้ไขเล็กน้อย</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-quick-spec" data-desc="เขียน spec สั้น ๆ สำหรับงานเล็ก — พอให้ dev เข้าใจและทำได้"><div class="sk-top"><span class="sk-name">/bmad-bmm-quick-spec</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">เขียน spec สั้น ๆ สำหรับงานเล็ก — พอให้ dev เข้าใจและทำได้</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-code-review" data-desc="ตรวจโค้ดแบบจริงจัง — หาบั๊ก ปัญหา performance ความปลอดภัย"><div class="sk-top"><span class="sk-name">/bmad-bmm-code-review</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">ตรวจโค้ดแบบจริงจัง — หาบั๊ก ปัญหา performance ความปลอดภัย</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-qa-e2e" data-desc="สร้างชุดทดสอบอัตโนมัติ — จำลองการใช้งานจริงตั้งแต่ต้นจนจบ"><div class="sk-top"><span class="sk-name">/bmad-bmm-qa-generate-e2e-tests</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">สร้างชุดทดสอบอัตโนมัติ — จำลองการใช้งานจริงตั้งแต่ต้นจนจบ</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-sprint-planning" data-desc="วางแผน Sprint — เลือกงานจาก Epic มาจัดเป็น sprint"><div class="sk-top"><span class="sk-name">/bmad-bmm-sprint-planning</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">วางแผน Sprint — เลือกงานจาก Epic มาจัดเป็น sprint</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-sprint-status" data-desc="ดูสถานะ Sprint — งานเสร็จกี่ % มีอะไรเสี่ยงจะไม่ทัน"><div class="sk-top"><span class="sk-name">/bmad-bmm-sprint-status</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">ดูสถานะ Sprint — งานเสร็จกี่ % มีอะไรเสี่ยงจะไม่ทัน</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-check-readiness" data-desc="เช็คว่าพร้อมเริ่มเขียนโค้ดหรือยัง — ตรวจว่า PRD UX Architecture ครบไหม"><div class="sk-top"><span class="sk-name">/bmad-bmm-check-implementation-readiness</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">เช็คว่าพร้อมเริ่มเขียนโค้ดหรือยัง — ตรวจว่า PRD UX Architecture ครบไหม</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-correct-course" data-desc="ปรับแผนกลาง sprint — เมื่อมีการเปลี่ยนแปลงใหญ่ต้องจัดการ"><div class="sk-top"><span class="sk-name">/bmad-bmm-correct-course</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">ปรับแผนกลาง sprint — เมื่อมีการเปลี่ยนแปลงใหญ่ต้องจัดการ</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-retrospective" data-desc="ทบทวนหลังจบงาน — อะไรดี อะไรแย่ ปรับอะไรรอบหน้า"><div class="sk-top"><span class="sk-name">/bmad-bmm-retrospective</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">ทบทวนหลังจบงาน — อะไรดี อะไรแย่ ปรับอะไรรอบหน้า</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-document-project" data-desc="สร้างเอกสารโปรเจกต์ที่มีอยู่แล้ว — ให้ AI เข้าใจ codebase ได้เร็วขึ้น"><div class="sk-top"><span class="sk-name">/bmad-bmm-document-project</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">สร้างเอกสารโปรเจกต์ที่มีอยู่แล้ว — ให้ AI เข้าใจ codebase ได้เร็วขึ้น</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-generate-context" data-desc="สร้างไฟล์ context สำหรับ AI — ให้ Claude เข้าใจโปรเจกต์โดยไม่ต้องอธิบายทุกครั้ง"><div class="sk-top"><span class="sk-name">/bmad-bmm-generate-project-context</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">สร้างไฟล์ context สำหรับ AI — ให้ Claude เข้าใจโปรเจกต์โดยไม่ต้องอธิบายทุกครั้ง</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-brainstorming" data-desc="ระดมไอเดีย — ใช้เทคนิคความคิดสร้างสรรค์หลายแบบช่วยคิด"><div class="sk-top"><span class="sk-name">/bmad-brainstorming</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">ระดมไอเดีย — ใช้เทคนิคความคิดสร้างสรรค์หลายแบบช่วยคิด</div></div>
+    </div></div>
 
-    <div class="category" data-cat="bmad">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--warning);"></div>
-        <div class="category-title">BMAD — ขั้นตอนทำงาน</div>
-        <span class="category-count">24</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="bmad" data-name="bmad-create-product-brief" data-desc="สร้าง Product Brief — ตอบคำถามทีละข้อแล้วได้เอกสารสรุปไอเดียผลิตภัณฑ์"><div class="skill-top"><span class="skill-name">/bmad-bmm-create-product-brief</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">สร้าง Product Brief — ตอบคำถามทีละข้อแล้วได้เอกสารสรุปไอเดียผลิตภัณฑ์</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-create-prd" data-desc="สร้าง PRD (เอกสารความต้องการ) — ระบุฟีเจอร์ user story acceptance criteria"><div class="skill-top"><span class="skill-name">/bmad-bmm-create-prd</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">สร้าง PRD (เอกสารความต้องการ) — ระบุฟีเจอร์ user story acceptance criteria</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-edit-prd" data-desc="แก้ไข PRD ที่มีอยู่แล้ว — เพิ่ม ลบ ปรับเนื้อหา"><div class="skill-top"><span class="skill-name">/bmad-bmm-edit-prd</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">แก้ไข PRD ที่มีอยู่แล้ว — เพิ่ม ลบ ปรับเนื้อหา</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-validate-prd" data-desc="ตรวจ PRD ว่าครบถ้วนตามมาตรฐานไหม — หาส่วนที่ขาดหาย"><div class="skill-top"><span class="skill-name">/bmad-bmm-validate-prd</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">ตรวจ PRD ว่าครบถ้วนตามมาตรฐานไหม — หาส่วนที่ขาดหาย</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-domain-research" data-desc="วิจัยอุตสาหกรรม — เข้าใจ domain ก่อนออกแบบหรือพัฒนา"><div class="skill-top"><span class="skill-name">/bmad-bmm-domain-research</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">วิจัยอุตสาหกรรม — เข้าใจ domain ก่อนออกแบบหรือพัฒนา</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-market-research" data-desc="วิจัยตลาด — ดูคู่แข่ง กลุ่มลูกค้า โอกาสทางธุรกิจ"><div class="skill-top"><span class="skill-name">/bmad-bmm-market-research</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">วิจัยตลาด — ดูคู่แข่ง กลุ่มลูกค้า โอกาสทางธุรกิจ</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-technical-research" data-desc="วิจัยเทคนิค — เปรียบเทียบเทคโนโลยี เลือก stack ที่เหมาะ"><div class="skill-top"><span class="skill-name">/bmad-bmm-technical-research</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">วิจัยเทคนิค — เปรียบเทียบเทคโนโลยี เลือก stack ที่เหมาะ</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-create-architecture" data-desc="ออกแบบโครงสร้างระบบ — วาง architecture เลือก database กำหนด API"><div class="skill-top"><span class="skill-name">/bmad-bmm-create-architecture</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">ออกแบบโครงสร้างระบบ — วาง architecture เลือก database กำหนด API</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-create-ux-design" data-desc="วางแผน UX — กำหนด pattern user flow wireframe spec"><div class="skill-top"><span class="skill-name">/bmad-bmm-create-ux-design</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">วางแผน UX — กำหนด pattern user flow wireframe spec</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-create-epics" data-desc="แบ่งงานใหญ่เป็นชิ้นเล็ก — Epic → Story พร้อม acceptance criteria"><div class="skill-top"><span class="skill-name">/bmad-bmm-create-epics-and-stories</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">แบ่งงานใหญ่เป็นชิ้นเล็ก — Epic → Story พร้อม acceptance criteria</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-create-story" data-desc="สร้างไฟล์ Story พร้อม context ครบ — dev เปิดอ่านแล้วทำงานได้เลย"><div class="skill-top"><span class="skill-name">/bmad-bmm-create-story</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">สร้างไฟล์ Story พร้อม context ครบ — dev เปิดอ่านแล้วทำงานได้เลย</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-dev-story" data-desc="เขียนโค้ดตาม Story ที่เตรียมไว้ — อ่าน spec แล้ว implement ให้"><div class="skill-top"><span class="skill-name">/bmad-bmm-dev-story</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">เขียนโค้ดตาม Story ที่เตรียมไว้ — อ่าน spec แล้ว implement ให้</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-quick-dev" data-desc="ทำงานเล็ก ๆ แบบเร็ว — ไม่ต้อง spec ละเอียด แก้ไขเล็กน้อย"><div class="skill-top"><span class="skill-name">/bmad-bmm-quick-dev</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">ทำงานเล็ก ๆ แบบเร็ว — ไม่ต้อง spec ละเอียด แก้ไขเล็กน้อย</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-quick-spec" data-desc="เขียน spec สั้น ๆ สำหรับงานเล็ก — พอให้ dev เข้าใจและทำได้"><div class="skill-top"><span class="skill-name">/bmad-bmm-quick-spec</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">เขียน spec สั้น ๆ สำหรับงานเล็ก — พอให้ dev เข้าใจและทำได้</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-code-review" data-desc="ตรวจโค้ดแบบจริงจัง — หาบั๊ก ปัญหา performance ความปลอดภัย"><div class="skill-top"><span class="skill-name">/bmad-bmm-code-review</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">ตรวจโค้ดแบบจริงจัง — หาบั๊ก ปัญหา performance ความปลอดภัย</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-qa-e2e" data-desc="สร้างชุดทดสอบอัตโนมัติ — จำลองการใช้งานจริงตั้งแต่ต้นจนจบ"><div class="skill-top"><span class="skill-name">/bmad-bmm-qa-generate-e2e-tests</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">สร้างชุดทดสอบอัตโนมัติ — จำลองการใช้งานจริงตั้งแต่ต้นจนจบ</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-sprint-planning" data-desc="วางแผน Sprint — เลือกงานจาก Epic มาจัดเป็น sprint"><div class="skill-top"><span class="skill-name">/bmad-bmm-sprint-planning</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">วางแผน Sprint — เลือกงานจาก Epic มาจัดเป็น sprint</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-sprint-status" data-desc="ดูสถานะ Sprint — งานเสร็จกี่ % มีอะไรเสี่ยงจะไม่ทัน"><div class="skill-top"><span class="skill-name">/bmad-bmm-sprint-status</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">ดูสถานะ Sprint — งานเสร็จกี่ % มีอะไรเสี่ยงจะไม่ทัน</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-check-readiness" data-desc="เช็คว่าพร้อมเริ่มเขียนโค้ดหรือยัง — ตรวจว่า PRD UX Architecture ครบไหม"><div class="skill-top"><span class="skill-name">/bmad-bmm-check-implementation-readiness</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">เช็คว่าพร้อมเริ่มเขียนโค้ดหรือยัง — ตรวจว่า PRD UX Architecture ครบไหม</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-correct-course" data-desc="ปรับแผนกลาง sprint — เมื่อมีการเปลี่ยนแปลงใหญ่ต้องจัดการ"><div class="skill-top"><span class="skill-name">/bmad-bmm-correct-course</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">ปรับแผนกลาง sprint — เมื่อมีการเปลี่ยนแปลงใหญ่ต้องจัดการ</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-retrospective" data-desc="ทบทวนหลังจบงาน — อะไรดี อะไรแย่ ปรับอะไรรอบหน้า"><div class="skill-top"><span class="skill-name">/bmad-bmm-retrospective</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">ทบทวนหลังจบงาน — อะไรดี อะไรแย่ ปรับอะไรรอบหน้า</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-document-project" data-desc="สร้างเอกสารโปรเจกต์ที่มีอยู่แล้ว — ให้ AI เข้าใจ codebase ได้เร็วขึ้น"><div class="skill-top"><span class="skill-name">/bmad-bmm-document-project</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">สร้างเอกสารโปรเจกต์ที่มีอยู่แล้ว — ให้ AI เข้าใจ codebase ได้เร็วขึ้น</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-generate-context" data-desc="สร้างไฟล์ context สำหรับ AI — ให้ Claude เข้าใจโปรเจกต์โดยไม่ต้องอธิบายทุกครั้ง"><div class="skill-top"><span class="skill-name">/bmad-bmm-generate-project-context</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">สร้างไฟล์ context สำหรับ AI — ให้ Claude เข้าใจโปรเจกต์โดยไม่ต้องอธิบายทุกครั้ง</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-brainstorming" data-desc="ระดมไอเดีย — ใช้เทคนิคความคิดสร้างสรรค์หลายแบบช่วยคิด"><div class="skill-top"><span class="skill-name">/bmad-brainstorming</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">ระดมไอเดีย — ใช้เทคนิคความคิดสร้างสรรค์หลายแบบช่วยคิด</div></div>
-      </div>
-    </div>
+    <div class="category" data-cat="bmad"><div class="cat-header"><div class="cat-dot" style="background:var(--warning)"></div><div class="cat-title">BMAD — ตรวจสอบ & เครื่องมือเสริม</div><span class="cat-count">7</span></div><div class="grid">
+      <div class="sk" data-tags="bmad" data-name="bmad-adversarial" data-desc="ตรวจแบบจับผิดจริงจัง — หาจุดอ่อน ข้อบกพร่อง สิ่งที่หลุดรอด"><div class="sk-top"><span class="sk-name">/bmad-review-adversarial-general</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">ตรวจแบบจับผิดจริงจัง — หาจุดอ่อน ข้อบกพร่อง สิ่งที่หลุดรอด</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-edge-case" data-desc="หา edge case — กรณีพิเศษที่อาจทำให้ระบบพัง เช่น ข้อมูลว่าง ค่าติดลบ"><div class="sk-top"><span class="sk-name">/bmad-review-edge-case-hunter</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">หา edge case — กรณีพิเศษที่อาจทำให้ระบบพัง เช่น ข้อมูลว่าง ค่าติดลบ</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-editorial-prose" data-desc="แก้ภาษาและการสื่อสาร — ทำให้เอกสารอ่านง่ายขึ้น ชัดเจนขึ้น"><div class="sk-top"><span class="sk-name">/bmad-editorial-review-prose</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">แก้ภาษาและการสื่อสาร — ทำให้เอกสารอ่านง่ายขึ้น ชัดเจนขึ้น</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-editorial-structure" data-desc="จัดโครงสร้างเอกสาร — ตัดส่วนเกิน จัดลำดับใหม่ ทำให้กระชับ"><div class="sk-top"><span class="sk-name">/bmad-editorial-review-structure</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">จัดโครงสร้างเอกสาร — ตัดส่วนเกิน จัดลำดับใหม่ ทำให้กระชับ</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-party-mode" data-desc="ให้ AI หลายตัวคุยกัน — จำลองการประชุมทีม แต่ละตัวมีบทบาทต่างกัน"><div class="sk-top"><span class="sk-name">/bmad-party-mode</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">ให้ AI หลายตัวคุยกัน — จำลองการประชุมทีม แต่ละตัวมีบทบาทต่างกัน</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-help" data-desc="ถาม BMAD ว่าควรทำอะไรต่อ — วิเคราะห์สถานะปัจจุบันแล้วแนะนำ next step"><div class="sk-top"><span class="sk-name">/bmad-help</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">ถาม BMAD ว่าควรทำอะไรต่อ — วิเคราะห์สถานะปัจจุบันแล้วแนะนำ next step</div></div>
+      <div class="sk" data-tags="bmad" data-name="bmad-shard-doc" data-desc="แยกเอกสารใหญ่เป็นไฟล์ย่อย — เช่น markdown ยาว ๆ แยกตาม section"><div class="sk-top"><span class="sk-name">/bmad-shard-doc</span><span class="sk-tag sk-tag-bmad">BMAD</span></div><div class="sk-desc">แยกเอกสารใหญ่เป็นไฟล์ย่อย — เช่น markdown ยาว ๆ แยกตาม section</div></div>
+    </div></div>
 
-    <div class="category" data-cat="bmad">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--warning);"></div>
-        <div class="category-title">BMAD — ตรวจสอบ & เครื่องมือเสริม</div>
-        <span class="category-count">7</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="bmad" data-name="bmad-adversarial" data-desc="ตรวจแบบจับผิดจริงจัง — หาจุดอ่อน ข้อบกพร่อง สิ่งที่หลุดรอด"><div class="skill-top"><span class="skill-name">/bmad-review-adversarial-general</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">ตรวจแบบจับผิดจริงจัง — หาจุดอ่อน ข้อบกพร่อง สิ่งที่หลุดรอด</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-edge-case" data-desc="หา edge case — กรณีพิเศษที่อาจทำให้ระบบพัง เช่น ข้อมูลว่าง ค่าติดลบ"><div class="skill-top"><span class="skill-name">/bmad-review-edge-case-hunter</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">หา edge case — กรณีพิเศษที่อาจทำให้ระบบพัง เช่น ข้อมูลว่าง ค่าติดลบ</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-editorial-prose" data-desc="แก้ภาษาและการสื่อสาร — ทำให้เอกสารอ่านง่ายขึ้น ชัดเจนขึ้น"><div class="skill-top"><span class="skill-name">/bmad-editorial-review-prose</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">แก้ภาษาและการสื่อสาร — ทำให้เอกสารอ่านง่ายขึ้น ชัดเจนขึ้น</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-editorial-structure" data-desc="จัดโครงสร้างเอกสาร — ตัดส่วนเกิน จัดลำดับใหม่ ทำให้กระชับ"><div class="skill-top"><span class="skill-name">/bmad-editorial-review-structure</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">จัดโครงสร้างเอกสาร — ตัดส่วนเกิน จัดลำดับใหม่ ทำให้กระชับ</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-party-mode" data-desc="ให้ AI หลายตัวคุยกัน — จำลองการประชุมทีม แต่ละตัวมีบทบาทต่างกัน"><div class="skill-top"><span class="skill-name">/bmad-party-mode</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">ให้ AI หลายตัวคุยกัน — จำลองการประชุมทีม แต่ละตัวมีบทบาทต่างกัน</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-help" data-desc="ถาม BMAD ว่าควรทำอะไรต่อ — วิเคราะห์สถานะปัจจุบันแล้วแนะนำ next step"><div class="skill-top"><span class="skill-name">/bmad-help</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">ถาม BMAD ว่าควรทำอะไรต่อ — วิเคราะห์สถานะปัจจุบันแล้วแนะนำ next step</div></div>
-        <div class="skill-card" data-tags="bmad" data-name="bmad-shard-doc" data-desc="แยกเอกสารใหญ่เป็นไฟล์ย่อย — เช่น markdown ยาว ๆ แยกตาม section"><div class="skill-top"><span class="skill-name">/bmad-shard-doc</span><span class="skill-tag skill-tag-bmad">BMAD</span></div><div class="skill-desc">แยกเอกสารใหญ่เป็นไฟล์ย่อย — เช่น markdown ยาว ๆ แยกตาม section</div></div>
-      </div>
-    </div>
+    <!-- LSP -->
+    <div class="category" data-cat="lsp"><div class="cat-header"><div class="cat-dot" style="background:#5B4BC7"></div><div class="cat-title">ตัวช่วยภาษาโปรแกรม (LSP)</div><span class="cat-count">12</span></div><div class="grid">
+      <div class="sk" data-tags="lsp" data-name="typescript-lsp" data-desc="ช่วย Claude เข้าใจโค้ด TypeScript / JavaScript ได้ลึกขึ้น"><div class="sk-top"><span class="sk-name">typescript-lsp</span><span class="sk-tag sk-tag-lsp">LSP</span></div><div class="sk-desc">ช่วย Claude เข้าใจโค้ด TypeScript / JavaScript ได้ลึกขึ้น</div></div>
+      <div class="sk" data-tags="lsp" data-name="pyright-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Python"><div class="sk-top"><span class="sk-name">pyright-lsp</span><span class="sk-tag sk-tag-lsp">LSP</span></div><div class="sk-desc">ช่วย Claude เข้าใจโค้ด Python</div></div>
+      <div class="sk" data-tags="lsp" data-name="gopls-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Go"><div class="sk-top"><span class="sk-name">gopls-lsp</span><span class="sk-tag sk-tag-lsp">LSP</span></div><div class="sk-desc">ช่วย Claude เข้าใจโค้ด Go</div></div>
+      <div class="sk" data-tags="lsp" data-name="rust-analyzer-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Rust"><div class="sk-top"><span class="sk-name">rust-analyzer-lsp</span><span class="sk-tag sk-tag-lsp">LSP</span></div><div class="sk-desc">ช่วย Claude เข้าใจโค้ด Rust</div></div>
+      <div class="sk" data-tags="lsp" data-name="kotlin-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Kotlin (Android)"><div class="sk-top"><span class="sk-name">kotlin-lsp</span><span class="sk-tag sk-tag-lsp">LSP</span></div><div class="sk-desc">ช่วย Claude เข้าใจโค้ด Kotlin (Android)</div></div>
+      <div class="sk" data-tags="lsp" data-name="jdtls-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Java"><div class="sk-top"><span class="sk-name">jdtls-lsp</span><span class="sk-tag sk-tag-lsp">LSP</span></div><div class="sk-desc">ช่วย Claude เข้าใจโค้ด Java</div></div>
+      <div class="sk" data-tags="lsp" data-name="clangd-lsp" data-desc="ช่วย Claude เข้าใจโค้ด C / C++"><div class="sk-top"><span class="sk-name">clangd-lsp</span><span class="sk-tag sk-tag-lsp">LSP</span></div><div class="sk-desc">ช่วย Claude เข้าใจโค้ด C / C++</div></div>
+      <div class="sk" data-tags="lsp" data-name="csharp-lsp" data-desc="ช่วย Claude เข้าใจโค้ด C# (.NET)"><div class="sk-top"><span class="sk-name">csharp-lsp</span><span class="sk-tag sk-tag-lsp">LSP</span></div><div class="sk-desc">ช่วย Claude เข้าใจโค้ด C# (.NET)</div></div>
+      <div class="sk" data-tags="lsp" data-name="ruby-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Ruby"><div class="sk-top"><span class="sk-name">ruby-lsp</span><span class="sk-tag sk-tag-lsp">LSP</span></div><div class="sk-desc">ช่วย Claude เข้าใจโค้ด Ruby</div></div>
+      <div class="sk" data-tags="lsp" data-name="swift-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Swift (iOS/macOS)"><div class="sk-top"><span class="sk-name">swift-lsp</span><span class="sk-tag sk-tag-lsp">LSP</span></div><div class="sk-desc">ช่วย Claude เข้าใจโค้ด Swift (iOS/macOS)</div></div>
+      <div class="sk" data-tags="lsp" data-name="lua-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Lua"><div class="sk-top"><span class="sk-name">lua-lsp</span><span class="sk-tag sk-tag-lsp">LSP</span></div><div class="sk-desc">ช่วย Claude เข้าใจโค้ด Lua</div></div>
+      <div class="sk" data-tags="lsp" data-name="php-lsp" data-desc="ช่วย Claude เข้าใจโค้ด PHP (Laravel WordPress)"><div class="sk-top"><span class="sk-name">php-lsp</span><span class="sk-tag sk-tag-lsp">LSP</span></div><div class="sk-desc">ช่วย Claude เข้าใจโค้ด PHP (Laravel WordPress)</div></div>
+    </div></div>
 
-    <!-- ===== LSP ===== -->
-    <div class="category" data-cat="lsp">
-      <div class="category-header">
-        <div class="category-dot" style="background: #5B4BC7;"></div>
-        <div class="category-title">ตัวช่วยภาษาโปรแกรม (LSP)</div>
-        <span class="category-count">12</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="lsp" data-name="typescript-lsp" data-desc="ช่วย Claude เข้าใจโค้ด TypeScript / JavaScript ได้ลึกขึ้น"><div class="skill-top"><span class="skill-name">typescript-lsp</span><span class="skill-tag skill-tag-lsp">LSP</span></div><div class="skill-desc">ช่วย Claude เข้าใจโค้ด TypeScript / JavaScript ได้ลึกขึ้น</div></div>
-        <div class="skill-card" data-tags="lsp" data-name="pyright-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Python"><div class="skill-top"><span class="skill-name">pyright-lsp</span><span class="skill-tag skill-tag-lsp">LSP</span></div><div class="skill-desc">ช่วย Claude เข้าใจโค้ด Python</div></div>
-        <div class="skill-card" data-tags="lsp" data-name="gopls-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Go"><div class="skill-top"><span class="skill-name">gopls-lsp</span><span class="skill-tag skill-tag-lsp">LSP</span></div><div class="skill-desc">ช่วย Claude เข้าใจโค้ด Go</div></div>
-        <div class="skill-card" data-tags="lsp" data-name="rust-analyzer-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Rust"><div class="skill-top"><span class="skill-name">rust-analyzer-lsp</span><span class="skill-tag skill-tag-lsp">LSP</span></div><div class="skill-desc">ช่วย Claude เข้าใจโค้ด Rust</div></div>
-        <div class="skill-card" data-tags="lsp" data-name="kotlin-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Kotlin (Android)"><div class="skill-top"><span class="skill-name">kotlin-lsp</span><span class="skill-tag skill-tag-lsp">LSP</span></div><div class="skill-desc">ช่วย Claude เข้าใจโค้ด Kotlin (Android)</div></div>
-        <div class="skill-card" data-tags="lsp" data-name="jdtls-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Java"><div class="skill-top"><span class="skill-name">jdtls-lsp</span><span class="skill-tag skill-tag-lsp">LSP</span></div><div class="skill-desc">ช่วย Claude เข้าใจโค้ด Java</div></div>
-        <div class="skill-card" data-tags="lsp" data-name="clangd-lsp" data-desc="ช่วย Claude เข้าใจโค้ด C / C++"><div class="skill-top"><span class="skill-name">clangd-lsp</span><span class="skill-tag skill-tag-lsp">LSP</span></div><div class="skill-desc">ช่วย Claude เข้าใจโค้ด C / C++</div></div>
-        <div class="skill-card" data-tags="lsp" data-name="csharp-lsp" data-desc="ช่วย Claude เข้าใจโค้ด C# (.NET)"><div class="skill-top"><span class="skill-name">csharp-lsp</span><span class="skill-tag skill-tag-lsp">LSP</span></div><div class="skill-desc">ช่วย Claude เข้าใจโค้ด C# (.NET)</div></div>
-        <div class="skill-card" data-tags="lsp" data-name="ruby-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Ruby"><div class="skill-top"><span class="skill-name">ruby-lsp</span><span class="skill-tag skill-tag-lsp">LSP</span></div><div class="skill-desc">ช่วย Claude เข้าใจโค้ด Ruby</div></div>
-        <div class="skill-card" data-tags="lsp" data-name="swift-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Swift (iOS/macOS)"><div class="skill-top"><span class="skill-name">swift-lsp</span><span class="skill-tag skill-tag-lsp">LSP</span></div><div class="skill-desc">ช่วย Claude เข้าใจโค้ด Swift (iOS/macOS)</div></div>
-        <div class="skill-card" data-tags="lsp" data-name="lua-lsp" data-desc="ช่วย Claude เข้าใจโค้ด Lua"><div class="skill-top"><span class="skill-name">lua-lsp</span><span class="skill-tag skill-tag-lsp">LSP</span></div><div class="skill-desc">ช่วย Claude เข้าใจโค้ด Lua</div></div>
-        <div class="skill-card" data-tags="lsp" data-name="php-lsp" data-desc="ช่วย Claude เข้าใจโค้ด PHP (Laravel WordPress)"><div class="skill-top"><span class="skill-name">php-lsp</span><span class="skill-tag skill-tag-lsp">LSP</span></div><div class="skill-desc">ช่วย Claude เข้าใจโค้ด PHP (Laravel WordPress)</div></div>
-      </div>
-    </div>
+    <!-- REFERENCES -->
+    <div class="category" data-cat="reference"><div class="cat-header"><div class="cat-dot" style="background:var(--info)"></div><div class="cat-title">เอกสารอ้างอิง</div><span class="cat-count">15</span></div><div class="grid">
+      <div class="sk" data-tags="reference" data-name="ref-wcag" data-desc="Checklist Accessibility — รายการที่ต้องตรวจเพื่อให้คนพิการใช้งานได้ WCAG 2.2"><div class="sk-top"><span class="sk-name">wcag-checklist</span><span class="sk-tag sk-tag-reference">Ref</span></div><div class="sk-desc">Checklist Accessibility — รายการที่ต้องตรวจเพื่อให้คนพิการใช้งานได้ WCAG 2.2</div></div>
+      <div class="sk" data-tags="reference" data-name="ref-aria" data-desc="วิธีทำ component ให้ screen reader อ่านได้ — ปุ่ม modal tab dropdown"><div class="sk-top"><span class="sk-name">aria-patterns</span><span class="sk-tag sk-tag-reference">Ref</span></div><div class="sk-desc">วิธีทำ component ให้ screen reader อ่านได้ — ปุ่ม modal tab dropdown</div></div>
+      <div class="sk" data-tags="reference" data-name="ref-atoms" data-desc="ชิ้นส่วนเล็กสุด — Button Input Icon Badge Avatar Toggle"><div class="sk-top"><span class="sk-name">component-atoms</span><span class="sk-tag sk-tag-reference">Ref</span></div><div class="sk-desc">ชิ้นส่วนเล็กสุด — Button Input Icon Badge Avatar Toggle</div></div>
+      <div class="sk" data-tags="reference" data-name="ref-molecules" data-desc="กลุ่มชิ้นส่วน — Search Bar Form Field Card Alert Dropdown"><div class="sk-top"><span class="sk-name">component-molecules</span><span class="sk-tag sk-tag-reference">Ref</span></div><div class="sk-desc">กลุ่มชิ้นส่วน — Search Bar Form Field Card Alert Dropdown</div></div>
+      <div class="sk" data-tags="reference" data-name="ref-organisms" data-desc="ส่วนใหญ่ของหน้า — Header Sidebar Data Table Modal Drawer"><div class="sk-top"><span class="sk-name">component-organisms</span><span class="sk-tag sk-tag-reference">Ref</span></div><div class="sk-desc">ส่วนใหญ่ของหน้า — Header Sidebar Data Table Modal Drawer</div></div>
+      <div class="sk" data-tags="reference" data-name="ref-templates" data-desc="โครงหน้าทั้งหน้า — Dashboard Login Settings List/Detail"><div class="sk-top"><span class="sk-name">component-templates</span><span class="sk-tag sk-tag-reference">Ref</span></div><div class="sk-desc">โครงหน้าทั้งหน้า — Dashboard Login Settings List/Detail</div></div>
+      <div class="sk" data-tags="reference" data-name="ref-ux-writing" data-desc="แนวทางเขียน UX Copy — ปุ่ม error message placeholder ทั้งไทย-อังกฤษ"><div class="sk-top"><span class="sk-name">ux-writing-patterns</span><span class="sk-tag sk-tag-reference">Ref</span></div><div class="sk-desc">แนวทางเขียน UX Copy — ปุ่ม error message placeholder ทั้งไทย-อังกฤษ</div></div>
+      <div class="sk" data-tags="reference" data-name="ref-visual" data-desc="หลักการออกแบบ — สมดุล contrast hierarchy white space"><div class="sk-top"><span class="sk-name">visual-design-principles</span><span class="sk-tag sk-tag-reference">Ref</span></div><div class="sk-desc">หลักการออกแบบ — สมดุล contrast hierarchy white space</div></div>
+      <div class="sk" data-tags="reference" data-name="ref-ui-quality" data-desc="กฎตรวจคุณภาพ UI — checklist ก่อนส่งงาน"><div class="sk-top"><span class="sk-name">ui-preview-quality-rules</span><span class="sk-tag sk-tag-reference">Ref</span></div><div class="sk-desc">กฎตรวจคุณภาพ UI — checklist ก่อนส่งงาน</div></div>
+      <div class="sk" data-tags="reference" data-name="ref-prototyping" data-desc="ขั้นตอนทำ Prototype & User Research — ตั้งแต่คิดจนถึงทดสอบ"><div class="sk-top"><span class="sk-name">prototyping-workflow</span><span class="sk-tag sk-tag-reference">Ref</span></div><div class="sk-desc">ขั้นตอนทำ Prototype & User Research — ตั้งแต่คิดจนถึงทดสอบ</div></div>
+      <div class="sk" data-tags="reference" data-name="ref-design-tokens" data-desc="ค่ากลางของดีไซน์ — สี ขนาดตัวอักษร ระยะห่าง มุมโค้ง เงา"><div class="sk-top"><span class="sk-name">design-tokens</span><span class="sk-tag sk-tag-reference">Ref</span></div><div class="sk-desc">ค่ากลางของดีไซน์ — สี ขนาดตัวอักษร ระยะห่าง มุมโค้ง เงา</div></div>
+      <div class="sk" data-tags="reference" data-name="ref-figma-mcp" data-desc="รายการคำสั่ง Figma MCP ทั้งหมด — ใช้อ้างอิงตอนสั่ง Claude ทำงานใน Figma"><div class="sk-top"><span class="sk-name">figma-mcp-commands</span><span class="sk-tag sk-tag-reference">Ref</span></div><div class="sk-desc">รายการคำสั่ง Figma MCP ทั้งหมด — ใช้อ้างอิงตอนสั่ง Claude ทำงานใน Figma</div></div>
+      <div class="sk" data-tags="reference" data-name="ref-fontawesome" data-desc="รายการไอคอน FontAwesome — ค้นหาชื่อไอคอนที่ต้องการ"><div class="sk-top"><span class="sk-name">fontawesome-icons</span><span class="sk-tag sk-tag-reference">Ref</span></div><div class="sk-desc">รายการไอคอน FontAwesome — ค้นหาชื่อไอคอนที่ต้องการ</div></div>
+      <div class="sk" data-tags="reference" data-name="ref-hig" data-desc="แนวทางออกแบบของ Apple (HIG) และ Google (Material Design)"><div class="sk-top"><span class="sk-name">HIG & Material Design</span><span class="sk-tag sk-tag-reference">Ref</span></div><div class="sk-desc">แนวทางออกแบบของ Apple (HIG) และ Google (Material Design)</div></div>
+      <div class="sk" data-tags="reference" data-name="ref-skill-guide" data-desc="คู่มือสร้าง Custom Skill — วิธีเขียน โครงสร้างไฟล์ ตัวอย่าง"><div class="sk-top"><span class="sk-name">skill-building-guide</span><span class="sk-tag sk-tag-reference">Ref</span></div><div class="sk-desc">คู่มือสร้าง Custom Skill — วิธีเขียน โครงสร้างไฟล์ ตัวอย่าง</div></div>
+    </div></div>
 
-    <!-- ===== REFERENCES ===== -->
-    <div class="category" data-cat="reference">
-      <div class="category-header">
-        <div class="category-dot" style="background: var(--info);"></div>
-        <div class="category-title">เอกสารอ้างอิง</div>
-        <span class="category-count">15</span>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card" data-tags="reference" data-name="ref-wcag" data-desc="Checklist Accessibility — รายการที่ต้องตรวจเพื่อให้คนพิการใช้งานได้ WCAG 2.2"><div class="skill-top"><span class="skill-name">wcag-checklist</span><span class="skill-tag skill-tag-reference">Ref</span></div><div class="skill-desc">Checklist Accessibility — รายการที่ต้องตรวจเพื่อให้คนพิการใช้งานได้ WCAG 2.2</div></div>
-        <div class="skill-card" data-tags="reference" data-name="ref-aria" data-desc="วิธีทำ component ให้ screen reader อ่านได้ — ปุ่ม modal tab dropdown"><div class="skill-top"><span class="skill-name">aria-patterns</span><span class="skill-tag skill-tag-reference">Ref</span></div><div class="skill-desc">วิธีทำ component ให้ screen reader อ่านได้ — ปุ่ม modal tab dropdown</div></div>
-        <div class="skill-card" data-tags="reference" data-name="ref-atoms" data-desc="ชิ้นส่วนเล็กสุด — Button Input Icon Badge Avatar Toggle"><div class="skill-top"><span class="skill-name">component-atoms</span><span class="skill-tag skill-tag-reference">Ref</span></div><div class="skill-desc">ชิ้นส่วนเล็กสุด — Button Input Icon Badge Avatar Toggle</div></div>
-        <div class="skill-card" data-tags="reference" data-name="ref-molecules" data-desc="กลุ่มชิ้นส่วน — Search Bar Form Field Card Alert Dropdown"><div class="skill-top"><span class="skill-name">component-molecules</span><span class="skill-tag skill-tag-reference">Ref</span></div><div class="skill-desc">กลุ่มชิ้นส่วน — Search Bar Form Field Card Alert Dropdown</div></div>
-        <div class="skill-card" data-tags="reference" data-name="ref-organisms" data-desc="ส่วนใหญ่ของหน้า — Header Sidebar Data Table Modal Drawer"><div class="skill-top"><span class="skill-name">component-organisms</span><span class="skill-tag skill-tag-reference">Ref</span></div><div class="skill-desc">ส่วนใหญ่ของหน้า — Header Sidebar Data Table Modal Drawer</div></div>
-        <div class="skill-card" data-tags="reference" data-name="ref-templates" data-desc="โครงหน้าทั้งหน้า — Dashboard Login Settings List/Detail"><div class="skill-top"><span class="skill-name">component-templates</span><span class="skill-tag skill-tag-reference">Ref</span></div><div class="skill-desc">โครงหน้าทั้งหน้า — Dashboard Login Settings List/Detail</div></div>
-        <div class="skill-card" data-tags="reference" data-name="ref-ux-writing" data-desc="แนวทางเขียน UX Copy — ปุ่ม error message placeholder ทั้งไทย-อังกฤษ"><div class="skill-top"><span class="skill-name">ux-writing-patterns</span><span class="skill-tag skill-tag-reference">Ref</span></div><div class="skill-desc">แนวทางเขียน UX Copy — ปุ่ม error message placeholder ทั้งไทย-อังกฤษ</div></div>
-        <div class="skill-card" data-tags="reference" data-name="ref-visual" data-desc="หลักการออกแบบ — สมดุล contrast hierarchy white space"><div class="skill-top"><span class="skill-name">visual-design-principles</span><span class="skill-tag skill-tag-reference">Ref</span></div><div class="skill-desc">หลักการออกแบบ — สมดุล contrast hierarchy white space</div></div>
-        <div class="skill-card" data-tags="reference" data-name="ref-ui-quality" data-desc="กฎตรวจคุณภาพ UI — checklist ก่อนส่งงาน"><div class="skill-top"><span class="skill-name">ui-preview-quality-rules</span><span class="skill-tag skill-tag-reference">Ref</span></div><div class="skill-desc">กฎตรวจคุณภาพ UI — checklist ก่อนส่งงาน</div></div>
-        <div class="skill-card" data-tags="reference" data-name="ref-prototyping" data-desc="ขั้นตอนทำ Prototype & User Research — ตั้งแต่คิดจนถึงทดสอบ"><div class="skill-top"><span class="skill-name">prototyping-workflow</span><span class="skill-tag skill-tag-reference">Ref</span></div><div class="skill-desc">ขั้นตอนทำ Prototype & User Research — ตั้งแต่คิดจนถึงทดสอบ</div></div>
-        <div class="skill-card" data-tags="reference" data-name="ref-design-tokens" data-desc="ค่ากลางของดีไซน์ — สี ขนาดตัวอักษร ระยะห่าง มุมโค้ง เงา"><div class="skill-top"><span class="skill-name">design-tokens</span><span class="skill-tag skill-tag-reference">Ref</span></div><div class="skill-desc">ค่ากลางของดีไซน์ — สี ขนาดตัวอักษร ระยะห่าง มุมโค้ง เงา</div></div>
-        <div class="skill-card" data-tags="reference" data-name="ref-figma-mcp" data-desc="รายการคำสั่ง Figma MCP ทั้งหมด — ใช้อ้างอิงตอนสั่ง Claude ทำงานใน Figma"><div class="skill-top"><span class="skill-name">figma-mcp-commands</span><span class="skill-tag skill-tag-reference">Ref</span></div><div class="skill-desc">รายการคำสั่ง Figma MCP ทั้งหมด — ใช้อ้างอิงตอนสั่ง Claude ทำงานใน Figma</div></div>
-        <div class="skill-card" data-tags="reference" data-name="ref-fontawesome" data-desc="รายการไอคอน FontAwesome — ค้นหาชื่อไอคอนที่ต้องการ"><div class="skill-top"><span class="skill-name">fontawesome-icons</span><span class="skill-tag skill-tag-reference">Ref</span></div><div class="skill-desc">รายการไอคอน FontAwesome — ค้นหาชื่อไอคอนที่ต้องการ</div></div>
-        <div class="skill-card" data-tags="reference" data-name="ref-hig" data-desc="แนวทางออกแบบของ Apple (HIG) และ Google (Material Design)"><div class="skill-top"><span class="skill-name">HIG & Material Design</span><span class="skill-tag skill-tag-reference">Ref</span></div><div class="skill-desc">แนวทางออกแบบของ Apple (HIG) และ Google (Material Design)</div></div>
-        <div class="skill-card" data-tags="reference" data-name="ref-skill-guide" data-desc="คู่มือสร้าง Custom Skill — วิธีเขียน โครงสร้างไฟล์ ตัวอย่าง"><div class="skill-top"><span class="skill-name">skill-building-guide</span><span class="skill-tag skill-tag-reference">Ref</span></div><div class="skill-desc">คู่มือสร้าง Custom Skill — วิธีเขียน โครงสร้างไฟล์ ตัวอย่าง</div></div>
-      </div>
-    </div>
+  </div>
 
-  </div><!-- /results -->
-
-  <!-- CHANGELOG -->
+  <!-- Changelog -->
   <div class="changelog">
     <h2>บันทึกการเปลี่ยนแปลง</h2>
-    <div class="changelog-entry">
-      <span class="changelog-version">v1.1.0</span>
-      <span class="changelog-date">22 มี.ค. 2569</span>
-      <ul class="changelog-items">
-        <li>Redesign — filter เป็นการ์ดใหญ่ ค้นหาแล้ว highlight คำที่ match</li>
-        <li>การ์ดที่ไม่ match จะจางลงแทนที่จะหายไป ช่วยให้เห็นบริบทรอบข้าง</li>
-      </ul>
+    <div class="cl-entry">
+      <span class="cl-ver">v1.1.0</span><span class="cl-date">22 มี.ค. 2569</span>
+      <ul class="cl-items"><li>ปรับ template ให้ตรงกับเว็บ tanplanet — เพิ่ม back nav, hero, footer</li><li>Filter การ์ดใหญ่ + search highlight</li></ul>
     </div>
-    <div class="changelog-entry">
-      <span class="changelog-version">v1.0.0</span>
-      <span class="changelog-date">22 มี.ค. 2569</span>
-      <ul class="changelog-items">
-        <li>เปิดตัว — รวบรวมทุกสกิลไว้ที่เดียว</li>
-        <li>คำอธิบายภาษาไทยทุกรายการ, ฟอนต์ IBM Plex Sans Thai</li>
-      </ul>
+    <div class="cl-entry">
+      <span class="cl-ver">v1.0.0</span><span class="cl-date">22 มี.ค. 2569</span>
+      <ul class="cl-items"><li>เปิดตัว — รวบรวมทุกสกิลเป็น source of truth</li></ul>
     </div>
   </div>
 
-</div><!-- /container -->
-
-<div class="footer">
-  Claude Code Skills Registry v1.1.0 — อัปเดตล่าสุด: 22 มี.ค. 2569<br>
-  ดูแลโดย Nat Pakansirirat
 </div>
 
+<!-- Footer -->
+<footer class="footer">
+  <p><strong>Claude Code Skills Registry</strong> — รวมทุกสกิลที่ติดตั้งไว้ใน Claude Code เป็น source of truth</p>
+  <p style="margin-top:12px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+    <a href="https://projects.tanplanet.info/talk-to-figma-mcp/">Talk to Figma MCP</a>
+    <a href="https://projects.tanplanet.info/thai-typo-fixer/">Thai Typo Fixer</a>
+    <a href="https://projects.tanplanet.info/">All Projects</a>
+  </p>
+  <p class="footer-version">v1.1.0 — มี.ค. 2569</p>
+</footer>
+
 <script>
-const searchInput = document.getElementById('search');
-const searchCountEl = document.getElementById('searchCount');
-const cards = document.querySelectorAll('.skill-card');
-const categories = document.querySelectorAll('.category');
-const filterCards = document.querySelectorAll('.filter-card');
-let activeFilter = 'all';
+(function(){
+  var btn = document.querySelector('.back-to-top');
+  window.addEventListener('scroll', function(){
+    btn.classList.toggle('visible', window.scrollY > 300);
+  }, {passive: true});
+})();
 
-function escapeRegex(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+var searchInput = document.getElementById('search');
+var searchCountEl = document.getElementById('searchCount');
+var cards = document.querySelectorAll('.sk');
+var categories = document.querySelectorAll('.category');
+var filterCards = document.querySelectorAll('.filter-card');
+var activeFilter = 'all';
+
+function escapeRegex(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+function hl(text,q){if(!q)return text;return text.replace(new RegExp('('+escapeRegex(q)+')','gi'),'<mark>$1</mark>');}
+
+function apply(){
+  var q = searchInput.value.toLowerCase().trim();
+  var matchCount = 0;
+  cards.forEach(function(c){
+    var name = c.getAttribute('data-name').toLowerCase();
+    var desc = c.getAttribute('data-desc').toLowerCase();
+    var tags = c.getAttribute('data-tags');
+    if(activeFilter !== 'all' && tags.indexOf(activeFilter) === -1){c.classList.add('hidden');c.classList.remove('matched','dimmed');return;}
+    c.classList.remove('hidden');
+    if(!q){c.classList.remove('matched','dimmed');c.querySelector('.sk-desc').textContent=c.getAttribute('data-desc');return;}
+    var m = name.indexOf(q)!==-1 || desc.indexOf(q)!==-1;
+    if(m){c.classList.add('matched');c.classList.remove('dimmed');matchCount++;c.querySelector('.sk-desc').innerHTML=hl(c.getAttribute('data-desc'),q);var ne=c.querySelector('.sk-name');ne.innerHTML=hl(ne.textContent,q);}
+    else{c.classList.remove('matched');c.classList.add('dimmed');c.querySelector('.sk-desc').textContent=c.getAttribute('data-desc');}
+  });
+  categories.forEach(function(cat){cat.style.display=cat.querySelectorAll('.sk:not(.hidden)').length===0?'none':'';});
+  searchCountEl.textContent=q?(matchCount>0?'พบ '+matchCount+' สกิลที่ตรงกับ "'+searchInput.value+'"':'ไม่พบสกิลที่ตรงกับ "'+searchInput.value+'"'):'';
 }
 
-function highlightText(text, query) {
-  if (!query) return text;
-  const escaped = escapeRegex(query);
-  const regex = new RegExp(`(${escaped})`, 'gi');
-  return text.replace(regex, '<mark>$1</mark>');
-}
-
-function applyFilters() {
-  const query = searchInput.value.toLowerCase().trim();
-  let matchCount = 0;
-  let totalVisible = 0;
-
-  cards.forEach(card => {
-    const name = card.getAttribute('data-name').toLowerCase();
-    const desc = card.getAttribute('data-desc').toLowerCase();
-    const tags = card.getAttribute('data-tags');
-    const matchFilter = activeFilter === 'all' || tags.includes(activeFilter);
-
-    if (!matchFilter) {
-      card.classList.add('hidden');
-      card.classList.remove('matched', 'dimmed');
-      return;
-    }
-
-    card.classList.remove('hidden');
-    totalVisible++;
-
-    if (!query) {
-      card.classList.remove('matched', 'dimmed');
-      // restore original text
-      card.querySelector('.skill-desc').textContent = card.getAttribute('data-desc');
-      card.querySelector('.skill-name').textContent = card.querySelector('.skill-name').textContent;
-      return;
-    }
-
-    const matchSearch = name.includes(query) || desc.includes(query);
-
-    if (matchSearch) {
-      card.classList.add('matched');
-      card.classList.remove('dimmed');
-      matchCount++;
-
-      // highlight in desc
-      const origDesc = card.getAttribute('data-desc');
-      card.querySelector('.skill-desc').innerHTML = highlightText(origDesc, query);
-
-      // highlight in name
-      const nameEl = card.querySelector('.skill-name');
-      const origName = nameEl.textContent;
-      nameEl.innerHTML = highlightText(origName, query);
-    } else {
-      card.classList.remove('matched');
-      card.classList.add('dimmed');
-      card.querySelector('.skill-desc').textContent = card.getAttribute('data-desc');
-    }
-  });
-
-  // hide empty categories
-  categories.forEach(cat => {
-    const visible = cat.querySelectorAll('.skill-card:not(.hidden)');
-    cat.style.display = visible.length === 0 ? 'none' : '';
-  });
-
-  // update search count
-  if (query) {
-    searchCountEl.textContent = matchCount > 0
-      ? `พบ ${matchCount} สกิลที่ตรงกับ "${searchInput.value}"`
-      : `ไม่พบสกิลที่ตรงกับ "${searchInput.value}"`;
-  } else {
-    searchCountEl.textContent = '';
-  }
-}
-
-searchInput.addEventListener('input', applyFilters);
-
-filterCards.forEach(card => {
-  card.addEventListener('click', () => {
-    filterCards.forEach(c => c.classList.remove('active'));
-    card.classList.add('active');
-    activeFilter = card.getAttribute('data-filter');
-    applyFilters();
-  });
-});
-
-// set total count
+searchInput.addEventListener('input', apply);
+filterCards.forEach(function(fc){fc.addEventListener('click',function(){filterCards.forEach(function(c){c.classList.remove('active');});fc.classList.add('active');activeFilter=fc.getAttribute('data-filter');apply();});});
 document.getElementById('count-all').textContent = cards.length;
 </script>
 </body>
