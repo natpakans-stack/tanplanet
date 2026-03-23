@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  base: '/claude-skills-registry/',
   title: 'Skills Registry',
   description: 'รวมทุก Skill, Plugin, MCP Server ที่ติดตั้งไว้ใน Claude Code',
   lang: 'th',
