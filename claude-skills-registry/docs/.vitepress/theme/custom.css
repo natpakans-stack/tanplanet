@@ -1,0 +1,120 @@
+:root {
+  --vp-font-family-base: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+  --vp-font-family-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  --vp-c-brand-1: #D97757;
+  --vp-c-brand-2: #C4654A;
+  --vp-c-brand-3: #B8573A;
+  --vp-c-brand-soft: rgba(217, 119, 87, 0.14);
+
+  --vp-c-tip-1: #6B5CE7;
+  --vp-c-tip-2: #5A4BD6;
+  --vp-c-tip-3: #4A3BC6;
+  --vp-c-tip-soft: rgba(107, 92, 231, 0.14);
+}
+
+.dark {
+  --vp-c-brand-1: #E08A6B;
+  --vp-c-brand-2: #D97757;
+  --vp-c-brand-3: #C4654A;
+  --vp-c-brand-soft: rgba(217, 119, 87, 0.16);
+}
+
+/* Skill heading styling — h3 codes appear in outline */
+.vp-doc h3 code {
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.95rem;
+  color: var(--vp-c-brand-1);
+  background: var(--vp-c-brand-soft);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.vp-doc h3 {
+  border-top: 1px solid var(--vp-c-divider);
+  padding-top: 20px !important;
+  margin-top: 24px !important;
+}
+
+.vp-doc h3 + p {
+  font-size: 0.92rem;
+  color: var(--vp-c-text-2);
+  line-height: 1.6;
+  margin-top: 4px !important;
+}
+
+/* Category badge */
+.category-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.badge-plugin { background: #FDF2ED; color: #D97757; }
+.badge-mcp { background: #F0EEFF; color: #6B5CE7; }
+.badge-custom { background: #EDF7ED; color: #2E7D32; }
+.badge-bmad { background: #FEF9EB; color: #B8860B; }
+.badge-lsp { background: #E8F4FD; color: #0277BD; }
+.badge-reference { background: #F3E8FD; color: #7B1FA2; }
+.badge-tool { background: #E0F2F1; color: #00695C; }
+
+.dark .badge-plugin { background: rgba(217, 119, 87, 0.15); }
+.dark .badge-mcp { background: rgba(107, 92, 231, 0.15); }
+.dark .badge-custom { background: rgba(46, 125, 50, 0.15); }
+.dark .badge-bmad { background: rgba(184, 134, 11, 0.15); }
+.dark .badge-lsp { background: rgba(2, 119, 189, 0.15); }
+.dark .badge-reference { background: rgba(123, 31, 162, 0.15); }
+.dark .badge-tool { background: rgba(0, 105, 92, 0.15); }
+
+/* Stats grid on home */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 16px 12px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  background: var(--vp-c-bg-soft);
+}
+
+.stat-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--vp-c-brand-1);
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 0.82rem;
+  color: var(--vp-c-text-2);
+  margin-top: 4px;
+}
+
+/* Wider search button — easier to find and click */
+.VPNavBarSearch .DocSearch-Button,
+.VPNavBarSearch button[aria-label] {
+  min-width: 260px;
+}
+
+@media (min-width: 768px) {
+  .VPNavBarSearch .DocSearch-Button,
+  .VPNavBarSearch button[aria-label] {
+    min-width: 320px;
+  }
+}
+
+/* Local search trigger button */
+#local-search button,
+.VPNavBarSearchButton {
+  min-width: 240px !important;
+  padding: 6px 16px !important;
+}

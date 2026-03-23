@@ -1,0 +1,51 @@
+---
+layout: home
+hero:
+  name: Claude Code Skills Registry
+  text: Source of Truth
+  tagline: รวมทุก Skill, Plugin, MCP Server ที่ติดตั้งไว้ใน Claude Code — ดูได้ในที่เดียว อัปเดตได้ตลอด
+  image:
+    src: https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif
+    alt: Aw mascot
+  actions:
+    - theme: brand
+      text: เริ่มดูสกิลทั้งหมด
+      link: /plugin/design-frontend
+    - theme: alt
+      text: All Projects
+      link: https://projects.tanplanet.info/
+
+features:
+  - icon: 🔌
+    title: Plugins (19)
+    details: สกิลสำเร็จรูป — ออกแบบ, พัฒนาโค้ด, ตรวจ PR, สร้าง plugin ใหม่
+    link: /plugin/design-frontend
+  - icon: 🔗
+    title: MCP Servers (23)
+    details: เชื่อมต่อเครื่องมือภายนอก — Slack, GitHub, Jira, Figma, Firebase
+    link: /mcp/chat
+  - icon: 🎨
+    title: Custom Skills (17)
+    details: สกิลที่สร้างเอง — Design Pipeline, QA, UX Audit, Clone Web
+    link: /custom/design-qa
+  - icon: 🤖
+    title: BMAD (40)
+    details: ทีม AI จำลอง — PM, Dev, QA, Architect พร้อม workflow ครบวงจร
+    link: /bmad/team
+  - icon: 💻
+    title: LSP (12)
+    details: ตัวช่วยภาษาโปรแกรม — TypeScript, Python, Go, Rust, Swift และอื่น ๆ
+    link: /lsp/
+  - icon: 📚
+    title: Reference (15)
+    details: เอกสารอ้างอิง — WCAG, ARIA, Components, Design Tokens, Figma MCP
+    link: /reference/
+  - icon: 🛠️
+    title: Tools (5)
+    details: เครื่องมือที่ใช้ทำงาน — Remotion, Loftlyy, Masko Code, Flow, Chops
+    link: /tool/
+---
+
+<div style="text-align: center; padding: 24px 0 0;">
+  <p style="color: var(--vp-c-text-3); font-size: 0.85rem;">v1.2.0 — มี.ค. 2569 · ทั้งหมด 131 skills</p>
+</div>
