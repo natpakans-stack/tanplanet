@@ -328,87 +328,94 @@
       color: var(--text-secondary);
     }
 
-    /* ===== CLOSING ===== */
+    /* ===== Closing ===== */
     .closing {
-      position: relative;
       text-align: center;
       padding: 40px 24px 64px;
+      border-top: 1px solid var(--border);
       margin-top: 140px;
+      position: relative;
     }
-    .closing .mascot-half {
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
       position: absolute;
-      top: -100px;
+      top: 0;
       left: 50%;
-      transform: translateX(-50%);
-      width: 120px;
-      height: 120px;
+      transform: translate(-50%, -100%);
     }
-    .closing .mascot-half img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: 3px solid var(--border);
-      background: var(--surface);
-      object-fit: cover;
-    }
-    .closing h2 {
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-      margin-top: 24px;
-    }
+    .mascot-half img { width: 100%; height: auto; display: block; border-radius: 50%; }
+    .closing h2 { font-size: 1.4rem; margin-bottom: 8px; }
     .closing p {
-      font-size: 0.95rem;
       color: var(--text-secondary);
-      max-width: 560px;
+      font-size: 0.95rem;
+      max-width: 480px;
       margin: 0 auto 20px;
-      line-height: 1.75;
     }
-    .closing .stack-icons {
+    .stack-icons {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 8px;
-      margin-top: 16px;
     }
-    .closing .stack-icon {
-      display: inline-block;
-      background: var(--tag-bg);
-      padding: 4px 12px;
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
       border-radius: 50px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-weight: 600;
     }
-    .closing .footer-credit {
-      margin-top: 32px;
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-    }
-    .closing .footer-credit a { color: var(--accent-dark); text-decoration: none; }
-    .closing .footer-credit a:hover { text-decoration: underline; }
 
-    /* ===== BACK NAV ===== */
+    /* ===== Back Nav ===== */
     .back-nav {
       position: fixed;
-      bottom: 24px;
-      left: 24px;
-      display: flex;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: var(--surface);
-      border: 1px solid var(--border);
       padding: 8px 16px;
+      background: rgba(122,162,247,0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
       border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
       font-size: 0.82rem;
       font-weight: 600;
-      color: var(--text-secondary);
-      text-decoration: none;
-      box-shadow: var(--shadow-md);
-      transition: background 0.15s;
-      z-index: 100;
+      transition: background 0.2s, transform 0.2s;
     }
-    .back-nav:hover { background: var(--tag-bg); }
+    .back-nav:hover { background: rgba(122,162,247,0.95); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 640px) {
@@ -698,12 +705,12 @@
     </div>
   </div>
 
-  <!-- CLOSING -->
+  <!-- ===== Closing ===== -->
   <div class="closing">
     <div class="mascot-half">
       <img src="https://avatars.githubusercontent.com/u/256731825?v=4" alt="tanθ avatar">
     </div>
-    <h2>Inspect → Copy → Paste to Claude</h2>
+    <h2>🔍 Inspect → Copy → Paste to Claude</h2>
     <p>Design Inspector for Claude เกิดจากการสังเกต pain point ของตัวเอง แล้วลงมือแก้ปัญหาด้วย Design Thinking — ตั้งแต่ empathize, prototype, จนถึง iterate จากการใช้งานจริง</p>
     <div class="stack-icons">
       <span class="stack-icon">Chrome Extension</span>
@@ -713,16 +720,23 @@
       <span class="stack-icon">Design Thinking</span>
       <span class="stack-icon">AI Workflow</span>
     </div>
-    <div class="footer-credit">
-      <p>built by <a href="https://tanplanet.info" target="_blank">tanθ</a> — UX Designer × AI Workflow</p>
-    </div>
   </div>
 
-  <!-- BACK NAV -->
+  <!-- ===== Fixed UI ===== -->
   <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
 
 </body>
 </html>
