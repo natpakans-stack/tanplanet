@@ -4,12 +4,12 @@
 <template>
   <div class="mascot-footer">
     <div class="mascot-avatar">
-      <img
-        src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif"
-        alt="Aw mascot"
-        width="160"
-        height="160"
-      />
+      <div class="mascot-peek">
+        <img
+          src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif"
+          alt="Aw mascot"
+        />
+      </div>
     </div>
     <h3>🧠 ทุกสกิลอยู่ที่นี่</h3>
     <p class="mascot-desc">
@@ -33,21 +33,29 @@
 <style scoped>
 .mascot-footer {
   text-align: center;
-  padding: 48px 24px 32px;
+  padding: 80px 24px 32px;
   border-top: 1px solid var(--vp-c-divider);
   margin-top: 48px;
+  position: relative;
 }
 
 .mascot-avatar {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 16px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.mascot-avatar img {
-  width: 160px;
+.mascot-peek {
+  width: 120px;
+  height: 60px;
+  overflow: hidden;
+}
+
+.mascot-peek img {
+  width: 120px;
   height: auto;
-  border-radius: 50%;
+  display: block;
 }
 
 .mascot-footer h3 {
