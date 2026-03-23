@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=64&height=64">
+  <link rel="apple-touch-icon" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=180&height=180">
+  <title>Design Inspector for Claude — Chrome Extension Portfolio</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Design Inspector for Claude — Chrome Extension Portfolio">
+  <meta name="twitter:description" content="Chrome Extension ที่ช่วย UX Designer inspect element แล้ว copy เป็น Markdown สำหรับ Claude AI ได้ทันที">
+  <meta property="og:url" content="https://projects.tanplanet.info/design-inspector-for-claude/">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="Chrome Extension ที่ช่วย UX Designer inspect element แล้ว copy เป็น Markdown สำหรับ Claude AI ได้ทันที">
+  <meta property="og:title" content="Design Inspector for Claude — Chrome Extension Portfolio">
+  <meta name="description" content="Chrome Extension ที่ช่วย UX Designer inspect element แล้ว copy เป็น Markdown สำหรับ Claude AI ได้ทันที">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL@20..48,100..700,0..1" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --text: #1a1a2e;
+      --text-secondary: #64748b;
+      --accent: #7aa2f7;
+      --accent-dark: #5b83d8;
+      --accent-light: #eef2ff;
+      --border: #e2e8f0;
+      --code-bg: #1e1e2e;
+      --code-text: #cdd6f4;
+      --tag-bg: #f1f5f9;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --max-w: 800px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, #1e1e2e 0%, #2d2b55 50%, #1e1e2e 100%);
+      color: #fff;
+      padding: 80px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at 30% 70%, rgba(122,162,247,0.1) 0%, transparent 50%);
+    }
+    .hero-inner { position: relative; max-width: var(--max-w); margin: 0 auto; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(122,162,247,0.2);
+      backdrop-filter: blur(10px);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: var(--accent);
+    }
+    .hero-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .hero-icon svg {
+      width: 56px;
+      height: 56px;
+    }
+    .hero h1 {
+      font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .hero .hero-sub {
+      font-size: 1.1rem;
+      font-weight: 600;
+      opacity: 0.95;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+    .hero p {
+      font-size: 1rem;
+      opacity: 0.75;
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ===== SECTIONS ===== */
+    .section { padding: 48px 24px; max-width: var(--max-w); margin: 0 auto; }
+    .section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section h2 .material-symbols-outlined {
+      color: var(--accent);
+      font-size: 1.6rem;
+    }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    /* ===== DT PROCESS ===== */
+    .dt-process {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .dt-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .dt-card-phase {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .dt-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .dt-card p, .dt-card ul {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+    .dt-card ul {
+      padding-left: 18px;
+    }
+    .dt-card ul li + li {
+      margin-top: 4px;
+    }
+
+    /* ===== FEATURE LIST ===== */
+    .feature-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .feature-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .feature-icon {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      background: var(--accent-light);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-dark);
+      font-size: 1.2rem;
+    }
+    .feature-text h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .feature-text p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    /* ===== CODE DEMO ===== */
+    .code-demo {
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      font-family: 'Fira Code', ui-monospace, monospace;
+      font-size: 0.82rem;
+      line-height: 1.8;
+      overflow-x: auto;
+      margin-top: 16px;
+      box-shadow: var(--shadow-md);
+    }
+    .code-demo .dim { opacity: 0.45; }
+    .code-demo .key { color: #cba6f7; }
+    .code-demo .val { color: #a6e3a1; }
+    .code-demo .str { color: #f9e2af; }
+    .code-demo .comment { color: #585b70; font-style: italic; }
+
+    /* ===== DECISION TABLE ===== */
+    .decision-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 0.88rem;
+    }
+    .decision-table th {
+      text-align: left;
+      font-weight: 700;
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--border);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--text-secondary);
+    }
+    .decision-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .decision-table tr:last-child td { border-bottom: none; }
+
+    /* ===== TAGS ===== */
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    /* ===== ITERATION ===== */
+    .iteration-list {
+      margin-top: 16px;
+    }
+    .iteration-item {
+      display: flex;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .iteration-item:last-child { border-bottom: none; }
+    .iteration-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      background: var(--accent-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-dark);
+    }
+    .iteration-text h3 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .iteration-text p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    /* ===== ARCH ===== */
+    .arch-diagram {
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: var(--radius);
+      padding: 24px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.78rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      margin-top: 16px;
+      text-align: center;
+    }
+    .arch-diagram .accent { color: var(--accent); }
+    .arch-diagram .dim { opacity: 0.5; }
+
+    /* ===== LEARNING ===== */
+    .learning-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+    .learning-card h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .learning-card p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    /* ===== CLOSING ===== */
+    .closing {
+      position: relative;
+      text-align: center;
+      padding: 40px 24px 64px;
+      margin-top: 140px;
+    }
+    .closing .mascot-half {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 120px;
+    }
+    .closing .mascot-half img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid var(--border);
+      background: var(--surface);
+      object-fit: cover;
+    }
+    .closing h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      margin-top: 24px;
+    }
+    .closing p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      max-width: 560px;
+      margin: 0 auto 20px;
+      line-height: 1.75;
+    }
+    .closing .stack-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .closing .stack-icon {
+      display: inline-block;
+      background: var(--tag-bg);
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+    .closing .footer-credit {
+      margin-top: 32px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+    .closing .footer-credit a { color: var(--accent-dark); text-decoration: none; }
+    .closing .footer-credit a:hover { text-decoration: underline; }
+
+    /* ===== BACK NAV ===== */
+    .back-nav {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-decoration: none;
+      box-shadow: var(--shadow-md);
+      transition: background 0.15s;
+      z-index: 100;
+    }
+    .back-nav:hover { background: var(--tag-bg); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      .hero { padding: 60px 20px 48px; }
+      .hero h1 { font-size: 1.5rem; }
+      .section { padding: 36px 20px; }
+      .dt-process { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">Chrome Extension</div>
+      <div class="hero-icon">
+        <svg viewBox="0 0 128 128" fill="none">
+          <rect x="3" y="3" width="122" height="122" rx="24" fill="rgba(122,162,247,0.1)" stroke="#7aa2f7" stroke-width="3"/>
+          <line x1="16" y1="44" x2="112" y2="44" stroke="#585b70" stroke-width="2"/>
+          <line x1="44" y1="16" x2="44" y2="112" stroke="#585b70" stroke-width="2"/>
+          <rect x="28" y="28" width="72" height="72" rx="8" fill="none" stroke="#7aa2f7" stroke-width="3" stroke-dasharray="8 4"/>
+          <circle cx="64" cy="64" r="12" fill="rgba(122,162,247,0.2)" stroke="#7aa2f7" stroke-width="2.5"/>
+          <circle cx="96" cy="96" r="10" fill="#a6e3a1"/>
+          <text x="96" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#1e1e2e" font-family="sans-serif">C</text>
+        </svg>
+      </div>
+      <h1>Design Inspector for Claude</h1>
+      <p class="hero-sub">Inspect → Copy → Paste to Claude</p>
+      <p>Chrome Extension ที่ช่วย UX Designer inspect element บนเว็บ แล้ว copy ข้อมูลเป็น Markdown สำหรับ Claude AI ได้ทันทีในคลิกเดียว</p>
+    </div>
+  </div>
+
+  <!-- BACKGROUND / PROBLEM -->
+  <div class="section">
+    <h2><span class="material-symbols-outlined">lightbulb</span> Background</h2>
+    <p>ในฐานะ UX Designer ที่ใช้ Claude เป็น design assistant — ปัญหาที่เจอทุกวันคือ: เวลาจะบอก Claude ว่า "แก้ element นี้ให้หน่อย" ต้อง<strong>เปิด DevTools → หาข้อมูล → คัดลอก CSS → จัดรูปแบบ → วางใน prompt</strong> ทุกครั้ง</p>
+    <p style="margin-top:12px; color: var(--text-secondary);">กระบวนการนี้เสีย 2-3 นาทีต่อ element และเกิดขึ้นซ้ำๆ วันละหลายสิบครั้ง — รวมแล้วเสียเวลามากกว่าที่คิด</p>
+  </div>
+
+  <!-- DESIGN THINKING PROCESS -->
+  <div class="section">
+    <h2><span class="material-symbols-outlined">psychology</span> Design Thinking Process</h2>
+    <div class="dt-process">
+
+      <div class="dt-card">
+        <div class="dt-card-phase">1. Empathize</div>
+        <h3>เข้าใจ Pain Point</h3>
+        <ul>
+          <li>สังเกต workflow ตัวเองเวลาทำงานกับ Claude</li>
+          <li>ขั้นตอนที่ช้าที่สุด = การเตรียมข้อมูล element ให้ Claude</li>
+          <li>ต้องสลับไปมาระหว่าง DevTools, code editor, Claude prompt</li>
+        </ul>
+      </div>
+
+      <div class="dt-card">
+        <div class="dt-card-phase">2. Define</div>
+        <h3>ปัญหาที่ชัดเจน</h3>
+        <p><strong>HMW:</strong> เราจะทำอย่างไรให้ designer สามารถส่งข้อมูล element ให้ Claude ได้ภายใน 1 คลิก โดยไม่ต้องเปิด DevTools?</p>
+      </div>
+
+      <div class="dt-card">
+        <div class="dt-card-phase">3. Ideate</div>
+        <h3>สำรวจทางเลือก</h3>
+        <ul>
+          <li>Bookmarklet — ง่ายแต่ไม่มี permission ที่จำเป็น</li>
+          <li>Chrome Extension — มี API ครบ, ใช้ได้ทุกเว็บ</li>
+          <li>ศึกษา Element Inspector extension เป็น reference</li>
+        </ul>
+      </div>
+
+      <div class="dt-card">
+        <div class="dt-card-phase">4. Prototype</div>
+        <h3>สร้างและทดสอบ</h3>
+        <ul>
+          <li>v1: Hover inspect + detail panel</li>
+          <li>v2: เพิ่ม auto-copy Markdown on click</li>
+          <li>v3: เพิ่ม ⌘+C shortcut + toast feedback</li>
+        </ul>
+      </div>
+
+      <div class="dt-card">
+        <div class="dt-card-phase">5. Test & Iterate</div>
+        <h3>ใช้จริง → ปรับปรุง</h3>
+        <ul>
+          <li>Markdown ยาวเกิน → ย่อให้กระชับ ~200 tokens</li>
+          <li>Screenshot ทำให้ flow ช้า → ตัดออก เน้น text</li>
+          <li>Clipboard API ใน content script มีปัญหา → ใช้ offscreen document</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="section">
+    <h2><span class="material-symbols-outlined">deployed_code</span> Features</h2>
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="feature-icon"><span class="material-symbols-outlined">select_all</span></div>
+        <div class="feature-text">
+          <h3>Hover Inspect</h3>
+          <p>ชี้ element แล้วเห็น overlay สี box model (margin/padding/content) พร้อม tooltip แสดง tag, size, font</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><span class="material-symbols-outlined">info</span></div>
+        <div class="feature-text">
+          <h3>Detail Panel</h3>
+          <p>คลิกเลือก element → แสดง panel ด้านขวาพร้อม box model diagram, computed styles, HTML snippet, CSS variables</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><span class="material-symbols-outlined">content_copy</span></div>
+        <div class="feature-text">
+          <h3>Auto Copy Markdown</h3>
+          <p>คลิกหรือกด ⌘+C → copy ข้อมูล element เป็น Markdown ลง clipboard ทันที พร้อมวางใน Claude prompt ได้เลย</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><span class="material-symbols-outlined">flash_on</span></div>
+        <div class="feature-text">
+          <h3>Visual Feedback</h3>
+          <p>Flash highlight สีฟ้า + toast pill ลอยด้านล่าง บอกสถานะ copy สำเร็จหรือไม่</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTPUT DEMO -->
+  <div class="section">
+    <h2><span class="material-symbols-outlined">code</span> Output ที่ได้</h2>
+    <p>คลิก element เดียว ได้ข้อมูลครบ — Claude อ่านแล้วรู้ทันทีว่า element ไหน อยู่ไฟล์ไหน style อะไร:</p>
+    <div class="code-demo">
+      <span class="key">**Element:**</span> <span class="val">`div.vd-status-hero--warning`</span> <span class="dim">(844×132)</span><br>
+      <span class="key">**File:**</span> <span class="str">http://localhost/voucher-detail.html</span><br>
+      <span class="key">**Path:**</span> <span class="val">`div.real-content > div#status-hero > div.vd-status-hero`</span><br>
+      <span class="key">**Styles:**</span> <span class="dim">padding: 14px 16px | font: 400 16px/26px IBM Plex Sans Thai | bg: #FEF9EB | radius: 12px</span><br>
+      <span class="comment">```html</span><br>
+      <span class="dim">&lt;div class="vd-status-hero vd-status-hero--warning"&gt;</span><br>
+      <span class="dim">&nbsp;&nbsp;&lt;div class="vd-status-hero__title"&gt;รอชำระเงิน&lt;/div&gt;</span><br>
+      <span class="dim">&nbsp;&nbsp;...</span><br>
+      <span class="dim">&lt;/div&gt;</span><br>
+      <span class="comment">```</span>
+    </div>
+    <p style="margin-top: 12px; font-size: 0.88rem; color: var(--text-secondary);">~200 tokens ต่อ element — กระชับพอให้ Claude เข้าใจ ไม่เปลือง context window</p>
+  </div>
+
+  <!-- DESIGN DECISIONS -->
+  <div class="section">
+    <h2><span class="material-symbols-outlined">decision</span> Design Decisions</h2>
+    <table class="decision-table">
+      <thead>
+        <tr><th>Decision</th><th>Choice</th><th>Why</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>UI Isolation</strong></td>
+          <td>Shadow DOM</td>
+          <td>ป้องกัน style ชนกับเว็บที่ inspect — ไม่ว่าเว็บจะใช้ CSS อะไรก็ไม่พัง</td>
+        </tr>
+        <tr>
+          <td><strong>Panel Theme</strong></td>
+          <td>Dark (#1e1e2e)</td>
+          <td>ลด visual conflict กับเว็บ + ดูเป็น dev tool ที่ designer คุ้นเคย</td>
+        </tr>
+        <tr>
+          <td><strong>Clipboard</strong></td>
+          <td>Offscreen Document</td>
+          <td>Content script ไม่มี clipboard permission → ส่งผ่าน background → offscreen ที่มี DOM เต็ม</td>
+        </tr>
+        <tr>
+          <td><strong>Output Format</strong></td>
+          <td>Compact Markdown</td>
+          <td>Claude อ่าน structured text ดีกว่ารูป — ประหยัด token, แก้ไขง่าย</td>
+        </tr>
+        <tr>
+          <td><strong>ตัด Screenshot</strong></td>
+          <td>Text-only</td>
+          <td>ทดลองแล้วพบว่า image clipboard ไม่ stable ข้าม browser — text เชื่อถือได้ 100%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ITERATION JOURNEY -->
+  <div class="section">
+    <h2><span class="material-symbols-outlined">refresh</span> Iteration Journey</h2>
+    <div class="iteration-list">
+      <div class="iteration-item">
+        <div class="iteration-num">1</div>
+        <div class="iteration-text">
+          <h3>v1.0 — Hover + Panel + Manual Copy</h3>
+          <p>Inspect element ได้ แต่ต้องกดปุ่ม copy เอง → ยังช้ากว่าที่ควร</p>
+        </div>
+      </div>
+      <div class="iteration-item">
+        <div class="iteration-num">2</div>
+        <div class="iteration-text">
+          <h3>v1.0 + Screenshot — ตัดออก</h3>
+          <p>เพิ่ม auto-screenshot + capture highlight ของ element → พบว่า image clipboard ไม่ stable, ทำให้ flow ช้า, download ไฟล์ยุ่งยาก → ตัดออก</p>
+        </div>
+      </div>
+      <div class="iteration-item">
+        <div class="iteration-num">3</div>
+        <div class="iteration-text">
+          <h3>Clipboard Fix — Offscreen Document</h3>
+          <p>navigator.clipboard ใน content script ไม่ทำงาน เพราะ user gesture หมดอายุหลัง async → แก้โดยส่ง copy ไป offscreen document ผ่าน background</p>
+        </div>
+      </div>
+      <div class="iteration-item">
+        <div class="iteration-num">4</div>
+        <div class="iteration-text">
+          <h3>Markdown ย่อ — จาก verbose เป็น compact</h3>
+          <p>Markdown เดิมมี table + ASCII box model ≈400 tokens → ย่อเป็น 1-liner styles ≈200 tokens ประหยัด context 50%</p>
+        </div>
+      </div>
+      <div class="iteration-item">
+        <div class="iteration-num">5</div>
+        <div class="iteration-text">
+          <h3>v1.1 — Cleanup & Ship</h3>
+          <p>ลบ dead code 224 บรรทัด (screenshot.js, styles.css), ทำ error handling ให้สม่ำเสมอ, ลดจำนวนไฟล์จาก 7 เหลือ 5</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARCHITECTURE -->
+  <div class="section">
+    <h2><span class="material-symbols-outlined">account_tree</span> Architecture</h2>
+    <div class="arch-diagram">
+<span class="accent">┌─────────────────────────────────────┐</span>
+│  <span class="accent">Content Scripts</span> (injected per page)  │
+│                                     │
+│  overlay.js ──── hover/click visual │
+│  panel.js ────── detail panel UI    │
+│  markdown.js ─── generate output    │
+│  inspector.js ── controller/state   │
+<span class="accent">└──────────────┬──────────────────────┘</span>
+               │ <span class="dim">chrome.runtime.sendMessage</span>
+<span class="accent">┌──────────────▼──────────────────────┐</span>
+│  <span class="accent">background.js</span> (service worker)      │
+│  route messages, manage offscreen   │
+<span class="accent">└──────────────┬──────────────────────┘</span>
+               │
+<span class="accent">┌──────────────▼──────────────────────┐</span>
+│  <span class="accent">offscreen.js</span> (clipboard access)     │
+│  execCommand('copy') ─→ clipboard   │
+<span class="accent">└─────────────────────────────────────┘</span>
+    </div>
+  </div>
+
+  <!-- TECH STACK -->
+  <div class="section">
+    <h2><span class="material-symbols-outlined">build</span> Tech Stack</h2>
+    <div class="tags">
+      <span class="tag">Chrome Extension Manifest V3</span>
+      <span class="tag">Shadow DOM</span>
+      <span class="tag">Offscreen API</span>
+      <span class="tag">Content Scripts</span>
+      <span class="tag">Service Worker</span>
+      <span class="tag">Clipboard API</span>
+      <span class="tag">getComputedStyle()</span>
+      <span class="tag">CSS Variable Detection</span>
+    </div>
+  </div>
+
+  <!-- LEARNINGS -->
+  <div class="section">
+    <h2><span class="material-symbols-outlined">school</span> สิ่งที่ได้เรียนรู้</h2>
+    <div class="learning-grid">
+      <div class="learning-card">
+        <h3>Clipboard ≠ Simple</h3>
+        <p>Content script ไม่มี clipboard permission โดยตรง — ต้องเข้าใจ user gesture lifecycle และใช้ offscreen document เป็น proxy</p>
+      </div>
+      <div class="learning-card">
+        <h3>Less > More</h3>
+        <p>ฟีเจอร์ screenshot ดูดีบนกระดาษ แต่ใช้จริงแล้วช้าและไม่ stable — ตัดออกแล้วดีกว่า</p>
+      </div>
+      <div class="learning-card">
+        <h3>Shadow DOM Isolation</h3>
+        <p>ถ้าจะ inject UI เข้าหน้าเว็บ ต้องใช้ Shadow DOM ไม่งั้น CSS ของเว็บกับ extension จะชนกัน 100%</p>
+      </div>
+      <div class="learning-card">
+        <h3>Design for AI Context</h3>
+        <p>Output สำหรับ AI ต้องคิดเรื่อง token budget — ข้อมูลเยอะไม่ได้แปลว่าดี ต้อง compact + structured</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <div class="mascot-half">
+      <img src="https://avatars.githubusercontent.com/u/256731825?v=4" alt="tanθ avatar">
+    </div>
+    <h2>Inspect → Copy → Paste to Claude</h2>
+    <p>Design Inspector for Claude เกิดจากการสังเกต pain point ของตัวเอง แล้วลงมือแก้ปัญหาด้วย Design Thinking — ตั้งแต่ empathize, prototype, จนถึง iterate จากการใช้งานจริง</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Chrome Extension</span>
+      <span class="stack-icon">Manifest V3</span>
+      <span class="stack-icon">Shadow DOM</span>
+      <span class="stack-icon">Offscreen API</span>
+      <span class="stack-icon">Design Thinking</span>
+      <span class="stack-icon">AI Workflow</span>
+    </div>
+    <div class="footer-credit">
+      <p>built by <a href="https://tanplanet.info" target="_blank">tanθ</a> — UX Designer × AI Workflow</p>
+    </div>
+  </div>
+
+  <!-- BACK NAV -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+
+</body>
+</html>
