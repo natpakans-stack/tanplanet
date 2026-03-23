@@ -11,6 +11,7 @@
         />
       </div>
     </div>
+    <div class="mascot-content">
     <h3>🧠 ทุกสกิลอยู่ที่นี่</h3>
     <p class="mascot-desc">
       Claude Code Skills Registry — รวมทุกเครื่องมือที่ติดตั้งไว้ให้ดูได้ในที่เดียว อัปเดตได้ตลอด
@@ -27,35 +28,42 @@
       <a href="https://projects.tanplanet.info/" target="_blank">All Projects</a>
     </div>
     <p class="mascot-version">v1.2.0 — มี.ค. 2569</p>
+    <p class="mascot-credit">Made with ❤️ by <a href="https://github.com/natpakans-stack" target="_blank">Natpakan Sirirat (tanθ)</a></p>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .mascot-footer {
   text-align: center;
-  padding: 80px 24px 32px;
-  border-top: 1px solid var(--vp-c-divider);
+  padding: 0 24px 24px;
   margin-top: 48px;
   position: relative;
 }
 
 .mascot-avatar {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
 }
 
 .mascot-peek {
-  width: 120px;
-  height: 60px;
+  width: 140px;
+  height: 100px;
   overflow: hidden;
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 1;
 }
 
 .mascot-peek img {
-  width: 120px;
+  width: 140px;
   height: auto;
   display: block;
+}
+
+.mascot-content {
+  border-top: 1px solid var(--vp-c-divider);
+  padding-top: 40px;
 }
 
 .mascot-footer h3 {
@@ -115,5 +123,20 @@
 .mascot-version {
   color: var(--vp-c-text-3);
   font-size: 0.82rem;
+  margin-bottom: 4px;
+}
+
+.mascot-credit {
+  color: var(--vp-c-text-3);
+  font-size: 0.82rem;
+}
+
+.mascot-credit a {
+  color: var(--vp-c-text-2);
+  text-decoration: none;
+}
+
+.mascot-credit a:hover {
+  color: var(--vp-c-brand-1);
 }
 </style>
