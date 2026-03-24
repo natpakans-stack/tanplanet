@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=64&height=64">
+    <link rel="apple-touch-icon" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=180&height=180">
+    <title>Legal AI — ระบบค้นคว้ากฎหมายไทยด้วย AI สำหรับทนายความ | Portfolio</title>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Legal AI — ระบบค้นคว้ากฎหมายไทยด้วย AI">
+    <meta name="twitter:description" content="Portfolio: Legal AI — ระบบค้นคว้ากฎหมายไทย 84,000+ มาตรา ด้วย RAG + GPT-4o สำหรับทนายความ พร้อม Citation Cards และ Law Viewer">
+    <meta property="og:url" content="https://projects.tanplanet.info/Legal-AI/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Legal AI — ระบบค้นคว้ากฎหมายไทยด้วย AI">
+    <meta property="og:description" content="Portfolio: Legal AI — ระบบค้นคว้ากฎหมายไทย 84,000+ มาตรา ด้วย RAG + GPT-4o สำหรับทนายความ พร้อม Citation Cards และ Law Viewer">
+    <meta name="description" content="Portfolio: Legal AI — ระบบค้นคว้ากฎหมายไทย 84,000+ มาตรา ด้วย RAG + GPT-4o สำหรับทนายความ พร้อม Citation Cards และ Law Viewer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f9fb;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #475569;
+            --accent: #1e40af;
+            --accent-dark: #1e3a8a;
+            --accent-light: #eff6ff;
+            --green: #16a34a;
+            --green-light: #f0fdf4;
+            --purple: #7c3aed;
+            --purple-light: #f5f3ff;
+            --blue: #2563eb;
+            --blue-light: #eff6ff;
+            --orange: #ea580c;
+            --orange-light: #fff7ed;
+            --red: #dc2626;
+            --red-light: #fef2f2;
+            --border: #e2e8f0;
+            --code-bg: #1e1e2e;
+            --code-text: #cdd6f4;
+            --tag-bg: #f1f5f9;
+            --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --max-w: 780px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 40%, #2563eb 100%);
+            color: #ffffff;
+            padding: 80px 24px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.06) 0%, transparent 50%);
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #1e40af, #7c3aed, #16a34a, #2563eb);
+        }
+        .hero-inner {
+            position: relative;
+            max-width: var(--max-w);
+            margin: 0 auto;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 2.6rem);
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 16px;
+        }
+        .hero h1 .emoji { font-size: clamp(2rem, 5.5vw, 3rem); }
+        .hero p {
+            font-size: 1.05rem;
+            opacity: 0.9;
+            max-width: 580px;
+            margin: 0 auto 24px;
+        }
+        .hero-tags {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .hero-tags span {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(6px);
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* ===== ARTICLE ===== */
+        article {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+        .section-intro { margin-bottom: 24px; }
+        .section-intro h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .section-intro p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        hr.divider {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 48px 0;
+        }
+
+        /* ===== DESIGN THINKING CARDS ===== */
+        .dt-step {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        .dt-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 2px 14px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .dt-step h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            margin-top: 8px;
+        }
+        .dt-step p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+        .dt-step .highlight {
+            background: var(--accent-light);
+            border-left: 3px solid var(--accent);
+            padding: 12px 16px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--accent-dark);
+            font-weight: 500;
+        }
+
+        /* ===== METRICS ===== */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .metric-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        .metric-card .num {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .metric-card .num.green { color: var(--green); }
+        .metric-card .num.orange { color: var(--orange); }
+        .metric-card .num.purple { color: var(--purple); }
+        .metric-card .label {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* ===== ARCHITECTURE DIAGRAM ===== */
+        .arch-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 24px 0;
+        }
+        .arch-node {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .arch-node .node-icon { font-size: 1.6rem; margin-bottom: 6px; }
+        .arch-node .node-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+        .arch-node .node-desc { font-size: 0.82rem; color: var(--text-secondary); }
+        .arch-node.highlight-node { border-color: var(--accent); background: var(--accent-light); }
+        .arch-arrow { text-align: center; padding: 4px 0; color: var(--text-secondary); font-size: 1.2rem; }
+
+        @media (min-width: 600px) {
+            .arch-flow {
+                display: grid;
+                grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+                align-items: center;
+                gap: 0;
+            }
+            .arch-arrow { padding: 0 4px; }
+        }
+
+        /* ===== CHAT MOCKUP ===== */
+        .chat-mockup {
+            background: #1a1a2e;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            margin: 24px 0;
+        }
+        .chat-topbar {
+            background: #16213e;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #2a2a4a;
+        }
+        .chat-topbar .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+        .chat-topbar .title {
+            color: #e2e8f0;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        .chat-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            min-height: 300px;
+        }
+        .chat-msg {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .chat-msg.user { flex-direction: row-reverse; }
+        .chat-msg .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .chat-msg .avatar.ai {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+        }
+        .chat-msg .avatar.human {
+            background: #374151;
+            color: #9ca3af;
+        }
+        .chat-msg .bubble {
+            max-width: 500px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+        .chat-msg .bubble.ai-bubble {
+            background: #1e293b;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+        }
+        .chat-msg .bubble.user-bubble {
+            background: #2563eb;
+            color: white;
+        }
+        .citation-card-mini {
+            background: #0f2218;
+            border: 1px solid #16a34a;
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-top: 8px;
+        }
+        .citation-card-mini .law-name {
+            color: #4ade80;
+            font-weight: 700;
+            font-size: 0.82rem;
+            margin-bottom: 4px;
+        }
+        .citation-card-mini .sections {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .citation-card-mini .sec-badge {
+            background: #166534;
+            color: #bbf7d0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+        .citation-purple { border-color: #7c3aed !important; background: #1a0f2e !important; }
+        .citation-purple .law-name { color: #a78bfa !important; }
+        .citation-purple .sec-badge { background: #4c1d95 !important; color: #ddd6fe !important; }
+        .citation-blue { border-color: #2563eb !important; background: #0f1a2e !important; }
+        .citation-blue .law-name { color: #60a5fa !important; }
+        .citation-blue .sec-badge { background: #1e3a8a !important; color: #bfdbfe !important; }
+
+        /* ===== FEATURE CARDS ===== */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+        .feature-card .f-icon { font-size: 1.8rem; margin-bottom: 10px; }
+        .feature-card .f-title { font-weight: 700; font-size: 1rem; margin-bottom: 6px; }
+        .feature-card .f-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+        .feature-card.green { border-top: 3px solid var(--green); }
+        .feature-card.purple { border-top: 3px solid var(--purple); }
+        .feature-card.blue { border-top: 3px solid var(--blue); }
+        .feature-card.orange { border-top: 3px solid var(--orange); }
+
+        /* ===== CODE BLOCK ===== */
+        .code-block {
+            background: var(--code-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: var(--shadow-md);
+        }
+        .code-header {
+            background: #313244;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .code-header .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .code-header .dot.r { background: #f38ba8; }
+        .code-header .dot.y { background: #f9e2af; }
+        .code-header .dot.g { background: #a6e3a1; }
+        .code-header .filename {
+            color: #bac2de;
+            font-size: 0.8rem;
+            margin-left: auto;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+        .code-body {
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            color: var(--code-text);
+        }
+        .code-body .kw { color: #cba6f7; }
+        .code-body .str { color: #a6e3a1; }
+        .code-body .num { color: #fab387; }
+        .code-body .cm { color: #6c7086; }
+        .code-body .fn { color: #89b4fa; }
+        .code-body .op { color: #89dceb; }
+
+        /* ===== DB TABLE ===== */
+        .db-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.88rem;
+        }
+        .db-table th, .db-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .db-table th {
+            background: var(--tag-bg);
+            font-weight: 700;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+        .db-table tr:hover { background: #fafbfc; }
+        .db-table .row-num { font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+
+        /* ===== RAG FLOW ===== */
+        .rag-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 24px 0;
+        }
+        .rag-step {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            position: relative;
+        }
+        .rag-step .step-num {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--accent);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+        .rag-step .step-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+            margin-top: 4px;
+        }
+        .rag-step .step-desc { font-size: 0.85rem; color: var(--text-secondary); }
+        .rag-arrow {
+            text-align: center;
+            padding: 4px 0;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+            margin: 24px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--surface);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+        .timeline-item .tl-date {
+            font-size: 0.78rem;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .timeline-item .tl-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .timeline-item .tl-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ===== LEARNING CARDS ===== */
+        .learning-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        .learning-card strong { color: var(--text); }
+
+        /* ===== CLOSING ===== */
+        .closing {
+            text-align: center;
+            padding: 40px 24px 64px;
+            border-top: 1px solid var(--border);
+            margin-top: 48px;
+        }
+        .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+        .closing p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        .closing .stack-icons {
+            margin-top: 24px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .closing .stack-icon {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .closing .links {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+        .closing .links a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .closing .links a:hover { text-decoration: underline; }
+
+        /* ===== COMPARISON TABLE ===== */
+        .compare-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+        }
+        .compare-card h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .compare-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .compare-row:last-child { border-bottom: none; margin-bottom: 0; }
+        .compare-row .criteria { font-weight: 600; color: var(--text); }
+        .compare-row .val { color: var(--text-secondary); text-align: center; }
+        .compare-row .val.win { color: var(--green); font-weight: 700; }
+
+        /* ===== BACK NAV ===== */
+        .back-nav {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: rgba(30,64,175,0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .back-nav:hover { background: rgba(30,64,175,0.95); transform: translateY(-1px); }
+        .back-nav svg { flex-shrink: 0; }
+
+        /* ===== BACK TO TOP ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1000;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+        }
+        .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-to-top:hover { background: var(--accent-dark); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .hero { padding: 60px 20px 48px; }
+            article { padding: 32px 16px; }
+            .dt-step { padding: 24px 18px; }
+            .arch-flow { display: flex; flex-direction: column; }
+            .compare-row { grid-template-columns: 1fr; gap: 4px; }
+            .compare-row .val { text-align: left; }
+            .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+            .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Back nav -->
+<a class="back-nav" href="https://projects.tanplanet.info/">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    All Projects
+</a>
+
+<!-- Back to top -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+</button>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge">POC / AI + Legal Tech</div>
+        <h1><span class="emoji">&#9878;</span> Legal AI — ค้นคว้ากฎหมายไทยด้วย AI</h1>
+        <p>ระบบค้นคว้ากฎหมายไทย 84,000+ มาตรา สำหรับทนายความ — ถามเป็นภาษาคน ได้คำตอบพร้อมอ้างอิงมาตราจริงจากฐานข้อมูล</p>
+        <div class="hero-tags">
+            <span>React 19</span>
+            <span>Vite</span>
+            <span>Tailwind v4</span>
+            <span>Supabase</span>
+            <span>GPT-4o</span>
+            <span>RAG</span>
+            <span>pgvector</span>
+        </div>
+    </div>
+</div>
+
+<article>
+
+    <!-- ===== OVERVIEW ===== -->
+    <section class="section-intro">
+        <h2>Overview</h2>
+        <p>Legal AI คือ POC ระบบค้นคว้ากฎหมายไทยที่ใช้ RAG (Retrieval-Augmented Generation) ดึงเนื้อหามาตราจริงจาก Database มาเป็น context ให้ AI ตอบ — ไม่ใช่แค่ generate จากความรู้ทั่วไป แต่อ้างอิงกฎหมายจริงที่ scrape มาจากสำนักงานคณะกรรมการกฤษฎีกา (OCS)</p>
+    </section>
+
+    <div class="metrics">
+        <div class="metric-card">
+            <div class="num">84K+</div>
+            <div class="label">มาตราในฐานข้อมูล</div>
+        </div>
+        <div class="metric-card">
+            <div class="num green">1,811</div>
+            <div class="label">กฎหมาย (OCS)</div>
+        </div>
+        <div class="metric-card">
+            <div class="num purple">5</div>
+            <div class="label">หมวดกฎหมาย</div>
+        </div>
+        <div class="metric-card">
+            <div class="num orange">v13</div>
+            <div class="label">Edge Function version</div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== DESIGN THINKING ===== -->
+    <section class="section-intro">
+        <h2>Design Thinking Process</h2>
+        <p>ทำไมทนายความถึงต้องการเครื่องมือแบบนี้</p>
+    </section>
+
+    <div class="dt-step" data-step="01 EMPATHIZE">
+        <h3>ทนายความกับการค้นคว้ากฎหมาย — ปัญหาที่ซ่อนอยู่</h3>
+        <p>ทนายความไทยต้องค้นกฎหมาย 84,000+ มาตรา จากหลายพ.ร.บ. เพื่อเตรียมคดีหนึ่งคดี การค้นหาแบบเดิมใช้ keyword search บนเว็บ OCS ซึ่งต้องรู้ชื่อพ.ร.บ.ที่แน่นอน หรือเลข "มาตรา" ที่ต้องการ — ถ้าไม่รู้ก็หาไม่เจอ</p>
+        <div class="highlight">Insight: ทนายรู้ "สถานการณ์" แต่ไม่รู้ว่าต้องค้น "มาตราอะไร" — ต้องการเครื่องมือที่ถามเป็นภาษาคนได้</div>
+    </div>
+
+    <div class="dt-step" data-step="02 DEFINE">
+        <h3>"ถ้า AI ตอบกฎหมายผิด อาจทำให้แพ้คดี"</h3>
+        <p>ChatGPT ตอบกฎหมายได้ แต่มักอ้างมาตราผิด หรือ hallucinate กฎหมายที่ไม่มีอยู่จริง ซึ่งอันตรายมากสำหรับงานทนายความ — ต้องการระบบที่ <strong>อ้างอิงกฎหมายจริง</strong> ที่ตรวจสอบได้</p>
+        <div class="highlight">HMW: How might we สร้าง AI ที่ตอบกฎหมายได้แม่นยำ โดยอ้างอิงเฉพาะมาตราจริงจากฐานข้อมูล?</div>
+    </div>
+
+    <div class="dt-step" data-step="03 IDEATE">
+        <h3>RAG — ให้ AI อ้างอิงจากฐานข้อมูลจริง</h3>
+        <p>ใช้ RAG (Retrieval-Augmented Generation) แทนการให้ AI ตอบจากความรู้ทั่วไป:</p>
+        <p style="margin-top: 8px;">
+            &#8226; Scrape กฎหมาย 1,811 ฉบับ 84,376 มาตราจาก OCS<br>
+            &#8226; Full-text search + Vector search (pgvector) หามาตราที่เกี่ยวข้อง<br>
+            &#8226; ส่งเนื้อมาตราจริงเป็น context ให้ GPT-4o<br>
+            &#8226; สั่งให้ AI อ้างอิงเฉพาะมาตราที่ปรากฏใน context เท่านั้น
+        </p>
+    </div>
+
+    <div class="dt-step" data-step="04 PROTOTYPE">
+        <h3>3-Panel Layout — Chat + Citations + Law Viewer</h3>
+        <p>ออกแบบ Chat Page เป็น 3 ส่วน: Sidebar (ประวัติแชท), Chat Area (ถาม-ตอบ AI พร้อม Citation Cards), Law Viewer Panel (ดูเนื้อกฎหมายจริง) — กด Citation Card แล้วเปิดดูเนื้อกฎหมายจริงได้ทันทีโดยไม่ต้องออกจากหน้าแชท</p>
+        <div class="highlight">Key Decision: Citation Cards ใช้สี 3 แบบ (เขียว/ม่วง/ฟ้า) แยกตาม role ของกฎหมาย เพื่อให้ทนายเห็นภาพรวมได้เร็ว</div>
+    </div>
+
+    <div class="dt-step" data-step="05 TEST">
+        <h3>Comparison Testing — Legal AI vs Gemini Pro</h3>
+        <p>ใช้ Playwright ทดสอบ 5 คำถามกฎหมายเปรียบเทียบ Legal AI กับ Gemini Pro:</p>
+        <p style="margin-top: 8px;">
+            &#8226; <strong>Legal AI:</strong> Structured output (citations + summary) ดีกว่า — เห็นมาตราอ้างอิงชัดเจน<br>
+            &#8226; <strong>Gemini:</strong> เนื้อหาละเอียดกว่า ครบกว่า<br>
+            &#8226; <strong>Next:</strong> เพิ่ม Vector Search เพื่อดึงมาตราที่เกี่ยวข้องได้แม่นยำขึ้น
+        </p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== CHAT MOCKUP ===== -->
+    <section class="section-intro">
+        <h2>Chat Interface</h2>
+        <p>ถามเป็นภาษาคน — ได้คำตอบพร้อม Citation Cards ที่กดดูกฎหมายจริงได้</p>
+    </section>
+
+    <div class="chat-mockup">
+        <div class="chat-topbar">
+            <div class="logo-icon">LA</div>
+            <div class="title">Legal AI</div>
+        </div>
+        <div class="chat-body">
+            <div class="chat-msg user">
+                <div class="avatar human">N</div>
+                <div class="bubble user-bubble">ลูกจ้างถูกเลิกจ้างโดยไม่แจ้งล่วงหน้า มีสิทธิ์ได้ค่าชดเชยอะไรบ้าง?</div>
+            </div>
+            <div class="chat-msg">
+                <div class="avatar ai">AI</div>
+                <div>
+                    <div class="bubble ai-bubble">
+                        <div style="margin-bottom: 8px;">ตาม <strong>พ.ร.บ.คุ้มครองแรงงาน พ.ศ. 2541</strong> ลูกจ้างที่ถูกเลิกจ้างโดยไม่แจ้งล่วงหน้ามีสิทธิ์ได้รับ:</div>
+                        <div style="margin-bottom: 4px;">1. <strong>ค่าชดเชย</strong> ตามอายุงาน (มาตรา 118)</div>
+                        <div style="margin-bottom: 4px;">2. <strong>สินจ้างแทนการบอกกล่าวล่วงหน้า</strong> (มาตรา 17)</div>
+                        <div style="margin-bottom: 8px;">3. <strong>ค่าเสียหายจากการเลิกจ้างไม่เป็นธรรม</strong> (พ.ร.บ.จัดตั้งศาลแรงงานฯ มาตรา 49)</div>
+                        <div class="citation-card-mini">
+                            <div class="law-name">พ.ร.บ.คุ้มครองแรงงาน พ.ศ. 2541</div>
+                            <div class="sections">
+                                <span class="sec-badge">มาตรา 17</span>
+                                <span class="sec-badge">มาตรา 118</span>
+                                <span class="sec-badge">มาตรา 119</span>
+                            </div>
+                        </div>
+                        <div class="citation-card-mini citation-purple" style="margin-top: 6px;">
+                            <div class="law-name">พ.ร.บ.จัดตั้งศาลแรงงานฯ</div>
+                            <div class="sections">
+                                <span class="sec-badge">มาตรา 49</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== FEATURES ===== -->
+    <section class="section-intro">
+        <h2>Key Features</h2>
+        <p>ฟีเจอร์หลักที่ออกแบบมาเพื่อทนายความ</p>
+    </section>
+
+    <div class="feature-grid">
+        <div class="feature-card green">
+            <div class="f-icon">&#128269;</div>
+            <div class="f-title">RAG Search</div>
+            <div class="f-desc">Full-text + Vector search 84K มาตรา — ดึงเนื้อกฎหมายจริงมาเป็น context ให้ AI ไม่ hallucinate</div>
+        </div>
+        <div class="feature-card purple">
+            <div class="f-icon">&#128203;</div>
+            <div class="f-title">Citation Cards</div>
+            <div class="f-desc">แสดงกฎหมายที่อ้างอิงเป็น card สี 3 แบบ กดดูเนื้อกฎหมายจริงได้ทันที</div>
+        </div>
+        <div class="feature-card blue">
+            <div class="f-icon">&#128214;</div>
+            <div class="f-title">Law Viewer Panel</div>
+            <div class="f-desc">อ่านเนื้อกฎหมายจริงจาก DB พร้อม highlight มาตราที่ AI อ้างอิง + สารบัญ</div>
+        </div>
+        <div class="feature-card orange">
+            <div class="f-icon">&#128172;</div>
+            <div class="f-title">Structured Output</div>
+            <div class="f-desc">AI ตอบเป็น structured JSON: content + citations + court decisions + summary box</div>
+        </div>
+    </div>
+
+    <div class="feature-grid">
+        <div class="feature-card green">
+            <div class="f-icon">&#128194;</div>
+            <div class="f-title">Chat History</div>
+            <div class="f-desc">ประวัติแชทจัดกลุ่มตามวัน ค้นหาได้ ลบได้ Auto-generate ชื่อ + description</div>
+        </div>
+        <div class="feature-card purple">
+            <div class="f-icon">&#128295;</div>
+            <div class="f-title">Markdown Rendering</div>
+            <div class="f-desc">รองรับ headings, bold, bullets, numbered lists, tables, HR ใน AI response</div>
+        </div>
+        <div class="feature-card blue">
+            <div class="f-icon">&#128272;</div>
+            <div class="f-title">Auth System</div>
+            <div class="f-desc">Supabase Auth — Email/Password + Google OAuth พร้อม RLS user-only data</div>
+        </div>
+        <div class="feature-card orange">
+            <div class="f-icon">&#127760;</div>
+            <div class="f-title">Landing Page</div>
+            <div class="f-desc">Hero + stats จาก DB, แหล่งข้อมูล, Release Notes, Login Modal</div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== RAG ARCHITECTURE ===== -->
+    <section class="section-intro">
+        <h2>RAG Architecture</h2>
+        <p>ระบบ Retrieval-Augmented Generation ที่ทำให้ AI อ้างอิงกฎหมายจริง</p>
+    </section>
+
+    <div class="arch-flow">
+        <div class="arch-node">
+            <div class="node-icon">&#128172;</div>
+            <div class="node-title">User Question</div>
+            <div class="node-desc">ทนายถามภาษาธรรมชาติ</div>
+        </div>
+        <div class="arch-arrow">&#8594;</div>
+        <div class="arch-node highlight-node">
+            <div class="node-icon">&#128269;</div>
+            <div class="node-title">Hybrid Search</div>
+            <div class="node-desc">FTS + pgvector 84K มาตรา</div>
+        </div>
+        <div class="arch-arrow">&#8594;</div>
+        <div class="arch-node">
+            <div class="node-icon">&#129302;</div>
+            <div class="node-title">GPT-4o + Context</div>
+            <div class="node-desc">AI ตอบจากเนื้อมาตราจริง</div>
+        </div>
+        <div class="arch-arrow">&#8594;</div>
+        <div class="arch-node">
+            <div class="node-icon">&#128203;</div>
+            <div class="node-title">Structured JSON</div>
+            <div class="node-desc">content + citations + summary</div>
+        </div>
+    </div>
+
+    <div class="rag-flow">
+        <div class="rag-step">
+            <div class="step-num">1</div>
+            <div class="step-title">Scrape &amp; Store</div>
+            <div class="step-desc">ดึงกฎหมาย 1,811 ฉบับ 84,376 มาตราจาก OCS API เข้า Supabase (PostgreSQL) พร้อม deduplicate</div>
+        </div>
+        <div class="rag-arrow">&#8595;</div>
+        <div class="rag-step">
+            <div class="step-num">2</div>
+            <div class="step-title">Hybrid Search</div>
+            <div class="step-desc">Full-text search (tsvector) + Vector search (pgvector, text-embedding-3-small 1536 dims) ผ่าน Supabase function <code>hybrid_search</code></div>
+        </div>
+        <div class="rag-arrow">&#8595;</div>
+        <div class="rag-step">
+            <div class="step-num">3</div>
+            <div class="step-title">AI Generation</div>
+            <div class="step-desc">GPT-4o รับเนื้อมาตราจริงเป็น context — Prompt สั่ง "ONLY cite sections ที่ APPEAR ใน context" เพื่อป้องกัน hallucination</div>
+        </div>
+        <div class="rag-arrow">&#8595;</div>
+        <div class="rag-step">
+            <div class="step-num">4</div>
+            <div class="step-title">Structured Output</div>
+            <div class="step-desc">Response เป็น JSON: content (markdown), citations (กฎหมาย + มาตราอ้างอิง), courtDecisions, summary (ขั้นตอนที่ต้องทำ)</div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== DATABASE ===== -->
+    <section class="section-intro">
+        <h2>Database Schema</h2>
+        <p>Supabase (PostgreSQL) + pgvector + Row Level Security</p>
+    </section>
+
+    <div style="overflow-x: auto;">
+        <table class="db-table">
+            <thead>
+                <tr>
+                    <th>Table</th>
+                    <th>Rows</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>law_sections</strong></td>
+                    <td class="row-num">84,376</td>
+                    <td>เนื้อหารายมาตรา (deduplicated) + vector embeddings</td>
+                </tr>
+                <tr>
+                    <td><strong>laws</strong></td>
+                    <td class="row-num">1,811</td>
+                    <td>กฎหมายจาก OCS ครบ 5 หมวด</td>
+                </tr>
+                <tr>
+                    <td><strong>conversations</strong></td>
+                    <td class="row-num">dynamic</td>
+                    <td>แชทของ user (RLS: user-only)</td>
+                </tr>
+                <tr>
+                    <td><strong>messages</strong></td>
+                    <td class="row-num">dynamic</td>
+                    <td>ข้อความ user + ai + citations (RLS: user-only)</td>
+                </tr>
+                <tr>
+                    <td><strong>releases</strong></td>
+                    <td class="row-num">1</td>
+                    <td>Release notes (public read)</td>
+                </tr>
+                <tr>
+                    <td><strong>system_stats</strong></td>
+                    <td class="row-num">4</td>
+                    <td>ตัวเลข stats หน้าแรก</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== AI PROMPT ENGINEERING ===== -->
+    <section class="section-intro">
+        <h2>Prompt Engineering</h2>
+        <p>ปรับ prompt ถึง v13 เพื่อให้ AI ตอบแม่นยำสำหรับทนายความ</p>
+    </section>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span class="dot r"></span>
+            <span class="dot y"></span>
+            <span class="dot g"></span>
+            <span class="filename">edge-function/chat/prompt-v13.ts</span>
+        </div>
+        <div class="code-body">
+<span class="cm">// Key prompt rules for legal accuracy</span>
+<br><span class="kw">const</span> promptRules = {
+<br>&nbsp;&nbsp;<span class="fn">verification</span>: <span class="str">"ONLY cite sections that APPEAR in DB context"</span>,
+<br>&nbsp;&nbsp;<span class="fn">lawNames</span>: <span class="str">"Use EXACT law name from database"</span>,
+<br>&nbsp;&nbsp;<span class="fn">audience</span>: <span class="str">"User is a lawyer - don't suggest 'consult a lawyer'"</span>,
+<br>&nbsp;&nbsp;<span class="fn">format</span>: <span class="str">"400-600 words, ## headings, warnings, follow-up"</span>,
+<br>&nbsp;&nbsp;<span class="fn">model</span>: <span class="str">"GPT-4o primary, GPT-4o-mini fallback"</span>,
+<br>};
+        </div>
+    </div>
+
+    <div class="compare-card">
+        <h4>&#9878; Comparison: Legal AI vs Gemini Pro (5 Questions)</h4>
+        <div class="compare-row" style="font-weight: 700; border-bottom: 2px solid var(--border);">
+            <div class="criteria">Criteria</div>
+            <div class="val">Legal AI</div>
+            <div class="val">Gemini Pro</div>
+        </div>
+        <div class="compare-row">
+            <div class="criteria">Structured Citations</div>
+            <div class="val win">&#10003; Card-based</div>
+            <div class="val">Inline text</div>
+        </div>
+        <div class="compare-row">
+            <div class="criteria">Source Verification</div>
+            <div class="val win">&#10003; DB-backed</div>
+            <div class="val">General knowledge</div>
+        </div>
+        <div class="compare-row">
+            <div class="criteria">Law Viewer</div>
+            <div class="val win">&#10003; Real-time</div>
+            <div class="val">&#10007; None</div>
+        </div>
+        <div class="compare-row">
+            <div class="criteria">Content Depth</div>
+            <div class="val">Good</div>
+            <div class="val win">&#10003; More detailed</div>
+        </div>
+        <div class="compare-row">
+            <div class="criteria">Answer Format</div>
+            <div class="val win">&#10003; JSON structured</div>
+            <div class="val">Plain text</div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== SCRAPER ===== -->
+    <section class="section-intro">
+        <h2>OCS Scraper</h2>
+        <p>ดึงข้อมูลกฎหมายจากสำนักงานคณะกรรมการกฤษฎีกา</p>
+    </section>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span class="dot r"></span>
+            <span class="dot y"></span>
+            <span class="dot g"></span>
+            <span class="filename">scripts/scrape-sections.ts</span>
+        </div>
+        <div class="code-body">
+<span class="cm">// Scrape 84,376 sections from OCS API</span>
+<br><span class="kw">for</span> (<span class="kw">const</span> law <span class="kw">of</span> laws) {
+<br>&nbsp;&nbsp;<span class="kw">const</span> doc = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">`OCS_API/getLawDoc?id=${law.id}`</span>);
+<br>&nbsp;&nbsp;<span class="kw">const</span> sections = <span class="fn">parseSections</span>(doc);
+<br>&nbsp;&nbsp;<span class="kw">await</span> supabase.<span class="fn">from</span>(<span class="str">'law_sections'</span>)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;.<span class="fn">upsert</span>(sections, { <span class="fn">onConflict</span>: <span class="str">'law_id,section_number'</span> });
+<br>}
+<br><span class="cm">// Result: 1,811 laws, 84,376 sections (deduplicated)</span>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== DEVELOPMENT TIMELINE ===== -->
+    <section class="section-intro">
+        <h2>Development Timeline</h2>
+        <p>สร้างจาก 0 ถึง production-ready POC</p>
+    </section>
+
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="tl-date">Phase 1 — Foundation</div>
+            <div class="tl-title">Database + Scraper + Auth</div>
+            <div class="tl-desc">Scrape กฎหมาย 1,811 ฉบับ 84K มาตราจาก OCS, สร้าง Supabase schema (5 migrations), Supabase Auth (Email + Google OAuth)</div>
+        </div>
+        <div class="timeline-item">
+            <div class="tl-date">Phase 2 — Landing Page</div>
+            <div class="tl-title">Hero + Data Sources + Login</div>
+            <div class="tl-desc">Landing page พร้อม stats จาก DB, แหล่งข้อมูล OCS, Release Notes section, Login Modal</div>
+        </div>
+        <div class="timeline-item">
+            <div class="tl-date">Phase 3 — Chat System</div>
+            <div class="tl-title">3-Panel Layout + RAG + Citations</div>
+            <div class="tl-desc">Chat page ครบ 3 panels: Sidebar (history), Chat (AI response + Citation Cards), Law Viewer (เนื้อกฎหมายจริง)</div>
+        </div>
+        <div class="timeline-item">
+            <div class="tl-date">Phase 4 — AI Refinement</div>
+            <div class="tl-title">Prompt v13 + Vector Embeddings</div>
+            <div class="tl-desc">ปรับ prompt ให้ verify มาตราก่อนอ้าง, เพิ่ม pgvector + text-embedding-3-small สำหรับ semantic search</div>
+        </div>
+        <div class="timeline-item">
+            <div class="tl-date">Phase 5 — Testing</div>
+            <div class="tl-title">Comparison Testing + UI Polish</div>
+            <div class="tl-desc">Playwright ทดสอบเทียบกับ Gemini Pro 5 คำถาม, ปรับ Law Viewer highlight colors, Markdown rendering, auto-scroll</div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== KEY FILES ===== -->
+    <section class="section-intro">
+        <h2>Project Structure</h2>
+        <p>Frontend (React 19 + Vite) + Backend (Supabase Edge Functions)</p>
+    </section>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span class="dot r"></span>
+            <span class="dot y"></span>
+            <span class="dot g"></span>
+            <span class="filename">project-structure</span>
+        </div>
+        <div class="code-body">
+src/
+<br>&#9500;&#9472;&#9472; App.tsx                  <span class="cm">// Routes + ProtectedRoute</span>
+<br>&#9500;&#9472;&#9472; pages/
+<br>&#9474;&nbsp;&nbsp;&nbsp;&#9500;&#9472;&#9472; LandingPage.tsx      <span class="cm">// Hero + stats + login</span>
+<br>&#9474;&nbsp;&nbsp;&nbsp;&#9500;&#9472;&#9472; ChatPage.tsx         <span class="cm">// 3-panel chat interface</span>
+<br>&#9474;&nbsp;&nbsp;&nbsp;&#9492;&#9472;&#9472; ReleasesPage.tsx     <span class="cm">// Release notes</span>
+<br>&#9500;&#9472;&#9472; components/
+<br>&#9474;&nbsp;&nbsp;&nbsp;&#9500;&#9472;&#9472; chat/
+<br>&#9474;&nbsp;&nbsp;&nbsp;&#9474;&nbsp;&nbsp;&nbsp;&#9500;&#9472;&#9472; ChatSidebar.tsx  <span class="cm">// History grouped by date</span>
+<br>&#9474;&nbsp;&nbsp;&nbsp;&#9474;&nbsp;&nbsp;&nbsp;&#9500;&#9472;&#9472; ChatMessage.tsx  <span class="cm">// Markdown + citations</span>
+<br>&#9474;&nbsp;&nbsp;&nbsp;&#9474;&nbsp;&nbsp;&nbsp;&#9500;&#9472;&#9472; CitationCard.tsx <span class="cm">// Color-coded law refs</span>
+<br>&#9474;&nbsp;&nbsp;&nbsp;&#9474;&nbsp;&nbsp;&nbsp;&#9492;&#9472;&#9472; LawViewer.tsx    <span class="cm">// Real law content panel</span>
+<br>&#9474;&nbsp;&nbsp;&nbsp;&#9492;&#9472;&#9472; landing/             <span class="cm">// Landing page sections</span>
+<br>&#9500;&#9472;&#9472; lib/
+<br>&#9474;&nbsp;&nbsp;&nbsp;&#9500;&#9472;&#9472; supabase.ts          <span class="cm">// Client init</span>
+<br>&#9474;&nbsp;&nbsp;&nbsp;&#9492;&#9472;&#9472; api.ts               <span class="cm">// All CRUD functions</span>
+<br>
+<br>supabase/
+<br>&#9500;&#9472;&#9472; migrations/001-006       <span class="cm">// Schema + pgvector</span>
+<br>&#9492;&#9472;&#9472; functions/chat/          <span class="cm">// Edge Function v13</span>
+<br>
+<br>scripts/
+<br>&#9500;&#9472;&#9472; scrape-ocs.ts            <span class="cm">// Law list from OCS API</span>
+<br>&#9500;&#9472;&#9472; scrape-sections.ts       <span class="cm">// 84K sections via getLawDoc</span>
+<br>&#9492;&#9472;&#9472; generate-embeddings.ts   <span class="cm">// pgvector embeddings</span>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== LESSONS LEARNED ===== -->
+    <section class="section-intro">
+        <h2>Lessons Learned</h2>
+        <p>สิ่งที่ได้เรียนรู้จากการสร้าง Legal AI</p>
+    </section>
+
+    <div class="learning-card">
+        <strong>RAG > Fine-tuning สำหรับ domain-specific data</strong> — แทนที่จะ fine-tune model ซึ่งแพงและ maintain ยาก การ scrape ข้อมูลจริงเข้า DB แล้วใช้ RAG ให้ AI อ้างอิง ได้ผลลัพธ์ที่ตรวจสอบได้ดีกว่ามาก
+    </div>
+    <div class="learning-card">
+        <strong>Prompt Engineering สำคัญมาก</strong> — จาก v1 ที่ AI hallucinate มาตรา ถึง v13 ที่สั่ง "ONLY cite sections ที่ APPEAR ใน context" ลด hallucination ได้อย่างมีนัยสำคัญ
+    </div>
+    <div class="learning-card">
+        <strong>Hybrid Search (FTS + Vector) ดีกว่า FTS อย่างเดียว</strong> — Full-text search หาได้เฉพาะ keyword match, แต่ vector search จับ semantic meaning ได้ เช่น "เลิกจ้าง" match กับ "ค่าชดเชย"
+    </div>
+    <div class="learning-card">
+        <strong>Structured Output ช่วย UX มาก</strong> — การให้ AI return JSON (content + citations + summary) แทน plain text ทำให้สร้าง UI ที่เป็นระเบียบและ interact ได้ (กด citation ดูกฎหมายจริง)
+    </div>
+    <div class="learning-card">
+        <strong>Color-coded Citations ช่วยเรื่อง cognitive load</strong> — สี 3 แบบ (เขียว/ม่วง/ฟ้า) ตาม role ของกฎหมาย ทำให้ทนายเห็นภาพรวมได้เร็วโดยไม่ต้องอ่านทุกบรรทัด
+    </div>
+
+</article>
+
+<!-- ===== CLOSING ===== -->
+<div class="closing">
+    <h2>Legal AI</h2>
+    <p>POC ระบบค้นคว้ากฎหมายไทยด้วย AI — สร้างเพื่อพิสูจน์ว่า RAG + Structured Output สามารถทำให้ AI อ้างอิงกฎหมายจริงได้อย่างน่าเชื่อถือ</p>
+    <div class="stack-icons">
+        <span class="stack-icon">React 19</span>
+        <span class="stack-icon">Vite</span>
+        <span class="stack-icon">Tailwind v4</span>
+        <span class="stack-icon">Supabase</span>
+        <span class="stack-icon">PostgreSQL</span>
+        <span class="stack-icon">pgvector</span>
+        <span class="stack-icon">GPT-4o</span>
+        <span class="stack-icon">OpenAI Embeddings</span>
+        <span class="stack-icon">Edge Functions</span>
+        <span class="stack-icon">Playwright</span>
+    </div>
+    <div class="links">
+        <a href="https://projects.tanplanet.info/">&#8592; All Projects</a>
+    </div>
+</div>
+
+<script>
+    const btn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+        btn.classList.toggle('visible', window.scrollY > 400);
+    });
+    btn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>
+
+</body>
+</html>
