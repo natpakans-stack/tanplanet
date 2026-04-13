@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Realfact — Digital OS สำหรับกลุ่มบริษัท</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Portal Realfact — Digital OS สำหรับกลุ่มบริษัท">
+  <meta name="twitter:description" content="Portfolio: Portal Realfact — Internal Portal รวม 8 แผนกในระบบเดียว สำหรับกลุ่มบริษัท Real Factory">
+  <meta property="og:url" content="https://projects.tanplanet.info/Internal-Tools-Porfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.info/Internal-Tools-Porfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: Portal Realfact — Internal Portal รวม 8 แผนกในระบบเดียว สำหรับกลุ่มบริษัท Real Factory">
+  <meta property="og:title" content="Portal Realfact — Digital OS สำหรับกลุ่มบริษัท">
+  <meta name="description" content="Portfolio: Portal Realfact — Internal Portal รวม 8 แผนกในระบบเดียว สำหรับกลุ่มบริษัท Real Factory">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --accent: #1e40af;
+      --accent-light: #eff6ff;
+      --accent-dark: #1e3a8a;
+      --accent-glow: rgba(30,64,175,0.12);
+      --gold: #c69b57;
+      --gold-light: #fef9ee;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #ef4444;
+      --red-light: #fef2f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 40%, #1e40af 80%, #3b82f6 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(198,155,87,0.18) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(59,130,246,0.22) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #1e40af, #c69b57, #3b82f6);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #60a5fa;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .gold {
+      color: #fcd34d;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.88;
+      max-width: 560px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.85);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.15;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.7;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards (8 modules) ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30,64,175,0.08);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.scale::before { background: var(--accent-light); color: var(--accent); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.process::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.brand::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.visibility::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card.consistency::before { background: var(--gold-light); color: #92651e; }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(30,64,175,0.2); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--gold-light); color: #92651e; border: 1px solid rgba(198,155,87,0.3); }
+    .arch-layer.infra { background: #f1f5f9; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 40px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .closing .stack-icon {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+    .closing .links {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+    .closing .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .closing .links a:hover { text-decoration: underline; }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .stack-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(15,23,42,0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(15,23,42,0.95); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Internal Portal · Digital OS · 8 Modules
+      </div>
+      <h1>Portal Realfact<br><span class="gold">Digital OS สำหรับกลุ่มบริษัท</span></h1>
+      <p>Internal Portal ที่รวม 8 แผนกของ Real Factory ไว้ในระบบเดียว — จากเอกสารกระจายใน Excel/LINE/Email สู่ Source of Truth เดียว</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Internal Portal</span>
+        <span class="hero-tag">8 Modules</span>
+        <span class="hero-tag">RBAC 18 Roles</span>
+        <span class="hero-tag">Vue 3 + TypeScript</span>
+        <span class="hero-tag">Design System</span>
+        <span class="hero-tag">Multi-Tenant</span>
+        <span class="hero-tag">i18n TH/EN</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Empathize ===== -->
+    <section class="section-intro">
+      <h2>ปัญหาที่เจอ</h2>
+      <p>ทำไมกลุ่มบริษัทถึงต้องมี Digital OS ของตัวเอง?</p>
+    </section>
+
+    <div class="quote-block">
+      <p>8 แผนกใช้ระบบคนละชุด — ขอซื้อใน Excel, เบิกเงินใน LINE, จองที่พักใน Google Form, ตั๋วเครื่องบินใน Email Approval cycle 3-5 วันต่อ 1 เอกสาร และไม่มีใครเห็นภาพรวม ผู้บริหารไม่รู้ด้วยซ้ำว่างานค้างอยู่ที่ใคร</p>
+      <div class="author">— Insight จาก stakeholder interview ก่อนเริ่มโปรเจกต์</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="emoji">🧩</span>
+        <h3>8 แผนกใช้ระบบแยก ไม่มีใครเห็นภาพรวม</h3>
+        <p>ขอซื้อใน Excel, เบิกเงินใน LINE, จองที่พักใน Google Form, ตั๋วเครื่องบินใน Email — ไม่มี Source of Truth เดียว ตามไม่ได้ว่าเอกสารอยู่ที่ขั้นไหน</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">⏳</span>
+        <h3>Approval Cycle 3-5 วันต่อเอกสาร</h3>
+        <p>เอกสารต้อง print → เซ็น → สแกน → ส่งต่อ ผู้บริหารไม่รู้ว่างานค้างที่ใคร เกินวันยังไม่ได้แก้ — กระทบแผนงานทั้งบริษัท</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">🕵️</span>
+        <h3>ไม่มี Audit Trail — ตามย้อนไม่ได้</h3>
+        <p>ใคร approve ใคร reject เพราะอะไร ใช้งบเกินวงเงินหรือไม่ — ไม่มีบันทึก พอ Auditor มาตรวจหาเอกสารกันยกใหญ่</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">📄</span>
+        <h3>ทำเอกสาร PDF ด้วยมือทุกครั้ง</h3>
+        <p>เปิด Word เติมตัวเลข → export PDF → print → เซ็นปากกา → สแกนกลับ — เปลืองเวลา ผิดพลาดเยอะ ไม่มี standard layout</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">🔐</span>
+        <h3>15+ User Roles สิทธิ์ต่างกัน</h3>
+        <p>Hardcode role check ทั่ว codebase — แค่เพิ่ม role ใหม่ก็ต้องไล่แก้ทุกหน้า maintain ไม่ไหวเมื่อบริษัทขยาย</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Define + Ideate ===== -->
+    <section class="section-intro">
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>1 Portal เดียว — Digital OS pattern ที่รองรับทุกแผนกพร้อมกัน</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <span class="emoji">🎯</span>
+        <h3>1 Portal เดียวรวมทุก Request Type</h3>
+        <p>PR/PO, Expense, Booking, HR Request — เข้าใน Portal เดียว 1 source of truth ผู้ใช้ login ครั้งเดียว เห็นทุก task ของตัวเอง</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">⚙️</span>
+        <h3>Approval Engine แบบ Configurable</h3>
+        <p>State machine กลาง 1 ตัว รองรับ chain แบบ M3→E1→E2→E3→CEO ตามวงเงิน — แต่ละ doc type / department config เองได้ ไม่ต้องเขียน code ใหม่</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">⚡</span>
+        <h3>Real-time Status ผ่าน Socket.io</h3>
+        <p>ผู้ขอเห็นทันทีว่างานค้างที่ใคร ผู้บริหารเห็น dashboard "เกินวันค้าง" แบบ real-time — ลด follow-up ใน LINE ไปได้กว่า 80%</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">📑</span>
+        <h3>Document PDF Component ที่ Reuse ได้</h3>
+        <p>Voucher + Signature Block + Attachment Index = component กลาง ใช้ได้ทุก doc type ไม่ต้อง duplicate layout</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">🛡️</span>
+        <h3>RBAC 18 Roles แยก Approval Level</h3>
+        <p>M3/E1/E2/E3, Finance Lv1/Head, Acc Lv1/Head, Procurement Manager + Reviewer ฯลฯ — ตรงกับ org chart จริง config ผ่าน Permissions Matrix</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">🌏</span>
+        <h3>i18n Bilingual TH/EN ตั้งแต่วันแรก</h3>
+        <p>ทุก string ผ่าน <code>useLocale</code> composable + type-safe LocaleKey รองรับขยายตลาดต่างประเทศโดยไม่ต้อง refactor</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture ===== -->
+    <section class="section-intro">
+      <h2>Architecture Overview</h2>
+      <p>Vue 3 + Express + Prisma — Modern stack, shared types, single source of truth</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Frontend — Portal SPA
+          <div class="arch-sub">
+            <span>Vue 3.5</span>
+            <span>Vite 8</span>
+            <span>TypeScript</span>
+            <span>PrimeVue 4</span>
+            <span>Tailwind v4</span>
+            <span>Pinia 3</span>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer platform">
+          @portal/shared — Zod Schemas
+          <div class="arch-sub">
+            <span>Validation</span>
+            <span>Types</span>
+            <span>Single Source of Truth</span>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer services">
+          Backend API
+          <div class="arch-sub">
+            <span>Express 5</span>
+            <span>Prisma 6</span>
+            <span>JWT + Google OAuth</span>
+            <span>Socket.io</span>
+            <span>Pino Logger</span>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer infra">
+          Infrastructure
+          <div class="arch-sub">
+            <span>PostgreSQL (Supabase)</span>
+            <span>Supabase Storage</span>
+            <span>Docker</span>
+            <span>Railway / AWS ECS</span>
+            <span>GitHub Actions</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== 8 Modules ===== -->
+    <section class="section-intro">
+      <h2>สิ่งที่สร้าง — 8 Modules</h2>
+      <p>Phase 1 MVP — Core Platform + 7 Functional Modules</p>
+    </section>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <span class="emoji">📋</span>
+        <h3>PR / Procurement</h3>
+        <p>Purchase Request + PO with approval chain (M3→E1→E2→E3→CEO ตามวงเงิน) + supplier comparison</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">💰</span>
+        <h3>Expense Suite</h3>
+        <p>Petty Cash, Reimbursement, Advance + Clear, Credit Card OCR, Travel — 5 sub-flows + WHT 1/2/3/5%</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">🏨</span>
+        <h3>Booking</h3>
+        <p>ที่พัก (HR confirm จาก voucher pool ของบริษัท) + ตั๋วเครื่องบิน (HR แนบ e-ticket)</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">👥</span>
+        <h3>HR</h3>
+        <p>Employee Directory, Vehicle Registry, Course Library, Form Templates, Announcements</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">⚡</span>
+        <h3>Think Tank</h3>
+        <p>กิจกรรม engagement + leaderboard + scoring โดย C-Level พร้อมรายงานผล</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">📚</span>
+        <h3>Legal</h3>
+        <p>Knowledge Base + AI Chat (Phase 1: Legal Admin only) — รวบรวมสัญญา + ข้อกฎหมายภายใน</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">📊</span>
+        <h3>C-Level Dashboard</h3>
+        <p>Pending approvals, Budget vs Actual, Approval Bottleneck, Department Ranking, Spending Trend</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">⚙️</span>
+        <h3>Admin</h3>
+        <p>Permissions Matrix (18 roles × all routes), Workflow config, System settings — เปลี่ยนสิทธิ์โดยไม่ต้อง deploy</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack ===== -->
+    <section class="section-intro">
+      <h2>Hack กับปัญหา</h2>
+      <p>6 challenges ที่ไม่มีอยู่ใน playbook — ต้องคิดทาง workaround เอง</p>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card scale" data-label="Scale">
+        <span class="emoji">🎯</span>
+        <h3>RBAC 18 Roles แตกจาก 11</h3>
+        <p>PRD ระบุ 15 roles แต่ codebase รวบยอดเป็น 11 → approval threshold ทำงานไม่ตรงกับ org chart จริง คนที่ควรเห็นเอกสารเห็นไม่ครบ คนที่ไม่ควรเห็นกลับเข้าได้</p>
+        <div class="highlight">แก้: split manager → m3/e1/e2/e3, Finance → Lv1/Head, Acc → Lv1/Head, Procurement Manager + เพิ่ม Reviewer + tab filter per role + backward-compat normalize legacy roles ด้วย mapping function</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Performance">
+        <span class="emoji">📄</span>
+        <h3>Document PDF ที่ Scale ได้ 8 Doc Types</h3>
+        <p>8 doc types × signature block × attachment index × ต้องการ real PDF merge (text-selectable) — ถ้า duplicate layout ต่อ doc คือฝันร้าย maintainability</p>
+        <div class="highlight">แก้: สร้าง component กลาง <code>components/document/*</code> (SignatureBlock, AttachmentIndex, AttachmentPage) + ใช้ pdf-lib merge real PDF bytes ติดท้าย + html2canvas สำหรับ image-only attachments — 1 abstraction รองรับทุก doc</div>
+      </div>
+
+      <div class="hack-card process" data-label="Process">
+        <span class="emoji">🌐</span>
+        <h3>i18n Project-wide ใน 1 Sprint</h3>
+        <p>~50 views, 1000+ strings, ต้องบังคับ TH/EN parity แบบ strict (ขาด key ฝั่งใดฝั่งหนึ่ง = build แตก) — ทำมือคนเดียวไม่ทันแน่</p>
+        <div class="highlight">แก้: handwritten composable <code>useLocale</code> (zero-dep, type-safe via LocaleKey union) + delegate batch ไป subagents 10 ตัว + auto type-check ทุก batch ก่อน commit → TH/EN parity บังคับด้วย TypeScript ไม่ใช่ discipline</div>
+      </div>
+
+      <div class="hack-card brand" data-label="Brand">
+        <span class="emoji">🌙</span>
+        <h3>Login Dark Mode ที่ขัดกับ App</h3>
+        <p>App รองรับ dark mode ทั้งระบบ แต่หน้า Login เป็น brand experience ที่ต้องคงสีขาว + brand panel สีเข้มตลอด — token cascade เผลอ flip สีตอนเปิด dark mode</p>
+        <div class="highlight">แก้: pattern <code>.login-light-scope</code> lock token values ใน CSS scope; brand panel hardcoded <code>#231F20</code> + <code>!important</code> rule กัน cascade override; SplashScreen ใช้ pattern เดียวกัน reuse ได้</div>
+      </div>
+
+      <div class="hack-card visibility" data-label="Visibility">
+        <span class="emoji">🔍</span>
+        <h3>Approval Bottleneck Real-time</h3>
+        <p>C-Level อยากเห็นว่างานค้างอยู่ที่ใคร, chain ขั้นไหน, ค้างมานานเท่าไหร่ — แต่ refresh เอามันก็ไม่ทันใจ</p>
+        <div class="highlight">แก้: Socket.io broadcast ทุก approve/reject event ไป channel ของ company; Dashboard chart "ค้าง >24 ชม." เรียงตามเวลา + drill-down เห็นชื่อผู้อนุมัติ + click ส่ง LINE notify ตรงได้</div>
+      </div>
+
+      <div class="hack-card consistency" data-label="Consistency">
+        <span class="emoji">📐</span>
+        <h3>Design Tokens 100% — กัน Drift ก่อนเกิด</h3>
+        <p>Tailwind v4 + PrimeVue Aura theme + custom tokens — 3 layers ที่ override กันได้ ถ้าไม่มีระเบียบ hex hardcode จะแอบหลุดเข้ามาเรื่อยๆ</p>
+        <div class="highlight">แก้: audit hex hardcodes → swap เป็น CSS variables; token definitions ใน <code>design-tokens.css</code> เป็น single source of truth; dark mode flip ผ่าน <code>:root.dark-mode</code> overrides — ไม่ต้องเขียน Tailwind dark: variant</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Strategic Partners ===== -->
+    <section class="section-intro">
+      <h2>Stakeholders & Build Period</h2>
+      <p>Internal product — co-designed กับทีมจริงทุก department</p>
+    </section>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>Portal Realfact ไม่ใช่ product ที่ออกแบบจาก ivory tower — ทุก flow ผ่าน workshop กับ HR, Finance, Accounting, Procurement, Legal, C-Level จริง ทุก approval threshold มาจาก policy ของ Real Factory จริง</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">🏢</strong><br>
+        <strong>Real Factory Group</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ลูกค้า + Production team — 8 departments stakeholder</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">⏱️</strong><br>
+        <strong>Build Period</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">6 weeks — Phase 1 MVP (Core + 7 modules)</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">👥</strong><br>
+        <strong>Team Composition</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">TechLead, PM×2, BA, UX/UI — cross-functional small team</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">🤖</strong><br>
+        <strong>AI-Augmented Workflow</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">BMAD framework + Claude subagents ช่วยทำ i18n + create-story</p>
+      </div>
+    </div>
+
+    <div class="learning-card" style="border-left: 3px solid var(--accent);">
+      <strong>ทำไม co-design ถึงสำคัญกับ Internal Tools?</strong>
+      <p>Internal user คือ user ที่หนีไม่ได้ — บังคับใช้ก็ต้องใช้ แต่ถ้าออกแบบไม่ตรง pain point จริง พวกเขาจะหา workaround กลับไป Excel เหมือนเดิม co-design ทำให้ทุก approval rule, ทุก field, ทุก label มาจาก domain expert จริง ไม่ใช่ assumption</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Key Takeaways ===== -->
+    <section class="section-intro">
+      <h2>Key Takeaways</h2>
+      <p>4 บทเรียน Design Thinking จาก Portal Realfact</p>
+    </section>
+
+    <div class="learning-card">
+      <strong>Empathy First — แยกบทบาท 18 roles ทำให้ approval flow ใกล้เคียง real org chart:</strong>
+      <p>ตอนแรกใช้ 11 roles ตามที่ codebase มีอยู่ พอ test กับ Finance Head จริง เขาบอก "ผมไม่ใช่ Lv1 ผมเป็น Head ทำไมต้องเห็นเอกสารเดียวกับ Lv1?" — ถึงรู้ว่า role ต้องสะท้อน hierarchy จริง ไม่ใช่ลดเพื่อความง่ายของ dev สุดท้าย split เป็น 18 roles แล้ว approval ตรงกับ policy ของบริษัทเป๊ะ</p>
+    </div>
+    <div class="learning-card">
+      <strong>Single Source of Truth — design tokens + Zod schemas + DEPARTMENT_LABELS:</strong>
+      <p>ถ้ามี constant 1 ตัวอยู่ 3 ที่ มันจะ drift แน่นอน — ไม่ใช่ "ถ้า" แต่เป็น "เมื่อไหร่" Portal Realfact บังคับให้ทุก type, ทุก validation, ทุก label ดึงมาจากแหล่งเดียว → frontend กับ backend mismatch กันไม่ได้ tokens กับ component ขัดกันไม่ได้</p>
+    </div>
+    <div class="learning-card">
+      <strong>Scale by Composition — 4 component กลางรองรับ 8 doc types:</strong>
+      <p>SignatureBlock + AttachmentIndex + AttachmentPage + DocumentLayout — แค่ 4 components รับ prop interface เดียว generate ได้ 8 doc types (PR, PO, Petty Cash, Reimbursement, Advance, Clear, Travel, Booking) ถ้า duplicate ต่อ doc คือ 8× maintenance burden — Composition ชนะ duplication เสมอ</p>
+    </div>
+    <div class="learning-card">
+      <strong>Subagent Workflow — งาน i18n 1000+ strings เสร็จในวันเดียว:</strong>
+      <p>Translate ทีละไฟล์ทีละ string คือฝันร้าย — ใช้ Claude subagents 10 ตัว parallel แต่ละตัวรับ batch ของ views + auto type-check guard ก่อน commit ถ้า key ขาด TS แตกทันที — ไม่ต้องพึ่ง human discipline สิ่งสำคัญคือออกแบบ guard ที่ machine ตรวจได้ ไม่ใช่ checklist ใน Notion</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">8</div>
+        <div class="label">Modules</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">18</div>
+        <div class="label">User Roles (RBAC)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">2</div>
+        <div class="label">Languages (TH/EN)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">6w</div>
+        <div class="label">Phase 1 MVP</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>Portal Realfact</h2>
+    <p>Digital OS รวม 8 แผนกในระบบเดียว — ออกแบบให้ scale ทั้ง user count, role hierarchy และตลาดต่างประเทศ ด้วย Design System + RBAC + i18n bilingual ตั้งแต่วันแรก</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Vue 3</span>
+      <span class="stack-icon">TypeScript</span>
+      <span class="stack-icon">PrimeVue</span>
+      <span class="stack-icon">Tailwind v4</span>
+      <span class="stack-icon">Express 5</span>
+      <span class="stack-icon">Prisma</span>
+      <span class="stack-icon">PostgreSQL</span>
+      <span class="stack-icon">Socket.io</span>
+      <span class="stack-icon">Design System</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.info/">&#8592; All Projects</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.info/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Portal Realfact Portfolio",
+      "item": "https://projects.tanplanet.info/Internal-Tools-Porfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>
