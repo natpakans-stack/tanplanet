@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>หารกัน (HanGun) — แอปหารบิลทริปกับเพื่อน</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="หารกัน (HanGun) — แอปหารบิลทริปกับเพื่อน">
+  <meta name="twitter:description" content="Portfolio: หารกัน (HanGun) — แอปหารบิลทริป Full-stack ด้วย Next.js 16 + Supabase, no-login, มี Transfer Matrix ลดทอนหนี้ให้โอนน้อยครั้งที่สุด">
+  <meta property="og:url" content="https://projects.tanplanet.info/hangun-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.info/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: หารกัน (HanGun) — แอปหารบิลทริป Full-stack ด้วย Next.js 16 + Supabase, no-login, มี Transfer Matrix ลดทอนหนี้ให้โอนน้อยครั้งที่สุด">
+  <meta property="og:title" content="หารกัน (HanGun) — แอปหารบิลทริปกับเพื่อน">
+  <meta name="description" content="Portfolio: หารกัน (HanGun) — แอปหารบิลทริป Full-stack ด้วย Next.js 16 + Supabase, no-login, มี Transfer Matrix ลดทอนหนี้ให้โอนน้อยครั้งที่สุด">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%234F46E5'/><text x='50' y='50' dy='.35em' text-anchor='middle' font-size='62' fill='white' font-family='sans-serif'>&#247;</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --accent: #4F46E5;
+      --accent-light: #eef2ff;
+      --accent-dark: #3730a3;
+      --accent-glow: rgba(79,70,229,0.12);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 38%, #4338ca 78%, #6366f1 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(16,185,129,0.18) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(99,102,241,0.28) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #4F46E5, #10b981, #6366f1);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      background: #fff;
+      color: var(--accent);
+      font-size: 2.4rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #34d399;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #6ee7b7;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.88;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.85);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.18); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #1e1b4b, #3730a3);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.15;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.7;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(79,70,229,0.1);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.algo::before { background: var(--accent-light); color: var(--accent); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.responsive::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.automation::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card.precision::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--emerald));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(79,70,229,0.2); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f1f5f9; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 56px;
+    }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .closing .links {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .closing .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(30,27,75,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(30,27,75,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark">&#247;</div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Full-Stack Web App &middot; No-login &middot; Mobile-first
+      </div>
+      <h1>หารกัน · HanGun<br><span class="accent">หารบิลทริป รู้เลยว่าใครโอนใคร</span></h1>
+      <p>แอปหารบิลทริปกับเพื่อน — สร้าง Project, ชวนเพื่อนสแกน QR เข้าร่วม, บันทึกค่าใช้จ่าย แล้วระบบบอกเลยว่าใครต้องโอนเงินคืนใครเท่าไหร่ พร้อมลดทอนหนี้ให้โอนน้อยครั้งที่สุด</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Next.js 16</span>
+        <span class="hero-tag">React 19</span>
+        <span class="hero-tag">TypeScript</span>
+        <span class="hero-tag">Supabase</span>
+        <span class="hero-tag">Server Actions</span>
+        <span class="hero-tag">No-login Auth</span>
+        <span class="hero-tag">Mobile-first</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="https://hangun.tanplanet.info" target="_blank" rel="noopener">
+          เปิดแอปจริง &#8599;
+        </a>
+        <a class="cta-btn cta-ghost" href="#stack">ดู Tech Stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem ===== -->
+    <section class="section-intro">
+      <h2>ปัญหาที่เจอ</h2>
+      <p>ทำไมการหารบิลทริปถึงปวดหัวทุกครั้ง?</p>
+    </section>
+
+    <div class="quote-block">
+      <p>ทริปจบแล้วแต่บิลยังไม่จบ — คนนึงจ่ายค่าที่พัก อีกคนจ่ายค่ารถ อีกคนจ่ายค่าข้าว มื้อนี้มาไม่ครบ มื้อนั้นบางคนไม่กินเหล้า สุดท้ายต้องนั่งคิดเลขในแชต แล้วก็ยังโอนกันวุ่นไปมา</p>
+      <div class="author">— Insight จากทริปจริง ก่อนเริ่มทำ HanGun</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="emoji">&#128184;</span>
+        <h3>จบทริปแล้วงง — ใครออกบิลไหนไปบ้าง</h3>
+        <p>ค่าใช้จ่ายกระจายอยู่ในหัวของแต่ละคน ไม่มีที่จดรวม พอจะเคลียร์เงินก็จำกันไม่ได้ว่าใครจ่ายอะไรไปเท่าไหร่</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#129518;</span>
+        <h3>หารไม่เท่ากัน คิดมือพลาดบ่อย</h3>
+        <p>บางมื้อมาไม่ครบ บางคนไม่กินเหล้า บางบิลเป็นหนี้ส่วนตัวคนเดียว — หารเท่ากันทื่อ ๆ ไม่ได้ ต้องคิดแยกทีละรายการ</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128260;</span>
+        <h3>คิดเสร็จแล้ว แต่โอนกันวุ่น</h3>
+        <p>A ติด B, B ติด C, C ติด A — ทั้งที่จริงหักลบกันแล้วโอนแค่ไม่กี่ครั้งก็จบ แต่ไม่มีใครคำนวณตรงนั้นให้</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128226;</span>
+        <h3>ทวงเงินในแชต ไม่มีหลักฐาน</h3>
+        <p>ใครโอนแล้ว ใครยังค้าง ต้องไล่เลื่อนหาสลิปในแชตกลุ่ม ยอดที่ค้างก็ไม่เคยอัปเดตให้เห็นชัด ๆ</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128241;</span>
+        <h3>แอปหารบิลส่วนใหญ่ต้องสมัครสมาชิก</h3>
+        <p>กว่าจะชวนเพื่อนครบทุกคน ต้องให้ทุกคนโหลดแอป สมัคร ยืนยันอีเมล — เพื่อนหลายคนถอดใจตั้งแต่ขั้นนี้</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution ===== -->
+    <section class="section-intro">
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>1 ลิงก์ 1 QR — เข้าร่วมได้ทันที ไม่ต้องสมัคร แล้วให้ระบบคิดเลขแทน</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <span class="emoji">&#127919;</span>
+        <h3>Project เดียว แชร์ QR — เข้าร่วมใน 10 วินาที</h3>
+        <p>เจ้าของสร้าง Project แล้วได้ QR/ลิงก์ เพื่อนสแกนเข้ามา กรอกชื่อ ก็เป็นสมาชิกแล้ว — ไม่มีหน้า Login ไม่มีอีเมลให้ยืนยัน</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#9878;&#65039;</span>
+        <h3>หาร 3 โหมดในที่เดียว</h3>
+        <p>หารเท่ากัน / กำหนดเองรายคน / หนี้ส่วนตัว — ครอบคลุมทุกแบบบิลในทริปจริง ระบบกระจายเศษสตางค์ให้ครบบาท ไม่มีตกหล่น</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128256;</span>
+        <h3>Transfer Matrix หักลบหนี้อัตโนมัติ</h3>
+        <p>สลับดูได้ทั้ง "ยอดดิบ" และ "หักลบแล้ว" — ระบบลดทอนหนี้ให้เหลือจำนวนการโอนน้อยที่สุดที่ทุกคนเคลียร์กันจบ</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128179;</span>
+        <h3>ทุกคนมี QR รับเงินในโปรไฟล์</h3>
+        <p>ตอนเข้าร่วมต้องอัปรูป QR พร้อมเพย์ของตัวเอง — พอจะโอนคืนใคร กดเข้าไปก็เจอ QR ของคนนั้นให้สแกนได้เลย</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#9989;</span>
+        <h3>ปุ่ม "จ่ายแล้ว" + อ่านสลิปอัตโนมัติ</h3>
+        <p>โอนเสร็จกดยืนยัน แนบสลิปได้ ระบบอ่าน QR ในสลิปเป็นหลักฐานให้ ยอดที่ค้างหายไปจากหน้าจอทันที</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== User Flow ===== -->
+    <section class="section-intro">
+      <h2>User Flow</h2>
+      <p>4 ขั้นตอน — จากเปิดแอปครั้งแรกถึงเคลียร์เงินจบ</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <span class="emoji">&#10133;</span>
+        <h4>สร้าง Project</h4>
+        <p>ตั้งชื่อทริป ทำโปรไฟล์ + อัป QR รับเงิน</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <span class="emoji">&#128241;</span>
+        <h4>ชวนเพื่อน</h4>
+        <p>แชร์ QR/ลิงก์ เพื่อนสแกนเข้าร่วมเอง</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <span class="emoji">&#129534;</span>
+        <h4>ลงบิล</h4>
+        <p>ใครก็เพิ่มค่าใช้จ่ายได้ เลือกโหมดหาร</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <span class="emoji">&#9989;</span>
+        <h4>โอน + เคลียร์</h4>
+        <p>ดูว่าต้องโอนใคร สแกนจ่าย กด "จ่ายแล้ว"</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>Next.js 16 + Supabase — stack ที่คนเดียวก็ดูแลได้ทั้งระบบ</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Frontend — Next.js App Router
+          <div class="arch-sub">
+            <span>React 19</span>
+            <span>TypeScript</span>
+            <span>Turbopack</span>
+            <span>Client Components</span>
+            <span>CSS Design Tokens</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Server Actions — ชั้นข้อมูลเดียว
+          <div class="arch-sub">
+            <span>createProject</span>
+            <span>joinProject</span>
+            <span>saveExpense</span>
+            <span>addSettlement</span>
+            <span>revalidatePath</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          lib/engine.ts — Pure Calculation
+          <div class="arch-sub">
+            <span>splitEqual</span>
+            <span>rawDebts</span>
+            <span>simplifyDebts</span>
+            <span>outstandingTransfers</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Infrastructure
+          <div class="arch-sub">
+            <span>PostgreSQL (Supabase)</span>
+            <span>Supabase Storage</span>
+            <span>Vercel</span>
+            <span>GitHub</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+      <strong>ทำไมเลือก stack นี้?</strong>
+      <p><strong>Next.js Server Actions</strong> ตัดชั้น REST API ทิ้งทั้งชั้น — เขียน mutation เป็นฟังก์ชัน TypeScript ธรรมดาที่เรียกจาก client ได้ตรง ๆ &middot; <strong>Supabase</strong> รวม Postgres + Storage สำหรับเก็บรูปโปรไฟล์/QR ไว้ที่เดียว ไม่ต้องตั้ง backend เอง &middot; <strong>Vercel</strong> deploy จาก git push — ผลคือ full-stack app ที่คนเดียวสร้างและดูแลได้ตั้งแต่ DB ถึง production</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <h2>สิ่งที่สร้าง — 8 ฟีเจอร์หลัก</h2>
+      <p>ครบ loop ตั้งแต่สร้างทริปถึงเคลียร์เงินกันจบ</p>
+    </section>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <span class="emoji">&#127881;</span>
+        <h3>สร้าง &amp; เข้าร่วม Project</h3>
+        <p>เปิดทริปแล้วได้ QR/ลิงก์ เพื่อนสแกนเข้าร่วมได้เอง — no-login ทั้งหมด</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128100;</span>
+        <h3>โปรไฟล์ + QR รับเงิน</h3>
+        <p>ทุกคนตั้งชื่อ ใส่รูป และอัป QR พร้อมเพย์ (บังคับ) เพื่อนจะได้สแกนโอนคืนได้</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#129534;</span>
+        <h3>บันทึกค่าใช้จ่าย 3 โหมด</h3>
+        <p>หารเท่ากัน / กำหนดเองรายคน / หนี้ส่วนตัว — มีหมวดหมู่ + รูปสลิปประกอบ</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128202;</span>
+        <h3>สรุปยอดต่อคน</h3>
+        <p>แต่ละคนเห็นชัดว่าจ่ายไปเท่าไหร่ ต้องจ่ายเท่าไหร่ และยอดสุทธิติดลบ/บวก</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128256;</span>
+        <h3>Transfer Matrix</h3>
+        <p>ตารางใครโอนใคร สลับดูยอดดิบ/หักลบ พร้อมปุ่มลัดไปจ่ายเงิน</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#9989;</span>
+        <h3>จ่ายแล้ว (Settle)</h3>
+        <p>กดยืนยันการโอน แนบสลิปได้ ยอดที่ค้างถูกหักออกจากการคำนวณทันที</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128269;</span>
+        <h3>อ่าน QR ในสลิป</h3>
+        <p>อัปสลิปปุ๊บ ระบบสแกน QR ในรูปด้วย jsQR ดึงเลขอ้างอิงการโอนมาเก็บเป็นหลักฐาน</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128737;&#65039;</span>
+        <h3>สิทธิ์เจ้าของ Project</h3>
+        <p>เจ้าของลบสมาชิกหรือลบทั้ง Project ได้ ยืนยันตัวด้วย owner token ลับในเครื่อง</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack ===== -->
+    <section class="section-intro">
+      <h2>Hack กับปัญหา</h2>
+      <p>6 โจทย์เทคนิคที่ต้องคิดทางแก้เอง ไม่มีใน playbook</p>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card algo" data-label="Algorithm">
+        <span class="emoji">&#128256;</span>
+        <h3>ลดทอนหนี้ให้โอนน้อยครั้งที่สุด</h3>
+        <p>ถ้าแสดงหนี้ดิบ ทุกคู่ที่ติดกันต้องโอนหากันหมด — A→B, B→C, C→A วุ่นวายและเสียค่าธรรมเนียมโอนเกินจำเป็น</p>
+        <div class="highlight">แก้: <code>simplifyDebts()</code> ใช้ greedy min-cash-flow — จับคนยอดบวกสูงสุดไปเจอคนยอดลบสูงสุดทีละคู่ จนหนี้หมด เหลือจำนวนการโอนน้อยที่สุดที่ทุกคนยังเคลียร์กันครบ</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Precision">
+        <span class="emoji">&#129689;</span>
+        <h3>หารแล้วเศษสตางค์ต้องไม่หาย</h3>
+        <p>หาร 100 บาท / 3 คน = 33.33 × 3 = 99.99 — หายไป 1 สตางค์ ยอดรวมไม่ตรงบิล พอสะสมหลายรายการก็เพี้ยน</p>
+        <div class="highlight">แก้: <code>splitEqual()</code> แบบ satang-exact — คำนวณเป็นจำนวนสตางค์เต็ม แล้วกระจายเศษที่เหลือทีละสตางค์ให้คนแรก ๆ ผลรวมของส่วนแบ่งเท่ากับยอดบิลเป๊ะทุกครั้ง</div>
+      </div>
+
+      <div class="hack-card arch" data-label="Architecture">
+        <span class="emoji">&#128273;</span>
+        <h3>No-login แต่ยังต้องรู้ว่าใครเป็นใคร</h3>
+        <p>ไม่มีระบบสมาชิก แล้วจะแยกเจ้าของออกจากสมาชิกทั่วไป และจำได้ว่าเครื่องนี้คือใคร ได้ยังไง?</p>
+        <div class="highlight">แก้: 2 token — <code>join_code</code> เป็น public token ใน QR/ลิงก์ให้ใครก็เข้าร่วมได้ ส่วน <code>owner_token</code> เป็น secret เก็บใน localStorage ของเจ้าของเท่านั้น ตัวตนสมาชิกผูกกับเครื่องผ่าน localStorage — เปิดเว็บมาก็เข้าทริปเดิมได้เลย</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Performance">
+        <span class="emoji">&#128247;</span>
+        <h3>รูปจากมือถือชน Server Action 1MB limit</h3>
+        <p>ตอนชวนเพื่อนเข้าร่วม รูปโปรไฟล์/QR จากกล้องมือถือมักโต 3–8MB — ทะลุลิมิต body ของ Server Action เด้ง error ทันที</p>
+        <div class="highlight">แก้: <code>compressImage()</code> ย่อรูปฝั่ง client ด้วย canvas ก่อนส่ง (3.1MB &rarr; ~98KB) สลับไฟล์ใน input ผ่าน <code>DataTransfer</code> + ดัน <code>bodySizeLimit</code> เป็น 8MB เป็น headroom</div>
+      </div>
+
+      <div class="hack-card automation" data-label="Automation">
+        <span class="emoji">&#129516;</span>
+        <h3>อ่าน QR ในสลิปโอนเงินอัตโนมัติ</h3>
+        <p>อยากให้สลิปเป็นหลักฐานที่ตรวจสอบได้ ไม่ใช่แค่รูปภาพเฉย ๆ ที่ใครจะแนบรูปอะไรก็ได้</p>
+        <div class="highlight">แก้: ตอนผู้ใช้เลือกสลิป decode QR ในรูปด้วย <code>jsQR</code> บน canvas (อ่านจากไฟล์ต้นฉบับที่คมที่สุดก่อนค่อยบีบอัด) ดึงเลขอ้างอิงการโอนเก็บคู่กับ settlement</div>
+      </div>
+
+      <div class="hack-card responsive" data-label="Responsive">
+        <span class="emoji">&#128241;</span>
+        <h3>Mobile-first ที่ทำพลาดแล้วแก้</h3>
+        <p>เขียน layout หลักไว้ใน <code>min-width</code> media query — desktop ดูดี แต่บนมือถือ content ชนขอบจอ tab bar ไม่ติดล่าง</p>
+        <div class="highlight">แก้: ย้าย layout/padding หลักมาเป็น base rule (ออกแบบที่ 390px ก่อน) แล้วใช้ media query ขยายขึ้น 768 / 1440 — บทเรียนคือ mobile-first ต้องเริ่มที่ base จริง ๆ ไม่ใช่แค่พูด</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Prototype to Production ===== -->
+    <section class="section-intro">
+      <h2>จาก Prototype สู่ Production</h2>
+      <p>เริ่มจาก HTML ไฟล์เดียว — พิสูจน์ flow ก่อนลงทุนกับ stack จริง</p>
+    </section>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>HanGun ไม่ได้เริ่มจากการเปิด Next.js — แต่เริ่มจาก HTML ไฟล์เดียวที่รัน React ผ่าน CDN เพื่อทดสอบว่า user flow และสูตรคำนวณ Transfer Matrix ใช้ได้จริงไหม พอมั่นใจว่าโจทย์ถูก ค่อย rebuild เป็น full-stack app</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#129514;</strong><br>
+        <strong>Prototype First</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">HTML ไฟล์เดียว ทดสอบ flow + สูตรคำนวณ</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128104;&#8205;&#128187;</strong><br>
+        <strong>Solo Build</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ออกแบบ + เขียนโค้ด + deploy คนเดียวจบ</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#129302;</strong><br>
+        <strong>AI-Augmented</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">สร้างร่วมกับ Claude Code ตั้งแต่ดีไซน์ถึงดีพลอย</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128640;</strong><br>
+        <strong>Live in Production</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ใช้งานจริงที่ hangun.tanplanet.info</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Key Takeaways ===== -->
+    <section class="section-intro">
+      <h2>เราได้อะไรจากโปรเจกต์นี้</h2>
+      <p>4 บทเรียนจากการทำ HanGun ตั้งแต่ต้นจนถึง production</p>
+    </section>
+
+    <div class="learning-card">
+      <strong>1. Prototype ก่อน Production — แก้ของถูกก่อนลงทุน:</strong>
+      <p>การเริ่มจาก HTML ไฟล์เดียวทำให้รู้เร็วว่า Transfer Matrix แบบ "ดิบ vs หักลบ" คือสิ่งที่ user ต้องการจริง — ถ้ากระโดดไปเขียน Next.js + DB ตั้งแต่แรก จะเสียเวลาไปกับ infra ก่อนที่จะรู้ว่าโจทย์ถูกหรือเปล่า</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. แยก Logic ออกจาก UI — engine ที่เชื่อใจได้:</strong>
+      <p><code>lib/engine.ts</code> เป็น pure function ล้วน ไม่ผูกกับ React หรือ DB — รับ input ได้ output เดิมเสมอ ทำให้สูตรหารเงิน/ลดทอนหนี้ทดสอบง่ายและมั่นใจได้ ส่วน UI แค่เรียกใช้ ความถูกต้องของเงินไม่ปนกับเรื่องการแสดงผล</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. ลด Friction = เอาขั้นตอนออก ไม่ใช่เพิ่มฟีเจอร์:</strong>
+      <p>โจทย์ที่แท้จริงคือ "ทำยังไงให้เพื่อนทุกคนเข้าร่วมได้" — คำตอบไม่ใช่ระบบสมาชิกที่ดีขึ้น แต่คือ no-login model: สแกน QR แล้วเข้าได้เลย UX ที่ดีหลายครั้งคือการตัดสิ่งที่ไม่จำเป็นออก</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Mobile-first ต้องเริ่มที่ base จริง ๆ:</strong>
+      <p>บั๊ก responsive ที่เจอสอนชัดว่า "mobile-first" ไม่ใช่แค่คำพูด — ถ้าเขียน layout หลักไว้ใน <code>min-width</code> media query เท่ากับออกแบบ desktop ก่อนโดยไม่รู้ตัว ต้องวาง base layout ที่ 390px ให้สมบูรณ์ แล้วค่อยขยายขึ้น</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">หน้า Login — เข้าร่วมผ่าน QR</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">3</div>
+        <div class="label">โหมดหารบิล</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">5</div>
+        <div class="label">ตารางฐานข้อมูล</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">100%</div>
+        <div class="label">Server Actions — ไม่มี REST API แยก</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <h2>หารกัน · HanGun</h2>
+    <p>แอปหารบิลทริปที่จบครบ loop — สร้าง Project, สแกน QR เข้าร่วม, ลงบิล แล้วรู้เลยว่าใครโอนใคร พร้อมลดทอนหนี้ให้โอนน้อยที่สุด สร้างเป็น full-stack app ด้วย Next.js 16 + Supabase</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Next.js 16</span>
+      <span class="stack-icon">React 19</span>
+      <span class="stack-icon">TypeScript</span>
+      <span class="stack-icon">Server Actions</span>
+      <span class="stack-icon">Supabase</span>
+      <span class="stack-icon">PostgreSQL</span>
+      <span class="stack-icon">Supabase Storage</span>
+      <span class="stack-icon">jsQR</span>
+      <span class="stack-icon">Vercel</span>
+    </div>
+    <div class="links">
+      <a href="https://hangun.tanplanet.info" target="_blank" rel="noopener">เปิดแอปจริง &#8599;</a>
+      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.info/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "หารกัน (HanGun) Portfolio",
+      "item": "https://projects.tanplanet.info/hangun-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>
