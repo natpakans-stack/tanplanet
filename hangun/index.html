@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<meta name="theme-color" content="#4F46E5" />
+<title>หารกัน — หารบิลทริปกับเพื่อน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     หารกัน (HanGun) — Design Tokens
+     สี/typography/spacing เฉพาะโปรเจกต์นี้ ห้ามใช้ข้าม project
+     ============================================================ */
+  :root {
+    /* surfaces */
+    --bg: #F4F4F5;
+    --surface: #FFFFFF;
+    --surface-2: #FAFAFA;
+    --border: #E7E7EA;
+    --border-strong: #D4D4D8;
+    /* text */
+    --text: #18181B;
+    --text-2: #52525B;
+    --text-3: #A1A1AA;
+    /* brand */
+    --primary: #4F46E5;
+    --primary-press: #4338CA;
+    --primary-soft: #EEF2FF;
+    --primary-grad: linear-gradient(135deg, #4F46E5 0%, #6366F1 60%, #818CF8 100%);
+    /* semantic */
+    --positive: #047857;
+    --positive-soft: #ECFDF5;
+    --negative: #BE123C;
+    --negative-soft: #FFF1F3;
+    --warn: #B45309;
+    --warn-soft: #FFFBEB;
+    /* radius */
+    --r-sm: 9px;
+    --r: 13px;
+    --r-lg: 18px;
+    --r-xl: 24px;
+    /* shadow */
+    --sh-card: 0 1px 2px rgba(24,24,27,.04), 0 2px 8px rgba(24,24,27,.05);
+    --sh-pop: 0 10px 30px rgba(24,24,27,.16);
+    --sh-btn: 0 4px 14px rgba(79,70,229,.32);
+    --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    font-family: var(--font);
+    background: #DEDEE3;
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    justify-content: center;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  input { font-family: inherit; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* ---- phone shell ---- */
+  .phone {
+    width: 100%;
+    max-width: 430px;
+    height: 100dvh;
+    background: var(--bg);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  @media (min-width: 460px) {
+    body { align-items: center; padding: 24px 0; }
+    .phone { height: min(920px, calc(100dvh - 48px)); border-radius: 36px; box-shadow: var(--sh-pop); }
+  }
+
+  /* ---- screen layout ---- */
+  .screen { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+  .screen-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; min-height: 0; }
+  .screen-body.pad { padding: 16px 16px 28px; }
+  .screen-footer {
+    flex: none;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  }
+  .anim { animation: slideIn .26s cubic-bezier(.22,.7,.3,1); }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+
+  /* ---- topbar ---- */
+  .topbar {
+    flex: none;
+    display: flex; align-items: center; gap: 8px;
+    padding: calc(12px + env(safe-area-inset-top)) 10px 12px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-title { font-size: 17px; font-weight: 600; flex: 1; }
+  .topbar.hero {
+    background: var(--primary-grad);
+    color: #fff;
+    border: none;
+    flex-direction: column; align-items: flex-start; gap: 4px;
+    padding: calc(22px + env(safe-area-inset-top)) 20px 22px;
+  }
+  .hero h1 { font-size: 26px; font-weight: 700; letter-spacing: -.4px; }
+  .hero p { font-size: 13.5px; opacity: .88; }
+  .icon-btn {
+    width: 40px; height: 40px; border-radius: 11px;
+    display: grid; place-items: center; color: var(--text-2);
+    flex: none;
+  }
+  .icon-btn:active { background: var(--surface-2); }
+  .icon-btn.danger { color: var(--negative); }
+
+  /* ---- buttons ---- */
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    height: 52px; padding: 0 18px; border-radius: var(--r);
+    font-size: 15.5px; font-weight: 600;
+    transition: transform .08s ease, opacity .15s ease;
+  }
+  .btn:active { transform: scale(.975); }
+  .btn:disabled { opacity: .42; pointer-events: none; }
+  .btn-primary { background: var(--primary); color: #fff; box-shadow: var(--sh-btn); }
+  .btn-secondary { background: var(--surface); color: var(--text); border: 1.5px solid var(--border-strong); }
+  .btn-ghost { background: var(--surface-2); color: var(--text-2); height: 44px; }
+  .btn-danger { background: var(--negative-soft); color: var(--negative); }
+  .btn-block { width: 100%; }
+  .btn-row { display: flex; gap: 10px; }
+  .btn-row .btn { flex: 1; }
+  .btn-row .grow2 { flex: 1.6; }
+
+  /* ---- card / section ---- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    box-shadow: var(--sh-card);
+  }
+  .section { margin-bottom: 20px; }
+  .section-label {
+    font-size: 12px; font-weight: 600; color: var(--text-3);
+    letter-spacing: .4px; text-transform: uppercase;
+    margin: 0 4px 9px;
+  }
+  .list { display: flex; flex-direction: column; gap: 10px; }
+
+  /* ---- field / input ---- */
+  .field { margin-bottom: 16px; }
+  .field-label { display: block; font-size: 13.5px; font-weight: 600; color: var(--text-2); margin: 0 2px 7px; }
+  .input {
+    width: 100%; height: 52px; padding: 0 15px;
+    background: var(--surface); border: 1.5px solid var(--border-strong);
+    border-radius: var(--r); font-size: 16px; color: var(--text);
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .input::placeholder { color: var(--text-3); }
+  .input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3.5px var(--primary-soft); }
+  .amount-wrap { position: relative; }
+  .amount-wrap .baht {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    font-size: 22px; font-weight: 600; color: var(--text-3); pointer-events: none;
+  }
+  .input-amount {
+    height: 64px; padding-left: 38px; font-size: 26px; font-weight: 700;
+  }
+  .hint { font-size: 12.5px; color: var(--text-3); margin: 6px 2px 0; }
+
+  /* ---- chips (category) ---- */
+  .chip-row { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 4px; scrollbar-width: none; }
+  .chip-row::-webkit-scrollbar { display: none; }
+  .chip {
+    flex: none; display: flex; align-items: center; gap: 6px;
+    height: 42px; padding: 0 14px; border-radius: 999px;
+    background: var(--surface); border: 1.5px solid var(--border-strong);
+    font-size: 14px; font-weight: 500; color: var(--text-2);
+    transition: transform .08s ease;
+  }
+  .chip:active { transform: scale(.95); }
+  .chip .emj { font-size: 16px; }
+  .chip.selected { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); font-weight: 600; }
+
+  /* ---- segmented ---- */
+  .seg {
+    display: flex; background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: var(--r); padding: 4px; gap: 4px;
+  }
+  .seg-btn {
+    flex: 1; height: 40px; border-radius: 9px;
+    font-size: 14px; font-weight: 600; color: var(--text-2);
+    transition: transform .08s ease;
+  }
+  .seg-btn:active { transform: scale(.97); }
+  .seg-btn.active { background: var(--surface); color: var(--primary); box-shadow: var(--sh-card); }
+
+  /* ---- avatar ---- */
+  .avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    display: grid; place-items: center; flex: none;
+    color: #fff; font-weight: 600; font-size: 15px;
+  }
+  .avatar.sm { width: 26px; height: 26px; font-size: 11px; }
+  .avatar.lg { width: 46px; height: 46px; font-size: 18px; }
+  .avatar-stack { display: flex; }
+  .avatar-stack .avatar { border: 2px solid var(--surface); margin-left: -9px; }
+  .avatar-stack .avatar:first-child { margin-left: 0; }
+
+  /* ---- member pick row ---- */
+  .mp-row { display: flex; gap: 9px; overflow-x: auto; padding: 2px 2px 6px; scrollbar-width: none; }
+  .mp-row::-webkit-scrollbar { display: none; }
+  .mp {
+    flex: none; width: 64px; display: flex; flex-direction: column; align-items: center; gap: 5px;
+    padding: 8px 4px; border-radius: var(--r); border: 1.5px solid transparent;
+    transition: transform .08s ease;
+  }
+  .mp:active { transform: scale(.95); }
+  .mp.active { background: var(--primary-soft); border-color: var(--primary); }
+  .mp .nm { font-size: 11.5px; font-weight: 500; color: var(--text-2); max-width: 58px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mp.active .nm { color: var(--primary); font-weight: 600; }
+  .mp .av-wrap { position: relative; }
+  .mp .tick {
+    position: absolute; right: -3px; bottom: -3px; width: 17px; height: 17px;
+    background: var(--primary); border: 2px solid var(--surface); border-radius: 50%;
+    display: grid; place-items: center; color: #fff;
+  }
+
+  /* ---- expense / trip rows ---- */
+  .row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 14px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--r-lg);
+    box-shadow: var(--sh-card); width: 100%; text-align: left;
+    transition: transform .08s ease;
+  }
+  .row:active { transform: scale(.99); }
+  .row-icon {
+    width: 44px; height: 44px; border-radius: 12px; flex: none;
+    display: grid; place-items: center; font-size: 21px;
+    background: var(--surface-2);
+  }
+  .row-main { flex: 1; min-width: 0; }
+  .row-title { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .row-sub { font-size: 12.5px; color: var(--text-3); display: flex; align-items: center; gap: 5px; margin-top: 1px; }
+  .row-amount { font-size: 15.5px; font-weight: 700; flex: none; }
+  .row-chev { color: var(--border-strong); flex: none; }
+
+  /* ---- trip total hero card ---- */
+  .total-card {
+    background: var(--primary-grad); color: #fff;
+    border-radius: var(--r-xl); padding: 20px;
+    box-shadow: var(--sh-btn); margin-bottom: 18px;
+  }
+  .total-card .lab { font-size: 13px; opacity: .85; }
+  .total-card .big { font-size: 34px; font-weight: 700; letter-spacing: -.5px; margin: 2px 0 10px; }
+  .total-card .meta { display: flex; align-items: center; gap: 8px; font-size: 13px; opacity: .9; }
+
+  /* ---- empty state ---- */
+  .empty { text-align: center; padding: 56px 28px; }
+  .empty .emj { font-size: 52px; }
+  .empty .t { font-size: 17px; font-weight: 600; margin-top: 14px; }
+  .empty .s { font-size: 13.5px; color: var(--text-3); margin-top: 5px; }
+
+  /* ---- net badge ---- */
+  .net-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 5px 10px; border-radius: 999px;
+    font-size: 13px; font-weight: 700; white-space: nowrap;
+  }
+  .net-pos { background: var(--positive-soft); color: var(--positive); }
+  .net-neg { background: var(--negative-soft); color: var(--negative); }
+  .net-zero { background: var(--surface-2); color: var(--text-3); }
+
+  /* ---- person card ---- */
+  .person {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 14px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--r-lg);
+    box-shadow: var(--sh-card);
+  }
+  .person-main { flex: 1; min-width: 0; }
+  .person-name { font-size: 15px; font-weight: 600; }
+  .person-sub { font-size: 12px; color: var(--text-3); margin-top: 1px; }
+
+  /* ---- transfer row ---- */
+  .transfer {
+    display: flex; align-items: center; gap: 10px;
+    padding: 13px 14px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--r-lg);
+    box-shadow: var(--sh-card);
+  }
+  .transfer .who { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; }
+  .transfer .arrow { color: var(--text-3); flex: none; }
+  .transfer .amt { margin-left: auto; font-size: 15.5px; font-weight: 700; color: var(--primary); }
+
+  /* ---- matrix ---- */
+  .matrix-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); -webkit-overflow-scrolling: touch; }
+  table.matrix { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+  table.matrix th, table.matrix td { padding: 9px 8px; text-align: right; white-space: nowrap; }
+  table.matrix thead th { font-weight: 600; color: var(--text-2); border-bottom: 1.5px solid var(--border); background: var(--surface-2); }
+  table.matrix th.rowhead { text-align: left; position: sticky; left: 0; background: var(--surface); z-index: 2; box-shadow: 1px 0 0 var(--border); }
+  table.matrix thead th.corner { text-align: left; position: sticky; left: 0; background: var(--surface-2); z-index: 3; box-shadow: 1px 0 0 var(--border); color: var(--text-3); font-size: 11px; }
+  table.matrix tbody tr:not(:last-child) td, table.matrix tbody tr:not(:last-child) th { border-bottom: 1px solid var(--border); }
+  table.matrix td.zero { color: var(--text-3); }
+  table.matrix td.diag { background: repeating-linear-gradient(135deg,#F4F4F5,#F4F4F5 4px,#fff 4px,#fff 8px); }
+  table.matrix .tot { font-weight: 700; }
+  table.matrix tfoot td, table.matrix tfoot th { border-top: 1.5px solid var(--border); font-weight: 700; background: var(--surface-2); }
+  table.matrix .recv { color: var(--positive); }
+  table.matrix .pay { color: var(--negative); }
+
+  /* ---- toggle switch ---- */
+  .switch-row { display: flex; align-items: center; gap: 10px; padding: 13px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); box-shadow: var(--sh-card); }
+  .switch-row .lab { flex: 1; }
+  .switch-row .lab .t { font-size: 14px; font-weight: 600; }
+  .switch-row .lab .s { font-size: 12px; color: var(--text-3); }
+  .switch { width: 48px; height: 29px; border-radius: 999px; background: var(--border-strong); position: relative; transition: background .18s ease; flex: none; }
+  .switch.on { background: var(--primary); }
+  .switch .knob { position: absolute; top: 3px; left: 3px; width: 23px; height: 23px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: transform .18s cubic-bezier(.4,.8,.3,1.2); }
+  .switch.on .knob { transform: translateX(19px); }
+
+  /* ---- banner ---- */
+  .banner { display: flex; gap: 9px; padding: 11px 13px; border-radius: var(--r); font-size: 13px; line-height: 1.45; }
+  .banner-warn { background: var(--warn-soft); color: var(--warn); }
+  .banner-info { background: var(--primary-soft); color: var(--primary-press); }
+
+  /* ---- member edit chips ---- */
+  .mlist { display: flex; flex-direction: column; gap: 8px; }
+  .mitem { display: flex; align-items: center; gap: 11px; padding: 9px 11px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); }
+  .mitem .nm { flex: 1; font-size: 14.5px; font-weight: 500; }
+  .add-row { display: flex; gap: 8px; }
+  .add-row .input { flex: 1; }
+  .add-row .btn { width: 56px; padding: 0; flex: none; }
+
+  /* ---- custom share row ---- */
+  .cs-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+  .cs-row .nm { flex: 1; font-size: 14px; font-weight: 500; }
+  .cs-row .input { width: 116px; height: 44px; text-align: right; font-size: 15px; font-weight: 600; padding: 0 12px; }
+  .cs-summary { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; padding: 10px 2px 0; border-top: 1px dashed var(--border-strong); margin-top: 4px; }
+
+  .divider { height: 1px; background: var(--border); margin: 14px 0; }
+  .reduced-motion * { animation: none !important; transition: none !important; }
+  @media (prefers-reduced-motion: reduce) { .anim { animation: none; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useMemo, useRef } = React;
+
+/* ============================================================
+   CONSTANTS
+   ============================================================ */
+const CATEGORIES = [
+  { id: 'food',      label: 'ค่ากิน',     emoji: '🍜' },
+  { id: 'transport', label: 'ค่าเดินทาง', emoji: '🚕' },
+  { id: 'stay',      label: 'ที่พัก',     emoji: '🏨' },
+  { id: 'shopping',  label: 'ช้อปปิ้ง',   emoji: '🛍️' },
+  { id: 'activity',  label: 'กิจกรรม',    emoji: '🎉' },
+  { id: 'other',     label: 'อื่นๆ',      emoji: '📦' },
+];
+const catOf = (id) => CATEGORIES.find(c => c.id === id) || CATEGORIES[5];
+const AVATAR_COLORS = ['#6366F1','#0EA5E9','#0D9488','#F59E0B','#EF4444','#EC4899','#8B5CF6','#F97316'];
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+const uid = () => (window.crypto && crypto.randomUUID)
+  ? crypto.randomUUID()
+  : 'id' + Date.now() + Math.random().toString(36).slice(2);
+
+const round2 = (n) => Math.round((n + Number.EPSILON) * 100) / 100;
+
+function money(n, rounded) {
+  // `|| 0` กัน -0, NaN, undefined ไม่ให้โผล่ในหน้าจอ
+  const v = (rounded ? Math.ceil(round2(n) - 1e-9) : round2(n)) || 0;
+  return '฿' + v.toLocaleString('en-US', rounded
+    ? { maximumFractionDigits: 0 }
+    : { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// แบ่งเงินเท่ากัน + เกลี่ยเศษสตางค์ให้ผลรวมตรงเป๊ะ
+function splitEqual(amount, n) {
+  if (n <= 0) return [];
+  const cents = Math.round(amount * 100);
+  const base = Math.floor(cents / n);
+  const rem = cents - base * n;
+  return Array.from({ length: n }, (_, i) => (base + (i < rem ? 1 : 0)) / 100);
+}
+
+const initial = (name) => (name || '?').trim().charAt(0) || '?';
+
+/* ============================================================
+   CALCULATION ENGINE  (framework-agnostic — พร้อมพอร์ตเข้า Framer)
+   ============================================================ */
+// ใครเป็นคนสำรองจ่ายของรายการนี้
+function payerOf(e) {
+  return e.type === 'debt' ? e.lenderId : e.payerId;
+}
+
+// แต่ละคน "ใช้ไป" เท่าไหร่ในรายการนี้  -> { memberId: amount }
+function memberShares(e) {
+  if (e.type === 'debt') {
+    return { [e.borrowerId]: e.amount };
+  }
+  if (e.splitMode === 'custom') {
+    const out = {};
+    Object.entries(e.customShares || {}).forEach(([id, v]) => { out[id] = round2(v); });
+    return out;
+  }
+  const ids = e.participants || [];
+  const parts = splitEqual(e.amount, ids.length);
+  const out = {};
+  ids.forEach((id, i) => { out[id] = parts[i]; });
+  return out;
+}
+
+function participantCount(e) {
+  if (e.type === 'debt') return 1;
+  if (e.splitMode === 'custom') {
+    return Object.values(e.customShares || {}).filter(v => v > 0).length;
+  }
+  return (e.participants || []).length;
+}
+
+// ยอดรวมทริป (เฉพาะค่าใช้จ่ายร่วม ไม่นับหนี้ส่วนตัว)
+function tripTotal(trip) {
+  return trip.expenses.reduce((s, e) => s + (e.type === 'expense' ? e.amount : 0), 0);
+}
+
+// สรุปรายคน: paid (สำรองจ่าย), owed (ใช้ไปจริง), net
+function perPerson(trip) {
+  const res = {};
+  trip.members.forEach(m => { res[m.id] = { paid: 0, owed: 0, net: 0 }; });
+  trip.expenses.forEach(e => {
+    const payer = payerOf(e);
+    if (res[payer]) res[payer].paid += e.amount;
+    const shares = memberShares(e);
+    Object.entries(shares).forEach(([id, amt]) => {
+      if (res[id]) res[id].owed += amt;
+    });
+  });
+  Object.values(res).forEach(r => {
+    r.paid = round2(r.paid); r.owed = round2(r.owed); r.net = round2(r.paid - r.owed);
+  });
+  return res;
+}
+
+// ยอดดิบ: debts[debtor][creditor] = จำนวนที่ debtor ติด creditor
+function rawDebts(trip) {
+  const d = {};
+  trip.members.forEach(m => { d[m.id] = {}; });
+  trip.expenses.forEach(e => {
+    const payer = payerOf(e);
+    const shares = memberShares(e);
+    Object.entries(shares).forEach(([id, amt]) => {
+      if (id === payer || amt <= 0 || !d[id]) return;
+      d[id][payer] = round2((d[id][payer] || 0) + amt);
+    });
+  });
+  return d;
+}
+
+// หักลบกลบหนี้: คืน list การโอนที่น้อยครั้งที่สุด
+function nettedTransfers(trip) {
+  const pp = perPerson(trip);
+  const creditors = [];
+  const debtors = [];
+  trip.members.forEach(m => {
+    const net = pp[m.id].net;
+    if (net > 0.005) creditors.push({ id: m.id, amt: net });
+    else if (net < -0.005) debtors.push({ id: m.id, amt: -net });
+  });
+  creditors.sort((a, b) => b.amt - a.amt);
+  debtors.sort((a, b) => b.amt - a.amt);
+  const out = [];
+  let i = 0, j = 0;
+  while (i < debtors.length && j < creditors.length) {
+    const pay = Math.min(debtors[i].amt, creditors[j].amt);
+    out.push({ from: debtors[i].id, to: creditors[j].id, amount: round2(pay) });
+    debtors[i].amt -= pay;
+    creditors[j].amt -= pay;
+    if (debtors[i].amt < 0.005) i++;
+    if (creditors[j].amt < 0.005) j++;
+  }
+  return out;
+}
+
+/* ============================================================
+   STORAGE + SEED
+   ============================================================ */
+const STORE_KEY = 'hangun.trips.v1';
+
+function seedTrip() {
+  const m = [
+    { id: 'm1', name: 'แทน',     color: 0 },
+    { id: 'm2', name: 'แนน',     color: 1 },
+    { id: 'm3', name: 'โกล',     color: 2 },
+    { id: 'm4', name: 'กระต่าย', color: 3 },
+  ];
+  return {
+    id: 'seed-trip',
+    name: 'ทริปตัวอย่าง 🏝️',
+    createdAt: Date.now(),
+    members: m,
+    expenses: [
+      { id: 'e1', type: 'expense', category: 'food', name: 'ค่าน้ำ (มินต์นมสด)',
+        amount: 180, payerId: 'm1', splitMode: 'equal', participants: ['m1','m2','m3','m4'] },
+      { id: 'e2', type: 'expense', category: 'transport', name: 'ค่าที่จอดรถ',
+        amount: 400, payerId: 'm4', splitMode: 'equal', participants: ['m1'] },
+      { id: 'e3', type: 'expense', category: 'food', name: 'ร้านข้าว',
+        amount: 1135, payerId: 'm2', splitMode: 'custom', customShares: { m1: 365, m3: 385, m4: 385 } },
+      { id: 'e4', type: 'expense', category: 'shopping', name: 'กล่องสุ่ม',
+        amount: 280, payerId: 'm4', splitMode: 'equal', participants: ['m2'] },
+      { id: 'e5', type: 'expense', category: 'activity', name: 'ค่าถ่ายรูป',
+        amount: 160, payerId: 'm4', splitMode: 'equal', participants: ['m2','m3','m4'] },
+    ],
+  };
+}
+
+function loadTrips() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) { /* ignore */ }
+  return [seedTrip()];
+}
+function saveTrips(trips) {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(trips)); } catch (e) { /* ignore */ }
+}
+
+/* ============================================================
+   ICONS
+   ============================================================ */
+function Icon({ name, size = 22 }) {
+  const P = {
+    back:   'M15 18l-6-6 6-6',
+    right:  'M9 18l6-6-6-6',
+    plus:   'M12 5v14M5 12h14',
+    trash:  'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',
+    edit:   'M4 20h4L18.5 9.5a2.12 2.12 0 0 0-3-3L5 17v3z',
+    check:  'M20 6L9 17l-5-5',
+    copy:   'M9 9h11v11H9zM5 15V4h11',
+    close:  'M18 6L6 18M6 6l12 12',
+    arrow:  'M5 12h14M13 6l6 6-6 6',
+    users:  'M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M22 21v-2a4 4 0 0 0-3-3.87',
+  };
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d={P[name]} />
+    </svg>
+  );
+}
+
+/* ============================================================
+   SMALL COMPONENTS
+   ============================================================ */
+function Avatar({ member, size }) {
+  const cls = 'avatar' + (size ? ' ' + size : '');
+  const color = AVATAR_COLORS[(member && member.color != null ? member.color : 0) % AVATAR_COLORS.length];
+  return <div className={cls} style={{ background: color }}>{initial(member && member.name)}</div>;
+}
+
+function Topbar({ title, onBack, right }) {
+  return (
+    <div className="topbar">
+      {onBack
+        ? <button className="icon-btn" onClick={onBack} aria-label="ย้อนกลับ"><Icon name="back" /></button>
+        : <div style={{ width: 40 }} />}
+      <div className="topbar-title">{title}</div>
+      {right || <div style={{ width: 40 }} />}
+    </div>
+  );
+}
+
+function Segmented({ options, value, onChange }) {
+  return (
+    <div className="seg" role="tablist">
+      {options.map(o => (
+        <button key={o.value} role="tab" aria-selected={value === o.value}
+          className={'seg-btn' + (value === o.value ? ' active' : '')}
+          onClick={() => onChange(o.value)}>{o.label}</button>
+      ))}
+    </div>
+  );
+}
+
+function MemberRow({ members, selected, multi, onChange }) {
+  const isSel = (id) => multi ? selected.includes(id) : selected === id;
+  const toggle = (id) => {
+    if (multi) {
+      onChange(selected.includes(id) ? selected.filter(x => x !== id) : [...selected, id]);
+    } else {
+      onChange(id);
+    }
+  };
+  return (
+    <div className="mp-row">
+      {members.map(m => (
+        <button key={m.id} className={'mp' + (isSel(m.id) ? ' active' : '')}
+          onClick={() => toggle(m.id)} aria-pressed={isSel(m.id)}>
+          <div className="av-wrap">
+            <Avatar member={m} />
+            {multi && isSel(m.id) && <span className="tick"><Icon name="check" size={11} /></span>}
+          </div>
+          <span className="nm">{m.name}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/* ============================================================
+   SCREEN: HOME
+   ============================================================ */
+function HomeScreen({ trips, onOpen, onNew }) {
+  return (
+    <div className="screen">
+      <div className="topbar hero">
+        <h1>หารกัน 🧮</h1>
+        <p>หารบิลทริปกับเพื่อน รู้เลยว่าใครโอนใครเท่าไหร่</p>
+      </div>
+      <div className="screen-body pad anim">
+        {trips.length === 0 ? (
+          <div className="empty">
+            <div className="emj">🧳</div>
+            <div className="t">ยังไม่มีทริป</div>
+            <div className="s">สร้างทริปแรกเพื่อเริ่มหารบิลกับเพื่อน</div>
+          </div>
+        ) : (
+          <>
+            <div className="section-label">ทริปของฉัน ({trips.length})</div>
+            <div className="list">
+              {trips.map(t => {
+                const total = tripTotal(t);
+                return (
+                  <button key={t.id} className="row" onClick={() => onOpen(t.id)}>
+                    <div className="row-icon">🧳</div>
+                    <div className="row-main">
+                      <div className="row-title">{t.name}</div>
+                      <div className="row-sub">
+                        <span>👥 {t.members.length} คน</span>
+                        <span>·</span>
+                        <span>{t.expenses.length} รายการ</span>
+                      </div>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <div className="row-amount num">{money(total)}</div>
+                    </div>
+                    <span className="row-chev"><Icon name="right" size={18} /></span>
+                  </button>
+                );
+              })}
+            </div>
+          </>
+        )}
+      </div>
+      <div className="screen-footer">
+        <button className="btn btn-primary btn-block" onClick={onNew}>
+          <Icon name="plus" size={20} /> สร้างทริปใหม่
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   SCREEN: TRIP FORM (create / edit members)
+   ============================================================ */
+function TripFormScreen({ mode, trip, usedMemberIds, onBack, onSubmit, onDelete }) {
+  const [name, setName] = useState(trip ? trip.name : '');
+  const [members, setMembers] = useState(trip ? trip.members.map(m => ({ ...m })) : []);
+  const [draft, setDraft] = useState('');
+
+  const addMember = () => {
+    const nm = draft.trim();
+    if (!nm) return;
+    setMembers([...members, { id: uid(), name: nm, color: members.length }]);
+    setDraft('');
+  };
+  const removeMember = (id) => {
+    if (usedMemberIds && usedMemberIds.has(id)) return;
+    setMembers(members.filter(m => m.id !== id));
+  };
+
+  const valid = name.trim().length > 0 && members.length >= 2;
+
+  return (
+    <div className="screen">
+      <Topbar
+        title={mode === 'create' ? 'สร้างทริปใหม่' : 'จัดการทริป'}
+        onBack={onBack}
+      />
+      <div className="screen-body pad anim">
+        <div className="field">
+          <label className="field-label" htmlFor="tn">ชื่อทริป</label>
+          <input id="tn" className="input" placeholder="เช่น เที่ยวเชียงใหม่ 3 วัน"
+            value={name} onChange={e => setName(e.target.value)} />
+        </div>
+
+        <div className="field">
+          <label className="field-label">สมาชิก ({members.length})</label>
+          <div className="add-row" style={{ marginBottom: members.length ? 10 : 0 }}>
+            <input className="input" placeholder="ชื่อสมาชิก" value={draft}
+              onChange={e => setDraft(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') addMember(); }} />
+            <button className="btn btn-primary" onClick={addMember} aria-label="เพิ่มสมาชิก">
+              <Icon name="plus" size={20} />
+            </button>
+          </div>
+          <div className="mlist">
+            {members.map(m => {
+              const locked = usedMemberIds && usedMemberIds.has(m.id);
+              return (
+                <div key={m.id} className="mitem">
+                  <Avatar member={m} size="sm" />
+                  <span className="nm">{m.name}</span>
+                  {locked
+                    ? <span className="hint" style={{ margin: 0 }}>มีรายการอยู่</span>
+                    : <button className="icon-btn danger" onClick={() => removeMember(m.id)}
+                        aria-label={'ลบ ' + m.name} style={{ width: 34, height: 34 }}>
+                        <Icon name="close" size={18} />
+                      </button>}
+                </div>
+              );
+            })}
+          </div>
+          {members.length < 2 && <div className="hint">ต้องมีสมาชิกอย่างน้อย 2 คน</div>}
+        </div>
+
+        {mode === 'edit' && (
+          <>
+            <div className="divider" />
+            <button className="btn btn-danger btn-block" onClick={onDelete}>
+              <Icon name="trash" size={19} /> ลบทริปนี้
+            </button>
+          </>
+        )}
+      </div>
+      <div className="screen-footer">
+        <button className="btn btn-primary btn-block" disabled={!valid}
+          onClick={() => onSubmit({ name: name.trim(), members })}>
+          {mode === 'create' ? 'สร้างทริป' : 'บันทึก'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   SCREEN: TRIP DETAIL
+   ============================================================ */
+function TripScreen({ trip, onBack, onEdit, onAddExpense, onOpenExpense, onSummary }) {
+  const total = tripTotal(trip);
+  const memberById = useMemo(() => {
+    const m = {}; trip.members.forEach(x => { m[x.id] = x; }); return m;
+  }, [trip.members]);
+
+  return (
+    <div className="screen">
+      <Topbar title={trip.name} onBack={onBack}
+        right={<button className="icon-btn" onClick={onEdit} aria-label="จัดการทริป"><Icon name="edit" size={20} /></button>} />
+      <div className="screen-body pad anim">
+        <div className="total-card">
+          <div className="lab">ยอดใช้จ่ายรวมทั้งทริป</div>
+          <div className="big num">{money(total)}</div>
+          <div className="meta">
+            <div className="avatar-stack">
+              {trip.members.slice(0, 5).map(m => <Avatar key={m.id} member={m} size="sm" />)}
+            </div>
+            <span>{trip.members.length} คน · {trip.expenses.length} รายการ</span>
+          </div>
+        </div>
+
+        <div className="section-label">รายการค่าใช้จ่าย</div>
+        {trip.expenses.length === 0 ? (
+          <div className="empty" style={{ padding: '40px 20px' }}>
+            <div className="emj">🧾</div>
+            <div className="t">ยังไม่มีรายการ</div>
+            <div className="s">กดปุ่มด้านล่างเพื่อเพิ่มรายการแรก</div>
+          </div>
+        ) : (
+          <div className="list">
+            {trip.expenses.map(e => {
+              const payer = memberById[payerOf(e)];
+              const isDebt = e.type === 'debt';
+              return (
+                <button key={e.id} className="row" onClick={() => onOpenExpense(e.id)}>
+                  <div className="row-icon">{isDebt ? '🤝' : catOf(e.category).emoji}</div>
+                  <div className="row-main">
+                    <div className="row-title">{e.name}</div>
+                    <div className="row-sub">
+                      {isDebt ? (
+                        <span>{memberById[e.borrowerId] && memberById[e.borrowerId].name} ยืม {payer && payer.name}</span>
+                      ) : (
+                        <>
+                          <span>จ่ายโดย {payer && payer.name}</span>
+                          <span>·</span>
+                          <span>{e.splitMode === 'custom' ? 'หารเอง' : 'หาร'} {participantCount(e)} คน</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  <div className="row-amount num">{money(e.amount)}</div>
+                  <span className="row-chev"><Icon name="right" size={18} /></span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
+      <div className="screen-footer">
+        <div className="btn-row">
+          <button className="btn btn-secondary" disabled={trip.expenses.length === 0}
+            onClick={onSummary}>ดูสรุป</button>
+          <button className="btn btn-primary grow2" onClick={onAddExpense}>
+            <Icon name="plus" size={20} /> เพิ่มรายการ
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   SCREEN: EXPENSE FORM
+   ============================================================ */
+function ExpenseFormScreen({ trip, expense, onBack, onSave, onDelete }) {
+  const editing = !!expense;
+  const members = trip.members;
+
+  const [type, setType] = useState(expense ? expense.type : 'expense');
+  const [category, setCategory] = useState(expense ? expense.category : 'food');
+  const [name, setName] = useState(expense ? expense.name : '');
+  const [amount, setAmount] = useState(expense ? String(expense.amount) : '');
+  const [payerId, setPayerId] = useState(expense && expense.payerId ? expense.payerId : members[0].id);
+  const [splitMode, setSplitMode] = useState(expense && expense.splitMode ? expense.splitMode : 'equal');
+  const [participants, setParticipants] = useState(
+    expense && expense.participants ? expense.participants : members.map(m => m.id));
+  const [customShares, setCustomShares] = useState(() => {
+    const init = {};
+    if (expense && expense.customShares) {
+      Object.entries(expense.customShares).forEach(([k, v]) => { init[k] = String(v); });
+    }
+    return init;
+  });
+  const [borrowerId, setBorrowerId] = useState(expense && expense.borrowerId ? expense.borrowerId : members[0].id);
+  const [lenderId, setLenderId] = useState(
+    expense && expense.lenderId ? expense.lenderId : (members[1] ? members[1].id : members[0].id));
+
+  const amt = parseFloat(amount) || 0;
+  const customSum = useMemo(() =>
+    round2(members.reduce((s, m) => s + (parseFloat(customShares[m.id]) || 0), 0)),
+    [customShares, members]);
+  const customDiff = round2(amt - customSum);
+
+  // เกลี่ยยอดเท่ากันให้ทุกคน (custom mode)
+  const fillEqual = () => {
+    const parts = splitEqual(amt, members.length);
+    const next = {};
+    members.forEach((m, i) => { next[m.id] = String(parts[i]); });
+    setCustomShares(next);
+  };
+
+  // validation
+  let valid = false;
+  if (type === 'expense') {
+    const base = amt > 0 && name.trim().length > 0;
+    if (splitMode === 'equal') valid = base && participants.length > 0;
+    else valid = base && Math.abs(customDiff) < 0.01 && customSum > 0;
+  } else {
+    valid = amt > 0 && borrowerId !== lenderId;
+  }
+
+  const handleSave = () => {
+    if (!valid) return;
+    const base = { id: expense ? expense.id : uid() };
+    if (type === 'expense') {
+      const e = { ...base, type: 'expense', category, name: name.trim(), amount: round2(amt), payerId };
+      if (splitMode === 'equal') {
+        e.splitMode = 'equal';
+        e.participants = [...participants];
+      } else {
+        e.splitMode = 'custom';
+        e.customShares = {};
+        members.forEach(m => {
+          const v = parseFloat(customShares[m.id]) || 0;
+          if (v > 0) e.customShares[m.id] = round2(v);
+        });
+      }
+      onSave(e);
+    } else {
+      onSave({ ...base, type: 'debt', name: name.trim() || 'ยืมเงิน',
+        amount: round2(amt), borrowerId, lenderId });
+    }
+  };
+
+  return (
+    <div className="screen">
+      <Topbar title={editing ? 'แก้ไขรายการ' : 'เพิ่มรายการ'} onBack={onBack}
+        right={editing
+          ? <button className="icon-btn danger" onClick={onDelete} aria-label="ลบรายการ"><Icon name="trash" size={20} /></button>
+          : null} />
+      <div className="screen-body pad anim">
+        <div className="field">
+          <Segmented value={type} onChange={setType}
+            options={[{ value: 'expense', label: '🧾 ค่าใช้จ่าย' }, { value: 'debt', label: '🤝 หนี้ส่วนตัว' }]} />
+        </div>
+
+        {type === 'expense' ? (
+          <>
+            <div className="field">
+              <label className="field-label">หมวดหมู่</label>
+              <div className="chip-row">
+                {CATEGORIES.map(c => (
+                  <button key={c.id} className={'chip' + (category === c.id ? ' selected' : '')}
+                    onClick={() => setCategory(c.id)}>
+                    <span className="emj">{c.emoji}</span>{c.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="field">
+              <label className="field-label" htmlFor="en">ชื่อรายการ</label>
+              <input id="en" className="input" placeholder="เช่น ค่าข้าวเย็น"
+                value={name} onChange={e => setName(e.target.value)} />
+            </div>
+
+            <div className="field">
+              <label className="field-label" htmlFor="ea">จำนวนเงิน</label>
+              <div className="amount-wrap">
+                <span className="baht">฿</span>
+                <input id="ea" className="input input-amount num" inputMode="decimal" placeholder="0.00"
+                  value={amount} onChange={e => setAmount(e.target.value.replace(/[^0-9.]/g, ''))} />
+              </div>
+            </div>
+
+            <div className="field">
+              <label className="field-label">ใครเป็นคนจ่าย</label>
+              <MemberRow members={members} selected={payerId} onChange={setPayerId} />
+            </div>
+
+            <div className="field">
+              <label className="field-label">หารกันยังไง</label>
+              <div style={{ marginBottom: 12 }}>
+                <Segmented value={splitMode} onChange={setSplitMode}
+                  options={[{ value: 'equal', label: 'หารเท่ากัน' }, { value: 'custom', label: 'กำหนดเอง' }]} />
+              </div>
+
+              {splitMode === 'equal' ? (
+                <div className="card" style={{ padding: 14 }}>
+                  <div className="field-label" style={{ marginBottom: 10 }}>เลือกคนที่ร่วมหาร</div>
+                  <MemberRow members={members} selected={participants} multi onChange={setParticipants} />
+                  {participants.length > 0 && amt > 0 && (
+                    <div className="banner banner-info" style={{ marginTop: 8 }}>
+                      หัวละประมาณ <strong>&nbsp;{money(amt / participants.length)}</strong>
+                      &nbsp;({participants.length} คน)
+                    </div>
+                  )}
+                  {participants.length === 0 && (
+                    <div className="hint">เลือกอย่างน้อย 1 คน</div>
+                  )}
+                </div>
+              ) : (
+                <div className="card" style={{ padding: '6px 14px 14px' }}>
+                  {members.map(m => (
+                    <div key={m.id} className="cs-row">
+                      <Avatar member={m} size="sm" />
+                      <span className="nm">{m.name}</span>
+                      <div className="amount-wrap" style={{ width: 116 }}>
+                        <input className="input num" inputMode="decimal" placeholder="0"
+                          value={customShares[m.id] || ''}
+                          onChange={e => setCustomShares({ ...customShares,
+                            [m.id]: e.target.value.replace(/[^0-9.]/g, '') })} />
+                      </div>
+                    </div>
+                  ))}
+                  <button className="btn btn-ghost btn-block" onClick={fillEqual}
+                    style={{ marginTop: 6 }}>เกลี่ยเท่ากันให้ทุกคน</button>
+                  <div className="cs-summary">
+                    <span style={{ color: 'var(--text-3)' }}>รวม {money(customSum)} / {money(amt)}</span>
+                    <span style={{ color: Math.abs(customDiff) < 0.01 ? 'var(--positive)' : 'var(--negative)' }}>
+                      {Math.abs(customDiff) < 0.01 ? '✓ ครบแล้ว'
+                        : customDiff > 0 ? 'ขาด ' + money(customDiff) : 'เกิน ' + money(-customDiff)}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="banner banner-info" style={{ marginBottom: 16 }}>
+              หนี้ส่วนตัว = ยืมเงินกันตรงๆ ไม่นำไปหารรวมกับคนอื่น
+            </div>
+            <div className="field">
+              <label className="field-label">ใครเป็นคนยืม</label>
+              <MemberRow members={members} selected={borrowerId} onChange={setBorrowerId} />
+            </div>
+            <div className="field">
+              <label className="field-label">ยืมจากใคร</label>
+              <MemberRow members={members} selected={lenderId} onChange={setLenderId} />
+            </div>
+            {borrowerId === lenderId && (
+              <div className="hint" style={{ color: 'var(--negative)' }}>คนยืมกับคนให้ยืมต้องไม่ใช่คนเดียวกัน</div>
+            )}
+            <div className="field">
+              <label className="field-label" htmlFor="da">จำนวนเงิน</label>
+              <div className="amount-wrap">
+                <span className="baht">฿</span>
+                <input id="da" className="input input-amount num" inputMode="decimal" placeholder="0.00"
+                  value={amount} onChange={e => setAmount(e.target.value.replace(/[^0-9.]/g, ''))} />
+              </div>
+            </div>
+            <div className="field">
+              <label className="field-label" htmlFor="dn">โน้ต (ไม่บังคับ)</label>
+              <input id="dn" className="input" placeholder="เช่น ยืมไปจ่ายค่าตั๋ว"
+                value={name} onChange={e => setName(e.target.value)} />
+            </div>
+          </>
+        )}
+      </div>
+      <div className="screen-footer">
+        <button className="btn btn-primary btn-block" disabled={!valid} onClick={handleSave}>
+          {editing ? 'บันทึกการแก้ไข' : 'บันทึกรายการ'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   SCREEN: SUMMARY
+   ============================================================ */
+function SummaryScreen({ trip, onBack }) {
+  const [mode, setMode] = useState('netted'); // netted | raw
+  const [rounded, setRounded] = useState(true);
+
+  const memberById = useMemo(() => {
+    const m = {}; trip.members.forEach(x => { m[x.id] = x; }); return m;
+  }, [trip.members]);
+
+  const pp = useMemo(() => perPerson(trip), [trip]);
+  const transfers = useMemo(() => nettedTransfers(trip), [trip]);
+  const debts = useMemo(() => rawDebts(trip), [trip]);
+  const total = tripTotal(trip);
+
+  // raw matrix totals
+  const rowRecv = {}; // creditor -> รวมรับคืน
+  const colPay = {};  // debtor -> รวมจ่ายออก
+  trip.members.forEach(r => { rowRecv[r.id] = 0; colPay[r.id] = 0; });
+  trip.members.forEach(debtor => {
+    trip.members.forEach(creditor => {
+      const v = (debts[debtor.id] && debts[debtor.id][creditor.id]) || 0;
+      rowRecv[creditor.id] += v;
+      colPay[debtor.id] += v;
+    });
+  });
+  const grandTotal = Object.values(rowRecv).reduce((a, b) => a + b, 0);
+
+  const copySummary = () => {
+    const L = [];
+    L.push('🧾 สรุปทริป ' + trip.name);
+    L.push('สมาชิก: ' + trip.members.map(m => m.name).join(', '));
+    L.push('ยอดใช้จ่ายรวม: ' + money(total));
+    L.push('');
+    L.push('— สรุปรายคน —');
+    trip.members.forEach(m => {
+      const r = pp[m.id];
+      const tag = r.net > 0.005 ? ('ได้รับคืน ' + money(r.net, rounded))
+        : r.net < -0.005 ? ('ต้องจ่ายเพิ่ม ' + money(-r.net, rounded)) : 'พอดี';
+      L.push('• ' + m.name + ': ใช้ไป ' + money(r.owed) + ' / สำรองจ่าย ' + money(r.paid) + ' → ' + tag);
+    });
+    L.push('');
+    L.push('— ใครโอนให้ใคร (หักลบแล้ว) —');
+    if (transfers.length === 0) L.push('ทุกคนเคลียร์กันหมดแล้ว 🎉');
+    transfers.forEach(t => {
+      L.push('• ' + memberById[t.from].name + ' → ' + memberById[t.to].name + ' : ' + money(t.amount, rounded));
+    });
+    const text = L.join('\n');
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(
+        () => alert('คัดลอกสรุปแล้ว ✓'),
+        () => alert(text));
+    } else {
+      alert(text);
+    }
+  };
+
+  return (
+    <div className="screen">
+      <Topbar title="สรุปการโอนเงิน" onBack={onBack} />
+      <div className="screen-body pad anim">
+        {/* per-person */}
+        <div className="section">
+          <div className="section-label">สรุปรายคน</div>
+          <div className="list">
+            {trip.members.map(m => {
+              const r = pp[m.id];
+              const cls = r.net > 0.005 ? 'net-pos' : r.net < -0.005 ? 'net-neg' : 'net-zero';
+              const label = r.net > 0.005 ? ('รับ ' + money(r.net, rounded))
+                : r.net < -0.005 ? ('จ่าย ' + money(-r.net, rounded)) : 'พอดี';
+              return (
+                <div key={m.id} className="person">
+                  <Avatar member={m} size="lg" />
+                  <div className="person-main">
+                    <div className="person-name">{m.name}</div>
+                    <div className="person-sub num">
+                      ใช้ไป {money(r.owed)} · สำรองจ่าย {money(r.paid)}
+                    </div>
+                  </div>
+                  <span className={'net-badge ' + cls}>{label}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* rounding toggle */}
+        <div className="section">
+          <button className="switch-row" style={{ width: '100%', textAlign: 'left' }}
+            onClick={() => setRounded(!rounded)} aria-pressed={rounded}>
+            <div className="lab">
+              <div className="t">ปัดเศษขึ้นเป็นจำนวนเต็ม</div>
+              <div className="s">โอนง่ายขึ้น ไม่มีเศษสตางค์</div>
+            </div>
+            <div className={'switch' + (rounded ? ' on' : '')}><div className="knob" /></div>
+          </button>
+        </div>
+
+        {/* transfer section */}
+        <div className="section">
+          <div className="section-label">ใครโอนให้ใคร</div>
+          <div style={{ marginBottom: 12 }}>
+            <Segmented value={mode} onChange={setMode}
+              options={[{ value: 'netted', label: 'หักลบแล้ว' }, { value: 'raw', label: 'ยอดดิบ' }]} />
+          </div>
+
+          {mode === 'netted' ? (
+            transfers.length === 0 ? (
+              <div className="empty" style={{ padding: '32px 20px' }}>
+                <div className="emj">🎉</div>
+                <div className="t">ทุกคนเคลียร์กันหมดแล้ว</div>
+                <div className="s">ไม่มีใครต้องโอนเงินให้ใคร</div>
+              </div>
+            ) : (
+              <>
+                <div className="list">
+                  {transfers.map((t, i) => (
+                    <div key={i} className="transfer">
+                      <span className="who"><Avatar member={memberById[t.from]} size="sm" />{memberById[t.from].name}</span>
+                      <span className="arrow"><Icon name="arrow" size={18} /></span>
+                      <span className="who"><Avatar member={memberById[t.to]} size="sm" />{memberById[t.to].name}</span>
+                      <span className="amt num">{money(t.amount, rounded)}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="hint">
+                  หักลบกลบหนี้แล้ว — โอนแค่ {transfers.length} ครั้งก็จบ
+                  {rounded ? ' (ยอดปัดขึ้น คนรับอาจได้เกินเล็กน้อย)' : ''}
+                </div>
+              </>
+            )
+          ) : (
+            <>
+              <div className="matrix-wrap">
+                <table className="matrix">
+                  <thead>
+                    <tr>
+                      <th className="corner">รับ \ จ่าย</th>
+                      {trip.members.map(m => <th key={m.id}>{m.name}</th>)}
+                      <th className="recv">รวมรับ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {trip.members.map(creditor => (
+                      <tr key={creditor.id}>
+                        <th className="rowhead">{creditor.name}</th>
+                        {trip.members.map(debtor => {
+                          if (debtor.id === creditor.id) return <td key={debtor.id} className="diag" />;
+                          const v = (debts[debtor.id] && debts[debtor.id][creditor.id]) || 0;
+                          return (
+                            <td key={debtor.id} className={'num' + (v <= 0 ? ' zero' : '')}>
+                              {v > 0 ? money(v, rounded) : '–'}
+                            </td>
+                          );
+                        })}
+                        <td className="num tot recv">{money(rowRecv[creditor.id], rounded)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th className="rowhead pay">รวมจ่าย</th>
+                      {trip.members.map(m => (
+                        <td key={m.id} className="num tot pay">{money(colPay[m.id], rounded)}</td>
+                      ))}
+                      <td className="num tot">{money(grandTotal, rounded)}</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <div className="hint">
+                อ่านว่า "คนบนสุด (คอลัมน์) โอนให้ คนซ้ายมือ (แถว)" · ยอดดิบยังไม่หักลบกลบหนี้ · ปัดซ้าย-ขวาเพื่อดูทั้งตาราง
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+      <div className="screen-footer">
+        <button className="btn btn-secondary btn-block" onClick={copySummary}>
+          <Icon name="copy" size={19} /> คัดลอกข้อความสรุป
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   APP — routing
+   ============================================================ */
+function App() {
+  const [trips, setTrips] = useState(loadTrips);
+  const [route, setRoute] = useState({ screen: 'home' });
+
+  useEffect(() => { saveTrips(trips); }, [trips]);
+  useEffect(() => {
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.body.classList.add('reduced-motion');
+    }
+  }, []);
+
+  const tripById = (id) => trips.find(t => t.id === id);
+  const updateTrip = (id, patch) =>
+    setTrips(ts => ts.map(t => t.id === id ? { ...t, ...patch } : t));
+
+  const trip = route.tripId ? tripById(route.tripId) : null;
+  const expense = (trip && route.expenseId) ? trip.expenses.find(e => e.id === route.expenseId) : null;
+
+  // --- home ---
+  if (route.screen === 'home') {
+    return <HomeScreen trips={trips}
+      onOpen={(id) => setRoute({ screen: 'trip', tripId: id })}
+      onNew={() => setRoute({ screen: 'tripForm', mode: 'create' })} />;
+  }
+
+  // --- trip form ---
+  if (route.screen === 'tripForm') {
+    const isCreate = route.mode === 'create';
+    const usedIds = new Set();
+    if (!isCreate && trip) {
+      trip.expenses.forEach(e => {
+        usedIds.add(payerOf(e));
+        Object.keys(memberShares(e)).forEach(id => usedIds.add(id));
+        if (e.type === 'debt') { usedIds.add(e.borrowerId); usedIds.add(e.lenderId); }
+      });
+    }
+    return <TripFormScreen mode={isCreate ? 'create' : 'edit'} trip={isCreate ? null : trip}
+      usedMemberIds={usedIds}
+      onBack={() => setRoute(isCreate ? { screen: 'home' } : { screen: 'trip', tripId: trip.id })}
+      onSubmit={(data) => {
+        if (isCreate) {
+          const newTrip = { id: uid(), name: data.name, createdAt: Date.now(),
+            members: data.members, expenses: [] };
+          setTrips(ts => [newTrip, ...ts]);
+          setRoute({ screen: 'trip', tripId: newTrip.id });
+        } else {
+          updateTrip(trip.id, { name: data.name, members: data.members });
+          setRoute({ screen: 'trip', tripId: trip.id });
+        }
+      }}
+      onDelete={() => {
+        if (window.confirm('ลบทริป "' + trip.name + '" และรายการทั้งหมด?')) {
+          setTrips(ts => ts.filter(t => t.id !== trip.id));
+          setRoute({ screen: 'home' });
+        }
+      }} />;
+  }
+
+  // --- trip detail ---
+  if (route.screen === 'trip' && trip) {
+    return <TripScreen trip={trip}
+      onBack={() => setRoute({ screen: 'home' })}
+      onEdit={() => setRoute({ screen: 'tripForm', mode: 'edit', tripId: trip.id })}
+      onAddExpense={() => setRoute({ screen: 'expense', tripId: trip.id })}
+      onOpenExpense={(eid) => setRoute({ screen: 'expense', tripId: trip.id, expenseId: eid })}
+      onSummary={() => setRoute({ screen: 'summary', tripId: trip.id })} />;
+  }
+
+  // --- expense form ---
+  if (route.screen === 'expense' && trip) {
+    return <ExpenseFormScreen trip={trip} expense={expense}
+      onBack={() => setRoute({ screen: 'trip', tripId: trip.id })}
+      onSave={(e) => {
+        const exists = trip.expenses.some(x => x.id === e.id);
+        updateTrip(trip.id, {
+          expenses: exists
+            ? trip.expenses.map(x => x.id === e.id ? e : x)
+            : [...trip.expenses, e],
+        });
+        setRoute({ screen: 'trip', tripId: trip.id });
+      }}
+      onDelete={() => {
+        if (window.confirm('ลบรายการ "' + expense.name + '"?')) {
+          updateTrip(trip.id, { expenses: trip.expenses.filter(x => x.id !== expense.id) });
+          setRoute({ screen: 'trip', tripId: trip.id });
+        }
+      }} />;
+  }
+
+  // --- summary ---
+  if (route.screen === 'summary' && trip) {
+    return <SummaryScreen trip={trip}
+      onBack={() => setRoute({ screen: 'trip', tripId: trip.id })} />;
+  }
+
+  // fallback
+  return <HomeScreen trips={trips}
+    onOpen={(id) => setRoute({ screen: 'trip', tripId: id })}
+    onNew={() => setRoute({ screen: 'tripForm', mode: 'create' })} />;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <div className="phone"><App /></div>
+);
+</script>
+</body>
+</html>
