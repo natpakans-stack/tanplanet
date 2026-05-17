@@ -494,7 +494,22 @@
       text-align: center;
       padding: 48px 24px 64px;
       border-top: 1px solid var(--border);
-      margin-top: 56px;
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img {
+      width: 100%;
+      height: auto;
+      display: block;
     }
     .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
     .closing p {
@@ -993,6 +1008,9 @@
 
   <!-- ===== Closing ===== -->
   <div class="closing">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
     <h2>หารกัน · HanGun</h2>
     <p>แอปหารบิลทริปที่จบครบ loop — สร้าง Project, สแกน QR เข้าร่วม, ลงบิล แล้วรู้เลยว่าใครโอนใคร พร้อมลดทอนหนี้ให้โอนน้อยที่สุด สร้างเป็น full-stack app ด้วย Next.js 16 + Supabase</p>
     <div class="stack-icons">
