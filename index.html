@@ -625,6 +625,8 @@
     }
 
     /* ===== NEW Badge ===== */
+    /* Single source of truth: only show .badge-new when the card is flagged data-new="true" */
+    .card:not([data-new="true"]) .badge-new { display: none; }
     .badge-new {
       position: absolute;
       top: 12px;
