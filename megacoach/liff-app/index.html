@@ -3,98 +3,183 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>MegaCoach · Entry Signal</title>
+<title>MegaCoach · จังหวะเข้าซื้อ</title>
+<meta name="theme-color" content="#f6f5f1">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#F4F5F8; --surface:#FFFFFF; --surface-sunken:#F8FAFC;
-    --ink:#0F172A; --ink-2:#475569; --ink-3:#94A3B8;
-    --border:#E5E8EF; --border-strong:#D5DAE3;
-    --brand:#4338CA; --brand-ink:#312E81;
-    --go:#15803D; --go-bg:#DCFCE7; --go-line:#22C55E;
-    --wait:#B45309; --wait-bg:#FEF3C7; --wait-line:#F59E0B;
-    --avoid:#B91C1C; --avoid-bg:#FEE2E2; --avoid-line:#EF4444;
-    --up:#15803D; --down:#B91C1C;
-    --r-sm:10px; --r-md:14px; --r-lg:20px; --r-pill:999px;
-    --sh-1:0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.06);
-    --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s8:32px;
+    /* paper neutrals, tinted toward brand hue 265 */
+    --bg:oklch(0.982 0.004 265);
+    --surface:oklch(0.998 0.0015 265);
+    --panel:oklch(0.965 0.005 265);
+    --ink:oklch(0.255 0.02 265);
+    --ink-2:oklch(0.475 0.02 265);
+    --ink-3:oklch(0.63 0.016 265);
+    --border:oklch(0.915 0.006 265);
+    --border-2:oklch(0.86 0.008 265);
+    --hair:oklch(0.93 0.005 265);
+
+    --accent:oklch(0.52 0.15 265);
+    --accent-ink:oklch(0.40 0.13 265);
+    --accent-bg:oklch(0.965 0.022 265);
+
+    /* signals — muted, AA on their tints */
+    --go:oklch(0.48 0.12 150);   --go-bg:oklch(0.955 0.034 150);   --go-line:oklch(0.60 0.14 150);
+    --wait:oklch(0.49 0.095 72); --wait-bg:oklch(0.957 0.052 85);  --wait-line:oklch(0.71 0.135 78);
+    --avoid:oklch(0.51 0.155 25);--avoid-bg:oklch(0.957 0.030 25);  --avoid-line:oklch(0.62 0.19 25);
+
+    --up:oklch(0.50 0.13 150); --down:oklch(0.54 0.18 25);
+
+    --r-sm:9px; --r-md:13px; --r-lg:18px; --r-xl:22px; --r-pill:999px;
+    --sh-1:0 1px 1px oklch(0.4 0.03 265/.04), 0 2px 5px oklch(0.4 0.03 265/.05);
+    --sh-2:0 1px 2px oklch(0.4 0.03 265/.05), 0 6px 16px oklch(0.4 0.03 265/.07);
+    --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s8:32px; --s10:40px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
-  body{font-family:"IBM Plex Sans Thai",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:var(--s8)}
-  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-feature-settings:"tnum"}
+  body{
+    font-family:"IBM Plex Sans Thai",system-ui,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.5;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-feature-settings:"tnum";letter-spacing:-.01em}
   .wrap{max-width:480px;margin:0 auto;padding:0 var(--s4)}
+  svg{display:block}
 
-  .top{background:linear-gradient(160deg,#1E1B4B 0%,#312E81 55%,#3730A3 100%);color:#fff;padding:calc(env(safe-area-inset-top) + var(--s6)) 0 var(--s6);border-bottom-left-radius:var(--r-lg);border-bottom-right-radius:var(--r-lg)}
-  .brand{display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s2)}
-  .brand-dots{display:flex;gap:5px}
-  .brand-dots i{width:9px;height:9px;border-radius:50%;display:block}
-  .brand-dots i:nth-child(1){background:#22C55E}.brand-dots i:nth-child(2){background:#F59E0B}.brand-dots i:nth-child(3){background:#EF4444}
-  .brand h1{font-size:20px;font-weight:700;letter-spacing:.2px}
-  .brand .tag{font-size:11px;font-weight:600;color:#C7D2FE;text-transform:uppercase;letter-spacing:1.5px}
-  .top .sub{color:#C7D2FE;font-size:13px;margin-top:2px}
-  .top .updated{display:inline-flex;align-items:center;gap:6px;margin-top:var(--s4);font-size:12px;color:#E0E7FF;background:rgba(255,255,255,.10);padding:6px 12px;border-radius:var(--r-pill)}
-  .top .updated::before{content:"";width:7px;height:7px;border-radius:50%;background:#34D399;box-shadow:0 0 0 3px rgba(52,211,153,.25)}
-  .legend{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:var(--r-md);padding:var(--s3) var(--s4);margin-top:var(--s5);display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--s2)}
-  .legend .lg{display:flex;flex-direction:column;gap:3px;font-size:11.5px;color:#E0E7FF}
-  .legend .lg b{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#fff}
-  .legend .lg b span{font-size:14px}
+  /* ---------- header ---------- */
+  .top{padding:calc(env(safe-area-inset-top) + var(--s6)) 0 var(--s2)}
+  .brand{display:flex;align-items:center;gap:9px;margin-bottom:var(--s5)}
+  .mark{display:flex;gap:4px;padding:6px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-pill);box-shadow:var(--sh-1)}
+  .mark i{width:8px;height:8px;border-radius:50%;display:block}
+  .mark i:nth-child(1){background:var(--go-line)}
+  .mark i:nth-child(2){background:var(--wait-line)}
+  .mark i:nth-child(3){background:var(--avoid-line)}
+  .brand .word{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
 
-  section{margin-top:var(--s6)}
-  .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--s3);padding:0 var(--s1)}
-  .sec-head h2{font-size:15px;font-weight:700;color:var(--ink)}
-  .sec-head .meta{font-size:12px;color:var(--ink-3)}
+  .top h1{font-size:27px;font-weight:700;line-height:1.15;letter-spacing:-.01em}
+  .top .sub{color:var(--ink-2);font-size:13.5px;margin-top:7px;max-width:34ch}
+  .updated{display:inline-flex;align-items:center;gap:7px;margin-top:var(--s4);font-size:12px;font-weight:500;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);padding:5px 11px 5px 9px;border-radius:var(--r-pill)}
+  .updated::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--go-line);box-shadow:0 0 0 3px oklch(0.60 0.14 150/.2);animation:pulse 2.4s ease-in-out infinite}
 
-  .notice{display:flex;gap:var(--s3);align-items:flex-start;background:#FFF7ED;border:1px solid #FED7AA;color:#9A3412;border-radius:var(--r-md);padding:var(--s3) var(--s4);font-size:12.5px;margin-top:var(--s5);line-height:1.45}
+  /* ---------- today tally (doubles as legend) ---------- */
+  .tally{display:grid;grid-template-columns:1fr 1fr 1fr;margin-top:var(--s5);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-1);overflow:hidden}
+  .t-cell{padding:var(--s4) var(--s3);position:relative}
+  .t-cell + .t-cell::before{content:"";position:absolute;left:0;top:18%;bottom:18%;width:1px;background:var(--hair)}
+  .t-head{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--ink-2)}
+  .t-dot{width:9px;height:9px;border-radius:50%}
+  .t-cell.go .t-dot{background:var(--go-line)} .t-cell.go .t-n{color:var(--go)}
+  .t-cell.wait .t-dot{background:var(--wait-line)} .t-cell.wait .t-n{color:var(--wait)}
+  .t-cell.avoid .t-dot{background:var(--avoid-line)} .t-cell.avoid .t-n{color:var(--avoid)}
+  .t-n{font-family:"IBM Plex Mono",monospace;font-size:25px;font-weight:600;line-height:1.1;margin-top:5px}
+  .t-d{font-size:10.5px;color:var(--ink-3);margin-top:2px;line-height:1.35}
 
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-1);overflow:hidden;margin-bottom:var(--s4)}
-  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s3);padding:var(--s4) var(--s4) var(--s3)}
-  .id .ticker{font-size:18px;font-weight:600;letter-spacing:.5px}
-  .id .name{font-size:12.5px;color:var(--ink-2);margin-top:1px}
-  .id .sector{display:inline-block;margin-top:var(--s2);font-size:10.5px;font-weight:600;color:var(--brand-ink);background:#EEF2FF;border-radius:var(--r-pill);padding:3px 9px}
+  /* ---------- notice ---------- */
+  .notice{display:flex;gap:10px;align-items:flex-start;background:var(--wait-bg);border:1px solid oklch(0.85 0.06 85);color:oklch(0.42 0.08 70);border-radius:var(--r-md);padding:11px 13px;font-size:12.5px;margin-top:var(--s5);line-height:1.5}
+  .notice svg{width:18px;height:18px;flex-shrink:0;margin-top:1px;color:var(--wait)}
+  .notice.err{background:var(--avoid-bg);border-color:oklch(0.85 0.07 25);color:var(--avoid)}
+  .notice.err svg{color:var(--avoid)}
+
+  /* ---------- section ---------- */
+  section{margin-top:var(--s8)}
+  .sec-head{display:flex;align-items:center;gap:10px;margin-bottom:var(--s4);padding:0 var(--s1)}
+  .sec-ic{display:grid;place-items:center;width:30px;height:30px;border-radius:var(--r-sm);background:var(--panel);border:1px solid var(--border);color:var(--ink-2);flex-shrink:0}
+  .sec-ic svg{width:17px;height:17px}
+  .sec-head h2{font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+  .sec-head .meta{margin-left:auto;font-size:11.5px;font-weight:500;color:var(--ink-3);text-align:right;flex-shrink:0;max-width:42%}
+
+  /* ---------- card ---------- */
+  .stack{display:flex;flex-direction:column;gap:var(--s4)}
+  .grid{display:flex;flex-direction:column;gap:var(--s4)}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-1);overflow:hidden}
+  .cat{display:inline-flex;align-items:center;gap:5px;margin:var(--s4) var(--s4) 10px;padding:4px 10px 4px 7px;font-size:10.5px;font-weight:600;letter-spacing:.01em;color:var(--accent-ink);background:var(--accent-bg);border-radius:var(--r-pill)}
+  .cat-ic{width:12px;height:12px;opacity:.9;flex-shrink:0}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s3);padding:0 var(--s4) var(--s4)}
+  .card-top:first-child{padding-top:var(--s4)}
+  .id{display:flex;align-items:center;gap:12px;min-width:0}
+  .id-text{min-width:0}
+  .logo{position:relative;flex-shrink:0;width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--surface);border:1px solid var(--border);display:grid;place-items:center}
+  .logo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .logo-mono{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600;color:var(--ink-2);letter-spacing:.02em}
+  .id .ticker{font-size:18px;font-weight:700;letter-spacing:.01em;color:var(--ink);line-height:1.15}
+  .id .name{font-size:12.5px;color:var(--ink-2);margin-top:2px}
   .price{text-align:right;flex-shrink:0}
-  .price .now{font-size:17px;font-weight:600}
-  .price .chg{font-size:12px;font-weight:600;margin-top:2px}
-  .chg.up{color:var(--up)}.chg.down{color:var(--down)}
+  .price .now{font-size:18px;font-weight:700;letter-spacing:-.01em}
+  .price .chg{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;margin-top:6px;padding:3px 8px;border-radius:var(--r-pill)}
+  .chg .chg-ic{width:11px;height:11px;flex-shrink:0}
+  .chg.up{color:var(--up);background:var(--go-bg)} .chg.down{color:var(--down);background:var(--avoid-bg)}
 
-  .signal{display:flex;align-items:center;gap:var(--s3);margin:0 var(--s4);padding:var(--s3) var(--s4);border-radius:var(--r-md);border:1px solid transparent}
-  .signal .ic{font-size:20px;line-height:1}
-  .signal .txt b{display:block;font-size:14px;font-weight:700}
-  .signal .txt span{font-size:12px;display:block;margin-top:1px;color:var(--ink-2)}
-  .s-go{background:var(--go-bg);border-color:#A7F3C2;color:var(--go)}
-  .s-wait{background:var(--wait-bg);border-color:#FCD89A;color:var(--wait)}
-  .s-avoid{background:var(--avoid-bg);border-color:#FBB4B4;color:var(--avoid)}
+  /* signal banner — the glance anchor */
+  .signal{display:flex;align-items:center;gap:12px;margin:0 var(--s4) var(--s4);padding:13px 14px;border-radius:var(--r-md)}
+  .signal .ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;color:#fff}
+  .signal .ic svg{width:17px;height:17px}
+  .signal .txt{flex:1;min-width:0}
+  .signal .top-line{display:flex;align-items:center;gap:8px}
+  .signal .top-line b{font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .signal .desc{font-size:12px;color:var(--ink-2);margin-top:2px;line-height:1.4}
+  .s-go{background:var(--go-bg);color:var(--go)} .s-go .ic{background:var(--go)}
+  .s-wait{background:var(--wait-bg);color:var(--wait)} .s-wait .ic{background:var(--wait)}
+  .s-avoid{background:var(--avoid-bg);color:var(--avoid)} .s-avoid .ic{background:var(--avoid)}
 
-  .factors{padding:var(--s4) var(--s4) var(--s2)}
-  .factors .f{display:grid;grid-template-columns:18px 1fr auto;align-items:center;gap:var(--s3);padding:7px 0;font-size:12.5px;border-bottom:1px dashed var(--border)}
-  .factors .f:last-child{border-bottom:none}
-  .dot{width:9px;height:9px;border-radius:50%;justify-self:center}
-  .dot.g{background:var(--go-line)}.dot.w{background:var(--wait-line)}.dot.a{background:var(--avoid-line)}
+  /* factors */
+  .factors{padding:2px var(--s4) var(--s2);padding-left:calc(var(--s4) + 13px)}
+  .factors .f{display:grid;grid-template-columns:8px 1fr auto;align-items:center;gap:14px;padding:9px 0;font-size:12.5px;border-top:1px solid var(--hair)}
+  .factors .f:first-child{border-top:none}
+  .fdot{width:8px;height:8px;border-radius:50%;justify-self:start}
+  .fdot.g{background:var(--go-line)} .fdot.w{background:var(--wait-line)} .fdot.a{background:var(--avoid-line)}
   .f .lbl{color:var(--ink-2)}
   .f .val{font-weight:600;color:var(--ink);text-align:right}
   .f .val.mono{font-size:12px}
 
-  .action{margin:var(--s2) var(--s4) var(--s4);background:var(--surface-sunken);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s3) var(--s4);display:flex;gap:var(--s3);align-items:flex-start}
-  .action .k{font-size:11px;font-weight:700;color:var(--brand);letter-spacing:.5px;text-transform:uppercase;flex-shrink:0;padding-top:1px}
-  .action .v{font-size:13px;color:var(--ink);line-height:1.5}
-  .action .v b{font-weight:600}
+  /* coach plan */
+  .plan{margin:13px 0 0;padding:12px var(--s4) 14px;background:var(--accent-bg);border-top:1px solid var(--border)}
+  .plan .k{display:inline-flex;align-items:center;gap:5px;margin-bottom:7px;padding:3px 10px 3px 8px;background:var(--accent);color:#fff;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:var(--r-pill)}
+  .plan .k-ic{width:11px;height:11px;flex-shrink:0}
+  .plan .v{font-size:12.5px;color:var(--ink);line-height:1.5}
+  .plan .v b{font-weight:600;color:var(--accent-ink)}
 
-  .empty{background:var(--surface);border:1px dashed var(--border-strong);border-radius:var(--r-lg);padding:var(--s8) var(--s5);text-align:center}
-  .empty .em-ic{font-size:34px;display:block;margin-bottom:var(--s3)}
-  .empty h3{font-size:15px;font-weight:600;margin-bottom:6px}
-  .empty p{font-size:13px;color:var(--ink-2);max-width:32ch;margin:0 auto}
+  /* empty */
+  .empty{background:var(--surface);border:1px dashed var(--border-2);border-radius:var(--r-lg);padding:var(--s8) var(--s5);text-align:center}
+  .empty .em-ic{display:inline-grid;place-items:center;width:48px;height:48px;border-radius:14px;background:var(--panel);color:var(--ink-3);margin-bottom:var(--s3)}
+  .empty .em-ic svg{width:24px;height:24px}
+  .empty h3{font-size:14.5px;font-weight:600;margin-bottom:6px}
+  .empty p{font-size:12.5px;color:var(--ink-2);max-width:34ch;margin:0 auto;line-height:1.55}
 
-  footer{margin-top:var(--s8);padding:var(--s5);border-top:1px solid var(--border);font-size:11.5px;color:var(--ink-3);line-height:1.6;text-align:center}
-  footer b{color:var(--ink-2)}
+  /* skeleton */
+  .sk-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-1);padding:var(--s4);margin-bottom:var(--s4)}
+  .sk{background:linear-gradient(100deg,var(--panel) 30%,oklch(0.985 0.004 265) 50%,var(--panel) 70%);background-size:200% 100%;border-radius:6px;animation:shimmer 1.4s linear infinite}
+  .sk-row{display:flex;justify-content:space-between;gap:var(--s4)}
+  .sk-h{height:18px} .sk-h.w40{width:40%} .sk-h.w22{width:22%}
+  .sk-line{height:11px;margin-top:9px} .w70{width:70%} .w90{width:90%}
+  .sk-sig{height:46px;border-radius:var(--r-md);margin-top:var(--s4)}
 
-  .loading{text-align:center;padding:var(--s8);color:var(--ink-3);font-size:13px}
+  footer.wrap{position:relative;margin-top:140px;padding:var(--s6) var(--s4) 0;padding-bottom:64px;padding-bottom:calc(64px + env(safe-area-inset-bottom));border-top:1px solid var(--border);font-size:11.5px;color:var(--ink-3);line-height:1.65;text-align:center}
+  .mascot{width:180px;height:120px;overflow:hidden;position:absolute;top:0;left:50%;transform:translate(-50%,-100%);pointer-events:none}
+  .mascot img{width:100%;height:auto;display:block}
+  .disc-main{display:flex;align-items:center;justify-content:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--ink-2);line-height:1.4}
+  .disc-main svg{width:15px;height:15px;color:var(--wait);flex-shrink:0}
+  .disc-sub{max-width:34ch;margin:var(--s3) auto 0;font-size:11.5px;color:var(--ink-3);line-height:1.75;text-wrap:balance}
+  .disc-sub span{white-space:nowrap}
+  .sign{margin-top:var(--s5);font-size:12px;font-weight:600;color:var(--ink-2);letter-spacing:.05em}
+
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+  @keyframes shimmer{to{background-position:-200% 0}}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .rise{animation:rise .42s cubic-bezier(.22,1,.36,1) both}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before{animation:none!important;transition:none!important}
+  }
 
   @media (min-width:768px){
     .wrap{max-width:880px}
+    .top h1{font-size:31px}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
-    .grid .card{margin-bottom:0}
+    .stack{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
   }
 </style>
 </head>
@@ -103,53 +188,69 @@
   <header class="top">
     <div class="wrap">
       <div class="brand">
-        <span class="brand-dots"><i></i><i></i><i></i></span>
-        <div>
-          <span class="tag">MegaCoach</span>
-          <h1>Entry Signal · จังหวะเข้าซื้อ</h1>
-        </div>
+        <span class="mark"><i></i><i></i><i></i></span>
+        <span class="word">MegaCoach</span>
       </div>
-      <p class="sub">ไฟจราจรบอกจังหวะ — ไม่ใช่คำสั่งซื้อขาย โค้ชอัปเดตให้ทุกวันทำการ</p>
+      <h1>จังหวะเข้าซื้อ</h1>
+      <p class="sub">ไฟจราจรบอกจังหวะเข้า ไม่ใช่คำสั่งซื้อขาย · อัปเดตทุกเช้าวันทำการ</p>
       <span class="updated" id="updated">กำลังโหลด…</span>
-      <div class="legend">
-        <div class="lg"><b><span>✅</span> เข้าได้</b>ราคาน่าสนใจ / DCA ได้เลย</div>
-        <div class="lg"><b><span>⏳</span> รอจังหวะ</b>ทยอยไม้แรกได้ เก็บกระสุนไว้</div>
-        <div class="lg"><b><span>⛔</span> อย่าเพิ่ง</b>ร้อน/ผันผวนสูง รอย่อก่อน</div>
+      <div class="tally" id="tally" aria-label="ภาพรวมสัญญาณวันนี้">
+        <div class="t-cell go"><span class="t-head"><span class="t-dot"></span>เข้าได้</span><div class="t-n mono">–</div><div class="t-d">DCA / ทยอยได้</div></div>
+        <div class="t-cell wait"><span class="t-head"><span class="t-dot"></span>รอจังหวะ</span><div class="t-n mono">–</div><div class="t-d">ไม้แรกได้ เก็บกระสุน</div></div>
+        <div class="t-cell avoid"><span class="t-head"><span class="t-dot"></span>อย่าเพิ่ง</span><div class="t-n mono">–</div><div class="t-d">ร้อน/ผันผวน รอย่อ</div></div>
       </div>
     </div>
   </header>
 
   <div class="wrap">
     <div id="notice"></div>
-    <div id="app"><div class="loading">กำลังโหลดข้อมูลสัญญาณ…</div></div>
+    <div id="app">
+      <div class="sk-card"><div class="sk-row"><div class="sk sk-h w40"></div><div class="sk sk-h w22"></div></div><div class="sk sk-sig"></div><div class="sk sk-line w90"></div><div class="sk sk-line w70"></div></div>
+      <div class="sk-card"><div class="sk-row"><div class="sk sk-h w40"></div><div class="sk sk-h w22"></div></div><div class="sk sk-sig"></div><div class="sk sk-line w90"></div><div class="sk sk-line w70"></div></div>
+      <div class="sk-card"><div class="sk-row"><div class="sk sk-h w40"></div><div class="sk sk-h w22"></div></div><div class="sk sk-sig"></div><div class="sk sk-line w90"></div><div class="sk sk-line w70"></div></div>
+    </div>
   </div>
 
   <footer class="wrap">
-    <b>⚠️ ข้อมูลเชิงวิเคราะห์ ไม่ใช่คำสั่งซื้อขาย</b> — เจ้าของพอร์ตตัดสินใจเอง<br>
-    การลงทุนมีความเสี่ยง ราคาหุ้นขึ้นลงได้เสมอ · สัญญาณช่วยเสริมความมั่นใจ ไม่รับประกันผลตอบแทน<br>
-    MegaCoach · โค้ชเมก้า
+    <div class="mascot"><img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="โค้ชเมก้า mascot" loading="lazy"></div>
+    <p class="disc-main"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><span>ข้อมูลเชิงวิเคราะห์ ไม่ใช่คำสั่งซื้อขาย</span></p>
+    <p class="disc-sub"><span>เจ้าของพอร์ตตัดสินใจเอง</span> · <span>การลงทุนมีความเสี่ยง</span> · <span>ราคาหุ้นขึ้นลงได้เสมอ</span> · <span>สัญญาณช่วยเสริมความมั่นใจ</span> <span>ไม่รับประกันผลตอบแทน</span></p>
+    <p class="sign">MegaCoach · โค้ชเมก้า</p>
   </footer>
 
   <!-- LINE LIFF SDK -->
   <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script>
-    // ⚠️ ใส่ LIFF ID จริงหลังลงทะเบียน LIFF ในคอนโซล (เช่น "1234567890-AbCdEfGh")
     const LIFF_ID = "2010317620-52h5kCM1";
 
     const SIG = {
-      go:    { cls: "s-go",    ic: "✅" },
-      wait:  { cls: "s-wait",  ic: "⏳" },
-      avoid: { cls: "s-avoid", ic: "⛔" }
+      go:    { cls:"s-go",    fdot:"g", code:"GO",    ic:'<path d="M5 13l4 4L19 7"/>' },
+      wait:  { cls:"s-wait",  fdot:"w", code:"WAIT",  ic:'<path d="M12 8v4l3 1.7"/>' },
+      avoid: { cls:"s-avoid", fdot:"a", code:"AVOID", ic:'<path d="M8 8l8 8M16 8l-8 8"/>' }
     };
 
-    function dirClass(d){ return d === "down" ? "down" : "up"; }
-    function dirArrow(d){ return d === "down" ? "▼ " : "▲ "; }
+    /* monoline icon set — one consistent vocabulary, mapped by group id */
+    const ICON = {
+      holdings:'<path d="M3 7a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.4.6L11.7 7H19a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+      core:'<path d="M12 3 3 7.5 12 12l9-4.5z"/><path d="M3 12l9 4.5L21 12"/><path d="M3 16.5 12 21l9-4.5"/>',
+      satellite:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/>',
+      watchlist:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+      _default:'<circle cx="12" cy="12" r="9"/>',
+      empty:'<path d="M3 7a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.4.6L11.7 7H19a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M12 11v5M9.5 13.5h5"/>'
+    };
+    const svg = (p,c="") => `<svg class="${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+
+    const dirClass = d => d === "down" ? "down" : "up";
+    const chgIcon = d => d === "down"
+      ? '<svg class="chg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7 17 17"/><path d="M17 9v8H9"/></svg>'
+      : '<svg class="chg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>';
+    const logoUrl = t => `https://assets.parqet.com/logos/symbol/${encodeURIComponent(t)}`;
 
     function renderFactors(factors){
       if(!factors || !factors.length) return "";
       const rows = factors.map(f => `
         <div class="f">
-          <span class="dot ${f.status}"></span>
+          <span class="fdot ${f.status}"></span>
           <span class="lbl">${f.label}</span>
           <span class="val ${f.mono ? "mono" : ""}">${f.value}</span>
         </div>`).join("");
@@ -160,52 +261,74 @@
       const sig = SIG[s.signal] || SIG.wait;
       return `
         <article class="card">
+          ${s.sector ? `<div class="cat"><svg class="cat-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.6-7.6A2 2 0 0 1 2.4 11.6V4.4A2 2 0 0 1 4.4 2.4h7.2a2 2 0 0 1 1.4.6l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.6" cy="7.6" r="1.4" fill="currentColor" stroke="none"/></svg>${s.sector}</div>` : ""}
           <div class="card-top">
             <div class="id">
-              <div class="ticker mono">${s.ticker}</div>
-              <div class="name">${s.name}</div>
-              ${s.sector ? `<span class="sector">${s.sector}</span>` : ""}
+              <span class="logo"><span class="logo-mono">${s.ticker.slice(0,2)}</span><img src="${logoUrl(s.ticker)}" alt="" loading="lazy" onerror="this.remove()"></span>
+              <div class="id-text">
+                <div class="ticker mono">${s.ticker}</div>
+                <div class="name">${s.name}</div>
+              </div>
             </div>
             <div class="price">
               <div class="now mono">${s.price}</div>
-              <div class="chg ${dirClass(s.dir)} mono">${dirArrow(s.dir)}${s.change}</div>
+              <div class="chg ${dirClass(s.dir)} mono">${chgIcon(s.dir)} ${s.change}</div>
             </div>
           </div>
           <div class="signal ${sig.cls}">
-            <span class="ic">${sig.ic}</span>
-            <div class="txt"><b>${s.signalLabel}</b><span>${s.signalDesc || ""}</span></div>
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${sig.ic}</svg></span>
+            <div class="txt">
+              <div class="top-line"><b>${s.signalLabel}</b></div>
+              ${s.signalDesc ? `<div class="desc">${s.signalDesc}</div>` : ""}
+            </div>
           </div>
           ${renderFactors(s.factors)}
-          ${s.action ? `<div class="action"><span class="k">${s.action.k}</span><span class="v">${s.action.v}</span></div>` : ""}
+          ${s.action ? `<div class="plan"><span class="k"><svg class="k-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2.5 4L16 12H5"/></svg>${s.action.k}</span><div class="v">${s.action.v}</div></div>` : ""}
         </article>`;
     }
 
     function renderGroup(g){
+      const icon = ICON[g.id] || ICON._default;
       let inner;
       if(g.empty && (!g.stocks || !g.stocks.length)){
         inner = `<div class="empty">
-          <span class="em-ic">${g.empty.icon}</span>
+          <span class="em-ic">${svg(ICON.empty)}</span>
           <h3>${g.empty.title}</h3>
           <p>${g.empty.text}</p>
         </div>`;
       } else {
-        inner = `<div class="grid">${g.stocks.map(renderCard).join("")}</div>`;
+        const cls = g.stocks.length > 1 ? "grid" : "stack";
+        inner = `<div class="${cls}">${g.stocks.map(renderCard).join("")}</div>`;
       }
-      return `<section>
+      return `<section class="rise">
         <div class="sec-head">
-          <h2>${g.icon} ${g.title}</h2>
-          <span class="meta">${g.meta || ""}</span>
+          <span class="sec-ic">${svg(icon)}</span>
+          <h2>${g.title}</h2>
+          ${g.meta ? `<span class="meta">${g.meta}</span>` : ""}
         </div>
         ${inner}
       </section>`;
     }
 
+    function renderTally(groups){
+      const c = { go:0, wait:0, avoid:0 };
+      (groups || []).forEach(g => (g.stocks || []).forEach(s => {
+        if(s.signal in c) c[s.signal]++;
+      }));
+      const el = document.getElementById("tally");
+      el.querySelectorAll(".t-cell").forEach(cell => {
+        const k = cell.classList.contains("go") ? "go" : cell.classList.contains("wait") ? "wait" : "avoid";
+        cell.querySelector(".t-n").textContent = c[k];
+      });
+    }
+
     function render(data){
-      document.getElementById("updated").textContent = "อัปเดตล่าสุด · " + (data.updated || "—");
+      document.getElementById("updated").textContent = "อัปเดต " + (data.updated || "—");
       if(data.note){
         document.getElementById("notice").innerHTML =
-          `<div class="notice"><span>ℹ️</span><div>${data.note}</div></div>`;
+          `<div class="notice">${svg('<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>')}<div>${data.note}</div></div>`;
       }
+      renderTally(data.groups);
       document.getElementById("app").innerHTML = (data.groups || []).map(renderGroup).join("");
     }
 
@@ -216,14 +339,13 @@
         render(await res.json());
       }catch(e){
         document.getElementById("app").innerHTML =
-          `<div class="notice"><span>⚠️</span><div>โหลดข้อมูลไม่สำเร็จ (${e.message}) — ลองรีเฟรชอีกครั้ง</div></div>`;
+          `<div class="notice err">${svg('<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>')}<div>โหลดข้อมูลไม่สำเร็จ (${e.message}) ลองรีเฟรชอีกครั้ง</div></div>`;
       }
     }
 
-    // เริ่ม LIFF (ถ้าเปิดนอก LINE ก็ยังแสดงผลได้ปกติ)
     async function boot(){
       if(window.liff && LIFF_ID && LIFF_ID !== "PUT_YOUR_LIFF_ID_HERE"){
-        try{ await liff.init({ liffId: LIFF_ID }); }catch(e){ /* เปิดนอก LINE — ข้ามไป */ }
+        try{ await liff.init({ liffId: LIFF_ID }); }catch(e){ /* opened outside LINE — keep rendering */ }
       }
       loadData();
     }
