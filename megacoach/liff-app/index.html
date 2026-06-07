@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>MegaCoach · Entry Signal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F4F5F8; --surface:#FFFFFF; --surface-sunken:#F8FAFC;
+    --ink:#0F172A; --ink-2:#475569; --ink-3:#94A3B8;
+    --border:#E5E8EF; --border-strong:#D5DAE3;
+    --brand:#4338CA; --brand-ink:#312E81;
+    --go:#15803D; --go-bg:#DCFCE7; --go-line:#22C55E;
+    --wait:#B45309; --wait-bg:#FEF3C7; --wait-line:#F59E0B;
+    --avoid:#B91C1C; --avoid-bg:#FEE2E2; --avoid-line:#EF4444;
+    --up:#15803D; --down:#B91C1C;
+    --r-sm:10px; --r-md:14px; --r-lg:20px; --r-pill:999px;
+    --sh-1:0 1px 2px rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.06);
+    --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s8:32px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:"IBM Plex Sans Thai",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:var(--s8)}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-feature-settings:"tnum"}
+  .wrap{max-width:480px;margin:0 auto;padding:0 var(--s4)}
+
+  .top{background:linear-gradient(160deg,#1E1B4B 0%,#312E81 55%,#3730A3 100%);color:#fff;padding:calc(env(safe-area-inset-top) + var(--s6)) 0 var(--s6);border-bottom-left-radius:var(--r-lg);border-bottom-right-radius:var(--r-lg)}
+  .brand{display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s2)}
+  .brand-dots{display:flex;gap:5px}
+  .brand-dots i{width:9px;height:9px;border-radius:50%;display:block}
+  .brand-dots i:nth-child(1){background:#22C55E}.brand-dots i:nth-child(2){background:#F59E0B}.brand-dots i:nth-child(3){background:#EF4444}
+  .brand h1{font-size:20px;font-weight:700;letter-spacing:.2px}
+  .brand .tag{font-size:11px;font-weight:600;color:#C7D2FE;text-transform:uppercase;letter-spacing:1.5px}
+  .top .sub{color:#C7D2FE;font-size:13px;margin-top:2px}
+  .top .updated{display:inline-flex;align-items:center;gap:6px;margin-top:var(--s4);font-size:12px;color:#E0E7FF;background:rgba(255,255,255,.10);padding:6px 12px;border-radius:var(--r-pill)}
+  .top .updated::before{content:"";width:7px;height:7px;border-radius:50%;background:#34D399;box-shadow:0 0 0 3px rgba(52,211,153,.25)}
+  .legend{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:var(--r-md);padding:var(--s3) var(--s4);margin-top:var(--s5);display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--s2)}
+  .legend .lg{display:flex;flex-direction:column;gap:3px;font-size:11.5px;color:#E0E7FF}
+  .legend .lg b{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#fff}
+  .legend .lg b span{font-size:14px}
+
+  section{margin-top:var(--s6)}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--s3);padding:0 var(--s1)}
+  .sec-head h2{font-size:15px;font-weight:700;color:var(--ink)}
+  .sec-head .meta{font-size:12px;color:var(--ink-3)}
+
+  .notice{display:flex;gap:var(--s3);align-items:flex-start;background:#FFF7ED;border:1px solid #FED7AA;color:#9A3412;border-radius:var(--r-md);padding:var(--s3) var(--s4);font-size:12.5px;margin-top:var(--s5);line-height:1.45}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-1);overflow:hidden;margin-bottom:var(--s4)}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s3);padding:var(--s4) var(--s4) var(--s3)}
+  .id .ticker{font-size:18px;font-weight:600;letter-spacing:.5px}
+  .id .name{font-size:12.5px;color:var(--ink-2);margin-top:1px}
+  .id .sector{display:inline-block;margin-top:var(--s2);font-size:10.5px;font-weight:600;color:var(--brand-ink);background:#EEF2FF;border-radius:var(--r-pill);padding:3px 9px}
+  .price{text-align:right;flex-shrink:0}
+  .price .now{font-size:17px;font-weight:600}
+  .price .chg{font-size:12px;font-weight:600;margin-top:2px}
+  .chg.up{color:var(--up)}.chg.down{color:var(--down)}
+
+  .signal{display:flex;align-items:center;gap:var(--s3);margin:0 var(--s4);padding:var(--s3) var(--s4);border-radius:var(--r-md);border:1px solid transparent}
+  .signal .ic{font-size:20px;line-height:1}
+  .signal .txt b{display:block;font-size:14px;font-weight:700}
+  .signal .txt span{font-size:12px;display:block;margin-top:1px;color:var(--ink-2)}
+  .s-go{background:var(--go-bg);border-color:#A7F3C2;color:var(--go)}
+  .s-wait{background:var(--wait-bg);border-color:#FCD89A;color:var(--wait)}
+  .s-avoid{background:var(--avoid-bg);border-color:#FBB4B4;color:var(--avoid)}
+
+  .factors{padding:var(--s4) var(--s4) var(--s2)}
+  .factors .f{display:grid;grid-template-columns:18px 1fr auto;align-items:center;gap:var(--s3);padding:7px 0;font-size:12.5px;border-bottom:1px dashed var(--border)}
+  .factors .f:last-child{border-bottom:none}
+  .dot{width:9px;height:9px;border-radius:50%;justify-self:center}
+  .dot.g{background:var(--go-line)}.dot.w{background:var(--wait-line)}.dot.a{background:var(--avoid-line)}
+  .f .lbl{color:var(--ink-2)}
+  .f .val{font-weight:600;color:var(--ink);text-align:right}
+  .f .val.mono{font-size:12px}
+
+  .action{margin:var(--s2) var(--s4) var(--s4);background:var(--surface-sunken);border:1px solid var(--border);border-radius:var(--r-md);padding:var(--s3) var(--s4);display:flex;gap:var(--s3);align-items:flex-start}
+  .action .k{font-size:11px;font-weight:700;color:var(--brand);letter-spacing:.5px;text-transform:uppercase;flex-shrink:0;padding-top:1px}
+  .action .v{font-size:13px;color:var(--ink);line-height:1.5}
+  .action .v b{font-weight:600}
+
+  .empty{background:var(--surface);border:1px dashed var(--border-strong);border-radius:var(--r-lg);padding:var(--s8) var(--s5);text-align:center}
+  .empty .em-ic{font-size:34px;display:block;margin-bottom:var(--s3)}
+  .empty h3{font-size:15px;font-weight:600;margin-bottom:6px}
+  .empty p{font-size:13px;color:var(--ink-2);max-width:32ch;margin:0 auto}
+
+  footer{margin-top:var(--s8);padding:var(--s5);border-top:1px solid var(--border);font-size:11.5px;color:var(--ink-3);line-height:1.6;text-align:center}
+  footer b{color:var(--ink-2)}
+
+  .loading{text-align:center;padding:var(--s8);color:var(--ink-3);font-size:13px}
+
+  @media (min-width:768px){
+    .wrap{max-width:880px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
+    .grid .card{margin-bottom:0}
+  }
+</style>
+</head>
+<body>
+
+  <header class="top">
+    <div class="wrap">
+      <div class="brand">
+        <span class="brand-dots"><i></i><i></i><i></i></span>
+        <div>
+          <span class="tag">MegaCoach</span>
+          <h1>Entry Signal · จังหวะเข้าซื้อ</h1>
+        </div>
+      </div>
+      <p class="sub">ไฟจราจรบอกจังหวะ — ไม่ใช่คำสั่งซื้อขาย โค้ชอัปเดตให้ทุกวันทำการ</p>
+      <span class="updated" id="updated">กำลังโหลด…</span>
+      <div class="legend">
+        <div class="lg"><b><span>✅</span> เข้าได้</b>ราคาน่าสนใจ / DCA ได้เลย</div>
+        <div class="lg"><b><span>⏳</span> รอจังหวะ</b>ทยอยไม้แรกได้ เก็บกระสุนไว้</div>
+        <div class="lg"><b><span>⛔</span> อย่าเพิ่ง</b>ร้อน/ผันผวนสูง รอย่อก่อน</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div id="notice"></div>
+    <div id="app"><div class="loading">กำลังโหลดข้อมูลสัญญาณ…</div></div>
+  </div>
+
+  <footer class="wrap">
+    <b>⚠️ ข้อมูลเชิงวิเคราะห์ ไม่ใช่คำสั่งซื้อขาย</b> — เจ้าของพอร์ตตัดสินใจเอง<br>
+    การลงทุนมีความเสี่ยง ราคาหุ้นขึ้นลงได้เสมอ · สัญญาณช่วยเสริมความมั่นใจ ไม่รับประกันผลตอบแทน<br>
+    MegaCoach · โค้ชเมก้า
+  </footer>
+
+  <!-- LINE LIFF SDK -->
+  <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script>
+    // ⚠️ ใส่ LIFF ID จริงหลังลงทะเบียน LIFF ในคอนโซล (เช่น "1234567890-AbCdEfGh")
+    const LIFF_ID = "2010317620-52h5kCM1";
+
+    const SIG = {
+      go:    { cls: "s-go",    ic: "✅" },
+      wait:  { cls: "s-wait",  ic: "⏳" },
+      avoid: { cls: "s-avoid", ic: "⛔" }
+    };
+
+    function dirClass(d){ return d === "down" ? "down" : "up"; }
+    function dirArrow(d){ return d === "down" ? "▼ " : "▲ "; }
+
+    function renderFactors(factors){
+      if(!factors || !factors.length) return "";
+      const rows = factors.map(f => `
+        <div class="f">
+          <span class="dot ${f.status}"></span>
+          <span class="lbl">${f.label}</span>
+          <span class="val ${f.mono ? "mono" : ""}">${f.value}</span>
+        </div>`).join("");
+      return `<div class="factors">${rows}</div>`;
+    }
+
+    function renderCard(s){
+      const sig = SIG[s.signal] || SIG.wait;
+      return `
+        <article class="card">
+          <div class="card-top">
+            <div class="id">
+              <div class="ticker mono">${s.ticker}</div>
+              <div class="name">${s.name}</div>
+              ${s.sector ? `<span class="sector">${s.sector}</span>` : ""}
+            </div>
+            <div class="price">
+              <div class="now mono">${s.price}</div>
+              <div class="chg ${dirClass(s.dir)} mono">${dirArrow(s.dir)}${s.change}</div>
+            </div>
+          </div>
+          <div class="signal ${sig.cls}">
+            <span class="ic">${sig.ic}</span>
+            <div class="txt"><b>${s.signalLabel}</b><span>${s.signalDesc || ""}</span></div>
+          </div>
+          ${renderFactors(s.factors)}
+          ${s.action ? `<div class="action"><span class="k">${s.action.k}</span><span class="v">${s.action.v}</span></div>` : ""}
+        </article>`;
+    }
+
+    function renderGroup(g){
+      let inner;
+      if(g.empty && (!g.stocks || !g.stocks.length)){
+        inner = `<div class="empty">
+          <span class="em-ic">${g.empty.icon}</span>
+          <h3>${g.empty.title}</h3>
+          <p>${g.empty.text}</p>
+        </div>`;
+      } else {
+        inner = `<div class="grid">${g.stocks.map(renderCard).join("")}</div>`;
+      }
+      return `<section>
+        <div class="sec-head">
+          <h2>${g.icon} ${g.title}</h2>
+          <span class="meta">${g.meta || ""}</span>
+        </div>
+        ${inner}
+      </section>`;
+    }
+
+    function render(data){
+      document.getElementById("updated").textContent = "อัปเดตล่าสุด · " + (data.updated || "—");
+      if(data.note){
+        document.getElementById("notice").innerHTML =
+          `<div class="notice"><span>ℹ️</span><div>${data.note}</div></div>`;
+      }
+      document.getElementById("app").innerHTML = (data.groups || []).map(renderGroup).join("");
+    }
+
+    async function loadData(){
+      try{
+        const res = await fetch("./entry-signal-data.json?t=" + Date.now());
+        if(!res.ok) throw new Error("HTTP " + res.status);
+        render(await res.json());
+      }catch(e){
+        document.getElementById("app").innerHTML =
+          `<div class="notice"><span>⚠️</span><div>โหลดข้อมูลไม่สำเร็จ (${e.message}) — ลองรีเฟรชอีกครั้ง</div></div>`;
+      }
+    }
+
+    // เริ่ม LIFF (ถ้าเปิดนอก LINE ก็ยังแสดงผลได้ปกติ)
+    async function boot(){
+      if(window.liff && LIFF_ID && LIFF_ID !== "PUT_YOUR_LIFF_ID_HERE"){
+        try{ await liff.init({ liffId: LIFF_ID }); }catch(e){ /* เปิดนอก LINE — ข้ามไป */ }
+      }
+      loadData();
+    }
+    boot();
+  </script>
+</body>
+</html>
