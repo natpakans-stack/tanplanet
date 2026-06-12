@@ -1,6 +1,6 @@
 {
-  "updated": "2026-06-07 07:00",
-  "note": "ตัวเลขตัวอย่างเชิงสาธิต — โค้ชจะดึงราคาสด + คำนวณสัญญาณจริงให้ทุกเช้า",
+  "updated": "2026-06-12 07:30",
+  "note": "ตลาดสหรัฐฟื้นตัวแรง Nasdaq +2.54% หลังสัญญาณสันติภาพสหรัฐ-อิหร่าน ขณะกลุ่มเซมิ (MU +11.7%, INTC +9.3%) นำตลาดขึ้น",
   "groups": [
     {
       "id": "holdings",
@@ -22,17 +22,27 @@
       "stocks": [
         {
           "ticker": "VOO", "name": "Vanguard S&P 500 ETF", "sector": "ดัชนีตลาดสหรัฐฯ",
-          "price": "$548.20", "change": "+0.42%", "dir": "up",
+          "price": "$682.00", "change": "+1.75%", "dir": "up",
           "signal": "go", "signalLabel": "เข้าได้เลย", "signalDesc": "กระจาย 500 บริษัท — DCA สม่ำเสมอดีที่สุด",
-          "factors": [],
+          "factors": [
+            { "label": "S&P 500 เมื่อคืน", "value": "7,394.30 (+1.75%)", "status": "g" },
+            { "label": "ปัจจัยหนุน", "value": "สัญญาณสันติภาพสหรัฐ-อิหร่าน", "status": "g" },
+            { "label": "ห่างจาก 52-week high", "value": "~-2% (ฟื้นตัวหลังย่อ 2 วัน)", "status": "w", "mono": true },
+            { "label": "risk event 2-3 วัน", "value": "ไม่มีนัดสำคัญ", "status": "g" }
+          ],
           "action": { "k": "ทำต่อ", "v": "หุ้นแกน <b>ไม่ต้องจับจังหวะ</b> — ตั้งซื้อประจำทุกเดือนเท่าๆ กัน ปล่อยให้เวลาทำงาน" }
         },
         {
           "ticker": "QQQ", "name": "Invesco Nasdaq-100 ETF", "sector": "เทคโนโลยีสหรัฐฯ",
-          "price": "$498.60", "change": "+0.71%", "dir": "up",
+          "price": "$711.27", "change": "+2.54%", "dir": "up",
           "signal": "go", "signalLabel": "เข้าได้เลย", "signalDesc": "เน้นเทคโต — ผันผวนกว่า VOO แต่ DCA รับได้",
-          "factors": [],
-          "action": { "k": "ทำต่อ", "v": "DCA คู่กับ VOO ได้ — สัดส่วน QQQ น้อยกว่าเพราะเหวี่ยงแรงกว่า" }
+          "factors": [
+            { "label": "Nasdaq เมื่อคืน", "value": "25,809.66 (+2.54%)", "status": "g" },
+            { "label": "ผู้นำตลาด", "value": "เซมิ-AI ดึงนาสแด็กขึ้นแรง", "status": "g" },
+            { "label": "ห่างจาก 52-week high", "value": "~-2% (ฟื้นตัวหลังย่อ 2 วัน)", "status": "w", "mono": true },
+            { "label": "risk event 2-3 วัน", "value": "ไม่มีนัดสำคัญ", "status": "g" }
+          ],
+          "action": { "k": "ทำต่อ", "v": "DCA คู่กับ VOO ได้ — สัดส่วน <b>QQQ น้อยกว่า VOO</b> เพราะเหวี่ยงแรงกว่า" }
         }
       ]
     },
@@ -40,55 +50,31 @@
       "id": "satellite",
       "icon": "🚀",
       "title": "หุ้นหาผลตอบแทน (Satellite)",
-      "meta": "งบ ~$1,400 · DCA 3 ไม้",
+      "meta": "เน้น AI Infrastructure · DCA ทยอย",
       "stocks": [
         {
           "ticker": "NVDA", "name": "NVIDIA", "sector": "เซมิคอนดักเตอร์ · AI",
-          "price": "$172.40", "change": "+1.10%", "dir": "up",
-          "signal": "wait", "signalLabel": "รอจังหวะ / ทยอยได้นิดนึง", "signalDesc": "พื้นฐานแกร่ง แต่วิ่งแรง ราคายังไม่ถูก",
+          "price": "$204.87", "change": "+2.22%", "dir": "up",
+          "signal": "wait", "signalLabel": "รอจังหวะ / ทยอยได้นิดนึง", "signalDesc": "พื้นฐานแกร่งมาก upside +45% แต่ราคาวิ่งขึ้นมาแล้ว + ความเสี่ยง export control",
           "factors": [
-            { "label": "นักวิเคราะห์", "value": "เชียร์ซื้อ 80%", "status": "g" },
-            { "label": "ห่างจากจุดสูงสุด 52 สัปดาห์", "value": "-6%", "status": "w", "mono": true },
-            { "label": "RSI (โมเมนตัม)", "value": "68 · ค่อนข้างร้อน", "status": "w" },
-            { "label": "upside ถึงเป้าเฉลี่ย", "value": "+9%", "status": "w", "mono": true }
+            { "label": "นักวิเคราะห์", "value": "Strong Buy · เป้าเฉลี่ย $298.42 (+45.6%)", "status": "g" },
+            { "label": "ปันผลใหม่", "value": "$0.25/ไตรมาส (เพิ่ม 25 เท่าจาก $0.01)", "status": "g" },
+            { "label": "ความเสี่ยง", "value": "Senate export control hearing (จีน)", "status": "a" },
+            { "label": "upside ถึงเป้าเฉลี่ย", "value": "+45.6% จากราคาปัจจุบัน", "status": "g", "mono": true }
           ],
-          "action": { "k": "แผน", "v": "เข้าไม้แรก <b>1/3</b> ที่ราคาตลาด · เก็บอีก 2/3 รอย่อแถว <b class='mono'>$155–160</b>" }
+          "action": { "k": "แผน", "v": "เข้าไม้แรก <b>1/3</b> ที่ราคาตลาด · เก็บอีก 2/3 รอย่อแถว <b class='mono'>$190–195</b>" }
         },
         {
-          "ticker": "GOOGL", "name": "Alphabet", "sector": "อินเทอร์เน็ต · AI",
-          "price": "$184.90", "change": "+0.35%", "dir": "up",
-          "signal": "go", "signalLabel": "เข้าได้", "signalDesc": "วาลูเอชันถูกกว่าเพื่อนกลุ่ม Big Tech",
+          "ticker": "VST", "name": "Vistra Corp", "sector": "พลังงาน · AI Infrastructure",
+          "price": "$144.51", "change": "+4.11%", "dir": "up",
+          "signal": "wait", "signalLabel": "รอจังหวะ", "signalDesc": "ข่าว Helix AI Infrastructure ($10B) ออกวันนี้ ราคาวิ่งขึ้นแล้ว รอย่อ",
           "factors": [
-            { "label": "นักวิเคราะห์", "value": "เชียร์ซื้อ 85%", "status": "g" },
-            { "label": "P/E เทียบกลุ่ม", "value": "ถูกกว่าค่าเฉลี่ย", "status": "g" },
-            { "label": "upside ถึงเป้าเฉลี่ย", "value": "+18%", "status": "g", "mono": true },
-            { "label": "RSI (โมเมนตัม)", "value": "55 · ปกติ", "status": "w", "mono": true }
+            { "label": "ข่าวหลัก", "value": "Helix Digital Infra (KKR+NVDA+VST) $10B", "status": "g" },
+            { "label": "ธีม", "value": "AI data center power — secular growth", "status": "g" },
+            { "label": "ราคา vs 5 มิ.ย.", "value": "ยังต่ำกว่า $148.76 ประมาณ 3%", "status": "w", "mono": true },
+            { "label": "ระยะสั้น", "value": "+4.11% วันนี้ ข่าวออกแล้ว", "status": "w" }
           ],
-          "action": { "k": "แผน", "v": "ตัวนี้ <b>เริ่มไม้แรกได้เลย 1/2</b> — เหลืออีกครึ่งไว้เฉลี่ยเดือนหน้า" }
-        },
-        {
-          "ticker": "META", "name": "Meta Platforms", "sector": "อินเทอร์เน็ต · โฆษณา",
-          "price": "$307.34", "change": "-0.28%", "dir": "down",
-          "signal": "wait", "signalLabel": "รอจังหวะ", "signalDesc": "นักวิเคราะห์เชียร์ แต่ upside เหลือน้อย",
-          "factors": [
-            { "label": "นักวิเคราะห์ (26 คน)", "value": "17 ซื้อ · 8 ถือ · 1 ขาย", "status": "g" },
-            { "label": "upside ถึงเป้าเฉลี่ย $325.71", "value": "+5.98%", "status": "w", "mono": true },
-            { "label": "เพิ่งวิ่งขึ้นแรง (มิ.ย.)", "value": "ราคาไม่ถูก", "status": "w" },
-            { "label": "แนวรับใกล้", "value": "$285–290", "status": "a", "mono": true }
-          ],
-          "action": { "k": "แผน", "v": "เข้าไม้แรก <b>1/3</b> ได้ · ที่เหลือรอย่อมาแถวแนวรับ <b class='mono'>$285–290</b> ค่อยเก็บเพิ่ม" }
-        },
-        {
-          "ticker": "LLY", "name": "Eli Lilly", "sector": "เฮลธ์แคร์ · ยา",
-          "price": "$842.10", "change": "+0.64%", "dir": "up",
-          "signal": "wait", "signalLabel": "รอจังหวะ", "signalDesc": "โตเด่นแต่ P/E สูงมาก · ราคาต่อหุ้นแพง",
-          "factors": [
-            { "label": "การเติบโต (ยาลดน้ำหนัก)", "value": "แข็งแกร่ง", "status": "g" },
-            { "label": "P/E (ความแพง)", "value": "สูงมาก", "status": "a" },
-            { "label": "ราคา/หุ้นสูง vs งบ $1,400", "value": "ได้ ~1 หุ้น", "status": "w" },
-            { "label": "RSI (โมเมนตัม)", "value": "62", "status": "w", "mono": true }
-          ],
-          "action": { "k": "แผน", "v": "ราคาต่อหุ้นแพง — ถ้างบจำกัด <b>เลือกได้ว่าจะข้ามตัวนี้ไปก่อน</b> หรือเก็บแค่ 1 หุ้นเป็นตัวแทนเฮลธ์แคร์" }
+          "action": { "k": "แผน", "v": "ธีม AI power น่าสนใจระยะยาว — รอย่อแถว <b class='mono'>$138–140</b> ค่อยเข้าไม้แรก 1/3" }
         }
       ]
     },
@@ -99,16 +85,28 @@
       "meta": "ยังไม่ซื้อ",
       "stocks": [
         {
-          "ticker": "MU", "name": "Micron Technology", "sector": "เซมิคอนดักเตอร์ · หน่วยความจำ",
-          "price": "$86.40", "change": "-3.10%", "dir": "down",
-          "signal": "avoid", "signalLabel": "อย่าเพิ่งเข้า", "signalDesc": "หุ้นวัฏจักร ผันผวนสูง · เพิ่งร่วงแรง",
+          "ticker": "MU", "name": "Micron Technology", "sector": "เซมิคอนดักเตอร์ · หน่วยความจำ AI",
+          "price": "$926.56", "change": "+11.7%", "dir": "up",
+          "signal": "avoid", "signalLabel": "อย่าเพิ่งเข้า", "signalDesc": "บาวน์สแรง +12% แต่ earnings 24 มิ.ย. เป็น binary event — ไม่เหมาะมือใหม่",
           "factors": [
-            { "label": "ธีม AI / หน่วยความจำ", "value": "น่าสนใจ", "status": "g" },
-            { "label": "ความผันผวน", "value": "-20% ใน 2 วัน", "status": "a" },
-            { "label": "ลักษณะธุรกิจ", "value": "วัฏจักร · อาจพีคกลางปี", "status": "a" },
-            { "label": "RSI (โมเมนตัม)", "value": "28 · ร่วงแรง", "status": "a", "mono": true }
+            { "label": "ย่อจาก 52-week high", "value": "-15% จาก ATH $1,089 (3 มิ.ย.)", "status": "a", "mono": true },
+            { "label": "ความผันผวน", "value": "+11.7% วันนี้ หลังย่อหนักมา 2 สัปดาห์", "status": "a" },
+            { "label": "Earnings", "value": "24 มิ.ย. — binary event อีก 13 วัน", "status": "a" },
+            { "label": "เป้านักวิเคราะห์", "value": "Susquehanna $1,750 · Morgan Stanley $1,050", "status": "g" }
           ],
-          "action": { "k": "แผน", "v": "ยังไม่เหมาะมือใหม่ — <b>รอฐานนิ่ง</b>หลายสัปดาห์ก่อน ถ้าจะเข้าให้ใช้เงินก้อนเล็กมากเท่านั้น" }
+          "action": { "k": "แผน", "v": "รอผ่าน <b>earnings 24 มิ.ย.</b> ก่อน — หากงบดีและราคาย่อหลัง earnings ค่อยพิจารณาเข้าก้อนเล็กมากๆ" }
+        },
+        {
+          "ticker": "INTC", "name": "Intel Corporation", "sector": "เซมิคอนดักเตอร์ · Foundry",
+          "price": "$116.96", "change": "+9.27%", "dir": "up",
+          "signal": "avoid", "signalLabel": "อย่าเพิ่งเข้า", "signalDesc": "เด้ง +9.3% วันเดียวหลัง BofA upgrade + foundry deal — ข่าวออกหมดแล้ว อย่าไล่ราคา",
+          "factors": [
+            { "label": "BofA Upgrade", "value": "→ Buy เป้า $135 (+15.4% จากราคาปัจจุบัน)", "status": "g" },
+            { "label": "foundry deal", "value": "Google+NVDA ผลิต TPU 3 ล้านชิ้น ปี 2028", "status": "g" },
+            { "label": "ความร้อนแรงวันนี้", "value": "+9.27% ในวันเดียว — อย่าไล่", "status": "a" },
+            { "label": "Wells Fargo เป้า", "value": "$110 — ต่ำกว่าราคาปัจจุบัน", "status": "a", "mono": true }
+          ],
+          "action": { "k": "แผน", "v": "ข่าวดีออกหมดแล้ว — <b>รอย่อ</b>กลับมาแถว <b class='mono'>$105–108</b> ก่อน ค่อยพิจารณาเข้า" }
         }
       ]
     }
