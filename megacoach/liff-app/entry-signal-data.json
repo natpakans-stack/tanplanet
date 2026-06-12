@@ -6,13 +6,19 @@
       "id": "holdings",
       "icon": "📁",
       "title": "หุ้นที่ถืออยู่ (Holdings)",
-      "meta": "0 ตัว",
-      "empty": {
-        "icon": "🐣",
-        "title": "ยังไม่มีหุ้นในพอร์ต",
-        "text": "เริ่มจากแผนเข้าซื้อด้านล่าง — พอกดซื้อจริงใน Dime แล้ว หุ้นจะมาโผล่ตรงนี้พร้อมราคาทุนของคุณ"
-      },
-      "stocks": []
+      "meta": "1 ตัว",
+      "stocks": [
+        {
+          "ticker": "NVDA", "name": "NVIDIA", "sector": "เซมิคอนดักเตอร์ · AI",
+          "price": "$203.79", "change": "-0.53%", "dir": "down",
+          "signal": "wait", "signalLabel": "ถือ · รอจังหวะเติม", "signalDesc": "ไม้แรกเข้าแล้ว — เติมตามแผน DCA",
+          "factors": [
+            { "label": "ราคาทุนเฉลี่ย", "value": "$204.24", "status": "w", "mono": true },
+            { "label": "สถานะ", "value": "ไม้ฝึก กระเป๋า A (ถือยาว)", "status": "g" }
+          ],
+          "action": { "k": "แผน", "v": "ถือยาว ไม่มี stop — ไม้ DCA ถัดไป<b>หลังผ่าน FOMC 17-18 มิ.ย.</b>" }
+        }
+      ]
     },
     {
       "id": "core",
