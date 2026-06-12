@@ -1,0 +1,33 @@
+name: MegaCoach LINE broadcast
+
+# ส่งข้อความ LINE ทุกครั้งที่ line-outbox.json เปลี่ยน (cloud routine push เข้ามา)
+# token อยู่ใน repo secret LINE_CHANNEL_ACCESS_TOKEN — sandbox คลาวด์ของ routine
+# ยิง api.line.me ตรงไม่ได้ (network egress ถูกบล็อก) จึงให้ Action เป็นคนส่งแทน
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'megacoach/liff-app/line-outbox.json'
+  workflow_dispatch:
+
+jobs:
+  broadcast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate outbox JSON
+        run: jq -e '.messages | type == "array" and length > 0' megacoach/liff-app/line-outbox.json
+
+      - name: Broadcast to LINE
+        env:
+          LINE_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+        run: |
+          STATUS=$(curl -s -o /tmp/resp.txt -w '%{http_code}' \
+            -X POST https://api.line.me/v2/bot/message/broadcast \
+            -H 'Content-Type: application/json' \
+            -H "Authorization: Bearer $LINE_TOKEN" \
+            -d @megacoach/liff-app/line-outbox.json)
+          echo "HTTP $STATUS"
+          cat /tmp/resp.txt
+          [ "$STATUS" = "200" ]
