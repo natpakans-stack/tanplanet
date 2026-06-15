@@ -201,6 +201,88 @@
   .radar-legend i.late{background:var(--avoid-line)}
   .radar-foot{padding:10px var(--s4) var(--s4);font-size:11px;color:var(--ink-3);line-height:1.5}
 
+  /* ---------- north star ---------- */
+  .ns-intro{display:flex;gap:12px;align-items:flex-start;margin:var(--s4) var(--s4) 0;padding:13px 14px;border-radius:var(--r-md);background:var(--accent-bg)}
+  .ns-intro .ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;background:var(--accent);color:#fff}
+  .ns-intro .ic svg{width:17px;height:17px}
+  .ns-intro .pk-k{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
+  .ns-intro b{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;color:var(--ink);margin-top:2px}
+  .ns-intro .pk-note{font-size:12px;color:var(--ink-2);margin-top:3px;line-height:1.45}
+
+  .ns-gauge{padding:var(--s6) var(--s4) var(--s3)}
+  .ns-bar{position:relative;margin:0 4px}
+  .ns-track{position:relative;height:16px;border-radius:var(--r-pill);background:var(--panel);border:1px solid var(--border);overflow:hidden}
+  .ns-band{position:absolute;top:0;bottom:0}
+  .ns-band.p1{background:var(--accent-bg)}
+  .ns-band.p2{background:var(--go-bg)}
+  .ns-fill{position:absolute;top:0;bottom:0;left:0;background:linear-gradient(90deg,var(--accent-ink),var(--accent))}
+  .ns-tick{position:absolute;top:0;height:16px;width:2px;background:var(--border-2);transform:translateX(-50%);z-index:2}
+  .ns-now{position:absolute;top:8px;z-index:4}
+  .ns-now .pin{position:absolute;left:0;top:0;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid var(--surface);box-shadow:0 0 0 1.5px var(--accent),0 1px 4px oklch(0.4 0.03 265/.3)}
+  .ns-now .lab{position:absolute;bottom:13px;left:0;transform:translateX(-50%);font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:700;color:#fff;background:var(--accent);padding:2px 8px;border-radius:var(--r-pill);white-space:nowrap}
+  .ns-marks{position:relative;height:30px;margin:9px 4px 0}
+  .ns-mark{position:absolute;display:flex;flex-direction:column;line-height:1.25}
+  .ns-mark b{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;color:var(--ink)}
+  .ns-mark s{font-size:10px;text-decoration:none;color:var(--ink-3);margin-top:1px;white-space:nowrap}
+  .ns-phases{display:flex;flex-wrap:wrap;gap:7px 16px;padding:4px var(--s4) var(--s2)}
+  .ns-phases span{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink-2)}
+  .ns-phases i{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+  .ns-phases i.p1{background:var(--accent)}
+  .ns-phases i.p2{background:var(--go-line)}
+  .ns-stats{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid var(--hair)}
+  .ns-cell{padding:var(--s4) var(--s3);position:relative}
+  .ns-cell + .ns-cell::before{content:"";position:absolute;left:0;top:22%;bottom:22%;width:1px;background:var(--hair)}
+  .ns-lab{font-size:11px;font-weight:500;color:var(--ink-3)}
+  .ns-val{font-size:14px;font-weight:700;color:var(--ink);margin-top:4px}
+  .ns-val s{font-size:11px;font-weight:500;text-decoration:none;color:var(--ink-3)}
+  .ns-foot{padding:10px var(--s4) var(--s4);font-size:11px;color:var(--ink-3);line-height:1.5;border-top:1px solid var(--hair)}
+
+  /* owner — encrypted layer */
+  .ns-owner{border-top:1px solid var(--border);background:var(--panel)}
+  .ns-lockrow{display:flex;align-items:center;gap:11px;padding:14px var(--s4) 0}
+  .ns-lockrow .lk{width:30px;height:30px;border-radius:var(--r-sm);display:grid;place-items:center;flex-shrink:0;background:var(--surface);border:1px solid var(--border);color:var(--ink-2)}
+  .ns-lockrow .lk svg{width:16px;height:16px}
+  .ns-lockrow b{font-size:13px;font-weight:700;display:block}
+  .ns-lockrow span{font-size:11.5px;color:var(--ink-2)}
+  .ns-form{display:flex;gap:8px;padding:11px var(--s4) 0}
+  .ns-form input[type=password]{flex:1;min-width:0;font-family:inherit;font-size:13px;padding:9px 12px;border:1px solid var(--border-2);border-radius:var(--r-sm);background:var(--surface);color:var(--ink)}
+  .ns-form input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+  .ns-form button{flex-shrink:0;font-family:inherit;font-size:13px;font-weight:600;padding:9px 16px;border:none;border-radius:var(--r-sm);background:var(--accent);color:#fff;cursor:pointer}
+  .ns-form button:disabled{opacity:.55}
+  .ns-remember{display:flex;align-items:center;gap:7px;padding:10px var(--s4) 14px;font-size:11.5px;color:var(--ink-2)}
+  .ns-remember input{width:15px;height:15px;accent-color:var(--accent)}
+  .ns-msg{padding:0 var(--s4) 13px;font-size:11.5px;color:var(--avoid)}
+  .ns-prog{padding:var(--s4) var(--s4) 0}
+  .ns-prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .ns-prog-top .pk-k{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
+  .ns-prog-top .pct{font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:700;color:var(--accent-ink)}
+  .ns-prog-bar{height:10px;border-radius:var(--r-pill);background:var(--surface);border:1px solid var(--border);overflow:hidden}
+  .ns-prog-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent-ink),var(--accent));border-radius:var(--r-pill);min-width:3px}
+  .ns-prog-cap{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-2);margin-top:7px}
+  .ns-money{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:var(--r-md);overflow:hidden;margin:var(--s4) var(--s4) 0}
+  .ns-money .m{background:var(--surface);padding:11px 13px}
+  .ns-money .mk{font-size:11px;color:var(--ink-3)}
+  .ns-money .mv{font-family:"IBM Plex Mono",monospace;font-size:14.5px;font-weight:600;color:var(--ink);margin-top:3px}
+  .ns-tbl{margin:var(--s5) var(--s4) 0}
+  .ns-tbl h4{font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:9px;display:flex;align-items:center;gap:7px}
+  .ns-tbl h4 svg{width:14px;height:14px;color:var(--ink-3)}
+  .ns-tbl table{width:100%;border-collapse:collapse;font-size:11.5px}
+  .ns-tbl th{font-size:10px;font-weight:600;color:var(--ink-3);text-align:right;padding:0 0 7px;border-bottom:1px solid var(--hair)}
+  .ns-tbl th:first-child{text-align:left}
+  .ns-tbl td{padding:8px 0;border-bottom:1px solid var(--hair);text-align:right;font-family:"IBM Plex Mono",monospace;color:var(--ink)}
+  .ns-tbl td:first-child{text-align:left;font-family:inherit;color:var(--ink-2)}
+  .ns-tbl tr:last-child td{border-bottom:none}
+  .ns-tbl .hit{color:var(--go);font-weight:600}
+  .ns-alloc td:first-child{font-size:11px}
+  .ns-pocket{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;margin-right:6px}
+  .ns-pocket.A{background:var(--accent-bg);color:var(--accent-ink)}
+  .ns-pocket.B{background:var(--avoid-bg);color:var(--avoid)}
+  .ns-pocket.x{background:var(--surface);color:var(--ink-3);border:1px solid var(--border)}
+  .ns-ownfoot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:var(--s5) var(--s4) var(--s4);margin-top:var(--s4);border-top:1px solid var(--hair)}
+  .ns-ownfoot .upd{font-size:11px;color:var(--ink-3)}
+  .ns-lockbtn{font-family:inherit;font-size:11.5px;font-weight:600;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-pill);padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .ns-lockbtn svg{width:12px;height:12px}
+
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
   @keyframes shimmer{to{background-position:-200% 0}}
   @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -244,6 +326,7 @@
       <div class="sk-card"><div class="sk-row"><div class="sk sk-h w40"></div><div class="sk sk-h w22"></div></div><div class="sk sk-sig"></div><div class="sk sk-line w90"></div><div class="sk sk-line w70"></div></div>
       <div class="sk-card"><div class="sk-row"><div class="sk sk-h w40"></div><div class="sk sk-h w22"></div></div><div class="sk sk-sig"></div><div class="sk sk-line w90"></div><div class="sk sk-line w70"></div></div>
     </div>
+    <div id="northstar"></div>
     <div id="radar"></div>
   </div>
 
@@ -273,6 +356,7 @@
       watchlist:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
       _default:'<circle cx="12" cy="12" r="9"/>',
       radar:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/>',
+      northstar:'<path d="M12 3l2.6 5.6 6 .8-4.4 4.2 1.1 6L12 16.8 6.7 19.6l1.1-6L3.4 9.4l6-.8z"/>',
       empty:'<path d="M3 7a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.4.6L11.7 7H19a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M12 11v5M9.5 13.5h5"/>'
     };
     const svg = (p,c="") => `<svg class="${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -439,12 +523,181 @@
       }
     }
 
+    /* ---------- North Star (public time gauge + encrypted owner layer) ---------- */
+    const NS_KEY = "ns_owner_pass";
+    let NS_BLOB = null;
+    const u8 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+    const fmtB = n => n >= 1e6 ? (n/1e6).toLocaleString("th-TH",{maximumFractionDigits:1}) + " ล้าน" : n.toLocaleString("th-TH");
+    const nsProgPct = (v,t) => { const p = v/t*100; return p < 0.1 ? "<0.1%" : p < 10 ? p.toFixed(1)+"%" : Math.round(p)+"%"; };
+
+    async function nsDecrypt(blob, pass){
+      const baseKey = await crypto.subtle.importKey("raw", new TextEncoder().encode(pass), "PBKDF2", false, ["deriveKey"]);
+      const key = await crypto.subtle.deriveKey(
+        { name:"PBKDF2", salt:u8(blob.salt), iterations:blob.iter||250000, hash:blob.hash||"SHA-256" },
+        baseKey, { name:"AES-GCM", length:256 }, false, ["decrypt"]);
+      const pt = await crypto.subtle.decrypt({ name:"AES-GCM", iv:u8(blob.iv) }, key, u8(blob.ct));
+      return JSON.parse(new TextDecoder().decode(pt));
+    }
+
+    function renderNorthStarGauge(n){
+      const el = document.getElementById("northstar");
+      if(!el || !n.startAge || !n.targetAge) return;
+      const span = n.targetAge - n.startAge;
+      const pc = a => Math.max(0, Math.min(100, ((a - n.startAge)/span)*100));
+      const curAge = n.currentAge ?? n.startAge;
+      const cur = pc(curAge), sw = n.switchAge ? pc(n.switchAge) : 41;
+      const passed = curAge - n.startAge;
+      const ms = n.milestones || [];
+      const ticks = ms.filter(m => m.age > n.startAge && m.age < n.targetAge)
+        .map(m => `<span class="ns-tick" style="left:${pc(m.age)}%"></span>`).join("");
+      const marks = ms.map((m,i) => {
+        const pos = i===0 ? "left:0" : i===ms.length-1 ? "left:100%;transform:translateX(-100%)" : `left:${pc(m.age)}%;transform:translateX(-50%)`;
+        return `<span class="ns-mark" style="${pos}"><b>${m.age}</b><s>${m.label||""}</s></span>`;
+      }).join("");
+      const labT = cur<=8 ? "transform:translateX(0)" : cur>=92 ? "transform:translateX(-100%)" : "";
+      el.innerHTML = `
+        <section class="rise">
+          <div class="sec-head">
+            <span class="sec-ic">${svg(ICON.northstar)}</span>
+            <h2>North Star</h2>
+            <span class="meta">${n.updated ? "อัปเดต " + n.updated : ""}</span>
+          </div>
+          <div class="card">
+            <div class="ns-intro">
+              <span class="ic">${svg(ICON.northstar)}</span>
+              <div>
+                <div class="pk-k">เป้าหมายระยะยาว · อายุ ${n.targetAge}</div>
+                <b>${n.goalLabel || "North Star"}</b>
+                ${n.note ? `<div class="pk-note">required เฉลี่ย ${n.requiredCagr||"~7%/ปี"} · ${n.note}</div>` : ""}
+              </div>
+            </div>
+            <div class="ns-gauge">
+              <div class="ns-bar">
+                <div class="ns-track">
+                  <span class="ns-band p1" style="left:0;width:${sw}%"></span>
+                  <span class="ns-band p2" style="left:${sw}%;right:0"></span>
+                  <span class="ns-fill" style="width:${cur}%"></span>
+                  ${ticks}
+                </div>
+                <span class="ns-now" style="left:${cur}%">
+                  <span class="lab" style="${labT}">อายุ ${curAge}</span>
+                  <span class="pin"></span>
+                </span>
+              </div>
+              <div class="ns-marks">${marks}</div>
+              <div class="ns-phases">
+                <span><i class="p1"></i>🔥 Phase 1 · ลุยเต็มที่ (${n.startAge}–${n.switchAge||40})</span>
+                <span><i class="p2"></i>🛡️ Phase 2 · passive (${n.switchAge||40}–${n.targetAge})</span>
+              </div>
+            </div>
+            <div class="ns-stats">
+              <div class="ns-cell"><div class="ns-lab">ปีที่ลงทุน</div><div class="ns-val mono">${passed} <s>/ ${span} ปี</s></div></div>
+              <div class="ns-cell"><div class="ns-lab">โหมดตอนนี้</div><div class="ns-val">${n.phaseLabel || "🔥 Phase 1"}</div></div>
+              <div class="ns-cell"><div class="ns-lab">เป้า/ปี</div><div class="ns-val mono">${n.phaseTarget || "10–14%"}</div></div>
+            </div>
+            <div class="ns-foot">เกจวัดตาม “ช่วงเวลา (อายุ)” · ตัวเลขเงินอยู่ในโซนเจ้าของด้านล่าง (เข้ารหัส) · แผนระยะยาว ไม่ใช่คำสั่งซื้อขาย</div>
+            <div class="ns-owner" id="nsOwner"></div>
+          </div>
+        </section>`;
+    }
+
+    function nsRenderLocked(msg){
+      const el = document.getElementById("nsOwner");
+      if(!el) return;
+      el.innerHTML = `
+        <div class="ns-lockrow">
+          <span class="lk">${svg('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>')}</span>
+          <div><b>ตัวเลขเต็ม (เจ้าของ)</b><span>ปลดล็อกดูมูลค่าพอร์ต · ความคืบหน้า · projection</span></div>
+        </div>
+        <form class="ns-form" id="nsForm">
+          <input type="password" id="nsPass" placeholder="passphrase" autocomplete="current-password" aria-label="passphrase">
+          <button type="submit" id="nsBtn">ปลดล็อก</button>
+        </form>
+        <label class="ns-remember"><input type="checkbox" id="nsRemember" checked> จำไว้ในเครื่องนี้</label>
+        ${msg ? `<div class="ns-msg">${msg}</div>` : ""}`;
+      document.getElementById("nsForm").addEventListener("submit", async e => {
+        e.preventDefault();
+        const pass = document.getElementById("nsPass").value;
+        const remember = document.getElementById("nsRemember").checked;
+        const btn = document.getElementById("nsBtn");
+        if(!pass || !NS_BLOB) return;
+        btn.disabled = true; btn.textContent = "กำลังถอด…";
+        try{
+          const data = await nsDecrypt(NS_BLOB, pass);
+          try{ remember ? localStorage.setItem(NS_KEY, pass) : localStorage.removeItem(NS_KEY); }catch(_){}
+          nsRenderUnlocked(data);
+        }catch(err){
+          nsRenderLocked("passphrase ไม่ถูกต้อง ลองใหม่อีกครั้ง");
+        }
+      });
+    }
+
+    function nsRenderUnlocked(d){
+      const el = document.getElementById("nsOwner");
+      if(!el) return;
+      const barW = Math.max(0.5, Math.min(100, d.currentValue/d.target*100));
+      const yearsLeft = d.targetAge - d.currentAge;
+      const scen = (d.scenarios||[]).map(s => `
+        <tr><td>${s.cagr}</td><td>${fmtB(s.at40)}</td><td>${fmtB(s.at60Stop)}</td><td class="${s.at60Cont>=d.target?'hit':''}">${fmtB(s.at60Cont)}</td></tr>`).join("");
+      const alloc = (d.allocation||[]).map(a => {
+        const pk = a.pocket==="A"?"A":a.pocket==="B"?"B":"x";
+        return `<tr><td><span class="ns-pocket ${pk}">${a.pocket}</span>${a.layer}</td><td>${a.pct}%</td></tr>`;
+      }).join("");
+      el.innerHTML = `
+        <div class="ns-prog">
+          <div class="ns-prog-top"><span class="pk-k">ความคืบหน้าสู่เป้าหมาย</span><span class="pct">${nsProgPct(d.currentValue,d.target)}</span></div>
+          <div class="ns-prog-bar"><i style="width:${barW}%"></i></div>
+          <div class="ns-prog-cap"><span>${fmtB(d.currentValue)} ฿</span><span>${fmtB(d.target)} ฿</span></div>
+        </div>
+        <div class="ns-money">
+          <div class="m"><div class="mk">มูลค่าพอร์ตตอนนี้</div><div class="mv">${d.currentValue.toLocaleString("th-TH")} ฿</div></div>
+          <div class="m"><div class="mk">เติมต่อเดือน</div><div class="mv">${d.monthlyAdd.toLocaleString("th-TH")} ฿</div></div>
+          <div class="m"><div class="mk">required เฉลี่ย</div><div class="mv">~${d.requiredCagr}%/ปี</div></div>
+          <div class="m"><div class="mk">เหลือถึงอายุ ${d.targetAge}</div><div class="mv">${yearsLeft} ปี</div></div>
+        </div>
+        <div class="ns-tbl">
+          <h4>${svg('<path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/>')}Projection (เติม ${(d.monthlyAdd/1000)}k/เดือนตลอด)</h4>
+          <table>
+            <thead><tr><th>CAGR P1</th><th>@ 40</th><th>@ 60 หยุด</th><th>@ 60 เติมต่อ</th></tr></thead>
+            <tbody>${scen}</tbody>
+          </table>
+        </div>
+        <div class="ns-tbl ns-alloc">
+          <h4>${svg('<circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 4"/>')}สัดส่วน Phase 1 (อายุ ${d.startAge}–${d.switchAge-5})</h4>
+          <table><tbody>${alloc}</tbody></table>
+        </div>
+        <div class="ns-ownfoot">
+          <span class="upd">ตัวเลขอัปเดต ${d.updated||"—"}</span>
+          <button class="ns-lockbtn" id="nsLockBtn">${svg('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>')}ล็อก</button>
+        </div>`;
+      document.getElementById("nsLockBtn").addEventListener("click", () => {
+        try{ localStorage.removeItem(NS_KEY); }catch(_){}
+        nsRenderLocked("");
+      });
+    }
+
+    async function loadNorthStar(){
+      let n = null;
+      try{ const r = await fetch("./northstar.json?t=" + Date.now()); if(r.ok) n = await r.json(); }catch(e){}
+      if(!n) return;
+      renderNorthStarGauge(n);
+      try{ const r = await fetch("./northstar-private.enc.json?t=" + Date.now()); if(!r.ok) return; NS_BLOB = await r.json(); }catch(e){ return; }
+      let saved = null;
+      try{ saved = localStorage.getItem(NS_KEY); }catch(e){}
+      if(saved){
+        try{ nsRenderUnlocked(await nsDecrypt(NS_BLOB, saved)); return; }
+        catch(e){ try{ localStorage.removeItem(NS_KEY); }catch(_){} }
+      }
+      nsRenderLocked("");
+    }
+
     async function boot(){
       if(window.liff && LIFF_ID && LIFF_ID !== "PUT_YOUR_LIFF_ID_HERE"){
         try{ await liff.init({ liffId: LIFF_ID }); }catch(e){ /* opened outside LINE — keep rendering */ }
       }
       loadData();
       loadRadar();
+      loadNorthStar();
     }
     boot();
   </script>
