@@ -166,6 +166,34 @@
   .disc-sub span{white-space:nowrap}
   .sign{margin-top:var(--s5);font-size:12px;font-weight:600;color:var(--ink-2);letter-spacing:.05em}
 
+  /* ---------- idea radar ---------- */
+  .radar-pick{display:flex;gap:12px;align-items:flex-start;margin:var(--s4) var(--s4) 0;padding:13px 14px;border-radius:var(--r-md);background:var(--accent-bg)}
+  .radar-pick .ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;background:var(--accent);color:#fff}
+  .radar-pick .ic svg{width:17px;height:17px}
+  .radar-pick .pk-k{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
+  .radar-pick b{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;color:var(--ink);margin-top:2px}
+  .radar-pick .pk-note{font-size:12px;color:var(--ink-2);margin-top:3px;line-height:1.45}
+  .themes{padding:2px var(--s4) var(--s2)}
+  .theme{display:grid;grid-template-columns:auto 1fr;gap:13px;padding:14px 0;border-top:1px solid var(--hair)}
+  .theme:first-child{border-top:none}
+  .score{width:44px;height:44px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;font-family:"IBM Plex Mono",monospace;line-height:1}
+  .score b{font-size:17px;font-weight:600}
+  .score s{font-size:9.5px;font-weight:500;text-decoration:none;opacity:.7;margin-top:1px}
+  .score.early{background:var(--go-bg);color:var(--go)}
+  .score.mid{background:var(--wait-bg);color:var(--wait)}
+  .score.late{background:var(--avoid-bg);color:var(--avoid)}
+  .theme-main{min-width:0}
+  .theme-top{display:flex;align-items:center;gap:8px}
+  .theme-name{font-size:14.5px;font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+  .stage{margin-left:auto;flex-shrink:0;font-size:10px;font-weight:600;padding:3px 9px;border-radius:var(--r-pill);text-transform:uppercase;letter-spacing:.02em}
+  .stage.early{background:var(--go-bg);color:var(--go)}
+  .stage.mid{background:var(--wait-bg);color:var(--wait)}
+  .stage.late{background:var(--avoid-bg);color:var(--avoid)}
+  .theme-thesis{font-size:12px;color:var(--ink-2);margin-top:5px;line-height:1.45}
+  .tickers{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+  .tk{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;color:var(--ink-2);background:var(--panel);border:1px solid var(--border);padding:3px 8px;border-radius:var(--r-sm)}
+  .radar-foot{padding:0 var(--s4) var(--s4);font-size:11px;color:var(--ink-3);line-height:1.5}
+
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
   @keyframes shimmer{to{background-position:-200% 0}}
   @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -209,6 +237,7 @@
       <div class="sk-card"><div class="sk-row"><div class="sk sk-h w40"></div><div class="sk sk-h w22"></div></div><div class="sk sk-sig"></div><div class="sk sk-line w90"></div><div class="sk sk-line w70"></div></div>
       <div class="sk-card"><div class="sk-row"><div class="sk sk-h w40"></div><div class="sk sk-h w22"></div></div><div class="sk sk-sig"></div><div class="sk sk-line w90"></div><div class="sk sk-line w70"></div></div>
     </div>
+    <div id="radar"></div>
   </div>
 
   <footer class="wrap">
@@ -236,6 +265,7 @@
       satellite:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/>',
       watchlist:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
       _default:'<circle cx="12" cy="12" r="9"/>',
+      radar:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/>',
       empty:'<path d="M3 7a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.4.6L11.7 7H19a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M12 11v5M9.5 13.5h5"/>'
     };
     const svg = (p,c="") => `<svg class="${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -332,6 +362,60 @@
       document.getElementById("app").innerHTML = (data.groups || []).map(renderGroup).join("");
     }
 
+    const stageClass = st => st === "early" ? "early" : (st === "late" || st === "priced" || st === "priced-in") ? "late" : "mid";
+
+    function renderRadar(r){
+      const el = document.getElementById("radar");
+      if(!el || !r || !r.themes || !r.themes.length) return;
+      const p = r.topPick;
+      const pick = p ? `
+        <div class="radar-pick">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21"/></svg></span>
+          <div>
+            <div class="pk-k">ธีมเด่นสัปดาห์นี้</div>
+            <b>${p.theme}</b>
+            ${p.note ? `<div class="pk-note">${p.note}</div>` : ""}
+          </div>
+        </div>` : "";
+      const rows = r.themes.map(t => {
+        const sc = stageClass(t.stage);
+        const tk = (t.tickers || []).map(x => `<span class="tk">${x}</span>`).join("");
+        return `
+          <div class="theme">
+            <span class="score ${sc}"><b>${t.score}</b><s>/25</s></span>
+            <div class="theme-main">
+              <div class="theme-top">
+                <span class="theme-name">${t.name}</span>
+                <span class="stage ${sc}">${t.stageLabel || t.stage}</span>
+              </div>
+              ${t.thesis ? `<div class="theme-thesis">${t.thesis}</div>` : ""}
+              ${tk ? `<div class="tickers">${tk}</div>` : ""}
+            </div>
+          </div>`;
+      }).join("");
+      el.innerHTML = `
+        <section class="rise">
+          <div class="sec-head">
+            <span class="sec-ic">${svg(ICON.radar)}</span>
+            <h2>Idea Radar</h2>
+            <span class="meta">${r.updated ? "อัปเดต " + r.updated : ""}</span>
+          </div>
+          <div class="card">
+            ${pick}
+            <div class="themes">${rows}</div>
+            <div class="radar-foot">คะแนนเต็ม 25 · ${r.cadence || "สแกนรายสัปดาห์"} · เป็นไอเดียตั้งต้น ไม่ใช่คำสั่งซื้อขาย</div>
+          </div>
+        </section>`;
+    }
+
+    async function loadRadar(){
+      try{
+        const res = await fetch("./idea-radar.json?t=" + Date.now());
+        if(!res.ok) return;
+        renderRadar(await res.json());
+      }catch(e){ /* section optional — fail silently */ }
+    }
+
     async function loadData(){
       try{
         const res = await fetch("./entry-signal-data.json?t=" + Date.now());
@@ -348,6 +432,7 @@
         try{ await liff.init({ liffId: LIFF_ID }); }catch(e){ /* opened outside LINE — keep rendering */ }
       }
       loadData();
+      loadRadar();
     }
     boot();
   </script>
