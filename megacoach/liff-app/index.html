@@ -192,7 +192,14 @@
   .theme-thesis{font-size:12px;color:var(--ink-2);margin-top:5px;line-height:1.45}
   .tickers{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
   .tk{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;color:var(--ink-2);background:var(--panel);border:1px solid var(--border);padding:3px 8px;border-radius:var(--r-sm)}
-  .radar-foot{padding:0 var(--s4) var(--s4);font-size:11px;color:var(--ink-3);line-height:1.5}
+  .radar-legend{display:flex;flex-wrap:wrap;gap:7px 14px;padding:12px var(--s4) 0;border-top:1px solid var(--hair)}
+  .radar-legend span{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--ink-2)}
+  .radar-legend b{font-weight:600;color:var(--ink)}
+  .radar-legend i{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+  .radar-legend i.early{background:var(--go-line)}
+  .radar-legend i.mid{background:var(--wait-line)}
+  .radar-legend i.late{background:var(--avoid-line)}
+  .radar-foot{padding:10px var(--s4) var(--s4);font-size:11px;color:var(--ink-3);line-height:1.5}
 
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
   @keyframes shimmer{to{background-position:-200% 0}}
@@ -403,7 +410,12 @@
           <div class="card">
             ${pick}
             <div class="themes">${rows}</div>
-            <div class="radar-foot">คะแนนเต็ม 25 · ${r.cadence || "สแกนรายสัปดาห์"} · เป็นไอเดียตั้งต้น ไม่ใช่คำสั่งซื้อขาย</div>
+            <div class="radar-legend">
+              <span><i class="early"></i><b>early</b> · มาก่อนคนอื่น</span>
+              <span><i class="mid"></i><b>mid</b> · มากลางๆ เริ่มแพง</span>
+              <span><i class="late"></i><b>late</b> · มาช้า ระวังไล่ราคา</span>
+            </div>
+            <div class="radar-foot">คะแนนเต็ม 25 (Durability · Evidence · Investability · Timing · Edge) · ${r.cadence || "สแกนรายสัปดาห์"} · ป้าย stage = จังหวะของธีม ไม่ใช่สัญญาณรายตัว · เป็นไอเดียตั้งต้น ไม่ใช่คำสั่งซื้อขาย</div>
           </div>
         </section>`;
     }
