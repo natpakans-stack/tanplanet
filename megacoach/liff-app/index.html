@@ -95,11 +95,13 @@
   /* ---------- card ---------- */
   .stack{display:flex;flex-direction:column;gap:var(--s4)}
   .grid{display:flex;flex-direction:column;gap:var(--s4)}
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-1);overflow:hidden}
-  .cat{display:inline-flex;align-items:center;gap:5px;margin:var(--s4) var(--s4) 10px;padding:4px 10px 4px 7px;font-size:10.5px;font-weight:600;letter-spacing:.01em;color:var(--accent-ink);background:var(--accent-bg);border-radius:var(--r-pill)}
-  .cat-ic{width:12px;height:12px;opacity:.9;flex-shrink:0}
+  .card{position:relative;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-1);overflow:hidden}
+  /* sector tag — inverted-corner tab pinned to the top-right of the card */
+  .cat{position:absolute;top:0;right:0;z-index:3;display:inline-flex;align-items:center;gap:5px;padding:8px 14px 9px 15px;font-size:10.5px;font-weight:600;letter-spacing:.01em;color:#fff;background:var(--accent);border-bottom-left-radius:14px}
+  .cat-ic{width:12px;height:12px;opacity:.95;flex-shrink:0}
   .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--s3);padding:0 var(--s4) var(--s4)}
   .card-top:first-child{padding-top:var(--s4)}
+  .cat + .card-top{padding-top:42px}
   .id{display:flex;align-items:center;gap:12px;min-width:0}
   .id-text{min-width:0}
   .logo{position:relative;flex-shrink:0;width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--surface);border:1px solid var(--border);display:grid;place-items:center}
@@ -137,6 +139,8 @@
 
   /* coach plan */
   .plan{margin:13px 0 0;padding:12px var(--s4) 14px;background:var(--accent-bg);border-top:1px solid var(--border)}
+  /* in 2-col rows cards stretch to equal height — pin the plan band to the bottom */
+  .plan:last-child{margin-top:auto}
   .plan .k{display:inline-flex;align-items:center;gap:5px;margin-bottom:7px;padding:3px 10px 3px 8px;background:var(--accent);color:#fff;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:var(--r-pill)}
   .plan .k-ic{width:11px;height:11px;flex-shrink:0}
   .plan .v{font-size:12.5px;color:var(--ink);line-height:1.5}
