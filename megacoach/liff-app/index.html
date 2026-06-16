@@ -843,7 +843,10 @@
         if(h.erPerAccident) bits.push(`ER ${insB(h.erPerAccident)}/อุบัติเหตุ`);
         if(h.criticalIllness) bits.push(`โรคร้าย ${insB(h.criticalIllness)}`);
         const temp = p.temporary ? `<span style="color:var(--wait)">ชั่วคราว${p.coverEnd?` · ถึง ${p.coverEnd}`:""}</span>` : null;
-        const sub = [p.insurer, p.hasDividend?"มีปันผล":null, temp, bits.length?bits.join(" · "):null].filter(Boolean).join(" · ");
+        const cb = p.cashback?.perMonth
+          ? `<span style="color:var(--go)">เงินคืน ${insB(p.cashback.perMonth)}/เดือน${p.cashback.hasDividend?"+ปันผล":""}</span>`
+          : (p.hasDividend ? "มีปันผล" : null);
+        const sub = [p.insurer, cb, temp, bits.length?bits.join(" · "):null].filter(Boolean).join(" · ");
         const rightV = p.sumAssured ? `${insB(p.sumAssured)} ฿` : (h.ipdRoomPerDay?`${insB(h.ipdRoomPerDay)} ฿/วัน`:"—");
         const rightK = p.premium!=null ? `เบี้ย ${insB(insYearly(p))}/ปี`
           : p.term ? `คุ้มครอง/ชำระ ${p.term}` : (p.coverageEndAge?`ถึงอายุ ${p.coverageEndAge}`:(p.sumAssured?"ทุนประกัน":"ค่าห้อง/วัน"));
