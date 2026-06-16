@@ -1,0 +1,185 @@
+<!doctype html><html lang="th"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MegaCoach · กรอกพอร์ต</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#222;--ink2:#666;--ink3:#999;--bd:#e3e3e8;--bg:#f5f6f8;--surface:#fff;--accent:#3b4ee0;--go:#1d9a5b;--err:#c0392b;--r:12px}
+  *{box-sizing:border-box}
+  body{font-family:"Anuphan",system-ui,sans-serif;color:var(--ink);background:var(--bg);margin:0;padding:20px 14px;line-height:1.5}
+  .wrap{max-width:560px;margin:0 auto}
+  h1{font-size:18px;font-weight:700;margin:0 0 3px}
+  .sub{color:var(--ink2);font-size:12.5px;margin:0 0 18px}
+  .card{background:var(--surface);border:1px solid var(--bd);border-radius:var(--r);padding:15px;margin-bottom:14px}
+  h2{font-size:12px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;margin:0 0 11px}
+  label{display:block;font-size:12px;color:var(--ink2);margin:0 0 5px}
+  input{width:100%;font:inherit;font-size:14px;padding:9px 11px;border:1px solid var(--bd);border-radius:8px;background:var(--surface);color:var(--ink)}
+  input[inputmode=decimal]{font-family:"IBM Plex Mono",monospace}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .row{display:grid;gap:7px;align-items:center;margin-bottom:8px}
+  .row.fund{grid-template-columns:1.3fr 1fr 1fr 1.3fr auto}
+  .row.pos{grid-template-columns:2fr 1fr auto}
+  .del{border:none;background:#fbe9e9;color:var(--err);border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:13px}
+  .add{margin-top:4px;border:1px dashed var(--bd);background:transparent;color:var(--accent);border-radius:8px;padding:8px 12px;cursor:pointer;font:inherit;font-size:13px;font-weight:600}
+  .field{margin-bottom:11px}
+  .hint{font-size:11px;color:var(--ink3);margin-top:4px}
+  .actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:6px}
+  .save{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 22px;font:inherit;font-size:15px;font-weight:700;cursor:pointer}
+  .save[disabled]{opacity:.5}
+  .chk{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--ink2)}.chk input{width:auto}
+  .msg{border-radius:var(--r);padding:12px 14px;margin-bottom:14px;font-size:13px;line-height:1.5}
+  .msg.ok{background:#e6f6ec;color:#147a45} .msg.err{background:#fbe9e9;color:var(--err)}
+  #app{display:none}
+  .lock{max-width:380px;margin:40px auto 0;text-align:center}
+  .lock .ic{font-size:34px} .lock p{color:var(--ink2);font-size:13px}
+  .lock input{margin:14px 0 10px;text-align:center}
+</style></head><body><div class="wrap">
+
+  <div id="gate" class="lock card">
+    <div class="ic">🔒</div>
+    <h1 style="margin-top:8px">กรอกพอร์ต MegaCoach</h1>
+    <p>ใส่ passphrase เดียวกับ dashboard เพื่อปลดล็อก<br>(ตัวเลขเข้ารหัสในเครื่องก่อนส่ง — zero-knowledge)</p>
+    <input id="pass" type="password" placeholder="passphrase" autocomplete="off">
+    <button class="save" id="unlock" style="width:100%">ปลดล็อก</button>
+    <div id="gateMsg" class="hint" style="margin-top:10px"></div>
+  </div>
+
+  <div id="app">
+    <h1>📝 กรอกพอร์ต</h1>
+    <p class="sub">เข้ารหัสในเครื่อง → ส่งขึ้น relay → Mac ดึงไปอัปเดต · ตัวเลขไม่รั่ว</p>
+    <div id="msg"></div>
+
+    <div class="card">
+      <h2>เงินสด & ภาษี</h2>
+      <div class="grid2">
+        <div class="field"><label>เงินสด (บาท)</label><input id="cashTHB" inputmode="decimal"></div>
+        <div class="field"><label>รายได้พึงประเมิน/ปี</label><input id="incomeTHB" inputmode="decimal"><div class="hint">เพดาน RMF 30%</div></div>
+      </div>
+      <div class="field"><label>ยอดซื้อ RMF สะสมปีนี้ (บาท)</label><input id="rmfContributedTHB" inputmode="decimal"><div class="hint">เช็คสิทธิลดหย่อนที่เหลือ</div></div>
+    </div>
+
+    <div class="card">
+      <h2>กองทุน (กรอกมือ)</h2>
+      <div id="funds"></div>
+      <button type="button" class="add" onclick="addFund()">+ เพิ่มกอง</button>
+    </div>
+
+    <div class="card">
+      <h2>หุ้น Dime (ดึงราคาสด)</h2>
+      <div id="pos"></div>
+      <button type="button" class="add" onclick="addPos()">+ เพิ่มหุ้น</button>
+    </div>
+
+    <div class="actions">
+      <button class="save" id="submit">💾 บันทึก + อัปเดต</button>
+      <label class="chk"><input type="checkbox" id="push" checked> push deploy</label>
+    </div>
+  </div>
+</div>
+
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script>
+  const LIFF_ID = "2010317620-52h5kCM1";          // เดียวกับ dashboard
+  const INBOX = "/api/holdings-inbox";             // relay endpoint (Vercel function)
+  const ITER = 250000;
+  let KEY = null;                                  // CryptoKey (จาก passphrase)
+
+  const b64e = u => btoa(String.fromCharCode(...new Uint8Array(u)));
+  const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  const enc = new TextEncoder(), dec = new TextDecoder();
+
+  async function deriveKey(pass, salt){
+    const base = await crypto.subtle.importKey("raw", enc.encode(pass), "PBKDF2", false, ["deriveKey"]);
+    return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:ITER,hash:"SHA-256"},
+      base, {name:"AES-GCM",length:256}, false, ["encrypt","decrypt"]);
+  }
+  async function encryptObj(pass, obj){
+    const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+    const key = await deriveKey(pass, salt);
+    const ct = await crypto.subtle.encrypt({name:"AES-GCM",iv}, key, enc.encode(JSON.stringify(obj)));
+    return {v:1,kdf:"PBKDF2",hash:"SHA-256",iter:ITER,salt:b64e(salt),iv:b64e(iv),ct:b64e(ct)};
+  }
+  async function decryptBlob(pass, blob){
+    const key = await deriveKey(pass, b64d(blob.salt));
+    const pt = await crypto.subtle.decrypt({name:"AES-GCM",iv:b64d(blob.iv)}, key, b64d(blob.ct));
+    return JSON.parse(dec.decode(pt));
+  }
+
+  const $ = id => document.getElementById(id);
+  const num = v => { const n = parseFloat(String(v??"").replace(/,/g,"").trim()); return isNaN(n)?0:n; };
+  const esc = s => String(s??"").replace(/"/g,"&quot;");
+
+  function fundRow(f={}){ const d=document.createElement("div"); d.className="row fund"; d.innerHTML=
+    `<input class="fn" placeholder="ชื่อกอง" value="${esc(f.name)}">
+     <input class="ft" placeholder="ประเภท" value="${esc(f.type)}">
+     <input class="fv" inputmode="decimal" placeholder="มูลค่า ฿" value="${f.valueTHB??""}">
+     <input class="fnote" placeholder="หมายเหตุ" value="${esc(f.note)}">
+     <button type="button" class="del" onclick="this.parentElement.remove()">✕</button>`;
+    return d; }
+  function posRow(p={}){ const d=document.createElement("div"); d.className="row pos"; d.innerHTML=
+    `<input class="pt" placeholder="Ticker" value="${esc(p.ticker)}">
+     <input class="ps" inputmode="decimal" placeholder="จำนวนหุ้น" value="${p.shares??""}">
+     <button type="button" class="del" onclick="this.parentElement.remove()">✕</button>`;
+    return d; }
+  function addFund(f){ $("funds").appendChild(fundRow(f)); }
+  function addPos(p){ $("pos").appendChild(posRow(p)); }
+
+  function fill(h){
+    $("cashTHB").value = h.cashTHB ?? "";
+    $("incomeTHB").value = h.incomeTHB ?? "";
+    $("rmfContributedTHB").value = h.rmfContributedTHB ?? "";
+    $("funds").innerHTML=""; (h.fundsTHB||[]).forEach(addFund); if(!(h.fundsTHB||[]).length) addFund();
+    $("pos").innerHTML="";  (h.positions||[]).forEach(addPos); if(!(h.positions||[]).length) addPos();
+  }
+  function collect(prev){
+    const h = {...(prev||{})};
+    h.cashTHB = num($("cashTHB").value);
+    h.incomeTHB = num($("incomeTHB").value);
+    h.rmfContributedTHB = num($("rmfContributedTHB").value);
+    h.fundsTHB = [...document.querySelectorAll("#funds .row")].map(r=>({
+      name:r.querySelector(".fn").value.trim(), type:r.querySelector(".ft").value.trim(),
+      valueTHB:num(r.querySelector(".fv").value), note:r.querySelector(".fnote").value.trim()
+    })).filter(x=>x.name);
+    h.positions = [...document.querySelectorAll("#pos .row")].map(r=>({
+      ticker:r.querySelector(".pt").value.trim().toUpperCase(), shares:num(r.querySelector(".ps").value)
+    })).filter(x=>x.ticker);
+    return h;
+  }
+
+  let PREV = {};   // holdings ล่าสุดจาก relay (เก็บ field ที่ฟอร์มไม่ render เช่น birthdate/_note)
+  async function unlock(){
+    const pass = $("pass").value; if(!pass){ $("gateMsg").textContent="ใส่ passphrase ก่อน"; return; }
+    $("gateMsg").textContent="กำลังตรวจ...";
+    let h = {};
+    try {
+      const r = await fetch(INBOX + "?t=" + Date.now());
+      if(r.ok){ const blob = await r.json(); if(blob && blob.ct){ h = await decryptBlob(pass, blob); } }
+    } catch(e){ /* ไม่มีข้อมูลเดิม = เริ่มเปล่า */ }
+    KEY = pass; PREV = h;
+    $("gate").style.display="none"; $("app").style.display="block";
+    fill(h);
+  }
+  async function submit(){
+    $("submit").disabled = true;
+    const h = collect(PREV);
+    h.push = $("push").checked;
+    try {
+      const blob = await encryptObj(KEY, h);
+      const r = await fetch(INBOX, {method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify(blob)});
+      if(!r.ok) throw new Error("relay " + r.status);
+      $("msg").className="msg ok";
+      $("msg").innerHTML="✅ ส่งแล้ว — Mac จะดึงไปอัปเดตรอบถัดไป (หรือรัน <b>bun pull-holdings.mjs</b>)";
+      if(window.liff && liff.isInClient && liff.isInClient()) setTimeout(()=>liff.closeWindow(), 1800);
+    } catch(e){
+      $("msg").className="msg err"; $("msg").textContent="❌ ส่งไม่สำเร็จ: " + e.message;
+    }
+    $("submit").disabled = false;
+    window.scrollTo(0,0);
+  }
+
+  $("unlock").addEventListener("click", unlock);
+  $("pass").addEventListener("keydown", e=>{ if(e.key==="Enter") unlock(); });
+  $("submit").addEventListener("click", submit);
+  if(window.liff) liff.init({liffId:LIFF_ID}).catch(()=>{});
+</script>
+</body></html>

@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     /* paper neutrals, tinted toward brand hue 265 */
@@ -43,7 +43,7 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
   body{
-    font-family:"IBM Plex Sans Thai",system-ui,sans-serif;
+    font-family:"Anuphan",system-ui,sans-serif;
     background:var(--bg);color:var(--ink);line-height:1.5;
     -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
   }
@@ -257,31 +257,96 @@
   .ns-remember input{width:15px;height:15px;accent-color:var(--accent)}
   .ns-msg{padding:0 var(--s4) 13px;font-size:11.5px;color:var(--avoid)}
   .ns-prog{padding:var(--s4) var(--s4) 0}
-  .ns-prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .ns-prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
   .ns-prog-top .pk-k{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
-  .ns-prog-top .pct{font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:700;color:var(--accent-ink)}
-  .ns-prog-bar{height:10px;border-radius:var(--r-pill);background:var(--surface);border:1px solid var(--border);overflow:hidden}
-  .ns-prog-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent-ink),var(--accent));border-radius:var(--r-pill);min-width:3px}
-  .ns-prog-cap{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-2);margin-top:7px}
+  .ns-prog-badge{font-size:10.5px;font-weight:700;color:var(--go);background:var(--go-bg);border:1px solid oklch(0.82 0.07 150);padding:3px 10px;border-radius:var(--r-pill)}
+  .ns-next{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:6px}
+  .ns-next .nx-k{display:block;font-size:10px;color:var(--ink-3);margin-bottom:3px}
+  .ns-next .nx-l b{font-family:"IBM Plex Mono",monospace;font-size:19px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+  .ns-next .nx-r{text-align:right}
+  .ns-next .nx-pct{display:block;font-family:"IBM Plex Mono",monospace;font-size:19px;font-weight:700;color:var(--accent);line-height:1.1}
+  .ns-next .nx-rem{font-size:10.5px;color:var(--ink-2)}
+  .ns-stair{display:flex;align-items:flex-end;gap:5px;padding-top:14px}
+  .ns-stair .step{flex:1;display:flex;flex-direction:column;align-items:center;min-width:0}
+  .ns-stair .bar{width:100%;border-radius:5px 5px 0 0;position:relative;overflow:hidden;background:var(--panel);border:1px solid var(--border);border-bottom:2px solid var(--border-2)}
+  .ns-stair .step.done .bar{background:var(--go-bg);border-color:oklch(0.82 0.07 150);border-bottom-color:var(--go-line)}
+  .ns-stair .step.cur .bar{background:var(--surface);border-color:var(--accent);border-bottom-color:var(--accent)}
+  .ns-stair .step.cur .bar i{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(0deg,var(--accent-ink),var(--accent))}
+  .ns-stair .step.lock .bar{background:var(--panel);border-style:dashed;opacity:.65}
+  .ns-stair .cap{height:20px;display:flex;align-items:center;justify-content:center;line-height:1;margin-bottom:4px}
+  .ns-stair .mk{font-size:12px;font-weight:700;color:var(--go)}
+  .ns-stair .mk.pct{font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:#fff;background:var(--accent);padding:2px 6px;border-radius:var(--r-pill);animation:pulse 2.4s ease-in-out infinite}
+  .ns-stair .lab{font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:var(--ink-3);margin-top:6px;white-space:nowrap}
+  .ns-stair .step.done .lab{color:var(--go)}
+  .ns-stair .step.cur .lab{color:var(--accent-ink);font-weight:700}
+  .ns-prog-foot{font-size:11px;color:var(--ink-3);margin-top:14px;line-height:1.45}
+  .ns-prog-foot b{font-family:"IBM Plex Mono",monospace;color:var(--ink-2);font-weight:600}
+  .ns-pace{margin:var(--s5) var(--s4) 0;border-radius:var(--r-md);border:1px solid var(--border);overflow:hidden}
+  .ns-pace .ph{display:flex;align-items:center;gap:11px;padding:12px 14px}
+  .ns-pace .ph .ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;font-size:14px;font-weight:700}
+  .ns-pace .ph .tx{flex:1;min-width:0}
+  .ns-pace .st{font-size:13px;font-weight:700;line-height:1.25}
+  .ns-pace .sub{font-size:11px;color:var(--ink-2);margin-top:3px;line-height:1.4}
+  .ns-pace .sub b{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-weight:700}
+  .ns-pace.ok{background:var(--go-bg)} .ns-pace.ok .ic{background:var(--go);color:#fff} .ns-pace.ok .st{color:var(--go)}
+  .ns-pace.warn{background:var(--wait-bg)} .ns-pace.warn .ic{background:var(--wait);color:#fff} .ns-pace.warn .st{color:var(--wait)}
+  .ns-pace.bad{background:var(--avoid-bg)} .ns-pace.bad .ic{background:var(--avoid);color:#fff} .ns-pace.bad .st{color:var(--avoid)}
+  .ns-pace.idle{background:var(--panel)} .ns-pace.idle .ic{background:var(--surface);border:1px solid var(--border)} .ns-pace.idle .st{color:var(--ink-2)}
+  .ns-pace .recs{background:var(--surface);border-top:1px solid var(--border)}
+  .ns-pace .rec{display:flex;gap:11px;align-items:flex-start;padding:9px 14px}
+  .ns-pace .rec + .rec{border-top:1px solid var(--hair)}
+  .ns-pace .rec .rk{font-size:11px;font-weight:700;color:var(--ink);flex-shrink:0;width:72px}
+  .ns-pace .rec .rv{font-size:11px;color:var(--ink-2);line-height:1.45;flex:1}
+  .ns-pace .rec .rv b{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-weight:700}
   .ns-money{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:var(--r-md);overflow:hidden;margin:var(--s4) var(--s4) 0}
   .ns-money .m{background:var(--surface);padding:11px 13px}
   .ns-money .mk{font-size:11px;color:var(--ink-3)}
   .ns-money .mv{font-family:"IBM Plex Mono",monospace;font-size:14.5px;font-weight:600;color:var(--ink);margin-top:3px}
   .ns-tbl{margin:var(--s5) var(--s4) 0}
-  .ns-tbl h4{font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:9px;display:flex;align-items:center;gap:7px}
+  .ns-tbl h4{font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:11px;display:flex;align-items:center;gap:7px}
   .ns-tbl h4 svg{width:14px;height:14px;color:var(--ink-3)}
-  .ns-tbl table{width:100%;border-collapse:collapse;font-size:11.5px}
-  .ns-tbl th{font-size:10px;font-weight:600;color:var(--ink-3);text-align:right;padding:0 0 7px;border-bottom:1px solid var(--hair)}
-  .ns-tbl th:first-child{text-align:left}
-  .ns-tbl td{padding:8px 0;border-bottom:1px solid var(--hair);text-align:right;font-family:"IBM Plex Mono",monospace;color:var(--ink)}
-  .ns-tbl td:first-child{text-align:left;font-family:inherit;color:var(--ink-2)}
-  .ns-tbl tr:last-child td{border-bottom:none}
-  .ns-tbl .hit{color:var(--go);font-weight:600}
-  .ns-alloc td:first-child{font-size:11px}
-  .ns-pocket{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:700;padding:1px 6px;border-radius:5px;margin-right:6px}
+  .ns-tbl table{width:100%;border-collapse:separate;border-spacing:0;font-size:11.5px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden}
+  .ns-tbl thead th{background:var(--panel);font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3);text-align:right;padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowrap}
+  .ns-tbl thead th:first-child{text-align:left}
+  .ns-tbl thead th.goal{color:var(--go);background:var(--go-bg)}
+  .ns-tbl tbody td{padding:11px 12px;text-align:right;font-family:"IBM Plex Mono",monospace;color:var(--ink);border-bottom:1px solid var(--hair)}
+  .ns-tbl tbody td:first-child{text-align:left;font-family:inherit;font-weight:700;color:var(--ink-2)}
+  .ns-tbl tbody tr:last-child td{border-bottom:none}
+  .ns-tbl tbody td.goal{background:var(--go-bg);color:var(--go);font-weight:700}
+  .ns-tbl tbody td.goal.hit{box-shadow:inset 2px 0 0 var(--go-line)}
+  .ns-pocket{display:inline-grid;place-items:center;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:700;width:20px;height:20px;border-radius:6px;flex-shrink:0}
   .ns-pocket.A{background:var(--accent-bg);color:var(--accent-ink)}
   .ns-pocket.B{background:var(--avoid-bg);color:var(--avoid)}
   .ns-pocket.x{background:var(--surface);color:var(--ink-3);border:1px solid var(--border)}
+  .ns-alloc .alloc-list{display:flex;flex-direction:column;gap:11px}
+  .alloc-row{display:flex;align-items:center;gap:11px}
+  .alloc-mid{flex:1;min-width:0}
+  .alloc-lab{font-size:11.5px;color:var(--ink-2);margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .alloc-track{height:6px;border-radius:var(--r-pill);background:var(--panel);overflow:hidden}
+  .alloc-track i{display:block;height:100%;border-radius:var(--r-pill)}
+  .alloc-track i.A{background:var(--accent)} .alloc-track i.B{background:var(--avoid)} .alloc-track i.x{background:var(--border-2)}
+  .alloc-pct{flex-shrink:0;font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:700;color:var(--ink);width:40px;text-align:right}
+  .ns-rmf .rmf-tax{background:var(--panel);border:1px solid var(--hair);border-radius:var(--r-md);padding:12px;margin-bottom:12px}
+  .ns-rmf .rmf-tax-top{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--ink-2);margin-bottom:8px}
+  .ns-rmf .rmf-rem b{font-family:"IBM Plex Mono",monospace;color:var(--go);font-weight:700}
+  .ns-rmf .rmf-bar{height:8px;border-radius:var(--r-pill);background:var(--surface);border:1px solid var(--border);overflow:hidden}
+  .ns-rmf .rmf-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent-ink),var(--accent));border-radius:var(--r-pill);min-width:3px}
+  .ns-rmf .rmf-tax-cap{font-size:10.5px;color:var(--ink-3);margin-top:6px;font-family:"IBM Plex Mono",monospace}
+  .ns-rmf .rmf-fund{padding:10px 0;border-bottom:1px solid var(--hair)}
+  .ns-rmf .rmf-fund:last-of-type{border-bottom:none}
+  .ns-rmf .rmf-fh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .ns-rmf .rmf-fh .nm{font-weight:700;font-size:13px;color:var(--ink)}
+  .ns-rmf .rmf-fh .val{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink-2);flex-shrink:0}
+  .ns-rmf .rmf-tag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:var(--r-pill);margin-top:6px}
+  .ns-rmf .rmf-tag.switch{background:var(--avoid-bg);color:var(--avoid)}
+  .ns-rmf .rmf-tag.weak{background:var(--wait-bg);color:var(--wait)}
+  .ns-rmf .rmf-tag.ok{background:var(--go-bg);color:var(--go)}
+  .ns-rmf .rmf-perf{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-3);margin-top:4px}
+  .ns-rmf .rmf-asof{margin-left:auto;font-size:10px;font-weight:500;color:var(--ink-3);font-family:"IBM Plex Mono",monospace}
+  .ns-rmf .rmf-adv{font-size:11px;color:var(--ink-2);margin-top:6px;line-height:1.45}
+  .ns-rmf .rmf-adv b{color:var(--accent-ink);font-weight:700}
+  .ns-rmf .rmf-when{font-size:11px;color:var(--ink-3);margin-top:12px;line-height:1.55;padding-top:11px;border-top:1px solid var(--hair)}
+  .ns-rmf .rmf-when b{color:var(--ink-2)}
   .ns-ownfoot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:var(--s5) var(--s4) var(--s4);margin-top:var(--s4);border-top:1px solid var(--hair)}
   .ns-ownfoot .upd{font-size:11px;color:var(--ink-3)}
   .ns-lockbtn{font-family:inherit;font-size:11.5px;font-weight:600;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-pill);padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
@@ -305,20 +370,26 @@
   .ins-sum .mv.none{color:var(--ink-3);font-size:12.5px}
   /* maturity timeline on the age axis */
   .ins-tl{margin:var(--s5) var(--s4) 0}
-  .ins-tl h4{font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:13px;display:flex;align-items:center;gap:7px}
+  .ins-tl-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:6px}
+  .ins-tl h4{font-size:12px;font-weight:700;color:var(--ink-2);display:flex;align-items:center;gap:7px}
   .ins-tl h4 svg{width:14px;height:14px;color:var(--ink-3)}
-  .ins-axis{position:relative;height:3px;border-radius:var(--r-pill);background:var(--panel);border:1px solid var(--border);margin:24px 6px 0}
-  .ins-seg{position:absolute;top:-1px;bottom:-1px;background:var(--accent-bg)}
+  .ins-tl-sum{font-size:10.5px;color:var(--ink-3);white-space:nowrap}
+  .ins-tl-sum b{font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:700;color:var(--go)}
+  .ins-axis{position:relative;height:6px;border-radius:var(--r-pill);background:var(--panel);border:1px solid var(--border);margin:36px 8px 0}
+  .ins-ph{position:absolute;top:-1px;bottom:-1px;z-index:0}
+  .ins-ph.acc{left:-1px;border-radius:var(--r-pill) 0 0 var(--r-pill);background:var(--go-bg)}
+  .ins-ph.pas{border-radius:0 var(--r-pill) var(--r-pill) 0;background:var(--accent-bg)}
+  .ins-sw{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--border-2);border-radius:var(--r-pill);transform:translateX(-50%);z-index:1}
   .ins-ev{position:absolute;top:50%;z-index:2}
-  .ins-ev .dot{position:absolute;left:0;top:0;transform:translate(-50%,-50%);width:11px;height:11px;border-radius:50%;border:3px solid var(--surface)}
+  .ins-ev .dot{position:absolute;left:0;top:0;transform:translate(-50%,-50%);width:13px;height:13px;border-radius:50%;border:3px solid var(--surface);box-shadow:var(--sh-1)}
   .ins-ev.lump .dot{background:var(--go-line)}
   .ins-ev.annu .dot{background:var(--accent)}
-  .ins-ev .tag{position:absolute;bottom:11px;left:0;transform:translateX(-50%);white-space:nowrap;font-family:"IBM Plex Mono",monospace;font-size:9.5px;font-weight:700;color:#fff;padding:2px 7px;border-radius:var(--r-pill)}
+  .ins-ev .tag{position:absolute;bottom:14px;left:0;transform:translateX(-50%);white-space:nowrap;font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:700;color:#fff;padding:3px 8px;border-radius:var(--r-pill);box-shadow:var(--sh-1)}
   .ins-ev.lump .tag{background:var(--go-line)}
   .ins-ev.annu .tag{background:var(--accent)}
-  .ins-ev .age{position:absolute;top:11px;left:0;transform:translateX(-50%);font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;color:var(--ink-2)}
-  .ins-axis .cap{position:absolute;top:11px;font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink-3)}
-  .ins-tl-legend{display:flex;gap:16px;margin:30px 6px 0;font-size:11px;color:var(--ink-2)}
+  .ins-ev .age{position:absolute;top:13px;left:0;transform:translateX(-50%);font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;color:var(--ink-2)}
+  .ins-axis .cap{position:absolute;top:13px;font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink-3)}
+  .ins-tl-legend{display:flex;gap:16px;margin:32px 8px 0;font-size:11px;color:var(--ink-2)}
   .ins-tl-legend span{display:inline-flex;align-items:center;gap:6px}
   .ins-tl-legend i{width:9px;height:9px;border-radius:50%;flex-shrink:0}
   .ins-tl-legend i.lump{background:var(--go-line)} .ins-tl-legend i.annu{background:var(--accent)}
@@ -340,13 +411,20 @@
   .ins-rv .v{font-family:"IBM Plex Mono",monospace;font-size:12.5px;font-weight:600;color:var(--ink)}
   .ins-rv .k{font-size:10px;color:var(--ink-3);margin-top:1px}
   /* premium burden */
-  .ins-prem{margin:var(--s5) var(--s4) 0;padding:13px 14px;border-radius:var(--r-md);background:var(--panel);border:1px solid var(--hair)}
-  .ins-prem .top{display:flex;justify-content:space-between;align-items:baseline}
+  .ins-prem{margin:var(--s5) var(--s4) 0;padding:14px;border-radius:var(--r-md);background:var(--panel);border:1px solid var(--hair)}
+  .ins-prem .top{display:flex;justify-content:space-between;align-items:baseline;line-height:1.2;padding:0;margin-bottom:11px}
   .ins-prem .pk-k{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
   .ins-prem .amt{font-family:"IBM Plex Mono",monospace;font-size:14.5px;font-weight:700;color:var(--ink)}
-  .ins-prem .bar{height:8px;border-radius:var(--r-pill);background:var(--surface);border:1px solid var(--border);overflow:hidden;margin:9px 0 7px}
-  .ins-prem .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--wait-line),var(--wait));border-radius:var(--r-pill);min-width:3px}
-  .ins-prem .note{font-size:11px;color:var(--ink-2);line-height:1.45}
+  .ins-prem .bar{display:flex;height:14px;border-radius:var(--r-pill);overflow:hidden;background:var(--surface);border:1px solid var(--border)}
+  .ins-prem .bar i{display:block;height:100%;min-width:2px}
+  .ins-prem .bar i.prem{background:linear-gradient(90deg,var(--wait-line),var(--wait))}
+  .ins-prem .bar i.inv{background:linear-gradient(90deg,var(--go-line),var(--go))}
+  .ins-prem .keys{display:flex;gap:16px;margin-top:10px;font-size:11px;color:var(--ink-2)}
+  .ins-prem .keys span{display:inline-flex;align-items:center;gap:6px}
+  .ins-prem .keys i{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+  .ins-prem .keys i.prem{background:var(--wait-line)} .ins-prem .keys i.inv{background:var(--go-line)}
+  .ins-prem .keys b{font-family:"IBM Plex Mono",monospace;font-weight:700;color:var(--ink)}
+  .ins-prem .note{font-size:10.5px;color:var(--ink-3);margin-top:9px;line-height:1.45}
   .ins-foot{padding:var(--s5) var(--s4) var(--s4);margin-top:var(--s4);font-size:11px;color:var(--ink-3);line-height:1.5;border-top:1px solid var(--hair)}
 
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
@@ -600,6 +678,10 @@
     const u8 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
     const fmtB = n => n >= 1e6 ? (n/1e6).toLocaleString("th-TH",{maximumFractionDigits:1}) + " ล้าน" : n.toLocaleString("th-TH");
     const nsProgPct = (v,t) => { const p = v/t*100; return p < 0.1 ? "<0.1%" : p < 10 ? p.toFixed(1)+"%" : Math.round(p)+"%"; };
+    // ---- pace math (future value w/ monthly contributions) ----
+    const fvCalc = (pv, monthly, rate, years) => { const m=rate/12, n=years*12; return m===0 ? pv+monthly*n : pv*Math.pow(1+m,n)+monthly*((Math.pow(1+m,n)-1)/m); };
+    const solveMonthly = (pv, target, rate, years) => { const m=rate/12, n=years*12, g=Math.pow(1+m,n), f=(m===0?n:(g-1)/m); return (target-pv*g)/f; };
+    const solveRate = (pv, monthly, target, years) => { let lo=-0.3,hi=0.6; for(let i=0;i<80;i++){const mid=(lo+hi)/2; if(fvCalc(pv,monthly,mid,years)<target) lo=mid; else hi=mid;} return (lo+hi)/2; };
 
     async function nsDecrypt(blob, pass){
       const baseKey = await crypto.subtle.importKey("raw", new TextEncoder().encode(pass), "PBKDF2", false, ["deriveKey"]);
@@ -707,37 +789,135 @@
     function nsRenderUnlocked(d){
       const el = document.getElementById("nsOwner");
       if(!el) return;
-      const barW = Math.max(0.5, Math.min(100, d.currentValue/d.target*100));
       const yearsLeft = d.targetAge - d.currentAge;
+      // gamified milestone staircase — reframe "3.4% สู่ 15 ล้าน" เป็น "ด่านต่อไปที่ทำได้จริง"
+      const cur = d.currentValue, tgt = d.target;
+      const msLab = v => v>=1e6 ? (+(v/1e6).toFixed(1))+"ล" : (v/1e5)+"แสน";
+      const ladder = [100000,500000,1000000,2500000,5000000,10000000].filter(v=>v<tgt).concat(tgt);
+      const curIdx = ladder.findIndex(v=>v>cur);
+      const reached = curIdx<0 ? ladder.length : curIdx;
+      const nextMs = curIdx<0 ? tgt : ladder[curIdx];
+      const toNext = Math.max(0, nextMs-cur);
+      const nextPct = Math.min(100, Math.round(cur/nextMs*100));
+      const minH=30, stepH=(116-minH)/Math.max(1,ladder.length-1);
+      const stairs = ladder.map((v,i)=>{
+        const done=v<=cur, isCur=i===curIdx, last=i===ladder.length-1;
+        const st=done?"done":isCur?"cur":"lock";
+        const h=Math.round(minH+i*stepH);
+        const fill=isCur?Math.max(8,Math.min(100,cur/v*100)):0;
+        const mk=done?'<span class="mk">✓</span>':isCur?`<span class="mk pct">${nextPct}%</span>`:(last?'<span class="mk">🎯</span>':'');
+        return `<div class="step ${st}"><span class="cap">${mk}</span><div class="bar" style="height:${h}px">${isCur?`<i style="height:${fill}%"></i>`:""}</div><span class="lab">${msLab(v)}</span></div>`;
+      }).join("");
+      const reachedTxt = curIdx<0 ? "ถึงเป้าแล้ว 🎉" : (reached>0?`ผ่านมาแล้ว ${reached} ด่าน`:"เริ่มไต่บันได");
+      const nextRow = curIdx<0 ? "" : `<div class="ns-next"><div class="nx-l"><span class="nx-k">ด่านต่อไป</span><b>${fmtB(nextMs)}</b></div><div class="nx-r"><span class="nx-pct">${nextPct}%</span><span class="nx-rem">อีก ${toNext.toLocaleString("th-TH")} ฿</span></div></div>`;
+      const progBlock = `<div class="ns-prog">
+          <div class="ns-prog-top"><span class="pk-k">เส้นทางสู่ ${fmtB(tgt)}</span><span class="ns-prog-badge">${reachedTxt}</span></div>
+          ${nextRow}
+          <div class="ns-stair">${stairs}</div>
+          <div class="ns-prog-foot">มูลค่าตอนนี้ <b>${cur.toLocaleString("th-TH")} ฿</b> · รวม ${nsProgPct(cur,tgt)} ของเป้า ${fmtB(tgt)}</div>
+        </div>`;
+      // ---- North Star pace tracker (hybrid: required floor + trailing momentum) → คำแนะนำให้กลับ on-track ----
+      const yrsLeft = Math.max(0.1, (d.targetAge - d.currentAge));
+      const hist = (d.history||[]).filter(h=>h&&h.d&&typeof h.v==="number").slice().sort((a,b)=> a.d<b.d?-1:1);
+      let trailing=null, spanDays=0;
+      if(hist.length>=2){
+        const a=hist[0], b=hist[hist.length-1];
+        spanDays = Math.round((new Date(b.d)-new Date(a.d))/86400000);
+        if(spanDays>=14 && a.v>0){
+          const yrs=spanDays/365.25, contrib=(d.monthlyAdd||0)*(spanDays/30.44), base=a.v+contrib;
+          if(base>0) trailing=Math.pow(Math.max(b.v,1)/base, 1/Math.max(yrs,0.04))-1;
+        }
+      }
+      const fmtPct = x => (x<0?"−":"")+Math.abs(x).toFixed(1)+"%";
+      const needRate = solveRate(d.currentValue, d.monthlyAdd||0, d.target, yrsLeft);   // อัตราเฉลี่ยที่ต้องทำ "จากจุดนี้" → เป้า (bounded)
+      const needPct = needRate*100;
+      let paceCard;
+      if(trailing==null){
+        const need = spanDays>0 ? `เก็บโมเมนตัม ${spanDays}/14 วัน` : `เริ่มเก็บโมเมนตัมวันนี้`;
+        paceCard = `<div class="ns-pace idle"><div class="ph"><span class="ic">⏳</span><div class="tx"><div class="st">กำลังเก็บโมเมนตัม</div><div class="sub">${need} · ต้องได้เฉลี่ย ~<b>${fmtPct(needPct)}</b>/ปี จากนี้ถึง ${fmtB(d.target)}</div></div></div></div>`;
+      } else if(trailing>=needRate){
+        paceCard = `<div class="ns-pace ok"><div class="ph"><span class="ic">✓</span><div class="tx"><div class="st">ตามแผน — โมเมนตัมพอ</div><div class="sub">เทรนด์ ~<b>${fmtPct(trailing*100)}</b>/ปี ≥ ที่ต้องการ <b>${fmtPct(needPct)}</b>/ปี · มาถูกทาง</div></div></div></div>`;
+      } else {
+        const proj = fvCalc(d.currentValue, d.monthlyAdd||0, Math.max(trailing,-0.9), yrsLeft);   // trailing < needRate → proj ≤ เป้า (bounded)
+        const sev = trailing>=0 ? "warn":"bad", ic = trailing>=0?"!":"▼", lab = trailing>=0?"ช้ากว่าแผน":"โมเมนตัมติดลบ";
+        const needMonthly = solveMonthly(d.currentValue, d.target, Math.max(trailing,0.005), yrsLeft);
+        const addMore = needMonthly-(d.monthlyAdd||0);
+        const monthlyTxt = (addMore>0 && addMore < (d.monthlyAdd||0)*12)
+          ? `+<b>${Math.round(addMore).toLocaleString("th-TH")}</b>/เดือน (รวม <b>${Math.round(needMonthly).toLocaleString("th-TH")}</b>) → ชดเชยที่เทรนด์นี้`
+          : `เทรนด์ต่ำเกินกว่าจะเติมเงินชดเชยไหว — ต้องกู้ผลตอบแทนก่อน`;
+        let yrsToHit=null; if(trailing>0) for(let y=1;y<=70;y++){ if(fvCalc(d.currentValue,d.monthlyAdd||0,trailing,y)>=d.target){yrsToHit=y;break;} }
+        const recs = [
+          ["เติมเงิน", monthlyTxt],
+          ["ปรับพอร์ตดุ", `ดึงผลตอบแทนกลับไป ≥ <b>${fmtPct(needPct)}</b>/ปี (เทรนด์ ${fmtPct(trailing*100)})`],
+          ["ทบทวน theme", `ตัดตัวฉุดใน Swing(B)/Thematic ที่ underperform เพื่อดึงผลตอบแทนรวมขึ้น`],
+          ["ยืด/ลดเป้า", `เทรนด์นี้ถึง ${fmtB(d.target)} ${yrsToHit?`ตอนอายุ ~<b>${d.currentAge+yrsToHit}</b>`:"<b>ไม่ถึง</b>"} · หรือเป้าที่ถึงได้ @${d.targetAge} ≈ <b>${fmtB(Math.round(proj))}</b>`]
+        ].map(([k,v])=>`<div class="rec"><span class="rk">${k}</span><span class="rv">${v}</span></div>`).join("");
+        paceCard = `<div class="ns-pace ${sev}"><div class="ph"><span class="ic">${ic}</span><div class="tx"><div class="st">${lab}</div><div class="sub">เทรนด์ ~<b>${fmtPct(trailing*100)}</b>/ปี < ที่ต้องการ <b>${fmtPct(needPct)}</b>/ปี · ถ้าต่อเนื่อง @${d.targetAge} ≈ <b>${fmtB(Math.round(proj))}</b> (ขาด ${fmtB(Math.round(d.target-proj))})</div></div></div><div class="recs">${recs}</div></div>`;
+      }
+      // ---- RMF card (DYNAMIC — verdict คำนวณจากผลตอบแทนสด finnomena ที่ updater ดึงมา) ----
+      const fmtR = v => v==null ? "—" : (v<0?"−":"+")+Math.abs(v).toFixed(1)+"%";
+      const rmfVerdict = p => {
+        if(!p) return null;
+        const long = p.r5y ?? p.r3y ?? p.r1y, span = p.r5y!=null?"5 ปี":p.r3y!=null?"3 ปี":"1 ปี";
+        if(long==null) return null;
+        if(long < 0) return { flag:"switch", label:"ควรสับ", reason:`ผลตอบแทน ${span} ติดลบ ${fmtR(long)}/ปี` };
+        if(long < 4) return { flag:"weak", label:"พิจารณาสับ", reason:`${span} โตแค่ ${fmtR(long)}/ปี — ต่ำกว่าที่ควร` };
+        return { flag:"ok", label:"โอเค", reason:`${span} ${fmtR(long)}/ปี` };
+      };
+      let rmfCard = "";
+      if (d.rmf) {
+        const r = d.rmf, used = r.contributed||0, cap = r.cap||0, remain = Math.max(0, cap-used);
+        const pctUsed = cap ? Math.min(100, Math.round(used/cap*100)) : 0;
+        const heldCodes = (r.funds||[]).map(f => f.perf?.code).filter(Boolean);
+        const altTop = (r.alternatives||[]).filter(a => !heldCodes.includes(a.name))
+          .map(a => ({ ...a, m: a.r5y ?? a.r3y ?? a.r1y, ms: a.r5y!=null?"5ปี":a.r3y!=null?"3ปี":"1ปี" }))
+          .filter(a => a.m!=null).sort((x,y) => y.m-x.m).slice(0,2);
+        const altLine = altTop.length ? `สับเป็น: ${altTop.map(a=>`<b>${a.name}</b> (${a.ms} ${fmtR(a.m)})`).join(" · ")}` : "";
+        const fundRows = (r.funds||[]).map(f => {
+          const v = rmfVerdict(f.perf);
+          const ic = v ? (v.flag==="ok"?"✓ ":v.flag==="switch"?"⚠️ ":"⏳ ") : "";
+          const tag = v ? `<span class="rmf-tag ${v.flag}">${ic}${v.label}</span>` : "";
+          const perf = f.perf ? `<div class="rmf-perf">1ปี ${fmtR(f.perf.r1y)} · 3ปี ${fmtR(f.perf.r3y)} · 5ปี ${fmtR(f.perf.r5y)}</div>` : "";
+          const adv = v && v.flag!=="ok" ? `<div class="rmf-adv">${v.reason}${altLine?` → ${altLine}`:""}</div>` : "";
+          return `<div class="rmf-fund"><div class="rmf-fh"><span class="nm">${f.name}</span><span class="val">${insB(f.value)} ฿</span></div>${perf}${tag}${adv}</div>`;
+        }).join("");
+        const taxBlock = cap ? `<div class="rmf-tax">
+          <div class="rmf-tax-top"><span>สิทธิลดหย่อน RMF ปีนี้</span><span class="rmf-rem">เหลือ <b>${insB(remain)}</b> ฿</span></div>
+          <div class="rmf-bar"><i style="width:${pctUsed}%"></i></div>
+          <div class="rmf-tax-cap">ใช้ ${insB(used)} / เพดาน ${insB(cap)} ฿ (30% ของรายได้)</div></div>` : "";
+        rmfCard = `<div class="ns-tbl ns-rmf">
+          <h4>${svg('<path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/>')}RMF · สับเปลี่ยนเพิ่มผลตอบแทน${r.perfAsOf?`<span class="rmf-asof">ผลตอบแทน ${r.perfAsOf}</span>`:""}</h4>
+          ${taxBlock}${fundRows}
+          <div class="rmf-when"><b>เมื่อไหร่ควรสับ:</b> ตลาดขึ้น → หุ้นต่างประเทศ · กำไร +10–20% → ล็อกเป็นตราสารหนี้ · ผันผวน → กองปลอดภัย · <b>สับ KF→KF ฟรี ไม่กระทบสิทธิภาษี</b></div>
+        </div>`;
+      }
       const scen = (d.scenarios||[]).map(s => `
-        <tr><td>${s.cagr}</td><td>${fmtB(s.at40)}</td><td>${fmtB(s.at60Stop)}</td><td class="${s.at60Cont>=d.target?'hit':''}">${fmtB(s.at60Cont)}</td></tr>`).join("");
+        <tr><td class="cagr">${s.cagr}</td><td>${fmtB(s.at40)}</td><td>${fmtB(s.at60Stop)}</td><td class="goal${s.at60Cont>=d.target?' hit':''}">${fmtB(s.at60Cont)}</td></tr>`).join("");
       const alloc = (d.allocation||[]).map(a => {
         const pk = a.pocket==="A"?"A":a.pocket==="B"?"B":"x";
-        return `<tr><td><span class="ns-pocket ${pk}">${a.pocket}</span>${a.layer}</td><td>${a.pct}%</td></tr>`;
+        return `<div class="alloc-row"><span class="ns-pocket ${pk}">${a.pocket}</span><div class="alloc-mid"><div class="alloc-lab">${a.layer}</div><div class="alloc-track"><i class="${pk}" style="width:${a.pct}%"></i></div></div><span class="alloc-pct">${a.pct}%</span></div>`;
       }).join("");
       el.innerHTML = `
-        <div class="ns-prog">
-          <div class="ns-prog-top"><span class="pk-k">ความคืบหน้าสู่เป้าหมาย</span><span class="pct">${nsProgPct(d.currentValue,d.target)}</span></div>
-          <div class="ns-prog-bar"><i style="width:${barW}%"></i></div>
-          <div class="ns-prog-cap"><span>${fmtB(d.currentValue)} ฿</span><span>${fmtB(d.target)} ฿</span></div>
-        </div>
+        ${progBlock}
         <div class="ns-money">
           <div class="m"><div class="mk">มูลค่าพอร์ตตอนนี้</div><div class="mv">${d.currentValue.toLocaleString("th-TH")} ฿</div></div>
           <div class="m"><div class="mk">เติมต่อเดือน</div><div class="mv">${d.monthlyAdd.toLocaleString("th-TH")} ฿</div></div>
           <div class="m"><div class="mk">required เฉลี่ย</div><div class="mv">~${d.requiredCagr}%/ปี</div></div>
           <div class="m"><div class="mk">เหลือถึงอายุ ${d.targetAge}</div><div class="mv">${yearsLeft} ปี</div></div>
         </div>
+        ${paceCard}
         <div class="ns-tbl">
           <h4>${svg('<path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/>')}Projection (เติม ${(d.monthlyAdd/1000)}k/เดือนตลอด)</h4>
           <table>
-            <thead><tr><th>CAGR P1</th><th>@ 40</th><th>@ 60 หยุด</th><th>@ 60 เติมต่อ</th></tr></thead>
+            <thead><tr><th>CAGR P1</th><th>@ 40</th><th>@ 60 หยุด</th><th class="goal">@ 60 เติมต่อ</th></tr></thead>
             <tbody>${scen}</tbody>
           </table>
         </div>
         <div class="ns-tbl ns-alloc">
           <h4>${svg('<circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 4"/>')}สัดส่วน Phase 1 (อายุ ${d.startAge}–${d.switchAge-5})</h4>
-          <table><tbody>${alloc}</tbody></table>
+          <div class="alloc-list">${alloc}</div>
         </div>
+        ${rmfCard}
         <div class="ns-ownfoot">
           <span class="upd">ตัวเลขอัปเดต ${d.updated||"—"}</span>
           <button class="ns-lockbtn" id="nsLockBtn">${svg('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>')}ล็อก</button>
@@ -811,6 +991,8 @@
         const span = Math.max(1, aMax - aMin);
         const pc = a => Math.max(0, Math.min(100, ((a-aMin)/span)*100));
         const swPc = ns.switchAge ? pc(ns.switchAge) : null;
+        const lumpTotal = events.filter(e=>e.kind==="lump").reduce((s,e)=>s+(e.value||0),0);
+        const kinds = new Set(events.map(e=>e.kind));
         const evHTML = events.map(e=>{
           const p = pc(e.age);
           const t = p<=8 ? "transform:translateX(0)" : p>=92 ? "transform:translateX(-100%)" : "";
@@ -818,15 +1000,19 @@
           return `<span class="ins-ev ${e.kind}" style="left:${p}%">
             <span class="tag" style="${t}">${tag}</span><span class="dot"></span><span class="age" style="${t}">${e.age}</span></span>`;
         }).join("");
-        const seg = swPc!=null ? `<span class="ins-seg" style="left:0;width:${swPc}%"></span>` : "";
+        const phases = swPc!=null ? `<span class="ins-ph acc" style="width:${swPc}%"></span><span class="ins-ph pas" style="left:${swPc}%;right:-1px"></span><span class="ins-sw" style="left:${swPc}%"></span>` : "";
+        const legend = [
+          kinds.has("lump")?`<span><i class="lump"></i>เงินก้อนครบกำหนด</span>`:"",
+          kinds.has("annu")?`<span><i class="annu"></i>บำนาญ/ปี</span>`:""
+        ].filter(Boolean).join("");
         timeline = `<div class="ins-tl">
-          <h4>${svg(ICON.coins)}ไทม์ไลน์เงินก้อน / บำนาญ</h4>
-          <div class="ins-axis">${seg}
+          <div class="ins-tl-h"><h4>${svg(ICON.coins)}ไทม์ไลน์เงินก้อน / บำนาญ</h4>${lumpTotal?`<span class="ins-tl-sum">รวมในอนาคต <b>${insB(lumpTotal)} ฿</b></span>`:""}</div>
+          <div class="ins-axis">${phases}
             <span class="cap" style="left:0">${aMin}</span>
             <span class="cap" style="right:0;transform:translateX(0)">${aMax}</span>
             ${evHTML}
           </div>
-          <div class="ins-tl-legend"><span><i class="lump"></i>เงินก้อนครบกำหนด</span><span><i class="annu"></i>บำนาญ/ปี</span></div>
+          <div class="ins-tl-legend">${legend}</div>
         </div>`;
       }
 
@@ -863,12 +1049,14 @@
       let prem = "";
       if(hasPrem){
         const annualAdd = (ns?.monthlyAdd||0)*12;
-        const pct = annualAdd ? Math.round(premYr/annualAdd*100) : null;
-        const barW = annualAdd ? Math.max(3, Math.min(100, premYr/annualAdd*100)) : 0;
+        const total = premYr + annualAdd;
+        const premPct = total ? Math.round(premYr/total*100) : 100;
+        const premW = total ? Math.max(4, Math.min(96, premYr/total*100)) : 100;
         prem = `<div class="ins-prem">
-          <div class="top"><span class="pk-k">ภาระเบี้ยรวม / ปี</span><span class="amt">${insB(premYr)} ฿</span></div>
-          ${annualAdd?`<div class="bar"><i style="width:${barW}%"></i></div>
-          <div class="note">≈ ${pct}% ของเงินเติมพอร์ตต่อปี (${insB(annualAdd)} ฿) — เบี้ยยิ่งต่ำ เงินไปลงทุนได้มาก</div>`:""}
+          <div class="top"><span class="pk-k">ภาระเบี้ย vs เงินลงทุน / ปี</span><span class="amt">${insB(premYr)} ฿</span></div>
+          ${annualAdd?`<div class="bar"><i class="prem" style="width:${premW}%"></i><i class="inv" style="width:${100-premW}%"></i></div>
+          <div class="keys"><span><i class="prem"></i>เบี้ย <b>${insB(premYr)}</b> · ${premPct}%</span><span><i class="inv"></i>ลงทุน <b>${insB(annualAdd)}</b> · ${100-premPct}%</span></div>
+          <div class="note">รวมเงินออกเพื่ออนาคต ${insB(total)} ฿/ปี — เบี้ยยิ่งต่ำ เงินไปลงทุนได้มาก</div>`:`<div class="note">เบี้ยรวม ${insB(premYr)} ฿/ปี</div>`}
         </div>`;
       }
 
