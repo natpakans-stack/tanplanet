@@ -287,6 +287,68 @@
   .ns-lockbtn{font-family:inherit;font-size:11.5px;font-weight:600;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-pill);padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
   .ns-lockbtn svg{width:12px;height:12px}
 
+  /* ---------- insurance (protection layer) ---------- */
+  .ins-lock{display:flex;align-items:center;gap:11px;padding:14px var(--s4);background:var(--panel)}
+  .ins-lock .lk{width:30px;height:30px;border-radius:var(--r-sm);display:grid;place-items:center;flex-shrink:0;background:var(--surface);border:1px solid var(--border);color:var(--ink-2)}
+  .ins-lock .lk svg{width:16px;height:16px}
+  .ins-lock b{font-size:13px;font-weight:700;display:block}
+  .ins-lock span{font-size:11.5px;color:var(--ink-2)}
+  .ins-banner{display:flex;gap:9px;align-items:flex-start;margin:var(--s4) var(--s4) 0;padding:10px 12px;border-radius:var(--r-md);background:var(--wait-bg);border:1px solid oklch(0.85 0.06 85);color:oklch(0.42 0.08 70);font-size:11.5px;line-height:1.5}
+  .ins-banner svg{width:15px;height:15px;flex-shrink:0;margin-top:1px;color:var(--wait)}
+  /* protection summary cells */
+  .ins-sum{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--hair);border:1px solid var(--hair);border-radius:var(--r-md);overflow:hidden;margin:var(--s4) var(--s4) 0}
+  .ins-sum .m{background:var(--surface);padding:12px 13px}
+  .ins-sum .mk{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--ink-3)}
+  .ins-sum .mk svg{width:13px;height:13px;color:var(--ink-3)}
+  .ins-sum .mv{font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:600;color:var(--ink);margin-top:4px}
+  .ins-sum .mv s{font-size:10.5px;font-weight:500;text-decoration:none;color:var(--ink-3);margin-left:3px}
+  .ins-sum .mv.none{color:var(--ink-3);font-size:12.5px}
+  /* maturity timeline on the age axis */
+  .ins-tl{margin:var(--s5) var(--s4) 0}
+  .ins-tl h4{font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:13px;display:flex;align-items:center;gap:7px}
+  .ins-tl h4 svg{width:14px;height:14px;color:var(--ink-3)}
+  .ins-axis{position:relative;height:3px;border-radius:var(--r-pill);background:var(--panel);border:1px solid var(--border);margin:24px 6px 0}
+  .ins-seg{position:absolute;top:-1px;bottom:-1px;background:var(--accent-bg)}
+  .ins-ev{position:absolute;top:50%;z-index:2}
+  .ins-ev .dot{position:absolute;left:0;top:0;transform:translate(-50%,-50%);width:11px;height:11px;border-radius:50%;border:3px solid var(--surface)}
+  .ins-ev.lump .dot{background:var(--go-line)}
+  .ins-ev.annu .dot{background:var(--accent)}
+  .ins-ev .tag{position:absolute;bottom:11px;left:0;transform:translateX(-50%);white-space:nowrap;font-family:"IBM Plex Mono",monospace;font-size:9.5px;font-weight:700;color:#fff;padding:2px 7px;border-radius:var(--r-pill)}
+  .ins-ev.lump .tag{background:var(--go-line)}
+  .ins-ev.annu .tag{background:var(--accent)}
+  .ins-ev .age{position:absolute;top:11px;left:0;transform:translateX(-50%);font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;color:var(--ink-2)}
+  .ins-axis .cap{position:absolute;top:11px;font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink-3)}
+  .ins-tl-legend{display:flex;gap:16px;margin:30px 6px 0;font-size:11px;color:var(--ink-2)}
+  .ins-tl-legend span{display:inline-flex;align-items:center;gap:6px}
+  .ins-tl-legend i{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+  .ins-tl-legend i.lump{background:var(--go-line)} .ins-tl-legend i.annu{background:var(--accent)}
+  /* policy list table */
+  .ins-pol{margin:var(--s5) var(--s4) 0}
+  .ins-pol h4{font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:9px;display:flex;align-items:center;gap:7px}
+  .ins-pol h4 svg{width:14px;height:14px;color:var(--ink-3)}
+  .ins-row{display:flex;align-items:flex-start;gap:11px;padding:11px 0;border-bottom:1px solid var(--hair)}
+  .ins-row:last-child{border-bottom:none}
+  .ins-tp{flex-shrink:0;font-size:9.5px;font-weight:700;letter-spacing:.02em;padding:3px 8px;border-radius:var(--r-pill);margin-top:1px}
+  .ins-tp.life{background:var(--accent-bg);color:var(--accent-ink)}
+  .ins-tp.save{background:var(--go-bg);color:var(--go)}
+  .ins-tp.health{background:oklch(0.95 0.03 230);color:oklch(0.45 0.12 230)}
+  .ins-tp.ci{background:var(--avoid-bg);color:var(--avoid)}
+  .ins-rb{flex:1;min-width:0}
+  .ins-rb .nm{font-size:13px;font-weight:600;color:var(--ink);line-height:1.3}
+  .ins-rb .meta{font-size:11px;color:var(--ink-3);margin-top:2px}
+  .ins-rv{flex-shrink:0;text-align:right}
+  .ins-rv .v{font-family:"IBM Plex Mono",monospace;font-size:12.5px;font-weight:600;color:var(--ink)}
+  .ins-rv .k{font-size:10px;color:var(--ink-3);margin-top:1px}
+  /* premium burden */
+  .ins-prem{margin:var(--s5) var(--s4) 0;padding:13px 14px;border-radius:var(--r-md);background:var(--panel);border:1px solid var(--hair)}
+  .ins-prem .top{display:flex;justify-content:space-between;align-items:baseline}
+  .ins-prem .pk-k{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+  .ins-prem .amt{font-family:"IBM Plex Mono",monospace;font-size:14.5px;font-weight:700;color:var(--ink)}
+  .ins-prem .bar{height:8px;border-radius:var(--r-pill);background:var(--surface);border:1px solid var(--border);overflow:hidden;margin:9px 0 7px}
+  .ins-prem .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--wait-line),var(--wait));border-radius:var(--r-pill);min-width:3px}
+  .ins-prem .note{font-size:11px;color:var(--ink-2);line-height:1.45}
+  .ins-foot{padding:var(--s5) var(--s4) var(--s4);margin-top:var(--s4);font-size:11px;color:var(--ink-3);line-height:1.5;border-top:1px solid var(--hair)}
+
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
   @keyframes shimmer{to{background-position:-200% 0}}
   @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -332,6 +394,7 @@
     </div>
     <div id="radar"></div>
     <div id="northstar"></div>
+    <div id="insurance"></div>
   </div>
 
   <footer class="wrap">
@@ -361,7 +424,11 @@
       _default:'<circle cx="12" cy="12" r="9"/>',
       radar:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/>',
       northstar:'<path d="M12 3l2.6 5.6 6 .8-4.4 4.2 1.1 6L12 16.8 6.7 19.6l1.1-6L3.4 9.4l6-.8z"/>',
-      empty:'<path d="M3 7a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.4.6L11.7 7H19a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M12 11v5M9.5 13.5h5"/>'
+      empty:'<path d="M3 7a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.4.6L11.7 7H19a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M12 11v5M9.5 13.5h5"/>',
+      shield:'<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9.2 12l2 2 3.6-4"/>',
+      heart:'<path d="M12 20s-7-4.4-7-9.5A3.8 3.8 0 0 1 12 7a3.8 3.8 0 0 1 7 3.5C19 15.6 12 20 12 20z"/>',
+      coins:'<ellipse cx="9" cy="7" rx="5" ry="2.4"/><path d="M4 7v4c0 1.3 2.2 2.4 5 2.4s5-1.1 5-2.4V7"/><path d="M14 13.2c.7.3 1.7.5 3 .5 2.8 0 5-1.1 5-2.4V9.6"/><path d="M10 17.4c.9.4 2.4.6 4 .6 2.8 0 5-1.1 5-2.4"/>',
+      pulse:'<path d="M3 12h4l2-5 4 10 2-5h6"/>'
     };
     const svg = (p,c="") => `<svg class="${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
 
@@ -606,6 +673,7 @@
     }
 
     function nsRenderLocked(msg){
+      insRenderLocked();
       const el = document.getElementById("nsOwner");
       if(!el) return;
       el.innerHTML = `
@@ -678,6 +746,141 @@
         try{ localStorage.removeItem(NS_KEY); }catch(_){}
         nsRenderLocked("");
       });
+      insRender(d.insurance, d);   // เลเยอร์ประกันปลดล็อกพร้อมกัน (อยู่ใน blob เดียวกัน)
+    }
+
+    /* ---------- Insurance (rides in the same encrypted blob · same passphrase) ---------- */
+    const INS_FREQ = { yearly:1, halfYearly:2, quarterly:4, monthly:12 };
+    const insYearly = p => (p.premium||0) * (INS_FREQ[p.premiumFrequency]||1);
+    const INS_TYPE = {
+      endowment:{cls:"save",lab:"สะสมทรัพย์"}, annuity:{cls:"save",lab:"บำนาญ"},
+      wholeLife:{cls:"life",lab:"ตลอดชีพ"},    term:{cls:"life",lab:"ชั่วระยะ"},
+      unitLinked:{cls:"save",lab:"ยูนิตลิงค์"}, health:{cls:"health",lab:"สุขภาพ"},
+      criticalIllness:{cls:"ci",lab:"โรคร้าย"}, groupHealth:{cls:"health",lab:"กลุ่ม·บริษัท"}
+    };
+    const LIFE_TYPES = ["wholeLife","term","endowment","annuity","unitLinked"];
+    const insB = n => n==null ? "—" : n.toLocaleString("th-TH");
+
+    function insRenderLocked(){
+      const el = document.getElementById("insurance");
+      if(!el) return;
+      el.innerHTML = `
+        <section class="rise">
+          <div class="sec-head"><span class="sec-ic">${svg(ICON.shield)}</span><h2>ความคุ้มครอง</h2></div>
+          <div class="card"><div class="ins-lock">
+            <span class="lk">${svg('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>')}</span>
+            <div><b>เลเยอร์ประกัน (เจ้าของ)</b><span>ปลดล็อกที่ North Star ด้านบน เพื่อดูความคุ้มครอง + ไทม์ไลน์เงินก้อน</span></div>
+          </div></div>
+        </section>`;
+    }
+
+    function insRender(ins, ns){
+      const el = document.getElementById("insurance");
+      if(!el) return;
+      const P = (ins && ins.policies) || [];
+      if(!P.length){ el.innerHTML = ""; return; }
+
+      // aggregates
+      const lifeSum = P.filter(p=>LIFE_TYPES.includes(p.type)).reduce((s,p)=>s+(p.sumAssured||0),0);
+      const ipdRoom = Math.max(0, ...P.map(p=>p.health?.ipdRoomPerDay||0));
+      const paSum   = P.reduce((s,p)=>s+(p.health?.paDeathBenefit||0),0);
+      const ciSum   = P.reduce((s,p)=>s+(p.health?.criticalIllness||0),0);
+      const premYr  = P.reduce((s,p)=>s+insYearly(p),0);
+      const hasPrem = premYr > 0;   // โชว์ภาระเบี้ยเฉพาะเมื่อมีเบี้ยจริง (เบี้ย null/0 = ยังไม่นับ)
+      const placeholder = P.some(p=>p._placeholder);
+
+      const cell = (ic,k,v,sub) => `<div class="m"><div class="mk">${svg(ic)}${k}</div>
+        <div class="mv${v?'':' none'}">${v ? v + (sub?`<s>${sub}</s>`:"") : "ไม่มี"}</div></div>`;
+      const summary = `<div class="ins-sum">
+        ${cell(ICON.heart,"คุ้มครองชีวิต", lifeSum?insB(lifeSum):"", "฿")}
+        ${cell(ICON.pulse,"ค่าห้อง IPD", ipdRoom?insB(ipdRoom):"", "฿/วัน")}
+        ${cell(ICON.shield,"อุบัติเหตุ (PA)", paSum?insB(paSum):"", "฿")}
+        ${cell('<path d="M19 14c-1.5 1.6-4 3.5-7 6-3-2.5-5.5-4.4-7-6a4 4 0 0 1 7-3 4 4 0 0 1 7 3z"/>',"โรคร้าย", ciSum?insB(ciSum):"", "฿")}
+      </div>`;
+
+      // timeline events (lump-sum maturity + annuity start)
+      const events = [];
+      P.forEach(p=>{
+        if(p.maturity?.age && p.maturity?.value) events.push({age:p.maturity.age, value:p.maturity.value, kind:"lump", name:p.name});
+        if(p.annuity?.startAge) events.push({age:p.annuity.startAge, value:p.annuity.perYear||0, kind:"annu", name:p.name, endAge:p.annuity.endAge});
+      });
+      events.sort((a,b)=>a.age-b.age);
+      let timeline = "";
+      if(events.length && ns?.startAge){
+        const aMin = ns.startAge, aMax = Math.max(ns.targetAge||60, ...events.map(e=>e.age));
+        const span = Math.max(1, aMax - aMin);
+        const pc = a => Math.max(0, Math.min(100, ((a-aMin)/span)*100));
+        const swPc = ns.switchAge ? pc(ns.switchAge) : null;
+        const evHTML = events.map(e=>{
+          const p = pc(e.age);
+          const t = p<=8 ? "transform:translateX(0)" : p>=92 ? "transform:translateX(-100%)" : "";
+          const tag = e.kind==="lump" ? `${insB(e.value)} ฿` : `${insB(e.value)} ฿/ปี`;
+          return `<span class="ins-ev ${e.kind}" style="left:${p}%">
+            <span class="tag" style="${t}">${tag}</span><span class="dot"></span><span class="age" style="${t}">${e.age}</span></span>`;
+        }).join("");
+        const seg = swPc!=null ? `<span class="ins-seg" style="left:0;width:${swPc}%"></span>` : "";
+        timeline = `<div class="ins-tl">
+          <h4>${svg(ICON.coins)}ไทม์ไลน์เงินก้อน / บำนาญ</h4>
+          <div class="ins-axis">${seg}
+            <span class="cap" style="left:0">${aMin}</span>
+            <span class="cap" style="right:0;transform:translateX(0)">${aMax}</span>
+            ${evHTML}
+          </div>
+          <div class="ins-tl-legend"><span><i class="lump"></i>เงินก้อนครบกำหนด</span><span><i class="annu"></i>บำนาญ/ปี</span></div>
+        </div>`;
+      }
+
+      // policy list
+      const rows = P.map(p=>{
+        const tp = INS_TYPE[p.type] || {cls:"life",lab:p.type||"—"};
+        const h = p.health||{};
+        const bits = [];
+        if(h.ipdRoomPerDay) bits.push(`ค่าห้อง ${insB(h.ipdRoomPerDay)}/วัน`);
+        if(h.dailyCompensationPerDay) bits.push(`ชดเชย ${insB(h.dailyCompensationPerDay)}/วัน`);
+        if(h.paDeathBenefit) bits.push(`PA ${insB(h.paDeathBenefit)}`);
+        if(h.accidentMedicalPerVisit) bits.push(`ค่ารักษาอุบัติเหตุ ${insB(h.accidentMedicalPerVisit)}/ครั้ง`);
+        if(h.opdPerVisit) bits.push(`OPD ${insB(h.opdPerVisit)}/ครั้ง`);
+        if(h.erPerAccident) bits.push(`ER ${insB(h.erPerAccident)}/อุบัติเหตุ`);
+        if(h.criticalIllness) bits.push(`โรคร้าย ${insB(h.criticalIllness)}`);
+        const temp = p.temporary ? `<span style="color:var(--wait)">ชั่วคราว${p.coverEnd?` · ถึง ${p.coverEnd}`:""}</span>` : null;
+        const sub = [p.insurer, p.hasDividend?"มีปันผล":null, temp, bits.length?bits.join(" · "):null].filter(Boolean).join(" · ");
+        const rightV = p.sumAssured ? `${insB(p.sumAssured)} ฿` : (h.ipdRoomPerDay?`${insB(h.ipdRoomPerDay)} ฿/วัน`:"—");
+        const rightK = p.premium!=null ? `เบี้ย ${insB(insYearly(p))}/ปี`
+          : p.term ? `คุ้มครอง/ชำระ ${p.term}` : (p.coverageEndAge?`ถึงอายุ ${p.coverageEndAge}`:(p.sumAssured?"ทุนประกัน":"ค่าห้อง/วัน"));
+        return `<div class="ins-row">
+          <span class="ins-tp ${tp.cls}">${tp.lab}</span>
+          <div class="ins-rb"><div class="nm">${p.name||"—"}</div>${sub?`<div class="meta">${sub}</div>`:""}</div>
+          <div class="ins-rv"><div class="v">${rightV}</div><div class="k">${rightK}</div></div>
+        </div>`;
+      }).join("");
+      const polList = `<div class="ins-pol"><h4>${svg('<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>')}กรมธรรม์ทั้งหมด · ${P.length} ฉบับ</h4>${rows}</div>`;
+
+      // premium burden vs yearly portfolio contribution
+      let prem = "";
+      if(hasPrem){
+        const annualAdd = (ns?.monthlyAdd||0)*12;
+        const pct = annualAdd ? Math.round(premYr/annualAdd*100) : null;
+        const barW = annualAdd ? Math.max(3, Math.min(100, premYr/annualAdd*100)) : 0;
+        prem = `<div class="ins-prem">
+          <div class="top"><span class="pk-k">ภาระเบี้ยรวม / ปี</span><span class="amt">${insB(premYr)} ฿</span></div>
+          ${annualAdd?`<div class="bar"><i style="width:${barW}%"></i></div>
+          <div class="note">≈ ${pct}% ของเงินเติมพอร์ตต่อปี (${insB(annualAdd)} ฿) — เบี้ยยิ่งต่ำ เงินไปลงทุนได้มาก</div>`:""}
+        </div>`;
+      }
+
+      const banner = placeholder ? `<div class="ins-banner">${svg('<path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>')}ตัวอย่าง — รอข้อมูลจริง</div>` : "";
+      const notes = [];
+      if(P.some(p=>p.temporary)) notes.push("⚠️ ประกันกลุ่มบริษัทคุ้มครองชั่วคราว — สิ้นสุดเมื่อออกจากงาน/เกษียณ ไม่ควรพึ่งเป็นแผนระยะยาว");
+      if(P.some(p=>LIFE_TYPES.includes(p.type) && p.premium==null)) notes.push("⏳ รอข้อมูลเพิ่ม: เบี้ย/ปี · เงินครบกำหนด (อายุ+จำนวน) เพื่อเติมไทม์ไลน์เงินก้อน + ภาระเบี้ยให้ครบ");
+      if(!notes.length) notes.push("เลเยอร์ความคุ้มครอง — แยกจากมูลค่าพอร์ตลงทุน (ไม่นับใน North Star) · ใช้ดูภาพเสี่ยง/เงินก้อนอนาคต");
+      const missing = `<div class="ins-foot">${notes.join("<br>")}</div>`;
+
+      el.innerHTML = `
+        <section class="rise">
+          <div class="sec-head"><span class="sec-ic">${svg(ICON.shield)}</span><h2>ความคุ้มครอง</h2>
+            <span class="meta">${ins.updated?"อัปเดต "+ins.updated:""}</span></div>
+          <div class="card">${banner}${summary}${timeline}${polList}${prem}${missing}</div>
+        </section>`;
     }
 
     async function loadNorthStar(){
