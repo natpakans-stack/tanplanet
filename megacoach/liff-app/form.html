@@ -162,6 +162,7 @@
   async function submit(){
     $("submit").disabled = true;
     const h = collect(PREV);
+    delete h._seed;              // ที่ user ส่ง = ของจริง (ไม่ใช่ seed) → Mac จะ apply
     h.push = $("push").checked;
     try {
       const blob = await encryptObj(KEY, h);
