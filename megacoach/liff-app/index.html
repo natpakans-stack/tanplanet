@@ -509,6 +509,11 @@
   #sheet .ctx-sig.go{color:var(--go);background:var(--go-bg)}
   #sheet .ctx-sig.wait{color:var(--wait);background:var(--wait-bg)}
   #sheet .ctx-sig.avoid{color:var(--avoid);background:var(--avoid-bg)}
+  #sheet .ctx-ta{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--ink-2);line-height:1.45}
+  #sheet .ctx-ta .ta-badge{align-self:flex-start;font-size:11px;font-weight:700;padding:3px 9px;border-radius:var(--r-pill)}
+  #sheet .ctx-ta.go .ta-badge{color:var(--go);background:var(--go-bg)}
+  #sheet .ctx-ta.wait .ta-badge{color:var(--wait);background:var(--wait-bg)}
+  #sheet .ctx-ta.avoid .ta-badge{color:var(--avoid);background:var(--avoid-bg)}
   #sheet .ctx-f{margin:0;padding:0;display:flex;flex-direction:column}
   #sheet .ctx-row{padding:9px 0;border-top:1px solid var(--hair)}
   #sheet .ctx-row:first-child{border-top:none;padding-top:2px}
@@ -869,6 +874,10 @@
       if(!s || !s.ticker) return "";
       const dir = s.dir === "up" ? "up" : s.dir === "down" ? "down" : "";
       const sigCls = (s.signal === "go" || s.signal === "avoid") ? s.signal : "wait";
+      const v = s.chartTA?.verdict;
+      const taCls = v === "bullish" ? "go" : v === "bearish" ? "avoid" : "wait";
+      const taLbl = v === "bullish" ? "ขาขึ้น" : v === "bearish" ? "ขาลง" : "กลางๆ";
+      const taHtml = s.chartTA?.summary ? `<div class="ctx-ta ${taCls}"><span class="ta-badge">📈 กราฟ · ${taLbl}</span><span>${esc(s.chartTA.summary)}</span></div>` : "";
       const f = (s.factors || []).slice(0, 4).map(x =>
         `<div class="ctx-row">
           <div class="ctx-rh"><i class="ctx-dot ${["g","w","a"].includes(x.status) ? x.status : "w"}"></i><span class="ctx-lbl">${esc(x.label)}</span></div>
@@ -884,8 +893,9 @@
           ${s.price ? `<div class="ctx-px"><span class="px mono">${esc(s.price)}</span>${s.change ? `<span class="chg ${dir} mono">${esc(s.change)}</span>` : ""}</div>` : ""}
         </div>
         ${s.signalLabel ? `<div class="ctx-sig ${sigCls}">${esc(s.signalLabel)}</div>` : ""}
+        ${taHtml}
         ${f ? `<dl class="ctx-f">${f}</dl>` : ""}
-        <button class="ctx-chart" onclick="analyzeChart()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 4-6"/></svg>วิเคราะห์กราฟด้วย AI</button>
+        <button class="ctx-chart" onclick="analyzeChart()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 4-6"/></svg>${s.chartTA ? "เจาะลึกกราฟด้วย AI" : "วิเคราะห์กราฟด้วย AI"}</button>
       </div>`;
     }
     // vision อ่านกราฟ → ประสานกับปัจจัยที่สกรีนมา (เฉพาะโหมดหุ้น)

@@ -39,6 +39,7 @@ export default async function handler(req, res) {
     `ราคา: ${stock.price || "—"} (${stock.change || "—"})`,
     `สัญญาณระบบ: ${stock.signalLabel || stock.signal || "—"}`,
     stock.signalDesc ? `เหตุผล: ${stock.signalDesc}` : "",
+    stock.chartTA?.summary ? `กราฟ(TA): ${stock.chartTA.verdict} · ${stock.chartTA.summary}` : "",
     (stock.factors || []).map(f => `• ${f.label}: ${f.value}`).join("\n"),
   ].filter(Boolean).join("\n") : "";
 

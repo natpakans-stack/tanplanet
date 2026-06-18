@@ -34,6 +34,7 @@ function buildPortfolioContext(esd, ns) {
     for (const s of stocks) {
       lines.push(`- ${s.ticker} ${s.price || ""}${s.change ? ` (${s.change})` : ""} · ${s.signalLabel || s.signal || ""}`);
       if (s.signalDesc) lines.push(`  ${s.signalDesc}`);
+      if (s.chartTA?.summary) lines.push(`  กราฟ(TA): ${s.chartTA.verdict} · ${s.chartTA.summary}`);
     }
   }
   if (ns) {
