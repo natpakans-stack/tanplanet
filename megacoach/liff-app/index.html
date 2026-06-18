@@ -525,6 +525,20 @@
   #sheet .chip{font:inherit;font-size:12.5px;color:var(--accent-ink);background:var(--accent-bg);border:1px solid var(--border);
     border-radius:var(--r-pill);padding:8px 13px;cursor:pointer;line-height:1.3;text-align:left}
   #sheet .chip:active{filter:brightness(.96)}
+  /* การ์ดบริบทโค้ชพอร์ต */
+  #sheet .coach-tally{display:flex;gap:8px;flex-wrap:wrap}
+  #sheet .coach-tally .ct{font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:var(--r-pill)}
+  #sheet .coach-tally .ct.go{color:var(--go);background:var(--go-bg)}
+  #sheet .coach-tally .ct.wait{color:var(--wait);background:var(--wait-bg)}
+  #sheet .coach-tally .ct.avoid{color:var(--avoid);background:var(--avoid-bg)}
+  #sheet .coach-ns{font-size:12px;color:var(--ink-2);line-height:1.45}
+  /* FAB คุยกับโค้ชพอร์ต (มุมจอล่างขวา) */
+  #coachFab{position:fixed;z-index:40;right:max(16px,env(safe-area-inset-right));bottom:calc(18px + env(safe-area-inset-bottom));
+    display:flex;align-items:center;gap:8px;padding:12px 18px 12px 15px;border:none;border-radius:var(--r-pill);
+    background:var(--accent);color:#fff;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;
+    box-shadow:0 6px 18px oklch(0.52 0.15 265/.38),0 1px 3px oklch(0.4 0.03 265/.2)}
+  #coachFab:active{filter:brightness(.95)}
+  #coachFab svg{width:18px;height:18px}
   #sheet .sh-acts{display:flex;gap:8px;padding:var(--s2) var(--s4) 0}
   #sheet .sh-acts[hidden]{display:none}
   #sheet .sh-acts button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;
@@ -586,6 +600,12 @@
     <p class="disc-sub"><span>เจ้าของพอร์ตตัดสินใจเอง</span> · <span>การลงทุนมีความเสี่ยง</span> · <span>ราคาหุ้นขึ้นลงได้เสมอ</span> · <span>สัญญาณช่วยเสริมความมั่นใจ</span> <span>ไม่รับประกันผลตอบแทน</span></p>
     <p class="sign">MegaCoach · โค้ชเมก้า</p>
   </footer>
+
+  <!-- FAB: คุยกับโค้ชพอร์ต -->
+  <button id="coachFab" onclick="openCoach()" aria-label="คุยกับโค้ชพอร์ต">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+    <span>โค้ชพอร์ต</span>
+  </button>
 
   <!-- Ask AI bottom sheet -->
   <div id="sheet" aria-hidden="true">
@@ -725,6 +745,7 @@
     }
 
     function render(data){
+      PORTFOLIO = data;
       document.getElementById("updated").textContent = "อัปเดต " + (data.updated || "—");
       if(data.note){
         document.getElementById("notice").innerHTML =
@@ -806,7 +827,8 @@
 
     /* ---------- Ask AI ---------- */
     const STOCKS = {};
-    let askTicker = null, askBusy = false;
+    let PORTFOLIO = null, NS_PUBLIC = null;   // ใช้โชว์การ์ดบริบทของโค้ชพอร์ต
+    let askTicker = null, askBusy = false, coachMode = false;
     const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
     // ย่อ markdown แบบเบาๆ: ลิงก์ + ตัวหนา (หลัง escape แล้ว ปลอดภัย)
     const fmt = s => esc(s)
@@ -815,8 +837,9 @@
     const logEl = () => document.getElementById("sheetLog");
     // suggestion bubble — กดแล้วถามทันที
     const SUGGEST = ["สรุปสั้นๆ ทำไมสัญญาณเป็นแบบนี้", "ควรเข้าตอนไหนดี", "มีข่าวอะไรล่าสุด", "ความเสี่ยงหลักคืออะไร"];
+    const COACH_SUGGEST = ["รีวิวพอร์ตรวมตอนนี้", "ควร DCA ตัวไหนก่อน", "พอร์ตเสี่ยงเกินไปไหม", "ปรับ allocation ยังไงให้ถึงเป้า"];
     const suggestHtml = () => `<div class="suggest"><span class="lead">เริ่มจากคำถามนี้ หรือพิมพ์เองได้เลย</span>${
-      SUGGEST.map(q => `<button class="chip" onclick="askSuggest(this)">${esc(q)}</button>`).join("")}</div>`;
+      (coachMode ? COACH_SUGGEST : SUGGEST).map(q => `<button class="chip" onclick="askSuggest(this)">${esc(q)}</button>`).join("")}</div>`;
     function askSuggest(btn){
       document.getElementById("sheetInput").value = btn.textContent;
       sendAsk();
@@ -857,8 +880,23 @@
         ${f ? `<dl class="ctx-f">${f}</dl>` : ""}
       </div>`;
     }
+    // การ์ดบริบทโค้ชพอร์ต — สรุปทั้งพอร์ตที่โค้ชเห็น
+    function coachCtxHtml(){
+      const groups = PORTFOLIO?.groups || [];
+      let go = 0, wait = 0, avoid = 0, total = 0;
+      groups.forEach(g => (g.stocks || []).forEach(s => { total++; s.signal === "go" ? go++ : s.signal === "avoid" ? avoid++ : wait++; }));
+      const ns = NS_PUBLIC;
+      const nsLine = ns ? `${ns.goalLabel || "อิสรภาพการเงิน"} · อายุ ${ns.currentAge ?? "—"} → ${ns.targetAge ?? 60}${ns.requiredCagr ? ` · CAGR ${ns.requiredCagr}` : ""}` : "";
+      return `<div class="ctx">
+        <div class="ctx-ey">โค้ชเห็นพอร์ตทั้งหมด</div>
+        <div class="ctx-top"><div class="ctx-id"><b>พอร์ตของคุณ</b><span>${total} ตัว · สกรีน ${esc(PORTFOLIO?.updated || "—")}</span></div></div>
+        <div class="coach-tally"><span class="ct go">เข้าได้ ${go}</span><span class="ct wait">รอ ${wait}</span><span class="ct avoid">เลี่ยง ${avoid}</span></div>
+        ${nsLine ? `<div class="coach-ns">🎯 ${esc(nsLine)}</div>` : ""}
+      </div>`;
+    }
     function renderChat(arr){
-      logEl().innerHTML = ctxHtml(STOCKS[askTicker]) + (arr.length ? "" : suggestHtml());
+      const ctx = coachMode ? coachCtxHtml() : ctxHtml(STOCKS[askTicker]);
+      logEl().innerHTML = ctx + (arr.length ? "" : suggestHtml());
       arr.forEach(m => appendMsg(m.role, m.text));
       updateChrome();
     }
@@ -873,16 +911,28 @@
       document.getElementById("sheetActs").hidden = !lastAnswer();
     }
 
-    function openAsk(ticker){
-      askTicker = ticker;
-      document.getElementById("sheetTkr").textContent = ticker;
-      document.getElementById("sheetInput").value = "";
-      renderChat(loadChat(ticker));
+    function showSheet(){
       const s = document.getElementById("sheet");
       document.querySelector("#sheet .panel").style.height = "";   // กลับไป default 70vh
       s.classList.add("open"); s.setAttribute("aria-hidden", "false");
       document.body.classList.add("sheet-open");   // ล็อกสกอลพื้นหลัง
       document.getElementById("sheetInput").focus();
+    }
+    function openAsk(ticker){
+      coachMode = false; askTicker = ticker;
+      document.getElementById("sheetTkr").textContent = ticker;
+      document.getElementById("sheetInput").value = "";
+      document.getElementById("sheetInput").placeholder = "ถามอะไรก็ได้เกี่ยวกับหุ้นตัวนี้…";
+      renderChat(loadChat(ticker));
+      showSheet();
+    }
+    function openCoach(){
+      coachMode = true; askTicker = "__coach__";
+      document.getElementById("sheetTkr").textContent = "โค้ชพอร์ต";
+      document.getElementById("sheetInput").value = "";
+      document.getElementById("sheetInput").placeholder = "ถามเรื่องพอร์ต/แผนการลงทุน…";
+      renderChat(loadChat(askTicker));
+      showSheet();
     }
     function closeAsk(){
       const s = document.getElementById("sheet");
@@ -911,10 +961,10 @@
       inp.value = "";
       const wait = appendMsg("a", "กำลังคิด…");
       try{
-        const res = await fetch("/api/ask", {
+        const res = await fetch(coachMode ? "/api/coach" : "/api/ask", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ question: q, stock: STOCKS[askTicker] || { ticker: askTicker } }),
+          body: JSON.stringify(coachMode ? { question: q } : { question: q, stock: STOCKS[askTicker] || { ticker: askTicker } }),
         });
         const data = await res.json();
         if(res.ok){
@@ -1390,6 +1440,7 @@
       let n = null;
       try{ const r = await fetch("./northstar.json?t=" + Date.now()); if(r.ok) n = await r.json(); }catch(e){}
       if(!n) return;
+      NS_PUBLIC = n;
       renderNorthStarGauge(n);
       try{ const r = await fetch("./northstar-private.enc.json?t=" + Date.now()); if(!r.ok) return; NS_BLOB = await r.json(); }catch(e){ return; }
       let saved = null;
