@@ -442,6 +442,36 @@
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
     .stack{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
   }
+
+  /* ---------- Ask AI ---------- */
+  .ask-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:var(--s3);
+    padding:9px 12px;font:inherit;font-size:12.5px;font-weight:600;color:var(--accent-ink);
+    background:var(--accent-bg);border:1px solid var(--border);border-radius:var(--r-sm);cursor:pointer;
+    transition:background .15s}
+  .ask-btn:active{background:var(--panel)}
+  .ask-btn svg{width:14px;height:14px}
+  #sheet{position:fixed;inset:0;z-index:50;display:none}
+  #sheet.open{display:block}
+  #sheet .scrim{position:absolute;inset:0;background:oklch(0.255 0.02 265/.42)}
+  #sheet .panel{position:absolute;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;
+    background:var(--surface);border-radius:var(--r-xl) var(--r-xl) 0 0;box-shadow:var(--sh-2);
+    max-height:86vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
+  #sheet .sh-head{display:flex;align-items:center;gap:10px;padding:var(--s4);border-bottom:1px solid var(--hair)}
+  #sheet .sh-head .tkr{font-weight:700;font-size:15px}
+  #sheet .sh-head .x{margin-left:auto;width:30px;height:30px;border:none;background:var(--panel);
+    border-radius:var(--r-pill);font-size:16px;color:var(--ink-2);cursor:pointer}
+  #sheet .log{flex:1;overflow-y:auto;padding:var(--s4);display:flex;flex-direction:column;gap:10px}
+  #sheet .msg{font-size:13.5px;line-height:1.55;white-space:pre-wrap;padding:10px 13px;border-radius:var(--r-md);max-width:90%}
+  #sheet .msg.u{align-self:flex-end;background:var(--accent-bg);color:var(--accent-ink)}
+  #sheet .msg.a{align-self:flex-start;background:var(--panel);color:var(--ink)}
+  #sheet .msg.a a{color:var(--accent-ink)}
+  #sheet .hint{font-size:11.5px;color:var(--ink-3);text-align:center}
+  #sheet .sh-foot{display:flex;gap:8px;padding:var(--s3) var(--s4);border-top:1px solid var(--hair)}
+  #sheet textarea{flex:1;resize:none;font:inherit;font-size:13.5px;padding:9px 12px;
+    border:1px solid var(--border-2);border-radius:var(--r-md);background:var(--surface);color:var(--ink);max-height:88px}
+  #sheet .send{padding:0 16px;border:none;background:var(--accent);color:#fff;font:inherit;font-weight:600;
+    font-size:13px;border-radius:var(--r-md);cursor:pointer}
+  #sheet .send:disabled{opacity:.5}
 </style>
 </head>
 <body>
@@ -481,6 +511,23 @@
     <p class="disc-sub"><span>เจ้าของพอร์ตตัดสินใจเอง</span> · <span>การลงทุนมีความเสี่ยง</span> · <span>ราคาหุ้นขึ้นลงได้เสมอ</span> · <span>สัญญาณช่วยเสริมความมั่นใจ</span> <span>ไม่รับประกันผลตอบแทน</span></p>
     <p class="sign">MegaCoach · โค้ชเมก้า</p>
   </footer>
+
+  <!-- Ask AI bottom sheet -->
+  <div id="sheet" aria-hidden="true">
+    <div class="scrim" onclick="closeAsk()"></div>
+    <div class="panel" role="dialog" aria-label="ถาม AI">
+      <div class="sh-head">
+        <span class="ic" aria-hidden="true">💬</span>
+        <span class="tkr" id="sheetTkr"></span>
+        <button class="x" onclick="closeAsk()" aria-label="ปิด">✕</button>
+      </div>
+      <div class="log" id="sheetLog"></div>
+      <div class="sh-foot">
+        <textarea id="sheetInput" rows="1" placeholder="ถามอะไรก็ได้เกี่ยวกับหุ้นตัวนี้…"></textarea>
+        <button class="send" id="sheetSend" onclick="sendAsk()">ถาม</button>
+      </div>
+    </div>
+  </div>
 
   <!-- LINE LIFF SDK -->
   <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
@@ -529,6 +576,7 @@
 
     function renderCard(s){
       const sig = SIG[s.signal] || SIG.wait;
+      STOCKS[s.ticker] = s;   // เก็บไว้ให้ sheet ส่ง context ให้ AI
       return `
         <article class="card">
           ${s.sector ? `<div class="cat"><svg class="cat-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.6-7.6A2 2 0 0 1 2.4 11.6V4.4A2 2 0 0 1 4.4 2.4h7.2a2 2 0 0 1 1.4.6l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.6" cy="7.6" r="1.4" fill="currentColor" stroke="none"/></svg>${s.sector}</div>` : ""}
@@ -554,6 +602,7 @@
           </div>
           ${renderFactors(s.factors)}
           ${s.action ? `<div class="plan"><span class="k"><svg class="k-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2.5 4L16 12H5"/></svg>${s.action.k}</span><div class="v">${s.action.v}</div></div>` : ""}
+          <button class="ask-btn" onclick="openAsk('${s.ticker}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>ถาม AI เรื่อง ${s.ticker}</button>
         </article>`;
     }
 
@@ -671,6 +720,70 @@
           `<div class="notice err">${svg('<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>')}<div>โหลดข้อมูลไม่สำเร็จ (${e.message}) ลองรีเฟรชอีกครั้ง</div></div>`;
       }
     }
+
+    /* ---------- Ask AI ---------- */
+    const STOCKS = {};
+    let askTicker = null, askBusy = false;
+    const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+    // ย่อ markdown แบบเบาๆ: ลิงก์ + ตัวหนา (หลัง escape แล้ว ปลอดภัย)
+    const fmt = s => esc(s)
+      .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+      .replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>");
+    const logEl = () => document.getElementById("sheetLog");
+    function pushMsg(role, html){
+      const d = document.createElement("div");
+      d.className = "msg " + role;
+      d.innerHTML = html;
+      logEl().appendChild(d);
+      logEl().scrollTop = logEl().scrollHeight;
+      return d;
+    }
+    function openAsk(ticker){
+      askTicker = ticker;
+      document.getElementById("sheetTkr").textContent = ticker;
+      logEl().innerHTML = '<div class="hint">ถามได้เลย เช่น “สรุปสั้นๆ ทำไมสัญญาณเป็นแบบนี้” · “ควรเข้าตอนไหน” · “มีข่าวอะไรล่าสุด”</div>';
+      document.getElementById("sheetInput").value = "";
+      const s = document.getElementById("sheet");
+      s.classList.add("open"); s.setAttribute("aria-hidden", "false");
+      document.getElementById("sheetInput").focus();
+    }
+    function closeAsk(){
+      const s = document.getElementById("sheet");
+      s.classList.remove("open"); s.setAttribute("aria-hidden", "true");
+    }
+    async function sendAsk(){
+      if(askBusy) return;
+      const inp = document.getElementById("sheetInput");
+      const q = inp.value.trim();
+      if(!q) return;
+      askBusy = true;
+      document.getElementById("sheetSend").disabled = true;
+      const hint = logEl().querySelector(".hint"); if(hint) hint.remove();
+      pushMsg("u", esc(q));
+      inp.value = "";
+      const wait = pushMsg("a", "กำลังคิด…");
+      try{
+        const res = await fetch("/api/ask", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ question: q, stock: STOCKS[askTicker] || { ticker: askTicker } }),
+        });
+        const data = await res.json();
+        wait.innerHTML = res.ok ? fmt(data.answer) : ("ขออภัย ตอบไม่ได้ — " + esc(data.error || res.status));
+      }catch(e){
+        wait.textContent = "เชื่อมต่อไม่ได้ ลองใหม่อีกครั้ง";
+      }finally{
+        askBusy = false;
+        document.getElementById("sheetSend").disabled = false;
+        logEl().scrollTop = logEl().scrollHeight;
+      }
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+      const inp = document.getElementById("sheetInput");
+      inp.addEventListener("keydown", e => {
+        if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); sendAsk(); }
+      });
+    });
 
     /* ---------- North Star (public time gauge + encrypted owner layer) ---------- */
     const NS_KEY = "ns_owner_pass";
