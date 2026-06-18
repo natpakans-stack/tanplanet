@@ -848,7 +848,7 @@
     const logEl = () => document.getElementById("sheetLog");
     // suggestion bubble — กดแล้วถามทันที
     const SUGGEST = ["สรุปสั้นๆ ทำไมสัญญาณเป็นแบบนี้", "ควรเข้าตอนไหนดี", "มีข่าวอะไรล่าสุด", "ความเสี่ยงหลักคืออะไร"];
-    const COACH_SUGGEST = ["รีวิวพอร์ตรวมตอนนี้", "ควร DCA ตัวไหนก่อน", "พอร์ตเสี่ยงเกินไปไหม", "ปรับ allocation ยังไงให้ถึงเป้า"];
+    const COACH_SUGGEST = ["มีตัวไหนน่าเก็งกำไรสั้นจากกราฟ", "รีวิวพอร์ตรวมตอนนี้", "ควร DCA ตัวไหนก่อน", "ปรับ allocation ยังไงให้ถึงเป้า"];
     const suggestHtml = () => `<div class="suggest"><span class="lead">เริ่มจากคำถามนี้ หรือพิมพ์เองได้เลย</span>${
       (coachMode ? COACH_SUGGEST : SUGGEST).map(q => `<button class="chip" onclick="askSuggest(this)">${esc(q)}</button>`).join("")}</div>`;
     function askSuggest(btn){
