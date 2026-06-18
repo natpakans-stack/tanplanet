@@ -519,6 +519,12 @@
   #sheet .ctx-dot.a{background:var(--avoid-line)}
   #sheet .ctx-lbl{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3)}
   #sheet .ctx-val{margin:0;font-size:12.5px;line-height:1.5;color:var(--ink)}
+  #sheet .ctx-chart{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:2px;padding:9px;
+    border:1px solid var(--accent);background:var(--surface);border-radius:var(--r-sm);font:inherit;font-size:12.5px;
+    font-weight:600;color:var(--accent-ink);cursor:pointer}
+  #sheet .ctx-chart:active{background:var(--accent-bg)}
+  #sheet .ctx-chart svg{width:15px;height:15px}
+  #sheet .chart-img{width:100%;display:block;border:1px solid var(--border);border-radius:var(--r-sm);margin-bottom:8px;background:#0e1118}
   /* suggestion bubble (กดแล้วถามเลย) */
   #sheet .suggest{display:flex;flex-wrap:wrap;gap:8px}
   #sheet .suggest .lead{flex:0 0 100%;font-size:12px;color:var(--ink-3);margin-bottom:2px}
@@ -849,10 +855,11 @@
     function loadChat(t){ try{ return JSON.parse(localStorage.getItem(chatKey(t))) || []; }catch(e){ return []; } }
     function saveChat(t, arr){ try{ localStorage.setItem(chatKey(t), JSON.stringify(arr)); }catch(e){} }
 
-    function appendMsg(role, text){
+    function appendMsg(role, text, img){
       const d = document.createElement("div");
       d.className = "msg " + role;
-      d.innerHTML = role === "a" ? fmt(text) : esc(text);   // AI = ข้อความเต็มกว้าง · user = bubble
+      const imgHtml = img ? `<img class="chart-img" src="${img}" alt="กราฟ" loading="lazy" onerror="this.remove()">` : "";
+      d.innerHTML = imgHtml + (role === "a" ? fmt(text) : esc(text));   // AI = ข้อความเต็มกว้าง · user = bubble
       logEl().appendChild(d);
       logEl().scrollTop = logEl().scrollHeight;
       return d;
@@ -878,7 +885,40 @@
         </div>
         ${s.signalLabel ? `<div class="ctx-sig ${sigCls}">${esc(s.signalLabel)}</div>` : ""}
         ${f ? `<dl class="ctx-f">${f}</dl>` : ""}
+        <button class="ctx-chart" onclick="analyzeChart()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 4-6"/></svg>วิเคราะห์กราฟด้วย AI</button>
       </div>`;
+    }
+    // vision อ่านกราฟ → ประสานกับปัจจัยที่สกรีนมา (เฉพาะโหมดหุ้น)
+    async function analyzeChart(){
+      if(askBusy || coachMode || !askTicker) return;
+      askBusy = true;
+      document.getElementById("sheetSend").disabled = true;
+      const sug = logEl().querySelector(".suggest"); if(sug) sug.remove();
+      const arr = loadChat(askTicker);
+      arr.push({ role: "u", text: "📈 วิเคราะห์กราฟ" }); saveChat(askTicker, arr);
+      appendMsg("u", "📈 วิเคราะห์กราฟ");
+      updateChrome();
+      const wait = appendMsg("a", "กำลังอ่านกราฟ…");
+      try{
+        const res = await fetch("/api/chart", {
+          method: "POST", headers: { "content-type": "application/json" },
+          body: JSON.stringify({ stock: STOCKS[askTicker] || { ticker: askTicker } }),
+        });
+        const data = await res.json();
+        if(res.ok){
+          wait.innerHTML = (data.chartUrl ? `<img class="chart-img" src="${data.chartUrl}" alt="กราฟ ${esc(askTicker)}" loading="lazy" onerror="this.remove()">` : "") + fmt(data.answer);
+          arr.push({ role: "a", text: data.answer, img: data.chartUrl }); saveChat(askTicker, arr);
+        } else {
+          wait.textContent = "อ่านกราฟไม่ได้ — " + (data.error || res.status);
+        }
+      }catch(e){
+        wait.textContent = "เชื่อมต่อไม่ได้ ลองใหม่อีกครั้ง";
+      }finally{
+        askBusy = false;
+        document.getElementById("sheetSend").disabled = false;
+        updateChrome();
+        logEl().scrollTop = logEl().scrollHeight;
+      }
     }
     // การ์ดบริบทโค้ชพอร์ต — สรุปทั้งพอร์ตที่โค้ชเห็น
     function coachCtxHtml(){
@@ -897,7 +937,7 @@
     function renderChat(arr){
       const ctx = coachMode ? coachCtxHtml() : ctxHtml(STOCKS[askTicker]);
       logEl().innerHTML = ctx + (arr.length ? "" : suggestHtml());
-      arr.forEach(m => appendMsg(m.role, m.text));
+      arr.forEach(m => appendMsg(m.role, m.text, m.img));
       updateChrome();
     }
     function lastAnswer(){
