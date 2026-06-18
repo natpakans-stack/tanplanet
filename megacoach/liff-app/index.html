@@ -94,7 +94,11 @@
 
   /* ---------- card ---------- */
   .stack{display:flex;flex-direction:column;gap:var(--s4)}
-  .grid{display:flex;flex-direction:column;gap:var(--s4)}
+  /* mobile: หลายการ์ดในกลุ่มเดียว = carousel เลื่อนแนวนอน (ประหยัดที่ ไม่ต้องสกอลยาว) */
+  .grid{display:flex;gap:var(--s4);overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+    padding-bottom:6px;scrollbar-width:none}
+  .grid::-webkit-scrollbar{display:none}
+  .grid > .card{flex:0 0 87%;scroll-snap-align:start}
   .card{position:relative;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-1);overflow:hidden}
   /* sector tag — inverted-corner tab pinned to the top-right of the card */
   .cat{position:absolute;top:0;right:0;z-index:3;display:inline-flex;align-items:center;gap:5px;padding:8px 14px 9px 15px;font-size:10.5px;font-weight:600;letter-spacing:.01em;color:#fff;background:var(--accent);border-bottom-left-radius:14px}
@@ -439,31 +443,38 @@
   @media (min-width:768px){
     .wrap{max-width:880px}
     .top h1{font-size:31px}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
-    .stack{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
+    /* desktop: 2 คอลัมน์ · align-items:stretch = การ์ดในแถวเดียวกันสูงเท่ากัน (footer ชิดล่างด้วย margin-top:auto) */
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);overflow:visible;margin:0;padding:0;align-items:stretch}
+    .grid > .card{flex:none}
+    .stack{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);align-items:stretch}
   }
 
   /* ---------- Ask AI ---------- */
-  .ask-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:var(--s3);
-    padding:9px 12px;font:inherit;font-size:12.5px;font-weight:600;color:var(--accent-ink);
-    background:var(--accent-bg);border:1px solid var(--border);border-radius:var(--r-sm);cursor:pointer;
-    transition:background .15s}
-  .ask-btn:active{background:var(--panel)}
+  /* foot สี (plan + ปุ่ม) ชิดล่างเสมอ (margin-top:auto) · lip สีพื้นโค้งรับเนื้อหาขาวด้านบน · มุมล่างถูก card clip */
+  .card-foot{position:relative;margin-top:auto;background:var(--accent-bg);padding-top:var(--r-lg)}
+  .card-foot::before{content:"";position:absolute;left:0;top:0;width:100%;height:var(--r-lg);
+    background:var(--surface);border-radius:0 0 var(--r-lg) var(--r-lg)}
+  .card-foot .plan{margin:0;border-top:none;background:transparent}
+  .ask-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;
+    padding:13px 12px;font:inherit;font-size:13px;font-weight:600;color:var(--accent-ink);
+    background:transparent;border:none;border-radius:0;cursor:pointer;transition:background .15s}
+  .ask-btn:active{background:oklch(0.52 0.15 265/.10)}
   .ask-btn svg{width:14px;height:14px}
-  #sheet{position:fixed;inset:0;z-index:50;display:none}
-  #sheet.open{display:block}
+  #sheet{position:fixed;inset:0;z-index:50;visibility:hidden;opacity:0;transition:opacity .25s,visibility .25s}
+  #sheet.open{visibility:visible;opacity:1}
   #sheet .scrim{position:absolute;inset:0;background:oklch(0.255 0.02 265/.42)}
   #sheet .panel{position:absolute;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;
     background:var(--surface);border-radius:var(--r-xl) var(--r-xl) 0 0;box-shadow:var(--sh-2);
     height:70vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom);
-    transition:height .26s cubic-bezier(.32,.72,0,1)}
+    transform:translateY(100%);transition:transform .28s cubic-bezier(.32,.72,0,1),height .26s cubic-bezier(.32,.72,0,1)}
+  #sheet.open .panel{transform:translateY(0)}            /* mobile: เลื่อนขึ้นจากล่าง */
   #sheet .panel.dragging{transition:none}
   #sheet .grip{display:flex;justify-content:center;padding:9px 0 3px;cursor:grab;touch-action:none}
   #sheet .grip:active{cursor:grabbing}
   #sheet .grip i{width:38px;height:4px;border-radius:var(--r-pill);background:var(--border-2);display:block}
   #sheet .sh-head{display:flex;align-items:center;gap:10px;padding:var(--s4);border-bottom:1px solid var(--hair)}
-  #sheet .sh-head .tkr{font-weight:700;font-size:15px}
-  #sheet .sh-head .clr{margin-left:auto;display:flex;align-items:center;gap:4px;padding:6px 11px;border:1px solid var(--border);
+  #sheet .sh-head .tkr{flex:1;font-weight:700;font-size:15px}
+  #sheet .sh-head .clr{display:flex;align-items:center;gap:4px;padding:6px 11px;border:1px solid var(--border);
     background:var(--surface);border-radius:var(--r-pill);font:inherit;font-size:11.5px;color:var(--ink-2);cursor:pointer}
   #sheet .sh-head .clr svg{width:13px;height:13px}
   #sheet .sh-head .clr[hidden]{display:none}
@@ -478,6 +489,42 @@
   #sheet .msg.a a{color:var(--accent-ink);word-break:break-all}
   #sheet .msg.a b{color:var(--accent-ink)}
   #sheet .hint{font-size:12px;color:var(--ink-3);text-align:center;line-height:1.6;padding:var(--s4) 0}
+  /* การ์ดบริบทที่ AI เห็น — hierarchy: ticker/ราคา (anchor) → signal chip → factors */
+  #sheet .ctx{background:var(--panel);border:1px solid var(--border);border-radius:var(--r-md);padding:14px;display:flex;flex-direction:column;gap:12px}
+  #sheet .ctx-ey{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
+  #sheet .ctx-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  #sheet .ctx-idwrap{display:flex;align-items:center;gap:10px;min-width:0}
+  #sheet .ctx-logo{position:relative;flex-shrink:0;width:34px;height:34px;border-radius:50%;overflow:hidden;background:var(--surface);border:1px solid var(--border);display:grid;place-items:center}
+  #sheet .ctx-logo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  #sheet .ctx-logo .logo-mono{font-size:12px}
+  #sheet .ctx-id{display:flex;flex-direction:column;gap:1px;min-width:0}
+  #sheet .ctx-id b{font-size:17px;font-weight:700;color:var(--ink);line-height:1.1}
+  #sheet .ctx-id span{font-size:11.5px;color:var(--ink-3)}
+  #sheet .ctx-px{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
+  #sheet .ctx-px .px{font-size:16px;font-weight:700;color:var(--ink);line-height:1.1}
+  #sheet .ctx-px .chg{font-size:11px;font-weight:600;padding:2px 8px;border-radius:var(--r-pill)}
+  #sheet .ctx-px .chg.down{color:var(--avoid);background:var(--avoid-bg)}
+  #sheet .ctx-px .chg.up{color:var(--go);background:var(--go-bg)}
+  #sheet .ctx-sig{font-size:12px;font-weight:600;line-height:1.4;padding:7px 11px;border-radius:var(--r-sm)}
+  #sheet .ctx-sig.go{color:var(--go);background:var(--go-bg)}
+  #sheet .ctx-sig.wait{color:var(--wait);background:var(--wait-bg)}
+  #sheet .ctx-sig.avoid{color:var(--avoid);background:var(--avoid-bg)}
+  #sheet .ctx-f{margin:0;padding:0;display:flex;flex-direction:column}
+  #sheet .ctx-row{padding:9px 0;border-top:1px solid var(--hair)}
+  #sheet .ctx-row:first-child{border-top:none;padding-top:2px}
+  #sheet .ctx-rh{display:flex;align-items:center;gap:7px;margin-bottom:3px}
+  #sheet .ctx-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+  #sheet .ctx-dot.g{background:var(--go-line)}
+  #sheet .ctx-dot.w{background:var(--wait-line)}
+  #sheet .ctx-dot.a{background:var(--avoid-line)}
+  #sheet .ctx-lbl{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3)}
+  #sheet .ctx-val{margin:0;font-size:12.5px;line-height:1.5;color:var(--ink)}
+  /* suggestion bubble (กดแล้วถามเลย) */
+  #sheet .suggest{display:flex;flex-wrap:wrap;gap:8px}
+  #sheet .suggest .lead{flex:0 0 100%;font-size:12px;color:var(--ink-3);margin-bottom:2px}
+  #sheet .chip{font:inherit;font-size:12.5px;color:var(--accent-ink);background:var(--accent-bg);border:1px solid var(--border);
+    border-radius:var(--r-pill);padding:8px 13px;cursor:pointer;line-height:1.3;text-align:left}
+  #sheet .chip:active{filter:brightness(.96)}
   #sheet .sh-acts{display:flex;gap:8px;padding:var(--s2) var(--s4) 0}
   #sheet .sh-acts[hidden]{display:none}
   #sheet .sh-acts button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;
@@ -493,6 +540,13 @@
     font-size:13px;border-radius:var(--r-md);cursor:pointer}
   #sheet .send:disabled{opacity:.5}
   body.sheet-open{overflow:hidden}   /* ล็อกไม่ให้พื้นหลังเลื่อนตอนเปิด sheet */
+  /* desktop: Ask AI = side drawer เลื่อนมาจากขวา (full-height) — ต้องอยู่หลัง base #sheet เพื่อ override */
+  @media (min-width:768px){
+    #sheet .panel{top:0;right:0;left:auto;bottom:0;height:100vh;width:420px;max-width:90vw;margin:0;
+      border-radius:var(--r-xl) 0 0 var(--r-xl);transform:translateX(100%)}
+    #sheet.open .panel{transform:translateX(0)}
+    #sheet .grip{display:none}
+  }
 </style>
 </head>
 <body>
@@ -628,8 +682,10 @@
             </div>
           </div>
           ${renderFactors(s.factors)}
-          ${s.action ? `<div class="plan"><span class="k"><svg class="k-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2.5 4L16 12H5"/></svg>${s.action.k}</span><div class="v">${s.action.v}</div></div>` : ""}
-          <button class="ask-btn" onclick="openAsk('${s.ticker}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>ถาม AI เรื่อง ${s.ticker}</button>
+          <div class="card-foot">
+            ${s.action ? `<div class="plan"><span class="k"><svg class="k-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2.5 4L16 12H5"/></svg>${s.action.k}</span><div class="v">${s.action.v}</div></div>` : ""}
+            <button class="ask-btn" onclick="openAsk('${s.ticker}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>ถาม AI เรื่อง ${s.ticker}</button>
+          </div>
         </article>`;
     }
 
@@ -757,7 +813,14 @@
       .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
       .replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>");
     const logEl = () => document.getElementById("sheetLog");
-    const HINT = '<div class="hint">ถามได้เลย เช่น “สรุปสั้นๆ ทำไมสัญญาณเป็นแบบนี้” · “ควรเข้าตอนไหน” · “มีข่าวอะไรล่าสุด”</div>';
+    // suggestion bubble — กดแล้วถามทันที
+    const SUGGEST = ["สรุปสั้นๆ ทำไมสัญญาณเป็นแบบนี้", "ควรเข้าตอนไหนดี", "มีข่าวอะไรล่าสุด", "ความเสี่ยงหลักคืออะไร"];
+    const suggestHtml = () => `<div class="suggest"><span class="lead">เริ่มจากคำถามนี้ หรือพิมพ์เองได้เลย</span>${
+      SUGGEST.map(q => `<button class="chip" onclick="askSuggest(this)">${esc(q)}</button>`).join("")}</div>`;
+    function askSuggest(btn){
+      document.getElementById("sheetInput").value = btn.textContent;
+      sendAsk();
+    }
     // จำแชทแยกตามหุ้นใน localStorage
     const chatKey = t => "ask_chat_" + t;
     function loadChat(t){ try{ return JSON.parse(localStorage.getItem(chatKey(t))) || []; }catch(e){ return []; } }
@@ -771,8 +834,31 @@
       logEl().scrollTop = logEl().scrollHeight;
       return d;
     }
+    // การ์ดสรุป "บริบทที่ AI เห็นจากการ์ดนี้" — ตรงกับ field ที่ /api/ask ส่งให้ AI
+    function ctxHtml(s){
+      if(!s || !s.ticker) return "";
+      const dir = s.dir === "up" ? "up" : s.dir === "down" ? "down" : "";
+      const sigCls = (s.signal === "go" || s.signal === "avoid") ? s.signal : "wait";
+      const f = (s.factors || []).slice(0, 4).map(x =>
+        `<div class="ctx-row">
+          <div class="ctx-rh"><i class="ctx-dot ${["g","w","a"].includes(x.status) ? x.status : "w"}"></i><span class="ctx-lbl">${esc(x.label)}</span></div>
+          <p class="ctx-val">${esc(x.value)}</p>
+        </div>`).join("");
+      return `<div class="ctx">
+        <div class="ctx-ey">บริบทที่ AI เห็น</div>
+        <div class="ctx-top">
+          <div class="ctx-idwrap">
+            <span class="ctx-logo"><span class="logo-mono">${esc(s.ticker.slice(0,2))}</span><img src="${logoUrl(s.ticker)}" alt="" loading="lazy" onerror="this.remove()"></span>
+            <div class="ctx-id"><b>${esc(s.ticker)}</b>${s.name ? `<span>${esc(s.name)}</span>` : ""}</div>
+          </div>
+          ${s.price ? `<div class="ctx-px"><span class="px mono">${esc(s.price)}</span>${s.change ? `<span class="chg ${dir} mono">${esc(s.change)}</span>` : ""}</div>` : ""}
+        </div>
+        ${s.signalLabel ? `<div class="ctx-sig ${sigCls}">${esc(s.signalLabel)}</div>` : ""}
+        ${f ? `<dl class="ctx-f">${f}</dl>` : ""}
+      </div>`;
+    }
     function renderChat(arr){
-      logEl().innerHTML = arr.length ? "" : HINT;
+      logEl().innerHTML = ctxHtml(STOCKS[askTicker]) + (arr.length ? "" : suggestHtml());
       arr.forEach(m => appendMsg(m.role, m.text));
       updateChrome();
     }
@@ -817,7 +903,7 @@
       if(!q) return;
       askBusy = true;
       document.getElementById("sheetSend").disabled = true;
-      const hint = logEl().querySelector(".hint"); if(hint) hint.remove();
+      const sug = logEl().querySelector(".suggest"); if(sug) sug.remove();
       const arr = loadChat(askTicker);
       arr.push({ role: "u", text: q }); saveChat(askTicker, arr);
       appendMsg("u", q);
