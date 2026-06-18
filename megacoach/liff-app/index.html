@@ -455,23 +455,44 @@
   #sheet .scrim{position:absolute;inset:0;background:oklch(0.255 0.02 265/.42)}
   #sheet .panel{position:absolute;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;
     background:var(--surface);border-radius:var(--r-xl) var(--r-xl) 0 0;box-shadow:var(--sh-2);
-    height:70vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom)}
+    height:70vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom);
+    transition:height .26s cubic-bezier(.32,.72,0,1)}
+  #sheet .panel.dragging{transition:none}
+  #sheet .grip{display:flex;justify-content:center;padding:9px 0 3px;cursor:grab;touch-action:none}
+  #sheet .grip:active{cursor:grabbing}
+  #sheet .grip i{width:38px;height:4px;border-radius:var(--r-pill);background:var(--border-2);display:block}
   #sheet .sh-head{display:flex;align-items:center;gap:10px;padding:var(--s4);border-bottom:1px solid var(--hair)}
   #sheet .sh-head .tkr{font-weight:700;font-size:15px}
-  #sheet .sh-head .x{margin-left:auto;width:30px;height:30px;border:none;background:var(--panel);
+  #sheet .sh-head .clr{margin-left:auto;display:flex;align-items:center;gap:4px;padding:6px 11px;border:1px solid var(--border);
+    background:var(--surface);border-radius:var(--r-pill);font:inherit;font-size:11.5px;color:var(--ink-2);cursor:pointer}
+  #sheet .sh-head .clr svg{width:13px;height:13px}
+  #sheet .sh-head .clr[hidden]{display:none}
+  #sheet .sh-head .x{width:30px;height:30px;border:none;background:var(--panel);
     border-radius:var(--r-pill);font-size:16px;color:var(--ink-2);cursor:pointer}
-  #sheet .log{flex:1;overflow-y:auto;padding:var(--s4);display:flex;flex-direction:column;gap:10px}
-  #sheet .msg{font-size:13.5px;line-height:1.55;white-space:pre-wrap;padding:10px 13px;border-radius:var(--r-md);max-width:90%}
-  #sheet .msg.u{align-self:flex-end;background:var(--accent-bg);color:var(--accent-ink)}
-  #sheet .msg.a{align-self:flex-start;background:var(--panel);color:var(--ink)}
-  #sheet .msg.a a{color:var(--accent-ink)}
-  #sheet .hint{font-size:11.5px;color:var(--ink-3);text-align:center}
+  #sheet .log{flex:1;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+    padding:var(--s4);display:flex;flex-direction:column;gap:14px}
+  #sheet .msg{font-size:14px;line-height:1.65;white-space:pre-wrap;word-break:break-word}
+  /* user: bubble · AI: text เต็มกว้าง ไม่มี bubble ให้พื้นที่อ่าน */
+  #sheet .msg.u{align-self:flex-end;max-width:88%;padding:9px 13px;border-radius:var(--r-md);background:var(--accent-bg);color:var(--accent-ink)}
+  #sheet .msg.a{align-self:stretch;max-width:100%;color:var(--ink)}
+  #sheet .msg.a a{color:var(--accent-ink);word-break:break-all}
+  #sheet .msg.a b{color:var(--accent-ink)}
+  #sheet .hint{font-size:12px;color:var(--ink-3);text-align:center;line-height:1.6;padding:var(--s4) 0}
+  #sheet .sh-acts{display:flex;gap:8px;padding:var(--s2) var(--s4) 0}
+  #sheet .sh-acts[hidden]{display:none}
+  #sheet .sh-acts button{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;
+    border:1px solid var(--border);background:var(--surface);border-radius:var(--r-sm);font:inherit;font-size:12.5px;
+    font-weight:600;color:var(--ink-2);cursor:pointer}
+  #sheet .sh-acts button:active{background:var(--panel)}
+  #sheet .sh-acts svg{width:15px;height:15px}
+  #sheet .sh-acts button.ok{color:var(--go);border-color:var(--go-line)}
   #sheet .sh-foot{display:flex;gap:8px;padding:var(--s3) var(--s4);border-top:1px solid var(--hair)}
   #sheet textarea{flex:1;resize:none;font:inherit;font-size:13.5px;padding:9px 12px;
     border:1px solid var(--border-2);border-radius:var(--r-md);background:var(--surface);color:var(--ink);max-height:88px}
   #sheet .send{padding:0 16px;border:none;background:var(--accent);color:#fff;font:inherit;font-weight:600;
     font-size:13px;border-radius:var(--r-md);cursor:pointer}
   #sheet .send:disabled{opacity:.5}
+  body.sheet-open{overflow:hidden}   /* ล็อกไม่ให้พื้นหลังเลื่อนตอนเปิด sheet */
 </style>
 </head>
 <body>
@@ -516,12 +537,18 @@
   <div id="sheet" aria-hidden="true">
     <div class="scrim" onclick="closeAsk()"></div>
     <div class="panel" role="dialog" aria-label="ถาม AI">
+      <div class="grip" id="sheetGrip" aria-label="ลากเพื่อขยาย"><i></i></div>
       <div class="sh-head">
         <span class="ic" aria-hidden="true">💬</span>
         <span class="tkr" id="sheetTkr"></span>
+        <button class="clr" id="sheetClear" onclick="clearAsk()" hidden aria-label="ล้างแชท"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>ล้าง</button>
         <button class="x" onclick="closeAsk()" aria-label="ปิด">✕</button>
       </div>
       <div class="log" id="sheetLog"></div>
+      <div class="sh-acts" id="sheetActs" hidden>
+        <button id="btnCopy" onclick="copyAnswer()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>คัดลอก</span></button>
+        <button onclick="shareAnswer()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>แชร์</button>
+      </div>
       <div class="sh-foot">
         <textarea id="sheetInput" rows="1" placeholder="ถามอะไรก็ได้เกี่ยวกับหุ้นตัวนี้…"></textarea>
         <button class="send" id="sheetSend" onclick="sendAsk()">ถาม</button>
@@ -730,27 +757,59 @@
       .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
       .replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>");
     const logEl = () => document.getElementById("sheetLog");
-    function pushMsg(role, html){
+    const HINT = '<div class="hint">ถามได้เลย เช่น “สรุปสั้นๆ ทำไมสัญญาณเป็นแบบนี้” · “ควรเข้าตอนไหน” · “มีข่าวอะไรล่าสุด”</div>';
+    // จำแชทแยกตามหุ้นใน localStorage
+    const chatKey = t => "ask_chat_" + t;
+    function loadChat(t){ try{ return JSON.parse(localStorage.getItem(chatKey(t))) || []; }catch(e){ return []; } }
+    function saveChat(t, arr){ try{ localStorage.setItem(chatKey(t), JSON.stringify(arr)); }catch(e){} }
+
+    function appendMsg(role, text){
       const d = document.createElement("div");
       d.className = "msg " + role;
-      d.innerHTML = html;
+      d.innerHTML = role === "a" ? fmt(text) : esc(text);   // AI = ข้อความเต็มกว้าง · user = bubble
       logEl().appendChild(d);
       logEl().scrollTop = logEl().scrollHeight;
       return d;
     }
+    function renderChat(arr){
+      logEl().innerHTML = arr.length ? "" : HINT;
+      arr.forEach(m => appendMsg(m.role, m.text));
+      updateChrome();
+    }
+    function lastAnswer(){
+      const arr = loadChat(askTicker);
+      for(let i = arr.length - 1; i >= 0; i--) if(arr[i].role === "a") return arr[i].text;
+      return "";
+    }
+    // ปุ่มล้าง โผล่เมื่อมีแชท · แถบ copy/share โผล่เมื่อมีคำตอบ AI แล้ว
+    function updateChrome(){
+      document.getElementById("sheetClear").hidden = loadChat(askTicker).length === 0;
+      document.getElementById("sheetActs").hidden = !lastAnswer();
+    }
+
     function openAsk(ticker){
       askTicker = ticker;
       document.getElementById("sheetTkr").textContent = ticker;
-      logEl().innerHTML = '<div class="hint">ถามได้เลย เช่น “สรุปสั้นๆ ทำไมสัญญาณเป็นแบบนี้” · “ควรเข้าตอนไหน” · “มีข่าวอะไรล่าสุด”</div>';
       document.getElementById("sheetInput").value = "";
+      renderChat(loadChat(ticker));
       const s = document.getElementById("sheet");
+      document.querySelector("#sheet .panel").style.height = "";   // กลับไป default 70vh
       s.classList.add("open"); s.setAttribute("aria-hidden", "false");
+      document.body.classList.add("sheet-open");   // ล็อกสกอลพื้นหลัง
       document.getElementById("sheetInput").focus();
     }
     function closeAsk(){
       const s = document.getElementById("sheet");
       s.classList.remove("open"); s.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("sheet-open");
+      document.querySelector("#sheet .panel").style.height = "";
     }
+    function clearAsk(){
+      if(!askTicker) return;
+      try{ localStorage.removeItem(chatKey(askTicker)); }catch(e){}
+      renderChat([]);
+    }
+
     async function sendAsk(){
       if(askBusy) return;
       const inp = document.getElementById("sheetInput");
@@ -759,9 +818,12 @@
       askBusy = true;
       document.getElementById("sheetSend").disabled = true;
       const hint = logEl().querySelector(".hint"); if(hint) hint.remove();
-      pushMsg("u", esc(q));
+      const arr = loadChat(askTicker);
+      arr.push({ role: "u", text: q }); saveChat(askTicker, arr);
+      appendMsg("u", q);
+      updateChrome();
       inp.value = "";
-      const wait = pushMsg("a", "กำลังคิด…");
+      const wait = appendMsg("a", "กำลังคิด…");
       try{
         const res = await fetch("/api/ask", {
           method: "POST",
@@ -769,20 +831,70 @@
           body: JSON.stringify({ question: q, stock: STOCKS[askTicker] || { ticker: askTicker } }),
         });
         const data = await res.json();
-        wait.innerHTML = res.ok ? fmt(data.answer) : ("ขออภัย ตอบไม่ได้ — " + esc(data.error || res.status));
+        if(res.ok){
+          wait.innerHTML = fmt(data.answer);
+          arr.push({ role: "a", text: data.answer }); saveChat(askTicker, arr);
+        } else {
+          wait.textContent = "ขออภัย ตอบไม่ได้ — " + (data.error || res.status);
+        }
       }catch(e){
         wait.textContent = "เชื่อมต่อไม่ได้ ลองใหม่อีกครั้ง";
       }finally{
         askBusy = false;
         document.getElementById("sheetSend").disabled = false;
+        updateChrome();
         logEl().scrollTop = logEl().scrollHeight;
       }
+    }
+
+    async function copyAnswer(){
+      const t = lastAnswer(); if(!t) return;
+      try{ await navigator.clipboard.writeText(t); }
+      catch(e){ const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta); ta.select(); try{ document.execCommand("copy"); }catch(_){} ta.remove(); }
+      const btn = document.getElementById("btnCopy");
+      btn.classList.add("ok"); btn.querySelector("span").textContent = "คัดลอกแล้ว";
+      setTimeout(() => { btn.classList.remove("ok"); btn.querySelector("span").textContent = "คัดลอก"; }, 1600);
+    }
+    async function shareAnswer(){
+      const t = lastAnswer(); if(!t) return;
+      const text = `MegaCoach · ${askTicker}\n\n${t}`;
+      if(navigator.share){ try{ await navigator.share({ title: "MegaCoach · " + askTicker, text }); }catch(e){} }
+      else copyAnswer();
+    }
+
+    // ลาก grip → ปรับสูง · snap 70vh ↔ เต็มจอ · ลากลงต่ำกว่า 40% = ปิด
+    function initSheetDrag(){
+      const panel = document.querySelector("#sheet .panel");
+      const grip = document.getElementById("sheetGrip");
+      let startY = 0, startH = 0, dragging = false;
+      const onDown = e => {
+        dragging = true; startY = e.clientY; startH = panel.getBoundingClientRect().height;
+        panel.classList.add("dragging"); grip.setPointerCapture(e.pointerId);
+      };
+      const onMove = e => {
+        if(!dragging) return;
+        const h = Math.min(window.innerHeight, Math.max(0, startH + (startY - e.clientY)));
+        panel.style.height = h + "px";
+      };
+      const onUp = () => {
+        if(!dragging) return;
+        dragging = false; panel.classList.remove("dragging");
+        const vh = window.innerHeight, h = panel.getBoundingClientRect().height;
+        if(h < vh * 0.4){ closeAsk(); return; }       // ลากลงสุด = ปิด
+        const full = vh, mid = vh * 0.7;
+        panel.style.height = (h > (mid + full) / 2 ? full : mid) + "px";
+      };
+      grip.addEventListener("pointerdown", onDown);
+      grip.addEventListener("pointermove", onMove);
+      grip.addEventListener("pointerup", onUp);
+      grip.addEventListener("pointercancel", onUp);
     }
     document.addEventListener("DOMContentLoaded", () => {
       const inp = document.getElementById("sheetInput");
       inp.addEventListener("keydown", e => {
         if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); sendAsk(); }
       });
+      initSheetDrag();
     });
 
     /* ---------- North Star (public time gauge + encrypted owner layer) ---------- */
