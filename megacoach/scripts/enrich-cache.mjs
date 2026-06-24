@@ -8,7 +8,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
-import { markHeld } from "./mark-held.mjs";
+import { consolidateHeld } from "./mark-held.mjs";
 
 const HERE  = dirname(fileURLToPath(import.meta.url));
 const REPO  = resolve(HERE, "..");                       // .../megacoach
@@ -21,7 +21,7 @@ const TODAY = new Date().toISOString().slice(0, 10);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 const esd = JSON.parse(await readFile(DATA, "utf8"));
-markHeld(esd, JSON.parse(await readFile(HOLD, "utf8")));   // ติดธง "ถืออยู่" จาก holdings.json ทุกรอบ
+consolidateHeld(esd, JSON.parse(await readFile(HOLD, "utf8")));   // ยกหุ้นถืออยู่เข้ากลุ่ม Holdings จาก holdings.json ทุกรอบ
 const stocks = (esd.groups || []).flatMap(g => g.stocks || []).filter(s => s.ticker);
 const todo = stocks.filter(s => FORCE || s.chartTA?.updated !== TODAY);
 console.log(`พบ ${stocks.length} entry · ต้องอ่าน ${todo.length} (base ${BASE})`);

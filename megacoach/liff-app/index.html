@@ -264,7 +264,6 @@
   .ns-prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
   .ns-prog-top .pk-k{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
   .ns-prog-badge{font-size:10.5px;font-weight:700;color:var(--go);background:var(--go-bg);border:1px solid oklch(0.82 0.07 150);padding:3px 10px;border-radius:var(--r-pill)}
-  .held-pill{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.02em;color:var(--go);background:var(--go-bg);border:1px solid oklch(0.82 0.07 150);padding:1px 7px;border-radius:var(--r-pill);vertical-align:middle}
   .ns-next{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:6px}
   .ns-next .nx-k{display:block;font-size:10px;color:var(--ink-3);margin-bottom:3px}
   .ns-next .nx-l b{font-family:"IBM Plex Mono",monospace;font-size:19px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
@@ -698,7 +697,7 @@
               <span class="logo"><span class="logo-mono">${s.ticker.slice(0,2)}</span><img src="${logoUrl(s.ticker)}" alt="" loading="lazy" onerror="this.remove()"></span>
               <div class="id-text">
                 <div class="ticker mono">${s.ticker}</div>
-                <div class="name">${s.name}${s.held ? ` <span class="held-pill">ถืออยู่</span>` : ""}</div>
+                <div class="name">${s.name}</div>
               </div>
             </div>
             <div class="price">
