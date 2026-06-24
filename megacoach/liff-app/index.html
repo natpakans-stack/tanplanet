@@ -576,12 +576,15 @@
   /* ---------- แผน DCA รายเดือน ---------- */
   .dca{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-1);padding:var(--s4);margin-bottom:var(--s4)}
   .dca-head{display:flex;gap:var(--s3);align-items:flex-start;margin-bottom:var(--s4)}
-  .dca-ic{font-size:22px;line-height:1}
+  .dca-ic{flex:0 0 auto;width:24px;height:24px;color:var(--accent-ink)}
+  .dca-ic svg{width:100%;height:100%}
   .dca-head h2{font-size:16px;font-weight:700;letter-spacing:-.01em}
-  .dca-head p{font-size:12px;color:var(--ink-3);margin-top:2px;line-height:1.45}
+  .dca-head p{font-size:12px;color:var(--ink-3);margin-top:2px;line-height:1.45;display:flex;align-items:center;flex-wrap:wrap;gap:0 2px}
+  .sig-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--go-line);margin:0 1px}
   .dca-list{list-style:none;display:flex;flex-direction:column;gap:var(--s3)}
   .dca-list li{display:flex;flex-direction:column;gap:var(--s1);padding:var(--s3);background:var(--bg);border:1px solid var(--hair);border-radius:var(--r-md)}
-  .dca-tag{align-self:flex-start;font-size:12px;font-weight:700;padding:3px 10px;border-radius:var(--r-pill)}
+  .dca-tag{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;font-size:12px;font-weight:700;padding:3px 10px;border-radius:var(--r-pill)}
+  .dca-tag .ti{width:15px;height:15px;flex:0 0 auto}
   .dca-tag.core{color:var(--accent-ink);background:var(--accent-bg)}
   .dca-tag.alpha{color:var(--go);background:var(--go-bg)}
   .dca-tag.swing{color:var(--wait);background:var(--wait-bg)}
@@ -599,7 +602,12 @@
   li.done .dca-body{text-decoration:line-through;opacity:.45;text-decoration-color:var(--ink-3)}
   li.done .dca-tag{opacity:.55}
   .dca-done{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);padding:var(--s4);background:var(--go-bg);border:1px solid var(--go-line);border-radius:var(--r-md);font-size:13.5px;font-weight:600;color:var(--go)}
-  .dca-reset{flex:0 0 auto;font:inherit;font-size:12px;font-weight:600;color:var(--ink-2);background:var(--surface);border:1px solid var(--border-2);border-radius:var(--r-pill);padding:5px 12px;cursor:pointer}
+  .dca-done .dt{display:flex;align-items:center;gap:7px}
+  .dca-done .dt svg{width:18px;height:18px;flex:0 0 auto}
+  .dca-foot{display:flex;align-items:flex-start;gap:6px}
+  .dca-foot svg{width:14px;height:14px;flex:0 0 auto;margin-top:2px;color:var(--wait-line)}
+  .dca-reset{display:inline-flex;align-items:center;gap:5px;flex:0 0 auto;font:inherit;font-size:12px;font-weight:600;color:var(--ink-2);background:var(--surface);border:1px solid var(--border-2);border-radius:var(--r-pill);padding:5px 12px;cursor:pointer}
+  .dca-reset svg{width:13px;height:13px}
   .dca-list[hidden],.dca-done[hidden]{display:none}  /* [hidden] (class+attr) ต้องชนะ display ของ .dca-list/.dca-done */
 </style>
 </head>
@@ -633,31 +641,31 @@
     <!-- แผน DCA รายเดือน — static (เปอร์เซ็นต์ + จำนวนไม้ ไม่โชว์ยอดเงิน) -->
     <section class="dca" aria-label="แผน DCA รายเดือน">
       <div class="dca-head">
-        <span class="dca-ic" aria-hidden="true">💰</span>
+        <span class="dca-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg></span>
         <div>
           <h2>แผน DCA รายเดือน</h2>
-          <p>เงินเข้า = ลงตามนี้ · แกนยิงเลย · ตัวทำกำไรรอ 🟢 · สิ้นเดือนต้องลงครบ</p>
+          <p>เงินเข้า = ลงตามนี้ · แกนยิงเลย · ตัวทำกำไรรอ<span class="sig-dot" aria-hidden="true"></span>· สิ้นเดือนต้องลงครบ</p>
         </div>
       </div>
       <ul class="dca-list">
         <li data-task="core">
-          <label class="dca-check"><input type="checkbox" aria-label="ทำเครื่องหมาย แกน"><span class="dca-box"></span><span class="dca-tag core">🏗️ แกน 60%</span></label>
+          <label class="dca-check"><input type="checkbox" aria-label="ทำเครื่องหมาย แกน"><span class="dca-box"></span><span class="dca-tag core"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>แกน 60%</span></label>
           <div class="dca-body"><b>QQQ + VOO</b> (60:40) · 2 ไม้ market · <b>ใช้ไม้ฟรีกับ QQQ</b> · ซื้อแล้วลืม ไม่ตั้ง target/stop</div>
         </li>
         <li data-task="alpha">
-          <label class="dca-check"><input type="checkbox" aria-label="ทำเครื่องหมาย ตัวทำกำไร"><span class="dca-box"></span><span class="dca-tag alpha">🚀 ตัวทำกำไร 25%</span></label>
+          <label class="dca-check"><input type="checkbox" aria-label="ทำเครื่องหมาย ตัวทำกำไร"><span class="dca-box"></span><span class="dca-tag alpha"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/></svg>ตัวทำกำไร 25%</span></label>
           <div class="dca-body">1 ตัว conviction (NVDA / Idea Radar) · <b>1 ไม้</b> เลือกวัน 🟢 หรือวันย่อ · อย่าซอย · ถือยาว</div>
         </li>
         <li data-task="swing">
-          <label class="dca-check"><input type="checkbox" aria-label="ทำเครื่องหมาย swing"><span class="dca-box"></span><span class="dca-tag swing">⚡ swing 15%</span></label>
+          <label class="dca-check"><input type="checkbox" aria-label="ทำเครื่องหมาย swing"><span class="dca-box"></span><span class="dca-tag swing"><svg class="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>swing 15%</span></label>
           <div class="dca-body"><b>เข้า 1 ไม้เต็ม</b> (เขียน entry/target/stop ก่อน) · <b>ออก:</b> ถึง target หรือ −10% ขายหมด <i>หรือ</i> +15~20% ขายครึ่ง เหลือครึ่งวิ่งต่อ · ไม่มี setup → ม้วนเข้าแกน</div>
         </li>
       </ul>
       <div class="dca-done" hidden>
-        <span>✅ ลงครบเดือนนี้แล้ว 🎉 — รอเดือนใหม่</span>
-        <button class="dca-reset" type="button">↺ เริ่มใหม่</button>
+        <span class="dt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>ลงครบเดือนนี้แล้ว — รอเดือนใหม่</span>
+        <button class="dca-reset" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>เริ่มใหม่</button>
       </div>
-      <p class="dca-foot">⚠️ Dime ไม่มี stop order → routine เช้าเตือนเมื่อหลุด stop แล้วกดขายเอง · ไม้ฟรี 1/เดือน · ห้ามดองเงิน</p>
+      <p class="dca-foot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><span>Dime ไม่มี stop order → routine เช้าเตือนเมื่อหลุด stop แล้วกดขายเอง · ไม้ฟรี 1/เดือน · ห้ามดองเงิน</span></p>
     </section>
 
     <div id="radar"></div>
