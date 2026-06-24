@@ -588,6 +588,18 @@
   .dca-body{font-size:13px;color:var(--ink-2);line-height:1.5}
   .dca-body b{color:var(--ink);font-weight:600}
   .dca-foot{font-size:11.5px;color:var(--ink-3);margin-top:var(--s3);line-height:1.45}
+  /* interactive checklist */
+  .dca-check{display:flex;align-items:center;gap:var(--s2);cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .dca-check input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+  .dca-box{flex:0 0 auto;width:20px;height:20px;border:2px solid var(--border-2);border-radius:6px;display:grid;place-items:center;transition:background .15s,border-color .15s}
+  .dca-box::after{content:"";width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);transition:transform .15s}
+  .dca-check input:checked + .dca-box{background:var(--go-line);border-color:var(--go-line)}
+  .dca-check input:checked + .dca-box::after{transform:rotate(45deg) scale(1)}
+  .dca-check input:focus-visible + .dca-box{outline:2px solid var(--accent);outline-offset:2px}
+  li.done .dca-body{text-decoration:line-through;opacity:.45;text-decoration-color:var(--ink-3)}
+  li.done .dca-tag{opacity:.55}
+  .dca-done{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);padding:var(--s4);background:var(--go-bg);border:1px solid var(--go-line);border-radius:var(--r-md);font-size:13.5px;font-weight:600;color:var(--go)}
+  .dca-reset{flex:0 0 auto;font:inherit;font-size:12px;font-weight:600;color:var(--ink-2);background:var(--surface);border:1px solid var(--border-2);border-radius:var(--r-pill);padding:5px 12px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -627,19 +639,23 @@
         </div>
       </div>
       <ul class="dca-list">
-        <li>
-          <span class="dca-tag core">🏗️ แกน 60%</span>
+        <li data-task="core">
+          <label class="dca-check"><input type="checkbox" aria-label="ทำเครื่องหมาย แกน"><span class="dca-box"></span><span class="dca-tag core">🏗️ แกน 60%</span></label>
           <div class="dca-body"><b>QQQ + VOO</b> (60:40) · 2 ไม้ market · <b>ใช้ไม้ฟรีกับ QQQ</b> · ซื้อแล้วลืม ไม่ตั้ง target/stop</div>
         </li>
-        <li>
-          <span class="dca-tag alpha">🚀 ตัวทำกำไร 25%</span>
+        <li data-task="alpha">
+          <label class="dca-check"><input type="checkbox" aria-label="ทำเครื่องหมาย ตัวทำกำไร"><span class="dca-box"></span><span class="dca-tag alpha">🚀 ตัวทำกำไร 25%</span></label>
           <div class="dca-body">1 ตัว conviction (NVDA / Idea Radar) · <b>1 ไม้</b> เลือกวัน 🟢 หรือวันย่อ · อย่าซอย · ถือยาว</div>
         </li>
-        <li>
-          <span class="dca-tag swing">⚡ swing 15%</span>
+        <li data-task="swing">
+          <label class="dca-check"><input type="checkbox" aria-label="ทำเครื่องหมาย swing"><span class="dca-box"></span><span class="dca-tag swing">⚡ swing 15%</span></label>
           <div class="dca-body"><b>เข้า 1 ไม้เต็ม</b> (เขียน entry/target/stop ก่อน) · <b>ออก:</b> ถึง target หรือ −10% ขายหมด <i>หรือ</i> +15~20% ขายครึ่ง เหลือครึ่งวิ่งต่อ · ไม่มี setup → ม้วนเข้าแกน</div>
         </li>
       </ul>
+      <div class="dca-done" hidden>
+        <span>✅ ลงครบเดือนนี้แล้ว 🎉 — รอเดือนใหม่</span>
+        <button class="dca-reset" type="button">↺ เริ่มใหม่</button>
+      </div>
       <p class="dca-foot">⚠️ Dime ไม่มี stop order → routine เช้าเตือนเมื่อหลุด stop แล้วกดขายเอง · ไม้ฟรี 1/เดือน · ห้ามดองเงิน</p>
     </section>
 
@@ -1124,7 +1140,42 @@
         if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); sendAsk(); }
       });
       initSheetDrag();
+      initDca();
     });
+
+    /* ---------- DCA checklist — local state, auto-reset เดือนใหม่ ---------- */
+    function initDca(){
+      const sec = document.querySelector(".dca");
+      if(!sec) return;
+      const KEY = "dca-check";
+      const d = new Date();
+      const month = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0"); // local YYYY-MM
+      let st;
+      try{ st = JSON.parse(localStorage.getItem(KEY)) || {}; }catch(e){ st = {}; }
+      if(st.month !== month || !Array.isArray(st.done)){ st = {month, done:[]}; } // เดือนใหม่ → ล้าง
+      const items = [...sec.querySelectorAll("li[data-task]")];
+      const list = sec.querySelector(".dca-list");
+      const done = sec.querySelector(".dca-done");
+      const save = () => localStorage.setItem(KEY, JSON.stringify(st));
+      function paint(){
+        items.forEach(li => {
+          const on = st.done.includes(li.dataset.task);
+          li.classList.toggle("done", on);
+          li.querySelector("input").checked = on;
+        });
+        const all = items.length > 0 && items.every(li => st.done.includes(li.dataset.task));
+        list.hidden = all;          // ครบ → ซ่อน task รอเดือนใหม่
+        done.hidden = !all;
+      }
+      items.forEach(li => li.querySelector("input").addEventListener("change", e => {
+        const t = li.dataset.task;
+        if(e.target.checked){ if(!st.done.includes(t)) st.done.push(t); }
+        else st.done = st.done.filter(x => x !== t);
+        save(); paint();
+      }));
+      sec.querySelector(".dca-reset").addEventListener("click", () => { st.done = []; save(); paint(); });
+      save(); paint();
+    }
 
     /* ---------- North Star (public time gauge + encrypted owner layer) ---------- */
     const NS_KEY = "ns_owner_pass";
