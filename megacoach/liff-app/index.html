@@ -572,6 +572,22 @@
     #sheet.open .panel{transform:translateX(0)}
     #sheet .grip{display:none}
   }
+
+  /* ---------- แผน DCA รายเดือน ---------- */
+  .dca{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-1);padding:var(--s4);margin-bottom:var(--s4)}
+  .dca-head{display:flex;gap:var(--s3);align-items:flex-start;margin-bottom:var(--s4)}
+  .dca-ic{font-size:22px;line-height:1}
+  .dca-head h2{font-size:16px;font-weight:700;letter-spacing:-.01em}
+  .dca-head p{font-size:12px;color:var(--ink-3);margin-top:2px;line-height:1.45}
+  .dca-list{list-style:none;display:flex;flex-direction:column;gap:var(--s3)}
+  .dca-list li{display:flex;flex-direction:column;gap:var(--s1);padding:var(--s3);background:var(--bg);border:1px solid var(--hair);border-radius:var(--r-md)}
+  .dca-tag{align-self:flex-start;font-size:12px;font-weight:700;padding:3px 10px;border-radius:var(--r-pill)}
+  .dca-tag.core{color:var(--accent-ink);background:var(--accent-bg)}
+  .dca-tag.alpha{color:var(--go);background:var(--go-bg)}
+  .dca-tag.swing{color:var(--wait);background:var(--wait-bg)}
+  .dca-body{font-size:13px;color:var(--ink-2);line-height:1.5}
+  .dca-body b{color:var(--ink);font-weight:600}
+  .dca-foot{font-size:11.5px;color:var(--ink-3);margin-top:var(--s3);line-height:1.45}
 </style>
 </head>
 <body>
@@ -600,6 +616,33 @@
       <div class="sk-card"><div class="sk-row"><div class="sk sk-h w40"></div><div class="sk sk-h w22"></div></div><div class="sk sk-sig"></div><div class="sk sk-line w90"></div><div class="sk sk-line w70"></div></div>
       <div class="sk-card"><div class="sk-row"><div class="sk sk-h w40"></div><div class="sk sk-h w22"></div></div><div class="sk sk-sig"></div><div class="sk sk-line w90"></div><div class="sk sk-line w70"></div></div>
     </div>
+
+    <!-- แผน DCA รายเดือน — static (เปอร์เซ็นต์ + จำนวนไม้ ไม่โชว์ยอดเงิน) -->
+    <section class="dca" aria-label="แผน DCA รายเดือน">
+      <div class="dca-head">
+        <span class="dca-ic" aria-hidden="true">💰</span>
+        <div>
+          <h2>แผน DCA รายเดือน</h2>
+          <p>เงินเข้า = ลงตามนี้ · แกนยิงเลย · ตัวทำกำไรรอ 🟢 · สิ้นเดือนต้องลงครบ</p>
+        </div>
+      </div>
+      <ul class="dca-list">
+        <li>
+          <span class="dca-tag core">🏗️ แกน 60%</span>
+          <div class="dca-body"><b>QQQ + VOO</b> (60:40) · 2 ไม้ market · <b>ใช้ไม้ฟรีกับ QQQ</b> · ซื้อแล้วลืม ไม่ตั้ง target/stop</div>
+        </li>
+        <li>
+          <span class="dca-tag alpha">🚀 ตัวทำกำไร 25%</span>
+          <div class="dca-body">1 ตัว conviction (NVDA / Idea Radar) · <b>1 ไม้</b> เลือกวัน 🟢 หรือวันย่อ · อย่าซอย · ถือยาว</div>
+        </li>
+        <li>
+          <span class="dca-tag swing">⚡ swing 15%</span>
+          <div class="dca-body"><b>เข้า 1 ไม้เต็ม</b> (เขียน entry/target/stop ก่อน) · <b>ออก:</b> ถึง target หรือ −10% ขายหมด <i>หรือ</i> +15~20% ขายครึ่ง เหลือครึ่งวิ่งต่อ · ไม่มี setup → ม้วนเข้าแกน</div>
+        </li>
+      </ul>
+      <p class="dca-foot">⚠️ Dime ไม่มี stop order → routine เช้าเตือนเมื่อหลุด stop แล้วกดขายเอง · ไม้ฟรี 1/เดือน · ห้ามดองเงิน</p>
+    </section>
+
     <div id="radar"></div>
     <div id="northstar"></div>
     <div id="insurance"></div>
