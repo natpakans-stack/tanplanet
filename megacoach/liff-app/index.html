@@ -120,26 +120,31 @@
   .chg.up{color:var(--up);background:var(--go-bg)} .chg.down{color:var(--down);background:var(--avoid-bg)}
 
   /* signal banner — the glance anchor */
-  .signal{display:flex;align-items:center;gap:12px;margin:0 var(--s4) var(--s4);padding:13px 14px;border-radius:var(--r-md)}
+  .signal{display:flex;align-items:flex-start;gap:12px;margin:0 var(--s4) var(--s4);padding:13px 14px;border-radius:var(--r-md)}
   .signal .ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;color:#fff}
   .signal .ic svg{width:17px;height:17px}
   .signal .txt{flex:1;min-width:0}
   .signal .top-line{display:flex;align-items:center;gap:8px}
   .signal .top-line b{font-size:15px;font-weight:700;letter-spacing:-.01em}
-  .signal .desc{font-size:12px;color:var(--ink-2);margin-top:2px;line-height:1.4}
+  .signal .ic{margin-top:1px}
+  .signal .desc{display:flex;flex-direction:column;gap:4px;margin-top:6px;font-size:12px;color:var(--ink-2);line-height:1.45}
+  .signal .desc.one{display:block}
+  .signal .desc .dl{padding-left:11px;position:relative}
+  .signal .desc .dl::before{content:"·";position:absolute;left:2px;top:-1px;color:var(--ink-3);font-weight:700}
   .s-go{background:var(--go-bg);color:var(--go)} .s-go .ic{background:var(--go)}
   .s-wait{background:var(--wait-bg);color:var(--wait)} .s-wait .ic{background:var(--wait)}
   .s-avoid{background:var(--avoid-bg);color:var(--avoid)} .s-avoid .ic{background:var(--avoid)}
 
   /* factors */
   .factors{padding:2px var(--s4) var(--s2);padding-left:calc(var(--s4) + 13px)}
-  .factors .f{display:grid;grid-template-columns:8px 1fr auto;align-items:center;gap:14px;padding:9px 0;font-size:12.5px;border-top:1px solid var(--hair)}
+  .factors .f{display:grid;grid-template-columns:8px 1fr;column-gap:11px;row-gap:3px;padding:10px 0;font-size:12.5px;border-top:1px solid var(--hair)}
   .factors .f:first-child{border-top:none}
-  .fdot{width:8px;height:8px;border-radius:50%;justify-self:start}
+  .fdot{width:8px;height:8px;border-radius:50%;justify-self:start;grid-column:1;grid-row:1;margin-top:5px}
   .fdot.g{background:var(--go-line)} .fdot.w{background:var(--wait-line)} .fdot.a{background:var(--avoid-line)}
-  .f .lbl{color:var(--ink-2)}
-  .f .val{font-weight:600;color:var(--ink);text-align:right}
+  .f .lbl{grid-column:2;grid-row:1;font-weight:700;color:var(--ink);line-height:1.4}
+  .f .val{grid-column:2;grid-row:2;color:var(--ink-2);text-align:left;font-weight:400;line-height:1.5}
   .f .val.mono{font-size:12px}
+  .hl{color:var(--ink);font-weight:700}
 
   /* coach plan */
   .plan{margin:13px 0 0;padding:12px var(--s4) 14px;background:var(--accent-bg);border-top:1px solid var(--border)}
@@ -611,6 +616,65 @@
   .dca-reset{display:inline-flex;align-items:center;gap:5px;flex:0 0 auto;font:inherit;font-size:12px;font-weight:600;color:var(--ink-2);background:var(--surface);border:1px solid var(--border-2);border-radius:var(--r-pill);padding:5px 12px;cursor:pointer}
   .dca-reset svg{width:13px;height:13px}
   .dca-list[hidden],.dca-done[hidden]{display:none}  /* [hidden] (class+attr) ต้องชนะ display ของ .dca-list/.dca-done */
+  /* ---------- weekly flow (คู่มือมือใหม่ พับได้) ---------- */
+  .wk{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-1);padding:var(--s4);margin-bottom:var(--s4)}
+  .wk>summary{display:flex;gap:var(--s3);align-items:flex-start;cursor:pointer;list-style:none;-webkit-tap-highlight-color:transparent}
+  .wk>summary::-webkit-details-marker{display:none}
+  .wk-ic{flex:0 0 auto;width:24px;height:24px;color:var(--accent-ink)}
+  .wk-ic svg{width:100%;height:100%}
+  .wk-htxt h2{font-size:16px;font-weight:700;letter-spacing:-.01em}
+  .wk-htxt p{font-size:12px;color:var(--ink-3);margin-top:2px;line-height:1.45}
+  .wk-chev{margin-left:auto;flex:0 0 auto;width:18px;height:18px;color:var(--ink-3);transition:transform .2s}
+  .wk[open] .wk-chev{transform:rotate(180deg)}
+  .wk-calm{font-size:13px;color:var(--ink-2);line-height:1.5;background:var(--go-bg);border:1px solid var(--go-line);border-radius:var(--r-md);padding:var(--s3);margin:var(--s4) 0}
+  .wk-calm b{color:var(--go);font-weight:700}
+  .wk-list{list-style:none;display:flex;flex-direction:column;gap:var(--s3)}
+  .wk-list li{display:flex;flex-direction:column;gap:6px;padding:var(--s3);background:var(--bg);border:1px solid var(--hair);border-radius:var(--r-md)}
+  .wk-top{display:flex;align-items:center;gap:var(--s2)}
+  .wk-tag{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;padding:3px 10px;border-radius:var(--r-pill)}
+  .wk-tag.pay{color:var(--accent-ink);background:var(--accent-bg)}
+  .wk-tag.buy{color:var(--go);background:var(--go-bg)}
+  .wk-tag.rmf{color:var(--wait);background:var(--wait-bg)}
+  .wk-when{margin-left:auto;font-size:11.5px;color:var(--ink-3);white-space:nowrap}
+  .wk-do{font-size:13px;color:var(--ink-2);line-height:1.5}
+  .wk-do b{color:var(--ink);font-weight:600}
+  .wk-rules{display:flex;flex-direction:column;gap:6px;margin-top:var(--s4);padding-top:var(--s4);border-top:1px solid var(--hair)}
+  .wk-rules div{font-size:12.5px;color:var(--ink-2);line-height:1.45;display:flex;gap:7px;align-items:flex-start}
+  .wk-rules b{color:var(--ink);font-weight:600}
+  /* ---------- guide launcher + bottom sheet (2 แท็บ) ---------- */
+  .guide-open{display:flex;align-items:center;gap:var(--s3);width:100%;margin:var(--s4) 0;
+    padding:13px var(--s4);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);
+    box-shadow:var(--sh-1);font:inherit;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent;text-align:left}
+  .guide-open .gi{flex:0 0 auto;width:22px;height:22px;color:var(--accent-ink)}
+  .guide-open .gi svg{width:100%;height:100%}
+  .guide-open .gt{display:flex;flex-direction:column;gap:1px;flex:1}
+  .guide-open .gt strong{font-size:14px;font-weight:700;letter-spacing:-.01em;line-height:1.25}
+  .guide-open .gt small{font-size:11.5px;font-weight:500;color:var(--ink-3);line-height:1.3}
+  .guide-open .ga{flex:0 0 auto;width:18px;height:18px;color:var(--ink-3)}
+  .guide-open .ga svg{width:100%;height:100%}
+  #guide{position:fixed;inset:0;z-index:55;visibility:hidden;opacity:0;transition:opacity .25s,visibility .25s}
+  #guide.open{visibility:visible;opacity:1}
+  #guide .scrim{position:absolute;inset:0;background:oklch(0.255 0.02 265/.42)}
+  #guide .g-panel{position:absolute;left:0;right:0;bottom:0;max-width:480px;margin:0 auto;
+    background:var(--surface);border-radius:var(--r-xl) var(--r-xl) 0 0;box-shadow:var(--sh-2);
+    height:70vh;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom);
+    transform:translateY(100%);transition:transform .28s cubic-bezier(.32,.72,0,1)}
+  #guide.open .g-panel{transform:translateY(0)}
+  #guide .g-grip{display:flex;justify-content:center;padding:9px 0 3px}
+  #guide .g-grip i{width:38px;height:4px;border-radius:var(--r-pill);background:var(--border-2);display:block}
+  #guide .g-head{display:flex;align-items:center;gap:var(--s2);padding:0 var(--s4);border-bottom:1px solid var(--hair)}
+  .g-tabs{display:flex;gap:var(--s5);flex:1}
+  .g-tab{font:inherit;font-size:14px;font-weight:700;color:var(--ink-3);background:none;border:none;
+    padding:13px 2px;cursor:pointer;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;-webkit-tap-highlight-color:transparent}
+  .g-tab.active{color:var(--accent-ink);border-bottom-color:var(--accent)}
+  .g-close{flex:0 0 auto;width:30px;height:30px;border:none;background:var(--panel);border-radius:50%;
+    color:var(--ink-2);cursor:pointer;display:grid;place-items:center;font-size:14px;line-height:1}
+  #guide .g-body{flex:1;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:var(--s4)}
+  .g-pane[hidden]{display:none}
+  /* การ์ดข้างใน sheet = เอา chrome การ์ดออก ให้เนื้อหาเต็มแผ่น */
+  #guide .dca,#guide .wk{background:none;border:none;box-shadow:none;padding:0;margin:0}
+  #guide .wk>summary{pointer-events:none}
+  #guide .wk-chev{display:none}
 </style>
 </head>
 <body>
@@ -634,11 +698,34 @@
 
   <div class="wrap">
     <div id="notice"></div>
+
+    <!-- ปุ่มเปิดคู่มือ bottom sheet -->
+    <button class="guide-open" onclick="openGuide()" aria-haspopup="dialog">
+      <span class="gi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+      <span class="gt"><strong>สิ่งที่ต้องทำ</strong><small>แผนรายเดือน · สัปดาห์นี้ทำอะไร</small></span>
+      <span class="ga" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+    </button>
+
     <div id="app">
       <div class="sk-card"><div class="sk-row"><div class="sk sk-h w40"></div><div class="sk sk-h w22"></div></div><div class="sk sk-sig"></div><div class="sk sk-line w90"></div><div class="sk sk-line w70"></div></div>
       <div class="sk-card"><div class="sk-row"><div class="sk sk-h w40"></div><div class="sk sk-h w22"></div></div><div class="sk sk-sig"></div><div class="sk sk-line w90"></div><div class="sk sk-line w70"></div></div>
       <div class="sk-card"><div class="sk-row"><div class="sk sk-h w40"></div><div class="sk sk-h w22"></div></div><div class="sk sk-sig"></div><div class="sk sk-line w90"></div><div class="sk sk-line w70"></div></div>
     </div>
+
+    <!-- คู่มือ bottom sheet: แผนเดือน + สัปดาห์นี้ (2 แท็บ สูง 70vh) -->
+    <div id="guide" aria-hidden="true">
+      <div class="scrim" onclick="closeGuide()"></div>
+      <div class="g-panel" role="dialog" aria-label="คู่มือสิ่งที่ต้องทำ">
+        <div class="g-grip" aria-hidden="true"><i></i></div>
+        <div class="g-head">
+          <div class="g-tabs" role="tablist">
+            <button class="g-tab active" data-pane="month" role="tab" onclick="guideTab('month')">แผนรายเดือน</button>
+            <button class="g-tab" data-pane="week" role="tab" onclick="guideTab('week')">สัปดาห์นี้</button>
+          </div>
+          <button class="g-close" onclick="closeGuide()" aria-label="ปิด">✕</button>
+        </div>
+        <div class="g-body">
+          <div class="g-pane" data-pane="month">
 
     <!-- แผน DCA รายเดือน — static (เปอร์เซ็นต์ + จำนวนไม้ ไม่โชว์ยอดเงิน) -->
     <section class="dca" aria-label="แผน DCA รายเดือน">
@@ -669,6 +756,46 @@
       </div>
       <p class="dca-foot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><span>Dime ไม่มี stop order → routine เช้าเตือนเมื่อหลุด stop แล้วกดขายเอง · ไม้ฟรี 1/เดือน · ห้ามดองเงิน</span></p>
     </section>
+
+          </div>
+          <div class="g-pane" data-pane="week" hidden>
+
+    <!-- คู่มือมือใหม่: สัปดาห์นึงทำอะไร — อยู่ในแท็บ "สัปดาห์นี้" -->
+    <details class="wk" open>
+      <summary>
+        <span class="wk-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg></span>
+        <span class="wk-htxt"><h2>สัปดาห์นึงต้องทำอะไร</h2><p>ระบบเฝ้าตลาดให้ — คุณแค่ทำตาม LINE · กดอ่านเมื่อไม่แน่ใจ</p></span>
+        <span class="wk-chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+      </summary>
+
+      <p class="wk-calm"><b>เงียบทั้งอาทิตย์ = ปกติ = ดี 👍</b> จะมีงานก็ต่อเมื่อ LINE เด้งเท่านั้น — ไม่ต้องคอยเฝ้าจอ</p>
+
+      <ul class="wk-list">
+        <li>
+          <div class="wk-top"><span class="wk-tag pay">💰 เติมพอร์ต</span><span class="wk-when">เดือนละ 1 ครั้ง</span></div>
+          <div class="wk-do">เปิดแอป Dime → <b>เติมเงิน 10,000฿</b> → ซื้อตัวประจำ (VOO/QQQ) ตามเช็กลิสต์ด้านบน · ~10 นาที</div>
+        </li>
+        <li>
+          <div class="wk-top"><span class="wk-tag buy">🚦 ราคาถึงโซน</span><span class="wk-when">นานๆ ที</span></div>
+          <div class="wk-do">หุ้นที่หมายตาไว้ราคาลงมาถึงจุดน่าซื้อ → เปิด Dime <b>ซื้อไม้เล็ก</b>ตามที่ข้อความบอก (บอกราคา+จำนวนให้ครบ) · ~5 นาที</div>
+        </li>
+        <li>
+          <div class="wk-top"><span class="wk-tag rmf">🔄 กองเกษียณ</span><span class="wk-when">นานๆ ที</span></div>
+          <div class="wk-do">กองลดหย่อนภาษีตัวนึงผลงานไม่ดี → <b>ไม่รีบ</b> กดปุ่มโค้ชพอร์ตถามก่อนได้ · 0 นาที</div>
+        </li>
+      </ul>
+
+      <div class="wk-rules">
+        <div>🟢 <span><b>เงียบ = ปกติ</b> ไม่ต้องคอยเช็คเอง ระบบเตือนตอนสำคัญให้แล้ว</span></div>
+        <div>🔴 <span><b>อย่าซื้อเองนอกรอบ</b>เพราะเห็นข่าว/เพื่อนบอก — ไม่เด้ง = ยังไม่ใช่จังหวะ</span></div>
+        <div>❓ <span><b>สงสัยถามได้ตลอด</b> กดปุ่ม "โค้ชพอร์ต" มุมล่างขวา</span></div>
+      </div>
+    </details>
+
+          </div><!-- /.g-pane week -->
+        </div><!-- /.g-body -->
+      </div><!-- /.g-panel -->
+    </div><!-- /#guide -->
 
     <div id="radar"></div>
     <div id="northstar"></div>
@@ -745,13 +872,23 @@
       : '<svg class="chg-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M9 7h8v8"/></svg>';
     const logoUrl = t => `https://assets.parqet.com/logos/symbol/${encodeURIComponent(t)}`;
 
+    // เน้นตัวเลขเงิน/เปอร์เซ็นต์ ($41.46B, +12.6%, -0.43%) ให้ skim ง่าย
+    function hl(t){ return (t || "").replace(/([+\-−]?\$\d[\d.,]*\s?[BMK]?|[+\-−]?\d[\d.,]*\s?%)/g, '<b class="hl">$1</b>'); }
+    // แตก wall of text เป็นบรรทัดย่อยตาม " · " — อ่าน/skim ง่ายกว่าก้อนเดียว
+    function renderDesc(t){
+      if(!t) return "";
+      const parts = t.split(" · ");
+      if(parts.length === 1) return `<div class="desc one">${hl(t)}</div>`;
+      return `<div class="desc">${parts.map(p => `<span class="dl">${hl(p)}</span>`).join("")}</div>`;
+    }
+
     function renderFactors(factors){
       if(!factors || !factors.length) return "";
       const rows = factors.map(f => `
         <div class="f">
           <span class="fdot ${f.status}"></span>
           <span class="lbl">${f.label}</span>
-          <span class="val ${f.mono ? "mono" : ""}">${f.value}</span>
+          <span class="val ${f.mono ? "mono" : ""}">${hl(f.value)}</span>
         </div>`).join("");
       return `<div class="factors">${rows}</div>`;
     }
@@ -779,7 +916,7 @@
             <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${sig.ic}</svg></span>
             <div class="txt">
               <div class="top-line"><b>${s.signalLabel}</b></div>
-              ${s.signalDesc ? `<div class="desc">${s.signalDesc}</div>` : ""}
+              ${renderDesc(s.signalDesc)}
             </div>
           </div>
           ${renderFactors(s.factors)}
@@ -1064,6 +1201,23 @@
       if(!askTicker) return;
       try{ localStorage.removeItem(chatKey(askTicker)); }catch(e){}
       renderChat([]);
+    }
+
+    // ---- guide bottom sheet (แผนเดือน + สัปดาห์นี้) ----
+    function guideTab(name){
+      document.querySelectorAll("#guide .g-tab").forEach(t => t.classList.toggle("active", t.dataset.pane === name));
+      document.querySelectorAll("#guide .g-pane").forEach(p => p.hidden = p.dataset.pane !== name);
+      const body = document.querySelector("#guide .g-body"); if(body) body.scrollTop = 0;
+    }
+    function openGuide(){
+      const g = document.getElementById("guide");
+      g.classList.add("open"); g.setAttribute("aria-hidden", "false");
+      document.body.classList.add("sheet-open");
+    }
+    function closeGuide(){
+      const g = document.getElementById("guide");
+      g.classList.remove("open"); g.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("sheet-open");
     }
 
     async function sendAsk(){

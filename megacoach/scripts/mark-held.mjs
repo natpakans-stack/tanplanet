@@ -46,7 +46,11 @@ export function consolidateHeld(esd, holdings) {
   hg.meta = `${hg.stocks.length} ตัว`;
 
   // ทิ้งกลุ่มที่ว่างและไม่มี empty-state (กลุ่ม holdings เก็บไว้เสมอ)
-  esd.groups = groups.filter(g => g === hg || (g.stocks && g.stocks.length) || g.empty);
+  // แล้วเรียงตาม journey ความ active: Satellite (ลงแรงสุด ต้องจัดการ) → Watchlist (รอจังหวะ) → Holdings (ถือแล้ว รู้แล้ว) → Core (DCA autopilot)
+  const ORDER = { satellite: 0, watchlist: 1, holdings: 2, core: 3 };
+  esd.groups = groups
+    .filter(g => g === hg || (g.stocks && g.stocks.length) || g.empty)
+    .sort((a, b) => (ORDER[a.id] ?? 9) - (ORDER[b.id] ?? 9));
   return esd;
 }
 
