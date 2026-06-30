@@ -598,6 +598,11 @@
   .dca-tag.rmf{color:var(--ink-2);background:var(--panel)}
   .dca-body{font-size:13px;color:var(--ink-2);line-height:1.5}
   .dca-body b{color:var(--ink);font-weight:600}
+  /* "เดือนนี้: <action>" — เติมโดย engine ผ่าน monthly-plan.json */
+  .dca-now{font-size:12.5px;color:var(--ink);background:var(--accent-bg);border:1px solid var(--accent);border-radius:8px;padding:7px 9px;margin-bottom:7px;line-height:1.5}
+  .dca-now b{color:var(--accent-ink);font-weight:700}
+  .dca-now-sub{display:block;margin-top:3px;font-size:11px;color:var(--ink-2)}
+  li.done .dca-now{opacity:.45;text-decoration:line-through;text-decoration-color:var(--ink-3)}
   .dca-foot{font-size:11.5px;color:var(--ink-3);margin-top:var(--s3);line-height:1.45}
   /* interactive checklist */
   .dca-check{display:flex;align-items:center;gap:var(--s2);cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -1311,7 +1316,31 @@
       });
       initSheetDrag();
       initDca();
+      renderMonthlyPlan();
     });
+
+    /* ---------- การ์ด "เดือนนี้ทำอะไร" — engine เติมผ่าน monthly-plan.json ---------- */
+    async function renderMonthlyPlan(){
+      let mp;
+      try{ const r = await fetch("./monthly-plan.json?t=" + Date.now()); if(!r.ok) return; mp = await r.json(); }
+      catch(e){ return; }
+      const d = new Date(), cur = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+      if(mp.month !== cur) return; // แผนเก่าค้างเดือน → โชว์แค่กติกา static ไม่เติมของผิดเดือน
+      const inject = (task, html) => {
+        const li = document.querySelector(`.dca-list li[data-task="${task}"]`);
+        if(!li || li.querySelector(".dca-now")) return;
+        const body = li.querySelector(".dca-body");
+        const el = document.createElement("div");
+        el.className = "dca-now";
+        el.innerHTML = html;
+        li.insertBefore(el, body);
+      };
+      if(mp.alpha) inject("alpha", `📌 <b>เดือนนี้:</b> ${mp.alpha.ticker} ${mp.alpha.amount} · ${mp.alpha.how}`);
+      if(mp.swing){
+        if(mp.swing.hasSetup) inject("swing", `📌 <b>เดือนนี้:</b> ${mp.swing.ticker} เข้า ${mp.swing.entry} · เป้า ${mp.swing.target} · ตัด ${mp.swing.stop}<span class="dca-now-sub">${mp.swing.exec}</span>`);
+        else inject("swing", `📌 <b>เดือนนี้:</b> ไม่มี setup → ม้วน ${mp.swing.amount || "~1,500฿"} เข้า ${mp.swing.rollTo || "QQQ/VOO"}`);
+      }
+    }
 
     /* ---------- DCA checklist — local state, auto-reset เดือนใหม่ ---------- */
     function initDca(){
