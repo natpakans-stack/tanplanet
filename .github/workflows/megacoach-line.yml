@@ -16,6 +16,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # เจอก้อนบรีฟเช้า → ต่อการ์ด "ดวงลงทุนวันนี้" (สดจาก API) เป็น carousel [brief, ดวง]
+      # การ์ดอื่น (alert/DCA) ไม่แตะ · API ล่ม → ส่งบรีฟเดี่ยวตามเดิม
+      - name: Attach ดวงลงทุน card (carousel)
+        run: |
+          cat > /tmp/attach.mjs <<'SCRIPT'
+          import { readFileSync, writeFileSync } from "node:fs";
+          const PATH = "megacoach/liff-app/line-outbox.json";
+          const API = "https://thai-astrology-flame.vercel.app/daily-invest/flex";
+          const isBrief = m => m?.type==="flex" && m.contents?.type==="bubble"
+            && /ENTRY SIGNAL|บรีฟเช้า/.test(JSON.stringify(m.contents.header||{}));
+          const outbox = JSON.parse(readFileSync(PATH,"utf8"));
+          let changed=false;
+          for (const m of outbox.messages||[]) {
+            if (!isBrief(m)) continue;
+            try {
+              const astro = await (await fetch(API)).json();
+              if (astro?.type !== "bubble") throw new Error("bad astro bubble");
+              m.contents = { type:"carousel", contents:[m.contents, astro] };
+              m.altText = (m.altText||"บรีฟเช้า MegaCoach") + " + 🔮 ดวงลงทุนวันนี้";
+              changed = true; console.log("✅ ต่อการ์ดดวง → carousel");
+            } catch (e) { console.log("⚠️ ดึงการ์ดดวงไม่ได้ ส่งบรีฟเดี่ยว:", e.message); }
+          }
+          if (changed) writeFileSync(PATH, JSON.stringify(outbox,null,2)+"\n");
+          else console.log("ไม่พบก้อนบรีฟเช้า — outbox คงเดิม");
+          SCRIPT
+          node /tmp/attach.mjs
+
       - name: Validate outbox JSON
         run: jq -e '.messages | type == "array" and length > 0' megacoach/liff-app/line-outbox.json
 
