@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plikplan Internal — แพลตฟอร์มบริหารงานภายในทีม (Next.js 16 · Supabase · Serverless)</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Plikplan Internal — แพลตฟอร์มบริหารงานภายในทีม">
+  <meta name="twitter:description" content="Portfolio: แพลตฟอร์มภายใน — Kanban board, ปฏิทิน, CRM, ใบเสนอราคา/เบิกจ่าย, โน้ตประชุม AI — Next.js 16 + Supabase (RLS) + serverless cron ไม่มี host รัน 24/7">
+  <meta property="og:url" content="https://projects.tanplanet.info/plikplan-internal-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.info/plikplan-internal-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: แพลตฟอร์มภายใน — Kanban board, ปฏิทิน, CRM, ใบเสนอราคา/เบิกจ่าย, โน้ตประชุม AI — Next.js 16 + Supabase (RLS) + serverless cron ไม่มี host รัน 24/7">
+  <meta property="og:title" content="Plikplan Internal — แพลตฟอร์มบริหารงานภายในทีม">
+  <meta name="description" content="Portfolio: แพลตฟอร์มภายใน — Kanban board, ปฏิทิน, CRM, ใบเสนอราคา/เบิกจ่าย, โน้ตประชุม AI — Next.js 16 + Supabase (RLS) + serverless cron ไม่มี host รัน 24/7">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%231e3a8a'/><text x='50' y='62' text-anchor='middle' font-size='54'>🗂️</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #1e3a8a;
+      --accent-light: #dbeafe;
+      --accent-dark: #1e293b;
+      --accent-glow: rgba(30,58,138,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 30%, #1e3a8a 75%, #2563eb 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(219,234,254,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(30,58,138,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #1e3a8a, #2563eb, #dbeafe);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #bfdbfe;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #1e293b, #1e3a8a);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30,58,138,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #2563eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(30,58,138,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Board Mockup ===== */
+    .ext-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 460px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+    .ext-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      align-items: center;
+    }
+    .ext-bar .ext-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    .ext-bar .ext-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 1px 9px;
+      font-size: 0.72rem;
+    }
+    .board-cols {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 12px;
+    }
+    .board-col {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .board-col-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .board-col-head .cnt { color: var(--text-muted); font-weight: 600; }
+    .board-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 10px;
+      margin-bottom: 8px;
+    }
+    .board-card:last-child { margin-bottom: 0; }
+    .board-prio { display: flex; align-items: center; gap: 5px; margin-bottom: 6px; }
+    .board-prio .pdot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+    .board-prio .plabel { font-size: 0.68rem; font-weight: 700; }
+    .board-card .ct { font-size: 0.78rem; font-weight: 600; line-height: 1.4; }
+    .board-card .cm { font-size: 0.68rem; color: var(--text-muted); margin-top: 5px; }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .closing .links {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .closing .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(30,41,59,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(30,41,59,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark">🗂️</div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Internal Platform &middot; Next.js 16 &middot; Supabase &middot; Serverless
+      </div>
+      <h1>Plikplan Internal<br><span class="accent">แพลตฟอร์มบริหารงานภายในทีม — บอร์ด ปฏิทิน ลูกค้า เอกสาร และโน้ตประชุม AI ในที่เดียว</span></h1>
+      <p>เครื่องมือภายในของทีม ที่รวม Kanban board, ปฏิทิน, CRM ลูกค้า, ใบเสนอราคา/เบิกจ่าย และโน้ตประชุม AI ไว้ในแอปเดียว — สร้างบน Next.js 16 + Supabase (RLS) และขับ automation ด้วย serverless cron ล้วน <code>ไม่มี host รัน 24/7</code> ออกแบบ multi-tenant ตั้งแต่ migration แรกเพื่อต่อยอดเป็น product</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Next.js 16</span>
+        <span class="hero-tag">React 19</span>
+        <span class="hero-tag">Tailwind v4</span>
+        <span class="hero-tag">Supabase (RLS)</span>
+        <span class="hero-tag">Bun monorepo</span>
+        <span class="hero-tag">Serverless cron</span>
+        <span class="hero-tag">Discord REST</span>
+        <span class="hero-tag">Google Calendar</span>
+        <span class="hero-tag">OpenAI</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#stack">ดู Tech Stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>ปัญหาที่เจอ</h2>
+      <p>งานของทีมกระจายอยู่หลายเครื่องมือ — ทำไมการบริหารงานประจำวันถึงยังยุ่งและตกหล่นบ่อย?</p>
+    </section>
+
+    <div class="quote-block">
+      <p>งานทีมกระจายอยู่คนละที่ — คิวงานคุยกันใน chat, นัดประชุมอยู่ในปฏิทินส่วนตัว, ข้อมูลลูกค้าอยู่ในสเปรดชีต, สรุปประชุมทำมือทุกครั้ง ไม่มีจุดเดียวที่เห็นภาพรวมว่าใครทำอะไรถึงไหน งานเลยตกหล่น ตามยาก และซ้ำซ้อน</p>
+      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ Plikplan Internal</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="emoji">&#129513;</span>
+        <h3>งานกระจายหลายเครื่องมือ ไม่มี single source of truth</h3>
+        <p>บอร์ดงานอยู่ใน chat, นัดอยู่ในปฏิทินส่วนตัว, ลูกค้าอยู่ในชีต — จะรู้ว่างานลูกค้ารายหนึ่งถึงไหนต้องเปิดหลายที่ประกอบเอง</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#129302;</span>
+        <h3>บอทแจ้งเตือนต้องเปิดเครื่องรัน 24/7</h3>
+        <p>ระบบเตือนงาน/ประชุมแบบเดิมต้องมี process ค้างตลอดเวลา — เปลือง host, ล่มแล้วเงียบไม่มีใครรู้ ดูแลลำบาก</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128221;</span>
+        <h3>สรุปประชุมทำมือทุกครั้ง</h3>
+        <p>ทีมอัดเสียงประชุมไว้ แต่กว่าจะมีคนมานั่งฟังย้อน ถอด แล้วสรุปเป็นบันทึก เสียเวลามาก และคุณภาพไม่คงที่ในแต่ละครั้ง</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#129534;</span>
+        <h3>ใบเสนอราคา/เบิกจ่ายทำมือ ไม่มี flow อนุมัติ</h3>
+        <p>เอกสารทำในไฟล์แยก ไล่ถามกันเองว่าใครอนุมัติ เวอร์ชันปนกัน ไม่มีสถานะชัดว่าอันไหนร่าง อันไหนอนุมัติแล้ว</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#127970;</span>
+        <h3>อยากต่อยอดขายลูกค้า แต่ระบบผูกกับบริษัทเดียว</h3>
+        <p>ถ้าสร้างเป็นเครื่องมือใช้ภายในตรงๆ โดยไม่คิดเผื่อหลายองค์กร วันหนึ่งจะเอาไปขายลูกค้าต้องรื้อ data model ใหม่ทั้งหมด</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>รวมทุกงานไว้ที่เดียว แล้วให้ automation ทำงานน่าเบื่อแทน — โดยไม่ต้องเลี้ยง server ไว้ตลอดเวลา</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <span class="emoji">&#128202;</span>
+        <h3>รวมทุกงานไว้แพลตฟอร์มเดียว</h3>
+        <p>บอร์ด, ปฏิทิน, CRM ลูกค้า, เอกสาร และโน้ตประชุม ใช้ข้อมูลชุดเดียวกัน — เปิดหน้าเดียวเห็นว่างานลูกค้าแต่ละรายถึงไหน ใครถือ</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#9729;&#65039;</span>
+        <h3>ทิ้ง host 24/7 เปลี่ยนเป็น serverless cron</h3>
+        <p>GitHub Actions ยิง <code>/api/cron/*</code> บน Vercel ทุก 30 นาที — งานเตือน/แจ้งเป็น tick แบบ stateless ไม่มี process ค้าง RAM ไม่มีเครื่องต้องเลี้ยง</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#127908;</span>
+        <h3>pipeline โน้ตประชุมอัตโนมัติ</h3>
+        <p>วางลิงก์ไฟล์อัดเสียงประชุม → ระบบ cook เสียงรายคน → ถอด → สรุปเป็น brief มีโครงสร้าง (การตัดสินใจ/สิ่งที่ต้องทำ/ความเสี่ยง) + คะแนนความครบถ้วน</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#9989;</span>
+        <h3>เอกสารมี flow อนุมัติจริง</h3>
+        <p>ใบเสนอราคา/เบิกจ่าย เดินสถานะ ร่าง &rarr; รออนุมัติ &rarr; อนุมัติ/ปฏิเสธ ตาม role ผู้ใช้ พร้อมออก PDF ภาษาไทย และคลังลายเซ็น</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#129521;</span>
+        <h3>ออกแบบ multi-tenant ตั้งแต่ migration แรก</h3>
+        <p>ทุกตารางมี <code>org_id</code> + Row Level Security กันข้ามองค์กรตั้งแต่วันแรก — v1 รันบริษัทเดียว แต่พร้อมกลายเป็น product ขายลูกค้าโดยไม่ต้องรื้อ</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน — 4 จังหวะ</h2>
+      <p>หัวใจสถาปัตยกรรม: ไม่มี host รัน 24/7 — ทุก automation ขับด้วย cron tick แบบ stateless</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <span class="emoji">&#128451;&#65039;</span>
+        <h4>ทีมทำงานบนแพลตฟอร์ม</h4>
+        <p>ลากการ์ดบนบอร์ด ตั้งนัดในปฏิทิน วางลิงก์ไฟล์อัดประชุม</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <span class="emoji">&#9201;&#65039;</span>
+        <h4>Cron tick ทุก 30 นาที</h4>
+        <p>GitHub Actions ยิง <code>/api/cron/*</code> บน Vercel — ไม่มี host ค้าง</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <span class="emoji">&#9881;&#65039;</span>
+        <h4>ประมวลผลเป็นชุด</h4>
+        <p>เตือนงานใกล้ครบ/เลยกำหนด, sync Google, cook + ถอดเสียงประชุม</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <span class="emoji">&#128227;</span>
+        <h4>ส่งออกอัตโนมัติ</h4>
+        <p>แจ้ง Discord/อีเมล + สรุปภาพรวมรายสัปดาห์ทุกเช้าจันทร์</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>Bun monorepo &middot; Next.js 16 บน Vercel &middot; Supabase — ไม่มี backend เป็นของตัวเอง ไม่มีเครื่องรันตลอดเวลา</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          ทีมภายใน + ช่องทางภายนอกที่เชื่อมต่อ
+          <div class="arch-sub">
+            <span>เว็บ (React 19)</span>
+            <span>Discord voice</span>
+            <span>Google Calendar</span>
+            <span>ลิงก์ไฟล์อัดประชุม</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          apps/web — Next.js 16 App Router (Vercel)
+          <div class="arch-sub">
+            <span>board / calendar</span>
+            <span>CRM / เอกสาร</span>
+            <span>meeting notes</span>
+            <span>api/cron/*</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          packages/shared + GitHub Actions cron
+          <div class="arch-sub">
+            <span>domain.ts</span>
+            <span>queries.ts</span>
+            <span>meeting.ts (AI)</span>
+            <span>notify.ts / google.ts</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Supabase (Postgres + Auth + Realtime + RLS) &middot; บริการภายนอก
+          <div class="arch-sub">
+            <span>RLS policies</span>
+            <span>Realtime</span>
+            <span>Discord REST v10</span>
+            <span>OpenAI / Google API</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+      <strong>ทำไมเลือก stack นี้?</strong>
+      <p><strong>Next.js 16 (App Router) + Server Actions</strong> — เขียน mutation ฝั่ง server ได้ตรงๆ ไม่ต้องปั้น REST เอง &middot; <strong>Supabase + RLS</strong> ให้ auth, realtime และความปลอดภัยระดับแถวมาในตัว — บังคับ multi-tenant ที่ชั้นฐานข้อมูล &middot; <strong>Bun workspaces monorepo</strong> — <code>packages/shared</code> เป็นแหล่งเดียวของ domain vocabulary + query builders ใช้ร่วมกันระหว่างเว็บกับ cron &middot; <strong>Serverless cron (GitHub Actions &rarr; Vercel)</strong> แทนบอทที่ต้องรัน 24/7 — stateless, ไม่มีเครื่องต้องเลี้ยง</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
+      <p>ครบ loop ของการบริหารงานทีม ตั้งแต่คิวงานถึงเอกสารและบันทึกประชุม</p>
+    </section>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <span class="emoji">&#128203;</span>
+        <h3>Kanban Board</h3>
+        <p>ลากจัดคิว 5 คอลัมน์ + sync realtime + ระดับความสำคัญ (สูง/กลาง/ต่ำ) + มอบหมายหลายคนต่อการ์ด</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128197;</span>
+        <h3>ปฏิทินทีม</h3>
+        <p>มุมมองเดือน/สัปดาห์ + งานประจำ (recurrence) + ผูกลิงก์ห้อง Discord ของแต่ละนัด</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128101;</span>
+        <h3>CRM ลูกค้า</h3>
+        <p>จัดสถานะ มุ่งหวัง/ประจำ/พัก แยกนิติบุคคล-บุคคล + ผูกช่อง Discord ต่อลูกค้าแต่ละราย</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128220;</span>
+        <h3>ใบเสนอราคา</h3>
+        <p>เดินสถานะ ร่าง&rarr;รอตอบรับ&rarr;ตอบรับ + ออก PDF ภาษาไทย + คลังลายเซ็นแนบท้าย</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128181;</span>
+        <h3>เบิกจ่าย</h3>
+        <p>แยกประเภทค่าใช้จ่าย + เติมอัตราหัก ณ ที่จ่ายอัตโนมัติ + flow อนุมัติตาม role ผู้ใช้</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#127908;</span>
+        <h3>โน้ตประชุม AI</h3>
+        <p>ลิงก์ไฟล์อัด &rarr; ถอดเสียงรายคน &rarr; brief มีโครงสร้าง (ตัดสินใจ/สิ่งที่ต้องทำ/ความเสี่ยง) + คะแนนความครบ</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128276;</span>
+        <h3>แจ้งเตือน Serverless</h3>
+        <p>เตือน Discord/อีเมลงานใกล้ครบ &amp; เลยกำหนด + สรุปภาพรวมรายสัปดาห์ ขับด้วย cron ไม่มี host</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128260;</span>
+        <h3>Sync Google Calendar</h3>
+        <p>เชื่อม OAuth สองทาง นัดในแอป &harr; Google + activity log ทุกการเปลี่ยนแปลง + changelog "มีอะไรใหม่"</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Board Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>หน้าตาบอร์ด</h2>
+      <p>คิวงานทั้งทีมในหน้าจอเดียว — ลากการ์ดข้ามคอลัมน์ อัปเดตสดให้ทุกคนเห็นพร้อมกัน</p>
+    </section>
+
+    <div class="ext-mockup">
+      <div class="ext-bar">
+        <span class="ext-btn">&#128203; บอร์ดทีม</span>
+        <span class="ext-btn">&#43; การ์ด</span>
+        <span class="ext-badge">12 งาน</span>
+      </div>
+      <div class="board-cols">
+        <div class="board-col">
+          <div class="board-col-head"><span>รอทำ</span><span class="cnt">2</span></div>
+          <div class="board-card">
+            <div class="board-prio"><span class="pdot" style="background:var(--red);"></span><span class="plabel" style="color:var(--red);">สูง</span></div>
+            <div class="ct">ทำใบเสนอราคาลูกค้าใหม่</div>
+            <div class="cm">&#128197; 5 ก.ค. &middot; &#128100; 2</div>
+          </div>
+          <div class="board-card">
+            <div class="board-prio"><span class="pdot" style="background:var(--orange);"></span><span class="plabel" style="color:var(--orange);">กลาง</span></div>
+            <div class="ct">เตรียมสไลด์นำเสนอ</div>
+            <div class="cm">&#128197; 6 ก.ค.</div>
+          </div>
+        </div>
+        <div class="board-col">
+          <div class="board-col-head"><span>กำลังทำ</span><span class="cnt">2</span></div>
+          <div class="board-card">
+            <div class="board-prio"><span class="pdot" style="background:var(--red);"></span><span class="plabel" style="color:var(--red);">สูง</span></div>
+            <div class="ct">แก้บั๊กหน้าชำระเงิน</div>
+            <div class="cm">&#128197; วันนี้ &middot; &#128100; 1</div>
+          </div>
+          <div class="board-card">
+            <div class="board-prio"><span class="pdot" style="background:var(--text-muted);"></span><span class="plabel" style="color:var(--text-muted);">ต่ำ</span></div>
+            <div class="ct">อัปเดตเอกสาร onboarding</div>
+            <div class="cm">&#128100; 1</div>
+          </div>
+        </div>
+        <div class="board-col">
+          <div class="board-col-head"><span>รีวิว</span><span class="cnt">1</span></div>
+          <div class="board-card">
+            <div class="board-prio"><span class="pdot" style="background:var(--orange);"></span><span class="plabel" style="color:var(--orange);">กลาง</span></div>
+            <div class="ct">รีวิว PR ปฏิทิน</div>
+            <div class="cm">&#128197; 4 ก.ค. &middot; &#128100; 2</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hack กับปัญหา</h2>
+      <p>6 โจทย์วิศวกรรมที่ต้องคิดทางแก้เอง — serverless constraint + API ที่ไม่มีเอกสาร + multi-tenant</p>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card arch" data-label="Serverless">
+        <span class="emoji">&#127785;</span>
+        <h3>ฆ่าบอทที่ต้องรัน 24/7</h3>
+        <p>ระบบเตือน/แจ้งเดิมต้องมี process ค้างตลอด — เปลือง host และล่มเงียบ อยากได้ automation ที่ไม่มีเครื่องต้องเลี้ยง</p>
+        <div class="highlight">แก้: cron tick เดียวทุก 30 นาที (GitHub Actions) ขับ 2 งานใน job เดียว (repo ส่วนตัว = Actions minutes มีค่าใช้จ่าย จึงไม่แตกหลาย workflow) — digest รายสัปดาห์ self-gate ด้วยการเช็คว่าเป็น tick เช้าจันทร์ (08:00–08:29 เขตไทย) ในโค้ด route เอง</div>
+      </div>
+
+      <div class="hack-card platform" data-label="Recording API">
+        <span class="emoji">&#127908;</span>
+        <h3>ถอดประชุมจากลิงก์อัดที่ไม่มี public API</h3>
+        <p>ไฟล์อัดประชุมอยู่บนบริการภายนอกที่ไม่เปิด API ทางการ — และ serverless function ลง ffmpeg ไม่ได้ ทำ audio processing หนักๆ ไม่ได้</p>
+        <div class="highlight">แก้: reverse-engineer endpoint จากหน้าดาวน์โหลด (metadata &rarr; สั่ง cook &rarr; poll &rarr; ดึง zip) ให้ฝั่งบริการ cook เสียงรายคนเป็น AAC ให้ แล้ว unzip ใน memory ด้วย <code>fflate</code> — ไม่ต้องพึ่ง ffmpeg เลย รันบน serverless ได้</div>
+      </div>
+
+      <div class="hack-card precision" data-label="AI Grounding">
+        <span class="emoji">&#129504;</span>
+        <h3>กัน AI มโนชื่อลูกค้า/ข้อสรุป</h3>
+        <p>ให้ LLM สรุปประชุมดิบๆ มันเดาชื่อลูกค้าและ project ที่ไม่มีจริง — สรุปสวยแต่เชื่อไม่ได้</p>
+        <div class="highlight">แก้: ฉีด context ของบอร์ดจริง (รายชื่อลูกค้า + การ์ดที่มีกำหนด) เข้าไปใน prompt ให้ model ground กับข้อมูลจริง + บังคับ JSON output มีโครงสร้าง &middot; ส่วน "Next Actions" ไม่ให้ AI ทำ แต่ roll up จากการ์ดที่มี due date ตรงๆ (factual ไม่ใช่ generative)</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Realtime">
+        <span class="emoji">&#9889;</span>
+        <h3>ลากการ์ดแล้วต้องไม่กระตุก/ชนกัน</h3>
+        <p>บอร์ดหลายคนใช้พร้อมกัน — ลากการ์ดแล้วรอ round-trip ถึงขยับ = หน่วง และถ้าสองคนขยับพร้อมกันลำดับพัง</p>
+        <div class="highlight">แก้: optimistic update ขยับการ์ดในจอทันที แล้วค่อย reconcile กับ Supabase Realtime ที่ broadcast การเปลี่ยนแปลงให้ทุก client — ลำดับ (position) คำนวณจาก weight ของ priority + ordering ในคอลัมน์ ให้ผลตรงกันทุกเครื่อง</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Discord REST">
+        <span class="emoji">&#128225;</span>
+        <h3>ยิง Discord จาก serverless โดยไม่มี gateway</h3>
+        <p><code>discord.js</code> ปกติต้องเปิด gateway (websocket ค้าง) — ขัดกับโมเดล serverless ที่ function จบแล้วดับ</p>
+        <div class="highlight">แก้: โพสต์ embed ผ่าน Discord REST v10 ตรงๆ (<code>POST /channels/:id/messages</code>) ไม่พึ่ง discord.js เลย รันจาก cron ได้สบาย + ออกแบบให้ fail soft (log ไม่ throw) ช่องเดียวพังไม่ล้มทั้ง batch</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Multi-tenant">
+        <span class="emoji">&#127970;</span>
+        <h3>เครื่องมือภายในที่พร้อมกลายเป็น product</h3>
+        <p>ถ้าสร้างแบบผูกบริษัทเดียว วันหนึ่งจะขายลูกค้าต้องรื้อ data model — แต่ทำ multi-tenant เต็มรูปตั้งแต่แรกก็ over-engineer สำหรับ v1</p>
+        <div class="highlight">แก้: ใส่ <code>org_id</code> + Row Level Security ทุกตารางตั้งแต่ migration ต้นๆ (v1 รัน org เดียว) — schema ค่อยๆ โตแบบ incremental ผ่าน migration หลายสิบไฟล์ ไม่ big-bang จึงพร้อมขยายเป็นหลายองค์กรโดยไม่ต้องรื้อ</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Design Decision ที่ตั้งใจเลือก</h2>
+      <p>ขอบเขตที่จงใจ "ไม่ทำ" ช่วยให้เครื่องมือเล็ก คม และดูแลง่าย</p>
+    </section>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>Plikplan Internal จงใจไม่พยายามเป็นทุกอย่าง — ไม่ทำห้องประชุมเอง (ใช้ Discord voice แอปแค่แจ้งเตือน/ลิงก์), ไม่มี host รัน 24/7 (serverless ล้วน), ไม่สร้าง design system ใหม่ (reuse จาก Plikplan Hub) ขอบเขตที่คมทำให้ implement ตรงและ maintain ง่าย</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#127911;</strong><br>
+        <strong>ไม่ทำห้องประชุมเอง</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ประชุมใช้ Discord voice — แอปแค่แจ้งเตือน/ลิงก์</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#9729;&#65039;</strong><br>
+        <strong>ไม่มี host รัน 24/7</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">automation เป็น serverless cron ล้วน ไม่มีเครื่องเลี้ยง</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#127912;</strong><br>
+        <strong>ไม่สร้าง design system ใหม่</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">reuse tokens/ฟอนต์/คอมโพเนนต์จาก Plikplan Hub</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#127970;</strong><br>
+        <strong>v1 รัน org เดียว</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">แต่โครง multi-tenant พร้อมขยายโดยไม่ต้องรื้อ</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge Domain ที่แข็งขึ้น</h2>
+      <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
+    </section>
+
+    <div class="learning-card">
+      <strong>1. Serverless scheduling — คิดแบบ stateless tick แทน long-running process:</strong>
+      <p>ออกแบบ automation ที่แต่เดิมต้องมีบอทรัน 24/7 ให้กลายเป็น cron tick แบบ stateless — รวมหลายงานใน job เดียวเพื่อประหยัด Actions minutes, ทำ time-window self-gating ด้วยเลขคณิต timezone (เขตไทย = UTC+7 คงที่). บทเรียน: งานที่ "ต้องรันตลอด" ส่วนใหญ่จริงๆ แค่ต้อง "รันเป็นจังหวะ" ก็พอ</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Postgres RLS + multi-tenant modeling — ความปลอดภัยที่ชั้นฐานข้อมูล:</strong>
+      <p>วาง <code>org_id</code> + Row Level Security ทุกตารางตั้งแต่ต้น เพื่อกันข้ามองค์กรที่ระดับ DB ไม่ใช่แค่ที่ application — และวิวัฒน์ schema แบบ incremental ผ่าน migration หลายสิบไฟล์. บทเรียน: ตัดสินใจ tenancy ตั้งแต่แถวแรกของ schema ถูกกว่ารื้อทีหลังมาก</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. LLM pipeline engineering — จาก prompt เดี่ยว เป็น pipeline ที่เชื่อถือได้:</strong>
+      <p>บังคับ structured JSON output, ground prompt ด้วยข้อมูลจริง (บอร์ด/ลูกค้า) เพื่อฆ่า hallucination, แยกส่วนที่เป็น "ข้อเท็จจริง" (roll up จากการ์ด) ออกจากส่วนที่ให้ AI สรุป, และทำ explainable score ที่อธิบายได้ว่าคะแนนมาจากไหน. บทเรียน: AI ที่เชื่อถือได้เกิดจากการจำกัดขอบเขตให้มัน ไม่ใช่ปล่อยอิสระ</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Reverse-engineering API + ข้อจำกัด serverless:</strong>
+      <p>แกะ endpoint ของบริการอัดเสียงที่ไม่มีเอกสารจากการ inspect หน้าดาวน์โหลด, จัดการ zip ใน memory ด้วย <code>fflate</code> แทน ffmpeg ที่ลงบน serverless ไม่ได้, และยิง Discord ผ่าน REST ตรงแทน gateway. บทเรียน: ข้อจำกัดของ runtime มักบังคับให้เจอทางแก้ที่เบาและตรงกว่าเดิม</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Monorepo domain-driven architecture — shared เป็นแหล่งความจริงเดียว:</strong>
+      <p>ใช้ Bun workspaces แยก <code>apps/web</code> กับ <code>packages/shared</code> ที่รวม domain vocabulary, query builders, และ business logic ใช้ร่วมกันทั้งเว็บและ cron — label/สถานะ/สีทั้งหมดมาจากที่เดียว ไม่ hardcode ซ้ำ. บทเรียน: โค้ดที่ต้อง "ตรงกันเสมอ" ต้องอยู่ที่เดียว ไม่ใช่ก๊อปไปหลายที่</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">11</div>
+        <div class="label">โมดูลงานหลักในแพลตฟอร์มเดียว</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">30</div>
+        <div class="label">SQL migration — schema โตแบบ incremental</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">host ที่ต้องรัน 24/7</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">4</div>
+        <div class="label">บริการภายนอกที่เชื่อม (Discord · Google · อัดเสียง · OpenAI)</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>Plikplan Internal</h2>
+    <p>แพลตฟอร์มบริหารงานภายในทีม ที่รวมบอร์ด ปฏิทิน CRM เอกสาร และโน้ตประชุม AI ไว้ในที่เดียว — สร้างบน Next.js 16 + Supabase ขับ automation ด้วย serverless cron ล้วน ไม่มี host รัน 24/7 และออกแบบ multi-tenant ตั้งแต่ migration แรกเพื่อต่อยอดเป็น product</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Next.js 16</span>
+      <span class="stack-icon">React 19</span>
+      <span class="stack-icon">Tailwind v4</span>
+      <span class="stack-icon">Supabase (RLS)</span>
+      <span class="stack-icon">Bun monorepo</span>
+      <span class="stack-icon">Serverless cron</span>
+      <span class="stack-icon">Discord REST</span>
+      <span class="stack-icon">Google Calendar</span>
+      <span class="stack-icon">OpenAI</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.info/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Plikplan Internal Portfolio",
+      "item": "https://projects.tanplanet.info/plikplan-internal-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linne — เว็บ Lookbook เสื้อผ้าลินิน "แชทเพื่อสั่ง" (Next.js + Payload CMS)</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Linne — เว็บ Lookbook เสื้อผ้าลินิน 'แชทเพื่อสั่ง' (Next.js + Payload CMS)">
+  <meta name="twitter:description" content="Portfolio: เว็บ catalog + lookbook แบรนด์เสื้อผ้าลินิน — ไม่มีตะกร้า/ไม่มี checkout เลือกสี-ไซซ์แล้วกดสั่งเพื่อเด้งเข้า LINE พร้อมข้อความอัตโนมัติ จัดการสินค้าเองด้วย headless CMS">
+  <meta property="og:url" content="https://projects.tanplanet.info/linne-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.info/linne-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: เว็บ catalog + lookbook แบรนด์เสื้อผ้าลินิน — ไม่มีตะกร้า/ไม่มี checkout เลือกสี-ไซซ์แล้วกดสั่งเพื่อเด้งเข้า LINE พร้อมข้อความอัตโนมัติ จัดการสินค้าเองด้วย headless CMS">
+  <meta property="og:title" content="Linne — เว็บ Lookbook เสื้อผ้าลินิน 'แชทเพื่อสั่ง' (Next.js + Payload CMS)">
+  <meta name="description" content="Portfolio: เว็บ catalog + lookbook แบรนด์เสื้อผ้าลินิน — ไม่มีตะกร้า/ไม่มี checkout เลือกสี-ไซซ์แล้วกดสั่งเพื่อเด้งเข้า LINE พร้อมข้อความอัตโนมัติ จัดการสินค้าเองด้วย headless CMS">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23831843'/><text x='50' y='62' text-anchor='middle' font-size='54'>🌸</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #be185d;
+      --accent-light: #fce7f3;
+      --accent-dark: #831843;
+      --accent-glow: rgba(190,24,93,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #831843 0%, #be185d 45%, #db2777 80%, #ec4899 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(252,231,243,0.22) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(190,24,93,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #be185d, #ec4899, #fce7f3);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #fbcfe8;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #831843, #be185d);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(236,72,153,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(190,24,93,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Product Buy-Panel Mockup ===== */
+    .ext-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 400px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+    .ext-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      align-items: center;
+    }
+    .ext-bar .ext-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    .ext-bar .ext-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 1px 9px;
+      font-size: 0.72rem;
+    }
+    .ext-yt {
+      margin: 12px;
+      padding: 10px 12px;
+      border: 1px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 8px;
+    }
+    .ext-yt b { color: #c00; }
+    .ext-yt .u { color: var(--text-muted); font-size: 0.72rem; word-break: break-all; margin: 3px 0 8px; font-family: 'SF Mono', monospace; }
+    .ext-yt .chip { display: inline-block; border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 3px 8px; font-size: 0.72rem; margin-right: 5px; color: var(--text-secondary); }
+    .ext-table { width: 100%; border-collapse: collapse; }
+    .ext-table th {
+      text-align: left; padding: 8px 12px; font-size: 0.68rem; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--border);
+    }
+    .ext-table td { padding: 9px 12px; border-bottom: 1px solid #f2f2f1; vertical-align: top; }
+    .ext-table .kind { font-weight: 700; white-space: nowrap; }
+    .ext-table .kind.master { color: #1e6b2e; }
+    .ext-table .kind.variant { color: #8a7a12; }
+    .ext-table .kind.file { color: var(--accent); }
+    .ext-table .q { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .ext-table .info { color: var(--text-secondary); font-size: 0.76rem; }
+    .ext-table .chip { display: inline-block; border: 1px solid var(--border); background: #fafafa; border-radius: 5px; padding: 1px 7px; font-size: 0.68rem; color: var(--text-secondary); font-family: 'SF Mono', monospace; }
+    .ext-cmd {
+      margin: 0 12px 12px;
+      padding: 10px 12px;
+      background: #0f172a;
+      color: #a5f3fc;
+      border-radius: 8px;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      font-size: 0.72rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .ext-cmd .flag { color: #fde047; }
+    .ext-cmd .cmt { color: #64748b; }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .closing .links {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .closing .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(131,24,67,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(131,24,67,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark">🌸</div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Fashion Catalog &middot; Chat-to-Order &middot; Headless CMS
+      </div>
+      <h1>Linne<br><span class="accent">เว็บ Lookbook เสื้อผ้าลินิน ที่ "แชทเพื่อสั่ง" — ไม่มีตะกร้า ไม่มี checkout</span></h1>
+      <p>เว็บ catalog + lookbook สำหรับแบรนด์เสื้อผ้าลินินพรีเมียม — ยกระดับจากขายผ่าน Instagram feed มาเป็นหน้าร้านที่ค้นหาง่าย ลูกค้าเลือกสี/ไซซ์แล้วกด "สั่งซื้อ" เพื่อเด้งเข้า <code>LINE</code> พร้อมข้อความสั่งซื้อที่กรอกให้อัตโนมัติ ทีมแบรนด์แก้สินค้า/ราคา/สถานะเองได้จาก headless CMS หลังบ้าน</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Next.js 16</span>
+        <span class="hero-tag">React 19</span>
+        <span class="hero-tag">Payload CMS 3</span>
+        <span class="hero-tag">PostgreSQL</span>
+        <span class="hero-tag">Tailwind v4</span>
+        <span class="hero-tag">LINE Deep Link</span>
+        <span class="hero-tag">Webflow Rewire</span>
+        <span class="hero-tag">Chat-to-Order</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#stack">ดู Tech Stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>ปัญหาที่เจอ</h2>
+      <p>แบรนด์เสื้อผ้าลินินที่โตมาจาก Instagram อยากมีหน้าร้านที่ดูพรีเมียมและค้นหาง่ายกว่า feed — แต่ยังไม่พร้อมทำ e-commerce เต็มรูปแบบ</p>
+    </section>
+
+    <div class="quote-block">
+      <p>ลูกค้าเจอลุคสวยใน IG แต่พอจะสั่ง ต้องเลื่อน feed หากลับ ถามซ้ำว่ารุ่นไหน มีไซซ์อะไร สีอะไร ราคาเท่าไหร่ ของหมดยัง — แบรนด์ตอบเดิมทุกวัน ส่วนระบบตะกร้า/ตัดบัตร กลับหนักและเกินจำเป็นสำหรับการขายที่จบด้วยการ "คุยกันใน LINE" อยู่แล้ว</p>
+      <div class="author">— โจทย์ตั้งต้น: ยกระดับจาก IG feed เป็นเว็บ catalog ที่ยังปิดการขายผ่านแชท</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="emoji">&#128241;</span>
+        <h3>ขายผ่าน IG feed อย่างเดียว — หาสินค้าไม่เป็นระบบ</h3>
+        <p>ลูกค้าต้องเลื่อน feed หาลุคที่เห็น ไม่มีหมวดหมู่ ไม่มีหน้าสินค้าเป็นเรื่องเป็นราว collection เก่าจมหายไปกับโพสต์ใหม่</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128172;</span>
+        <h3>ทักแชทถามซ้ำ ๆ ทุกวัน</h3>
+        <p>ไซซ์ไหน สีอะไร เนื้อผ้าเป็นยังไง ราคาเท่าไหร่ ของหมดยัง — คำถามเดิมวนซ้ำ เพราะข้อมูลไม่ได้อยู่รวมที่เดียว แอดมินตอบมือจนล้า</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128722;</span>
+        <h3>ระบบตะกร้า/ตัดบัตร หนักและเกินจำเป็น</h3>
+        <p>การขายจริงจบที่การคุยใน LINE อยู่แล้ว — checkout, payment gateway, ระบบสมาชิก กลายเป็นภาระที่ไม่ได้ใช้ และเพิ่มจุดที่ลูกค้าหลุด</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128295;</span>
+        <h3>อัปเดตสินค้าเองไม่ได้ ต้องรอ dev</h3>
+        <p>เพิ่มสินค้าใหม่ แก้ราคา ปรับสถานะ "ของหมด" ทุกครั้งต้องจ้างคนแก้โค้ด — ทีมแบรนด์อยากคุมเนื้อหาเองแบบไม่ต้องแตะโค้ด</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#127912;</span>
+        <h3>เทมเพลตสำเร็จรูปสวย แต่ผูกกับ commerce engine ของมันเอง</h3>
+        <p>ดีไซน์ fashion template ที่ถูกใจ มากับระบบตะกร้า/สินค้าแบบตายตัว — เอามาต่อกับข้อมูลจริงและช่องทาง LINE ตรง ๆ ไม่ได้</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>ทำ catalog ให้เป็นระบบ + เปลี่ยน "ปุ่มสั่งซื้อ" ให้เป็น deep-link เข้าแชท ตัด checkout ทิ้ง แล้วให้แบรนด์คุมทุกอย่างจากหลังบ้าน</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <span class="emoji">&#128717;&#65039;</span>
+        <h3>Catalog เป็นระบบ ค้นง่ายกว่า feed</h3>
+        <p>สินค้าแยกหมวดหมู่ มีหน้า collection กรองตามหมวด มีสถานะ (พร้อมขาย/พรีออเดอร์/ของหมด) และป้าย badge — ลูกค้าหาลุคที่เห็นเจอใน 2-3 คลิก</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128241;</span>
+        <h3>Chat-to-Order: กดสั่ง → เด้ง LINE พร้อมข้อความ</h3>
+        <p>เลือกสี+ไซซ์ ระบบประกอบเป็นข้อความสั่งซื้อ (ชื่อสินค้า + ตัวเลือกที่เลือก + ลิงก์) แล้ว deep-link เข้า LINE OA ของแบรนด์แบบ pre-filled — ลูกค้าแค่กดส่ง</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#9989;</span>
+        <h3>ไม่มี checkout — เหลือแค่ "สอบถาม"</h3>
+        <p>ตัด cart / payment / ระบบสมาชิกทิ้งทั้งหมด เหลือ inquiry flow อย่างเดียว — เบา เร็ว และตรงกับพฤติกรรมจริงที่ปิดการขายในแชท</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#129525;</span>
+        <h3>Headless CMS — แบรนด์คุมเนื้อหาเอง</h3>
+        <p>Payload CMS ในตัว ที่ <code>/admin</code> — เพิ่ม/แก้สินค้า ราคา สถานะ หมวดหมู่ รูป และแม้แต่ช่องทาง LINE/ข้อความตั้งต้น ได้เองแบบไม่ต้องแตะโค้ด</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128260;</span>
+        <h3>Rewire เทมเพลตสวย ให้ data-driven</h3>
+        <p>เอา fashion template มาแยก HTML/CSS/JS ออก แล้ว "ฉีด" การ์ดสินค้าจริงจาก CMS เข้าไปแทน — เก็บดีไซน์และแอนิเมชันไว้ ทิ้ง commerce engine เดิม</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน — 4 จังหวะ</h2>
+      <p>ตั้งแต่เปิดเว็บ จนถึงข้อความสั่งซื้อเด้งเข้าแชท</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <span class="emoji">&#128717;&#65039;</span>
+        <h4>Explore</h4>
+        <p>เปิดเว็บดูคอลเลกชัน กรองตามหมวดหมู่ เห็นสถานะสินค้าแต่ละชิ้น</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <span class="emoji">&#128064;</span>
+        <h4>Consider</h4>
+        <p>เข้าหน้าสินค้า ดูรูปหลายมุม ราคา เนื้อผ้า และรายละเอียด</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <span class="emoji">&#127799;</span>
+        <h4>เลือกสี / ไซซ์</h4>
+        <p>กดเลือก variant ระบบประกอบข้อความสั่งซื้ออัตโนมัติ real-time</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <span class="emoji">&#128241;</span>
+        <h4>Inquire ผ่าน LINE</h4>
+        <p>กดสั่งซื้อ → เด้งเข้า LINE พร้อมข้อความ pre-filled แค่กดส่ง</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>หน้าร้าน RSC-first + headless CMS + deep-link ออกแชท — ไม่มี payment layer</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          หน้าร้าน — Home / Collection / Product (any device)
+          <div class="arch-sub">
+            <span>เลือกสี / ไซซ์</span>
+            <span>ดูสถานะสินค้า</span>
+            <span>กด "สั่งซื้อ"</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Next.js 16 App Router (RSC) + Storefront Rewire Engine
+          <div class="arch-sub">
+            <span>readClonePage()</span>
+            <span>injectGrid()</span>
+            <span>buildProductDetail()</span>
+            <span>BuyPanel</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Payload CMS 3 — collections + BrandSettings + buyLink
+          <div class="arch-sub">
+            <span>Products</span>
+            <span>Categories</span>
+            <span>Media</span>
+            <span>lineBuyLink()</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          PostgreSQL (Neon) + Blob storage + LINE / Telegram deep-links
+          <div class="arch-sub">
+            <span>schema auto-push</span>
+            <span>media uploads</span>
+            <span>oaMessage://</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+      <strong>ทำไมเลือก stack นี้?</strong>
+      <p>โจทย์ตั้งต้นคือ CMS แบบ WordPress — แต่เลือก <strong>Next.js 16 + Payload CMS 3</strong> แทน เพราะ Payload ให้ admin UI ในตัว (ปรับ label เป็นภาษาไทยได้) พร้อม REST/GraphQL อัตโนมัติ และรันบน serverless เดียวกับหน้าร้าน &middot; <strong>React Server Components</strong> ดึงข้อมูลตรงจาก DB ไม่ต้องมี API กลาง &middot; <strong>PostgreSQL</strong> ให้ schema เป็นระเบียบ (auto-push ตอน dev) &middot; ที่สำคัญ — <strong>ไม่มี payment layer เลย</strong> จุดปิดการขายคือ deep-link ออก LINE ทำให้ทั้งระบบเบาและ maintain ง่าย</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
+      <p>ครบ loop ตั้งแต่ catalog หลังบ้าน ถึงข้อความสั่งซื้อในแชท</p>
+    </section>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <span class="emoji">&#128241;</span>
+        <h3>Chat-to-Order Deep Link</h3>
+        <p>ประกอบข้อความจาก template (<code>{product}</code>/<code>{url}</code>) แล้วสร้างลิงก์ <code>line.me/R/oaMessage</code> + Telegram พร้อม encode ปลอดภัย</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#127799;</span>
+        <h3>Variant Picker → Message</h3>
+        <p>เลือกสี/ไซซ์ (client component) → ต่อเป็น "ชื่อสินค้า (สี: …, ไซซ์: …)" เข้าข้อความสั่งซื้อทันทีแบบ real-time</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128260;</span>
+        <h3>Template Rewire Engine</h3>
+        <p>อ่านหน้า fashion template มาแยก inline styles / body / scripts ตามลำดับ แล้ว cache ไว้ parse ครั้งเดียวใช้ซ้ำทุก request</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#129513;</span>
+        <h3>Balanced-Tag DOM Transforms</h3>
+        <p>ชุดฟังก์ชันแทนที่ inner HTML ของ element ตาม class/tab แบบนับ depth ของ tag คู่เปิด-ปิด — ฉีดข้อมูลจริงลง markup ที่ nest ลึกได้แม่น</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#9986;&#65039;</span>
+        <h3>Commerce Stripper</h3>
+        <p>ตัด node ตะกร้า/add-to-cart (<code>data-node-type</code>) ออกจากเทมเพลตทั้งก้อน แล้วเสียบจุด mount ปุ่ม LINE/Telegram เข้าแทน</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#129525;</span>
+        <h3>CMS Catalog</h3>
+        <p>Products/Categories/Media — สถานะ, badge, สินค้าแนะนำ, ราคาก่อนลด, รูปหลายภาพ, slug auto จากชื่อ (hook beforeValidate)</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#9881;&#65039;</span>
+        <h3>Brand Settings Global</h3>
+        <p>LINE OA / Telegram / Instagram / ข้อความสั่งซื้อตั้งต้น / รูป banner — แก้จากหลังบ้านทั้งหมด ไม่มีอะไร hardcode</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#10024;</span>
+        <h3>Runtime Re-init</h3>
+        <p>โหลด lib ของเทมเพลตครั้งเดียวต่อ session แล้ว re-fire reveal animation ทุกครั้งที่เปลี่ยนหน้า + safety net กัน element ค้างซ่อน</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Product Buy-Panel Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>หน้าตา Product + Buy Panel</h2>
+      <p>เลือกสี/ไซซ์ → ข้อความสั่งซื้อประกอบให้อัตโนมัติ → กดปุ่มเดียวเด้งเข้าแชท</p>
+    </section>
+
+    <div class="ext-mockup">
+      <div class="ext-bar">
+        <span style="font-weight:700; letter-spacing:1px; color:var(--accent-dark)">Linne</span>
+        <span class="ext-btn">Lookbook</span>
+        <span class="ext-badge">New</span>
+      </div>
+      <div style="aspect-ratio:5/4; background:linear-gradient(135deg,var(--accent-light),#fbcfe8); display:flex; align-items:center; justify-content:center; font-size:3.4rem;">👗</div>
+      <div style="padding:14px 16px 4px;">
+        <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted);">Dresses</div>
+        <div style="font-size:1.05rem; font-weight:700; margin:2px 0 4px;">Audrey Linen Midi Dress</div>
+        <div style="font-weight:700; color:var(--accent-dark);">฿1,890 <span style="color:var(--text-muted); font-weight:400; text-decoration:line-through; font-size:0.85rem;">฿2,400</span> <span style="color:var(--emerald-dark); font-weight:600; font-size:0.72rem;">&#9679; พร้อมขาย</span></div>
+        <div style="margin-top:12px; font-size:0.76rem; color:var(--text-secondary);">สี</div>
+        <div style="margin-top:6px;">
+          <span class="chip" style="border:1px solid var(--accent); background:var(--accent); color:#fff; border-radius:50px; padding:3px 12px; font-size:0.74rem; margin-right:5px;">Sand</span>
+          <span class="chip" style="border:1px solid var(--border); border-radius:50px; padding:3px 12px; font-size:0.74rem; margin-right:5px; color:var(--text-secondary);">Sage</span>
+          <span class="chip" style="border:1px solid var(--border); border-radius:50px; padding:3px 12px; font-size:0.74rem; color:var(--text-secondary);">Ivory</span>
+        </div>
+        <div style="margin-top:10px; font-size:0.76rem; color:var(--text-secondary);">ไซซ์</div>
+        <div style="margin-top:6px;">
+          <span class="chip" style="border:1px solid var(--border); border-radius:50px; padding:3px 14px; font-size:0.74rem; margin-right:5px; color:var(--text-secondary);">S</span>
+          <span class="chip" style="border:1px solid var(--accent); background:var(--accent); color:#fff; border-radius:50px; padding:3px 14px; font-size:0.74rem; margin-right:5px;">M</span>
+          <span class="chip" style="border:1px solid var(--border); border-radius:50px; padding:3px 14px; font-size:0.74rem; color:var(--text-secondary);">L</span>
+        </div>
+      </div>
+      <div style="margin:12px 16px; padding:10px 12px; background:var(--accent-light); border-radius:10px; font-size:0.8rem; color:var(--accent-dark); line-height:1.6;">
+        <div style="font-size:0.66rem; text-transform:uppercase; letter-spacing:0.05em; opacity:0.6; margin-bottom:4px;">ข้อความที่จะส่งเข้า LINE</div>
+        สวัสดีค่ะ สนใจสั่งซื้อสินค้าชิ้นนี้ค่ะ 🛍️<br>
+        Audrey Linen Midi Dress (สี: Sand, ไซซ์: M)<br>
+        <span style="opacity:0.55; font-family:'SF Mono',monospace; font-size:0.72rem;">…/products/audrey-linen-midi-dress</span>
+      </div>
+      <div style="padding:0 16px 16px; display:flex; gap:8px;">
+        <span style="flex:1; text-align:center; background:#06C755; color:#fff; border-radius:50px; padding:11px; font-weight:700; font-size:0.85rem;">สั่งซื้อผ่าน LINE</span>
+        <span style="flex:1; text-align:center; background:#229ED9; color:#fff; border-radius:50px; padding:11px; font-weight:700; font-size:0.85rem;">Telegram</span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hack กับปัญหา</h2>
+      <p>6 โจทย์ที่ต้องคิดทางแก้เอง — ระหว่างเอาเทมเพลตสำเร็จรูปมาเชื่อมกับข้อมูลจริง + ช่องทางแชท</p>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card arch" data-label="HTML Parsing">
+        <span class="emoji">&#129513;</span>
+        <h3>เทมเพลตผูกกับ commerce — เอามาใช้กับข้อมูลจริงไม่ได้</h3>
+        <p>markup ของเทมเพลตซ้อนกันลึกและมี node ตะกร้าฝังอยู่ — จะแทนที่การ์ดสินค้าด้วย regex ธรรมดามันจับ tag ปิดผิดตัวทันทีเมื่อมี <code>&lt;div&gt;</code> ซ้อน</p>
+        <div class="highlight">แก้: เขียน DOM transform เอง โดยนับ depth ของ tag เปิด-ปิดให้ balance (เจอ <code>&lt;div&gt;</code> +1, <code>&lt;/div&gt;</code> −1) หา inner ที่ถูกต้องแล้วค่อยแทน — ฉีดการ์ดจริง, ตัด commerce node, สลับ hero banner ได้แม่นแม้ markup nest ลึก</div>
+      </div>
+
+      <div class="hack-card platform" data-label="Runtime">
+        <span class="emoji">&#10024;</span>
+        <h3>แอนิเมชันของเทมเพลตไม่เล่นหลัง hydration</h3>
+        <p>reveal animation ตั้ง element เป็น <code>opacity:0</code> แล้วรอ event <code>load</code> — แต่เราฉีด script หลัง React hydrate (เลย <code>load</code> ไปแล้ว) พอเปลี่ยนหน้าแบบ SPA element เลยค้างซ่อนทั้งหน้า</p>
+        <div class="highlight">แก้: โหลด lib ครั้งเดียวต่อ session แล้ว re-init เอนจิน animation ใหม่ทุกครั้งที่ mount หน้า + ยิง event <code>load</code>/<code>readystatechange</code> เอง — บวก safety net ที่กวาด reveal ทุก element ที่ยังซ่อนภายใน 1 วินาที กันพลาด</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Deep Link">
+        <span class="emoji">&#128279;</span>
+        <h3>ข้อความมี emoji / ช่องว่าง / ขึ้นบรรทัดใหม่ → deep-link พัง</h3>
+        <p>ข้อความสั่งซื้อมี emoji 🛍️ เว้นวรรค และ <code>\n</code> — เอาต่อท้าย URL ตรง ๆ ลิงก์ LINE/Telegram แตกทันที</p>
+        <div class="highlight">แก้: ห่อทั้งข้อความและ OA id ด้วย <code>encodeURIComponent()</code> ก่อนประกอบเป็น deep-link + normalize prefix (<code>@</code> ของ LINE, ตัด <code>@</code> ของ Telegram) ให้แบรนด์กรอกแบบไหนก็ทำงาน</div>
+      </div>
+
+      <div class="hack-card precision" data-label="API Collision">
+        <span class="emoji">&#128680;</span>
+        <h3>commerce ของเทมเพลตยิง <code>/api/cart</code> ชนกับ CMS</h3>
+        <p>runtime เดิมของเทมเพลตพยายาม fetch <code>/api/...</code> (ตะกร้า) ซึ่งชน endpoint <code>/api</code> ของ CMS → เด้ง error CSRF + alert "site unsecured" โผล่หน้าลูกค้า</p>
+        <div class="highlight">แก้: intercept <code>window.alert</code> กรองข้อความ cart/checkout/unsecured ทิ้ง + ดัก <code>unhandledrejection</code>/<code>error</code> ที่เป็น noise ของ commerce (CSRF, Failed to fetch) ให้เงียบ — เหลือแต่ flow จริงที่เราคุม</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Caching">
+        <span class="emoji">&#9889;</span>
+        <h3>หน้า dynamic re-parse ไฟล์ใหญ่ทุกครั้งที่เปิด</h3>
+        <p>หน้าเป็น <code>force-dynamic</code> (ข้อมูลสด) แต่ต้องอ่าน + regex แกะไฟล์เทมเพลตหลักร้อย KB ทุก navigation — เปลืองและช้า</p>
+        <div class="highlight">แก้: cache ผล parse ต่อ slug ไว้ใน <code>Map</code> (in-memory) — ไฟล์เทมเพลตเป็น static design ที่ไม่เปลี่ยน parse ครั้งเดียวใช้ซ้ำ ส่วนข้อมูลสินค้ายังดึงสดจาก CMS ทุก request แยกกันชัดเจน</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Scoping">
+        <span class="emoji">&#127919;</span>
+        <h3>โจทย์ขอ WordPress + คิดว่าต้องมี e-commerce</h3>
+        <p>ความคาดหวังตั้งต้นคือ CMS แบบ WordPress พร้อมระบบตะกร้า — แต่การขายจริงจบในแชท ระบบ checkout จะกลายเป็น dead weight</p>
+        <div class="highlight">แก้: เสนอ scope ใหม่ — Next.js + Payload (admin ในตัว แก้เนื้อหาเองได้เหมือนกัน) และ "ไม่ทำ" checkout/payment เลย เหลือ chat-to-order — บทเรียน: การตัด requirement ที่ไม่จำเป็นออก คือคุณค่าที่ให้ลูกค้าได้มากกว่าการทำทุกอย่างตามคำขอ</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Design Decision ที่ตั้งใจเลือก</h2>
+      <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอ ๆ กับสิ่งที่ทำ</p>
+    </section>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>เว็บนี้ทำหน้าที่เดียว: เป็น catalog ที่พาลูกค้าเข้าสู่บทสนทนาใน LINE ให้เร็วและเนียนที่สุด — มันไม่มีตะกร้า ไม่มี payment ไม่เก็บ order เอง จุดปิดการขายคือแชทของแบรนด์ ขอบเขตที่คมตั้งแต่ต้น = implement ตรง เบา และส่งมอบให้แบรนด์ดูแลต่อเองได้จริง</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128241;</strong><br>
+        <strong>Chat-to-order ไม่มี checkout</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ปิดการขายในแชท — เว็บแค่พาไปให้ถึงเร็วที่สุด</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128260;</strong><br>
+        <strong>Rewire ไม่ rebuild</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">เก็บดีไซน์เทมเพลตไว้ ทิ้งแค่ commerce engine</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#129525;</strong><br>
+        <strong>CMS-first ไม่ hardcode</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">สินค้า/ช่องทาง/ข้อความ แก้จากหลังบ้านหมด</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#129309;</strong><br>
+        <strong>Deep-link ตรงถึงแบรนด์</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">เข้า LINE OA ของแบรนด์เอง ไม่มีตัวกลาง</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge Domain ที่แข็งขึ้น</h2>
+      <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
+    </section>
+
+    <div class="learning-card">
+      <strong>1. Conversational commerce — ออกแบบการขายที่จบในแชท:</strong>
+      <p>เข้าใจ pattern ของ non e-commerce ที่ปิดการขายผ่าน chat — การประกอบข้อความ pre-filled, deep-link เข้า LINE OA / Telegram, และ UX ที่ลด friction จาก "อยากได้" ถึง "ทักแชท" ให้เหลือคลิกเดียว บทเรียน: บางธุรกิจ "ตะกร้า" ไม่ใช่คำตอบ — บทสนทนาต่างหากที่ปิดการขาย</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Payload CMS 3 (headless) — จาก schema ถึง admin ภาษาไทย:</strong>
+      <p>ออกแบบ collections/globals, ใช้ field hooks (<code>beforeValidate</code> สร้าง slug อัตโนมัติ), access control, และปรับ label/description ของ admin ให้ทีมแบรนด์ใช้เป็นภาษาไทย — เข้าใจว่า headless CMS ให้ทั้ง data model และ back-office ในตัวเดียว บทเรียน: ของดีสำหรับลูกค้า = แก้เนื้อหาเองได้โดยไม่ต้องเรียก dev</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. HTML rewiring — เขียน balanced-tag parser เอง:</strong>
+      <p>ฝึกแยก head styles / body / scripts จากหน้าเทมเพลต และเขียน transform ที่นับ depth ของ tag เปิด-ปิดเพื่อหา inner HTML ที่ถูกต้อง แทนการพึ่ง DOM library — เข้าใจว่าทำไม regex ธรรมดาแตกกับ markup ที่ nest บทเรียน: การแกะ HTML ให้ถูกต้องคือเรื่องของ balancing ไม่ใช่ pattern matching</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Next.js 16 App Router + integrating 3rd-party runtime:</strong>
+      <p>เข้าใจ RSC + <code>force-dynamic</code>, การ inject runtime ภายนอก (jQuery/animation engine) เข้า React lifecycle ให้ทำงานถูกลำดับหลัง hydration และ client-side navigation รวมถึงการดัก error ของโค้ดที่เราไม่ได้เขียนเอง บทเรียน: การพา legacy runtime มาอยู่ในโลก React ต้องคุม lifecycle ให้ขาด</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Client scoping — แปลง requirement เป็น stack ที่เหมาะ:</strong>
+      <p>รับโจทย์ "WordPress + ระบบขาย" แล้วกลั่นเป็นสิ่งที่ลูกค้าต้องการจริง (catalog + แก้เองได้ + ปิดการขายในแชท) เลือก stack และ "ตัด" ฟีเจอร์ที่ไม่จำเป็นออก บทเรียน: หน้าที่ของเราไม่ใช่ทำตามคำขอทุกตัวอักษร แต่คือส่งมอบผลลัพธ์ที่ตอบโจทย์ด้วยความซับซ้อนที่น้อยที่สุด</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">ขั้นตอน checkout — ปิดการขายในแชท</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">2</div>
+        <div class="label">ช่องทางแชทสั่งซื้อ (LINE / Telegram)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">4</div>
+        <div class="label">collection ใน CMS หลังบ้าน</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">1</div>
+        <div class="label">คลิก — จากหน้าสินค้าถึงข้อความในแชท</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>Linne</h2>
+    <p>เว็บ catalog + lookbook สำหรับแบรนด์เสื้อผ้าลินินพรีเมียม ที่เปลี่ยนการขายผ่าน IG feed — ให้กลายเป็นหน้าร้านค้นหาง่าย เลือกสี/ไซซ์แล้วกดเดียวเด้งเข้า LINE พร้อมข้อความสั่งซื้อ ไม่มีตะกร้า ไม่มี checkout จัดการทุกอย่างเองด้วย headless CMS สร้างด้วย Next.js 16 + Payload CMS 3</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Next.js 16</span>
+      <span class="stack-icon">React 19</span>
+      <span class="stack-icon">Payload CMS 3</span>
+      <span class="stack-icon">PostgreSQL</span>
+      <span class="stack-icon">Tailwind v4</span>
+      <span class="stack-icon">LINE Deep Link</span>
+      <span class="stack-icon">Webflow Rewire</span>
+      <span class="stack-icon">Chat-to-Order</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.info/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Linne Portfolio",
+      "item": "https://projects.tanplanet.info/linne-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

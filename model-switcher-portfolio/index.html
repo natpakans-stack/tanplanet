@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Shift — สลับโมเดล Claude Code ด้วยคันเกียร์รถ (VS Code Extension)</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Model Shift — สลับโมเดล Claude Code ด้วยคันเกียร์รถ (VS Code Extension)">
+  <meta name="twitter:description" content="Portfolio: VS Code extension โยกคันเกียร์ H-pattern เพื่อสลับโมเดล Claude Code — ยิง /model เข้า terminal, sync สถานะจริงจาก transcript, สวิตช์ปิดเสียงแจ้งงานเสร็จ">
+  <meta property="og:url" content="https://projects.tanplanet.info/model-switcher-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.info/model-switcher-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: VS Code extension โยกคันเกียร์ H-pattern เพื่อสลับโมเดล Claude Code — ยิง /model เข้า terminal, sync สถานะจริงจาก transcript, สวิตช์ปิดเสียงแจ้งงานเสร็จ">
+  <meta property="og:title" content="Model Shift — สลับโมเดล Claude Code ด้วยคันเกียร์รถ (VS Code Extension)">
+  <meta name="description" content="Portfolio: VS Code extension โยกคันเกียร์ H-pattern เพื่อสลับโมเดล Claude Code — ยิง /model เข้า terminal, sync สถานะจริงจาก transcript, สวิตช์ปิดเสียงแจ้งงานเสร็จ">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23a21caf'/><text x='50' y='62' text-anchor='middle' font-size='54'>🔀</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #a21caf;
+      --accent-light: #fae8ff;
+      --accent-dark: #701a75;
+      --accent-glow: rgba(162,28,175,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #4a044e 0%, #701a75 45%, #a21caf 80%, #d946ef 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(250,232,255,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(162,28,175,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #a21caf, #d946ef, #fae8ff);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #f0abfc;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #701a75, #a21caf);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(162,28,175,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #d946ef);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(162,28,175,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Extension Popup Mockup ===== */
+    .ext-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 440px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+    .ext-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      align-items: center;
+    }
+    .ext-bar .ext-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    .ext-bar .ext-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 1px 9px;
+      font-size: 0.72rem;
+    }
+    .ext-yt {
+      margin: 12px;
+      padding: 10px 12px;
+      border: 1px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 8px;
+    }
+    .ext-yt b { color: #c00; }
+    .ext-yt .u { color: var(--text-muted); font-size: 0.72rem; word-break: break-all; margin: 3px 0 8px; font-family: 'SF Mono', monospace; }
+    .ext-yt .chip { display: inline-block; border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 3px 8px; font-size: 0.72rem; margin-right: 5px; color: var(--text-secondary); }
+    .ext-table { width: 100%; border-collapse: collapse; }
+    .ext-table th {
+      text-align: left; padding: 8px 12px; font-size: 0.68rem; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--border);
+    }
+    .ext-table td { padding: 9px 12px; border-bottom: 1px solid #f2f2f1; vertical-align: top; }
+    .ext-table .kind { font-weight: 700; white-space: nowrap; }
+    .ext-table .kind.master { color: #1e6b2e; }
+    .ext-table .kind.variant { color: #8a7a12; }
+    .ext-table .kind.file { color: var(--accent); }
+    .ext-table .q { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .ext-table .info { color: var(--text-secondary); font-size: 0.76rem; }
+    .ext-table .chip { display: inline-block; border: 1px solid var(--border); background: #fafafa; border-radius: 5px; padding: 1px 7px; font-size: 0.68rem; color: var(--text-secondary); font-family: 'SF Mono', monospace; }
+    .ext-cmd {
+      margin: 0 12px 12px;
+      padding: 10px 12px;
+      background: #0f172a;
+      color: #a5f3fc;
+      border-radius: 8px;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      font-size: 0.72rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .ext-cmd .flag { color: #fde047; }
+    .ext-cmd .cmt { color: #64748b; }
+
+    /* ===== Gear Panel Mockup ===== */
+    .gear-panel {
+      max-width: 440px;
+      margin: 0 auto;
+      background: linear-gradient(160deg, #241a29, #14101a);
+      border: 1px solid #3b2a42;
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+      color: #f0abfc;
+      font-size: 0.82rem;
+    }
+    .gear-panel .gp-head {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      letter-spacing: 0.18em; font-weight: 700; color: #f5d0fe;
+      text-transform: uppercase; font-size: 0.82rem; margin-bottom: 16px;
+    }
+    .gear-panel .gp-readout {
+      display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center;
+      background: #0f0b14; border: 1px solid #2e2036; border-radius: 10px;
+      padding: 12px 14px; margin-bottom: 16px;
+    }
+    .gear-panel .gp-gauge { text-align: center; }
+    .gear-panel .gp-gauge svg { width: 92px; height: 52px; overflow: visible; }
+    .gear-panel .gp-gauge .cap { font-size: 8px; letter-spacing: 0.12em; color: #7c5a86; margin-top: 2px; }
+    .gear-panel .gp-cmd { font-family: 'SF Mono', ui-monospace, Menlo, monospace; font-size: 0.72rem; color: #c084fc; }
+    .gear-panel .gp-name-row { display: flex; align-items: baseline; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+    .gear-panel .gp-num { font-size: 1.9rem; font-weight: 700; color: #fbbf24; line-height: 1; }
+    .gear-panel .gp-name { font-size: 1rem; font-weight: 700; color: #f5d0fe; letter-spacing: 0.05em; }
+    .gear-panel .gp-gate {
+      background: #0d0912; border: 1px solid #2e2036; border-radius: 12px;
+      padding: 16px; display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; position: relative;
+    }
+    .gear-panel .gp-cell {
+      border: 1px solid #35263d; border-radius: 8px; background: #17101d;
+      padding: 12px 8px; text-align: center;
+    }
+    .gear-panel .gp-cell .g { display: block; font-size: 0.7rem; color: #8a6d94; font-weight: 700; }
+    .gear-panel .gp-cell .m { display: block; font-size: 0.78rem; color: #d8b4fe; font-weight: 600; margin-top: 2px; }
+    .gear-panel .gp-cell.active {
+      border-color: #fbbf24; background: linear-gradient(160deg, #3a2a12, #2a1e0c);
+      box-shadow: 0 0 0 1px rgba(251,191,36,0.4), 0 0 18px rgba(251,191,36,0.25);
+    }
+    .gear-panel .gp-cell.active .g { color: #fcd34d; }
+    .gear-panel .gp-cell.active .m { color: #fde68a; }
+    .gear-panel .gp-mute {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 16px; padding: 12px 14px; background: #0f0b14;
+      border: 1px solid #2e2036; border-radius: 10px;
+    }
+    .gear-panel .gp-mute .lab { color: #d8b4fe; font-size: 0.8rem; }
+    .gear-panel .gp-sw {
+      width: 46px; height: 26px; border-radius: 50px; background: #a21caf;
+      position: relative; flex-shrink: 0;
+    }
+    .gear-panel .gp-sw .knob {
+      position: absolute; top: 3px; right: 3px; width: 20px; height: 20px;
+      border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    .gear-panel .gp-sw .on { position: absolute; left: 8px; top: 5px; font-size: 0.62rem; color: rgba(255,255,255,0.85); font-weight: 700; }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .closing .links {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .closing .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(112,26,117,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(112,26,117,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark">🔀</div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        VS Code Extension &middot; Claude Code &middot; Bun
+      </div>
+      <h1>Model Shift<br><span class="accent">สลับโมเดล Claude Code ด้วยคันเกียร์รถ — โยกเกียร์ = เปลี่ยน model</span></h1>
+      <p>VS Code / Cursor extension ที่ยกงานพิมพ์ <code>/model</code> ออกมาเป็น panel แยกหน้าตาเหมือนคันเกียร์รถ (H-pattern) — โยกเกียร์เพื่อสลับโมเดลทันทีระหว่างคุยกับ Claude Code, sync สถานะจริงจาก transcript, พร้อมสวิตช์ปิด/เปิดเสียงแจ้ง task เสร็จจากจุดเดียว</p>
+      <div class="hero-tags">
+        <span class="hero-tag">VS Code Extension API</span>
+        <span class="hero-tag">Webview</span>
+        <span class="hero-tag">Bun.serve</span>
+        <span class="hero-tag">tmux</span>
+        <span class="hero-tag">Shell hooks</span>
+        <span class="hero-tag">TTS</span>
+        <span class="hero-tag">Web Audio</span>
+        <span class="hero-tag">Vanilla JS</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#stack">ดู Tech Stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>ปัญหาที่เจอ</h2>
+      <p>ทำไมการสลับโมเดลไปมาระหว่างทำงานกับ Claude Code ถึงกวนใจกว่าที่ควร?</p>
+    </section>
+
+    <div class="quote-block">
+      <p>Claude Code สลับโมเดลได้ด้วย <code>/model &lt;name&gt;</code> — แต่ต้องพิมพ์เอง + จำชื่อ flag (<code>sonnet[1m]</code>, <code>fable</code>) ทุกครั้ง โมเดลก็เพิ่มขึ้นเรื่อยๆ (Haiku / Sonnet / Sonnet 1M / Opus / Fable) และเราสลับบ่อยเพื่อคุมงบ vs คุณภาพ vs ความเร็ว การพิมพ์คำสั่งกลางบทสนทนาเลยขัดจังหวะ แถมสถานะที่ว่า "ตอนนี้โมเดลไหนติดอยู่ / context เหลือเท่าไร" ก็เป็น text ล้วน ไม่เห็นเป็นภาพ</p>
+      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ Model Shift</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="emoji">&#9000;</span>
+        <h3>พิมพ์ <code>/model</code> ทุกครั้งช้า + ต้องจำ flag</h3>
+        <p>ชื่อ flag ไม่ตรงกับชื่อที่เห็น (<code>sonnet[1m]</code>, <code>fable</code>) แถมเปลี่ยนตามเวอร์ชัน Claude Code — จำผิดทีก็สลับพลาด ต้องพิมพ์ใหม่</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128200;</span>
+        <h3>โมเดลเยอะขึ้น เลยสลับบ่อย</h3>
+        <p>Haiku / Sonnet / Sonnet 1M / Opus / Fable — งานเบาใช้ตัวถูก งานยากค่อยขยับขึ้น การสลับกลับไปมาเพื่อคุมงบต่อคุณภาพเลยเกิดหลายครั้งต่อ session</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#9000;&#65039;</span>
+        <h3>อยากสลับจากหน้าจอแยก ไม่แย่งพื้นที่พิมพ์</h3>
+        <p>การพิมพ์คำสั่งกลาง prompt ทำให้เสียโฟลว์ — อยากมีปุ่มอยู่ "นอก" TUI ที่กดแล้วสลับได้เลยโดยไม่ต้องละมือจากบทสนทนา</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128421;&#65039;</span>
+        <h3>ไม่เห็นสถานะเป็นภาพ</h3>
+        <p>โมเดลไหนกำลังติดอยู่? context ใกล้เต็มหรือยัง? ทุกอย่างเป็นตัวหนังสือ — อยากได้ readout แบบหน้าปัดรถที่กวาดตาแล้วรู้ทันที</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128266;</span>
+        <h3>เสียงแจ้งงานเสร็จปิดยากตอนประชุม</h3>
+        <p>ตั้งเสียงแจ้งเวลา task เสร็จไว้ให้รู้ตัว แต่พอเข้าประชุมต้องรีบปิด — ถ้าต้องไปไล่แก้ config หรือ restart claude ก็ไม่ทันการณ์</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>ยกงานพิมพ์คำสั่งออกมาเป็นคันเกียร์ — โยก 1 ที = สลับโมเดล + เห็นสถานะเป็นภาพเหมือนหน้าปัดรถ</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <span class="emoji">&#9881;&#65039;</span>
+        <h3>คันเกียร์ H-pattern บน panel แยก</h3>
+        <p>Panel ในแถบข้าง (activity bar) หน้าตาเหมือนคันเกียร์รถ 6 ตำแหน่ง — ลาก knob หรือคลิกป้ายเพื่อสลับโมเดลทันที ไม่ขัดจังหวะการพิมพ์ prompt</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128228;</span>
+        <h3>ยิง <code>/model</code> เข้า terminal ตรงๆ</h3>
+        <p>Claude Code ไม่มี API ให้สลับจากภายนอก — ปุ่มเลยยิง <code>terminal.sendText("/model opus")</code> เข้า integrated terminal ที่ claude รันอยู่ (surface web ใช้ <code>tmux send-keys</code>)</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128421;&#65039;</span>
+        <h3>สื่อสารสถานะเป็นภาพ</h3>
+        <p>เกียร์ที่ติด + VU meter (ความแรงโมเดล) + เกจ context แบบหน้าปัดน้ำมัน E&rarr;F — กวาดตาแล้วรู้ทันทีว่าโมเดลไหนอยู่ และ context ใกล้เต็มหรือยัง</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128260;</span>
+        <h3>Sync โมเดลจริงจาก transcript</h3>
+        <p>Poll ไฟล์ session <code>*.jsonl</code> อ่าน <code>message.model</code> จริง แล้วเลื่อนเกียร์ไปตำแหน่งนั้นแบบเงียบ — เผื่อผู้ใช้พิมพ์ <code>/model</code> เอง UI จะไม่หลุด sync</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128263;</span>
+        <h3>สวิตช์ mute เสียงจากจุดเดียว</h3>
+        <p>กดสวิตช์ = <code>touch</code>/<code>rm</code> ไฟล์ flag <code>.tts-muted</code> ที่ TTS hooks เช็ค — เงียบ/ดังทั้งชุดทันที ไม่ต้อง restart claude ปิดทันประชุม</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน — 4 จังหวะ</h2>
+      <p>ตั้งแต่เปิด panel จนโมเดลสลับจริงในบทสนทนา</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <span class="emoji">&#9881;&#65039;</span>
+        <h4>เปิด panel</h4>
+        <p>คลิกไอคอนเกียร์ใน activity bar → panel คันเกียร์ H-pattern โผล่ในแถบข้าง</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <span class="emoji">&#128228;</span>
+        <h4>โยกเกียร์</h4>
+        <p>ลาก knob / คลิกป้าย → <code>sendText("/model opus")</code> ยิงเข้า terminal + เสียง ka-chunk</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <span class="emoji">&#128260;</span>
+        <h4>Panel sync</h4>
+        <p>Poll transcript ทุก 5 วิ อ่านโมเดลจริง + tokens → เลื่อนเกียร์ + ขยับเกจ context</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <span class="emoji">&#128263;</span>
+        <h4>กดสวิตช์เสียง</h4>
+        <p>touch/rm <code>.tts-muted</code> → เสียงแจ้งงานเสร็จเงียบ/ดังทันที ไม่ต้อง restart</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>2 surface บนกลไกเดียวกัน — zero npm dependency, ไม่ยุ่งกับข้อมูลออกนอกเครื่อง</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          ผู้ใช้ Claude Code — โยกเกียร์ / กดสวิตช์เสียง
+          <div class="arch-sub">
+            <span>Surface A: VS Code webview</span>
+            <span>Surface B: Web panel</span>
+            <span>คันเกียร์ H-pattern</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Extension core (extension.js + webview) — sendText / poll / fs
+          <div class="arch-sub">
+            <span>activeTerminal.sendText()</span>
+            <span>poll *.jsonl</span>
+            <span>GEARS[]</span>
+            <span>injection guard</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Claude Code terminal + TTS hooks (Stop &rarr; speak-done.sh)
+          <div class="arch-sub">
+            <span>/model &lt;name&gt;</span>
+            <span>tmux send-keys (B)</span>
+            <span>tts-lib.sh</span>
+            <span>gpt-4o-mini-tts / say</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          ~/.claude — transcript (อ่านอย่างเดียว) + flag + cache
+          <div class="arch-sub">
+            <span>projects/*.jsonl</span>
+            <span>hooks/.tts-muted</span>
+            <span>.tts-cache/*.mp3</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+      <strong>ทำไมเลือก stack นี้?</strong>
+      <p><strong>VS Code Extension API</strong> = ปุ่มอยู่ "นอก" TUI ได้จริง แล้ว <code>sendText</code> ยิง <code>/model</code> เข้า integrated terminal โดยไม่ต้องพึ่ง API ที่ Claude Code ไม่มี &middot; <strong>Bun.serve + tmux</strong> เป็น surface สำรองสำหรับคนใช้ terminal เปล่า &mdash; native, ไม่ต้อง express &middot; <strong>Flag file</strong> (<code>.tts-muted</code>) ให้ mute ทั้งชุด hooks จากจุดเดียวโดยไม่ต้อง restart &middot; <strong>Vanilla JS ล้วน + zero npm dependency</strong> &mdash; ดีไซเนอร์แก้ UI ใน 1 ไฟล์ได้ ไม่มี build step</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
+      <p>ครบตั้งแต่โยกเกียร์ ยิงคำสั่ง ไปจนเสียงแจ้งงานเสร็จ</p>
+    </section>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <span class="emoji">&#9881;&#65039;</span>
+        <h3>H-Pattern Gear Shifter</h3>
+        <p>คันเกียร์ 6 ตำแหน่ง (1–5 + R) ลาก knob แล้ว snap ไปเกียร์ที่ใกล้สุด หรือคลิกป้ายตรงๆ — feel เหมือนโยกเกียร์รถจริง</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128228;</span>
+        <h3>Model Switcher</h3>
+        <p>ยิง <code>sendText("/model &lt;name&gt;")</code> เข้า integrated terminal (surface B ใช้ <code>tmux send-keys</code>) — สลับโมเดลโดยไม่ต้องพิมพ์เอง</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128260;</span>
+        <h3>Real-Model Sync</h3>
+        <p>Poll <code>*.jsonl</code> ทุก 5 วิ อ่าน <code>message.model</code> จริง → เลื่อนเกียร์เงียบ ๆ ให้ตรงสถานะ กัน UI หลุด sync</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#9981;</span>
+        <h3>Context Gauge</h3>
+        <p>หน้าปัดน้ำมัน E&rarr;F คิดจาก <code>input + cache_read + cache_creation</code> ของ message ล่าสุด เทียบหน้าต่าง 200K</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128202;</span>
+        <h3>VU Meter</h3>
+        <p>ช่องไฟบอกความ "แรง" ของโมเดลตามค่า rpm ที่ map ไว้ในแต่ละเกียร์ — สื่อสารว่ากำลังใช้ตัวเบาหรือตัวหนัก</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128264;</span>
+        <h3>Ka-chunk Sound</h3>
+        <p>เสียงคลิกตอนเข้าเกียร์สร้างสดจาก Web Audio (<code>clack()</code>) — ไม่มีไฟล์เสียง เป็น feel ของคันเกียร์</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#127908;</span>
+        <h3>เสียงแจ้งงานเสร็จ 17 บุคลิก</h3>
+        <p>Stop hook สุ่ม 1 ใน 17 บุคลิกทุกครั้งที่ task เสร็จ (ผู้ประกาศข่าว / หุ่นยนต์ / บัตเลอร์ ฯลฯ) ผ่าน TTS + fallback <code>say</code></p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128263;</span>
+        <h3>Mute Switch</h3>
+        <p>สวิตช์ใน panel touch/rm ไฟล์ <code>.tts-muted</code> ที่ hooks เช็ค — ปิด/เปิดเสียงทั้งชุดทันที ไม่ต้อง restart claude</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Gear Panel Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>หน้าตา Panel</h2>
+      <p>คลิกไอคอนเกียร์ใน activity bar → เห็นเกียร์ที่ติด, เกจ context และสวิตช์เสียงในหน้าจอเดียว</p>
+    </section>
+
+    <div class="gear-panel">
+      <div class="gp-head">&#9834; Model Shift</div>
+      <div class="gp-readout">
+        <div class="gp-gauge">
+          <svg viewBox="0 0 92 52">
+            <path d="M8 48 A38 38 0 0 1 84 48" fill="none" stroke="#3b2a42" stroke-width="5" stroke-linecap="round"/>
+            <path d="M8 48 A38 38 0 0 1 58 15" fill="none" stroke="#a21caf" stroke-width="5" stroke-linecap="round"/>
+            <g transform="rotate(28 46 48)"><rect x="45" y="16" width="2" height="34" rx="1" fill="#fbbf24"/></g>
+            <circle cx="46" cy="48" r="3" fill="#f5d0fe"/>
+          </svg>
+          <div class="cap">CONTEXT &middot; TOKENS &times;1000</div>
+        </div>
+        <div>
+          <div class="gp-cmd">/model opus</div>
+          <div class="gp-name-row"><span class="gp-num">4</span><span class="gp-name">OPUS</span></div>
+        </div>
+      </div>
+      <div class="gp-gate">
+        <div class="gp-cell"><span class="g">1</span><span class="m">HAIKU</span></div>
+        <div class="gp-cell"><span class="g">3</span><span class="m">SONNET 1M</span></div>
+        <div class="gp-cell"><span class="g">5</span><span class="m">FABLE</span></div>
+        <div class="gp-cell"><span class="g">2</span><span class="m">SONNET</span></div>
+        <div class="gp-cell active"><span class="g">4</span><span class="m">OPUS</span></div>
+        <div class="gp-cell"><span class="g">R</span><span class="m">DEFAULT</span></div>
+      </div>
+      <div class="gp-mute">
+        <span class="lab">&#128266; เสียงแจ้งงานเสร็จ</span>
+        <span class="gp-sw"><span class="on">ON</span><span class="knob"></span></span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hack กับปัญหา</h2>
+      <p>6 โจทย์ที่ต้องคิดทางแก้เอง — ข้อจำกัดของ tooling + การประกอบคำสั่งให้ปลอดภัย</p>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card arch" data-label="No API">
+        <span class="emoji">&#128228;</span>
+        <h3>Claude Code ไม่มี API ให้สลับโมเดลจากภายนอก</h3>
+        <p>อยากมีปุ่มสลับโมเดล แต่ไม่มี endpoint / SDK ให้เรียก — จะสั่งจากหน้าจอแยกได้ยังไง</p>
+        <div class="highlight">แก้: ปุ่มอยู่ "นอก" TUI แล้วยิง <code>/model &lt;name&gt; + Enter</code> เข้า terminal ที่ claude รันอยู่ — surface หลักใช้ <code>activeTerminal.sendText()</code> ของ VS Code (ไม่ต้อง tmux), surface สำรองใช้ <code>tmux send-keys</code> รับคนที่ใช้ terminal เปล่า</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Injection">
+        <span class="emoji">&#128737;&#65039;</span>
+        <h3>ชื่อโมเดลยิงเข้า shell/terminal เสี่ยง injection</h3>
+        <p>ค่าที่เอาไปต่อเป็นคำสั่ง <code>send-keys</code> / <code>sendText</code> ถ้าไม่ตรวจก่อน อาจถูกยัดคำสั่งอื่นแฝงมา</p>
+        <div class="highlight">แก้: whitelist ด้วย regex <code>^[\w\[\]-]+$</code> ก่อนส่งทุกครั้ง (ทั้ง 2 surface) — ผ่านเฉพาะ a–z 0–9 <code>[</code> <code>]</code> <code>-</code> + ฝั่ง web ใช้ <code>Bun.$</code> interpolation ที่ escape ให้อัตโนมัติ ส่งเป็น arg เดียว</div>
+      </div>
+
+      <div class="hack-card platform" data-label="One-way Sync">
+        <span class="emoji">&#128260;</span>
+        <h3>UI เป็น one-way — ไม่รู้โมเดลจริง</h3>
+        <p>สั่งโมเดลได้ แต่ถ้าผู้ใช้พิมพ์ <code>/model</code> เองในบทสนทนา เกียร์บน panel จะหลุด sync กับของจริง</p>
+        <div class="highlight">แก้: poll ท้ายไฟล์ 128KB ของ <code>*.jsonl</code> ที่ mtime ใหม่สุดทุก 5 วิ อ่าน <code>message.model</code> → เลื่อนเกียร์เงียบ ๆ (ไม่ยิง <code>/model</code> ซ้ำ ไม่มีเสียง) + หลังสับเกียร์เองพัก sync 30 วิ กัน transcript ที่ยังไม่อัปเดตดึงเกียร์กลับ</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Feel">
+        <span class="emoji">&#9881;&#65039;</span>
+        <h3>คันเกียร์ต้องรู้สึกเหมือนของจริง</h3>
+        <p>ถ้าเป็นแค่ปุ่มธรรมดา ก็ไม่ต่างจาก <code>/model</code> picker เดิม — ต้องมี "feel" ของการโยกเกียร์</p>
+        <div class="highlight">แก้: knob ลากด้วยเมาส์แล้ว snap ไปเกียร์ที่ระยะใกล้สุด (<code>(g.x-px)&sup2;+(g.y-py)&sup2;</code>) + เสียง ka-chunk สร้างสดจาก Web Audio ตอนเข้าเกียร์ — visual layer ทับ logic เดิมโดยไม่แตะกลไกส่งคำสั่ง</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Mute">
+        <span class="emoji">&#128263;</span>
+        <h3>เสียงต้องปิดได้เร็ว โดยไม่ restart</h3>
+        <p>เสียงแจ้งงานเสร็จมาจาก hooks หลายตัวที่รันแยกกัน — จะปิดทั้งชุดตอนประชุมให้ทันได้ยังไง</p>
+        <div class="highlight">แก้: ทุก hook source <code>tts-lib.sh</code> ร่วมกัน แล้วใส่ guard <code>[ -f ~/.claude/hooks/.tts-muted ] &amp;&amp; return 0</code> ที่หัวฟังก์ชันพูด — สวิตช์แค่ touch/rm ไฟล์ flag = เงียบ/ดังทั้งชุดทันที ไม่ต้อง restart claude</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Cost / Cache">
+        <span class="emoji">&#127908;</span>
+        <h3>TTS ยิง API ทุกครั้งแพงและช้า</h3>
+        <p>ถ้า gen เสียงใหม่ทุกครั้งที่งานเสร็จ ก็เปลืองเงิน + ต้องต่อเน็ต + หน่วง แถมแต่ละบุคลิกดังไม่เท่ากัน</p>
+        <div class="highlight">แก้: cache แยกต่อบุคลิก hash = <code>md5(voice+instructions+text)</code> — มีไฟล์แล้ว <code>afplay</code> เลย (ยิง API 0 ครั้ง, $0), ไม่มีค่อย gen 1 ครั้งแล้วเซฟ + normalize ทุกเสียงด้วย <code>ffmpeg loudnorm</code> ไป <strong>-16 LUFS</strong> ให้ดังเท่ากัน (ไม่มี ffmpeg ก็ข้าม ไม่พัง)</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Design Decision ที่ตั้งใจเลือก</h2>
+      <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอๆ กับสิ่งที่ทำ</p>
+    </section>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>เครื่องมือนี้ทำหน้าที่เดียว: สลับโมเดลให้เร็วขึ้น + สื่อสารสถานะเป็นภาพ — มันไม่ได้แทนที่ <code>/model</code> picker ในตัว Claude Code (ขายที่ "เร็วกว่า + เห็นเป็นภาพ + ไม่ต้องจำ flag"), การ sync เป็นการ "อ่านอย่างเดียว" จาก transcript ไม่เขียนอะไรกลับ, และไม่มีข้อมูลออกนอกเครื่อง ขอบเขตชัดตั้งแต่ต้น = implement ตรงและ maintain ง่าย</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128228;</strong><br>
+        <strong>ยิงคำสั่ง ไม่ replace picker</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ขายที่เร็ว + เห็นเป็นภาพ ไม่ใช่อุดช่องว่างฟังก์ชัน</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128065;&#65039;</strong><br>
+        <strong>Sync อ่านอย่างเดียว</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">อ่าน transcript มาแสดง ไม่เขียนกลับ ไม่แตะ session</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128263;</strong><br>
+        <strong>Mute = flag file จุดเดียว</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">คุมทั้งชุด hooks ด้วยไฟล์เดียว ไม่ต้อง restart</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#129513;</strong><br>
+        <strong>Zero npm dependency</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Vanilla JS + Bun แก้ UI ใน 1 ไฟล์ ไม่มี build step</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge Domain ที่แข็งขึ้น</h2>
+      <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
+    </section>
+
+    <div class="learning-card">
+      <strong>1. VS Code Extension development — จาก "ใช้ extension" เป็น "เขียนเอง":</strong>
+      <p>เข้าใจ activity bar view container + webview provider, การสื่อสารระหว่าง extension host กับ webview, ใช้ <code>vscode.window.activeTerminal.sendText()</code> ยิงคำสั่งเข้า terminal, อ่าน/เขียนไฟล์ด้วย <code>fs</code>, และ package เป็น <code>.vsix</code> ลง Cursor ถาวร — จากศูนย์เป็น extension ที่ใช้งานจริงได้ทั้งตัว บทเรียน: webview คือ HTML/JS ธรรมดา แต่ต้องคิดเรื่องขอบเขตระหว่าง host↔view ให้ขาด</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Terminal automation เมื่อไม่มี API — ยิงคำสั่งข้ามขอบเขต:</strong>
+      <p>เรียนรู้ว่าเมื่อ tool ไม่มี API ให้ควบคุมจากภายนอก ก็ยังทำ integration ได้ด้วยการ "พิมพ์" คำสั่งเข้า terminal — <code>sendText</code> (VS Code) กับ <code>tmux send-keys</code> เป็นสอง pattern ของแนวคิดเดียวกัน บทเรียน: การ automate ไม่จำเป็นต้องรอ official API เสมอไป แต่ต้องยอมรับว่ามันเป็น one-way และออกแบบ sync เสริม</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. Claude Code internals — อ่าน transcript ออกทุกฟิลด์:</strong>
+      <p>รู้โครงสร้าง session <code>*.jsonl</code>: <code>message.model</code> บอกโมเดลจริง, token usage แยก <code>input / cache_read / cache_creation</code>, และกลไก Stop hook ที่ยิงตอน task เสร็จ — เอามาทำทั้ง sync เกียร์และเกจ context บทเรียน: state ของ Claude Code อ่านได้จากไฟล์ ถ้ารู้ว่าอ่านตรงไหน</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Shell / audio pipeline — ประกอบระบบเสียงที่คุมต้นทุนได้:</strong>
+      <p>เขียน bash hooks ที่ source library ร่วมกัน, ต่อ OpenAI TTS (<code>gpt-4o-mini-tts</code>) พร้อม fallback offline (<code>say</code>), cache ด้วย <code>md5</code> hash เพื่อไม่ยิง API ซ้ำ, และ normalize ระดับเสียงด้วย <code>ffmpeg loudnorm</code> → -16 LUFS บทเรียน: การ cache + fallback ทำให้ฟีเจอร์ที่พึ่ง API ภายนอกยัง degrade ได้อย่างสง่างามและถูกเงิน</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Injection-safe command building — input ที่ไม่ trust ต้อง sanitize:</strong>
+      <p>ฝึก whitelist ด้วย regex ก่อนเอาค่าไปประกอบคำสั่ง shell/terminal + ใช้ <code>Bun.$</code> ที่ escape ให้อัตโนมัติ แทนการต่อ string ตรงๆ บทเรียน: ทุกจุดที่ input ไหลเข้าไปเป็นคำสั่ง คือจุดที่ต้องคิดเรื่อง injection — กันได้ด้วย validate + escape ที่ถูก pattern</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">2</div>
+        <div class="label">surface — VS Code extension + Web/tmux</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">6</div>
+        <div class="label">โมเดลบนคันเกียร์ (1–5 + R)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">17</div>
+        <div class="label">บุคลิกเสียงแจ้งงานเสร็จ (สุ่ม)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">npm dependency</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>Model Shift</h2>
+    <p>VS Code / Cursor extension ที่เปลี่ยนการพิมพ์ <code>/model</code> ให้เป็นการโยกคันเกียร์ — สลับโมเดล Claude Code ทันที, เห็นสถานะเป็นภาพ, ปิดเสียงแจ้งงานเสร็จได้ในสวิตช์เดียว สร้างด้วย Vanilla JS + Bun ไม่มี npm dependency ข้อมูลไม่ออกนอกเครื่อง</p>
+    <div class="stack-icons">
+      <span class="stack-icon">VS Code Extension API</span>
+      <span class="stack-icon">Webview</span>
+      <span class="stack-icon">Bun.serve</span>
+      <span class="stack-icon">tmux</span>
+      <span class="stack-icon">Shell hooks</span>
+      <span class="stack-icon">TTS</span>
+      <span class="stack-icon">Web Audio</span>
+      <span class="stack-icon">Vanilla JS</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.info/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "ModelSwitcher Portfolio",
+      "item": "https://projects.tanplanet.info/model-switcher-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

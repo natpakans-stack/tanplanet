@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Takra AI Monitoring — วิเคราะห์โฮสต์ไลฟ์คอมเมิร์ซ real-time (Computer Vision Research)</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Takra AI Monitoring — วิเคราะห์โฮสต์ไลฟ์คอมเมิร์ซ real-time">
+  <meta name="twitter:description" content="งานวิจัย Computer Vision: จับใบหน้า → ตัวตน → อารมณ์ → engagement ของโฮสต์ไลฟ์คอมเมิร์ซ แบบ real-time — Electron + React desktop + Python ML backend (MTCNN · FaceNet · ViT/FER+ · MediaPipe FaceMesh)">
+  <meta property="og:url" content="https://projects.tanplanet.info/takra-monitoring-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.info/takra-monitoring-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="งานวิจัย Computer Vision: จับใบหน้า → ตัวตน → อารมณ์ → engagement ของโฮสต์ไลฟ์คอมเมิร์ซ แบบ real-time — Electron + React desktop + Python ML backend (MTCNN · FaceNet · ViT/FER+ · MediaPipe FaceMesh)">
+  <meta property="og:title" content="Takra AI Monitoring — วิเคราะห์โฮสต์ไลฟ์คอมเมิร์ซ real-time">
+  <meta name="description" content="งานวิจัย Computer Vision: จับใบหน้า → ตัวตน → อารมณ์ → engagement ของโฮสต์ไลฟ์คอมเมิร์ซ แบบ real-time — Electron + React desktop + Python ML backend (MTCNN · FaceNet · ViT/FER+ · MediaPipe FaceMesh)">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%230d9488'/><text x='50' y='62' text-anchor='middle' font-size='54'>📡</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #0d9488;
+      --accent-light: #ccfbf1;
+      --accent-dark: #115e59;
+      --accent-glow: rgba(13,148,136,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #042f2e 0%, #115e59 45%, #0d9488 80%, #14b8a6 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(204,251,241,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(13,148,136,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #0d9488, #14b8a6, #ccfbf1);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #5eead4;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #115e59, #0d9488);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(13,148,136,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #14b8a6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(13,148,136,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Desktop App Mockup ===== */
+    .app-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 640px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+    .app-titlebar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #f5f5f4;
+      border-bottom: 1px solid var(--border);
+    }
+    .app-titlebar .dots { display: flex; gap: 6px; }
+    .app-titlebar .dots span { width: 11px; height: 11px; border-radius: 50%; display: block; }
+    .app-titlebar .dots .r { background: #ff5f57; }
+    .app-titlebar .dots .y { background: #febc2e; }
+    .app-titlebar .dots .g { background: #28c840; }
+    .app-titlebar .t-title { font-size: 0.78rem; color: var(--text-secondary); font-weight: 600; }
+    .app-titlebar .t-status {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--emerald-dark);
+      background: var(--emerald-light);
+      border-radius: 50px;
+      padding: 2px 10px;
+    }
+    .app-titlebar .t-status .d { width: 7px; height: 7px; border-radius: 50%; background: var(--emerald); }
+    .app-body { display: grid; grid-template-columns: 210px 1fr; }
+    .app-side { padding: 12px; border-right: 1px solid var(--border); background: #fafafa; }
+    .app-side h4 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .app-primary { font-size: 0.82rem; font-weight: 700; margin-bottom: 2px; }
+    .app-primary .em { color: var(--accent); font-weight: 600; }
+    .app-kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin: 10px 0 4px; }
+    .app-kpi { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 7px 9px; }
+    .app-kpi b { display: block; font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--text-muted); font-weight: 700; }
+    .app-kpi span { font-size: 1.02rem; font-weight: 700; color: var(--text); }
+    .app-kpi.ok span { color: var(--emerald-dark); }
+    .app-kpi.warn span { color: var(--orange); }
+    .app-video {
+      position: relative;
+      background: linear-gradient(160deg, #134e4a 0%, #0f172a 100%);
+      min-height: 300px;
+    }
+    .app-video .live-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #e11d48;
+      color: #fff;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      border-radius: 5px;
+      padding: 2px 8px;
+    }
+    .app-video .live-badge .d { width: 6px; height: 6px; border-radius: 50%; background: #fff; }
+    .app-video .viewers {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.45);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 600;
+      border-radius: 5px;
+      padding: 2px 8px;
+      backdrop-filter: blur(6px);
+    }
+    .app-video .host-silhouette {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 175px;
+      background: radial-gradient(circle at 50% 32%, rgba(94,234,212,0.32) 0%, transparent 58%),
+                  radial-gradient(ellipse at 50% 100%, rgba(94,234,212,0.20) 0%, transparent 60%);
+    }
+    .app-face-box {
+      position: absolute;
+      top: 58px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 108px;
+      height: 108px;
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      box-shadow: 0 0 0 3px rgba(13,148,136,0.22);
+    }
+    .app-face-label {
+      position: absolute;
+      top: -22px;
+      left: -2px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.66rem;
+      font-weight: 700;
+      border-radius: 5px 5px 5px 0;
+      padding: 1px 8px;
+      white-space: nowrap;
+    }
+    .app-chips {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 44px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .app-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      font-size: 0.66rem;
+      font-weight: 600;
+      border-radius: 50px;
+      padding: 2px 9px;
+      backdrop-filter: blur(6px);
+    }
+    .app-chip.on { background: rgba(13,148,136,0.85); border-color: transparent; }
+    .app-comment {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(6px);
+      border-radius: 8px;
+      padding: 6px 10px;
+      color: #fff;
+      font-size: 0.7rem;
+      line-height: 1.5;
+    }
+    .app-comment .u { color: #5eead4; font-weight: 700; margin-right: 5px; }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .closing .links {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .closing .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(17,94,89,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(17,94,89,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .app-body { grid-template-columns: 1fr; }
+      .app-side { border-right: none; border-bottom: 1px solid var(--border); }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark">📡</div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        AI Research &middot; Computer Vision &middot; Real-time
+      </div>
+      <h1>Takra AI Monitoring<br><span class="accent">อ่านตัวตน–อารมณ์–engagement ของโฮสต์ไลฟ์คอมเมิร์ซ แบบ real-time</span></h1>
+      <p>งานวิจัยภายใน (R&amp;D prototype) ที่ประกอบ 4 โมเดล Computer Vision เข้าเป็นไปป์ไลน์เดียว — จับใบหน้าจากไลฟ์ (TikTok Live / Facebook Live) → รู้จักตัวตน → อ่านอารมณ์ 7 คลาส → วัด engagement (ยิ้ม/พูด/มองกล้อง) → สรุปเป็น KPI สดและ session report ให้ทีมดูภาพรวมได้โดยไม่ต้องนั่งดูวิดีโอย้อนหลังเอง</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Electron + React</span>
+        <span class="hero-tag">FastAPI + WebSocket</span>
+        <span class="hero-tag">PyTorch / MPS</span>
+        <span class="hero-tag">MTCNN + FaceNet</span>
+        <span class="hero-tag">ViT / FER+</span>
+        <span class="hero-tag">MediaPipe FaceMesh</span>
+        <span class="hero-tag">YOLOv8-cls</span>
+        <span class="hero-tag">Chart.js</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#stack">ดู Tech Stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>ปัญหาที่เจอ</h2>
+      <p>ไลฟ์คอมเมิร์ซหนึ่งรอบยาวหลายชั่วโมง — จะรู้ได้ยังไงว่าโฮสต์ยัง "มีพลัง" และ engagement ตกตรงไหน โดยไม่ต้องมานั่งดูซ้ำทั้งคลิป?</p>
+    </section>
+
+    <div class="quote-block">
+      <p>ทีม ops อยากเข้าใจว่าโฮสต์ไลฟ์แต่ละคน "อิน" กับกล้องแค่ไหน อารมณ์เป็นยังไงตลอด session แต่การให้คนมานั่งดูวิดีโอย้อนหลังหลายชั่วโมงแล้วให้คะแนนเอง มันช้า ไม่ทัน และ subjective — โจทย์คือทำให้ metric พวกนี้ "อ่านได้ต่อวินาที" แบบอัตโนมัติ พร้อมเคารพความเป็นส่วนตัวของคนที่ถูกวัด</p>
+      <div class="author">— โจทย์ตั้งต้นของงานวิจัย Takra AI Monitoring</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="emoji">&#128337;</span>
+        <h3>ไลฟ์ยาวหลายชั่วโมง ดูย้อนหลังไม่ไหว</h3>
+        <p>หนึ่ง session ไลฟ์ขายของกินเวลาเป็นชั่วโมง — ไม่มีใครมานั่งดูซ้ำทั้งคลิปเพื่อประเมิน engagement ต้องการ metric ต่อวินาทีที่สรุปได้ทันที</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#127917;</span>
+        <h3>"โฮสต์เริ่มตก energy ไหม" ตาคนตัดสินไม่ทัน</h3>
+        <p>อารมณ์ / ความ active ของโฮสต์เปลี่ยนตลอด — การให้คนดูแล้วให้คะแนนเองทั้ง subjective และไม่ต่อเนื่อง อยากได้สัญญาณที่วัดเป็นตัวเลขได้</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#129302;</span>
+        <h3>โมเดล FER สำเร็จรูปมีอคติ</h3>
+        <p>โมเดลอ่านอารมณ์ที่ train บนชุดข้อมูลมาตรฐาน มักอ่าน "หน้านิ่ง / หน้ากำลังพูด" เป็น sad หรือ angry — เอามาใช้ตรงๆ ตัวเลขเพี้ยนทันที</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#127380;</span>
+        <h3>จะรู้ว่าใครอยู่หน้าจอ ต้องเตรียมรูปล่วงหน้า</h3>
+        <p>ระบบ face recognition ทั่วไปต้องมีชุดรูป reference ของแต่ละคนก่อน — ยุ่งยากเวลามีโฮสต์เข้าออกหลายคน อยากลงทะเบียนสดหน้างานได้เลย</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128274;</span>
+        <h3>จับหน้า + อารมณ์คน = ข้อมูล biometric ละเอียดอ่อน</h3>
+        <p>การประมวลผล face embedding และอารมณ์ของบุคคลเข้าข่าย biometric ตาม PDPA — ถ้าไม่ออกแบบเรื่อง consent / retention / การเก็บข้อมูลตั้งแต่ต้น จะกลายเป็นความเสี่ยง</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>ให้ไปป์ไลน์ CV ทำงานหนักแทน — จับ, รู้จัก, อ่านอารมณ์, วัด engagement ทุกเฟรม แล้วสรุปเป็น KPI ที่คนอ่านเข้าใจใน 3 วินาที</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <span class="emoji">&#128225;</span>
+        <h3>ไปป์ไลน์ real-time จับหน้า → ตัวตน → อารมณ์ → engagement</h3>
+        <p>ทุกเฟรมวิ่งผ่าน MTCNN (หาใบหน้า) → FaceNet (embedding ระบุตัวตน) → ViT (อารมณ์ 7 คลาส) → MediaPipe FaceMesh (ยิ้ม/พูด/มองกล้อง) แบบต่อเนื่อง</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128202;</span>
+        <h3>แปลงเป็น KPI ที่อ่านง่าย + rolling window</h3>
+        <p>สรุปออกมาเป็น Energy / Smile / Talking / Looking / Mood พร้อมค่าเฉลี่ยเลื่อน 1 นาที / 5 นาที ให้เห็นเทรนด์สดว่ากำลังขึ้นหรือตก</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#127919;</span>
+        <h3>Click-to-enroll — ลงทะเบียนตัวตนสดหน้างาน</h3>
+        <p>คลิกใบหน้าในวิดีโอ พิมพ์ชื่อ กด Enter — ระบบเฉลี่ย embedding เข้าไฟล์ทันที ใช้ได้เลย ไม่ต้องเตรียมชุดรูป reference ล่วงหน้า</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#129504;</span>
+        <h3>Multimodal calibration แก้อคติของโมเดลเดียว</h3>
+        <p>เอาสัญญาณเชิงเรขาคณิตจาก FaceMesh (blendshape ยิ้ม/ขมวดคิ้ว) มา gate ผล ViT — ลดอาการอ่านหน้านิ่งเป็น sad และทำให้ยิ้มจริงชัดขึ้น</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128274;</span>
+        <h3>Local-only + PDPA-aware ตั้งแต่ออกแบบ</h3>
+        <p>face embedding และ log ทั้งหมดอยู่ในเครื่อง (gitignored) ไม่ส่งออก ออกแบบเผื่อ consent / retention window / จำกัดสิทธิ์เข้าถึงตั้งแต่ต้น</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน — 4 จังหวะ</h2>
+      <p>ตั้งแต่เฟรมวิดีโอไลฟ์ จนได้ KPI สดบน dashboard</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <span class="emoji">&#128421;&#65039;</span>
+        <h4>ดึงเฟรมไลฟ์</h4>
+        <p>Electron ฝัง browser จริงเปิดไลฟ์ แคปหน้าจอเป็นเฟรมส่งเข้า backend ผ่าน WebSocket</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <span class="emoji">&#128100;</span>
+        <h4>ตรวจ + รู้จักใบหน้า</h4>
+        <p>MTCNN หาใบหน้า → FaceNet ทำ 512-d embedding → cosine match กับตัวตนที่ลงทะเบียนไว้</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <span class="emoji">&#129504;</span>
+        <h4>อ่านอารมณ์ + engagement</h4>
+        <p>ViT จัดอารมณ์ 7 คลาส + FaceMesh อ่าน blendshape เป็นยิ้ม/พูด/มองกล้อง แล้ว calibrate รวมกัน</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <span class="emoji">&#128202;</span>
+        <h4>สรุป KPI + log</h4>
+        <p>รวมเป็น KPI สดบน sidebar + เขียน CSV ต่อเฟรม → กลายเป็น session report ภายหลัง</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>Desktop app คุยกับ Python ML backend ในเครื่อง ผ่าน WebSocket — ประมวลผลทุกอย่าง local ไม่มี cloud</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          แหล่งวิดีโอไลฟ์ — TikTok Live / Facebook Live
+          <div class="arch-sub">
+            <span>Embedded Chromium</span>
+            <span>Screen frame (JPEG)</span>
+            <span>Comment / Gift / Like</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Python ML Backend — FastAPI + WebSocket
+          <div class="arch-sub">
+            <span>MTCNN (detect)</span>
+            <span>FaceNet / VGGFace2</span>
+            <span>ViT / FER+</span>
+            <span>MediaPipe FaceMesh</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Tracking &amp; Calibration
+          <div class="arch-sub">
+            <span>IoU face tracking</span>
+            <span>EMA smoothing</span>
+            <span>neutral-bias</span>
+            <span>smile / frown gate</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Electron + React Desktop — Live KPI + Session Report
+          <div class="arch-sub">
+            <span>KPI sidebar (rolling 1m/5m)</span>
+            <span>per-frame CSV log</span>
+            <span>Chart.js report</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+      <strong>ทำไมเลือก stack นี้?</strong>
+      <p><strong>FastAPI + WebSocket</strong> — สตรีมเฟรมสองทาง latency ต่ำ เหมาะกับ inference ต่อเนื่อง &middot; <strong>Electron WebContentsView</strong> ฝัง browser จริงเพื่อแคปไลฟ์ + ดึง comment/gift/like ได้ในแอปเดียว &middot; <strong>Pretrained models (FaceNet / ViT / MediaPipe)</strong> — ต่อของสำเร็จที่ validated แล้วแทนการ train เอง ทำให้ prototype เสร็จเร็วและแม่นกว่า &middot; <strong>PyTorch + Apple MPS</strong> เร่งงานบน Apple Silicon โดยมี workaround ปักบางโมเดลไว้ที่ CPU เพื่อเลี่ยง bug ของ MPS</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
+      <p>ครบ loop ตั้งแต่จับใบหน้า ถึง session report ที่ทีมเปิดดูย้อนหลังได้</p>
+    </section>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <span class="emoji">&#128100;</span>
+        <h3>Face Detection &amp; Recognition</h3>
+        <p>MTCNN หาใบหน้า + FaceNet/VGGFace2 ทำ 512-d embedding แล้ว cosine match กับตัวตนที่ลงทะเบียนไว้</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#129504;</span>
+        <h3>Emotion Classification</h3>
+        <p>Vision Transformer (fine-tune บน FER+) จัดอารมณ์ 7 คลาส — angry, disgust, fear, happy, neutral, sad, surprise</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128512;</span>
+        <h3>Engagement Signals</h3>
+        <p>MediaPipe FaceMesh 52 blendshapes + head-pose → smile / talking / looking / frown / blink เชิงเรขาคณิต</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#127919;</span>
+        <h3>Click-to-Enroll</h3>
+        <p>คลิกหน้าในวิดีโอ พิมพ์ชื่อ กด Enter → เฉลี่ย embedding เข้าไฟล์ ใช้งานได้ทันที ไม่ต้องมีรูป reference</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128202;</span>
+        <h3>Live KPI Sidebar</h3>
+        <p>Energy / Smile / Talking / Looking / Mood พร้อม rolling window 1 นาที / 5 นาที อัปเดตสดบนหน้าแอป</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128172;</span>
+        <h3>Comment &amp; Gift Scraper</h3>
+        <p>ดึง comment / gift / like / viewer count จากไลฟ์ (ผ่าน tiktok-live-connector) มาแสดงคู่กับ metric อารมณ์</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128200;</span>
+        <h3>Session Report</h3>
+        <p>รวม CSV ต่อเฟรม → aggregate ราย host รายนาที เป็นกราฟ behavior + emotion mix ด้วย Chart.js</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128301;</span>
+        <h3>Two-Model Research</h3>
+        <p>เทียบ custom-trained YOLOv8-cls กับ pretrained ViT บนโจทย์เดียวกัน — เพื่อตอบว่า "train เองคุ้มไหม"</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Desktop App Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>หน้าตา Desktop App</h2>
+      <p>เปิดไลฟ์ในหน้าต่างแอป → เห็นวิดีโอ + กล่องใบหน้า + KPI สดในหน้าจอเดียว</p>
+    </section>
+
+    <div class="app-mockup">
+      <div class="app-titlebar">
+        <div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+        <span class="t-title">Live Host Monitor</span>
+        <span class="t-status"><span class="d"></span>backend online · MPS</span>
+      </div>
+      <div class="app-body">
+        <div class="app-side">
+          <h4>&#9889; Live</h4>
+          <div class="app-primary">host_01 <span class="em">· happy 82%</span></div>
+          <div class="app-kpi-grid">
+            <div class="app-kpi ok"><b>Energy</b><span>74%</span></div>
+            <div class="app-kpi"><b>Smile</b><span>61%</span></div>
+            <div class="app-kpi"><b>Talking</b><span>68%</span></div>
+            <div class="app-kpi"><b>Looking</b><span>88%</span></div>
+            <div class="app-kpi"><b>Frown</b><span>7%</span></div>
+            <div class="app-kpi ok"><b>Mood</b><span>+0.53</span></div>
+          </div>
+          <h4 style="margin-top:12px;">&#128065; Stream</h4>
+          <div class="app-kpi-grid">
+            <div class="app-kpi"><b>Viewers</b><span>1.2k</span></div>
+            <div class="app-kpi"><b>&#10084;/min</b><span>3.4k</span></div>
+            <div class="app-kpi"><b>Comments</b><span>146</span></div>
+            <div class="app-kpi"><b>Joins</b><span>52</span></div>
+          </div>
+        </div>
+        <div class="app-video">
+          <span class="live-badge"><span class="d"></span>LIVE</span>
+          <span class="viewers">&#128065; 1,204</span>
+          <div class="host-silhouette"></div>
+          <div class="app-face-box">
+            <span class="app-face-label">host_01 · happy 82%</span>
+          </div>
+          <div class="app-chips">
+            <span class="app-chip on">&#128512; smile</span>
+            <span class="app-chip on">&#128172; talking</span>
+            <span class="app-chip on">&#128064; looking</span>
+            <span class="app-chip">&#128533; frown</span>
+          </div>
+          <div class="app-comment">
+            <span class="u">@mint_shop</span>ไซซ์ M ยังมีไหมคะ 🙋‍♀️
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hack กับปัญหา</h2>
+      <p>6 โจทย์ที่ต้องคิดทางแก้เอง — ML model bias, hardware quirk และ real-time engineering</p>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card precision" data-label="Model Bias">
+        <span class="emoji">&#129302;</span>
+        <h3>โมเดลที่ train เอง อ่านหน้านิ่งเป็น "angry"</h3>
+        <p>โมเดล classifier ที่ fine-tune บนชุดข้อมูล public มี class imbalance หนัก (คลาสหนึ่งมีรูปมากกว่าอีกคลาสหลายเท่า) พอเจอ webcam จริงก็ลำเอียงไปคลาสที่ข้อมูลเยอะ — หน้านิ่งโดนอ่านเป็น angry มั่นใจสูง</p>
+        <div class="highlight">แก้: หลังเทียบ per-class recall + ทดสอบสดแล้วเห็น failure mode ชัด จึงเปลี่ยนไปใช้ pretrained ViT (FER+) ที่ train บนชุดใหญ่และสมดุลกว่า — บทเรียน: หัวข้อ 2 ในส่วน Knowledge Domain</div>
+      </div>
+
+      <div class="hack-card arch" data-label="Signal Fusion">
+        <span class="emoji">&#129504;</span>
+        <h3>ViT ยังติดอ่าน "sad" บนหน้าปกติที่กำลังพูด</h3>
+        <p>แม้ pretrained ViT ดีกว่า แต่ก็ยัง sticky กับอารมณ์ลบบนหน้านิ่ง/หน้าพูด ทำให้ mood score เพี้ยนลบเกินจริง</p>
+        <div class="highlight">แก้: เอาสัญญาณเชิงเรขาคณิตจาก FaceMesh (blendshape ขมวดคิ้ว/ยิ้ม) มา "gate" ผลของ ViT — ถ้าไม่มีหลักฐานขมวดคิ้วก็หน่วงความน่าจะเป็นของอารมณ์ลบลง, ถ้ายิ้มจริงก็ดัน happy ขึ้น รวมเป็น multimodal calibration ที่ชนะอคติของโมเดลเดียว</div>
+      </div>
+
+      <div class="hack-card platform" data-label="Tracking">
+        <span class="emoji">&#127916;</span>
+        <h3>ป้ายอารมณ์กระพริบไปมาระหว่างเฟรม</h3>
+        <p>อ่านอารมณ์ทีละเฟรมอิสระ ทำให้ label เด้งสลับ happy/neutral/sad ตลอด ดูไม่นิ่ง และตัวตนของแต่ละหน้าก็สลับกันเวลาคนขยับ</p>
+        <div class="highlight">แก้: จับคู่ใบหน้าข้ามเฟรมด้วย IoU tracking ให้แต่ละหน้ามี track id คงที่ แล้ว smooth เวกเตอร์ความน่าจะเป็นด้วย EMA ต่อ track — ป้ายจึงนิ่ง และ metric สะสมต่อคนได้ถูกตัว</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Enrollment">
+        <span class="emoji">&#127919;</span>
+        <h3>Face recognition ต้องมีชุดรูปก่อนถึงใช้ได้</h3>
+        <p>ระบบระบุตัวตนปกติต้องเตรียมรูป reference ของแต่ละคนล่วงหน้า — ไม่เวิร์กเวลาโฮสต์เปลี่ยนหน้างานบ่อย</p>
+        <div class="highlight">แก้: ทำ click-to-enroll — operator คลิกใบหน้าในวิดีโอสด พิมพ์ชื่อ กด Enter ระบบดึง embedding ของเฟรมนั้นมาเฉลี่ยเข้าไฟล์ทันที เปิดใช้ recognition ได้เลยโดยไม่ต้องมีชุดรูปมาก่อน</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Integration">
+        <span class="emoji">&#128421;&#65039;</span>
+        <h3>จะแคปไลฟ์ + ดึง comment พร้อมกันยาก</h3>
+        <p>อยากได้ทั้งภาพวิดีโอไลฟ์ (เพื่ออ่านหน้า) และ metadata ไลฟ์ (comment/gift/viewer) ในแอปเดียว โดยไม่พึ่ง API ที่เข้าถึงยาก</p>
+        <div class="highlight">แก้: ใช้ Electron WebContentsView ฝัง browser จริงเปิดไลฟ์ → แคปเฟรมส่งเข้าโมเดล + ต่อ tiktok-live-connector อ่าน event comment/gift/like/join แบบสด แล้ว position view ให้ทับ placeholder ของ React ตลอดเวลา</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Latency">
+        <span class="emoji">&#9889;</span>
+        <h3>Face detector คือคอขวด + เจอ bug ของ MPS</h3>
+        <p>ขั้นตอน detect หน้าช้าสุดในไปป์ไลน์ และตัว detector ก็ชน bug ของ Apple MPS (pooling ต้องการขนาดหารลงตัว) ทำให้ค้าง</p>
+        <div class="highlight">แก้: ปัก detector ไว้ที่ CPU เพื่อเลี่ยง bug แล้วให้ embedding + emotion วิ่งบน MPS, ทำ detect เว้นเฟรม + ประมวลผลแบบ async ต่อ WebSocket — จบที่ราว 8–12 FPS บน Apple M4 Pro พอสำหรับ monitoring สด</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Design Decision ที่ตั้งใจเลือก</h2>
+      <p>เพราะเป็นงานที่แตะข้อมูล biometric ของคน ขอบเขต "ไม่ทำ" สำคัญพอๆ กับสิ่งที่ทำ</p>
+    </section>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>นี่คือ research prototype ที่จับข้อมูล biometric (face embedding) และ behavioral (อารมณ์/ความสนใจ) จึงออกแบบโดยยึดหลัก PDPA ตั้งแต่ต้น — ข้อมูลทุกอย่างอยู่ในเครื่อง ไม่ส่งออก, metric ที่ได้เป็น "สัญญาณ" ไว้ดูภาพรวม ไม่ใช่คำตัดสินตายตัวของคน, และเอกสารระบุ limitation/bias ของโมเดลไว้ชัด production จริงต้องมี consent + retention window + จำกัดสิทธิ์เข้าถึงก่อนเสมอ</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128274;</strong><br>
+        <strong>Local-only เท่านั้น</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">embedding + log อยู่ในเครื่อง (gitignored) ไม่ส่งออกนอก</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128221;</strong><br>
+        <strong>PDPA-aware</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ออกแบบเผื่อ consent · retention window · access control</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128202;</strong><br>
+        <strong>สัญญาณ ไม่ใช่คำตัดสิน</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">metric ไว้ดูภาพรวม + ระบุ bias ของโมเดลกำกับ</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#129514;</strong><br>
+        <strong>ยอมรับว่าเป็น prototype</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">calibration ปรับด้วยมือ ยังไม่ validate บน labelled set</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge Domain ที่แข็งขึ้น</h2>
+      <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
+    </section>
+
+    <div class="learning-card">
+      <strong>1. Real-time Computer Vision pipeline — orchestrate หลายโมเดลให้ทันเฟรม:</strong>
+      <p>ได้ลงมือต่อ 4 โมเดล (detect → recognize → classify → mesh) ให้ทำงานต่อกันภายใน latency budget เดียว รวมถึง IoU tracking ข้ามเฟรมและ EMA smoothing บทเรียน: real-time ML คือเกมของ latency + ความเสถียรของ output ไม่ใช่แค่ตัวเลข accuracy ของโมเดลเดี่ยว</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Model evaluation &amp; the accuracy trap — headline accuracy โกหกได้:</strong>
+      <p>โมเดลที่ train เองได้ top-1 สวยบน test set แต่พังในการใช้จริง เพราะ test set สืบทอด class imbalance มาจาก training — ต้องดู per-class recall, confusion matrix และทดสอบสดถึงเจอ failure mode (neutral → angry) บทเรียน: ตัวเลขเด่นตัวเดียวซ่อนปัญหา distribution ได้เสมอ</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. Pretrained vs custom-trained — รู้ว่าเมื่อไหร่ควร train เอง:</strong>
+      <p>เทียบตรงๆ แล้วเห็นว่า CNN เล็กที่ train บนภาพไม่กี่พันสู้ ViT ที่ pretrained บนชุดใหญ่ไม่ได้ บทเรียน: การ train เองคุ้มเฉพาะเมื่อ (ก) label set ไม่มาตรฐาน (ข) มี failure mode ที่วัดได้ในโดเมนจริง หรือ (ค) มี data flywheel ป้อนต่อเนื่อง — ไม่งั้น pretrained คือ default ที่ถูกต้อง</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Multimodal signal fusion — รวมสัญญาณต่างชนิดชนะอคติของโมเดลเดียว:</strong>
+      <p>เอา emotion จาก ViT (learned) มาผสมกับ blendshape จาก FaceMesh (geometric) ผ่านกลไก gate/bias/boost เพื่อหักล้างอคติที่โมเดลเดียวมี บทเรียน: เมื่อ single model ลำเอียง การเติมสัญญาณอิสระอีกชนิดมัก robust กว่าการฝืน fine-tune โมเดลเดิม</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Applied AI ethics / PDPA — responsible AI คือ requirement ไม่ใช่ nice-to-have:</strong>
+      <p>ออกแบบระบบที่แตะ biometric + emotion โดยคิดเรื่อง consent, retention, local-only storage และการ document bias ของโมเดลตั้งแต่ต้น บทเรียน: กับข้อมูลละเอียดอ่อนของคน ความถูกต้องเชิงจริยธรรม/กฎหมายเป็นข้อกำหนดของระบบ ไม่ใช่ของแถมที่ค่อยมาเติมทีหลัง</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">4</div>
+        <div class="label">โมเดล AI ในไปป์ไลน์เดียว</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">7</div>
+        <div class="label">คลาสอารมณ์ (FER+)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">52</div>
+        <div class="label">ARKit blendshapes จาก FaceMesh</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">8–12</div>
+        <div class="label">FPS real-time บน Apple M4 Pro</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>Takra AI Monitoring</h2>
+    <p>งานวิจัย Computer Vision ภายใน ที่เปลี่ยนการนั่งดูไลฟ์ย้อนหลังหลายชั่วโมง ให้เป็น KPI สดที่อ่านได้ต่อวินาที — ประกอบจากโมเดล pretrained ที่ validated แล้ว, ปรับ calibration แก้อคติด้วย multimodal fusion, และออกแบบโดยยึดความเป็นส่วนตัวของคนที่ถูกวัดเป็นหลัก</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Electron + React</span>
+      <span class="stack-icon">FastAPI + WebSocket</span>
+      <span class="stack-icon">PyTorch / MPS</span>
+      <span class="stack-icon">MTCNN</span>
+      <span class="stack-icon">FaceNet / VGGFace2</span>
+      <span class="stack-icon">ViT / FER+</span>
+      <span class="stack-icon">MediaPipe FaceMesh</span>
+      <span class="stack-icon">Chart.js</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.info/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Takra AI Monitoring Portfolio",
+      "item": "https://projects.tanplanet.info/takra-monitoring-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAKRA AI — แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar (Full-stack SaaS · Multi-tenant)</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TAKRA AI — แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar">
+  <meta name="twitter:description" content="Portfolio: integration/orchestration layer สำหรับไลฟ์ขายของด้วย AI Avatar — monorepo (Next.js 16 + NestJS/Fastify + Drizzle/Postgres RLS), multi-tenant, real-time Live Console (SSE), auto-reply pipeline">
+  <meta property="og:url" content="https://projects.tanplanet.info/takka-ai-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.info/takka-ai-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: integration/orchestration layer สำหรับไลฟ์ขายของด้วย AI Avatar — monorepo (Next.js 16 + NestJS/Fastify + Drizzle/Postgres RLS), multi-tenant, real-time Live Console (SSE), auto-reply pipeline">
+  <meta property="og:title" content="TAKRA AI — แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar">
+  <meta name="description" content="Portfolio: integration/orchestration layer สำหรับไลฟ์ขายของด้วย AI Avatar — monorepo (Next.js 16 + NestJS/Fastify + Drizzle/Postgres RLS), multi-tenant, real-time Live Console (SSE), auto-reply pipeline">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%237c3aed'/><text x='50' y='62' text-anchor='middle' font-size='54'>🤖</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #7c3aed;
+      --accent-light: #f3e8ff;
+      --accent-dark: #5b21b6;
+      --accent-glow: rgba(124,58,237,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #2e1065 0%, #5b21b6 45%, #7c3aed 80%, #a855f7 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(243,232,255,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(124,58,237,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #5b21b6, #7c3aed, #f3e8ff);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #d8b4fe;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #4c1d95, #6d28d9);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(124,58,237,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(124,58,237,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Live Console Mockup ===== */
+    .ext-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 460px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+    .ext-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      align-items: center;
+    }
+    .ext-bar .ext-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    .ext-bar .ext-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      color: var(--red);
+      font-size: 0.78rem;
+    }
+    .ext-bar .ext-live .rec {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--red);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    .ext-bar .ext-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 1px 9px;
+      font-size: 0.72rem;
+    }
+    .ext-yt {
+      margin: 12px;
+      padding: 10px 12px;
+      border: 1px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 8px;
+    }
+    .ext-yt b { color: #c00; }
+    .ext-yt .u { color: var(--text-muted); font-size: 0.72rem; margin: 3px 0 8px; }
+    .ext-yt .chip { display: inline-block; border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 3px 8px; font-size: 0.72rem; margin-right: 5px; color: var(--text-secondary); }
+    .ext-table { width: 100%; border-collapse: collapse; }
+    .ext-table th {
+      text-align: left; padding: 8px 12px; font-size: 0.68rem; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--border);
+    }
+    .ext-table td { padding: 9px 12px; border-bottom: 1px solid #f2f2f1; vertical-align: top; }
+    .ext-table .kind { font-weight: 700; white-space: nowrap; }
+    .ext-table .kind.master { color: #1e6b2e; }
+    .ext-table .kind.variant { color: #8a7a12; }
+    .ext-table .kind.file { color: var(--accent); }
+    .ext-table .q { white-space: nowrap; font-weight: 600; }
+    .ext-table .info { color: var(--text-secondary); font-size: 0.76rem; }
+    .ext-table .chip { display: inline-block; border: 1px solid var(--border); background: #fafafa; border-radius: 5px; padding: 1px 7px; font-size: 0.68rem; color: var(--text-secondary); }
+    .ext-cmd {
+      margin: 0 12px 12px;
+      padding: 10px 12px;
+      background: #0f172a;
+      color: #d8b4fe;
+      border-radius: 8px;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      font-size: 0.72rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .ext-cmd .flag { color: #fde047; }
+    .ext-cmd .cmt { color: #64748b; }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .closing .links {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .closing .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(91,33,182,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(91,33,182,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark">🤖</div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Full-stack SaaS &middot; Monorepo &middot; Multi-tenant
+      </div>
+      <h1>TAKRA AI<br><span class="accent">แพลตฟอร์มไลฟ์คอมเมิร์ซที่ให้ AI Avatar ไลฟ์ขายของแทน — ต่อได้ทุกชั่วโมง</span></h1>
+      <p>Operating System สำหรับไลฟ์ขายของด้วย AI Avatar — เป็น <strong>integration / orchestration layer</strong> เหนือ Avatar Engine ที่มีอยู่เดิม (TTS · lip-sync · render · RAG) แล้วเติมส่วนที่ขาด: Live Studio, real-time Console, auto-reply pipeline และ multi-tenant back office ให้ครบ loop ตั้งแต่จัดฉากถึงปิดการขาย</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Next.js 16</span>
+        <span class="hero-tag">React 19</span>
+        <span class="hero-tag">NestJS 11</span>
+        <span class="hero-tag">Fastify</span>
+        <span class="hero-tag">Drizzle ORM</span>
+        <span class="hero-tag">PostgreSQL + RLS</span>
+        <span class="hero-tag">Zitadel OIDC</span>
+        <span class="hero-tag">SSE</span>
+        <span class="hero-tag">WebRTC</span>
+        <span class="hero-tag">pnpm monorepo</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#stack">ดู Tech Stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>ปัญหาที่เจอ</h2>
+      <p>ทำไมร้านค้า SME ถึงไลฟ์ขายของ "ต่อเนื่อง" ไม่ได้ ทั้งที่ทุกชั่วโมงที่ไลฟ์ = โอกาสขาย?</p>
+    </section>
+
+    <div class="quote-block">
+      <p>Host มนุษย์ไลฟ์ได้จำกัด — พักก็ต้องพัก นอกเวลาก็ไม่มีคน ร้านเล็กหลายที่ยังไม่มี Host ด้วยซ้ำ ชั่วโมงที่ไม่มีใครไลฟ์คือยอดที่หายไปเฉยๆ ขณะเดียวกันเครื่องมือ AI avatar ที่มีในตลาดส่วนใหญ่ทำได้แค่ "อัดวิดีโอ" ไม่ใช่ "ไลฟ์" และไม่มี commerce loop — ตอบคอมเมนต์สด สลับสินค้า ปิดการขาย ไม่ได้</p>
+      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ TAKRA AI (positioning: เสริม Host ไม่ใช่แทน)</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="emoji">&#9200;</span>
+        <h3>Host ไลฟ์ได้จำกัดชั่วโมง</h3>
+        <p>คนต้องพัก ต้องนอน ไลฟ์นอกเวลาทำการ/ดึกๆ แทบเป็นไปไม่ได้ — ชั่วโมงว่างที่ไม่มีใครไลฟ์คือ demand ที่ปล่อยหลุด โดยเฉพาะร้านที่ยังไม่มี Host ประจำ</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128181;</span>
+        <h3>ต้นทุน Host หลายกะสูง</h3>
+        <p>จะไลฟ์ครอบคลุมทั้งวันต้องจ้างหลายคนหลายกะ — SME แบกไม่ไหว ทำให้เลือกไลฟ์ได้แค่บางช่วง เสียโอกาสในชั่วโมงที่ traffic ดีแต่ไม่มีคนไลฟ์</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128172;</span>
+        <h3>คอมเมนต์ถล่ม ตอบไม่ทัน</h3>
+        <p>ช่วง peak ลูกค้าถามราคา/สต็อก/โปร พร้อมกันเป็นสิบ — ตอบช้าคือปิดการขายไม่ได้ และตอบผิด/ตอบเกินจริงเรื่องสรรพคุณก็เสี่ยงด้านกฎหมาย</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#127909;</span>
+        <h3>เครื่องมือ AI avatar = async ไม่ใช่ไลฟ์</h3>
+        <p>tool ทำวิดีโอ avatar ที่มีอยู่ตอบโต้สดไม่ได้ ไม่มี live commerce loop (สลับสินค้า, CTA timing, ตอบคอมเมนต์สด) — ใช้ปิดการขายแบบไลฟ์จริงไม่ได้</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128274;</span>
+        <h3>หลายร้าน/หลาย workspace ข้อมูลต้องแยกเด็ดขาด</h3>
+        <p>แพลตฟอร์มที่ให้ Agency ดูแลลูกค้าหลายราย = ข้อมูลข้ามร้านห้ามรั่วแม้แถวเดียว — ทำ isolation เองแบบ manual พลาดง่ายและตรวจยาก</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>ไม่สร้าง core AI ใหม่ — ต่อยอด Avatar Engine เดิม แล้วทำส่วนที่ขาดให้ครบ loop ไลฟ์คอมเมิร์ซ</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <span class="emoji">&#129513;</span>
+        <h3>Integration layer เหนือ Avatar Engine</h3>
+        <p>Engine เดิมมี TTS / lip-sync / render / RAG อยู่แล้ว — TAKRA ทำหน้าที่ wire trigger logic, ป้อน script/สินค้า context, จัด session lifecycle ไม่สร้าง avatar core ใหม่ให้ซ้ำซ้อน</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#127916;</span>
+        <h3>Live Studio จัดฉาก + ไลฟ์ผ่านอุปกรณ์จริง</h3>
+        <p>Compose ฉาก/เลเยอร์/สินค้าแบบ free-form บน canvas เดียว แล้ว broadcast ผ่านอุปกรณ์จริงของร้าน (phone-as-camera) — avatar พูดตาม script ที่ผูกกับสินค้า</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#129504;</span>
+        <h3>Auto-Reply pipeline พร้อม Risk Filter</h3>
+        <p>Comment → intent detection → Risk Keyword block ก่อนตอบ → Reply Burst จัดคิว priority (ราคา/สต็อกแทรกก่อน) ให้ avatar ตอบสดในงบ latency ที่กำหนด</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128225;</span>
+        <h3>Live Console real-time (SSE)</h3>
+        <p>Manager เฝ้าดูสถานะ avatar, สุขภาพสตรีม, ฟีดคอมเมนต์, และ risk panel แบบสด ผ่าน SSE stream ที่ทน reconnect + รักษาลำดับ + กัน event ซ้ำ</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128273;</span>
+        <h3>Multi-tenant แยกข้อมูลระดับฐานข้อมูล</h3>
+        <p>ทุก query ผูก <code>workspace_id</code> + Postgres RLS เป็นด่านสุดท้าย (Model B tenancy: authority อยู่ที่ hub กลาง, identity แยกที่ Zitadel) — isolation เป็น non-negotiable มี negative test คุม</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน — 4 จังหวะ</h2>
+      <p>ตั้งแต่เตรียม avatar/สินค้า จนถึงปิดการขายและสรุปผล</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <span class="emoji">&#9881;&#65039;</span>
+        <h4>ตั้งค่า</h4>
+        <p>เลือก Avatar/Voice, ทำ Product Catalog + Risk Words, ตั้ง Live Schedule</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <span class="emoji">&#127917;</span>
+        <h4>Compose Studio</h4>
+        <p>จัดฉาก/เลเยอร์/สินค้า + เขียน script เอง หรือให้ AI gen</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <span class="emoji">&#128250;</span>
+        <h4>Broadcast</h4>
+        <p>ไลฟ์ผ่านอุปกรณ์จริง avatar พูดตาม script ผูกกับสินค้า</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <span class="emoji">&#128202;</span>
+        <h4>Engage + สรุป</h4>
+        <p>auto-reply คอมเมนต์ + Console เฝ้าดู → Post-Live Recap</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>Monorepo (pnpm workspaces) — Next.js PWA + NestJS/Fastify API + Drizzle/Postgres พร้อม external integrations</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Web PWA — ร้านค้า / Manager / Agency (Next.js 16 · React 19)
+          <div class="arch-sub">
+            <span>Live Studio</span>
+            <span>Live Console</span>
+            <span>Back Office</span>
+            <span>Onboarding</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Backend API — NestJS 11 + Fastify · Live Orchestrator
+          <div class="arch-sub">
+            <span>workspace / catalog</span>
+            <span>script / risk-word</span>
+            <span>live-orchestrator</span>
+            <span>auth / audit</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Integrations — Avatar Engine · Zitadel · Hub (tenancy) · Comment source
+          <div class="arch-sub">
+            <span>avatar-engine-contracts</span>
+            <span>hub-integration</span>
+            <span>comment-consumer</span>
+            <span>SSE console</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          PostgreSQL + Drizzle (RLS) · MinIO/S3 · Terraform · Docker Compose
+          <div class="arch-sub">
+            <span>workspace_id scoping</span>
+            <span>drizzle migrations</span>
+            <span>media-asset</span>
+            <span>audit-log</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+      <strong>ทำไมเลือก stack นี้?</strong>
+      <p><strong>NestJS 11 + Fastify</strong> — Live Orchestrator เป็น long-running process (route handler ไม่เหมาะ) + DI/module-per-feature ทำให้ scale ทีมได้ &middot; <strong>Drizzle ORM</strong> — TS-first, schema เป็น TS ตรงกับ FE type sharing, ใกล้ raw SQL ดีต่อ multi-tenant query + audit &middot; <strong>PostgreSQL + RLS</strong> — 100% data isolation ระดับฐานข้อมูล &middot; <strong>Zitadel (identity) + Model B tenancy</strong> — แยก identity ออกจาก authority ของ workspace/entitlement (อยู่ที่ hub กลาง) &middot; <strong>pnpm workspaces</strong> + <strong>OpenAPI → generated client</strong> (มี contract drift gate ใน CI) — type-safe ข้าม package โดยไม่ต้อง build matrix ซับซ้อน</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
+      <p>ครบ loop ตั้งแต่ back office ถึงไลฟ์สดและสรุปผลหลังไลฟ์</p>
+    </section>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <span class="emoji">&#127970;</span>
+        <h3>Multi-tenant Workspace &amp; Roles</h3>
+        <p>4 roles (Owner/Manager/Admin/Agency) + workspace scoping ทุก query + RLS — Agency ดูหลาย workspace ได้โดยข้อมูลไม่ปน</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128230;</span>
+        <h3>Catalog &amp; Live Schedule</h3>
+        <p>Product/SKU/Product Set CRUD + Live Schedule ผูกกับ LiveSession state machine 8 สถานะ (Live/Paused/Completed/Interrupted ฯลฯ)</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#127917;</span>
+        <h3>Live Studio (free-form)</h3>
+        <p>Compositor จัดฉากแบบ free-form — scenes &le;5, layers &le;10/scene, 9 layer types + custom upload + auto-switch เมื่อ script จบ</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#9997;&#65039;</span>
+        <h3>AI Script Generation</h3>
+        <p>8 script types + multi-content ต่อ slot (1-5) + lifecycle 5 สถานะ gate ด้วย role + risk check ต่อ content + rotation/cool-down/shuffle</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128250;</span>
+        <h3>Avatar Live Broadcasting</h3>
+        <p>Phone-as-camera PWA + WebRTC composition + session cap 20 นาที + preload &amp; seamless handover ให้ไลฟ์ต่อเนื่องไม่สะดุด</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#129504;</span>
+        <h3>Comment Auto-Reply</h3>
+        <p>Intent detection + Risk Keyword block ก่อนตอบ + Reply Burst &le;6/batch จัด priority P1/P2/P3 + per-script TTL drop</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128225;</span>
+        <h3>Live Console (SSE)</h3>
+        <p>Monitor สด: session list + Control Room + comment feed + risk panel ผ่าน SSE stream ที่ auto-reconnect + รักษาลำดับ</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128203;</span>
+        <h3>Post-Live Recap</h3>
+        <p>Aggregate AI-outcomes ต่อ session แล้ว join กับ raw comments ที่ pull จาก source — rebuild-from-source ได้ ไม่ผูกกับ snapshot อย่างเดียว</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Live Console Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>หน้าตา Live Console</h2>
+      <p>Manager เปิด Console → เห็นสถานะ avatar, ฟีดคอมเมนต์, และ risk panel สดในหน้าจอเดียว</p>
+    </section>
+
+    <div class="ext-mockup">
+      <div class="ext-bar">
+        <span class="ext-live"><span class="rec"></span>LIVE</span>
+        <span class="ext-btn">Avatar: มิ้น</span>
+        <span class="ext-btn">อัปไทม์ 18:24</span>
+        <span class="ext-badge">auto-reply 42</span>
+      </div>
+      <div class="ext-yt">
+        <div><b>&#9888; Risk Word</b> — ตรวจพบก่อนตอบ จึงบล็อกไม่ให้ avatar พูด</div>
+        <div class="u">คอมเมนต์: "กินแล้วหายขาดจริงไหมคะ" &middot; แมตช์คำกลุ่ม claim เกินจริง</div>
+        <span class="chip">blocked</span>
+        <span class="chip">logged &rarr; audit</span>
+      </div>
+      <table class="ext-table">
+        <thead>
+          <tr><th>Comment</th><th>Intent</th><th>Action</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ตัวนี้ราคาเท่าไหร่คะ</td>
+            <td class="q"><span class="kind master">price</span></td>
+            <td class="info">Reply Burst &middot; P1 แทรกก่อน</td>
+            <td><span class="chip">auto</span></td>
+          </tr>
+          <tr>
+            <td>ไซซ์ L ยังมีมั้ย</td>
+            <td class="q"><span class="kind variant">stock</span></td>
+            <td class="info">Reply Burst &middot; P1</td>
+            <td><span class="chip">auto</span></td>
+          </tr>
+          <tr>
+            <td>อยากได้สีเดียวกับพี่เลย</td>
+            <td class="q"><span class="kind file">chit-chat</span></td>
+            <td class="info">P3 &middot; drop เมื่อ script ถัดไปมา</td>
+            <td><span class="chip">queued</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="ext-cmd"><span class="cmt"># Directive Override — Manager สั่ง avatar พูดแทรกทันที</span><br>directive <span class="flag">--force-cta</span> product=SKU-4821 <span class="flag">--say</span> 'กดตะกร้าเลยนะคะ เหลือ 5 ชิ้นสุดท้าย'</div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hack กับปัญหา</h2>
+      <p>6 โจทย์วิศวกรรมที่ต้องออกแบบทางแก้เอง — multi-tenant, real-time, integration lifecycle</p>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card precision" data-label="Multi-tenant">
+        <span class="emoji">&#128273;</span>
+        <h3>ข้อมูลข้าม workspace ห้ามรั่วแม้แถวเดียว</h3>
+        <p>Agency ดูหลายร้านใน dashboard เดียว — พลาด scope query แค่ครั้งเดียวก็ข้อมูลรั่วข้ามลูกค้า ซึ่งเป็น non-negotiable</p>
+        <div class="highlight">แก้: บังคับ <code>workspace_id</code> scoping ทุก query + <strong>Postgres RLS</strong> เป็นด่านสุดท้ายที่ DB, มี <strong>ESLint guard</strong> กันเขียน query ที่ไม่ scope, และ <strong>negative isolation test</strong> ยืนยันว่าไม่มี leak — isolation ฝังใน Definition of Done ไม่ดองไป hardening ท้าย</div>
+      </div>
+
+      <div class="hack-card arch" data-label="Tenancy">
+        <span class="emoji">&#127760;</span>
+        <h3>ใครเป็นเจ้าของข้อมูล tenancy? (Model B)</h3>
+        <p>ทั้ง ecosystem มีหลาย product — ถ้าแต่ละตัวเก็บ workspace/membership/subscription เองจะ sync ไม่ตรงและ entitlement เพี้ยน</p>
+        <div class="highlight">แก้: แยกหน้าที่ชัด — <strong>hub กลางเป็น authority</strong> ของ tenancy/entitlement (resolve workspace + verify สิทธิ์ผ่าน Hub API), <strong>Zitadel ทำแค่ identity (login)</strong> ส่วน TAKRA mirror membership มาใช้ในเครื่อง มี Prism mock ของ Hub ให้ dev ไม่ต้องรัน hub จริงทุกครั้ง</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Realtime">
+        <span class="emoji">&#9889;</span>
+        <h3>คอมเมนต์ถล่ม แต่ avatar ตอบได้ทีละอย่าง</h3>
+        <p>ช่วง peak คอมเมนต์เข้ามาพร้อมกันเป็นสิบ — ตอบทุกอันไม่ได้และไม่ควร ต้องเลือกตอบอันสำคัญก่อนในงบเวลาที่จำกัด</p>
+        <div class="highlight">แก้: <strong>Reply Burst</strong> จัดคิว priority — ราคา/สต็อก (P1) แทรกก่อน chit-chat (P3), จำกัด &le;6 ต่อ batch, และ <strong>per-script TTL drop</strong> ทิ้งคอมเมนต์ที่ค้างเกินอายุเมื่อ script ถัดไปมา — กันคิวบวมและตอบตรงจังหวะ</div>
+      </div>
+
+      <div class="hack-card platform" data-label="SSE Stream">
+        <span class="emoji">&#128225;</span>
+        <h3>Console ต้องสด แต่เน็ตหลุด/ต่อใหม่ตลอด</h3>
+        <p>ไลฟ์บนมือถือเน็ตกระตุก — ถ้า stream หลุดแล้ว event หาย/ซ้ำ/สลับลำดับ Manager จะอ่านสถานะผิดและตัดสินใจพลาด</p>
+        <div class="highlight">แก้: ออกแบบ <strong>SSE console stream</strong> ให้ <strong>auto-reconnect</strong>, รักษา <strong>ordering</strong>, <strong>dedupe</strong> event ซ้ำ และมี <strong>backpressure</strong> เมื่อ client ตามไม่ทัน — reliability contract เขียนเป็น NFR แยกไม่ใช่ best-effort</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Contract-first">
+        <span class="emoji">&#129309;</span>
+        <h3>ต่อกับ engine/service ภายนอกที่ยังไม่มีจริง</h3>
+        <p>Avatar Engine, comment source และ Hub บาง endpoint ยังไม่พร้อมตอนเริ่ม dev — ถ้ารอให้เสร็จก่อนถึงเขียน integration จะบล็อกทั้ง pipeline</p>
+        <div class="highlight">แก้: <strong>contract-first</strong> — เขียน contract test แบบ network-free จาก spec ก่อน (red-first แม้ impl ยัง pending), มี <strong>OpenAPI/contract drift gate</strong> ใน CI Tier 1 ทุก PR และ Prism mock ให้ dev รันคู่ขนานได้โดยไม่ต้องมีของจริง</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Live Session">
+        <span class="emoji">&#128260;</span>
+        <h3>Engine cap session 20 นาที แต่ไลฟ์ต้องต่อเนื่อง</h3>
+        <p>Avatar Engine ปิด session ทุก 20 นาที — ถ้าปล่อยให้จบดื้อๆ ภาพจะกระตุก เสียงขาด ผู้ชมรู้สึกสะดุดทันที</p>
+        <div class="highlight">แก้: TAKRA จัด <strong>session lifecycle</strong> — preload session ถัดไป &ge;90s ก่อน cap (หรือ &ge;30s ก่อนสลับ scene) แล้วทำ <strong>seamless handover</strong> โดย budget audio &le;200ms / visual &le;100ms + รักษา pose continuity — ผู้ชมไม่รู้ว่ามีการสลับ session อยู่เบื้องหลัง</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Design Decision ที่ตั้งใจเลือก</h2>
+      <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอๆ กับสิ่งที่ทำ</p>
+    </section>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>TAKRA ไม่สร้าง core avatar ใหม่ — TTS, lip-sync, render, RAG, latency ≤2s, GPU pooling มีอยู่ใน Avatar Engine เดิมแล้ว จึงโฟกัสเป็น <strong>integration layer</strong>: จัด orchestration + commerce loop + multi-tenant back office + real-time console. Positioning ก็คมตั้งแต่ต้น — <strong>เสริม Host ไม่ใช่แทน</strong> ปลดล็อกชั่วโมงที่คนทำไม่ได้ ขอบเขตที่ชัด = implement ตรง maintain ง่าย</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#129513;</strong><br>
+        <strong>Integration ไม่ rebuild engine</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ต่อยอด engine เดิม ไม่สร้าง avatar core ซ้ำ</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128274;</strong><br>
+        <strong>Isolation = non-negotiable</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">RLS + workspace scoping + negative test คุมทุก PR</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#129514;</strong><br>
+        <strong>TDD + contract-first</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">red &rarr; green &rarr; refactor · test ฝังใน DoD</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#129309;</strong><br>
+        <strong>เสริม Host ไม่ใช่แทน</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ปลดล็อกชั่วโมงที่คนทำไม่ได้ — positioning ชัด</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge Domain ที่แข็งขึ้น</h2>
+      <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
+    </section>
+
+    <div class="learning-card">
+      <strong>1. Multi-tenant SaaS architecture — จาก "รู้แนวคิด" เป็น "ออกแบบ isolation ที่พิสูจน์ได้":</strong>
+      <p>เข้าใจการทำ data isolation หลายชั้น — <code>workspace_id</code> scoping ที่ application, Postgres RLS ที่ฐานข้อมูล, ESLint guard กันพลาดตั้งแต่เขียนโค้ด, และ negative test ยืนยันว่าไม่รั่ว รวมถึง tenancy authority split (Model B — authority ที่ hub, identity ที่ Zitadel) บทเรียน: isolation ที่ดีคือหลายด่านที่ทดสอบได้ ไม่ใช่ความตั้งใจดี</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Real-time systems — latency budget, priority queue, stream reliability:</strong>
+      <p>ออกแบบ Reply Burst เป็น priority queue (P1/P2/P3 + TTL drop) ให้ตอบตรงจังหวะภายใต้งบ latency, และ SSE console stream ที่ทน reconnect + รักษา ordering + dedupe + backpressure บทเรียน: real-time ที่เชื่อถือได้ต้องออกแบบ failure mode (หลุด/ซ้ำ/ตามไม่ทัน) ไว้ตั้งแต่แรก ไม่ใช่ best-effort</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. Monorepo + contract-driven development:</strong>
+      <p>จัด pnpm workspaces (apps + shared packages: db/auth/types/api-client/engine-contracts), gen client จาก OpenAPI พร้อม drift gate, และเขียน contract test แบบ network-free (red-first) กับ external services ที่ยังไม่มีจริง บทเรียน: contract คือสัญญาที่ให้ทีม/service คู่ขนานเดินไปพร้อมกันได้โดยไม่บล็อกกัน</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Integration architecture — adapter เหนือ 3rd-party engine + session lifecycle:</strong>
+      <p>ออกแบบ layer ที่ครอบ Avatar Engine เดิมโดยไม่แตะ core — จัด preload/handover ให้ session cap 20 นาทีดูต่อเนื่อง (audio ≤200ms / visual ≤100ms / pose continuity) และ adapter pattern รองรับ provider ใหม่ในอนาคต บทเรียน: การต่อของที่มีอยู่ให้ "ไร้รอยต่อ" ยากกว่าการเขียนใหม่ และคุ้มกว่ามาก</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Backend engineering ด้วย NestJS + Fastify + Drizzle:</strong>
+      <p>วาง module-per-feature (21 modules) + DI, เลือก Fastify เพราะ Live Orchestrator เป็น long-running process, ใช้ Drizzle (TS-first ORM ที่ใกล้ raw SQL) คู่กับ migration discipline (versioned · idempotent · fail-loud เมื่อ schema ไม่ตรง) บทเรียน: โครงสร้างที่คุมด้วย convention + guard ทำให้ solo dev ดูแลระบบใหญ่ได้โดยไม่พัง</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">21</div>
+        <div class="label">NestJS API modules (module-per-feature)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">43</div>
+        <div class="label">หน้าจอใน web app (Next.js routes)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">12</div>
+        <div class="label">ตารางฐานข้อมูล (Drizzle schema)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">7</div>
+        <div class="label">Epics — Foundation ถึง Pilot</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>TAKRA AI</h2>
+    <p>แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar สำหรับ SME ไทย — เป็น integration/orchestration layer เหนือ Avatar Engine เดิม เติม Live Studio, real-time Console, auto-reply pipeline และ multi-tenant back office ให้ครบ loop สร้างบน monorepo (Next.js 16 · NestJS/Fastify · Drizzle/Postgres RLS) ด้วยแนวทาง TDD + contract-first</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Next.js 16</span>
+      <span class="stack-icon">React 19</span>
+      <span class="stack-icon">NestJS 11</span>
+      <span class="stack-icon">Fastify</span>
+      <span class="stack-icon">Drizzle ORM</span>
+      <span class="stack-icon">PostgreSQL + RLS</span>
+      <span class="stack-icon">Zitadel OIDC</span>
+      <span class="stack-icon">SSE</span>
+      <span class="stack-icon">WebRTC</span>
+      <span class="stack-icon">pnpm monorepo</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.info/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Takka AI Portfolio",
+      "item": "https://projects.tanplanet.info/takka-ai-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

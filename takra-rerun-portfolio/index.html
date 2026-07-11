@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Takra Rerun — Desktop Control Room สำหรับ Re-broadcast คลิปออกไลฟ์ (Electron + Go + ffmpeg)</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Takra Rerun — Desktop Control Room สำหรับ Re-broadcast คลิปออกไลฟ์">
+  <meta name="twitter:description" content="Portfolio: เดสก์ท็อปแอปที่แพ็ก Go backend + ffmpeg streaming engine + React SPA เข้า Electron เป็นแอปเดียว — re-air คลิปออก RTMP, overlay, chat สด, ผ่าน browser oracle">
+  <meta property="og:url" content="https://projects.tanplanet.info/takra-rerun-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.info/takra-rerun-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: เดสก์ท็อปแอปที่แพ็ก Go backend + ffmpeg streaming engine + React SPA เข้า Electron เป็นแอปเดียว — re-air คลิปออก RTMP, overlay, chat สด, ผ่าน browser oracle">
+  <meta property="og:title" content="Takra Rerun — Desktop Control Room สำหรับ Re-broadcast คลิปออกไลฟ์">
+  <meta name="description" content="Portfolio: เดสก์ท็อปแอปที่แพ็ก Go backend + ffmpeg streaming engine + React SPA เข้า Electron เป็นแอปเดียว — re-air คลิปออก RTMP, overlay, chat สด, ผ่าน browser oracle">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23c2410c'/><text x='50' y='62' text-anchor='middle' font-size='54'>🔁</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #c2410c;
+      --accent-light: #ffedd5;
+      --accent-dark: #7c2d12;
+      --accent-glow: rgba(194,65,12,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #431407 0%, #7c2d12 40%, #c2410c 80%, #ea580c 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(255,237,213,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(194,65,12,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #c2410c, #ea580c, #ffedd5);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #fed7aa;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #7c2d12, #c2410c);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(194,65,12,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #ea580c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(194,65,12,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Console Mockup ===== */
+    .ext-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 480px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+    .ext-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      align-items: center;
+    }
+    .ext-bar .ext-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    .ext-bar .ext-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 1px 9px;
+      font-size: 0.72rem;
+    }
+    .ext-yt {
+      margin: 12px;
+      padding: 10px 12px;
+      border: 1px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 8px;
+    }
+    .ext-yt b { color: #c00; }
+    .ext-yt .u { color: var(--text-muted); font-size: 0.72rem; word-break: break-all; margin: 3px 0 8px; font-family: 'SF Mono', monospace; }
+    .ext-yt .chip { display: inline-block; border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 3px 8px; font-size: 0.72rem; margin-right: 5px; color: var(--text-secondary); }
+    .ext-table { width: 100%; border-collapse: collapse; }
+    .ext-table th {
+      text-align: left; padding: 8px 12px; font-size: 0.68rem; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--border);
+    }
+    .ext-table td { padding: 9px 12px; border-bottom: 1px solid #f2f2f1; vertical-align: top; }
+    .ext-table .kind { font-weight: 700; white-space: nowrap; }
+    .ext-table .kind.master { color: #1e6b2e; }
+    .ext-table .kind.variant { color: #8a7a12; }
+    .ext-table .kind.file { color: var(--accent); }
+    .ext-table .q { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .ext-table .info { color: var(--text-secondary); font-size: 0.76rem; }
+    .ext-table .chip { display: inline-block; border: 1px solid var(--border); background: #fafafa; border-radius: 5px; padding: 1px 7px; font-size: 0.68rem; color: var(--text-secondary); font-family: 'SF Mono', monospace; }
+    .ext-cmd {
+      margin: 0 12px 12px;
+      padding: 10px 12px;
+      background: #0f172a;
+      color: #fed7aa;
+      border-radius: 8px;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      font-size: 0.72rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .ext-cmd .flag { color: #fde047; }
+    .ext-cmd .cmt { color: #64748b; }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .closing .links {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .closing .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(124,45,18,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(124,45,18,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark">🔁</div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Desktop App &middot; Electron + Go &middot; ffmpeg Streaming Engine
+      </div>
+      <h1>Takra Rerun<br><span class="accent">เดสก์ท็อป control room สำหรับ re-broadcast คลิปออกไปเป็นไลฟ์ live commerce</span></h1>
+      <p>แอปเดสก์ท็อปที่แพ็ก <code>Go backend</code> + <code>ffmpeg engine</code> + React SPA เข้ามาเป็นแอปเดียว — วนคลิปที่บันทึกไว้ออก RTMP เป็นสตรีมสด พร้อม overlay นาฬิกา/ข้อความ, chat สด, ปักตะกร้าสินค้า และคุมหลายบัญชีจากหน้าจอเดียว โดยข้อมูลไม่ต้องออกจากเครื่อง</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Electron</span>
+        <span class="hero-tag">Go 1.26</span>
+        <span class="hero-tag">chi + sqlc</span>
+        <span class="hero-tag">ffmpeg / RTMP</span>
+        <span class="hero-tag">SQLite</span>
+        <span class="hero-tag">React 19 + Vite</span>
+        <span class="hero-tag">SSE</span>
+        <span class="hero-tag">Zitadel OIDC</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#stack">ดู Tech Stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>ปัญหาที่เจอ</h2>
+      <p>คนขายของไลฟ์ต้องออกอากาศเกือบตลอดเวลา — แต่ยืนพูดสดทั้งวันทั้งคืนคือทางไปสู่ burnout</p>
+    </section>
+
+    <div class="quote-block">
+      <p>ร้านที่ขายผ่านไลฟ์ต้อง "ติดจอ" ให้นานที่สุดถึงจะมียอด — แต่คนพูดสดทั้งวันไม่ไหว โดยเฉพาะกะดึก เครื่องมือที่ใช้กันคือเอา OBS + สคริปต์ + เครื่อง VM หลายตัวมาต่อกันเอง เปราะและพังกลางไลฟ์บ่อย ยิ่งถ้าดูแลหลายบัญชี/หลายห้องพร้อมกัน ยิ่งคุมไม่อยู่ โจทย์คือ: ทำ control room ตัวเดียวที่เอา "คลิปที่อัดไว้" มาวนออกเป็นไลฟ์ได้อย่างเสถียร</p>
+      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ Takra Rerun</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="emoji">&#128564;</span>
+        <h3>ยืนไลฟ์สดทั้งวันไม่ไหว</h3>
+        <p>ยอดขายผูกกับเวลาออกอากาศ — แต่คนมีลิมิต โดยเฉพาะช่วงดึก ต้องมีวิธีเอาคลิปที่อัดไว้มา re-air โดยที่ประสบการณ์ผู้ชมยังใกล้เคียงไลฟ์จริง</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#129513;</span>
+        <h3>เครื่องมือ = ต่อเอง เปราะ พังง่าย</h3>
+        <p>OBS + สคริปต์ + VM หลายตัวมาต่อกันเอง ไม่มีตัวคุมกลาง — สตรีมหลุด ต้องมานั่งเฝ้ารีสตาร์ตเอง ไม่มี auto-restart / keep-alive ในตัว</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128421;&#65039;</span>
+        <h3>หลายบัญชี/หลายห้อง คุมจากที่เดียวไม่ได้</h3>
+        <p>เอเจนซีดูหลายแบรนด์พร้อมกัน แต่ละบัญชีต้องแยก identity + network egress ของตัวเอง — ไม่มีหน้าจอเดียวที่เห็นสถานะทุกห้องรวมกัน</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128263;</span>
+        <h3>คลิปเสียงหลุด/เงียบกลางไลฟ์</h3>
+        <p>ไฟล์ที่เอามาวนบางทีเสียงสั้นกว่าภาพ หรือเงียบยาวกลางทาง — ออกอากาศความเงียบไปโดยไม่รู้ตัว เสียลูกค้าฟรีๆ</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128273;</span>
+        <h3>บาง action server เรียกเองไม่ได้</h3>
+        <p>งานอย่าง chat / ปักตะกร้า / อ่านยอดขายสด ต้องมี "ลายเซ็นคำขอ" ที่สร้างจาก JS ของแพลตฟอร์มในหน้าเว็บที่ login แล้วเท่านั้น — backend ยิงเองตรงๆ ไม่ได้</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>รวมทุกชิ้นที่เคยต้องต่อเอง ให้เป็นแอปเดสก์ท็อปตัวเดียว — เปิดแล้วใช้ได้เลย ไม่ต้องตั้ง server</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <span class="emoji">&#128250;</span>
+        <h3>Re-air engine ในเครื่อง</h3>
+        <p>ffmpeg push คลิปออก RTMP แบบ <code>-c copy</code> เดินตาม native frame-rate (ไม่ re-encode ถ้าไม่จำเป็น) + keep-alive ping ห้อง + auto-stop/auto-restart เมื่อสตรีมสะดุด</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128230;</span>
+        <h3>แพ็กทุกอย่างเป็นแอปเดียว</h3>
+        <p>Electron หุ้ม Go backend (spawn เป็น sidecar loopback), ffmpeg static และ React SPA ไว้ในตัวเดียว — ผู้ใช้ไม่ต้องลง Docker/Go/Node เอง ติดตั้งแล้วรันได้ทันที</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#127917;&#65039;</span>
+        <h3>Command center คุมทุกห้องที่เดียว</h3>
+        <p>หน้าคอนโซล React เดียวเห็นทุก session — เริ่ม/หยุดไลฟ์, สลับคลิป, ตั้ง overlay, ดู chat และยอดขายสด แยกตามบัญชีชัดเจน</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128266;</span>
+        <h3>การ์ดเสียงหลุดในตัว</h3>
+        <p>pre-flight ตรวจไฟล์ด้วย ffprobe (เสียงสั้น/ไม่มีเสียง) ก่อนไลฟ์ + monitor เงียบยาวระหว่างออกอากาศ — กันไม่ให้ออกอากาศความเงียบ</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#129497;</span>
+        <h3>Browser oracle เป็น "ตัวเซ็น"</h3>
+        <p>hidden window ที่ login ไว้ ทำหน้าที่ยิงคำขอในหน้าเว็บ ให้ JS ของแพลตฟอร์มเติมลายเซ็นให้เอง — ปลดล็อก chat / ปักตะกร้า / GMV ที่ server เซ็นเองไม่ได้</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน — 4 จังหวะ</h2>
+      <p>ตั้งแต่เลือกคลิป จนวนออกเป็นไลฟ์พร้อม chat และยอดขายสด</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <span class="emoji">&#127916;</span>
+        <h4>เตรียม session</h4>
+        <p>เลือกคลิป + ตั้ง overlay / proxy / ชุดสินค้าที่จะปักตะกร้า</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <span class="emoji">&#128250;</span>
+        <h4>กดไลฟ์</h4>
+        <p>backend เปิดห้อง + ffmpeg push RTMP + keep-alive ping</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <span class="emoji">&#129497;</span>
+        <h4>Oracle ดักสด</h4>
+        <p>hidden window ถอด chat/GMV → backend → SSE → คอนโซล</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <span class="emoji">&#128293;</span>
+        <h4>เฝ้า + วน</h4>
+        <p>monitor เสียงหลุด + auto-restart ให้ไลฟ์ไม่ขาดจนจบ</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>โปรเซสตระกูลเดียวบนเครื่อง seller — ไม่มี app server บนคลาวด์, ไม่มี infra ต่อร้าน</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          React SPA Console (Vite + Tailwind v4 + shadcn/ui)
+          <div class="arch-sub">
+            <span>control-room</span>
+            <span>session-detail</span>
+            <span>overlay / basket</span>
+            <span>chat + GMV panel</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Electron main — spawn sidecar + oracle
+          <div class="arch-sub">
+            <span>wait /healthz</span>
+            <span>first-party OIDC loopback</span>
+            <span>partitioned windows</span>
+            <span>bundle ffmpeg</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Go backend (chi + sqlc) — re-air engine + SSE broker
+          <div class="arch-sub">
+            <span>sessions / media</span>
+            <span>overlay / basket</span>
+            <span>gmv / chatreply</span>
+            <span>vault / egress</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          SQLite (file:) + ffmpeg (RTMP) + object store + Zitadel OIDC
+          <div class="arch-sub">
+            <span>goose migrations</span>
+            <span>-c copy push</span>
+            <span>video clips (S3)</span>
+            <span>workspace_id tenancy</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+      <strong>ทำไมเลือก stack นี้?</strong>
+      <p><strong>Electron หุ้ม Go sidecar</strong> — แพ็ก backend + ffmpeg + SPA เป็นแอปเดียว ผู้ใช้ zero-setup, และ window เปิดบน origin ของ backend ทำให้ flow login OIDC เป็น first-party &middot; <strong>SQLite (<code>file:</code> DSN)</strong> — desktop mode รันแบบ self-contained, migrate-on-start, ไม่ต้องมี DB server &middot; <strong>Go (chi + sqlc)</strong> — production shape: ไม่มี ORM, ไม่มี inline SQL, multi-tenant ด้วย <code>workspace_id</code> ตั้งแต่วันแรก &middot; <strong>React 19 + Vite + Tailwind v4</strong> — คอนโซลที่ backend เสิร์ฟเองที่ origin เดียวกัน</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
+      <p>ยกมาจาก POC ที่พิสูจน์ใช้งานแล้ว แล้ว port ให้ได้พฤติกรรมเดิมบน stack Go / React / Electron</p>
+    </section>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <span class="emoji">&#128250;</span>
+        <h3>Re-air Engine</h3>
+        <p>ffmpeg push RTMP แบบ <code>-c copy</code> native-rate + keep-alive ping + auto-stop/restart — แกนหลักที่วนคลิปออกเป็นไลฟ์</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128347;</span>
+        <h3>Overlay Compositor</h3>
+        <p>ซ้อนนาฬิกา LED / ข้อความบนวิดีโอด้วย <code>filter_complex</code> + ขยับตำแหน่งสดผ่าน ZMQ — re-encode เฉพาะ session ที่มี overlay</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128266;</span>
+        <h3>Audio-Drop Guard</h3>
+        <p>pre-flight ffprobe จับ <code>NO_AUDIO</code>/<code>AUDIO_SHORT</code> + runtime <code>silencedetect</code> — กันออกอากาศเงียบ</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#129497;</span>
+        <h3>Browser Oracle</h3>
+        <p>hidden partitioned window ต่อบัญชี รัน <code>executeJavaScript</code> ที่ preload ไว้ ให้หน้าเว็บเซ็นคำขอเอง — โครงกลางที่ chat/basket/GMV ใช้ร่วม</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128172;</span>
+        <h3>Realtime Chat</h3>
+        <p>oracle ถอด comment/viewer สด → <code>/ingest/chat</code> → SSE broker fan-out → panel ในคอนโซล (dedup by msgId)</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#9997;&#65039;</span>
+        <h3>Manual Reply</h3>
+        <p>พิมพ์ตอบจาก UI → in-memory queue → oracle ยิง <code>message/chat</code> ในหน้าเว็บ → โชว์เมื่อ delivered จริง (ไม่ optimistic)</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128722;</span>
+        <h3>Product Pin (ตะกร้า)</h3>
+        <p>เตรียมชุดสินค้า (<code>product_sets</code>) → กดไลฟ์ → pin queue + afterLive hook → oracle ปักอัตโนมัติ พร้อมสถานะ "ปักแล้ว X/X"</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#127760;</span>
+        <h3>Per-Account Egress</h3>
+        <p>network egress ต่อบัญชี (utls fingerprint + SOCKS5/HTTP CONNECT) — traffic ของแต่ละ identity แยกกันชัด</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Console Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>หน้าตา Session Console</h2>
+      <p>เปิดคลิป → กดไลฟ์ → เห็น chat, viewer, ยอดขาย และ overlay รวมในหน้าจอเดียว</p>
+    </section>
+
+    <div class="ext-mockup">
+      <div class="ext-bar">
+        <span class="ext-btn">&#9654; Go Live</span>
+        <span class="ext-btn">Overlay</span>
+        <span class="ext-btn">ตะกร้า</span>
+        <span class="ext-badge">&#128308; LIVE</span>
+      </div>
+      <div class="ext-yt">
+        <div><b>&#128308; กำลังไลฟ์</b> — re-air คลิปที่อัดไว้ &middot; uptime 01:12:40</div>
+        <div class="u">clip: promo-spring-set.mp4 &middot; -c copy &middot; native-rate</div>
+        <span class="chip">&#128101; 1,284 viewers</span>
+        <span class="chip">&#128722; ปักแล้ว 6/6</span>
+        <span class="chip">&#128266; audio ok</span>
+      </div>
+      <table class="ext-table">
+        <thead>
+          <tr><th>Channel</th><th>สด</th><th>รายละเอียด</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="kind master">Chat</span></td>
+            <td class="q">SSE</td>
+            <td class="info">&#128172; 42 ข้อความ/นาที &middot; ตอบสด</td>
+            <td><span class="chip">reply</span></td>
+          </tr>
+          <tr>
+            <td><span class="kind variant">GMV</span></td>
+            <td class="q">poll 45s</td>
+            <td class="info">&#128176; ยอดสด &middot; top 5 SKU</td>
+            <td><span class="chip">panel</span></td>
+          </tr>
+          <tr>
+            <td><span class="kind file">Overlay</span></td>
+            <td class="q">on</td>
+            <td class="info">&#128347; นาฬิกา + ข้อความ &middot; ZMQ move</td>
+            <td><span class="chip">edit</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="ext-cmd"><span class="cmt"># re-air engine — stream-copy, ไม่ re-encode</span><br>ffmpeg <span class="flag">-re</span> -i clip.mp4 <span class="flag">-c copy</span> <span class="flag">-f</span> flv 'rtmp://live.&hellip;/app/&lt;stream-key&gt;'</div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hack กับปัญหา</h2>
+      <p>6 โจทย์วิศวกรรมที่ต้องคิดทางแก้เอง — desktop runtime + media core + browser automation</p>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card platform" data-label="Desktop Runtime">
+        <span class="emoji">&#128230;</span>
+        <h3>รวม 3 โปรเซสให้เป็นแอปเดียวติดตั้งง่าย</h3>
+        <p>Go backend, ffmpeg และ SPA เป็นคนละ runtime — จะให้ seller ลงเองทีละตัวไม่ได้ ต้องแพ็กรวมและคุม lifecycle ให้เนียน</p>
+        <div class="highlight">แก้: Electron main <code>spawn</code> Go binary เป็น sidecar (loopback), รอ <code>/healthz</code> 200 ก่อนเปิด BrowserWindow บน origin ของ backend — ทำให้ flow OIDC login → callback → cookie เป็น first-party ทั้งหมด · ffmpeg static ฝังมากับ package (electron-builder)</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Media Core">
+        <span class="emoji">&#128347;</span>
+        <h3>Overlay ชนกฎ "ห้าม re-encode"</h3>
+        <p>แกน re-air ล็อก <code>-c copy</code> ไว้ (invariant: ไม่ re-encode = คุณภาพ/CPU คงที่) แต่การซ้อนนาฬิกา/ข้อความต้องผ่าน <code>filter_complex</code> = ต้อง re-encode</p>
+        <div class="highlight">แก้: เปิด re-encode branch (<code>libx264</code> + filtergraph) <strong>เฉพาะ session ที่มี overlay</strong> เท่านั้น — no-overlay ยังเป็น <code>-c copy</code> เป๊ะ · เป็น decision ระดับ media core ที่ตั้งใจ scope ไว้แคบ</div>
+      </div>
+
+      <div class="hack-card arch" data-label="Concurrency">
+        <span class="emoji">&#128266;</span>
+        <h3>ใส่ตัวจับเสียงเงียบใน stream-copy ไม่ได้</h3>
+        <p><code>silencedetect</code> เป็น audio filter (<code>-af</code>) แต่ push หลักเป็น <code>-c copy</code> — เติม <code>-af</code> ลงไปตรงๆ ทำ stream-copy พัง</p>
+        <div class="highlight">แก้: รัน ffmpeg <strong>ตัวที่สองคู่ขนาน</strong> (<code>-af silencedetect -f null -</code>) เป็น co-goroutine ที่ decode แค่เสียงแล้วทิ้งผล — push หลักยัง <code>-c copy</code> วิดีโอไม่ถูกแตะ · scan stderr สดแทนอ่าน log ทั้งไฟล์</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Signing">
+        <span class="emoji">&#129497;</span>
+        <h3>บาง action ต้องลายเซ็นจากหน้าเว็บที่ login</h3>
+        <p>chat / ปักตะกร้า / GMV ต้องมีลายเซ็นคำขอที่สร้างโดย JS ของแพลตฟอร์มในหน้า login แล้วเท่านั้น — Go เซ็นเองไม่ได้</p>
+        <div class="highlight">แก้: browser oracle — hidden BrowserWindow ต่อบัญชี (<code>session.fromPartition</code>) รับงานจาก backend ผ่าน validated IPC (sender id + size cap) แล้วเรียก <code>executeJavaScript</code> ที่ preload ไว้ (ห้าม string-interpolate logic เข้าหน้า remote) ให้หน้าเว็บ fetch + เซ็นเอง → ส่งผลกลับ</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Transient State">
+        <span class="emoji">&#128268;</span>
+        <h3>chat/GMV เป็นข้อมูลสด — ไม่ควรลง DB ทุกชิ้น</h3>
+        <p>คอมเมนต์และยอดขายสดไหลเข้ามาเร็วมาก ถ้าเขียน DB ทุก event = คอขวด และไม่ได้ต้องการ history ข้าม restart</p>
+        <div class="highlight">แก้: ทำ SSE broker เป็น live transport — chat/GMV/pin เป็น <strong>ephemeral</strong> (in-memory queue, fan-out ผ่าน SSE) ไม่แตะ DB · persist เฉพาะสิ่งที่ควร persist จริง (product_sets, overlay config, accounts) ผ่าน migration</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Security">
+        <span class="emoji">&#128273;</span>
+        <h3>credential ต่อบัญชีต้องไม่รั่ว</h3>
+        <p>cookie/credential ของแต่ละ identity คือความลับชั้นสูงสุด — เก็บ plaintext หรือ log ออกมาเมื่อไหร่คือจบ</p>
+        <div class="highlight">แก้: vault envelope encryption (AES-256 ผ่าน OS keychain) เก็บ secret ทุกตัว · log แค่ <code>length</code> ไม่เคย log ค่า · desktop↔backend ใช้ per-machine key (constant-time bearer, loopback เท่านั้น) แทน static key ที่ hardcode ไว้</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Design Decision ที่ตั้งใจเลือก</h2>
+      <p>ขอบเขตที่จงใจ "ทำแคบ" — เพื่อให้ implement ตรงและ maintain ง่าย</p>
+    </section>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>ทั้งระบบรันบนเครื่อง seller — ไม่มี app server กลาง, credential ไม่ออกนอกเครื่อง, re-encode เฉพาะเมื่อมี overlay จริง, และเก็บลง DB เฉพาะสิ่งที่ต้องคงข้าม restart เท่านั้น ขอบเขตที่คมตั้งแต่ต้นทำให้ทุก feature ต่อยอดจากแกน re-air เดิมได้ โดยไม่ทำให้ core พองหรือช้าลง</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128421;&#65039;</strong><br>
+        <strong>Desktop-local</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">รันบนเครื่อง seller ข้อมูล/credential ไม่ออก cloud</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128250;</strong><br>
+        <strong>-c copy invariant</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">re-encode เฉพาะ session ที่มี overlay เท่านั้น</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#9889;</strong><br>
+        <strong>Transient by default</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">chat/GMV เป็น live persist เฉพาะที่ต้องมี history</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128274;</strong><br>
+        <strong>Vault ทุก secret</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">envelope encryption + log แค่ length ไม่เคย log ค่า</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge Domain ที่แข็งขึ้น</h2>
+      <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
+    </section>
+
+    <div class="learning-card">
+      <strong>1. Desktop app architecture (Electron + native sidecar) — จาก web ล้วนสู่เดสก์ท็อปจริง:</strong>
+      <p>เข้าใจการแพ็ก native backend เป็น sidecar, จัดการ lifecycle (spawn → wait <code>/healthz</code> → teardown), ทำ OIDC login ให้เป็น first-party ผ่าน loopback origin และ bundle binary ต่อ target ด้วย electron-builder (dmg/nsis) บทเรียน: "แอปเดียวจบ" สำหรับผู้ใช้ = งานประกอบ runtime หลายตัวหลังบ้านที่ต้องคุมให้เนียน</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Real-time media / ffmpeg engineering — อ่านออกว่า pipeline ทำอะไรทุกขั้น:</strong>
+      <p>ทำ RTMP push แบบ stream-copy vs re-encode, เขียน <code>filter_complex</code> ซ้อน overlay, คุมตำแหน่งสดผ่าน ZMQ, จับเสียงเงียบด้วย <code>silencedetect</code> ที่รันคู่ขนานโดยไม่แตะ push หลัก บทเรียน: streaming ไม่ใช่ black box — เข้าใจว่าเมื่อไหร่ควร copy เมื่อไหร่ต้อง re-encode คือการควบคุมทั้ง CPU และคุณภาพ</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. Go backend ทรง production — โครงที่ maintain ได้จริง:</strong>
+      <p>chi + sqlc (ไม่มี ORM, ไม่มี inline SQL — บังคับด้วยเทสต์), goose migrations ฝังใน binary, multi-tenant ด้วย <code>workspace_id</code> ทุก query, และ SSE broker เป็น live fan-out บทเรียน: การตั้งกฎเชิงโครงสร้าง (tenant guard, no-inline-SQL) ตั้งแต่วันแรก ทำให้ระบบโตต่อได้โดยไม่พัง</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Browser automation / signing oracle — งานที่ server ทำเองไม่ได้:</strong>
+      <p>ใช้ partitioned session ต่อบัญชี, <code>executeJavaScript</code> เรียก preloaded function (ไม่ string-interpolate เข้าหน้า remote), และ validated IPC (sender id + size cap) พร้อมเข้าใจ tradeoff ของ <code>contextIsolation:false</code> บทเรียน: automation ที่ปลอดภัยคือการแยก context ที่ไม่ trust ออกให้เด็ดขาด แล้วคุยกันผ่าน channel ที่ตรวจสอบได้</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Secure-by-default & scoping — "ทำแคบ" คือ design ที่ดี:</strong>
+      <p>envelope encryption ทุก secret, per-machine key แทน static backdoor, log แค่ length, และตัดสินใจว่าอะไร persist / อะไร transient ตั้งแต่ออกแบบ บทเรียน: security ที่ดีเริ่มจาก default ที่ปลอดภัย + ขอบเขตที่คม ไม่ใช่การไปแปะทีหลัง</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">8</div>
+        <div class="label">ฟีเจอร์หลัก port จาก POC</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">40</div>
+        <div class="label">Go internal packages (~26k บรรทัด)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">3&#8594;1</div>
+        <div class="label">โปรเซส (Go + ffmpeg + SPA) รวมเป็นแอปเดียว</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">server ต่อร้าน — desktop self-contained</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>Takra Rerun</h2>
+    <p>เดสก์ท็อป control room สำหรับ live commerce ที่แพ็ก Go backend, ffmpeg engine และ React SPA เข้ามาเป็นแอปเดียวติดตั้งง่าย — วนคลิปที่บันทึกไว้ออกเป็นไลฟ์อย่างเสถียร พร้อม overlay, chat สด และปักตะกร้าอัตโนมัติผ่าน browser oracle โดยข้อมูลไม่ต้องออกจากเครื่องผู้ใช้</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Electron</span>
+      <span class="stack-icon">Go 1.26</span>
+      <span class="stack-icon">chi + sqlc</span>
+      <span class="stack-icon">ffmpeg / RTMP</span>
+      <span class="stack-icon">SQLite</span>
+      <span class="stack-icon">React 19 + Vite</span>
+      <span class="stack-icon">Tailwind v4</span>
+      <span class="stack-icon">SSE</span>
+      <span class="stack-icon">Zitadel OIDC</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.info/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Takra Rerun Portfolio",
+      "item": "https://projects.tanplanet.info/takra-rerun-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

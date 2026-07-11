@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MegaCoach — AI Coach จัดพอร์ตหุ้น US ผ่าน Dime บน LINE + LIFF</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MegaCoach — AI Coach จัดพอร์ตหุ้น US ผ่าน Dime บน LINE + LIFF">
+  <meta name="twitter:description" content="Portfolio: ระบบ AI coach ส่วนตัวจัดพอร์ตหุ้นสหรัฐฯ — LIFF dashboard + เตือนจังหวะเข้า-ออกอัตโนมัติทาง LINE + เข้ารหัส zero-knowledge (ตัวเลขเงินไม่ขึ้น cloud)">
+  <meta property="og:url" content="https://projects.tanplanet.info/megacoach-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.info/megacoach-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: ระบบ AI coach ส่วนตัวจัดพอร์ตหุ้นสหรัฐฯ — LIFF dashboard + เตือนจังหวะเข้า-ออกอัตโนมัติทาง LINE + เข้ารหัส zero-knowledge (ตัวเลขเงินไม่ขึ้น cloud)">
+  <meta property="og:title" content="MegaCoach — AI Coach จัดพอร์ตหุ้น US ผ่าน Dime บน LINE + LIFF">
+  <meta name="description" content="Portfolio: ระบบ AI coach ส่วนตัวจัดพอร์ตหุ้นสหรัฐฯ — LIFF dashboard + เตือนจังหวะเข้า-ออกอัตโนมัติทาง LINE + เข้ารหัส zero-knowledge (ตัวเลขเงินไม่ขึ้น cloud)">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23059669'/><text x='50' y='62' text-anchor='middle' font-size='54'>📈</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #059669;
+      --accent-light: #d1fae5;
+      --accent-dark: #065f46;
+      --accent-glow: rgba(5,150,105,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #022c22 0%, #065f46 45%, #059669 80%, #10b981 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(209,250,229,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(5,150,105,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #059669, #10b981, #d1fae5);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #6ee7b7;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #065f46, #059669);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(5,150,105,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #10b981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(5,150,105,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== LINE Card Mockup ===== */
+    .line-mock {
+      background: #e8eef1;
+      border-radius: var(--radius-lg);
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 22px 16px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+    }
+    .lm-day {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-bottom: 14px;
+    }
+    .lm-bubble {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      margin-bottom: 16px;
+    }
+    .lm-bubble:last-child { margin-bottom: 0; }
+    .lm-strip { height: 6px; background: #fb7185; }
+    .lm-head {
+      padding: 14px 16px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+    }
+    .lm-head.urgent { background: linear-gradient(135deg, #7f1d1d, #e11d48); }
+    .lm-head .tag { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.5px; opacity: 0.86; }
+    .lm-head .ttl { font-size: 1.1rem; font-weight: 700; margin-top: 2px; }
+    .lm-body { padding: 14px 16px; }
+    .lm-body .big { font-size: 1rem; font-weight: 700; color: var(--text); }
+    .lm-body .sub { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+    .lm-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      margin-top: 10px;
+      font-size: 0.86rem;
+      color: var(--text);
+    }
+    .lm-row .em { flex-shrink: 0; }
+    .lm-sep { border-top: 1px solid var(--border); margin: 12px 0; }
+    .lm-note { font-size: 0.7rem; color: var(--text-muted); line-height: 1.5; }
+    .lm-btn {
+      display: block;
+      text-align: center;
+      margin: 0 16px 16px;
+      padding: 9px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .lm-btn.urgent { background: #be123c; }
+    .lm-disc { font-size: 0.64rem; color: var(--text-muted); text-align: center; margin-bottom: 12px; }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .closing .links {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .closing .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(6,95,70,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(6,95,70,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark">📈</div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        AI Coach &middot; LINE + LIFF &middot; Zero-Knowledge
+      </div>
+      <h1>MegaCoach<br><span class="accent">โค้ช AI จัดพอร์ตหุ้น US — เตือนจังหวะเข้า-ออกทุกเช้าใน LINE</span></h1>
+      <p>ระบบส่วนตัวที่ทำหน้าที่เป็น "โค้ชพอร์ต" — รวม dashboard, ที่ปรึกษา AI ที่รู้พอร์ตจริง และการเตือน DCA / stop / RMF อัตโนมัติไว้ใน LINE เดียว โดย <strong>ตัวเลขเงินถูกเข้ารหัสในเครื่องก่อนออกไป cloud</strong> — เซิร์ฟเวอร์เห็นแค่ ciphertext</p>
+      <div class="hero-tags">
+        <span class="hero-tag">LINE Messaging API</span>
+        <span class="hero-tag">LIFF</span>
+        <span class="hero-tag">Vercel Serverless</span>
+        <span class="hero-tag">Web Crypto (AES-256-GCM)</span>
+        <span class="hero-tag">Zero-Knowledge</span>
+        <span class="hero-tag">Bun + launchd</span>
+        <span class="hero-tag">Vercel KV</span>
+        <span class="hero-tag">LLM + web search</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#stack">ดู Tech Stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>ปัญหาที่เจอ</h2>
+      <p>จัดพอร์ตหุ้นสหรัฐฯ คนเดียว ทำไมถึงเหนื่อยและพลาดง่ายกว่าที่คิด?</p>
+    </section>
+
+    <div class="quote-block">
+      <p>ข้อมูลพอร์ตกระจัดกระจาย — holdings อยู่ที่หนึ่ง, watchlist อยู่อีกที่, เป้าหมายระยะยาวอยู่ในหัว พอไม่มีระบบเตือนก็ <code>ลืม DCA</code>, <code>ลืม stop</code>, และเผลอ "ไล่ของร้อน" ตามอารมณ์ อยากมีที่ปรึกษาที่รู้พอร์ตเราจริง ๆ และดูทุกอย่างบนมือถือได้ — แต่ตัวเลขเงินเป็นเรื่องส่วนตัวมาก ไม่อยากให้ cloud ไหนเห็น</p>
+      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ MegaCoach</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="emoji">&#129513;</span>
+        <h3>ข้อมูลพอร์ตกระจัดกระจาย</h3>
+        <p>holdings, watchlist, กองทุน RMF, เป้าหมายเกษียณ — อยู่คนละที่ ไม่มีมุมมองรวมที่เห็น "ภาพพอร์ตทั้งใบ" ในหน้าจอเดียว</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128293;</span>
+        <h3>อารมณ์พาไล่ของร้อน (FOMO)</h3>
+        <p>เห็นหุ้นซิ่งทำ new high แล้วอยากกระโดดตาม — เข้าแบบไม่มีแผน ไม่มีจุด stop ที่กล้าผิด สุดท้ายเสี่ยงล้างพอร์ตมากกว่าได้กำไร</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#9200;</span>
+        <h3>ลืม DCA / ลืม stop</h3>
+        <p>วินัยหลุดทันทีที่ไม่มีคนเตือน — เดือนนี้ลืมเติมพอร์ต, ราคาหลุดจุดตัดขาดทุนแล้วไม่รู้ตัว, ใกล้สิ้นปีเพิ่งนึกได้ว่ายังซื้อ RMF ไม่ถึงเป้า</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#129302;</span>
+        <h3>chatbot ทั่วไปตอบลอย ๆ</h3>
+        <p>ถาม AI เรื่องหุ้นได้ แต่มันไม่รู้ว่าเราถืออะไร งบเท่าไหร่ รับความเสี่ยงแค่ไหน — คำแนะนำเลยเป็นสูตรสำเร็จ ไม่เข้ากับพอร์ตจริง</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128274;</span>
+        <h3>ตัวเลขเงินอ่อนไหวมาก</h3>
+        <p>อยากดู dashboard บนมือถือ/ส่งลิงก์ให้ตัวเองเปิดที่ไหนก็ได้ แต่ถ้า deploy ขึ้น cloud ตรง ๆ = มูลค่าพอร์ตจริงไปนอนอยู่บนเซิร์ฟเวอร์คนอื่น</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>ให้ระบบทำงานน่าเบื่อทั้งหมดแทน — รวมข้อมูล, เฝ้าตลาด, เตือนจังหวะ — โดยที่ตัวเลขเงินไม่เคยออกจากเครื่องแบบอ่านได้</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <span class="emoji">&#128241;</span>
+        <h3>รวมทุกอย่างไว้ที่ LIFF dashboard เดียว</h3>
+        <p>เปิดจาก LINE → เห็นจังหวะเข้าซื้อ (entry signal), เกจ North Star, สถานะ RMF, แผน DCA รายเดือน ครบในหน้าจอเดียว บนมือถือ</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#129504;</span>
+        <h3>AI coach ที่รู้พอร์ตจริง</h3>
+        <p>ก่อนตอบทุกครั้ง เสียบ context พอร์ต + ปรัชญา <code>Fear of Ruin &gt; FOMO</code> เข้า system prompt แล้วเปิด web search ดึงข้อมูลสด — ตอบตามงบ/ความเสี่ยงจริง ไม่เชียร์ลอย ๆ</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128276;</span>
+        <h3>เตือนอัตโนมัติทุกเช้าใน LINE</h3>
+        <p>DCA รายเดือน, RMF ควรสับ, ราคาหลุด stop / ถึงเป้าทำกำไร — ส่งเป็น Flex card ที่ <strong>สีหัวการ์ดสื่อระดับความเร่ง</strong> (ปกติ / มีจังหวะ / ด่วน)</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128273;</span>
+        <h3>Zero-Knowledge — เข้ารหัสในเครื่อง</h3>
+        <p>ตัวเลขจริงถูก encrypt ด้วย AES-256-GCM ในเบราว์เซอร์/เครื่องก่อนส่ง — cloud, relay, git เห็นแค่ ciphertext ถอดได้เฉพาะคนที่รู้ passphrase</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128421;&#65039;</span>
+        <h3>Mac = แหล่งความจริงเดียว</h3>
+        <p>เครื่องส่วนตัวดึงราคาสด → คำนวณมูลค่า → เข้ารหัส → publish โซนราคาที่ sanitize แล้ว → git push เอง คีย์ไม่เคยออกจากเครื่อง</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน — 4 จังหวะ</h2>
+      <p>จากราคาสดในตลาด จนถึงการ์ดเตือนใน LINE — วนอัตโนมัติทุกวันด้วย launchd</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <span class="emoji">&#128200;</span>
+        <h4>ดึงราคาสด</h4>
+        <p>Mac ดึงราคาหุ้น/FX (Yahoo) + ผลตอบแทนกองทุน (Finnomena) แบบ keyless</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <span class="emoji">&#128273;</span>
+        <h4>คำนวณ + เข้ารหัส</h4>
+        <p>คิดมูลค่าพอร์ต + requiredCAGR → เข้ารหัส AES-256-GCM → publish โซน sanitized</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <span class="emoji">&#9729;&#65039;</span>
+        <h4>push → deploy</h4>
+        <p>git push → Vercel deploy · LIFF dashboard + serverless routines อ่านข้อมูลใหม่</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <span class="emoji">&#128276;</span>
+        <h4>เตือน / เปิดดู</h4>
+        <p>LINE ส่ง Flex card เมื่อถึงเงื่อนไข · เปิด dashboard = ถอดรหัสในเครื่องด้วย passphrase</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>2 ฝั่งชัดเจน — Mac (แหล่งความจริง + คีย์) กับ Cloud (แสดงผล + เตือน) เชื่อมกันด้วย ciphertext เท่านั้น</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          LINE App — แชท (Flex cards) + LIFF webview
+          <div class="arch-sub">
+            <span>Morning brief cards</span>
+            <span>LIFF dashboard</span>
+            <span>ฟอร์มกรอกพอร์ต</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Vercel Serverless (/api) — webhook + coach + relay
+          <div class="arch-sub">
+            <span>/api/coach</span>
+            <span>/api/ask</span>
+            <span>/api/line-webhook</span>
+            <span>/api/holdings-inbox</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Mac Engine (Bun + launchd) — source of truth
+          <div class="arch-sub">
+            <span>update-northstar</span>
+            <span>publish-levels</span>
+            <span>pull-holdings</span>
+            <span>line-alerts</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Vercel KV (ZK relay · ciphertext) + static JSON + macOS Keychain
+          <div class="arch-sub">
+            <span>encrypted blob</span>
+            <span>coach-data.json</span>
+            <span>passphrase (in-device)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+      <strong>ทำไมเลือก stack นี้?</strong>
+      <p><strong>LINE + LIFF</strong> = แอปที่เปิดอยู่แล้วทุกวัน ไม่ต้องติดตั้งอะไรใหม่ &middot; <strong>Vercel Serverless</strong> — webhook/coach/relay เป็น stateless function เล็ก ๆ ไม่ต้องดูแลเซิร์ฟเวอร์ &middot; <strong>Web Crypto (AES-256-GCM + PBKDF2 250k)</strong> — เข้ารหัสได้ทั้งใน Node/Bun และในเบราว์เซอร์ด้วยโค้ดชุดเดียวกัน = zero-knowledge จริง &middot; <strong>Mac + launchd</strong> ทำหน้าที่เป็น source of truth ที่ถือคีย์ไว้ — cloud จึงไม่มีวันเห็นตัวเลขเงิน</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
+      <p>ครบ loop ตั้งแต่รวมข้อมูลพอร์ต ถึงการเตือนที่ปลอดภัย</p>
+    </section>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <span class="emoji">&#129504;</span>
+        <h3>AI Portfolio Coach</h3>
+        <p>เสียบ context พอร์ต + North Star เข้า system prompt ก่อนตอบ + เปิด web search ดึงข้อมูลสด · มองภาพรวมพอร์ต ไม่ใช่หุ้นตัวเดียว</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#127749;</span>
+        <h3>Morning Brief Engine</h3>
+        <p>ประกอบ Flex card ตาม "mood" — calm / warn / urgent — สีหัวการ์ด + แถบเตือนสื่อระดับความเร่งของ action</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#127919;</span>
+        <h3>North Star Gauge</h3>
+        <p>เกจเป้าหมายระยะยาว + pace tracker · คำนวณ requiredCAGR สดจากมูลค่าปัจจุบันด้วย bisection solver</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128273;</span>
+        <h3>Zero-Knowledge Layer</h3>
+        <p>AES-256-GCM + PBKDF2 250k · เข้ารหัส/ถอดรหัสด้วยโค้ดชุดเดียวทั้งฝั่งเครื่องและเบราว์เซอร์ · ปลดล็อกด้วย passphrase</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128221;</span>
+        <h3>LINE Form + ZK Relay</h3>
+        <p>พิมพ์ keyword → bubble → ฟอร์ม LIFF → เข้ารหัสในเบราว์เซอร์ → KV relay → Mac ดึงมาถอด · relay รับเฉพาะ ciphertext</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128225;</span>
+        <h3>Watchlist Triggers</h3>
+        <p>ดึงราคาสด (keyless) เทียบโซน entry / stop / trim · ยิงเตือนเฉพาะเมื่อแตะโซน + cooldown กันสแปมราย ticker</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128260;</span>
+        <h3>RMF Switch Advisor</h3>
+        <p>ดึงผลตอบแทน 1/3/5 ปีจาก Finnomena → ตัด verdict (ควรสับ / พิจารณา / โอเค) + เตือนซื้อให้ถึงเป้าโซนภาษีก่อนสิ้นปี</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128737;&#65039;</span>
+        <h3>Sanitized Publish Pipeline</h3>
+        <p>publish เฉพาะโซนราคา + held-flag ให้ cloud อ่าน · มี self-check regex กันข้อมูล sensitive (จำนวนหุ้น/เงิน) หลุด</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== LINE Card Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>หน้าตา — การ์ดเตือนใน LINE</h2>
+      <p>ทุกเช้า ระบบสรุปสิ่งที่ต้องทำเป็น Flex card — สีหัวการ์ดบอกทันทีว่าต้องรีบแค่ไหน</p>
+    </section>
+
+    <div class="line-mock">
+      <div class="lm-day">วันนี้ 08:00</div>
+
+      <div class="lm-bubble">
+        <div class="lm-head">
+          <div class="tag">💰 DCA REMINDER</div>
+          <div class="ttl">ถึงเวลาเติมพอร์ต</div>
+        </div>
+        <div class="lm-body">
+          <div class="big">เดือนนี้เติม ฿XXk</div>
+          <div class="sub">วินัยเติมทุกเดือน = หัวใจของ North Star</div>
+          <div class="lm-sep"></div>
+          <div class="lm-note">💡 ใช้ไม้ฟรี 1 ไม้/เดือน กับออเดอร์ใหญ่สุด · ถ้าตลาดย่อแรง เติมเพิ่มได้</div>
+        </div>
+        <a class="lm-btn" href="#stack" onclick="return false;">เปิด Dashboard</a>
+      </div>
+
+      <div class="lm-bubble">
+        <div class="lm-strip"></div>
+        <div class="lm-head urgent">
+          <div class="tag">🛑 ด่วน — ต้องตัดสินใจเดี๋ยวนี้</div>
+          <div class="ttl">หุ้นหลุด Stop แล้ว</div>
+        </div>
+        <div class="lm-body">
+          <div class="lm-note" style="font-size:0.78rem; color:var(--text-secondary);">ราคาหลุดจุดตัดขาดทุนที่ตั้งไว้ — ทบทวนตัดขาดทุนก่อนบานปลาย</div>
+          <div class="lm-row"><span class="em">🛑</span><span><b>XYZ</b> หลุด stop $XX.X (ราคา $XX.X) — ทบทวนตัดขาดทุน</span></div>
+          <div class="lm-sep"></div>
+          <div class="lm-note">เข้าไม้เล็ก คุม size + stop เสมอ</div>
+        </div>
+        <a class="lm-btn urgent" href="#stack" onclick="return false;">เปิด Dashboard</a>
+      </div>
+
+      <div class="lm-disc">ข้อมูลเชิงวิเคราะห์ ไม่ใช่คำสั่งซื้อขาย · ตัวเลขในภาพเป็นค่าตัวอย่าง</div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hack กับปัญหา</h2>
+      <p>6 โจทย์วิศวกรรมที่ต้องคิดทางแก้เอง — ความปลอดภัย + platform quirk + reliability</p>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card precision" data-label="Zero-Knowledge">
+        <span class="emoji">&#128273;</span>
+        <h3>อยากดู dashboard บน cloud แต่ห้าม cloud เห็นเงิน</h3>
+        <p>deploy static ขึ้น Vercel = ใครเปิดลิงก์ก็เห็น ถ้าฝังตัวเลขจริงลงไฟล์ = มูลค่าพอร์ตหลุดทันที</p>
+        <div class="highlight">แก้: เข้ารหัส payload ด้วย <code>AES-256-GCM + PBKDF2 250k</code> ในเครื่องก่อน แล้ว push เฉพาะ ciphertext · dashboard ถอดรหัสฝั่ง client ด้วย Web Crypto หลังผู้ใช้ใส่ passphrase — cloud ถือแต่ blob ที่อ่านไม่ออก</div>
+      </div>
+
+      <div class="hack-card arch" data-label="Serverless">
+        <span class="emoji">&#128274;</span>
+        <h3>LINE webhook verify signature ไม่ผ่าน</h3>
+        <p>ต้อง verify <code>x-line-signature</code> จาก raw body — แต่ Vercel parse body เป็น object ให้ก่อน ทำให้ HMAC ที่คำนวณไม่ตรง เลย reject ของจริง</p>
+        <div class="highlight">แก้: ปิด parser (<code>bodyParser: false</code>) แล้วอ่าน raw stream เอง → คำนวณ HMAC-SHA256 บน byte ดิบเป๊ะ ๆ ก่อนค่อย <code>JSON.parse</code> — signature จึงตรง กันคนยิง webhook ปลอมได้จริง</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Automation">
+        <span class="emoji">&#128421;&#65039;</span>
+        <h3>เลขต้องสดทุกวัน แต่คีย์ห้ามออกจากเครื่อง</h3>
+        <p>ถ้าให้ cloud คำนวณมูลค่า = ต้องเอาคีย์ขึ้น cloud (ขัดกับ zero-knowledge) แต่ถ้าไม่อัปเดต ตัวเลขก็ค้าง</p>
+        <div class="highlight">แก้: ให้ Mac เป็น source of truth — <code>launchd</code> ปลุก Bun script ทุกเช้า ดึงราคา → คำนวณ → เข้ารหัส → git push เอง · คีย์อ่านจาก macOS Keychain ไม่เคยขึ้น cloud · git push กลายเป็น deploy pipeline</div>
+      </div>
+
+      <div class="hack-card platform" data-label="Data Privacy">
+        <span class="emoji">&#128200;</span>
+        <h3>cloud routine ต้องรู้ "โซนราคา" แต่ห้ามรู้ "จำนวนหุ้น/เงิน"</h3>
+        <p>routine ฝั่ง cloud ต้องเทียบราคาสดกับ entry/stop เพื่อเตือน — แต่ข้อมูลพวกนั้นอยู่ปนกับจำนวนหุ้นและมูลค่าจริง</p>
+        <div class="highlight">แก้: สร้าง <code>publish-levels</code> ที่คัดออกมาเฉพาะ ticker + โซน + held-flag ลง JSON สาธารณะ · มี <code>--check</code> รัน regex กันคำอย่าง share/cash/value/บาท หลุด — ผิดเมื่อไหร่ build fail</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Anti-Spam">
+        <span class="emoji">&#128276;</span>
+        <h3>เตือนซ้ำ ๆ ทุกวันจนน่ารำคาญ</h3>
+        <p>ราคายังอยู่ใต้ stop หลายวันติด = ถ้ายิงทุกวันคนก็เลิกอ่าน · แถม Mac กับ cloud อาจเตือนเรื่องเดียวกันซ้อนกัน</p>
+        <div class="highlight">แก้: cooldown ราย <code>ticker:kind</code> (เตือนแล้วเงียบ N วัน) + แบ่งหน้าที่ชัด — Mac ยิงเฉพาะ stop/trim ที่ safety-critical, cloud รับ entry nudge ไป กันเตือนซ้ำและกัน alert fatigue</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Reliability">
+        <span class="emoji">&#9749;</span>
+        <h3>ดึงราคาพลาดตอนเครื่องเพิ่งตื่นจาก sleep</h3>
+        <p>launchd ปลุกงานตอน Mac เพิ่งตื่น — บางครั้ง WiFi ยังไม่กลับมา ทำให้ fetch ราคาแรก ๆ ล้มเหลว แล้วงานทั้งรอบพัง</p>
+        <div class="highlight">แก้: ห่อ fetch ด้วย retry 3 ครั้ง + หน่วง 4 วินาทีต่อรอบ (เผื่อเน็ตกลับ) · ทั้ง flow ออกแบบ best-effort — pull ไม่ได้ก็ update ต่อ, publish พลาดก็ไม่ล้มทั้งงาน — บทเรียน: งาน cron ต้องทน network ไม่พร้อม</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Design Decision ที่ตั้งใจเลือก</h2>
+      <p>ขอบเขตที่จงใจ "ไม่ทำ" — เพื่อให้เครื่องมือปลอดภัยและไว้ใจได้</p>
+    </section>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>เครื่องมือนี้เป็น "โค้ช" ไม่ใช่ "บอทเทรด" — มัน<strong>เตือนและวิเคราะห์ ไม่กดออเดอร์แทน</strong> ทุกการ์ดปิดท้ายว่า "ข้อมูลเชิงวิเคราะห์ ไม่ใช่คำสั่งซื้อขาย" การตัดสินใจสุดท้ายเป็นของคนเสมอ · และตัวเลขเงินทุกจุด<strong>เข้ารหัสในเครื่องก่อนออกไป</strong> ขอบเขตชัดตั้งแต่ต้น = ระบบเล็ก ตรงไปตรงมา และไว้ใจได้</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128221;</strong><br>
+        <strong>เตือน ไม่กดออเดอร์เอง</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ให้คนเป็นคนตัดสินใจ — ระบบแค่เตรียมข้อมูลให้</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128274;</strong><br>
+        <strong>ciphertext เท่านั้นขึ้น cloud</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">relay/git เห็นแต่ blob · คีย์อยู่ในเครื่องล้วน</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128737;&#65039;</strong><br>
+        <strong>Fear of Ruin &gt; FOMO</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ปรัชญาเอาตัวรอดก่อน ฝังใน system prompt ของโค้ช</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#127793;</strong><br>
+        <strong>โซน sanitized เท่านั้น</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">cloud รู้แค่โซนราคา ไม่รู้จำนวนหุ้น/เงิน</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge Domain ที่แข็งขึ้น</h2>
+      <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
+    </section>
+
+    <div class="learning-card">
+      <strong>1. Applied Cryptography — จาก "รู้ชื่อ" เป็น "ออกแบบระบบ zero-knowledge ได้":</strong>
+      <p>ลงมือใช้ Web Crypto จริง — <code>PBKDF2</code> derive key จาก passphrase, <code>AES-256-GCM</code> encrypt/decrypt, จัดการ salt/iv/base64 เอง แล้วออกแบบ flow ให้คีย์ไม่เคยออกจากเครื่อง (relay รับแต่ ciphertext) บทเรียน: zero-knowledge ไม่ใช่ magic — มันคือการวางขอบเขตว่า "ใครถือคีย์" ให้ถูกที่</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Serverless + Chat-platform engineering — LINE/LIFF + webhook เข้าใจทะลุ:</strong>
+      <p>ต่อ LINE Messaging API (reply/broadcast), ฝัง LIFF webview, verify webhook signature บน raw body, ออกแบบ Flex bubble ที่ปรับสีตาม state — และเข้าใจ quirk ของ serverless (body parsing, cold start, stateless) บทเรียน: การ integrate platform จริงคือการอ่าน spec + จัดการ edge case ของ runtime</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. Automation &amp; source-of-truth design — cron ที่ทนโลกจริง:</strong>
+      <p>วางสถาปัตยกรรม "เครื่องเดียวถือความจริง" — <code>launchd</code> orchestrate หลาย Bun script ต่อกัน (pull → update → publish → seed), ใช้ git push เป็น deploy, ออกแบบทุกขั้นให้ best-effort (network พร้อมไม่พร้อมก็ไม่ล้มทั้งงาน) บทเรียน: ระบบอัตโนมัติที่ดีต้องคิดเผื่อวันที่ทุกอย่างไม่พร้อม</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. LLM product engineering — จาก "เรียก API" เป็น "ออกแบบพฤติกรรมโค้ช":</strong>
+      <p>เขียน system prompt ที่ฝังปรัชญาการลงทุน (Fear of Ruin, core vs satellite), inject context พอร์ตแบบ dynamic ก่อนถาม, เปิด tool web_search ให้ดึงข้อมูลสด, และ post-process คำตอบ (strip citation/artifact) บทเรียน: คุณภาพผู้ช่วย AI อยู่ที่การ "กำกับบริบทและขอบเขต" มากกว่าตัวโมเดล</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Financial-domain modeling — แปลงกติกาการเงินเป็นโค้ด:</strong>
+      <p>เขียน bisection solver หา requiredCAGR จากมูลค่าปัจจุบัน + เงินเติมรายเดือน, โมเดลเพดานภาษี RMF + verdict สับกองจากผลตอบแทนจริง, แยกตรรกะ core (ถือยาว) ออกจาก satellite (เก็งสั้นด้วย TA) บทเรียน: โดเมนความรู้ (การเงิน) คือหัวใจ — โค้ดแค่ทำให้กติกาทำงานอัตโนมัติและสม่ำเสมอ</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">5</div>
+        <div class="label">serverless endpoints (/api)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">11</div>
+        <div class="label">สคริปต์อัตโนมัติ (Bun + launchd)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">250k</div>
+        <div class="label">PBKDF2 iterations · เข้ารหัสในเครื่อง</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">ตัวเลขเงินที่ cloud มองเห็น</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>MegaCoach</h2>
+    <p>ระบบ AI coach ส่วนตัวที่จัดพอร์ตหุ้น US ผ่าน Dime — รวม dashboard, ที่ปรึกษาที่รู้พอร์ตจริง และการเตือนจังหวะเข้า-ออกอัตโนมัติไว้ใน LINE เดียว โดยตัวเลขเงินถูกเข้ารหัสในเครื่องก่อนออกไป cloud เห็นแค่ ciphertext</p>
+    <div class="stack-icons">
+      <span class="stack-icon">LINE Messaging API</span>
+      <span class="stack-icon">LIFF</span>
+      <span class="stack-icon">Vercel Serverless</span>
+      <span class="stack-icon">Web Crypto (AES-256-GCM)</span>
+      <span class="stack-icon">Zero-Knowledge</span>
+      <span class="stack-icon">Bun + launchd</span>
+      <span class="stack-icon">Vercel KV</span>
+      <span class="stack-icon">LLM + web search</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.info/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "MegaCoach Portfolio",
+      "item": "https://projects.tanplanet.info/megacoach-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VINTA Hospital — เว็บ pre-opening + ระบบรับสมัครงาน สำหรับโรงพยาบาลเฉพาะทาง</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="VINTA Hospital — เว็บ pre-opening + ระบบรับสมัครงาน สำหรับโรงพยาบาลเฉพาะทาง">
+  <meta name="twitter:description" content="Portfolio: เว็บไซต์ pre-opening 2 ภาษา + ระบบรับสมัครงาน (ATS) ของโรงพยาบาลเฉพาะทาง — Next.js 16, Sanity CMS, สร้าง PDF ใบสมัครด้วย headless Chrome, ออกแบบเพื่อความสงบและศักดิ์ศรีของผู้ป่วย">
+  <meta property="og:url" content="https://projects.tanplanet.info/vinta-hospital-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.info/vinta-hospital-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: เว็บไซต์ pre-opening 2 ภาษา + ระบบรับสมัครงาน (ATS) ของโรงพยาบาลเฉพาะทาง — Next.js 16, Sanity CMS, สร้าง PDF ใบสมัครด้วย headless Chrome, ออกแบบเพื่อความสงบและศักดิ์ศรีของผู้ป่วย">
+  <meta property="og:title" content="VINTA Hospital — เว็บ pre-opening + ระบบรับสมัครงาน สำหรับโรงพยาบาลเฉพาะทาง">
+  <meta name="description" content="Portfolio: เว็บไซต์ pre-opening 2 ภาษา + ระบบรับสมัครงาน (ATS) ของโรงพยาบาลเฉพาะทาง — Next.js 16, Sanity CMS, สร้าง PDF ใบสมัครด้วย headless Chrome, ออกแบบเพื่อความสงบและศักดิ์ศรีของผู้ป่วย">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%230369a1'/><text x='50' y='62' text-anchor='middle' font-size='54'>🏥</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #0369a1;
+      --accent-light: #e0f2fe;
+      --accent-dark: #0c4a6e;
+      --accent-glow: rgba(3,105,161,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #082f49 0%, #0369a1 45%, #0284c7 80%, #0ea5e9 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(224,242,254,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(3,105,161,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #0369a1, #0ea5e9, #e0f2fe);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #bae6fd;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0c4a6e, #0369a1);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(3,105,161,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #0ea5e9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(3,105,161,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Extension Popup Mockup ===== */
+    .ext-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 440px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+    .ext-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      align-items: center;
+    }
+    .ext-bar .ext-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    .ext-bar .ext-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 1px 9px;
+      font-size: 0.72rem;
+    }
+    .ext-yt {
+      margin: 12px;
+      padding: 10px 12px;
+      border: 1px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 8px;
+    }
+    .ext-yt b { color: #c00; }
+    .ext-yt .u { color: var(--text-muted); font-size: 0.72rem; word-break: break-all; margin: 3px 0 8px; font-family: 'SF Mono', monospace; }
+    .ext-yt .chip { display: inline-block; border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 3px 8px; font-size: 0.72rem; margin-right: 5px; color: var(--text-secondary); }
+    .ext-table { width: 100%; border-collapse: collapse; }
+    .ext-table th {
+      text-align: left; padding: 8px 12px; font-size: 0.68rem; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--border);
+    }
+    .ext-table td { padding: 9px 12px; border-bottom: 1px solid #f2f2f1; vertical-align: top; }
+    .ext-table .kind { font-weight: 700; white-space: nowrap; }
+    .ext-table .kind.master { color: #1e6b2e; }
+    .ext-table .kind.variant { color: #8a7a12; }
+    .ext-table .kind.file { color: var(--accent); }
+    .ext-table .q { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .ext-table .info { color: var(--text-secondary); font-size: 0.76rem; }
+    .ext-table .chip { display: inline-block; border: 1px solid var(--border); background: #fafafa; border-radius: 5px; padding: 1px 7px; font-size: 0.68rem; color: var(--text-secondary); font-family: 'SF Mono', monospace; }
+    .ext-cmd {
+      margin: 0 12px 12px;
+      padding: 10px 12px;
+      background: #0f172a;
+      color: #a5f3fc;
+      border-radius: 8px;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      font-size: 0.72rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .ext-cmd .flag { color: #fde047; }
+    .ext-cmd .cmt { color: #64748b; }
+
+    /* ===== Careers Mockup (browser preview) ===== */
+    .mk-tabs { margin: 0; }
+    .mk-dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+    .mk-url { flex: 1; text-align: center; background: #fff; border: 1px solid var(--border); border-radius: 50px; padding: 3px 12px; font-size: 0.72rem; color: var(--text-muted); font-family: 'SF Mono', monospace; }
+    .mk-body { padding: 16px 14px; background: #fdfbf6; }
+    .mk-lead { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); }
+    .mk-h { font-size: 1.05rem; font-weight: 700; margin: 4px 0 14px; color: var(--text); }
+    .mk-job {
+      display: flex; align-items: center; gap: 12px;
+      background: #fff; border: 1px solid var(--border); border-radius: 12px;
+      padding: 13px 14px; margin-bottom: 10px;
+    }
+    .mk-job .mk-ic { width: 40px; height: 40px; flex: 0 0 auto; border-radius: 10px; background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; }
+    .mk-job .mk-info { flex: 1; min-width: 0; }
+    .mk-job .mk-role { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+    .mk-job .mk-meta { font-size: 0.74rem; color: var(--text-secondary); margin-top: 2px; }
+    .mk-tag { font-size: 0.66rem; font-weight: 700; border-radius: 50px; padding: 2px 9px; white-space: nowrap; }
+    .mk-tag.urgent { background: var(--red-light); color: var(--red); }
+    .mk-tag.high { background: var(--orange-light); color: var(--orange); }
+    .mk-tag.brand { background: var(--accent-light); color: var(--accent-dark); }
+    .mk-apply { flex: 0 0 auto; background: var(--accent); color: #fff; font-size: 0.74rem; font-weight: 600; border-radius: 50px; padding: 6px 14px; }
+    .mk-foot { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 9px 12px; border: 1px dashed var(--border); border-radius: 10px; background: #fff; font-size: 0.74rem; color: var(--text-secondary); }
+    .mk-foot .mk-pill { font-size: 0.66rem; font-weight: 700; color: #fff; background: var(--accent-dark); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .closing .links {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .closing .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(12,74,110,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(12,74,110,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark">🏥</div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Next.js 16 &middot; Sanity CMS &middot; i18n TH / EN
+      </div>
+      <h1>VINTA Hospital<br><span class="accent">เว็บ pre-opening + ระบบรับสมัครงาน ของโรงพยาบาลเฉพาะทาง</span></h1>
+      <p>เว็บไซต์ full-stack 2 ภาษา สำหรับโรงพยาบาลเฉพาะทางที่กำลังก่อสร้าง — สื่อสารเรื่องราว pre-opening อย่างสงบและมีศักดิ์ศรี พร้อมระบบรับสมัครงาน (ATS) ในตัว ที่รับใบสมัคร เก็บเข้า CMS แล้ว<code>สร้าง PDF</code>ใบสมัครภาษาไทยส่งเข้าเมล HR อัตโนมัติ</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Next.js 16 (App Router)</span>
+        <span class="hero-tag">React 19</span>
+        <span class="hero-tag">next-intl</span>
+        <span class="hero-tag">Sanity CMS</span>
+        <span class="hero-tag">Tailwind v4</span>
+        <span class="hero-tag">Motion</span>
+        <span class="hero-tag">Puppeteer + pdf-lib</span>
+        <span class="hero-tag">Resend</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#stack">ดู Tech Stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>ปัญหาที่เจอ</h2>
+      <p>ทำเว็บให้โรงพยาบาลที่ "ยังไม่เปิด" — ต้องสร้างความเชื่อใจโดยไม่ขายฝัน และต้องพร้อมรับทีมงานก่อนวันเปิดจริง</p>
+    </section>
+
+    <div class="quote-block">
+      <p>โรงพยาบาลเฉพาะทางด้านมะเร็งกำลังอยู่ระหว่างก่อสร้าง — เว็บต้องไม่ทำเหมือนเปิดเต็มระบบแล้ว แต่ต้องสื่อสารว่า "ที่นี่กำลังจะเป็นที่ที่เข้าใจคุณ" อย่างอบอุ่นและน่าเชื่อถือ ขณะเดียวกันก็ต้องเริ่ม<strong>รับสมัครทีมแพทย์ พยาบาล และเจ้าหน้าที่</strong>ตั้งแต่ก่อนเปิด ทั้งหมดนี้ต้อง deploy ได้เร็ว งบก่อนเปิดจำกัด และดูแลข้อมูลผู้สมัครซึ่งอ่อนไหวให้ปลอดภัย</p>
+      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำเว็บ VINTA Hospital</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="emoji">&#127959;&#65039;</span>
+        <h3>โรงพยาบาลยังไม่เปิด — สื่อสารยาก</h3>
+        <p>ถ้าทำเหมือนเปิดแล้วจะเสียความน่าเชื่อถือ แต่ถ้าโชว์แค่ "กำลังก่อสร้าง" ก็ดูเย็นชา ต้องบอกความจริงว่ากำลังสร้าง โดยยังทำให้คนรู้สึกว่ามีที่พึ่งกำลังจะมา</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128203;</span>
+        <h3>ต้องรับสมัครทีมก่อนเปิด แต่ไม่มีระบบ</h3>
+        <p>โรงพยาบาลต้องหาแพทย์/พยาบาล/เภสัชกรตั้งแต่ก่อนเปิด — ถ้าไม่มีระบบ ใบสมัครจะกระจัดกระจายตามอีเมล/แชต ไม่มีที่เก็บกลาง ไม่มีรูปแบบมาตรฐานให้ HR อ่าน</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128274;</span>
+        <h3>ข้อมูลผู้สมัคร = ข้อมูลอ่อนไหว (PII)</h3>
+        <p>ใบสมัครมีเลขบัตร เบอร์โทร เลขใบประกอบวิชาชีพ ผู้ติดต่อฉุกเฉิน — ถ้าเก็บผิดที่หรือหลุดออก public API มีความเสี่ยงทั้งด้าน PDPA และความไว้วางใจ</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#127760;</span>
+        <h3>2 กลุ่มผู้ชม + แบรนด์เฉพาะตัว</h3>
+        <p>ต้องรองรับทั้งคนไทยและผู้ชมต่างชาติ (แพทย์/พาร์ทเนอร์) และต้องคุมโทนแบรนด์เข้ม — ฟอนต์ไทยแบบไม่มีหัวให้เข้ากับโลโก้ ห้ามใช้กากบาทแดง/ภาษาสู้รบเรื่องมะเร็ง</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#9889;</span>
+        <h3>ต้อง deploy ได้เร็ว งบก่อนเปิดจำกัด</h3>
+        <p>ยังไม่พร้อมตั้ง backend แยก, ยังไม่มีคีย์ CMS/เมลตอนเริ่ม — แต่ต้อง publish เว็บให้ทันเพื่อเริ่มประชาสัมพันธ์และเปิดรับสมัคร ต้องไม่ผูกกับ vendor เยอะจนขยับตัวไม่ได้</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>เว็บ pre-opening ที่ซื่อสัตย์ + ระบบ ATS ในตัว — serverless ล้วน เชื่อม CMS/เมลทีหลังได้โดยเว็บไม่ล้ม</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <span class="emoji">&#127749;</span>
+        <h3>เว็บ pre-opening ที่บอกความจริงอย่างอบอุ่น</h3>
+        <p>Mood แสง–น้ำ–ร่มเงา, motion แบบ "ลมหายใจ" (fade + reveal ช้า ๆ), CTA แบบไม่กดดัน ("คุยกับทีมดูแล" / "ติดต่อรับคำแนะนำ") — สร้างความเชื่อใจโดยไม่ทำเหมือนเปิดแล้ว</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128188;</span>
+        <h3>ระบบ Careers + ATS ในตัวเว็บเดียว</h3>
+        <p>หน้าประกาศงาน + ฟอร์มสมัครหลายส่วน + เก็บใบสมัครเข้า CMS อัตโนมัติ — HR เปิดดูใน Studio ได้ที่เดียว ไม่ต้องไล่เก็บจากอีเมล/แชตอีก</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128272;</span>
+        <h3>เก็บใบสมัครเป็น "draft" กัน PII รั่ว</h3>
+        <p>บันทึกเอกสารเป็น draft (<code>drafts.&lt;uuid&gt;</code>) ที่ public API อ่านไม่ได้ แต่ HR เห็นใน Studio + write token เป็น server-only + เก็บเฉพาะฟิลด์ที่จำเป็น</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128196;</span>
+        <h3>สร้าง PDF ใบสมัครไทยให้ HR อัตโนมัติ</h3>
+        <p>เมื่อมีคนสมัคร ระบบ render หน้าปกใบสมัคร (ภาษาไทยเป๊ะ) ด้วย headless Chrome แล้ว merge กับไฟล์เรซูเม่เป็น PDF เดียว ส่งแนบเข้าเมล HR — พร้อมอ่านทันที</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#129513;</span>
+        <h3>Serverless ล้วน + fallback ทุกจุด</h3>
+        <p>Next.js + Sanity + Resend (เรียกผ่าน fetch ไม่เพิ่ม dependency) — ยังไม่เชื่อม CMS ก็ใช้ seed data, ยังไม่ตั้งเมลก็ตอบสำเร็จแบบ stub เว็บทำงานได้ตั้งแต่ deploy แรก</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน — 4 จังหวะ (เส้นทางใบสมัคร)</h2>
+      <p>ตั้งแต่ผู้สมัครกดส่ง จนใบสมัคร PDF ถึงมือ HR</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <span class="emoji">&#9997;&#65039;</span>
+        <h4>ผู้สมัครกรอกฟอร์ม</h4>
+        <p>ฟอร์มหลายส่วน มือถือเป็น bottom-sheet, มี date-wheel + ครอปรูปในตัว</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <span class="emoji">&#128272;</span>
+        <h4>Validate + เก็บ draft</h4>
+        <p>ตรวจฝั่ง server แล้วบันทึกเป็น draft ใน CMS ที่ public อ่านไม่ได้</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <span class="emoji">&#128196;</span>
+        <h4>สร้าง PDF เบื้องหลัง</h4>
+        <p>headless Chrome render หน้าปก + merge เรซูเม่ (ไม่หน่วงผู้สมัคร)</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <span class="emoji">&#128231;</span>
+        <h4>แจ้ง HR พร้อม PDF</h4>
+        <p>ส่งเมลแนบ PDF + ลิงก์เปิดใน Studio ให้ทีมงานอ่านต่อ</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>Serverless ล้วน — ไม่มี backend แยก, ไม่มี DB ที่ต้องดูแลเอง, เชื่อม service ทีหลังได้โดยเว็บไม่ล้ม</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          ผู้เข้าชม &amp; ผู้สมัครงาน (2 ภาษา · /th · /en)
+          <div class="arch-sub">
+            <span>ผู้ป่วย/ครอบครัว</span>
+            <span>แพทย์/พาร์ทเนอร์</span>
+            <span>ผู้สมัครงาน</span>
+            <span>ทีม HR</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Next.js 16 App Router — RSC + Route Handlers
+          <div class="arch-sub">
+            <span>Server Components</span>
+            <span>/api/apply</span>
+            <span>/api/contact</span>
+            <span>after() background</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Services — i18n · CMS · PDF · Mail
+          <div class="arch-sub">
+            <span>next-intl</span>
+            <span>Sanity Studio</span>
+            <span>Puppeteer + pdf-lib</span>
+            <span>Resend (fetch)</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Serverless (Vercel) + Sanity dataset + draft docs
+          <div class="arch-sub">
+            <span>@sparticuz/chromium</span>
+            <span>seed fallback</span>
+            <span>server-only token</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+      <strong>ทำไมเลือก stack นี้?</strong>
+      <p><strong>Next.js 16 + RSC</strong> — render เนื้อหา 2 ภาษาฝั่ง server ได้เร็วและ SEO ดี, route handlers ทำหน้าที่ API ในตัวเดียวกัน ไม่ต้องมี backend แยก &middot; <strong>Sanity CMS</strong> — ให้ HR แก้ประกาศงาน/อ่านใบสมัครเองผ่าน Studio ภาษาไทย โดย dev ไม่ต้องแตะโค้ด &middot; <strong>next-intl</strong> — แยก "ข้อความ" (dictionary) ออกจาก "โครงหน้า" (โค้ด) เพิ่ม/แก้ภาษาไม่กระทบ layout &middot; <strong>Puppeteer + pdf-lib</strong> — render หน้าปกไทยด้วยเบราว์เซอร์จริงแล้ว merge เรซูเม่ ได้ PDF ที่ตัวอักษรไทยเป๊ะ &middot; <strong>Resend ผ่าน fetch</strong> — ส่งเมลได้โดยไม่เพิ่ม dependency &middot; ทุก service มี <strong>fallback</strong> เว็บจึง deploy ได้ตั้งแต่ยังไม่ครบคีย์</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
+      <p>ครบตั้งแต่หน้าเว็บสื่อสารแบรนด์ ถึงระบบหลังบ้านรับสมัครงาน</p>
+    </section>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <span class="emoji">&#127760;</span>
+        <h3>Bilingual i18n (TH / EN)</h3>
+        <p>next-intl + App Router, URL prefix <code>/th</code> · <code>/en</code>, ไทยเป็นดีฟอลต์ — ข้อความอยู่ใน dictionary แยกจาก layout</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#127749;</span>
+        <h3>Pre-opening Homepage</h3>
+        <p>Hero วิดีโอ + reveal ช้า ๆ, section เล่าเรื่อง who/why/healing/services/process/FAQ ในโทนสงบและมีศักดิ์ศรี</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128188;</span>
+        <h3>Careers Listing</h3>
+        <p>หน้าประกาศงานพร้อม badge ระดับความต้องการ (เร่งด่วน/สูง) — ดึงจาก CMS ถ้าเชื่อมแล้ว ไม่งั้นใช้ seed data</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#9997;&#65039;</span>
+        <h3>Multi-section Application Form</h3>
+        <p>ฟอร์มสมัครหลายส่วน 30+ ฟิลด์ — มือถือใช้ bottom-sheet, มี date-wheel เลือกวันเกิด, ครอปรูปถ่ายในเบราว์เซอร์, ค้นหาสัญชาติ</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128451;&#65039;</span>
+        <h3>Sanity CMS (Thai Studio)</h3>
+        <p>8 content models (งาน/หมวด/แผนก/ทำเล/ใบสมัคร/ข้อความติดต่อ ฯลฯ), รองรับ i18n ระดับเอกสาร, custom input + ปุ่ม export PDF</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128196;</span>
+        <h3>Auto PDF Generation</h3>
+        <p>render หน้าปกใบสมัครด้วย headless Chrome (ไทยเป๊ะ) แล้ว merge เรซูเม่ (PDF/รูป) เป็นไฟล์เดียวด้วย pdf-lib + ปั๊ม footer/เลขหน้า</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128231;</span>
+        <h3>Email Notify</h3>
+        <p>แจ้งเตือน HR ทุกใบสมัคร/ข้อความติดต่อ ผ่าน Resend (เรียก REST ด้วย fetch) พร้อมแนบ PDF และ header แบรนด์</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128172;</span>
+        <h3>Contact Form + Chat Widget</h3>
+        <p>ฟอร์มติดต่อ (เก็บ draft + แจ้งเมล) และปุ่มแชตลอย "คุยกับทีมดูแล" ที่เชื่อมช่องทางแชตของโรงพยาบาล</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Careers Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>หน้าตา — Careers</h2>
+      <p>หน้าประกาศงานที่ผู้สมัครเห็น — การ์ดตำแหน่งพร้อมป้ายความต้องการ กดสมัครแล้วเข้าสู่ฟอร์มหลายส่วน</p>
+    </section>
+
+    <div class="ext-mockup">
+      <div class="ext-bar mk-tabs">
+        <span class="mk-dot" style="background:#f87171"></span>
+        <span class="mk-dot" style="background:#fbbf24"></span>
+        <span class="mk-dot" style="background:#34d399"></span>
+        <span class="mk-url">vinta &middot; ร่วมงานกับเรา</span>
+      </div>
+      <div class="mk-body">
+        <div class="mk-lead">Careers &middot; ร่วมสร้างทีมดูแล</div>
+        <div class="mk-h">ตำแหน่งที่เปิดรับ</div>
+
+        <div class="mk-job">
+          <span class="mk-ic">&#129658;</span>
+          <div class="mk-info">
+            <div class="mk-role">อายุรแพทย์มะเร็งวิทยา</div>
+            <div class="mk-meta">ฝ่ายการแพทย์ &middot; เต็มเวลา &middot; ศาลายา นครปฐม</div>
+          </div>
+          <span class="mk-tag urgent">เร่งด่วน</span>
+          <span class="mk-apply">สมัคร</span>
+        </div>
+
+        <div class="mk-job">
+          <span class="mk-ic">&#129657;</span>
+          <div class="mk-info">
+            <div class="mk-role">พยาบาลวิชาชีพ – หน่วยเคมีบำบัด</div>
+            <div class="mk-meta">ฝ่ายการพยาบาล &middot; เต็มเวลา &middot; ศาลายา นครปฐม</div>
+          </div>
+          <span class="mk-tag high">ต้องการสูง</span>
+          <span class="mk-apply">สมัคร</span>
+        </div>
+
+        <div class="mk-job">
+          <span class="mk-ic">&#128138;</span>
+          <div class="mk-info">
+            <div class="mk-role">เภสัชกรเฉพาะทางยาเคมีบำบัด</div>
+            <div class="mk-meta">ฝ่ายเภสัชกรรม &middot; เต็มเวลา &middot; ศาลายา นครปฐม</div>
+          </div>
+          <span class="mk-tag brand">เปิดรับ</span>
+          <span class="mk-apply">สมัคร</span>
+        </div>
+
+        <div class="mk-foot">
+          <span class="mk-pill">ส่งใบสมัคร →</span> กรอกฟอร์มหลายส่วน → ระบบสร้าง PDF ใบสมัคร ส่งเข้าเมลทีม HR อัตโนมัติ
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hack กับปัญหา</h2>
+      <p>6 โจทย์ที่ต้องคิดทางแก้เอง — ภาษาไทยบน PDF, browser บน serverless, ความปลอดภัยของ PII</p>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card precision" data-label="Rendering">
+        <span class="emoji">&#128196;</span>
+        <h3>สร้าง PDF ภาษาไทยให้ตัวอักษรเป๊ะ</h3>
+        <p>ฟอนต์มาตรฐานของ pdf-lib วาดภาษาไทยไม่ได้ (สระ/วรรณยุกต์เพี้ยน) แต่ HR ต้องอ่านใบสมัครไทยที่ถูกต้อง 100%</p>
+        <div class="highlight">แก้: render หน้าปกด้วย <strong>headless Chrome (puppeteer)</strong> ที่โหลดฟอนต์ Anuphan จริง → ได้ PDF หน้าปก แล้วค่อยใช้ <code>pdf-lib</code> merge กับเรซูเม่ &middot; ส่วน footer ที่ต้องปั๊มทุกหน้า ใช้วิธี <strong>screenshot เป็นรูป</strong> แล้ว embed กัน glyph ไทยเพี้ยนตอน stamp</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Serverless">
+        <span class="emoji">&#127760;</span>
+        <h3>เปิดเบราว์เซอร์บน serverless ไม่ได้ตรง ๆ</h3>
+        <p>Puppeteer ต้องมี Chrome binary — บนเครื่อง dev มี Chrome อยู่แล้ว แต่บน serverless ไม่มี และ Chrome เต็มตัวใหญ่เกิน limit</p>
+        <div class="highlight">แก้: ตรวจ env (<code>VERCEL</code> / <code>AWS_REGION</code>) → บน serverless โหลด <code>@sparticuz/chromium</code> (binary ที่ตัดให้เล็กพอ), บนเครื่อง dev ชี้ไป Chrome ที่ติดตั้งไว้ — โค้ดชุดเดียวรันได้ทั้งสอง environment</div>
+      </div>
+
+      <div class="hack-card platform" data-label="PII Safety">
+        <span class="emoji">&#128272;</span>
+        <h3>ใบสมัครมี PII ห้ามหลุด public API</h3>
+        <p>Sanity เอกสารที่ published อ่านได้ผ่าน public API — ถ้าเก็บใบสมัครแบบปกติ ใครก็ query เลขบัตร/เบอร์โทรผู้สมัครได้</p>
+        <div class="highlight">แก้: บันทึกเป็น <strong>draft</strong> (<code>_id = drafts.&lt;uuid&gt;</code>) ซึ่ง public API มองไม่เห็น แต่ HR เห็นใน Studio &middot; write token เป็น <strong>server-only</strong> (ไม่ขึ้นต้น <code>NEXT_PUBLIC_</code>) &middot; ตรวจ input ฝั่ง server ทุกฟิลด์ก่อนบันทึก</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Non-blocking">
+        <span class="emoji">&#9889;</span>
+        <h3>Gen PDF + ส่งเมล ช้า → ผู้สมัครรอนาน</h3>
+        <p>ถ้ารอ render PDF และส่งเมลให้เสร็จก่อนตอบ ผู้สมัครจะเห็น loading ค้างหลายวินาที — ประสบการณ์แย่</p>
+        <div class="highlight">แก้: ใช้ <code>after()</code> ของ Next.js — <strong>ตอบผู้สมัครว่า "สำเร็จ" ทันที</strong> หลังบันทึก แล้วค่อย generate PDF + ส่งเมลแจ้ง HR เป็นงานเบื้องหลัง (ตั้ง <code>maxDuration = 60</code> เผื่องานหนัก) ผู้สมัครไม่ต้องรอ</div>
+      </div>
+
+      <div class="hack-card arch" data-label="Graceful Fallback">
+        <span class="emoji">&#129513;</span>
+        <h3>เว็บต้อง live ก่อนคีย์ครบ</h3>
+        <p>ตอนเริ่มยังไม่มี Sanity project / Resend key / write token — แต่ต้อง publish เว็บให้ทันเพื่อเริ่มประชาสัมพันธ์</p>
+        <div class="highlight">แก้: ทุกจุดที่ต่อ service มี fallback — CMS ยังไม่ตั้งก็ใช้ <strong>seed data</strong> (ตำแหน่งงานตัวอย่าง), เมลยังไม่ตั้งก็ตอบ <strong>stub</strong> แล้ว log, ฟอร์มยังทำงานได้ครบ — พอใส่ env ทีหลัง ระบบ "สลับไปของจริง" อัตโนมัติโดยไม่ต้องแก้โค้ด</div>
+      </div>
+
+      <div class="hack-card ux" data-label="i18n Content">
+        <span class="emoji">&#127912;</span>
+        <h3>แยกไอคอน/ภาพ ออกจากข้อความ 2 ภาษา</h3>
+        <p>section ในหน้าแรกมีทั้งไอคอน รูป และข้อความ — ถ้าเก็บทุกอย่างปนกันใน dictionary จะแก้ภาษายากและ layout พังง่าย</p>
+        <div class="highlight">แก้: เก็บ <strong>ข้อความ</strong>ไว้ใน dictionary (แปลได้), แต่ <strong>ไอคอน/ลำดับรูป</strong>ผูกไว้ในโค้ดเป็น metadata แล้ว map เข้ากันด้วย index ตอน render — นักแปลแก้เฉพาะข้อความ ส่วนโครงหน้าคงเดิมทั้ง 2 ภาษา</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Design Decision ที่ตั้งใจเลือก</h2>
+      <p>สำหรับเว็บโรงพยาบาลมะเร็ง สิ่งที่จงใจ "ไม่ทำ" สำคัญพอ ๆ กับสิ่งที่ทำ</p>
+    </section>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>เว็บนี้ต้องลดความกลัว ไม่ใช่เพิ่ม — จึง<strong>ไม่ใช้กากบาทแดง</strong> ไม่ใช้ภาษาสู้รบเรื่องมะเร็ง ไม่ทำเหมือนโรงพยาบาลเปิดเต็มระบบทั้งที่ยังก่อสร้าง และ<strong>ไม่เก็บข้อมูลผู้สมัครไว้ที่ที่ public เข้าถึงได้</strong> ทุกการตัดสินใจยึดความสงบ ศักดิ์ศรี และความปลอดภัยของข้อมูลเป็นหลัก มากกว่าลูกเล่นทางการตลาด</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#129466;</strong><br>
+        <strong>บอกความจริง ไม่ขายฝัน</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">สื่อสารว่า "กำลังสร้าง" อย่างอบอุ่น ไม่ทำเหมือนเปิดแล้ว</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#10060;</strong><br>
+        <strong>ไม่ใช้กากบาทแดง/ภาษาสู้รบ</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ความน่าเชื่อถือมาจาก typography &amp; layout ไม่ใช่สัญลักษณ์เร่งด่วน</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128272;</strong><br>
+        <strong>PII เก็บเป็น draft เท่านั้น</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">public API อ่านไม่ได้ · token อยู่ฝั่ง server</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128207;</strong><br>
+        <strong>Motion แบบลมหายใจ</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">reveal ช้า นุ่ม เคารพ reduced-motion ไม่ flashy</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge Domain ที่แข็งขึ้น</h2>
+      <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
+    </section>
+
+    <div class="learning-card">
+      <strong>1. i18n Architecture — ทำเว็บ 2 ภาษาให้ maintain ได้จริง:</strong>
+      <p>เข้าใจ next-intl บน App Router — <code>routing</code>/URL prefix, <code>setRequestLocale</code> ใน RSC, การแยก "ข้อความ" (dictionary) ออกจาก "โครงหน้า" (โค้ด) แล้ว map ไอคอน/รูปด้วย index — บทเรียน: i18n ที่ดีคือทำให้นักแปลแก้เฉพาะข้อความได้ โดยไม่ต้องแตะ layout และไม่ทำให้ทั้งสองภาษาหลุดจากกัน</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Headless-browser PDF Pipeline — จากศูนย์เป็นสร้างเอกสารเองได้:</strong>
+      <p>ประกอบ pipeline: puppeteer render HTML→PDF (ฟอนต์ไทยเป๊ะ) + <code>pdf-lib</code> merge หลายไฟล์ + embed รูป/ปั๊ม footer/เลขหน้า + จัดการ dual-environment (Chrome เครื่อง vs <code>@sparticuz/chromium</code> บน serverless) — บทเรียน: การสร้างเอกสารคุณภาพระดับพร้อมส่ง ไม่ใช่ของลึกลับ ถ้ารู้จักจุดแข็งของแต่ละเครื่องมือแล้วเอามาต่อกัน</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. Structured Content / Headless CMS — ออกแบบ schema ให้คนอื่นใช้ต่อ:</strong>
+      <p>โมเดล content 8 ชนิดใน Sanity (งาน/หมวด/แผนก/ทำเล/ใบสมัคร/ข้อความ ฯลฯ), แยก draft vs published, ทำ i18n ระดับเอกสาร, custom Studio input + ปุ่ม export — บทเรียน: งานหลังบ้านที่ดีคือส่งมอบ "ระบบที่ HR ดูแลเองได้" ไม่ใช่หน้าจอที่ต้องกลับมาหา dev ทุกครั้งที่จะแก้ข้อความ</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Data Safety บน Serverless — คิดเรื่องความปลอดภัยตั้งแต่ออกแบบ:</strong>
+      <p>วางระบบให้ PII ปลอดภัย: เก็บเป็น draft ที่ public API อ่านไม่ได้, แยก server-only token ออกจาก client, validate ทุก input ฝั่ง server, ใช้ <code>after()</code> ทำงานหนักเบื้องหลังโดยไม่หน่วงผู้ใช้ — บทเรียน: กับข้อมูลอ่อนไหว "ที่เก็บ" และ "ใครอ่านได้" ต้องออกแบบมาตั้งแต่แรก ไม่ใช่มาแปะทีหลัง</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Healthcare UX / Brand สำหรับผู้ใช้เปราะบาง — ดีไซน์ที่ลดความกลัว:</strong>
+      <p>แปลง mood &amp; tone (แสง–น้ำ–ร่มเงา, ศักดิ์ศรี) เป็น UI จริง — คุมโทน copy ให้ปลอบประคองไม่กดดัน, เลี่ยงสัญลักษณ์เร่งด่วน, ทำ contrast ให้ผ่านบนพื้นเบจ/น้ำตาล, motion แบบลมหายใจที่เคารพ reduced-motion — บทเรียน: สำหรับผู้ป่วยและครอบครัว "ความสงบและความชัดเจน" คือฟีเจอร์ ไม่ใช่การตกแต่ง</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">2</div>
+        <div class="label">ภาษา — ไทย/อังกฤษ (i18n เต็มเว็บ)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">8</div>
+        <div class="label">content models ใน Sanity CMS</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">30+</div>
+        <div class="label">ฟิลด์ในฟอร์มสมัครงาน → PDF อัตโนมัติ</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">PII ที่อ่านได้ผ่าน public API</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>VINTA Hospital</h2>
+    <p>เว็บไซต์ full-stack 2 ภาษาสำหรับโรงพยาบาลเฉพาะทางที่กำลังก่อสร้าง — เล่าเรื่อง pre-opening อย่างสงบและมีศักดิ์ศรี พร้อมระบบรับสมัครงานในตัวที่รับใบสมัคร เก็บเข้า CMS อย่างปลอดภัย และสร้าง PDF ใบสมัครภาษาไทยส่งให้ HR อัตโนมัติ สร้างด้วย Next.js 16, Sanity และ serverless ล้วน</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Next.js 16</span>
+      <span class="stack-icon">React 19</span>
+      <span class="stack-icon">next-intl</span>
+      <span class="stack-icon">Sanity CMS</span>
+      <span class="stack-icon">Tailwind v4</span>
+      <span class="stack-icon">Motion</span>
+      <span class="stack-icon">Puppeteer + pdf-lib</span>
+      <span class="stack-icon">Resend</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.info/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Vinta Hospital Portfolio",
+      "item": "https://projects.tanplanet.info/vinta-hospital-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

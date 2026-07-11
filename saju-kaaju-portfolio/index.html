@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แปะก่าจู้ (Saju Kaaju) — ดูดวงสาจูเกาหลี อ่านดวงเป็นกระจก คุยกับอาแปะผ่าน AI</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="แปะก่าจู้ (Saju Kaaju) — ดูดวงสาจูเกาหลี อ่านดวงเป็นกระจก คุยกับอาแปะผ่าน AI">
+  <meta name="twitter:description" content="Portfolio: เว็บแอปดูดวงสาจูเกาหลี (사주팔자) — Python engine คำนวณจากฐานดาราศาสตร์ KASI จริง แล้วให้ 'อาแปะ' (AI) เล่าเป็นภาษาคน · Next.js 15 · Supabase · Stripe">
+  <meta property="og:url" content="https://projects.tanplanet.info/saju-kaaju-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.info/saju-kaaju-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: เว็บแอปดูดวงสาจูเกาหลี (사주팔자) — Python engine คำนวณจากฐานดาราศาสตร์ KASI จริง แล้วให้ 'อาแปะ' (AI) เล่าเป็นภาษาคน · Next.js 15 · Supabase · Stripe">
+  <meta property="og:title" content="แปะก่าจู้ (Saju Kaaju) — ดูดวงสาจูเกาหลี อ่านดวงเป็นกระจก คุยกับอาแปะผ่าน AI">
+  <meta name="description" content="Portfolio: เว็บแอปดูดวงสาจูเกาหลี (사주팔자) — Python engine คำนวณจากฐานดาราศาสตร์ KASI จริง แล้วให้ 'อาแปะ' (AI) เล่าเป็นภาษาคน · Next.js 15 · Supabase · Stripe">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%236d28d9'/><text x='50' y='62' text-anchor='middle' font-size='54'>🔮</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #6d28d9;
+      --accent-light: #ede9fe;
+      --accent-dark: #4c1d95;
+      --accent-glow: rgba(109,40,217,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #2e1065 0%, #4c1d95 45%, #6d28d9 80%, #7c3aed 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(237,233,254,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(109,40,217,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #6d28d9, #7c3aed, #ede9fe);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #c4b5fd;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #4c1d95, #6d28d9);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(109,40,217,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(109,40,217,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== App Preview Mockup ===== */
+    .ext-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 440px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+    .ext-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      align-items: center;
+    }
+    .ext-bar .ext-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    .ext-bar .ext-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 1px 9px;
+      font-size: 0.72rem;
+    }
+    .ext-yt {
+      margin: 12px;
+      padding: 10px 12px;
+      border: 1px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 8px;
+    }
+    .ext-yt b { color: #c00; }
+    .ext-yt .u { color: var(--text-muted); font-size: 0.72rem; word-break: break-all; margin: 3px 0 8px; font-family: 'SF Mono', monospace; }
+    .ext-yt .chip { display: inline-block; border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 3px 8px; font-size: 0.72rem; margin-right: 5px; color: var(--text-secondary); }
+    .ext-table { width: 100%; border-collapse: collapse; }
+    .ext-table th {
+      text-align: left; padding: 8px 12px; font-size: 0.68rem; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--border);
+    }
+    .ext-table td { padding: 9px 12px; border-bottom: 1px solid #f2f2f1; vertical-align: top; }
+    .ext-table .kind { font-weight: 700; white-space: nowrap; }
+    .ext-table .kind.master { color: #1e6b2e; }
+    .ext-table .kind.variant { color: #8a7a12; }
+    .ext-table .kind.file { color: var(--accent); }
+    .ext-table .q { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .ext-table .info { color: var(--text-secondary); font-size: 0.76rem; }
+    .ext-table .chip { display: inline-block; border: 1px solid var(--border); background: #fafafa; border-radius: 5px; padding: 1px 7px; font-size: 0.68rem; color: var(--text-secondary); font-family: 'SF Mono', monospace; }
+    .ext-cmd {
+      margin: 0 12px 12px;
+      padding: 10px 12px;
+      background: #0f172a;
+      color: #a5f3fc;
+      border-radius: 8px;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      font-size: 0.72rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .ext-cmd .flag { color: #fde047; }
+    .ext-cmd .cmt { color: #64748b; }
+    /* saju mockup helpers */
+    .saju-el { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:50px; font-size:0.72rem; font-weight:600; background:var(--accent-light); color:var(--accent-dark); }
+    .saju-chips { padding:10px 12px; display:flex; gap:6px; flex-wrap:wrap; border-bottom:1px solid var(--border); }
+    .saju-msg { padding:14px 12px; }
+    .saju-bubble { background:var(--accent-light); color:var(--accent-dark); padding:12px 14px; border-radius:14px 14px 14px 4px; font-size:0.86rem; line-height:1.65; }
+    .saju-bubble .who { display:block; font-weight:700; margin-bottom:4px; }
+    .saju-starters { padding:0 12px 14px; display:flex; gap:6px; flex-wrap:wrap; }
+    .saju-starter { border:1px solid var(--border); background:#fff; border-radius:50px; padding:4px 12px; font-size:0.74rem; color:var(--text-secondary); }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .closing .links {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .closing .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(76,29,149,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(76,29,149,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark">🔮</div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Next.js 15 &middot; Supabase &middot; Korean Saju Engine
+      </div>
+      <h1>แปะก่าจู้ · Saju Kaaju<br><span class="accent">ดูดวงสาจูเกาหลี อ่านดวงเป็นกระจก — คุยกับ "อาแปะ" ผ่าน AI</span></h1>
+      <p>เว็บแอปดูดวงสาจูเกาหลี (<code>사주팔자</code>) ที่แยก "คำนวณ" ออกจาก "เล่า" — Python engine คำนวณ 4 เสาชะตาจากฐานดาราศาสตร์เกาหลี (KASI) จริง แม่นระดับนาที แล้วให้ <em>อาแปะ</em> (AI) เล่าเป็นภาษาคน อ่านดวงเป็นกระจกสะท้อนตัวเอง ไม่ฟันธง ไม่ขายความกลัว</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Next.js 15</span>
+        <span class="hero-tag">React 19</span>
+        <span class="hero-tag">Supabase (RLS)</span>
+        <span class="hero-tag">Stripe</span>
+        <span class="hero-tag">Python · KASI</span>
+        <span class="hero-tag">korean-saju</span>
+        <span class="hero-tag">Gemini / OpenAI</span>
+        <span class="hero-tag">PWA</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#stack">ดู Tech Stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>ปัญหาที่เจอ</h2>
+      <p>ทำไมการ "ดูดวง" ออนไลน์ให้แม่นและอบอุ่นพร้อมกัน ถึงยากกว่าที่คิด?</p>
+    </section>
+
+    <div class="quote-block">
+      <p>สาจูเกาหลี (<code>四柱</code> — 4 เสาชะตา) คำนวณยากมาก: เสาปีขึ้นกับ <code>입춘</code>, เสาเดือนขึ้นกับ 12 <code>절기</code>, เสาชั่วโมงต้องแก้ <code>진태양시</code> ตาม longitude เพราะเวลามาตรฐานเกาหลีอิงเส้นเมอริเดียนญี่ปุ่น (คลาดได้ ~32 นาที) พลาดนาทีเดียวเสาเปลี่ยน คำทำนายเพี้ยนทั้งใบ — แล้วถ้าปล่อยให้ AI คำนวณเอง มันก็ "มโน" ตัวเลข</p>
+      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำแปะก่าจู้</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="emoji">&#128561;</span>
+        <h3>ดูดวงออนไลน์ส่วนใหญ่ "ฟันธง" + ขายความกลัว</h3>
+        <p>บอกว่าลื้อจะเป็นอย่างนี้แน่ ๆ แล้วปิดท้ายด้วยของมงคลให้ซื้อ — ไม่เหลือทางเลือกให้คนฟัง ไม่ได้ช่วยให้เข้าใจตัวเองจริง ๆ</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128207;</span>
+        <h3>คำนวณสาจูเกาหลีให้แม่นระดับนาที ยากมาก</h3>
+        <p>ต้องรู้จัก <code>입춘</code>/<code>절기</code> boundary, แก้ <code>진태양시</code> ตาม longitude, แยก <code>야자시</code>/<code>조자시</code> — พลาดนาทีเดียวเสาวัน/เสาชั่วโมงเปลี่ยน</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#129302;</span>
+        <h3>ให้ AI คำนวณดวงเอง = มโนเลข</h3>
+        <p>โมเดลภาษาไม่ใช่เครื่องคิดเลขดาราศาสตร์ — ถามว่าเสาชั่วโมงคืออะไร มันเดา (hallucinate) ตอบผิดแบบมั่นใจ เชื่อไม่ได้เลย</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128220;</span>
+        <h3>ศัพท์ 오행 / 십신 / 격국 คนทั่วไปอ่านไม่รู้เรื่อง</h3>
+        <p>ผลลัพธ์ของศาสตร์เป็นฮันจา/เกาหลีล้วน — ต่อให้คำนวณถูก ถ้าเล่าไม่เป็นภาษาคน คนก็ไม่ได้อะไรกลับไป</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128179;</span>
+        <h3>ต้องมี auth จริง + โควตา + จ่ายเงิน โดยกันโกง</h3>
+        <p>ไม่ใช่แค่หน้า demo — ต้อง login จริง, นับโควตาคำถามแบบกันแก้ฝั่ง client, รับเงินผ่าน Stripe แล้วเติมโควตาให้ถูกต้องแบบ idempotent</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>แยก "เครื่องคำนวณข้อเท็จจริง" ออกจาก "คนเล่าเรื่อง" — engine แม่น ๆ ป้อน AI ที่พูดภาษาคน</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <span class="emoji">&#129513;</span>
+        <h3>แยก "คำนวณ" ออกจาก "เล่า" — กัน hallucination</h3>
+        <p>Python engine คำนวณ 4 เสา, 격국, 용신, forecast เป็น <em>ข้อเท็จจริง</em> → ส่งให้ AI แค่ "เล่าต่อ" ไม่ให้ AI แตะการคำนวณเลย ตัวเลขจึงเชื่อได้</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128116;</span>
+        <h3>"อาแปะ" — character voice อบอุ่น อ่านดวงเป็นกระจก</h3>
+        <p>system prompt เป็นบุคลิกอาแปะชาวเกาหลี พูดตรงแต่มีเมตตา ไม่ขู่ ไม่ฟันธง ไม่ขายของมงคล — เหลือทางเลือกให้คนฟังเสมอ</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#127793;</span>
+        <h3>เครื่องคำนวณสาจูเกาหลีของจริง (KASI)</h3>
+        <p>ใช้ engine <code>korean-saju</code> ฝังข้อมูล KASI จริง แก้ <code>진태양시</code> ตาม longitude ของเมืองเกิด แม่นระดับนาที ครอบคลุมปฏิทินถึงปี 2050</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128197;</span>
+        <h3>ปฏิทินดวง personalized + cache รายวัน</h3>
+        <p>forecast รายวัน/รายยามอิงดวงกำเนิดของแต่ละคน — deterministic จึง cache ต่อ user ต่อวันใน DB ได้ เปิดซ้ำไม่ต้องคำนวณใหม่</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128274;</span>
+        <h3>โควตา + จ่ายเงินฝั่ง server เท่านั้น</h3>
+        <p>หักโควตาด้วย Postgres function แบบ atomic, เปิด RLS ทุกตาราง, เติมเงินผ่าน Stripe webhook แบบ idempotent — client แก้โควตาเองไม่ได้</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน — 4 จังหวะ</h2>
+      <p>ตั้งแต่กรอกวันเกิด จนอาแปะเล่าดวงให้ฟัง</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <span class="emoji">&#128203;</span>
+        <h4>กรอกวันเกิด</h4>
+        <p>Onboarding: วัน·เวลา·เมืองเกิด → ดึง longitude จาก city list</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <span class="emoji">&#129518;</span>
+        <h4>Engine คำนวณ</h4>
+        <p>Python (KASI) คำนวณ 4 เสา + 격국/용신 → cache ลง DB</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <span class="emoji">&#128172;</span>
+        <h4>อาแปะเล่า</h4>
+        <p>AI รับข้อเท็จจริงมาเล่าเป็นภาษาคน แบบ streaming เบสวันเกิด</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <span class="emoji">&#127793;</span>
+        <h4>ปฏิทิน + คุยต่อ</h4>
+        <p>เปิดปฏิทินดวงรายวัน → คุยต่อ → หมดโควตา → เติม 99฿</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>Next.js เดียวจบ (web + api) บน Vercel · Python engine เป็น serverless function · Supabase คุม DB + Auth + RLS</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          หน้าเว็บ (PWA · mobile-first ≤768px)
+          <div class="arch-sub">
+            <span>แชตอาแปะ</span>
+            <span>ปฏิทินดวง</span>
+            <span>โปรไฟล์ + ผังธาตุ</span>
+            <span>Onboarding</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Next.js 15 (App Router) บน Vercel
+          <div class="arch-sub">
+            <span>/api/chat</span>
+            <span>/api/calendar</span>
+            <span>/api/onboarding</span>
+            <span>/api/stripe</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Saju Engine (Python · KASI) + AI อาแปะ (Gemini → OpenAI)
+          <div class="arch-sub">
+            <span>calculate.py</span>
+            <span>forecast.py</span>
+            <span>streaming</span>
+            <span>prompt cache</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Supabase (Postgres + Auth + RLS) + Stripe
+          <div class="arch-sub">
+            <span>profiles</span>
+            <span>chats / messages</span>
+            <span>quota_ledger</span>
+            <span>stripe webhook</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+      <strong>ทำไมเลือก stack นี้?</strong>
+      <p><strong>Next.js 15 App Router</strong> — web + API route + Python function อยู่ deploy เดียว แชร์ session ตรง ๆ &middot; <strong>Supabase</strong> ตัวเดียวจบ Postgres + Google/Email Auth + <code>merge-by-email</code> + RLS — ลด moving parts &middot; <strong>Python บน Vercel</strong> รัน engine <code>korean-saju</code> ที่ <em>0 dependency</em> ได้เลย (คำนวณดาราศาสตร์ = งานของ Python) &middot; <strong>Provider abstraction</strong> — สลับ AI (Gemini ↔ OpenAI ↔ Claude) ได้ที่ไฟล์เดียว ไม่ต้องแตะ route/UI</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
+      <p>ครบ loop ตั้งแต่กรอกวันเกิด ถึงคุยกับอาแปะแล้วจ่ายเงินเติมโควตา</p>
+    </section>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <span class="emoji">&#128172;</span>
+        <h3>แชตกับอาแปะ</h3>
+        <p>ห้องแชต streaming เบสจากวันเกิด — ปักหมุด/เปลี่ยนชื่อ/ลบ/แชตใหม่ + starter prompts (ภาพรวม/การงาน/ความรัก/เงิน)</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#129518;</span>
+        <h3>Korean Saju Engine</h3>
+        <p>คำนวณ 4 เสา · 오행 · 십신 · 격국 · 용신 · 대운/세운 จากฐาน KASI จริง แก้ <code>진태양시</code> ตาม longitude</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128197;</span>
+        <h3>ปฏิทินดวง personalized</h3>
+        <p>forecast รายวัน/รายยามตามดวงผู้ใช้ — ไฮไลต์วันดี/ระวัง, ฤกษ์ยามราย ชม. → deep-link คุยกับแปะเรื่องวันนั้น</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#127881;</span>
+        <h3>Onboarding + ผังธาตุ</h3>
+        <p>กรอกวัน·เวลา·เมืองเกิด (city picker → longitude) → สร้างผังสาจู แสดง 4 เสา + สมดุลธาตุ (오행 balance)</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128101;</span>
+        <h3>Multi-profile</h3>
+        <p>ดูดวงให้คนอื่นได้ — สลับโปรไฟล์ (active profile), เพิ่มคนใหม่, แต่ละคนมีผังสาจู + ห้องแชตของตัวเอง</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128220;</span>
+        <h3>รายงานดวงเต็ม + Reveal</h3>
+        <p>สร้างรายงานดวงฉบับเต็ม + หน้า reveal พร้อม share card (html-to-image) และเสียงอาแปะเล่า (TTS)</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128274;</span>
+        <h3>Auth + โควตา atomic</h3>
+        <p>Google + Email/Password (merge-by-email), หักโควตาด้วย Postgres function แบบ atomic + ledger append-only + RLS</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128179;</span>
+        <h3>Payment + Admin หลังบ้าน</h3>
+        <p>Stripe consumable (99฿ = 100 คำถาม) เติมผ่าน webhook idempotent + admin dashboard: ลูกค้า/โควตา/รายได้/cost</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== App Preview Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>หน้าตา — แชตกับอาแปะ</h2>
+      <p>เปิดแอป → เห็นผังธาตุของตัวเอง → คุยกับอาแปะได้เลย บนจอเดียว (mobile-first)</p>
+    </section>
+
+    <div class="ext-mockup">
+      <div class="ext-bar">
+        <span class="ext-btn">&#128116; อาแปะ</span>
+        <span class="ext-btn">ผังธาตุ</span>
+        <span class="ext-btn">ปฏิทิน</span>
+        <span class="ext-badge">โควตา 8</span>
+      </div>
+      <table class="ext-table">
+        <thead>
+          <tr><th>เสา</th><th>時 ยาม</th><th>日 วัน</th><th>月 เดือน</th><th>年 ปี</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="info">ก้าน·กิ่ง</td>
+            <td class="q">癸巳</td>
+            <td class="q">丙寅</td>
+            <td class="q">丙子</td>
+            <td class="q">己巳</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="saju-chips">
+        <span class="saju-el">&#127794; ไม้ 1</span>
+        <span class="saju-el">&#128293; ไฟ 3</span>
+        <span class="saju-el">&#127956; ดิน 1</span>
+        <span class="saju-el">&#9889; ทอง 0</span>
+        <span class="saju-el">&#128167; น้ำ 3</span>
+      </div>
+      <div class="saju-msg">
+        <div class="saju-bubble">
+          <span class="who">&#128116; อาแปะ</span>
+          ไฟในตัวลื้อแรงนะ — ดวงว่าใจร้อน ตัดสินใจไว มันไม่ได้แปลว่าลื้อไม่ดี มันแปลว่าไฟลื้อร้อน ถ้าใช้ถูกก็ให้ความอบอุ่น ถ้าใช้ผิดก็เผาตัวเอง ปีนี้ค่อย ๆ ก้าว อย่าเพิ่งรีบ
+        </div>
+      </div>
+      <div class="saju-starters">
+        <span class="saju-starter">ภาพรวม</span>
+        <span class="saju-starter">การงาน</span>
+        <span class="saju-starter">ความรัก</span>
+        <span class="saju-starter">เงิน</span>
+        <span class="saju-starter">ปีนี้</span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hack กับปัญหา</h2>
+      <p>6 โจทย์ที่ต้องคิดทางแก้เอง — ความแม่นของศาสตร์เกาหลี + การคุม AI + เงินที่พลาดไม่ได้</p>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card precision" data-label="Saju Accuracy">
+        <span class="emoji">&#128207;</span>
+        <h3>เวลามาตรฐานเกาหลีอิงเส้นญี่ปุ่น — เสาชั่วโมงเพี้ยน</h3>
+        <p>KST อิงเมอริเดียน 135° (ญี่ปุ่น) แต่โซลอยู่ 126.98° — เวลาสุริยะจริงช้ากว่า ~32 นาที เอา KST มาคิดเสาชั่วโมงตรง ๆ เสาผิด</p>
+        <div class="highlight">แก้: ใช้ engine <code>korean-saju</code> ที่แก้ <code>진태양시</code> ตาม longitude ของเมืองเกิด + อ้าง <code>절기</code>/<code>입춘</code> boundary จาก KASI + แยก <code>야자시</code>/<code>조자시</code> — verify ตรง 100% กับ 35,000 วัน</div>
+      </div>
+
+      <div class="hack-card arch" data-label="No Hallucination">
+        <span class="emoji">&#129302;</span>
+        <h3>ถ้าให้ AI คำนวณดวง มันมโนตัวเลข</h3>
+        <p>โมเดลภาษาตอบเลขดวงแบบมั่นใจแต่ผิด — จะเชื่อคำทำนายไม่ได้ถ้าฐานตัวเลขมั่ว</p>
+        <div class="highlight">แก้: แยกหน้าที่เด็ดขาด — Python engine คำนวณ "ข้อเท็จจริง" (เสา/격국/forecast) ส่งเป็น context ให้ AI, AI มีหน้าที่ "เล่า" อย่างเดียว + prompt caching ส่วน system + ผังสาจู กัน token บาน</div>
+      </div>
+
+      <div class="hack-card platform" data-label="Python on Vercel">
+        <span class="emoji">&#128013;</span>
+        <h3>รัน engine เกาหลี (Python) ร่วมกับ Next.js</h3>
+        <p>เว็บเป็น TypeScript/Next.js แต่ศาสตร์คำนวณอยู่ในแพ็กเกจ Python — จะเอามารันบน serverless เดียวกันยังไง</p>
+        <div class="highlight">แก้: วาง engine เป็น Vercel Python function (<code>/api/*.py</code>) — inject <code>korean_saju/src</code> เข้า <code>sys.path</code>, แพ็กเกจ 0 dependency จึง bundle ง่าย, Next.js เรียกผ่าน fetch ภายใน แล้ว cache ผลลง DB</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Atomic Quota">
+        <span class="emoji">&#128179;</span>
+        <h3>กันโกงโควตา + race condition ตอนหักเลข</h3>
+        <p>ถ้าหักโควตาฝั่ง client แก้ได้เอง / ยิงพร้อมกันหลาย request อาจหักพลาดหรือติดลบ + เติมเงินซ้ำจาก webhook ที่มาซ้ำ</p>
+        <div class="highlight">แก้: Postgres function <code>consume_question()</code> หัก free/paid แบบ atomic ใน query เดียว + RLS เขียนได้เฉพาะ service-role + <code>quota_ledger</code> append-only + Stripe webhook idempotent ด้วย <code>stripe_session_id</code> unique</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Voice / Character">
+        <span class="emoji">&#128116;</span>
+        <h3>ศาสตร์เป็นฮันจา + AI ต้องอบอุ่นไม่ขู่</h3>
+        <p>ผล engine เป็น 오행/십신/격국 ล้วน คนอ่านไม่ออก — และ AI default มักฟันธง/ทางการเกินไป ไม่ใช่เสียงอาแปะ</p>
+        <div class="highlight">แก้: engine map ป้ายเป็นภาษาไทยก่อนส่ง + system prompt ฝัง brand pillars ของอาแปะ (อ่านดวงเป็นกระจก ไม่ขู่ ไม่ขายของมงคล เหลือทางเลือกเสมอ) + starter prompts พาคนเริ่มคุย</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Forecast Cache">
+        <span class="emoji">&#9203;</span>
+        <h3>ปฏิทินเดือน = คำนวณหลายสิบวัน ช้า + เปลือง</h3>
+        <p>เปิดปฏิทินมุมมองเดือนต้อง forecast ทุกวัน ถ้าเรียก Python ใหม่ทุกครั้งที่เปิด ทั้งช้าและเปลือง</p>
+        <div class="highlight">แก้: forecast เป็น deterministic (ดวงเดิม + วันเดิม = ผลเดิม) จึง cache ต่อ user ต่อวันในตาราง <code>daily_forecast_cache</code> — เปิดปฏิทินเช็ค cache ก่อน ไม่มีค่อยเรียก engine แล้วเก็บไว้</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Design Decision ที่ตั้งใจเลือก</h2>
+      <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอ ๆ กับสิ่งที่ทำ</p>
+    </section>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>แปะก่าจู้จงใจ "อ่านดวงเป็นกระจก ไม่ฟันธงชะตา" — ไม่ขายของมงคล ไม่ขายความกลัว เหลือทางเลือกให้คนฟังเสมอ · engine คำนวณ AI เล่า (แยกหน้าที่กัน hallucination) · mobile-first cap 768px จัดกลางจอ ไม่ฝืนทำ desktop layout · โควตาเป็น consumable ไม่ผูกมัด subscription · มี disclaimer + 18+ ขอบเขตชัดตั้งแต่ต้น = implement ตรงและ maintain ง่าย</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#129746;</strong><br>
+        <strong>อ่านดวงเป็นกระจก</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">สะท้อนให้เห็นตัวเอง ไม่ฟันธง ไม่ขายความกลัว</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#129513;</strong><br>
+        <strong>Engine คำนวณ · AI เล่า</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">แยกหน้าที่เด็ดขาด กัน AI มโนตัวเลข</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128241;</strong><br>
+        <strong>Mobile-first ≤768</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">จัดกลางจอ (letterbox) ไม่ฝืนทำ desktop</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#127861;</strong><br>
+        <strong>99฿ consumable</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">เติมครั้งเดียว ไม่หมดอายุ ไม่ผูกมัด sub</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge Domain ที่แข็งขึ้น</h2>
+      <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
+    </section>
+
+    <div class="learning-card">
+      <strong>1. โหราศาสตร์เกาหลี / สาจู 사주팔자 — จาก 0 เป็นเข้าใจโครงสร้าง:</strong>
+      <p>เข้าใจ 4 เสา (연·월·일·시), 오행 (5 ธาตุ), 십신, 격국, 용신, 대운/세운, และเหตุผลเชิงดาราศาสตร์เบื้องหลัง (<code>진태양시</code>, <code>절기</code>, <code>입춘</code> boundary) — ลึกพอจะแปลงเป็น data model + UX ได้ บทเรียน: domain knowledge ที่ลึกจริงคือสิ่งที่ทำให้ product น่าเชื่อถือ ไม่ใช่แค่ UI สวย</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Full-stack Next.js 15 + Supabase — App Router + RLS + Auth:</strong>
+      <p>ทำ App Router (RSC), Supabase Auth (Google + Email/Password + <code>merge-by-email</code>), RLS ทุกตาราง, และหักโควตาด้วย Postgres function แบบ atomic บทเรียน: Supabase ตัวเดียวคุม DB + Auth + security surface ได้ — ลด moving parts ทำให้ทีมเล็กปล่อยเร็ว</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. Polyglot serverless — TypeScript + Python บน Vercel เดียวกัน:</strong>
+      <p>เชื่อม engine Python (<code>korean-saju</code>, 0 dependency) เข้ากับ Next.js ผ่าน Vercel Python function + <code>sys.path</code> injection แล้ว cache ผลลง DB บทเรียน: เลือกภาษาให้เหมาะกับงาน — คำนวณดาราศาสตร์คือของ Python ไม่ต้องฝืนเขียนใหม่ใน TS</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. AI product engineering — provider abstraction + คุมไม่ให้มโน:</strong>
+      <p>ทำชั้น provider ที่สลับ Gemini → OpenAI → template fallback ได้ที่ไฟล์เดียว, streaming, prompt caching, และกัน hallucination ด้วยการ inject ข้อเท็จจริงจาก engine + character/system prompt บทเรียน: คุม AI ด้วย "ขอบเขต + ข้อเท็จจริง" ไม่ปล่อยให้มันคิดเลขเอง</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Payments &amp; quota economics — เงินคือ path ที่พลาดไม่ได้:</strong>
+      <p>ออกแบบ Stripe consumable + webhook idempotent + <code>quota_ledger</code> append-only + snapshot ราคา ณ ตอนซื้อ (แก้ราคาภายหลังไม่กระทบประวัติเก่า) บทเรียน: อะไรที่เกี่ยวกับเงิน ต้อง atomic + server-only + idempotent เสมอ ไม่มีข้อยกเว้น</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">35,000</div>
+        <div class="label">วันที่ engine คำนวณตรง 100% (vs lunar-python)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">8</div>
+        <div class="label">ตาราง Postgres — เปิด RLS ทุกตาราง</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">15</div>
+        <div class="label">เส้นทางในแอป (mobile-first)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">dependency ของ Saju engine (pure Python)</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>แปะก่าจู้ · Saju Kaaju</h2>
+    <p>เว็บแอปดูดวงสาจูเกาหลี (사주팔자) ที่แยก "คำนวณ" ออกจาก "เล่า" — Python engine คำนวณจากฐานดาราศาสตร์ KASI จริงแม่นระดับนาที แล้วให้อาแปะ (AI) เล่าเป็นภาษาคน อ่านดวงเป็นกระจกสะท้อนตัวเอง สร้างด้วย Next.js 15 + Supabase + Stripe · mobile-first · PWA</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Next.js 15</span>
+      <span class="stack-icon">React 19</span>
+      <span class="stack-icon">Supabase (RLS)</span>
+      <span class="stack-icon">Stripe</span>
+      <span class="stack-icon">Python · KASI</span>
+      <span class="stack-icon">korean-saju</span>
+      <span class="stack-icon">Gemini / OpenAI</span>
+      <span class="stack-icon">Tailwind 4</span>
+      <span class="stack-icon">PWA</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.info/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Saju Kaaju Portfolio",
+      "item": "https://projects.tanplanet.info/saju-kaaju-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MP4/M3U8 Sniffer — Chrome Extension ดักลิงก์วิดีโอ → yt-dlp</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MP4/M3U8 Sniffer — Chrome Extension ดักลิงก์วิดีโอ → yt-dlp">
+  <meta name="twitter:description" content="Portfolio: Chrome extension (Manifest V3) ดัก media stream ในหน้าเว็บ — แยก HLS master/variant, เก็บ header จริง, สร้างคำสั่ง yt-dlp ให้ก๊อปวางโหลดได้ทันที">
+  <meta property="og:url" content="https://projects.tanplanet.info/media-sniffer-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.info/media-sniffer-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: Chrome extension (Manifest V3) ดัก media stream ในหน้าเว็บ — แยก HLS master/variant, เก็บ header จริง, สร้างคำสั่ง yt-dlp ให้ก๊อปวางโหลดได้ทันที">
+  <meta property="og:title" content="MP4/M3U8 Sniffer — Chrome Extension ดักลิงก์วิดีโอ → yt-dlp">
+  <meta name="description" content="Portfolio: Chrome extension (Manifest V3) ดัก media stream ในหน้าเว็บ — แยก HLS master/variant, เก็บ header จริง, สร้างคำสั่ง yt-dlp ให้ก๊อปวางโหลดได้ทันที">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%230e7490'/><text x='50' y='62' text-anchor='middle' font-size='54'>🎬</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #0e7490;
+      --accent-light: #cffafe;
+      --accent-dark: #164e63;
+      --accent-glow: rgba(14,116,144,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #083344 0%, #0e7490 45%, #0891b2 80%, #06b6d4 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(207,250,254,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(14,116,144,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #0e7490, #06b6d4, #cffafe);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #a5f3fc;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #164e63, #0e7490);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(6,182,212,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(14,116,144,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Extension Popup Mockup ===== */
+    .ext-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 440px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+    .ext-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      align-items: center;
+    }
+    .ext-bar .ext-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    .ext-bar .ext-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 1px 9px;
+      font-size: 0.72rem;
+    }
+    .ext-yt {
+      margin: 12px;
+      padding: 10px 12px;
+      border: 1px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 8px;
+    }
+    .ext-yt b { color: #c00; }
+    .ext-yt .u { color: var(--text-muted); font-size: 0.72rem; word-break: break-all; margin: 3px 0 8px; font-family: 'SF Mono', monospace; }
+    .ext-yt .chip { display: inline-block; border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 3px 8px; font-size: 0.72rem; margin-right: 5px; color: var(--text-secondary); }
+    .ext-table { width: 100%; border-collapse: collapse; }
+    .ext-table th {
+      text-align: left; padding: 8px 12px; font-size: 0.68rem; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--border);
+    }
+    .ext-table td { padding: 9px 12px; border-bottom: 1px solid #f2f2f1; vertical-align: top; }
+    .ext-table .kind { font-weight: 700; white-space: nowrap; }
+    .ext-table .kind.master { color: #1e6b2e; }
+    .ext-table .kind.variant { color: #8a7a12; }
+    .ext-table .kind.file { color: var(--accent); }
+    .ext-table .q { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .ext-table .info { color: var(--text-secondary); font-size: 0.76rem; }
+    .ext-table .chip { display: inline-block; border: 1px solid var(--border); background: #fafafa; border-radius: 5px; padding: 1px 7px; font-size: 0.68rem; color: var(--text-secondary); font-family: 'SF Mono', monospace; }
+    .ext-cmd {
+      margin: 0 12px 12px;
+      padding: 10px 12px;
+      background: #0f172a;
+      color: #a5f3fc;
+      border-radius: 8px;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      font-size: 0.72rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .ext-cmd .flag { color: #fde047; }
+    .ext-cmd .cmt { color: #64748b; }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .closing .links {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .closing .links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(22,78,99,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(22,78,99,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark">🎬</div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Chrome Extension &middot; Manifest V3 &middot; HLS / DASH
+      </div>
+      <h1>MP4/M3U8 Sniffer<br><span class="accent">ดักลิงก์วิดีโอในหน้าเว็บ — แปลงเป็นคำสั่ง yt-dlp พร้อมโหลด</span></h1>
+      <p>Chrome extension (Manifest V3) ที่ดักทุก media stream ที่หน้าเว็บกำลังเล่น — แยกแยะ HLS master/variant, เก็บ header จริงที่เบราว์เซอร์ส่ง (Referer / Cookie), แล้วประกอบเป็นคำสั่ง <code>yt-dlp</code> ให้ก๊อปวางโหลดได้ทันที</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Manifest V3</span>
+        <span class="hero-tag">Service Worker</span>
+        <span class="hero-tag">webRequest API</span>
+        <span class="hero-tag">HLS (m3u8)</span>
+        <span class="hero-tag">DASH (mpd)</span>
+        <span class="hero-tag">yt-dlp</span>
+        <span class="hero-tag">Session Storage</span>
+        <span class="hero-tag">Vanilla JS</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#stack">ดู Tech Stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>ปัญหาที่เจอ</h2>
+      <p>ทำไมการโหลดวิดีโอที่ตัวเองมีสิทธิ์เข้าถึง มาเก็บดูออฟไลน์ ถึงยากขึ้นทุกปี?</p>
+    </section>
+
+    <div class="quote-block">
+      <p>เว็บสมัยนี้ไม่ได้ฝังไฟล์ <code>.mp4</code> ตรงๆ อีกแล้ว — มันเล่นแบบ HLS ที่หั่นวิดีโอเป็น segment เล็กๆ หลายพันชิ้น (<code>.ts</code> / <code>.m4s</code>) แล้วมี playlist <code>.m3u8</code> ควบคุม พอจะโหลดมาดูออฟไลน์ ต้องเปิด DevTools → Network ไล่หา m3u8 → ก๊อป Referer/Cookie มาใส่ yt-dlp เอง ทำทุกครั้งเสียเวลามาก และพลาดง่าย</p>
+      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ MP4/M3U8 Sniffer</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="emoji">&#128269;</span>
+        <h3>หา media URL ใน DevTools เหนื่อย</h3>
+        <p>Network tab มี request เป็นร้อย — ต้อง filter หา <code>.m3u8</code>/<code>.mp4</code> เอง แล้วยังแยกไม่ออกว่าอันไหนคือ master playlist (ตัวเลือกความชัด) อันไหนคือ variant จริงที่ต้องโหลด</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128272;</span>
+        <h3>โหลดตรงๆ แล้ว 403 เพราะขาด header</h3>
+        <p>ก๊อป URL ไปวางใน yt-dlp เฉยๆ มักโดน 403 — เพราะ server เช็ค <code>Referer</code> / <code>Origin</code> / <code>Cookie</code> ที่เบราว์เซอร์ส่งตอนเล่นจริง header พวกนี้ปกติถูกซ่อนใน DevTools</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128220;</span>
+        <h3>ไม่รู้ว่าสตรีมมีกี่ความชัด / เข้ารหัสไหม</h3>
+        <p>เปิด m3u8 มาอ่านเองต้องรู้จัก tag <code>#EXT-X-STREAM-INF</code>, <code>#EXT-X-KEY</code> — คนทั่วไปดูไม่ออกว่ามี 1080p/720p ให้เลือกไหม หรือ segment ถูกเข้ารหัส AES-128 อยู่</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#127909;</span>
+        <h3>YouTube sniff ตรงๆ ไม่เสถียร</h3>
+        <p>YouTube ส่ง stream ผ่าน <code>googlevideo.com</code> ที่มี token หมดอายุเร็ว + แยก video/audio track — ดักมาแล้วมักโหลดไม่ได้ ต้องใช้วิธีอื่น</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128465;</span>
+        <h3>ของหน้าเก่าปนหน้าใหม่</h3>
+        <p>เปิดหลายเว็บใน tab ต่างๆ แล้ว media ปนกันมั่ว — ไม่รู้ว่าลิงก์ไหนมาจากหน้าที่กำลังดูอยู่ ต้องมานั่งเดา</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>ให้ extension ทำงานน่าเบื่อทั้งหมดแทน — ดัก, แกะ, ประกอบคำสั่ง เหลือแค่ "ก๊อป → วาง → Enter"</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <span class="emoji">&#128225;</span>
+        <h3>ดัก media อัตโนมัติจาก network layer</h3>
+        <p>Service worker ฟัง <code>webRequest</code> — เจอ request ที่เข้าเงื่อน <code>.m3u8/.mpd/.mp4/.ts/.m4s</code> หรือ type = media ก็เก็บทันที ไม่ต้องเปิด DevTools ไม่ต้อง filter เอง</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#129504;</span>
+        <h3>แกะ m3u8 จริง แล้วบอกว่าโหลดตัวไหน</h3>
+        <p>Fetch ตัว playlist มา parse — master ไหน มีความชัดอะไรบ้าง (1080p/720p), variant ไหนกี่ segment ยาวกี่นาที เข้ารหัส AES-128 หรือเปล่า สรุปเป็นตารางอ่านง่าย</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128203;</span>
+        <h3>ประกอบคำสั่ง yt-dlp พร้อม header จริง</h3>
+        <p>เก็บ <code>Referer/Origin/Cookie/User-Agent</code> ที่เบราว์เซอร์ส่งจริง แล้วประกอบเป็น <code>yt-dlp --referer ... --add-header ...</code> ที่ shell-quote ปลอดภัย กดปุ่มเดียวก๊อปได้เลย</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#9654;&#65039;</span>
+        <h3>YouTube = โหลดจากลิงก์หน้าเว็บ</h3>
+        <p>ตรวจว่าอยู่หน้า YouTube watch/shorts/live → เสนอคำสั่ง yt-dlp จาก URL หน้าเว็บโดยตรง (เสถียรกว่า sniff googlevideo มาก) + ตัด <code>&amp;list=</code> กันโหลดทั้ง playlist</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128194;</span>
+        <h3>แยก media ตาม tab เด็ดขาด</h3>
+        <p>ทุก item ผูกกับ <code>tabId</code> — popup โชว์เฉพาะของหน้าที่ดูอยู่ เปลี่ยนหน้า/ปิด tab = ล้างของเก่าทิ้งอัตโนมัติ badge นับจำนวนต่อ tab</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน — 4 จังหวะ</h2>
+      <p>ตั้งแต่เปิดหน้าเว็บ จนได้คำสั่งพร้อมโหลด</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <span class="emoji">&#127760;</span>
+        <h4>เปิดหน้าเว็บ</h4>
+        <p>วิดีโอเริ่มเล่น เบราว์เซอร์ยิง request m3u8 / segment ออกไป</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <span class="emoji">&#128225;</span>
+        <h4>Service worker ดัก</h4>
+        <p>จับ URL + เก็บ header จริง ผูกกับ tabId ขึ้น badge นับจำนวน</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <span class="emoji">&#129504;</span>
+        <h4>เปิด popup → แกะ</h4>
+        <p>fetch m3u8 มา parse แยก master/variant + ความชัด + การเข้ารหัส</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <span class="emoji">&#128203;</span>
+        <h4>ก๊อปคำสั่ง</h4>
+        <p>กดปุ่ม yt-dlp → ก๊อปคำสั่งพร้อม header ไปวางใน terminal</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>Manifest V3 ล้วน — ไม่มี backend, ไม่มี build step, ไม่เก็บข้อมูลออกนอกเครื่อง</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          หน้าเว็บที่กำลังเล่นวิดีโอ (any origin)
+          <div class="arch-sub">
+            <span>HLS .m3u8</span>
+            <span>DASH .mpd</span>
+            <span>.mp4 / .ts / .m4s</span>
+            <span>YouTube watch/shorts</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Service Worker (background.js) — webRequest
+          <div class="arch-sub">
+            <span>onSendHeaders</span>
+            <span>onBeforeRequest</span>
+            <span>extraHeaders</span>
+            <span>setBadgeText</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Popup (popup.js) — classifier + command builder
+          <div class="arch-sub">
+            <span>parseM3u8()</span>
+            <span>analyze()</span>
+            <span>buildCmd()</span>
+            <span>ytCard()</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          chrome.storage.session (per-tab, in-memory) + clipboard
+          <div class="arch-sub">
+            <span>items[]</span>
+            <span>tabId binding</span>
+            <span>onChanged → render</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+      <strong>ทำไมเลือก stack นี้?</strong>
+      <p><strong>Manifest V3 + Service Worker</strong> เป็นมาตรฐานใหม่ที่ Chrome บังคับ — event-driven ไม่มี background page ค้าง RAM &middot; <strong>chrome.storage.session</strong> เก็บใน memory หายเมื่อปิดเบราว์เซอร์ — เหมาะกับข้อมูลชั่วคราวที่ไม่ควรค้างในดิสก์ &middot; <strong>host_permissions <code>&lt;all_urls&gt;</code></strong> ให้ popup fetch ตัว m3u8 มาแกะได้โดยข้าม CORS &middot; <strong>Vanilla JS ล้วน</strong> — ไม่มี build step, โหลด unpacked ได้เลย, ทั้ง extension ~4 ไฟล์</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
+      <p>ครบ loop ตั้งแต่ดัก network ถึงคำสั่งพร้อมโหลด</p>
+    </section>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <span class="emoji">&#128225;</span>
+        <h3>Media Sniffer</h3>
+        <p>ดัก <code>.m3u8/.mpd/.mp4/.ts/.m4s</code> + request type = media จาก webRequest — ครอบคลุมทั้ง HLS, DASH และไฟล์ตรง</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128272;</span>
+        <h3>Real Header Capture</h3>
+        <p>ใช้ <code>extraHeaders</code> ดึง Referer/Origin/Cookie/User-Agent ที่ปกติถูกซ่อน — กุญแจที่ทำให้โหลดผ่าน 403</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#129504;</span>
+        <h3>HLS Classifier</h3>
+        <p>fetch m3u8 มา parse จริง — แยก master (มี variants + audio/subs) vs variant (segment count + duration + AES)</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#127916;</span>
+        <h3>Quality Resolver</h3>
+        <p>อ่าน <code>RESOLUTION</code>/<code>BANDWIDTH</code> จาก master แล้ว map ให้ variant แต่ละตัวว่าเป็น 1080p/720p</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128203;</span>
+        <h3>yt-dlp Command Builder</h3>
+        <p>ประกอบคำสั่งพร้อม header + shell-quote ปลอดภัย (จัดการ single-quote/space/semicolon ใน cookie)</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#9654;&#65039;</span>
+        <h3>YouTube Smart Card</h3>
+        <p>ตรวจหน้า watch/shorts/live → เสนอคำสั่งโหลดจาก URL หน้าเว็บ 2 แบบ (best / 1080p) ตัด playlist param ทิ้ง</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128290;</span>
+        <h3>Per-Tab Badge &amp; Cleanup</h3>
+        <p>นับจำนวน media ต่อ tab บน icon + ล้างเมื่อ navigate (main_frame) หรือปิด tab — ไม่ให้ของเก่าค้าง</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128203;</span>
+        <h3>Copy All / Rescan / Clear</h3>
+        <p>ก๊อปทุก URL ทีเดียว, reload tab เพื่อจับรอบสด, ล้างเฉพาะ tab ปัจจุบัน — คุมง่ายจาก header เดียว</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Extension Popup Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>หน้าตา Popup</h2>
+      <p>เปิดหน้าเว็บที่มีวิดีโอ → คลิก icon → เห็นทุกอย่างในหน้าจอเดียว</p>
+    </section>
+
+    <div class="ext-mockup">
+      <div class="ext-bar">
+        <span class="ext-btn">&#8635; Rescan</span>
+        <span class="ext-btn">Copy all</span>
+        <span class="ext-btn">Clear</span>
+        <span class="ext-badge">3</span>
+      </div>
+      <div class="ext-yt">
+        <div><b>&#9654; YouTube</b> — โหลดจากหน้าเว็บ (เสถียรกว่า sniff)</div>
+        <div class="u">https://www.youtube.com/watch?v=dQw4w9WgXcQ</div>
+        <span class="chip">yt-dlp best</span>
+        <span class="chip">yt-dlp 1080p</span>
+      </div>
+      <table class="ext-table">
+        <thead>
+          <tr><th>Type</th><th>Quality</th><th>Info</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="kind master">Master</span></td>
+            <td class="q">1080p / 720p / 480p</td>
+            <td class="info">&#128266; th, en &middot; &#128172; th</td>
+            <td><span class="chip">URL</span> <span class="chip">yt-dlp</span></td>
+          </tr>
+          <tr>
+            <td><span class="kind variant">Variant</span></td>
+            <td class="q">1080p</td>
+            <td class="info">312 segs &middot; 24:15 &middot; &#128274; AES-128</td>
+            <td><span class="chip">URL</span> <span class="chip">yt-dlp</span></td>
+          </tr>
+          <tr>
+            <td><span class="kind file">File</span></td>
+            <td class="q">&mdash;</td>
+            <td class="info">direct .mp4</td>
+            <td><span class="chip">URL</span> <span class="chip">yt-dlp</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="ext-cmd"><span class="cmt"># กดปุ่ม yt-dlp → ได้คำสั่งพร้อม header จริง</span><br>yt-dlp <span class="flag">--referer</span> 'https://site.tld/' <span class="flag">--add-header</span> 'Cookie:sid=…' 'https://cdn.site.tld/1080/index.m3u8' <span class="flag">-o</span> video.mp4</div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hack กับปัญหา</h2>
+      <p>6 โจทย์ที่ต้องคิดทางแก้เอง — Chrome extension API quirk + streaming internals</p>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card precision" data-label="Browser API">
+        <span class="emoji">&#128272;</span>
+        <h3>Cookie / Referer ถูกซ่อนจาก webRequest</h3>
+        <p>โดย default <code>onSendHeaders</code> ไม่คืน header ที่ browser จัดการเอง (Cookie, Referer, Origin) — ได้แต่ URL เปล่า โหลดต่อไม่ผ่าน 403</p>
+        <div class="highlight">แก้: ใส่ <code>"extraHeaders"</code> ใน extraInfoSpec ของ listener — Chrome จึงเปิดเผย header ที่ถูกซ่อน แล้ว whitelist เก็บเฉพาะ 4 ตัวที่ yt-dlp ต้องใช้ (referer/origin/cookie/user-agent) ไม่เก็บเกินจำเป็น</div>
+      </div>
+
+      <div class="hack-card arch" data-label="CORS">
+        <span class="emoji">&#129504;</span>
+        <h3>จะแกะ m3u8 ต้อง fetch ข้าม origin</h3>
+        <p>เพื่อรู้ว่า master มีความชัดอะไรบ้าง ต้อง fetch ตัว playlist มาอ่าน — แต่ปกติ fetch ข้าม origin โดน CORS block</p>
+        <div class="highlight">แก้: ประกาศ <code>host_permissions: &lt;all_urls&gt;</code> ใน manifest — popup context จึง fetch ข้าม origin ได้โดยไม่ติด CORS แล้ว cache ผลลัพธ์ต่อ URL กัน fetch ซ้ำทุกครั้งที่ re-render</div>
+      </div>
+
+      <div class="hack-card platform" data-label="MV3 State">
+        <span class="emoji">&#128290;</span>
+        <h3>Master ต้องแกะก่อน Variant ถึงรู้ความชัด</h3>
+        <p>ความชัด (1080p) อยู่ในไฟล์ master แต่ตอนดัก network เราเห็น variant URL ลอยๆ ไม่มี label ว่ากี่ p</p>
+        <div class="highlight">แก้: parse master → เก็บ map <code>variantUrl → "1080p"</code> ไว้ใน <code>variantRes</code> ก่อน แล้วค่อยวาดตาราง — ใช้ <code>Promise.all(analyze)</code> แกะทุกตัวให้เสร็จก่อน render รอบเดียว variant จึงหยิบ label จาก master ที่แกะแล้วได้</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Tab Isolation">
+        <span class="emoji">&#128194;</span>
+        <h3>media ของหน้าเก่า carry มาปนหน้าใหม่</h3>
+        <p>SPA / เปลี่ยนหน้าไม่ได้ reload — media เก่ายังค้างใน storage ปนกับหน้าใหม่ ทำให้ popup โชว์ลิงก์ที่ไม่เกี่ยว</p>
+        <div class="highlight">แก้: ฟัง <code>onBeforeRequest</code> เฉพาะ <code>main_frame</code> = สัญญาณว่าหน้าเปลี่ยนจริง → ล้าง items ของ tabId นั้นทิ้ง + reset badge บวกกับ cleanup ตอน <code>tabs.onRemoved</code> — storage สะอาดตลอด</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Shell Safety">
+        <span class="emoji">&#128737;&#65039;</span>
+        <h3>Cookie มี space / semicolon พังคำสั่ง shell</h3>
+        <p>ค่า Cookie จริงมี <code>;</code> และ space เต็มไปหมด — เอาไปต่อเป็นคำสั่ง shell ตรงๆ มันแตกคำสั่ง หรือถูกตีความผิด</p>
+        <div class="highlight">แก้: ฟังก์ชัน <code>q()</code> ห่อทุกค่าด้วย single-quote แล้ว escape single-quote ข้างในเป็น <code>'\''</code> — pattern มาตรฐานของ POSIX shell ทำให้ Cookie/Referer ที่มีอักขระพิเศษปลอดภัย 100%</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Stability">
+        <span class="emoji">&#9654;&#65039;</span>
+        <h3>YouTube sniff แล้วโหลดไม่ได้</h3>
+        <p>ดัก googlevideo มาได้ URL จริง แต่มี token หมดอายุเร็ว + track เสียงแยกจากภาพ — โหลดจริงแทบไม่เคยสำเร็จ</p>
+        <div class="highlight">แก้: เปลี่ยนกลยุทธ์ — ไม่ sniff googlevideo เลย แต่ตรวจว่าอยู่หน้า YouTube แล้วให้ yt-dlp จัดการจาก URL หน้าเว็บเอง (มัน resolve track + merge ให้) พร้อม <code>cleanYt()</code> ตัด <code>&amp;list=</code> กันเผลอโหลดทั้ง playlist — บทเรียน: บางปัญหาแก้ด้วยการ "ไม่ทำ" ดีกว่าฝืนทำให้ได้</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Design Decision ที่ตั้งใจเลือก</h2>
+      <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอๆ กับสิ่งที่ทำ</p>
+    </section>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>เครื่องมือนี้ทำหน้าที่เดียว: ช่วยประกอบคำสั่งให้เร็วขึ้น — มันไม่ดาวน์โหลดเอง ไม่ถอดรหัส DRM ไม่เก็บข้อมูลออกนอกเครื่อง ตัว classifier แค่ "บอก" ว่า segment เข้ารหัส AES-128 อยู่ (เพื่อให้รู้ว่าต้องมี key) ไม่ได้แตะ key ใดๆ ขอบเขตชัดตั้งแต่ต้น = ตัดสินใจ implement ง่ายและตรงไปตรงมา</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128203;</strong><br>
+        <strong>ประกอบคำสั่ง ไม่โหลดเอง</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ให้ yt-dlp เป็นคนโหลด — extension แค่เตรียม input ให้</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128274;</strong><br>
+        <strong>Detect ไม่ Decrypt</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">บอกว่า AES-128 เข้ารหัสอยู่ แต่ไม่ยุ่งกับ key</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128190;</strong><br>
+        <strong>session storage เท่านั้น</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ข้อมูลอยู่ใน memory หายเมื่อปิด ไม่เขียนดิสก์</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#127911;</strong><br>
+        <strong>Whitelist 4 header</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">เก็บเฉพาะที่ yt-dlp ต้องใช้ ไม่เก็บเกิน</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge Domain ที่แข็งขึ้น</h2>
+      <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
+    </section>
+
+    <div class="learning-card">
+      <strong>1. Chrome Extension MV3 — จาก "เคยได้ยิน" เป็น "ทำได้จริง":</strong>
+      <p>เข้าใจ lifecycle ของ service worker (event-driven, ไม่มี persistent background), การใช้ <code>chrome.storage.session</code> vs <code>local</code>, การผูก state กับ <code>tabId</code>, และ badge API — จากศูนย์เป็นเขียน extension ที่ใช้งานจริงได้ทั้งตัว บทเรียน: MV3 บังคับคิดแบบ event-driven ตั้งแต่แรก</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. HLS / streaming internals — อ่าน m3u8 ออกทุกบรรทัด:</strong>
+      <p>รู้จักโครงสร้าง master vs variant playlist, tag <code>#EXT-X-STREAM-INF</code> (RESOLUTION/BANDWIDTH), <code>#EXT-X-MEDIA</code> (audio/subtitle track), <code>#EXTINF</code> (duration ต่อ segment), <code>#EXT-X-KEY</code> (AES-128/SAMPLE-AES) — เขียน parser เองจนแยกประเภทสตรีมได้แม่น บทเรียน: video streaming ไม่ใช่ black box อีกต่อไป</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. HTTP header semantics — เข้าใจว่า 403 มาจากไหน:</strong>
+      <p>เข้าใจว่า CDN ใช้ <code>Referer/Origin/Cookie</code> ตรวจสิทธิ์อย่างไร ทำไม header บางตัวถูกเบราว์เซอร์ซ่อน และ <code>extraHeaders</code> เปิดเผยมันได้ — ความรู้ที่ต่อยอดไป debug API auth / CORS ได้ทั้งหมด บทเรียน: header คือกุญแจของ web security ครึ่งหนึ่ง</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Shell-safe string building — money/security path ที่พลาดไม่ได้:</strong>
+      <p>ฝึกเขียน quoting ที่ปลอดภัยจริง (<code>'\''</code> escape) แทนการต่อ string มั่วๆ — เข้าใจว่า input ที่ไม่ trust (Cookie จากเว็บ) ถ้าเอาไปประกอบคำสั่งต้อง sanitize เสมอ บทเรียน: command injection ป้องกันได้ด้วย quoting ที่ถูก pattern</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Scoping — รู้ว่า "ไม่ทำอะไร" คือ design ที่ดี:</strong>
+      <p>ตัดสินใจไม่ sniff YouTube, ไม่ decrypt, ไม่ auto-download — ทำให้ตัวเครื่องมือเล็ก เข้าใจง่าย และอยู่ในขอบเขตที่เหมาะสม บทเรียน: ขอบเขตที่คมทำให้ implement ตรง และ maintain ง่ายกว่าเครื่องมือที่พยายามทำทุกอย่าง</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">4</div>
+        <div class="label">ไฟล์ — ทั้ง extension (ไม่มี build)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">5</div>
+        <div class="label">รูปแบบ media ที่ดักได้</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">1</div>
+        <div class="label">คลิก — จาก network ถึงคำสั่งพร้อมโหลด</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">ข้อมูลที่ออกนอกเครื่อง</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>MP4/M3U8 Sniffer</h2>
+    <p>Chrome extension (Manifest V3) ส่วนตัว ที่เปลี่ยนงานน่าเบื่อ — เปิด DevTools ไล่หา m3u8, ก๊อป header เข้า yt-dlp — ให้เหลือแค่คลิกเดียว สร้างด้วย Vanilla JS ล้วน ไม่มี backend ไม่มี build step ข้อมูลไม่ออกนอกเครื่อง</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Manifest V3</span>
+      <span class="stack-icon">Service Worker</span>
+      <span class="stack-icon">webRequest API</span>
+      <span class="stack-icon">chrome.storage.session</span>
+      <span class="stack-icon">HLS (m3u8)</span>
+      <span class="stack-icon">DASH (mpd)</span>
+      <span class="stack-icon">yt-dlp</span>
+      <span class="stack-icon">Vanilla JS</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.info/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "MP4/M3U8 Sniffer Portfolio",
+      "item": "https://projects.tanplanet.info/media-sniffer-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>
