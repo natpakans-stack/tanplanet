@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ดวงสุริยยาตร์ของแทน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#F1E7D2; --card:#FFFDF8; --line:#E7DBC1; --ink:#2E2416; --muted:#8C7A5A;
+         --accent:#7A1A1A; --gold:#A9832A; --good:#15803D; --warn:#B45309; --bad:#B91C1C;
+         --soft:#5B4A2E; --panel:#FBF6EA; }
+  *{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+  body{font-family:Anuphan,-apple-system,sans-serif;background:
+        radial-gradient(1200px 600px at 50% -10%, #FBF4E2 0%, var(--bg) 60%);
+        color:var(--ink);min-height:100dvh;padding:20px 14px 44px;max-width:520px;margin:0 auto;line-height:1.5}
+  .head{text-align:center;margin-bottom:16px}
+  .head .k{color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.14em}
+  .head h1{font-size:24px;font-weight:800;margin-top:4px;color:var(--accent)}
+  .head .sub{color:var(--muted);font-size:12.5px;margin-top:5px}
+  .card{background:linear-gradient(180deg,#FFFDF8,var(--panel));border:1px solid var(--line);
+        border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 8px 22px rgba(90,66,20,.10)}
+  .card>h2{font-size:15px;font-weight:800;margin-bottom:4px;color:var(--accent)}
+  .card>.desc{font-size:12px;color:var(--muted);margin-bottom:14px}
+  /* daily */
+  .score{display:flex;align-items:baseline;gap:6px}
+  .score .n{font-size:46px;font-weight:800;line-height:1}.score .of{color:var(--muted);font-size:15px}
+  .score .v{margin-left:auto;font-size:18px;font-weight:800}
+  .meter{height:9px;background:#EBE0C6;border-radius:99px;overflow:hidden;margin:12px 0 10px}.meter>i{display:block;height:100%;border-radius:99px}
+  .advice{font-weight:700;font-size:14px}
+  .aisum{margin-top:14px;padding:12px 14px;background:#FBF3E0;border:1px solid #E9D9B0;border-radius:12px}
+  .aisum .ail{font-size:11px;font-weight:800;color:var(--accent);margin-bottom:5px;letter-spacing:.03em;display:flex;align-items:center;gap:5px}
+  .aisum .txt{font-size:13px;color:#463B26;line-height:1.65}
+  .reasons{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+  .reasons .r{display:flex;gap:8px;font-size:13px;color:#4A3F2A;margin:7px 0}
+  /* wheel controls */
+  .seg{display:flex;gap:6px;background:#F2E8D2;border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:12px}
+  .seg button{flex:1;border:0;background:transparent;color:var(--muted);font-family:inherit;font-size:13px;font-weight:700;padding:9px;border-radius:9px}
+  .seg button.on{background:linear-gradient(135deg,#7A1A1A,#591010);color:#fff}
+  .tglrow{display:flex;align-items:center;gap:8px;margin:2px 0 12px;font-size:13px;color:var(--muted)}
+  .tgl{position:relative;width:42px;height:24px;background:#E1D4B4;border-radius:99px;transition:.2s;flex:0 0 42px;border:1px solid var(--line)}
+  .tgl.on{background:#7A1A1A} .tgl::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:99px;background:#fff;transition:.2s}
+  .tgl.on::after{left:21px}
+  svg{display:block;width:100%;height:auto}
+  .legend{display:flex;flex-wrap:wrap;gap:7px 13px;margin-top:12px;font-size:11px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:5px} .legend i{width:11px;height:11px;border-radius:99px;display:inline-block}
+  /* planet rows */
+  .pl{display:flex;flex-direction:column;gap:3px;padding:11px 0;border-bottom:1px solid var(--line)}.pl:last-child{border-bottom:0}
+  .pl .top{display:flex;align-items:center;gap:9px}
+  .num{display:inline-flex;width:25px;height:25px;border-radius:99px;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex:0 0 25px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .pl .nm{font-weight:700;font-size:15px} .pl .pos{margin-left:auto;font-size:13.5px;color:var(--soft);font-variant-numeric:tabular-nums}
+  .std{font-size:10.5px;padding:2px 8px;border-radius:99px;font-weight:700;margin-left:8px}
+  .std.good{background:rgba(21,128,61,.14);color:var(--good)} .std.bad{background:rgba(185,28,28,.12);color:var(--bad)}
+  .std.warn{background:rgba(180,83,9,.14);color:var(--warn)} .std.o{color:var(--muted);background:#EFE6D0}
+  .pl .meta{font-size:11.5px;color:var(--muted);padding-left:34px}.pl .meta b{color:var(--soft);font-weight:700}
+  .star{color:var(--gold);font-weight:700}
+  /* house-lord cards */
+  .hl{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px;background:var(--panel)}
+  .hl .h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .chip{font-size:11px;font-weight:800;padding:3px 9px;border-radius:99px}
+  .chip.ดี{background:rgba(21,128,61,.16);color:var(--good)} .chip.กลาง{background:#EFE6D0;color:var(--muted)}
+  .chip.ปะปน{background:rgba(180,83,9,.16);color:var(--warn)} .chip.ระวัง{background:rgba(185,28,28,.14);color:var(--bad)}
+  .hl .h .t{font-weight:700;font-size:13.5px}
+  .hl .flow{font-size:12px;color:var(--accent);margin:6px 0 4px;font-weight:700}
+  .hl .p{font-size:12.5px;color:#4A3F2A}
+  /* aspects */
+  .asp{display:flex;flex-wrap:wrap;gap:7px}
+  .asp .a{font-size:11.5px;padding:5px 10px;border-radius:99px;border:1px solid var(--line);background:var(--panel)}
+  .asp .a.good{border-color:rgba(21,128,61,.4);color:var(--good)} .asp .a.bad{border-color:rgba(185,28,28,.4);color:var(--bad)} .asp .a.neu{color:var(--soft)}
+  /* bhava */
+  .bhava{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .bhava .b{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+  .bhava .b .t{font-size:11px;color:var(--muted)} .bhava .b .s{font-size:13px;font-weight:600;margin-top:2px;min-height:18px}
+  .disc{text-align:center;color:var(--muted);font-size:11px;margin-top:6px;line-height:1.7}
+  .cta{display:block;text-align:center;background:linear-gradient(135deg,#7A1A1A,#591010);color:#fff;font-weight:700;padding:15px;border-radius:12px;text-decoration:none;margin-top:2px}
+</style>
+</head>
+<body>
+  <div class="head">
+    <div class="k">🔮 ดวงสุริยยาตร์</div>
+    <h1>ดวงชะตาของแทน</h1>
+    <div class="sub" id="birthLine">—</div>
+  </div>
+
+  <div class="card" id="dailyCard" style="display:none">
+    <h2>ดวงลงทุนวันนี้</h2>
+    <div class="score"><span class="n" id="dScore">—</span><span class="of">/100</span><span class="v" id="dVerdict"></span></div>
+    <div class="meter"><i id="dMeter"></i></div>
+    <div class="advice" id="dAdvice"></div>
+    <div class="aisum" id="aiSum" style="display:none"><div class="ail" id="aiLbl">🤖 AI สรุป</div><div class="txt" id="aiSumText"></div></div>
+    <div class="reasons" id="dReasons"></div>
+  </div>
+
+  <div class="card">
+    <h2>ผังจักรราศี</h2>
+    <div class="desc">เลขในวง = ดาวกำเนิด · เลขนอก = เรือน · สลับดู ราศีจักร / นวางค์จักร (D9) ได้</div>
+    <div class="seg">
+      <button id="btnD1" class="on" onclick="setMode('d1')">ราศีจักร</button>
+      <button id="btnD9" onclick="setMode('d9')">นวางค์จักร (D9)</button>
+    </div>
+    <div class="tglrow" id="transitToggleRow">
+      <div class="tgl" id="transitTgl" onclick="toggleTransit()"></div>
+      <span>ซ้อน<b style="color:var(--accent)">ดาวจรวันนี้</b> (วงนอก · เลขจาง)</span>
+    </div>
+    <svg id="wheel" viewBox="0 0 440 440" role="img" aria-label="ผังจักรราศี"></svg>
+    <div class="legend" id="legend"></div>
+  </div>
+
+  <div class="card">
+    <h2>ตำแหน่งดาว 10 ดวง</h2>
+    <div class="desc">ราศี · องศา°ลิปดา' · เรือน · กำลัง · ตรียางค์ · นวางค์ · ★วรโคตม</div>
+    <div id="planets"></div>
+  </div>
+
+  <div class="card">
+    <h2>ทักษา · ดาวประจำวันเกิด</h2>
+    <div class="desc">แทนเกิดวันพุธ (กลางวัน) · ดาวประจำวัน = พุธ · หมวดทักษา 8 → ดาวเจ้าประจำ</div>
+    <div id="taksa"></div>
+  </div>
+
+  <div class="card">
+    <h2>สมดุลธาตุในดวง</h2>
+    <div class="desc">นับธาตุจากราศีที่ดาว 10 ดวงสถิต → ธาตุเด่นบ่งบุคลิก/แนวชีวิต</div>
+    <div id="elements"></div>
+  </div>
+
+  <div class="card">
+    <h2>คำทำนายเจ้าเรือนครองภพ</h2>
+    <div class="desc">เจ้าเรือนแต่ละภพไปสถิตภพไหน = ด้านชีวิตนั้นไปส่งผลที่ไหน</div>
+    <div id="houseLords"></div>
+  </div>
+
+  <div class="card">
+    <h2>เกณฑ์ดวงพิเศษ</h2>
+    <div class="desc">โยคคลาสสิก (Parashari) · ต่างจากแต้มสุริยยาตร์เฉพาะของตำราไทย</div>
+    <div id="yogas"></div>
+  </div>
+
+  <div class="card">
+    <h2>คำพยากรณ์ดาวจร (ช่วงนี้)</h2>
+    <div class="desc">ดาวจรกระทบดาวกำเนิด → เรื่องเด่นช่วงนี้ · เรียงจากเหตุการณ์ใหญ่ (ดาวช้า)</div>
+    <div id="forecastTop"></div>
+    <div id="forecastLists"></div>
+  </div>
+
+  <div class="card">
+    <h2>มุมสัมพันธ์ (Aspect)</h2>
+    <div class="desc">กุม/โยค/เล็ง/ตรีโกณ · เขียว = ส่งคุณ · แดง = ส่งโทษ</div>
+    <div class="asp" id="aspects"></div>
+  </div>
+
+  <div class="card">
+    <h2>ภพ 12 (เรือนชะตา)</h2>
+    <div class="desc">&nbsp;</div>
+    <div class="bhava" id="bhavaGrid"></div>
+  </div>
+
+  <a class="cta" href="#" id="backCta">← กลับหน้า Dashboard</a>
+  <div class="disc">🎈 เพื่อความบันเทิงและศึกษา ไม่ใช่คำแนะนำการลงทุน<br>ระบบ Lahiri (นิรายนะ) · ลัคนา/ราศีตรงกับสุริยยาตร์ · กำลังดาวใช้เกณฑ์คลาสสิก (เกษตร/อุจ/นิจ/มิตร/ศัตรู)</div>
+
+<script>
+const RASI=["เมษ","พฤษภ","เมถุน","กรกฎ","สิงห์","กันย์","ตุล","พิจิก","ธนู","มังกร","กุมภ์","มีน"];
+const ELEM_GLYPH=["▲","■","◆","▼"]; // ไฟ ดิน ลม น้ำ (ราศี%4)
+const BHAVA=["ตนุ","กฎุมพะ","สหัชชะ","พันธุ","ปุตตะ","อริ","ปัตนิ","มรณะ","ศุภะ","กัมมะ","ลาภะ","วินาสนะ"];
+const DIG_CLS={"เกษตร":"good","อุจ":"good","มิตร":"good","นิจ":"bad","ศัตรู":"bad","ประ":"warn","สมภาคี":"o","ปกติ":"o"};
+let DATA=null, MODE="d1", SHOW_TRANSIT=false;
+// single source of truth = engine สุริยยาตร์ (thai-astrology API)
+const API_BASE="https://thai-astrology-flame.vercel.app";
+
+function render(N){
+  DATA=N;
+  document.getElementById("birthLine").textContent =
+    `${N.ชื่อ} · 28 ต.ค. 2541 · ${N.ข้อมูลเกิด.เวลาเกิด} น. · จ.ตรัง · ลัคนา${N.ลัคนา.ราศี} ${N.ลัคนา.องศาเต็ม}°${String(N.ลัคนา.ลิปดา).padStart(2,"0")}'`;
+  drawWheel();
+  // planets
+  document.getElementById("planets").innerHTML = N.ดาว.map(p=>{
+    const std = p.กำลัง==="—" ? "" : `<span class="std ${DIG_CLS[p.กำลัง]||"o"}">${p.กำลัง}</span>`;
+    const star = p.วรโคตม ? ` <span class="star">★วรโคตม</span>` : "";
+    const bh=N.ภพ[p.เรือน-1];
+    return `<div class="pl"><div class="top"><span class="num" style="background:${p.สี}">${p.เลข}</span>
+      <span class="nm">${p.ดาว}</span>${std}<span class="pos">${p.ราศี} ${p.องศา}°${String(p.ลิปดา).padStart(2,"0")}'</span></div>
+      <div class="meta">เรือน ${p.เรือน} ${bh?bh.ชื่อ:""} · ธาตุ${p.ธาตุ} · ตรียางค์ ${p.ตรียางค์} (ครอง<b>${p.ตรียางค์เจ้าครอง}</b>) · นวางค์<b>${p.นวางค์}</b>${star}</div></div>`;
+  }).join("");
+  // taksa
+  document.getElementById("taksa").innerHTML = N.ทักษา.หมวด.map(t=>`
+    <div class="pl"><div class="top"><span class="nm" style="${t.ร้าย?'color:var(--bad)':''}">${t.หมวด}</span>
+      <span class="pos" style="color:var(--soft);font-weight:700">${t.ดาว}</span></div>
+      <div class="meta" style="padding-left:0">${t.ความหมาย}${t.ร้าย?' · ⚠️ กาลกิณี ควรระวัง':''}</div></div>`).join("");
+  // elements
+  const el={ไฟ:0,ดิน:0,ลม:0,น้ำ:0}; N.ดาว.forEach(p=>el[p.ธาตุ]!=null&&el[p.ธาตุ]++);
+  const ELC={ไฟ:"#F87171",ดิน:"#D6A461",ลม:"#67C7E8",น้ำ:"#7CA9F5"}, tot=N.ดาว.length;
+  const dom=Object.entries(el).sort((a,b)=>b[1]-a[1])[0][0];
+  document.getElementById("elements").innerHTML = Object.entries(el).map(([k,v])=>`
+    <div style="margin:9px 0"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>ธาตุ${k}</span><span style="color:var(--muted)">${v} ดวง</span></div>
+      <div class="meter"><i style="width:${(v/tot*100).toFixed(0)}%;background:${ELC[k]}"></i></div></div>`).join("")
+    + `<div style="margin-top:12px;font-size:12.5px;color:#4A3F2A">ธาตุเด่น: <b style="color:${ELC[dom]}">ธาตุ${dom}</b> — มีอิทธิพลต่อบุคลิกและแนวทางชีวิตมากที่สุด</div>`;
+  // house lords
+  document.getElementById("houseLords").innerHTML = N.เจ้าเรือน.map(h=>`
+    <div class="hl"><div class="h"><span class="chip ${h.ป้าย}">${h.ป้าย}</span>
+      <span class="t">ภพ ${h.ภพ} ${h.ชื่อภพ} · เจ้าเรือน<b>${h.เจ้าเรือน}</b> (${h.ราศีเจ้าเรือน}·${h.กำลัง})</span></div>
+      <div class="flow">→ ไปสถิต ภพ ${h.ไปสถิตภพ} ${h.ไปสถิตชื่อ}</div>
+      <div class="p">${h.คำทำนาย}</div></div>`).join("");
+  // yogas (เกณฑ์)
+  const yogas=N.เกณฑ์||[];
+  document.getElementById("yogas").innerHTML = yogas.length ? yogas.map(k=>`
+    <div class="hl"><div class="h"><span class="chip ดี">${k.เกณฑ์}</span>
+      <span class="t">${k.ดาว.join(" · ")}${k.รูปแบบ?" · "+k.รูปแบบ:""}</span></div>
+      <div class="p" style="margin-top:6px">${k.ความหมาย}</div></div>`).join("")
+    : '<div class="hl"><div class="p">ไม่พบเกณฑ์โยคเด่นตามกฎคลาสสิก</div></div>';
+  // transit forecast
+  const F=N.พยากรณ์ดาวจร;
+  if(F){
+    const rank=["#1","#2","#3"], chip=t=>t==="ดี"?"ดี":t==="ระวัง"?"ระวัง":"กลาง";
+    document.getElementById("forecastTop").innerHTML = F.เด่นที่สุด.map((e,i)=>`
+      <div class="hl"><div class="h"><span class="chip ${chip(e.โทน)}">${rank[i]} ${e.โทน}</span>
+        <span class="t">${e.หัวข้อ}</span></div>
+        <div class="flow">${e.ด้าน} · ${e.ระยะ}</div>
+        <div class="p">${e.คำทำนาย}</div></div>`).join("") || '<div class="hl"><div class="p">ช่วงนี้ไม่มีดาวจรกระทบเด่น</div></div>';
+    const line=e=>`<div style="display:flex;gap:8px;font-size:12.5px;margin:6px 0;color:#4A3F2A"><b style="color:${e.โทน==='ดี'?'var(--good)':'var(--bad)'}">•</b><span>${e.หัวข้อ} — ${e.ด้าน}</span></div>`;
+    document.getElementById("forecastLists").innerHTML =
+      (F.ในด้านดี.length?`<div style="margin-top:14px;font-weight:700;color:var(--good);font-size:13px">✨ ในด้านที่ดี</div>`+F.ในด้านดี.map(line).join(""):"")
+     +(F.ต้องระวัง.length?`<div style="margin-top:14px;font-weight:700;color:var(--bad);font-size:13px">⚠️ สิ่งที่ต้องระวัง</div>`+F.ต้องระวัง.map(line).join(""):"");
+  }
+  // aspects
+  document.getElementById("aspects").innerHTML = N.aspects.map(a=>{
+    const cls=a.ผล==="คุณ"?"good":(a.ผล==="โทษ"||a.ผล==="ปะทะ")?"bad":"neu";
+    return `<span class="a ${cls}">${a.a}–${a.b} · ${a.มุม} ${a.องศา}°</span>`;}).join("")||'<span style="color:var(--muted)">ไม่มีมุมเด่น</span>';
+  // bhava
+  document.getElementById("bhavaGrid").innerHTML = N.ภพ.map(b=>
+    `<div class="b"><div class="t">${b.เรือน} ${b.ชื่อ} · ${b.ราศี}</div><div class="s">${b.ดาวสถิต.join("·")||"<span style='color:#B0A488'>ว่าง</span>"}</div></div>`).join("");
+  document.getElementById("legend").innerHTML = N.ดาว.map(p=>`<span><i style="background:${p.สี}"></i>${p.เลข} ${p.ดาว}</span>`).join("");
+}
+
+function setMode(m){ MODE=m;
+  document.getElementById("btnD1").classList.toggle("on",m==="d1");
+  document.getElementById("btnD9").classList.toggle("on",m==="d9");
+  document.getElementById("transitToggleRow").style.display = m==="d1"?"flex":"none";
+  drawWheel();
+}
+function toggleTransit(){ SHOW_TRANSIT=!SHOW_TRANSIT; document.getElementById("transitTgl").classList.toggle("on",SHOW_TRANSIT); drawWheel(); }
+
+function drawWheel(){
+  const N=DATA, cx=220,cy=220;
+  const rNum=207, rDash=195, rMain=176, rSign=152, rTick=133, rPl=134, rBh=104, rBhG=88, rCart=70;
+  const svg=document.getElementById("wheel"); svg.innerHTML="";
+  const NS="http://www.w3.org/2000/svg";
+  const mk=(t,a,txt)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;return e;};
+  const P=(L,r)=>{const a=(-90-L)*Math.PI/180;return [cx+r*Math.cos(a), cy+r*Math.sin(a)];}; // เมษ0°=บน, ทวนเข็ม
+  const isD9=MODE==="d9";
+  const ascIdx=isD9?RASI.indexOf(N.ลัคนา.นวางค์):N.ลัคนา.ราศีidx;
+  const ascL=isD9?ascIdx*30+15:(N.ลัคนา.ราศีidx*30+N.ลัคนา.องศาเต็ม+N.ลัคนา.ลิปดา/60);
+  const planets=N.ดาว.map(p=>({...p, L:isD9?p["นวางค์idx"]*30+15:p.longitude}));
+
+  // ---- พื้นกระดาษ + วงทอง ----
+  svg.appendChild(mk("rect",{x:0,y:0,width:440,height:440,fill:"#F4EAD0",rx:16}));
+  svg.appendChild(mk("circle",{cx,cy,r:rDash,fill:"none",stroke:"#C2A24A","stroke-width":1,"stroke-dasharray":"2 6",opacity:.7}));
+  svg.appendChild(mk("circle",{cx,cy,r:rMain,fill:"#FBF5E4",stroke:"#B08D2C","stroke-width":2.5}));
+  svg.appendChild(mk("circle",{cx,cy,r:rTick+7,fill:"none",stroke:"#DCC98F","stroke-width":1}));
+  svg.appendChild(mk("circle",{cx,cy,r:rBh+10,fill:"none",stroke:"#DCC98F","stroke-width":1}));
+  svg.appendChild(mk("circle",{cx,cy,r:rCart,fill:"#FBF5E4",stroke:"#B08D2C","stroke-width":2}));
+
+  for(let r=0;r<12;r++){
+    const startL=r*30, midL=r*30+15, isLag=r===ascIdx;
+    const houseIdx=((r-ascIdx)%12+12)%12;
+    // เส้นแบ่งราศี
+    const [x1,y1]=P(startL,rCart),[x2,y2]=P(startL,rMain);
+    svg.appendChild(mk("line",{x1,y1,x2,y2,stroke:"#DCC98F","stroke-width":1}));
+    // ไฮไลต์ราศีลัคนา
+    if(isLag){const pts=[];for(let a=0;a<=30;a+=3){const[px,py]=P(startL+a,rMain);pts.push(px+","+py);}
+      const [ix,iy]=P(midL,rCart);svg.appendChild(mk("polygon",{points:P(startL,rCart).join(",")+" "+pts.join(" ")+" "+P(startL+30,rCart).join(","),fill:"#F5E4B8",opacity:.55}));}
+    // ชื่อราศี
+    const [sx,sy]=P(midL,rSign);
+    svg.appendChild(mk("text",{x:sx,y:sy+5,"text-anchor":"middle","font-size":15,"font-weight":800,fill:"#7A1A1A","font-family":"Anuphan"},RASI[r]));
+    // เลของศา 1-6 (ทุก 5°)
+    for(let t=1;t<=6;t++){const [tx,ty]=P(startL+t*5-2.5,rTick);
+      svg.appendChild(mk("text",{x:tx,y:ty+3,"text-anchor":"middle","font-size":8,fill:"#B39B54","font-family":"Anuphan"},t));}
+    // ชื่อภพ + ธาตุ
+    const [bx,by]=P(midL,rBh);
+    svg.appendChild(mk("text",{x:bx,y:by+3,"text-anchor":"middle","font-size":10,"font-weight":600,fill:"#8A6A2E","font-family":"Anuphan"},BHAVA[houseIdx]));
+    const [gx,gy]=P(midL,rBhG);
+    svg.appendChild(mk("text",{x:gx,y:gy+4,"text-anchor":"middle","font-size":12,fill:"#B0552A","font-family":"Anuphan"},ELEM_GLYPH[r%4]));
+    // เลขเรือน วงนอก (เม็ดกลม)
+    const [hx,hy]=P(midL,rNum);
+    svg.appendChild(mk("circle",{cx:hx,cy:hy,r:11,fill:isLag?"#7A1A1A":"#FBF5E4",stroke:"#B08D2C","stroke-width":1.5}));
+    svg.appendChild(mk("text",{x:hx,y:hy+4,"text-anchor":"middle","font-size":11,"font-weight":800,fill:isLag?"#F5D28A":"#7A1A1A","font-family":"Anuphan"},houseIdx+1));
+  }
+
+  // ---- ลัคนา: เส้นประ + หมุด ----
+  const [lx1,ly1]=P(ascL,rCart),[lx2,ly2]=P(ascL,rMain);
+  svg.appendChild(mk("line",{x1:lx1,y1:ly1,x2:lx2,y2:ly2,stroke:"#B01A1A","stroke-width":2,"stroke-dasharray":"5 3"}));
+  const [alx,aly]=P(ascL,rCart+20);
+  svg.appendChild(mk("circle",{cx:alx,cy:aly,r:12,fill:"#FBF5E4",stroke:"#7A1A1A","stroke-width":2}));
+  svg.appendChild(mk("text",{x:alx,y:aly+5,"text-anchor":"middle","font-size":12,"font-weight":800,fill:"#7A1A1A","font-family":"Anuphan"},"ลั"));
+
+  // ---- คาร์ทูชกลาง ----
+  svg.appendChild(mk("text",{x:cx,y:cy-12,"text-anchor":"middle","font-size":16,"font-weight":800,fill:"#7A1A1A","font-family":"Anuphan"},N.ชื่อ));
+  svg.appendChild(mk("text",{x:cx,y:cy+5,"text-anchor":"middle","font-size":9,fill:"#8A6A2E","font-family":"Anuphan"},"28 ต.ค. 2541 · 08:26 น."));
+  svg.appendChild(mk("line",{x1:cx-34,y1:cy+13,x2:cx+34,y2:cy+13,stroke:"#DCC98F","stroke-width":1}));
+  svg.appendChild(mk("text",{x:cx,y:cy+27,"text-anchor":"middle","font-size":10.5,"font-weight":700,fill:"#7A1A1A","font-family":"Anuphan"},(isD9?"นวางค์ ":"ลัคนา ")+RASI[ascIdx]));
+
+  // ---- ดาวกำเนิด (ตามองศาจริง + กระจายรัศมีเมื่อชิด) ----
+  const sorted=[...planets].sort((a,b)=>a.L-b.L);
+  let prevL=-99,tier=0;
+  sorted.forEach(p=>{ if(p.L-prevL<7)tier++; else tier=0; prevL=p.L;
+    const [x,y]=P(p.L, rPl-tier*21);
+    svg.appendChild(mk("circle",{cx:x,cy:y,r:12,fill:p.สี,stroke:"#FBF5E4","stroke-width":2}));
+    if(p.วรโคตม)svg.appendChild(mk("circle",{cx:x,cy:y,r:14.5,fill:"none",stroke:"#B08D2C","stroke-width":1.4}));
+    svg.appendChild(mk("text",{x,y:y+4.5,"text-anchor":"middle","font-size":12,"font-weight":700,fill:"#fff","font-family":"Anuphan"},p.เลข));
+  });
+
+  // ---- ดาวจร (วงนอก · เม็ดกลวง) ----
+  if(!isD9 && SHOW_TRANSIT && N.ดาวจร_ตัวอย่าง){
+    const tr=[...N.ดาวจร_ตัวอย่าง].map(p=>({...p,L:p.ราศีidx*30+(p.องศา??15)})).sort((a,b)=>a.L-b.L);
+    let pv=-99,ti=0;
+    tr.forEach(p=>{ if(p.L-pv<8)ti++; else ti=0; pv=p.L;
+      const [x,y]=P(p.L, (rMain-11)-ti*15);
+      svg.appendChild(mk("circle",{cx:x,cy:y,r:8.5,fill:"#FBF5E4",stroke:p.สี,"stroke-width":2}));
+      svg.appendChild(mk("text",{x,y:y+3.5,"text-anchor":"middle","font-size":9,"font-weight":700,fill:p.สี,"font-family":"Anuphan"},p.เลข));
+    });
+  }
+}
+
+// ดึงดวงสด: engine API ก่อน (single source of truth) → fallback json ที่ precompute
+const primary = API_BASE ? API_BASE.replace(/\/$/,"")+"/astro-full" : "./astro-natal.json";
+fetch(primary).then(r=>{if(!r.ok)throw 0;return r.json();}).then(render)
+  .catch(()=>fetch("./astro-natal.json").then(r=>r.json()).then(render)
+    .catch(()=>{document.getElementById("birthLine").textContent="โหลดข้อมูลดวงไม่สำเร็จ";}));
+
+if(API_BASE) fetch(API_BASE.replace(/\/$/,"")+"/daily-invest").then(r=>r.json()).then(d=>{
+  const col=d.สรุป==="จังหวะดี"?"#34D399":d.สรุป==="ปานกลาง"?"#FBBF24":"#F87171",q=id=>document.getElementById(id);
+  document.getElementById("dailyCard").style.display="block";
+  q("dScore").textContent=d.คะแนน;q("dScore").style.color=col;q("dVerdict").textContent=d.สรุป;q("dVerdict").style.color=col;
+  q("dMeter").style.width=d.คะแนน+"%";q("dMeter").style.background=col;q("dAdvice").textContent=d.คำแนะนำ;
+  q("dReasons").innerHTML=(d.เหตุผล||[]).slice(0,4).map(t=>`<div class="r"><b style="color:${col}">•</b><span>${t}</span></div>`).join("");
+  if(d.ดาวจร&&DATA){ DATA.ดาวจร_ตัวอย่าง=d.ดาวจร; drawWheel(); } // ดาวจรสด แทน snapshot
+  aiSummary(d);
+}).catch(()=>{});
+
+function showAI(text, isAI){ const s=document.getElementById("aiSum");
+  document.getElementById("aiLbl").textContent = isAI?"🤖 AI สรุป":"📋 สรุปวันนี้";
+  document.getElementById("aiSumText").textContent = text; s.style.display="block"; }
+function aiFallback(d){ // ไม่มี AI สด → สรุปแบบ template
+  const r=(d.เหตุผล||[]); const bits=r.slice(0,2).map(x=>x.split(" — ")[0]).join(" · ");
+  showAI(`ดวงลงทุนวันนี้ ${d.คะแนน}/100 (${d.สรุป}) — ${d.คำแนะนำ}${bits?" · "+bits:""}`, false); }
+function aiSummary(d){
+  const payload={ score:d.คะแนน, verdict:d.สรุป, advice:d.คำแนะนำ, moonRasi:d["ราศีจันทร์วันนี้"],
+    reasons:d.เหตุผล||[],
+    forecast:((DATA&&DATA.พยากรณ์ดาวจร&&DATA.พยากรณ์ดาวจร.เด่นที่สุด)||[]).map(e=>`${e.หัวข้อ} (${e.ด้าน})`),
+    yogas:((DATA&&DATA.เกณฑ์)||[]).map(k=>`${k.เกณฑ์} ${k.ดาว.join("-")}`) };
+  fetch("/api/astro-summary",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(payload)})
+    .then(r=>r.ok?r.json():Promise.reject()).then(s=>s.summary?showAI(s.summary,true):aiFallback(d))
+    .catch(()=>aiFallback(d));
+}
+document.getElementById("backCta").href="https://liff.line.me/2010317620-52h5kCM1";
+</script>
+</body>
+</html>
