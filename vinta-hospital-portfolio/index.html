@@ -725,6 +725,234 @@
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
     }
+
+    /* ============================================================
+       UI / Design Showcase (scoped .ui-*) — Product Designer craft
+       ============================================================ */
+
+    /* --- Block A: Design Tokens --- */
+    .ui-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+    .ui-panel-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .ui-panel-head .ui-kicker {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .ui-panel-head .ui-note {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+    .ui-swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .ui-swatch { text-align: left; }
+    .ui-swatch .chip {
+      height: 52px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+    }
+    .ui-swatch .name {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 7px;
+      line-height: 1.3;
+    }
+    .ui-swatch .hex {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      text-transform: uppercase;
+    }
+    .ui-type-scale { display: flex; flex-direction: column; gap: 14px; }
+    .ui-type-row {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed var(--border);
+    }
+    .ui-type-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .ui-type-sample { color: var(--text); flex: 1; min-width: 200px; }
+    .ui-type-sample.display { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: 1.75rem; line-height: 1.28; letter-spacing: 0.01em; }
+    .ui-type-sample.body { font-size: 1rem; line-height: 1.6; color: var(--text-secondary); letter-spacing: 0.01em; }
+    .ui-type-sample.caption { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+    .ui-type-meta {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      white-space: nowrap;
+    }
+    .ui-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ui-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 8px;
+      font-size: 0.74rem;
+      font-weight: 600;
+    }
+    .ui-chip .val { font-family: 'SF Mono', ui-monospace, Menlo, monospace; opacity: 0.85; font-weight: 500; }
+
+    /* --- Block B: Screen Showcase --- */
+    .ui-screens {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding: 4px 4px 14px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .ui-screens::-webkit-scrollbar { height: 6px; }
+    .ui-screens::-webkit-scrollbar-thumb { background: var(--border); border-radius: 50px; }
+    .ui-frame { scroll-snap-align: start; flex: 0 0 auto; display: flex; flex-direction: column; }
+    .ui-screens { align-items: stretch; }
+    .ui-frame > .ui-win, .ui-frame > .ui-phone { flex: 1 0 auto; }
+    .ui-cap {
+      font-size: 0.74rem;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      text-align: center;
+      line-height: 1.45;
+    }
+    .ui-cap b { color: var(--accent-dark); font-weight: 600; }
+
+    /* browser window frame */
+    .ui-win {
+      width: 340px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 8px 26px rgba(0,0,0,0.10);
+      background: #fff;
+    }
+    .ui-win-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 12px;
+      background: #f5f4f2;
+      border-bottom: 1px solid var(--border);
+    }
+    .ui-win-bar .d { width: 9px; height: 9px; border-radius: 50%; }
+    .ui-win-url {
+      flex: 1;
+      text-align: center;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 2px 10px;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* VINTA real palette (screen content only) */
+    .ui-vinta-forest { background: #4A342D; color: #F3ECE5; }
+    .ui-vinta-ivory  { background: #FAF6F1; color: #35231F; }
+
+    /* Screen 1 — homepage */
+    .ui-home { padding: 26px 22px 30px; }
+    .ui-home .eb { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #6ec6bf; }
+    .ui-home h4 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-weight: 400;
+      font-size: 1.5rem;
+      line-height: 1.32;
+      color: #F3ECE5;
+      margin: 12px 0 12px;
+    }
+    .ui-home p { font-size: 0.78rem; line-height: 1.6; color: rgba(243,236,229,0.72); margin-bottom: 18px; }
+    .ui-home .btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .ui-btn {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 9px 16px; border-radius: 2px;
+    }
+    .ui-btn.line { border: 1px solid rgba(243,236,229,0.6); color: #F3ECE5; }
+    .ui-btn.fill { background: #F3ECE5; color: #4A342D; }
+
+    /* Screen 2 — mobile application form (phone) */
+    .ui-phone {
+      width: 264px;
+      border: 9px solid #201D1D;
+      border-radius: 34px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+      background: #FAF6F1;
+    }
+    .ui-phone .notch { height: 22px; background: #201D1D; position: relative; }
+    .ui-phone .notch::after {
+      content: ''; position: absolute; left: 50%; top: 6px; transform: translateX(-50%);
+      width: 74px; height: 6px; border-radius: 50px; background: #35231F;
+    }
+    .ui-form { padding: 14px 14px 16px; }
+    .ui-form .fhead { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .ui-form .fhead .ic { width: 26px; height: 26px; border-radius: 8px; background: #E9F3F1; color: #1d7d77; display: flex; align-items: center; justify-content: center; font-size: 0.82rem; }
+    .ui-form .fhead .t { font-size: 0.86rem; font-weight: 700; color: #35231F; }
+    .ui-steps { display: flex; gap: 5px; margin: 10px 0 14px; }
+    .ui-steps i { height: 4px; border-radius: 50px; flex: 1; background: #E4DAD0; }
+    .ui-steps i.on { background: #259B94; }
+    .ui-steps i.done { background: #AF9C84; }
+    .ui-fld { margin-bottom: 11px; }
+    .ui-fld label { display: block; font-size: 0.68rem; font-weight: 500; color: rgba(53,35,31,0.75); margin-bottom: 4px; }
+    .ui-fld .box {
+      border: 1px solid rgba(96,64,54,0.15); background: #fff; border-radius: 12px;
+      padding: 9px 11px; font-size: 0.74rem; color: #35231F; min-height: 38px; display: flex; align-items: center;
+    }
+    .ui-fld .box.ph { color: rgba(53,35,31,0.45); }
+    .ui-fld .box.focus { border-color: #AF9C84; box-shadow: 0 0 0 3px rgba(175,156,132,0.25); }
+    .ui-fld .box.err { border-color: #b4452f; box-shadow: 0 0 0 3px rgba(180,69,47,0.18); }
+    .ui-fld .msg { font-size: 0.62rem; color: #b4452f; margin-top: 4px; }
+    .ui-state-tag { float: right; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); }
+    .ui-wheel {
+      margin-top: 4px; border: 1px solid rgba(96,64,54,0.12); border-radius: 12px; background: #fff; overflow: hidden;
+    }
+    .ui-wheel .wt { display: flex; font-size: 0.6rem; color: rgba(53,35,31,0.55); border-bottom: 1px solid rgba(96,64,54,0.1); }
+    .ui-wheel .wt span { flex: 1; text-align: center; padding: 5px 0; }
+    .ui-wheel .wt span.on { color: #35231F; font-weight: 700; border-bottom: 2px solid #259B94; }
+    .ui-wheel .wv { display: flex; }
+    .ui-wheel .wv div { flex: 1; text-align: center; padding: 4px 0; font-size: 0.66rem; }
+    .ui-wheel .wv .a { color: rgba(53,35,31,0.35); }
+    .ui-wheel .wv .b { color: #35231F; font-weight: 700; background: rgba(175,156,132,0.14); }
+    .ui-fsubmit { margin-top: 6px; text-align: center; background: #4A342D; color: #F3ECE5; border-radius: 12px; padding: 10px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; }
+
+    /* Screen 3 — generated PDF cover */
+    .ui-pdf { padding: 20px 18px; background: #fff; }
+    .ui-pdf .pbrand { display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 2px solid #4A342D; }
+    .ui-pdf .pmark { width: 28px; height: 28px; border-radius: 7px; background: #4A342D; color: #F3ECE5; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
+    .ui-pdf .pbrand .pn { font-family: Georgia, serif; font-size: 0.92rem; color: #35231F; }
+    .ui-pdf .pbrand .pn small { display: block; font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: #259B94; font-family: var(--font); }
+    .ui-pdf h4 { font-family: Georgia, serif; font-weight: 400; font-size: 1.05rem; color: #35231F; margin: 14px 0 12px; }
+    .ui-pdf .prow { display: flex; font-size: 0.68rem; padding: 5px 0; border-bottom: 1px dashed rgba(96,64,54,0.16); }
+    .ui-pdf .prow .k { width: 92px; color: rgba(53,35,31,0.55); flex: 0 0 auto; }
+    .ui-pdf .prow .v { color: #35231F; font-weight: 500; }
+    .ui-pdf .pfoot { margin-top: 14px; font-size: 0.6rem; color: rgba(53,35,31,0.5); text-align: center; letter-spacing: 0.02em; }
+
+    @media (max-width: 680px) {
+      .ui-swatch-grid { grid-template-columns: repeat(3, 1fr); }
+      .ui-type-sample.display { font-size: 1.45rem; }
+    }
   </style>
 </head>
 <body>
@@ -1034,6 +1262,205 @@
         <div class="mk-foot">
           <span class="mk-pill">ส่งใบสมัคร →</span> กรอกฟอร์มหลายส่วน → ระบบสร้าง PDF ใบสมัคร ส่งเข้าเมลทีม HR อัตโนมัติ
         </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== UI / Design Showcase (Prototype · UI Craft) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype &middot; UI Craft</span>
+      <h2>งานออกแบบ UI &amp; Design System</h2>
+      <p>ในมุม Product Designer: แปลงโจทย์ "โรงพยาบาลมะเร็งก่อนเปิด" เป็นระบบดีไซน์ที่สงบ มีศักดิ์ศรี และรองรับฟอร์มสมัครงาน 30+ ฟิลด์ 2 ภาษาได้จริง</p>
+    </section>
+
+    <!-- Block A: Design Tokens -->
+    <div class="ui-panel">
+      <div class="ui-panel-head">
+        <span class="ui-kicker">Design Tokens</span>
+        <span class="ui-note">แกะจากโลโก้จริง · VINTA Brand Book v1.0</span>
+      </div>
+      <div class="ui-swatch-grid">
+        <div class="ui-swatch">
+          <div class="chip" style="background:#259B94"></div>
+          <div class="name">Healing Green</div>
+          <div class="hex">#259B94</div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#AF9C84"></div>
+          <div class="name">Humility Gold</div>
+          <div class="hex">#AF9C84</div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#7FA6A2"></div>
+          <div class="name">Quiet Water</div>
+          <div class="hex">#7FA6A2</div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#4A342D"></div>
+          <div class="name">Deep Bark</div>
+          <div class="hex">#4A342D</div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#604036"></div>
+          <div class="name">Vinta Brown</div>
+          <div class="hex">#604036</div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#F3ECE5"></div>
+          <div class="name">Hope Beige</div>
+          <div class="hex">#F3ECE5</div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#D9D1C8"></div>
+          <div class="name">Warm Mist</div>
+          <div class="hex">#D9D1C8</div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#35231F"></div>
+          <div class="name">Ink (text)</div>
+          <div class="hex">#35231F</div>
+        </div>
+      </div>
+
+      <div style="height:1px; background:var(--border); margin:20px 0;"></div>
+
+      <div class="ui-type-scale">
+        <div class="ui-type-row">
+          <span class="ui-type-sample display">การดูแลที่เริ่มจากคุณ ไม่ใช่จากโรค</span>
+          <span class="ui-type-meta">Display · Marcellus / Anuphan · 300</span>
+        </div>
+        <div class="ui-type-row">
+          <span class="ui-type-sample body">เนื้อความภาษาไทยใช้ฟอนต์มีหัวเพื่อการอ่านต่อเนื่อง คุมโทนอบอุ่นและชัดเจน</span>
+          <span class="ui-type-meta">Body · Garuda / Acumin · 400 · 1.06rem</span>
+        </div>
+        <div class="ui-type-row">
+          <span class="ui-type-sample caption">Careers · ร่วมงานกับเรา</span>
+          <span class="ui-type-meta">Eyebrow · 0.825rem · tracking 0.14em</span>
+        </div>
+      </div>
+
+      <div style="height:1px; background:var(--border); margin:20px 0;"></div>
+
+      <div class="ui-chip-row">
+        <span class="ui-chip">radius การ์ด <span class="val">20px</span></span>
+        <span class="ui-chip">radius ฟิลด์ <span class="val">12px</span></span>
+        <span class="ui-chip">container <span class="val">90rem</span></span>
+        <span class="ui-chip">heading tracking <span class="val">0.14em</span></span>
+        <span class="ui-chip">heading weight <span class="val">300</span></span>
+        <span class="ui-chip">shadow <span class="val">card</span></span>
+      </div>
+    </div>
+
+    <!-- Block B: Screen Showcase -->
+    <div class="ui-screens">
+      <!-- Screen 1: Pre-opening homepage -->
+      <div class="ui-frame">
+        <div class="ui-win">
+          <div class="ui-win-bar">
+            <span class="d" style="background:#f87171"></span>
+            <span class="d" style="background:#fbbf24"></span>
+            <span class="d" style="background:#34d399"></span>
+            <span class="ui-win-url">vinta &middot; หน้าแรก</span>
+          </div>
+          <div class="ui-home ui-vinta-forest">
+            <span class="eb">Pre-opening &middot; เปิดเร็ว ๆ นี้</span>
+            <h4>เป็นมะเร็ง ไม่ได้แปลว่า<br>ต้องเผชิญเรื่องนี้คนเดียว</h4>
+            <p>ตั้งแต่วันแรกที่รู้ผล จนถึงวันที่มีแผนการดูแลที่ชัดเจน VINTA อยู่ในทุกขั้นตอนกับคุณ</p>
+            <div class="btns">
+              <span class="ui-btn line">คุยกับทีมดูแล</span>
+              <span class="ui-btn fill">ส่งข้อมูลผู้ป่วย</span>
+            </div>
+          </div>
+        </div>
+        <p class="ui-cap"><b>Pre-opening Homepage</b><br>โทนสงบ พื้นเข้ม heading serif น้ำหนักเบา CTA ไม่กดดัน</p>
+      </div>
+
+      <!-- Screen 2: Mobile application form -->
+      <div class="ui-frame">
+        <div class="ui-phone">
+          <div class="notch"></div>
+          <div class="ui-form">
+            <div class="fhead">
+              <span class="ic">&#128100;</span>
+              <span class="t">ข้อมูลส่วนตัว</span>
+            </div>
+            <div class="ui-steps">
+              <i class="done"></i><i class="done"></i><i class="on"></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="ui-fld">
+              <label>ชื่อ *</label>
+              <div class="box">ศิริพร</div>
+            </div>
+            <div class="ui-fld">
+              <label>อีเมล * <span class="ui-state-tag">error</span></label>
+              <div class="box err">siriporn.mail</div>
+              <div class="msg">รูปแบบอีเมลไม่ถูกต้อง</div>
+            </div>
+            <div class="ui-fld">
+              <label>วันเกิด <span class="ui-state-tag">focus</span></label>
+              <div class="box focus">14 มีนาคม 2535</div>
+              <div class="ui-wheel">
+                <div class="wt"><span>ปี (พ.ศ.)</span><span class="on">เดือน</span><span>วัน</span></div>
+                <div class="wv">
+                  <div class="a">กุมภาพันธ์</div><div class="b">มีนาคม</div><div class="a">เมษายน</div>
+                </div>
+              </div>
+            </div>
+            <div class="ui-fld">
+              <label>สัญชาติ</label>
+              <div class="box ph">ค้นหาสัญชาติ…</div>
+            </div>
+            <div class="ui-fsubmit">ส่งใบสมัคร</div>
+          </div>
+        </div>
+        <p class="ui-cap"><b>Application Form (มือถือ)</b><br>bottom-sheet + date-wheel · states: focus / error / empty</p>
+      </div>
+
+      <!-- Screen 3: Auto-generated PDF -->
+      <div class="ui-frame">
+        <div class="ui-win">
+          <div class="ui-win-bar">
+            <span class="d" style="background:#f87171"></span>
+            <span class="d" style="background:#fbbf24"></span>
+            <span class="d" style="background:#34d399"></span>
+            <span class="ui-win-url">application-cover.pdf</span>
+          </div>
+          <div class="ui-pdf">
+            <div class="pbrand">
+              <span class="pmark">V</span>
+              <span class="pn">VINTA<small>Specialized Cancer Hospital</small></span>
+            </div>
+            <h4>ใบสมัครงาน — อายุรแพทย์มะเร็งวิทยา</h4>
+            <div class="prow"><span class="k">ชื่อ–สกุล</span><span class="v">นพ. ศิริพร ใจดี (ตัวอย่าง)</span></div>
+            <div class="prow"><span class="k">ฝ่าย</span><span class="v">ฝ่ายการแพทย์ · เต็มเวลา</span></div>
+            <div class="prow"><span class="k">ประสบการณ์</span><span class="v">8 ปี · เงินเดือนที่คาดหวัง —</span></div>
+            <div class="prow"><span class="k">ใบประกอบฯ</span><span class="v">ว. XXXXX (ตัวอย่าง)</span></div>
+            <div class="prow"><span class="k">แนบ</span><span class="v">เรซูเม่ + รูปถ่าย (merge แล้ว)</span></div>
+            <div class="pfoot">สร้างอัตโนมัติด้วย headless Chrome · ฟอนต์ไทยเป๊ะ · ส่งเข้าเมล HR</div>
+          </div>
+        </div>
+        <p class="ui-cap"><b>Auto-generated PDF</b><br>หน้าปกไทยจาก Chrome จริง → merge เรซูเม่เป็นไฟล์เดียว</p>
+      </div>
+    </div>
+
+    <!-- Block C: UI Decision Cards -->
+    <div class="ui-decisions" style="margin-top:24px;">
+      <div class="learning-card" style="border-left:3px solid var(--accent);">
+        <strong>Mobile-first: ฟอร์ม 30+ ฟิลด์ ไม่ให้ล้นจอ (393 → 768 → 1440)</strong>
+        <p>บนมือถือ ฟอร์มยาว = คนเลิกกรอกกลางคัน จึงแตกเป็น section stepper + ใช้ <strong>bottom-sheet</strong> สำหรับตัวเลือก, <strong>date-wheel</strong> เลือกวันเกิด (พ.ศ.) และครอปรูปในเบราว์เซอร์ — ผู้สมัครเห็นทีละส่วน ไม่เจอกำแพงช่องกรอก ส่วนบน ≥768 ค่อยขยายเป็น popover/2 คอลัมน์</p>
+      </div>
+      <div class="learning-card" style="border-left:3px solid var(--accent);">
+        <strong>Component states: บอก error ตอนที่ควรบอก ไม่ใช่ระหว่างพิมพ์</strong>
+        <p>ทุกฟิลด์มี state ครบ — default / focus (ring ทอง <code>#AF9C84</code>) / invalid (แดง <code>#b4452f</code>) แต่ใช้ <code>:not(:placeholder-shown):invalid</code> ให้ error โผล่<strong>หลังผู้ใช้กรอกแล้วออกจากช่อง</strong> ไม่ใช่ทันทีที่เริ่มพิมพ์ — ลดความรู้สึกโดนตำหนิ พร้อมข้อความบอกวิธีแก้เป็นภาษาไทย</p>
+      </div>
+      <div class="learning-card" style="border-left:3px solid var(--accent);">
+        <strong>Accessibility &amp; แบรนด์: ลดความกลัว ไม่ใช่เพิ่ม</strong>
+        <p>จงใจ<strong>ไม่ใช้กากบาทแดง/ภาษาสู้รบ</strong> — ใช้ Healing Green เป็น accent เงียบ ๆ ไม่ใช่สีเตือนภัย, คุม contrast ให้ผ่าน AA บนพื้นเบจ, touch target ≥44px, <code>:focus-visible</code> เส้นเขียว, และ motion แบบ "ลมหายใจ" ที่เคารพ <code>prefers-reduced-motion</code></p>
+      </div>
+      <div class="learning-card" style="border-left:3px solid var(--accent);">
+        <strong>Typography 2 ภาษา: เลือกฟอนต์ตามหน้าที่</strong>
+        <p>ไทยใช้ 2 ฟอนต์คนละงาน — <strong>Anuphan</strong> (ไม่มีหัว เข้ากับโลโก้) สำหรับ heading/display, <strong>Garuda</strong> (มีหัว) สำหรับ body ให้อ่านต่อเนื่อง; อังกฤษใช้ Marcellus (serif) คู่กัน · เผื่อ <code>line-height 1.28</code> ให้สระ/วรรณยุกต์ไทย · แยกข้อความออกจาก layout ให้ทั้ง 2 ภาษาไม่หลุดจากกัน</p>
       </div>
     </div>
 

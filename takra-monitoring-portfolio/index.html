@@ -802,7 +802,7 @@
         AI Research &middot; Computer Vision &middot; Real-time
       </div>
       <h1>Takra AI Monitoring<br><span class="accent">อ่านตัวตน–อารมณ์–engagement ของโฮสต์ไลฟ์คอมเมิร์ซ แบบ real-time</span></h1>
-      <p>งานวิจัยภายใน (R&amp;D prototype) ที่ประกอบ 4 โมเดล Computer Vision เข้าเป็นไปป์ไลน์เดียว — จับใบหน้าจากไลฟ์ (TikTok Live / Facebook Live) → รู้จักตัวตน → อ่านอารมณ์ 7 คลาส → วัด engagement (ยิ้ม/พูด/มองกล้อง) → สรุปเป็น KPI สดและ session report ให้ทีมดูภาพรวมได้โดยไม่ต้องนั่งดูวิดีโอย้อนหลังเอง</p>
+      <p>งานวิจัยภายใน (R&amp;D prototype) ที่ประกอบ 4 โมเดล Computer Vision เข้าเป็นไปป์ไลน์เดียว — จับใบหน้าจากไลฟ์ (แพลตฟอร์มไลฟ์คอมเมิร์ซ) → รู้จักตัวตน → อ่านอารมณ์ 7 คลาส → วัด engagement (ยิ้ม/พูด/มองกล้อง) → สรุปเป็น KPI สดและ session report ให้ทีมดูภาพรวมได้โดยไม่ต้องนั่งดูวิดีโอย้อนหลังเอง</p>
       <div class="hero-tags">
         <span class="hero-tag">Electron + React</span>
         <span class="hero-tag">FastAPI + WebSocket</span>
@@ -948,7 +948,7 @@
     <div class="arch-diagram">
       <div class="arch-layers">
         <div class="arch-layer users">
-          แหล่งวิดีโอไลฟ์ — TikTok Live / Facebook Live
+          แหล่งวิดีโอไลฟ์ — แพลตฟอร์มไลฟ์คอมเมิร์ซ
           <div class="arch-sub">
             <span>Embedded Chromium</span>
             <span>Screen frame (JPEG)</span>
@@ -1030,7 +1030,7 @@
       <div class="module-card">
         <span class="emoji">&#128172;</span>
         <h3>Comment &amp; Gift Scraper</h3>
-        <p>ดึง comment / gift / like / viewer count จากไลฟ์ (ผ่าน tiktok-live-connector) มาแสดงคู่กับ metric อารมณ์</p>
+        <p>ดึง comment / gift / like / viewer count จากไลฟ์ (ผ่าน live-comment connector) มาแสดงคู่กับ metric อารมณ์</p>
       </div>
       <div class="module-card">
         <span class="emoji">&#128200;</span>
@@ -1141,7 +1141,7 @@
         <span class="emoji">&#128421;&#65039;</span>
         <h3>จะแคปไลฟ์ + ดึง comment พร้อมกันยาก</h3>
         <p>อยากได้ทั้งภาพวิดีโอไลฟ์ (เพื่ออ่านหน้า) และ metadata ไลฟ์ (comment/gift/viewer) ในแอปเดียว โดยไม่พึ่ง API ที่เข้าถึงยาก</p>
-        <div class="highlight">แก้: ใช้ Electron WebContentsView ฝัง browser จริงเปิดไลฟ์ → แคปเฟรมส่งเข้าโมเดล + ต่อ tiktok-live-connector อ่าน event comment/gift/like/join แบบสด แล้ว position view ให้ทับ placeholder ของ React ตลอดเวลา</div>
+        <div class="highlight">แก้: ใช้ Electron WebContentsView ฝัง browser จริงเปิดไลฟ์ → แคปเฟรมส่งเข้าโมเดล + ต่อ live-comment connector อ่าน event comment/gift/like/join แบบสด แล้ว position view ให้ทับ placeholder ของ React ตลอดเวลา</div>
       </div>
 
       <div class="hack-card perf" data-label="Latency">

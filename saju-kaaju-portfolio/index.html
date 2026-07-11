@@ -709,6 +709,132 @@
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
     }
+
+    /* ===== UI / Design Showcase (Product Designer craft) — scoped .ui-* ===== */
+    .ui-block { margin-top: 26px; }
+    .ui-block-label {
+      font-size: 0.8rem; font-weight: 700; color: var(--accent-dark);
+      margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+    }
+    .ui-block-label::before {
+      content: ''; width: 18px; height: 2px; background: var(--accent); border-radius: 2px;
+    }
+
+    /* — Block A: Design Tokens — */
+    .ui-tokens {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 24px; display: grid; gap: 22px;
+    }
+    .ui-swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .ui-swatch .chip {
+      height: 46px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.06); margin-bottom: 6px;
+    }
+    .ui-swatch .nm { font-size: 0.74rem; font-weight: 600; color: var(--text); }
+    .ui-swatch .hex {
+      font-size: 0.7rem; color: var(--text-muted);
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+    .ui-type { display: grid; gap: 12px; border-top: 1px solid var(--border); padding-top: 20px; }
+    .ui-type-row { display: flex; align-items: baseline; gap: 12px; }
+    .ui-type-row .meta {
+      font-size: 0.66rem; color: var(--text-muted); min-width: 96px; flex-shrink: 0;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+    .ui-type-row .t1 { font-size: 1.6rem; font-weight: 700; line-height: 1.2; }
+    .ui-type-row .t2 { font-size: 1rem; font-weight: 400; color: var(--text-secondary); }
+    .ui-type-row .t3 { font-size: 0.78rem; color: var(--text-muted); }
+    .ui-scale { border-top: 1px solid var(--border); padding-top: 20px; }
+    .ui-scale-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .ui-scale-row:last-child { margin-bottom: 0; }
+    .ui-scale-row .grp {
+      font-size: 0.66rem; color: var(--text-muted); min-width: 62px;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+    .ui-tk {
+      display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;
+      background: var(--accent-light); color: var(--accent-dark);
+      border-radius: 50px; font-size: 0.74rem; font-weight: 600;
+    }
+    .ui-tk .box { background: var(--accent); flex-shrink: 0; }
+
+    /* — Block B: Screen Showcase — */
+    .ui-screens {
+      display: flex; gap: 16px; overflow-x: auto; padding: 6px 2px 14px;
+      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    }
+    .ui-phone-wrap { flex: 0 0 auto; scroll-snap-align: center; }
+    .ui-phone {
+      width: 262px; border-radius: 30px; background: #1c1917; padding: 8px;
+      box-shadow: 0 12px 34px rgba(0,0,0,0.18);
+    }
+    .ui-phone-screen {
+      background: var(--surface); border-radius: 23px; overflow: hidden;
+      height: 470px; display: flex; flex-direction: column;
+    }
+    .ui-scr-head { padding: 14px 15px 10px; border-bottom: 1px solid var(--border); }
+    .ui-scr-head .st {
+      font-size: 0.62rem; color: var(--accent); font-weight: 700;
+      letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .ui-scr-head .ti { font-size: 0.98rem; font-weight: 700; margin-top: 2px; }
+    .ui-scr-body { padding: 14px 15px; flex: 1; overflow: hidden; }
+    .ui-phone-label {
+      text-align: center; font-size: 0.78rem; color: var(--text-secondary);
+      margin-top: 12px; font-weight: 600;
+    }
+    /* onboarding */
+    .ui-field { border: 1px solid var(--border); border-radius: 12px; padding: 9px 12px; margin-bottom: 10px; }
+    .ui-field .fl { font-size: 0.64rem; color: var(--text-muted); }
+    .ui-field .fv { font-size: 0.9rem; font-weight: 600; }
+    .ui-hint { font-size: 0.7rem; color: var(--text-muted); margin: 4px 2px 12px; line-height: 1.5; }
+    .ui-cta { background: var(--accent); color: #fff; text-align: center; border-radius: 12px; padding: 11px; font-size: 0.86rem; font-weight: 700; }
+    /* pillars + element balance */
+    .ui-pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 16px; }
+    .ui-pillar { text-align: center; background: var(--accent-light); border-radius: 10px; padding: 9px 3px; }
+    .ui-pillar .cap { font-size: 0.6rem; color: var(--accent-dark); opacity: 0.75; }
+    .ui-pillar .gz { font-size: 1.05rem; font-weight: 700; color: var(--accent-dark); line-height: 1.35; }
+    .ui-el { display: grid; grid-template-columns: 52px 1fr 20px; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .ui-el .lb { font-size: 0.74rem; font-weight: 600; }
+    .ui-el .track { height: 8px; background: var(--accent-light); border-radius: 50px; overflow: hidden; }
+    .ui-el .fill { height: 100%; background: linear-gradient(90deg, var(--accent), #a78bfa); border-radius: 50px; }
+    .ui-el .vv { font-size: 0.72rem; color: var(--text-muted); text-align: right; font-variant-numeric: tabular-nums; }
+    /* calendar */
+    .ui-cal-wk { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 4px; }
+    .ui-cal-wk span { text-align: center; font-size: 0.56rem; color: var(--text-muted); }
+    .ui-cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 14px; }
+    .ui-cal .d {
+      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+      font-size: 0.64rem; border-radius: 7px; background: var(--bg); color: var(--text-secondary);
+    }
+    .ui-cal .d.good { background: var(--emerald-light); color: var(--emerald-dark); font-weight: 700; }
+    .ui-cal .d.warn { background: var(--orange-light); color: var(--orange); font-weight: 700; }
+    .ui-cal .d.today { background: var(--accent); color: #fff; font-weight: 700; }
+    .ui-day-card { background: var(--accent-light); border-radius: 12px; padding: 12px 13px; }
+    .ui-day-card .dh { font-size: 0.8rem; font-weight: 700; color: var(--accent-dark); margin-bottom: 3px; }
+    .ui-day-card .dp { font-size: 0.75rem; color: var(--accent-dark); opacity: 0.85; line-height: 1.5; }
+    .ui-day-chips { display: flex; gap: 6px; margin-top: 9px; }
+    .ui-day-chips span { font-size: 0.66rem; font-weight: 600; padding: 2px 9px; border-radius: 50px; }
+    .ui-day-chips .g { background: var(--emerald-light); color: var(--emerald-dark); }
+    .ui-day-chips .w { background: var(--orange-light); color: var(--orange); }
+
+    /* — Block C: UI Decision Cards — */
+    .ui-decisions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 8px; }
+    .ui-dcard {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px; border-top: 3px solid var(--accent);
+    }
+    .ui-dcard .ic { font-size: 1.4rem; display: block; margin-bottom: 8px; }
+    .ui-dcard h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .ui-dcard p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; }
+    .ui-dcard .why {
+      display: block; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border);
+      font-size: 0.78rem; color: var(--accent-dark); font-weight: 600;
+    }
+
+    @media (max-width: 680px) {
+      .ui-decisions { grid-template-columns: 1fr; }
+      .ui-swatches { gap: 8px; }
+    }
   </style>
 </head>
 <body>
@@ -1015,6 +1141,162 @@
         <span class="saju-starter">ความรัก</span>
         <span class="saju-starter">เงิน</span>
         <span class="saju-starter">ปีนี้</span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== UI / Design Showcase (Product Designer craft) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype &middot; UI Craft</span>
+      <h2>งานออกแบบ UI &amp; Design System</h2>
+      <p>มองแปะก่าจู้ในมุม Product Designer — ระบบ token, หน้าจอจริงจาก flow, และเหตุผลเบื้องหลังทุกการตัดสินใจด้าน UX</p>
+    </section>
+
+    <!-- Block A — Design Tokens -->
+    <div class="ui-block">
+      <div class="ui-block-label">Design Tokens — ออกแบบเป็นระบบ</div>
+      <div class="ui-tokens">
+        <div class="ui-swatches">
+          <div class="ui-swatch"><div class="chip" style="background:#6d28d9"></div><div class="nm">accent</div><div class="hex">#6D28D9</div></div>
+          <div class="ui-swatch"><div class="chip" style="background:#4c1d95"></div><div class="nm">accent-dark</div><div class="hex">#4C1D95</div></div>
+          <div class="ui-swatch"><div class="chip" style="background:#ede9fe"></div><div class="nm">accent-light</div><div class="hex">#EDE9FE</div></div>
+          <div class="ui-swatch"><div class="chip" style="background:#fdfbf6"></div><div class="nm">bg</div><div class="hex">#FDFBF6</div></div>
+          <div class="ui-swatch"><div class="chip" style="background:#1c1917"></div><div class="nm">text</div><div class="hex">#1C1917</div></div>
+          <div class="ui-swatch"><div class="chip" style="background:#e7e5e4"></div><div class="nm">border</div><div class="hex">#E7E5E4</div></div>
+        </div>
+        <div class="ui-type">
+          <div class="ui-type-row"><span class="meta">H1 · 28 / 700</span><span class="t1">แปะก่าจู้</span></div>
+          <div class="ui-type-row"><span class="meta">Body · 16 / 400</span><span class="t2">อาแปะเล่าดวงเป็นภาษาคน</span></div>
+          <div class="ui-type-row"><span class="meta">Caption · 12</span><span class="t3">IBM Plex Sans Thai · 300–700</span></div>
+        </div>
+        <div class="ui-scale">
+          <div class="ui-scale-row">
+            <span class="grp">spacing</span>
+            <span class="ui-tk"><span class="box" style="width:4px;height:4px"></span>4</span>
+            <span class="ui-tk"><span class="box" style="width:8px;height:8px"></span>8</span>
+            <span class="ui-tk"><span class="box" style="width:12px;height:12px"></span>12</span>
+            <span class="ui-tk"><span class="box" style="width:16px;height:16px"></span>16</span>
+            <span class="ui-tk"><span class="box" style="width:24px;height:24px"></span>24</span>
+          </div>
+          <div class="ui-scale-row">
+            <span class="grp">radius</span>
+            <span class="ui-tk"><span class="box" style="width:14px;height:14px;border-radius:6px"></span>12px</span>
+            <span class="ui-tk"><span class="box" style="width:14px;height:14px;border-radius:8px"></span>16px</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block B — Screen Showcase -->
+    <div class="ui-block">
+      <div class="ui-block-label">Screen Showcase — flow จริงบนมือถือ</div>
+      <div class="ui-screens">
+
+        <!-- Screen 1: Onboarding -->
+        <div class="ui-phone-wrap">
+          <div class="ui-phone">
+            <div class="ui-phone-screen">
+              <div class="ui-scr-head">
+                <div class="st">ขั้นที่ 1 &middot; Onboarding</div>
+                <div class="ti">บอกวันเกิดให้แปะดู</div>
+              </div>
+              <div class="ui-scr-body">
+                <div class="ui-field"><div class="fl">วันเกิด</div><div class="fv">14 มีนาคม 2537</div></div>
+                <div class="ui-field"><div class="fl">เวลาเกิด</div><div class="fv">23:20 น.</div></div>
+                <div class="ui-field"><div class="fl">เมืองเกิด</div><div class="fv">กรุงเทพฯ &middot; 100.50°E</div></div>
+                <p class="ui-hint">แปะขอไว้เปิดเสาให้เท่านั้น — เวลาเกิดยิ่งตรง เสายิ่งแม่น (ปรับ 진태양시 ตาม longitude)</p>
+                <div class="ui-cta">ให้แปะอ่านให้</div>
+              </div>
+            </div>
+          </div>
+          <div class="ui-phone-label">กรอกวันเกิด &middot; ขอข้อมูลพร้อมบอกเหตุผล</div>
+        </div>
+
+        <!-- Screen 2: ผังธาตุ -->
+        <div class="ui-phone-wrap">
+          <div class="ui-phone">
+            <div class="ui-phone-screen">
+              <div class="ui-scr-head">
+                <div class="st">โปรไฟล์ &middot; ผังสาจู</div>
+                <div class="ti">ผังธาตุของลื้อ</div>
+              </div>
+              <div class="ui-scr-body">
+                <div class="ui-pillars">
+                  <div class="ui-pillar"><div class="cap">時 ยาม</div><div class="gz">癸巳</div></div>
+                  <div class="ui-pillar"><div class="cap">日 วัน</div><div class="gz">丙寅</div></div>
+                  <div class="ui-pillar"><div class="cap">月 เดือน</div><div class="gz">丙子</div></div>
+                  <div class="ui-pillar"><div class="cap">年 ปี</div><div class="gz">己巳</div></div>
+                </div>
+                <div class="ui-el"><span class="lb">🌲 ไม้</span><span class="track"><span class="fill" style="width:33%"></span></span><span class="vv">1</span></div>
+                <div class="ui-el"><span class="lb">🔥 ไฟ</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="vv">3</span></div>
+                <div class="ui-el"><span class="lb">🏔 ดิน</span><span class="track"><span class="fill" style="width:33%"></span></span><span class="vv">1</span></div>
+                <div class="ui-el"><span class="lb">⚡ ทอง</span><span class="track"><span class="fill" style="width:5%"></span></span><span class="vv">0</span></div>
+                <div class="ui-el"><span class="lb">💧 น้ำ</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="vv">3</span></div>
+                <p class="ui-hint">ไฟกับน้ำเด่น ทองพร่อง — ใจร้อนแต่คิดลึก แปะสรุปให้เป็นภาษาคน</p>
+              </div>
+            </div>
+          </div>
+          <div class="ui-phone-label">ผังธาตุ 4 เสา &middot; 오행 balance อ่านง่าย</div>
+        </div>
+
+        <!-- Screen 3: ปฏิทินดวง -->
+        <div class="ui-phone-wrap">
+          <div class="ui-phone">
+            <div class="ui-phone-screen">
+              <div class="ui-scr-head">
+                <div class="st">ปฏิทินดวง &middot; เดือนนี้</div>
+                <div class="ti">วันไหนควรก้าว วันไหนควรรอ</div>
+              </div>
+              <div class="ui-scr-body">
+                <div class="ui-cal-wk"><span>อา</span><span>จ</span><span>อ</span><span>พ</span><span>พฤ</span><span>ศ</span><span>ส</span></div>
+                <div class="ui-cal">
+                  <span class="d">1</span><span class="d good">2</span><span class="d">3</span><span class="d">4</span><span class="d warn">5</span><span class="d">6</span><span class="d">7</span>
+                  <span class="d">8</span><span class="d">9</span><span class="d good">10</span><span class="d today">11</span><span class="d">12</span><span class="d warn">13</span><span class="d">14</span>
+                  <span class="d">15</span><span class="d good">16</span><span class="d">17</span><span class="d">18</span><span class="d">19</span><span class="d">20</span><span class="d good">21</span>
+                </div>
+                <div class="ui-day-card">
+                  <div class="dh">วันนี้ · ไฟแรง</div>
+                  <div class="dp">ค่อย ๆ ก้าว อย่าเพิ่งรีบตัดสินใจเรื่องใหญ่ในวันนี้นะ</div>
+                  <div class="ui-day-chips"><span class="g">ก้าวได้: คุยงาน</span><span class="w">ระวัง: ปากร้อน</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui-phone-label">ปฏิทินดวงรายวัน &middot; deep-link คุยกับแปะ</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Block C — UI Decision Cards -->
+    <div class="ui-block">
+      <div class="ui-block-label">UI Decisions — ทำไมถึงเลือกแบบนี้</div>
+      <div class="ui-decisions">
+        <div class="ui-dcard">
+          <span class="ic">📱</span>
+          <h4>Mobile-first แล้ว letterbox ที่ 768px</h4>
+          <p>คนมาหาแปะบนมือถือเกือบทั้งหมด ออกแบบ 393 ก่อน แล้วขยับ 768 → 1440</p>
+          <span class="why">ทำไม: บนจอใหญ่จัดกลาง (cap 768) ไม่ยืด layout ให้โล่งเก้อ — คงบรรยากาศ "โต๊ะน้ำชา" ที่สงบ ไม่ฝืนทำ desktop grid</span>
+        </div>
+        <div class="ui-dcard">
+          <span class="ic">♿</span>
+          <h4>Accessibility floor ที่ไม่ยอมลด</h4>
+          <p>Base font ≥ 16px, touch target ≥ 44px, contrast ≥ 4.5:1 ทุก text/สีปุ่ม</p>
+          <span class="why">ทำไม: กลุ่มผู้ใช้กว้าง อ่านคำอ่านยาว ๆ บนมือถือ — ตัวเล็กหรือปุ่มชิดกันคือ barrier จริง ไม่ใช่แค่ nice-to-have</span>
+        </div>
+        <div class="ui-dcard">
+          <span class="ic">💬</span>
+          <h4>Microcopy พูดด้วยเสียง "อาแปะ"</h4>
+          <p>Loading = "แปะกำลังชงคำอ่านให้ ใจเย็นก่อนนะ" · Error = "ไอ้หยา ระบบสะดุดนิดหน่อย ลองใหม่นะ"</p>
+          <span class="why">ทำไม: state ที่คนหงุดหงิดที่สุด (รอ/พัง) คือจุดที่ character ต้องอยู่ — ไม่ทำให้ผู้ใช้รู้สึกผิดตอนกรอกพลาด</span>
+        </div>
+        <div class="ui-dcard">
+          <span class="ic">🧩</span>
+          <h4>ผลอ่านเป็นการ์ด ไม่ใช่กำแพงข้อความ</h4>
+          <p>ศัพท์ 오행/십신/격국 map เป็นไทยก่อนโชว์ + ซอยคำอ่านยาวเป็นท่อน/การ์ด + starter prompts</p>
+          <span class="why">ทำไม: ต่อให้ engine แม่นแค่ไหน ถ้าเทข้อความก้อนเดียวคนก็ไม่อ่าน — visual hierarchy ทำให้ศาสตร์ที่ลึกกลายเป็นเรื่องเข้าใจง่าย</span>
+        </div>
       </div>
     </div>
 
