@@ -1,0 +1,30 @@
+<!doctype html>
+<meta charset="utf-8" />
+<style>
+  body { width: 460px; margin: 0; font: 13px system-ui, sans-serif; }
+  header { display: flex; gap: 8px; padding: 8px; border-bottom: 1px solid #ddd; }
+  button { cursor: pointer; border: 1px solid #ccc; background: #f5f5f5; border-radius: 6px; padding: 4px 10px; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #eee; vertical-align: top; }
+  th { font-size: 11px; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; }
+  .kind { font-weight: 700; white-space: nowrap; }
+  .kind.master { color: #1e6b2e; }
+  .kind.variant { color: #6b6b1e; }
+  .kind.file { color: #1e4e6b; }
+  .q { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .info { color: #666; font-size: 12px; }
+  .acts { white-space: nowrap; }
+  .acts button { padding: 2px 8px; margin-left: 4px; }
+  .empty { padding: 16px; color: #888; text-align: center; }
+  .yt { margin: 8px; padding: 8px 10px; border: 1px solid #e0b3b3; background: #fff5f5; border-radius: 8px; }
+  .yt b { color: #c00; }
+  .yt .u { color: #666; font-size: 11px; word-break: break-all; margin: 2px 0 6px; }
+  .yt button { padding: 3px 8px; margin-right: 4px; }
+</style>
+<header>
+  <button id="rescan">↻ Rescan</button>
+  <button id="copyAll">Copy all</button>
+  <button id="clear">Clear</button>
+</header>
+<div id="wrap"></div>
+<script src="popup.js"></script>
