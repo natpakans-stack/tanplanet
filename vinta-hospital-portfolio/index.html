@@ -837,6 +837,10 @@
       line-height: 1.45;
     }
     .ui-cap b { color: var(--accent-dark); font-weight: 600; }
+    .ui-subhead { display: flex; align-items: center; gap: 10px; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 4px 2px 12px; }
+    .ui-subhead::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .ui-screens + .ui-subhead { margin-top: 26px; }
 
     /* browser window frame */
     .ui-win {
@@ -1353,6 +1357,7 @@
     </div>
 
     <!-- Block B: Screen Showcase -->
+    <div class="ui-subhead">เว็บไซต์ &middot; Web (Desktop)</div>
     <div class="ui-screens">
       <!-- Screen 1: Pre-opening homepage -->
       <div class="ui-frame">
@@ -1376,7 +1381,36 @@
         <p class="ui-cap"><b>Pre-opening Homepage</b><br>โทนสงบ พื้นเข้ม heading serif น้ำหนักเบา CTA ไม่กดดัน</p>
       </div>
 
-      <!-- Screen 2: Mobile application form -->
+      <!-- Screen 3: Auto-generated PDF -->
+      <div class="ui-frame">
+        <div class="ui-win">
+          <div class="ui-win-bar">
+            <span class="d" style="background:#f87171"></span>
+            <span class="d" style="background:#fbbf24"></span>
+            <span class="d" style="background:#34d399"></span>
+            <span class="ui-win-url">application-cover.pdf</span>
+          </div>
+          <div class="ui-pdf">
+            <div class="pbrand">
+              <span class="pmark">V</span>
+              <span class="pn">VINTA<small>Specialized Cancer Hospital</small></span>
+            </div>
+            <h4>ใบสมัครงาน — อายุรแพทย์มะเร็งวิทยา</h4>
+            <div class="prow"><span class="k">ชื่อ–สกุล</span><span class="v">นพ. ศิริพร ใจดี (ตัวอย่าง)</span></div>
+            <div class="prow"><span class="k">ฝ่าย</span><span class="v">ฝ่ายการแพทย์ · เต็มเวลา</span></div>
+            <div class="prow"><span class="k">ประสบการณ์</span><span class="v">8 ปี · เงินเดือนที่คาดหวัง —</span></div>
+            <div class="prow"><span class="k">ใบประกอบฯ</span><span class="v">ว. XXXXX (ตัวอย่าง)</span></div>
+            <div class="prow"><span class="k">แนบ</span><span class="v">เรซูเม่ + รูปถ่าย (merge แล้ว)</span></div>
+            <div class="pfoot">สร้างอัตโนมัติด้วย headless Chrome · ฟอนต์ไทยเป๊ะ · ส่งเข้าเมล HR</div>
+          </div>
+        </div>
+        <p class="ui-cap"><b>Auto-generated PDF</b><br>หน้าปกไทยจาก Chrome จริง → merge เรซูเม่เป็นไฟล์เดียว</p>
+      </div>
+    </div>
+
+    <div class="ui-subhead">แอปมือถือ &middot; Mobile</div>
+    <div class="ui-screens">
+      <!-- Screen: Mobile application form -->
       <div class="ui-frame">
         <div class="ui-phone">
           <div class="notch"></div>
@@ -1415,32 +1449,6 @@
           </div>
         </div>
         <p class="ui-cap"><b>Application Form (มือถือ)</b><br>bottom-sheet + date-wheel · states: focus / error / empty</p>
-      </div>
-
-      <!-- Screen 3: Auto-generated PDF -->
-      <div class="ui-frame">
-        <div class="ui-win">
-          <div class="ui-win-bar">
-            <span class="d" style="background:#f87171"></span>
-            <span class="d" style="background:#fbbf24"></span>
-            <span class="d" style="background:#34d399"></span>
-            <span class="ui-win-url">application-cover.pdf</span>
-          </div>
-          <div class="ui-pdf">
-            <div class="pbrand">
-              <span class="pmark">V</span>
-              <span class="pn">VINTA<small>Specialized Cancer Hospital</small></span>
-            </div>
-            <h4>ใบสมัครงาน — อายุรแพทย์มะเร็งวิทยา</h4>
-            <div class="prow"><span class="k">ชื่อ–สกุล</span><span class="v">นพ. ศิริพร ใจดี (ตัวอย่าง)</span></div>
-            <div class="prow"><span class="k">ฝ่าย</span><span class="v">ฝ่ายการแพทย์ · เต็มเวลา</span></div>
-            <div class="prow"><span class="k">ประสบการณ์</span><span class="v">8 ปี · เงินเดือนที่คาดหวัง —</span></div>
-            <div class="prow"><span class="k">ใบประกอบฯ</span><span class="v">ว. XXXXX (ตัวอย่าง)</span></div>
-            <div class="prow"><span class="k">แนบ</span><span class="v">เรซูเม่ + รูปถ่าย (merge แล้ว)</span></div>
-            <div class="pfoot">สร้างอัตโนมัติด้วย headless Chrome · ฟอนต์ไทยเป๊ะ · ส่งเข้าเมล HR</div>
-          </div>
-        </div>
-        <p class="ui-cap"><b>Auto-generated PDF</b><br>หน้าปกไทยจาก Chrome จริง → merge เรซูเม่เป็นไฟล์เดียว</p>
       </div>
     </div>
 
