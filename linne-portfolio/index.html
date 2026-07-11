@@ -745,14 +745,18 @@
     /* --- Block B: Screen Showcase (real dark/lime storefront) --- */
     .ui-screens { display: flex; gap: 14px; overflow-x: auto; padding: 4px 2px 14px;
       scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; justify-content: center; }
-    .ui-screen { scroll-snap-align: center; flex: 0 0 auto; display: flex; flex-direction: column; }
+    .ui-screen { scroll-snap-align: center; flex: 0 0 auto; }
     .ui-phone { width: 230px; background: #0d0d0d; border: 6px solid #1b1b1a; border-radius: 32px;
-      padding: 16px 11px 14px; box-shadow: 0 14px 36px rgba(0,0,0,0.22); position: relative; flex: 1 0 auto; }
-    .ui-screens { align-items: stretch; }
+      padding: 16px 11px 14px; box-shadow: 0 14px 36px rgba(0,0,0,0.22); position: relative; }
     .ui-phone::before { content: ''; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-      width: 60px; height: 5px; border-radius: 5px; background: #333; }
+      width: 60px; height: 5px; border-radius: 5px; background: #333; z-index: 2; }
     .ui-scr { color: #f4f1ea; font-size: 0.7rem; line-height: 1.5;
-      font-family: ui-sans-serif, system-ui, -apple-system, 'Noto Sans Thai', sans-serif; }
+      font-family: ui-sans-serif, system-ui, -apple-system, 'Noto Sans Thai', sans-serif;
+      height: 468px; overflow-y: auto; overflow-x: hidden; position: relative; scrollbar-width: none; }
+    .ui-scr::-webkit-scrollbar { display: none; }
+    .ui-buybar { position: sticky; bottom: 0; background: #0d0d0d; padding-top: 10px;
+      margin-top: 11px; box-shadow: 0 -10px 12px -6px #0d0d0d; }
+    .ui-buybar .ui-btn-line { margin-top: 0; }
     .ui-nav { display: flex; align-items: center; justify-content: space-between; }
     .ui-logo { font-weight: 700; letter-spacing: 0.5px; font-size: 0.78rem; }
     .ui-nav .dots { color: #6f6d66; letter-spacing: 2px; font-size: 0.8rem; }
@@ -1302,8 +1306,10 @@
               Audrey Linen Midi Dress (สี: Sand, ไซซ์: M)<br>
               <span class="mono">…/products/audrey-linen-midi-dress</span>
             </div>
-            <span class="ui-btn-line">สั่งซื้อผ่าน LINE</span>
-            <span class="ui-btn-tg">สั่งซื้อผ่าน Telegram</span>
+            <div class="ui-buybar">
+              <span class="ui-btn-line">สั่งซื้อผ่าน LINE</span>
+              <span class="ui-btn-tg">สั่งซื้อผ่าน Telegram</span>
+            </div>
           </div>
         </div>
         <div class="cap">หน้าสินค้า + Buy Panel<span>/products/[slug]</span></div>
