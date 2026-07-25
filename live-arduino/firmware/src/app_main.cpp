@@ -394,7 +394,7 @@ static void drawBars(lv_obj_t* parent, const CardViz& viz) {
     lv_obj_align(name, LV_ALIGN_LEFT_MID, 0, 0);
 
     lv_obj_t* bar = lv_bar_create(row);
-    lv_obj_set_size(bar, 168, 14);
+    lv_obj_set_size(bar, 150, 14);
     lv_obj_align(bar, LV_ALIGN_LEFT_MID, 100, 0);
     lv_obj_set_style_bg_color(bar, lv_color_hex(0x232C4A), LV_PART_MAIN);
     lv_obj_set_style_bg_color(bar, lv_color_hex(0x4ADE80), LV_PART_INDICATOR);
@@ -418,7 +418,7 @@ static void drawBars(lv_obj_t* parent, const CardViz& viz) {
 // สไตล์กราฟกลาง — เส้นตารางต้องจางกว่าเส้นข้อมูลเสมอ ไม่งั้นแย่งสายตา
 static lv_obj_t* makeChart(lv_obj_t* parent, int h) {
   lv_obj_t* chart = lv_chart_create(parent);
-  lv_obj_set_size(chart, 396, h);
+  lv_obj_set_size(chart, 380, h);
   lv_chart_set_type(chart, LV_CHART_TYPE_LINE);
   lv_obj_set_style_bg_color(chart, lv_color_hex(C_BG), 0);
   lv_obj_set_style_border_width(chart, 0, 0);
@@ -537,7 +537,7 @@ static void cardClicked(lv_event_t* e) {
   int idx = (int)(intptr_t)lv_obj_get_user_data(card);
   if (idx >= 0 && idx < cardCount && cardViz[idx].kind != VIZ_NONE) {
     vizBox = lv_obj_create(detailView);
-    lv_obj_set_size(vizBox, 404, LV_SIZE_CONTENT);
+    lv_obj_set_size(vizBox, 386, LV_SIZE_CONTENT);
     lv_obj_set_style_bg_opa(vizBox, LV_OPA_TRANSP, 0);
     lv_obj_set_style_border_width(vizBox, 0, 0);
     lv_obj_set_style_pad_all(vizBox, 0, 0);
@@ -944,7 +944,6 @@ void setup() {
   lv_obj_set_style_radius(detailView, 0, 0);
   lv_obj_set_style_pad_all(detailView, 16, 0);
   lv_obj_set_style_pad_row(detailView, 10, 0);
-  lv_obj_set_style_pad_right(detailView, 44, 0);  // เว้นทางให้ปุ่ม X ไม่ทับเนื้อหา
   lv_obj_add_flag(detailView, LV_OBJ_FLAG_HIDDEN);
   lv_obj_add_flag(detailView, LV_OBJ_FLAG_CLICKABLE);
   lv_obj_set_flex_flow(detailView, LV_FLEX_FLOW_COLUMN);
@@ -961,13 +960,13 @@ void setup() {
   detailValue = lv_label_create(detailView);
   lv_obj_set_style_text_font(detailValue, &thai36, 0);
   lv_obj_set_style_text_color(detailValue, lv_color_hex(C_TEXT), 0);
-  lv_obj_set_width(detailValue, 404);
+  lv_obj_set_width(detailValue, 386);
   lv_label_set_long_mode(detailValue, LV_LABEL_LONG_WRAP);
 
   detailText = lv_label_create(detailView);
   lv_obj_set_style_text_font(detailText, &thai18, 0);
   lv_obj_set_style_text_color(detailText, lv_color_hex(0xB9C4E6), 0);
-  lv_obj_set_width(detailText, 404);
+  lv_obj_set_width(detailText, 386);
   lv_label_set_long_mode(detailText, LV_LABEL_LONG_WRAP);  // ยาวแค่ไหนก็เลื่อนอ่านได้
 
   lv_obj_t* closeBtn = lv_button_create(detailView);
@@ -976,7 +975,7 @@ void setup() {
   // ขยายพื้นที่รับสัมผัสออกไปอีก 14px รอบด้าน แล้วยิงตั้งแต่กดลง ไม่รอปล่อย
   lv_obj_set_ext_click_area(closeBtn, 14);
   lv_obj_add_flag(closeBtn, LV_OBJ_FLAG_FLOATING);  // ลอยอยู่กับที่ ไม่เลื่อนตามเนื้อหา
-  lv_obj_align(closeBtn, LV_ALIGN_TOP_RIGHT, -2, -2);
+  lv_obj_align(closeBtn, LV_ALIGN_TOP_RIGHT, 8, -8);
   lv_obj_set_style_bg_color(closeBtn, lv_color_hex(0x2A3556), 0);
   lv_obj_set_style_radius(closeBtn, 19, 0);
   lv_obj_add_event_cb(closeBtn, [](lv_event_t*) {
@@ -992,7 +991,7 @@ void setup() {
     lv_obj_t* sb = lv_button_create(detailView);
     lv_obj_set_size(sb, 40, 60);
     lv_obj_add_flag(sb, LV_OBJ_FLAG_FLOATING);
-    lv_obj_align(sb, LV_ALIGN_RIGHT_MID, -2, b.y);
+    lv_obj_align(sb, LV_ALIGN_RIGHT_MID, 8, b.y);
     lv_obj_set_style_bg_color(sb, lv_color_hex(0x2A3556), 0);
     lv_obj_set_style_radius(sb, 10, 0);
     lv_obj_set_ext_click_area(sb, 8);
