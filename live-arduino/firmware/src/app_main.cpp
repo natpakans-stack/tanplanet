@@ -11,6 +11,7 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <Preferences.h>
+#include <time.h>
 
 LV_FONT_DECLARE(thai18);
 LV_FONT_DECLARE(thai36);
@@ -31,6 +32,17 @@ static lv_obj_t* detailView;
 static lv_obj_t* detailTitle;
 static lv_obj_t* detailValue;
 static lv_obj_t* detailText;
+
+// ponytail: ไม่มี LDR บนบอร์ด — หรี่จอตามเวลาแทน ปรับ 2 ตัวนี้ถ้าอยากได้ช่วงอื่น
+static const int kNightStartHour = 22;
+static const int kNightEndHour = 6;
+static const uint8_t kBacklightDay = 255;
+static const uint8_t kBacklightNight = 60;
+
+static const char* kThaiDays[] = {"อาทิตย์", "จันทร์", "อังคาร", "พุธ",
+                                  "พฤหัสบดี", "ศุกร์", "เสาร์"};
+static const char* kThaiMonths[] = {"ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
+                                    "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."};
 
 static uint32_t lastFetch = 0;
 static const uint32_t kRefreshMs = 5UL * 60UL * 1000UL;
@@ -295,6 +307,35 @@ static void addCard(const char* title, const char* value, const char* detail, co
   }
 }
 
+static void applyBacklight(int hour) {
+  bool night = (hour >= kNightStartHour || hour < kNightEndHour);
+  static int lastLevel = -1;
+  int level = night ? kBacklightNight : kBacklightDay;
+  if (level == lastLevel) return;
+  lastLevel = level;
+  ledcWrite(1, level);
+}
+
+static void updateClock(lv_timer_t*) {
+  time_t now = time(nullptr);
+  if (now < 1000000000) {  // ยังไม่ได้เวลาจริงจาก NTP
+    lv_label_set_text(headValue, "--:--");
+    return;
+  }
+  struct tm tm;
+  localtime_r(&now, &tm);
+
+  char buf[8];
+  strftime(buf, sizeof(buf), "%H:%M", &tm);
+  lv_label_set_text(headValue, buf);
+
+  // พ.ศ. = ค.ศ. + 543
+  setThaiText(headDetail, (String("วัน") + kThaiDays[tm.tm_wday] + "ที่ " + tm.tm_mday + " " +
+                           kThaiMonths[tm.tm_mon] + " " + (tm.tm_year + 1900 + 543))
+                              .c_str());
+  applyBacklight(tm.tm_hour);
+}
+
 static void setStatus(const char* msg, uint32_t color) {
   setThaiText(statusLabel, msg);
   lv_obj_set_style_text_color(statusLabel, lv_color_hex(color), 0);
@@ -336,12 +377,8 @@ static void fetchAndRender() {
     const char* value = c["value"] | "-";
     const char* detail = c["detail"] | "";
 
-    // การ์ดนาฬิกาไปอยู่หัวจอ ไม่ต้องซ้ำในลิสต์
-    if (!strcmp(type, "clock")) {
-      setThaiText(headValue, value);
-      setThaiText(headDetail, detail);
-      continue;
-    }
+    // การ์ดนาฬิกาข้าม — หัวจอใช้เวลาจาก NTP ในเครื่องแทน แม่นกว่าและไม่ต้องรอ fetch
+    if (!strcmp(type, "clock")) continue;
     addCard(c["title"] | "", value, detail, c["tone"] | "neutral");
     n++;
   }
@@ -356,8 +393,10 @@ void setup() {
   delay(300);
   Serial.println("\n=== TanPlanet Smart Astro Calendar ===");
 
-  pinMode(TFT_BL, OUTPUT);
-  digitalWrite(TFT_BL, HIGH);
+  // backlight ผ่าน PWM เพื่อหรี่จอกลางคืนได้ (channel 1 — 0 กันไว้ให้ buzzer)
+  ledcSetup(1, 5000, 8);
+  ledcAttachPin(TFT_BL, 1);
+  ledcWrite(1, kBacklightDay);
   tft.init();
   tft.setRotation(1);
   tft.fillScreen(TFT_BLACK);
@@ -465,6 +504,7 @@ void setup() {
   lv_obj_set_style_text_color(hint, lv_color_hex(0x5A6688), 0);
   setThaiText(hint, "แตะเพื่อปิด");
 
+  lv_timer_create(updateClock, 1000, nullptr);
   lv_refr_now(disp);
 
   // captive portal: ถ้ายังไม่เคยตั้ง Wi-Fi จะเปิด AP "TanPlanet_Config" ให้ตั้งจากมือถือ
@@ -483,6 +523,11 @@ void setup() {
     Serial.println("wifi portal failed");
   } else {
     Serial.printf("wifi ok: %s\n", WiFi.localIP().toString().c_str());
+    // ICT-7 = UTC+7 ไม่มี DST — ตั้งผ่าน TZ string ให้ localtime_r คำนวณให้เอง
+    configTzTime("ICT-7", "pool.ntp.org", "time.google.com");
+    for (int i = 0; i < 20 && time(nullptr) < 1000000000; i++) delay(250);
+    time_t nowSec = time(nullptr);
+    Serial.printf("ntp: %s", nowSec > 1000000000 ? ctime(&nowSec) : "ไม่ได้เวลา\n");
     setStatus("กำลังดึงข้อมูล...", 0xFBBF24);
     lv_refr_now(disp);
     fetchAndRender();
