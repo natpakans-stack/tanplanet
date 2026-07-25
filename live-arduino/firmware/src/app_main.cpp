@@ -43,7 +43,7 @@ static uint8_t drawBuf[kBufPixels * 2];
 
 static lv_obj_t* headValue;
 static lv_obj_t* headDetail;
-static lv_obj_t* statusLabel;
+static lv_obj_t* statusDot;
 static lv_obj_t* heroWeather;
 static lv_obj_t* heroLunar;
 static lv_obj_t* cardList;
@@ -79,6 +79,8 @@ struct CardViz {
   float spark[24] = {0};
   uint8_t sparkN = 0;
   float gaugeVal = 0, gaugeMax = 0;
+  float quotaPct = -1, quotaWeekPct = -1;
+  int quotaMinutes = 0;
   char gaugeUnit[12] = {0};
   uint32_t accent = 0x8492BC;
 };
@@ -374,6 +376,49 @@ static uint32_t toneColor(const char* tone) {
 // ponytail: อ่านข้อความจาก label ลูกของการ์ดเอง ไม่ต้องเก็บ state ซ้ำอีกชุด
 static lv_obj_t* vizBox = nullptr;
 
+// โควตาจริงจาก Anthropic — มีเพดาน 100% จึงวาดเป็นวงได้อย่างมีความหมาย
+static void drawQuota(lv_obj_t* parent, const CardViz& viz) {
+  lv_obj_t* row = lv_obj_create(parent);
+  lv_obj_set_size(row, lv_pct(100), 104);
+  lv_obj_set_style_bg_opa(row, LV_OPA_TRANSP, 0);
+  lv_obj_set_style_border_width(row, 0, 0);
+  lv_obj_set_style_pad_all(row, 0, 0);
+  lv_obj_clear_flag(row, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_add_flag(row, LV_OBJ_FLAG_EVENT_BUBBLE);
+
+  int pct = (int)(viz.quotaPct + 0.5f);
+  uint32_t col = pct >= 80 ? C_DOWN : pct >= 50 ? C_WARN : C_UP;
+
+  lv_obj_t* arc = lv_arc_create(row);
+  lv_obj_set_size(arc, 96, 96);
+  lv_obj_align(arc, LV_ALIGN_LEFT_MID, 0, 0);
+  lv_arc_set_rotation(arc, 270);
+  lv_arc_set_bg_angles(arc, 0, 360);
+  lv_arc_set_range(arc, 0, 100);
+  lv_arc_set_value(arc, max(pct, 1));  // 0% จะมองไม่เห็นเลยว่ามีวง
+  lv_obj_remove_style(arc, nullptr, LV_PART_KNOB);
+  lv_obj_clear_flag(arc, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_set_style_arc_color(arc, lv_color_hex(0x232C4A), LV_PART_MAIN);
+  lv_obj_set_style_arc_color(arc, lv_color_hex(col), LV_PART_INDICATOR);
+  lv_obj_set_style_arc_width(arc, 11, LV_PART_MAIN);
+  lv_obj_set_style_arc_width(arc, 11, LV_PART_INDICATOR);
+
+  lv_obj_t* num = lv_label_create(arc);
+  lv_obj_set_style_text_font(num, &thai22, 0);
+  lv_obj_set_style_text_color(num, lv_color_hex(col), 0);
+  lv_label_set_text_fmt(num, "%d%%", pct);
+  lv_obj_center(num);
+
+  lv_obj_t* info = lv_label_create(row);
+  lv_obj_set_style_text_font(info, &thai18, 0);
+  lv_obj_set_style_text_color(info, lv_color_hex(C_MUTED), 0);
+  setThaiText(info, (String("รอบ 5 ชม. · รีเซ็ตอีก ") + (viz.quotaMinutes / 60) + " ชม. " +
+                     (viz.quotaMinutes % 60) + " นาที" +
+                     (viz.quotaWeekPct >= 0 ? String("\nรอบ 7 วัน · ") + (int)viz.quotaWeekPct + "%" : ""))
+                        .c_str());
+  lv_obj_align(info, LV_ALIGN_LEFT_MID, 112, 0);
+}
+
 // แท่งนอนพร้อมป้ายชื่อ+ค่า — ใช้กับ token usage ที่ค่าต่างกันหลักพันเท่า
 static void drawBars(lv_obj_t* parent, const CardViz& viz) {
   float maxV = 1;
@@ -545,7 +590,10 @@ static void cardClicked(lv_event_t* e) {
     lv_obj_add_flag(vizBox, LV_OBJ_FLAG_EVENT_BUBBLE);  // แตะกราฟก็ปิดหน้าได้
 
     switch (cardViz[idx].kind) {
-      case VIZ_TOKENS: drawBars(vizBox, cardViz[idx]); break;
+      case VIZ_TOKENS:
+        if (cardViz[idx].quotaPct >= 0) drawQuota(vizBox, cardViz[idx]);
+        drawBars(vizBox, cardViz[idx]);
+        break;
       case VIZ_HOURLY: drawHourly(vizBox, cardViz[idx]); break;
       case VIZ_SCORE:  drawScore(vizBox, cardViz[idx]); break;
       case VIZ_PRICE:  drawPrice(vizBox, cardViz[idx]); break;
@@ -558,7 +606,7 @@ static void cardClicked(lv_event_t* e) {
 }
 
 static const int kCardW = 198;
-static const int kCardH = 96;
+static const int kCardH = 104;
 
 // เส้นแนวโน้มบางในการ์ด — ไม่มีกรอบ ไม่มีตาราง ให้รูปทรงเส้นเล่าเรื่องอย่างเดียว
 static void addSpark(lv_obj_t* card, const CardViz& viz) {
@@ -656,8 +704,10 @@ static void updateClock(lv_timer_t*) {
 }
 
 static void setStatus(const char* msg, uint32_t color) {
-  setThaiText(statusLabel, msg);
-  lv_obj_set_style_text_color(statusLabel, lv_color_hex(color), 0);
+  lv_obj_set_style_bg_color(statusDot, lv_color_hex(color), 0);
+  if (color == C_UP) return;  // ปกติดีก็ไม่ต้องรบกวนด้วยข้อความ
+  setThaiText(headDetail, msg);
+  lv_obj_set_style_text_color(headDetail, lv_color_hex(color), 0);
 }
 
 static bool fetchAndRender() {
@@ -674,8 +724,7 @@ static bool fetchAndRender() {
   if (code != HTTP_CODE_OK) {
     Serial.printf("http failed: %d\n", code);
     setStatus(String("ต่อ backend ไม่ได้ (").c_str(), 0xF87171);
-    setThaiText(statusLabel, (String("ต่อ backend ไม่ได้ (") + code + ") · ลองใหม่ใน 30 วิ").c_str());
-    lv_obj_set_style_text_color(statusLabel, lv_color_hex(C_DOWN), 0);
+    setStatus((String("ต่อ backend ไม่ได้ (") + code + ") · ลองใหม่ใน 30 วิ").c_str(), C_DOWN);
     http.end();
     return false;
   }
@@ -735,6 +784,12 @@ static bool fetchAndRender() {
     }
 
     if (!strcmp(type, "token") && extra["usage"][0]) {
+      JsonObject sess = extra["quota"]["session"];
+      if (sess) {
+        viz.quotaPct = sess["pct"] | 0.0f;
+        viz.quotaMinutes = sess["minutesLeft"] | 0;
+        viz.quotaWeekPct = extra["quota"]["week"]["pct"] | -1.0f;
+      }
       JsonObject u = extra["usage"][0];
       const char* names[] = {"ส่งเข้า", "ตอบกลับ", "อ่านแคช", "เขียนแคช"};
       const char* keys[] = {"input", "output", "cacheRead", "cacheWrite"};
@@ -793,8 +848,8 @@ static bool fetchAndRender() {
     n++;
   }
 
-  setThaiText(statusLabel, (String(n) + " การ์ด · " + (const char*)(doc["status"]["message"] | "ok")).c_str());
-  lv_obj_set_style_text_color(statusLabel, lv_color_hex(0x4ADE80), 0);
+  setStatus("ok", C_UP);
+  lv_obj_set_style_text_color(headDetail, lv_color_hex(C_MUTED), 0);  // คืนสีบรรทัดวันที่
   Serial.printf("rendered %d cards (payload %u bytes)\n", n, (unsigned)doc.size());
   return true;
 }
@@ -864,42 +919,26 @@ void setup() {
   lv_label_set_text(heroWeather, "");
   lv_obj_align(heroWeather, LV_ALIGN_TOP_RIGHT, -18, 10);
 
-  // แถบสถานะล่างสุด — จองพื้นที่ไว้ เดิมลอยทับกราฟในการ์ดแถวล่าง
-  lv_obj_t* statusBar = lv_obj_create(scr);
-  lv_obj_set_size(statusBar, 480, 24);
-  lv_obj_align(statusBar, LV_ALIGN_BOTTOM_MID, 0, 0);
-  lv_obj_set_style_bg_color(statusBar, lv_color_hex(C_HERO), 0);
-  lv_obj_set_style_border_width(statusBar, 0, 0);
-  lv_obj_set_style_radius(statusBar, 0, 0);
-  lv_obj_set_style_pad_all(statusBar, 0, 0);
-  lv_obj_clear_flag(statusBar, LV_OBJ_FLAG_SCROLLABLE);
+  // จุดสถานะข้างนาฬิกา: เขียว = ข้อมูลสด, เหลือง = กำลังต่อ, แดง = ต่อไม่ได้
+  // รายละเอียดเต็มโผล่แทนบรรทัดวันที่เฉพาะตอนมีปัญหา ปกติไม่ต้องกินพื้นที่
+  statusDot = lv_obj_create(hero);
+  lv_obj_set_size(statusDot, 10, 10);
+  lv_obj_align(statusDot, LV_ALIGN_TOP_LEFT, 132, 26);
+  lv_obj_set_style_radius(statusDot, 5, 0);
+  lv_obj_set_style_border_width(statusDot, 0, 0);
+  lv_obj_set_style_bg_color(statusDot, lv_color_hex(C_WARN), 0);
 
-  lv_obj_t* calBtn = lv_button_create(statusBar);
-  lv_obj_set_size(calBtn, 116, 22);
-  lv_obj_align(calBtn, LV_ALIGN_RIGHT_MID, -2, 0);
-  lv_obj_set_style_bg_color(calBtn, lv_color_hex(C_CARD), 0);
-  lv_obj_set_style_radius(calBtn, 6, 0);
-  lv_obj_add_event_cb(calBtn, [](lv_event_t*) {
+  // กดค้างที่นาฬิกาเพื่อคาลิเบรตทัช — ไม่ต้องมีปุ่มกินพื้นที่
+  lv_obj_add_flag(headValue, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_set_ext_click_area(headValue, 16);
+  lv_obj_add_event_cb(headValue, [](lv_event_t*) {
     calibrateTouch();
-    lv_obj_invalidate(lv_screen_active());  // calibrate วาดทับด้วย tft ตรง ๆ ต้องสั่ง LVGL วาดคืน
+    lv_obj_invalidate(lv_screen_active());
   }, LV_EVENT_LONG_PRESSED, nullptr);
-
-  lv_obj_t* calLbl = lv_label_create(calBtn);
-  lv_obj_set_style_text_font(calLbl, &thai18, 0);
-  lv_obj_set_style_text_color(calLbl, lv_color_hex(C_MUTED), 0);
-  setThaiText(calLbl, "กดค้าง=ปรับทัช");
-  lv_obj_center(calLbl);
-
-  statusLabel = lv_label_create(statusBar);
-  lv_obj_set_style_text_font(statusLabel, &thai18, 0);
-  lv_obj_set_width(statusLabel, 334);  // เว้นที่ให้ปุ่มปรับทัช
-  lv_label_set_long_mode(statusLabel, LV_LABEL_LONG_DOT);
-  setThaiText(statusLabel, "ต่อ Wi-Fi...");
-  lv_obj_align(statusLabel, LV_ALIGN_LEFT_MID, 12, 0);
 
   // 2 คอลัมน์ — เห็น 4 การ์ดต่อหน้า แทนที่จะเลื่อนดูทีละใบ
   cardList = lv_obj_create(scr);
-  lv_obj_set_size(cardList, 408, 200);
+  lv_obj_set_size(cardList, 408, 216);
   lv_obj_align(cardList, LV_ALIGN_TOP_LEFT, 10, 96);
   lv_obj_set_style_bg_opa(cardList, LV_OPA_TRANSP, 0);
   lv_obj_set_style_border_width(cardList, 0, 0);
@@ -914,11 +953,11 @@ void setup() {
   struct ScrollBtn { const char* icon; int dy; lv_align_t align; int y; };
   const ScrollBtn scrollBtns[] = {
     {LV_SYMBOL_UP, -(kCardH + 8), LV_ALIGN_TOP_RIGHT, 96},
-    {LV_SYMBOL_DOWN, kCardH + 8, LV_ALIGN_TOP_RIGHT, 200},
+    {LV_SYMBOL_DOWN, kCardH + 8, LV_ALIGN_TOP_RIGHT, 208},
   };
   for (const ScrollBtn& b : scrollBtns) {
     lv_obj_t* btn = lv_button_create(scr);
-    lv_obj_set_size(btn, 52, 96);  // touch target ใหญ่กว่า 44px — resistive ต้องกดแรง
+    lv_obj_set_size(btn, 52, 104);  // touch target ใหญ่กว่า 44px — resistive ต้องกดแรง
     lv_obj_align(btn, b.align, -8, b.y);
     lv_obj_set_style_bg_color(btn, lv_color_hex(C_CARD), 0);
     lv_obj_set_style_radius(btn, 12, 0);

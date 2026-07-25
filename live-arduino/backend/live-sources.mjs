@@ -167,6 +167,50 @@ export function getStockViz(ticker) {
   });
 }
 
+// ---------------------------------------------------------------- โควตา Claude
+
+// เปอร์เซ็นต์โควตาที่ใช้ไปอยู่ฝั่งเซิร์ฟเวอร์ Anthropic ไม่ได้เก็บในไฟล์เครื่อง
+// แต่ Claude Code เก็บ OAuth token ไว้ใน Keychain — ยืมมาถาม endpoint เดียวกับที่ /usage ใช้
+// token ไม่เคยออกจากเครื่องนี้ และไม่ถูกส่งต่อไปที่จอ (ส่งแค่ % กับเวลารีเซ็ต)
+async function claudeAccessToken() {
+  const { execFile } = await import("node:child_process");
+  const raw = await new Promise((resolve) => {
+    execFile("security", ["find-generic-password", "-s", "Claude Code-credentials", "-w"],
+      { timeout: 5000 }, (err, stdout) => resolve(err ? null : stdout));
+  });
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw).claudeAiOauth?.accessToken ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export function getClaudeQuota() {
+  return cached("claude-quota", 3 * 60 * 1000, async () => {
+    const token = await claudeAccessToken();
+    if (!token) throw new Error("ไม่พบ token ใน Keychain");
+
+    const res = await fetch("https://api.anthropic.com/api/oauth/usage", {
+      headers: { authorization: `Bearer ${token}`, "anthropic-beta": "oauth-2025-04-20" },
+      signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok) throw new Error(`oauth/usage ${res.status}`);
+    const d = await res.json();
+
+    const pick = (o) => o && {
+      pct: Math.round((o.utilization ?? 0) * 10) / 10,
+      resetsAt: o.resets_at,
+      minutesLeft: o.resets_at ? Math.max(0, Math.round((Date.parse(o.resets_at) - Date.now()) / 60000)) : null,
+    };
+    return {
+      session: pick(d.five_hour),
+      week: pick(d.seven_day),
+      weekOpus: pick(d.seven_day_opus),
+    };
+  });
+}
+
 // ---------------------------------------------------------------- AI usage
 
 // อ่านบรรทัดสุดท้าย ๆ ของ JSONL แล้วรวม token ของวันนี้
@@ -321,6 +365,11 @@ async function demo() {
 
   const st = await getStockViz("NVDA");
   console.log(`หุ้น ${st.ticker}: $${st.last} (${st.changePct > 0 ? "+" : ""}${st.changePct}% 1 เดือน) · ${st.closes.length} จุด · โลโก้ ${st.logo ? `${st.logo.length} chars` : "ไม่มี"}`);
+
+  const q = await getClaudeQuota().catch((e) => ({ error: e.message }));
+  if (q.session) {
+    console.log(`โควตา: รอบ 5 ชม. ${q.session.pct}% (รีเซ็ตอีก ${Math.floor(q.session.minutesLeft / 60)} ชม. ${q.session.minutesLeft % 60} นาที) · 7 วัน ${q.week.pct}%`);
+  } else console.log("โควตา:", q.error);
 
   const ai = await getAiUsage();
   const fmt = (n) => (n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : `${Math.round(n / 1000)}k`);

@@ -58,7 +58,7 @@ function card(id, type, title, value, detail, tone = "neutral", priority = 50) {
 }
 
 import { thaiLunar, nextUposatha } from "./thai-lunar.mjs";
-import { getWeather, nextHoliday, holidaysInMonth, getAiUsage, getStockViz } from "./live-sources.mjs";
+import { getWeather, nextHoliday, holidaysInMonth, getAiUsage, getStockViz, getClaudeQuota } from "./live-sources.mjs";
 
 const THAI_MONTHS = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
 const THAI_DAYS = ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสฯ", "ศุกร์", "เสาร์"];
@@ -274,22 +274,26 @@ function fmtTokens(n) {
 
 async function buildAiUsageCard() {
   try {
-    const usage = await getAiUsage();
+    const [usage, quota] = await Promise.all([getAiUsage(), getClaudeQuota().catch(() => null)]);
     const c = usage.claude;
     const x = usage.codex;
-    const parts = [];
-    if (c) parts.push(`Claude ${fmtTokens(c.output)} out`);
-    if (x?.output) parts.push(`Codex ${fmtTokens(x.output)} out`);
+    const q = quota?.session;
+
+    // โควตาจริงจาก Anthropic มาก่อน ตัวเลข token เป็นรายละเอียดรอง
+    const headline = q
+      ? `ใช้ไป ${q.pct}% · รีเซ็ต ${Math.floor(q.minutesLeft / 60)}:${String(q.minutesLeft % 60).padStart(2, "0")} ชม.`
+      : [c && `Claude ${fmtTokens(c.output)} out`, x?.output && `Codex ${fmtTokens(x.output)} out`]
+          .filter(Boolean).join(" · ") || "ยังไม่มีการใช้งานวันนี้";
 
     return {
       ...card(
         "ai_status", "token", "AI Status",
-        parts.join(" · ") || "ยังไม่มีการใช้งานวันนี้",
-        c
-          ? `รอบนี้เหลือ ${Math.floor(c.windowMinutesLeft / 60)} ชม. ${c.windowMinutesLeft % 60} นาที · ` +
-            `วันนี้ส่งเข้า ${fmtTokens(c.input)} · อ่านแคช ${fmtTokens(c.cacheRead)} · ${c.messages} ข้อความ`
-          : "",
-        "neutral", 80,
+        headline,
+        [
+          quota?.week && `รอบ 7 วัน ${quota.week.pct}%`,
+          c && `วันนี้ ${fmtTokens(c.output)} out · อ่านแคช ${fmtTokens(c.cacheRead)} · ${c.messages} ข้อความ`,
+        ].filter(Boolean).join(" · "),
+        q && q.pct >= 80 ? "alert" : q && q.pct >= 50 ? "caution" : "ok", 80,
       ),
       extra: {
         usage: [
@@ -301,6 +305,7 @@ async function buildAiUsageCard() {
           x && { name: "Codex", input: x.input, output: x.output, messages: x.messages },
         ].filter(Boolean),
         since: usage.since,
+        quota,
       },
     };
   } catch (error) {
@@ -400,7 +405,7 @@ async function buildDeviceSummary() {
     if (c.extra?.stock?.closes) withViz(c, { kind: "spark", points: c.extra.stock.closes });
   }
 
-  // เส้นการใช้งานรายชั่วโมง 24 ชม. — เล่าจังหวะการทำงานได้ดีกว่าแถบเทียบเพดานที่ไม่รู้ค่าจริง
+  // มีเพดานจริงจาก Anthropic แล้ว แถบสัดส่วนจึงมีความหมาย ไม่ใช่เดาเพดานเอง
   const hourly = tokenCard.extra?.usage?.[0]?.hourly;
   if (hourly?.some((v) => v > 0)) withViz(tokenCard, { kind: "spark", points: hourly });
 
@@ -538,10 +543,11 @@ async function buildConfigPage() {
   const cardRows = ordered.map(([id, label], i) => {
     const hidden = config.hiddenCards.includes(id);
     return `<li class="row${hidden ? " off" : ""}" data-id="${id}">
-      <span class="grip" aria-hidden="true">⠿</span>
       <span class="num">${i + 1}</span>
       <span class="name">${label}</span>
-      <button class="eye" type="button" aria-label="แสดง/ซ่อน">${hidden ? "ซ่อนอยู่" : "แสดง"}</button>
+      <button class="mv" data-dir="-1" type="button" aria-label="เลื่อนขึ้น">▲</button>
+      <button class="mv" data-dir="1" type="button" aria-label="เลื่อนลง">▼</button>
+      <button class="eye" type="button" aria-label="แสดง/ซ่อน">${hidden ? "ซ่อน" : "แสดง"}</button>
     </li>`;
   }).join("\n");
 
@@ -555,14 +561,15 @@ async function buildConfigPage() {
   .sub{color:#8492BC;font-size:13px;margin-bottom:20px}
   h2{font-size:12px;color:#8492BC;margin:22px 0 8px;text-transform:uppercase;letter-spacing:.6px}
   ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
-  .row{display:flex;align-items:center;gap:10px;background:#161F3C;border-radius:12px;padding:12px 14px;
-       touch-action:none;user-select:none;transition:opacity .15s}
+  .row{display:flex;align-items:center;gap:8px;background:#161F3C;border-radius:12px;padding:10px 12px;
+       user-select:none;transition:opacity .15s,background .15s}
   .row.off{opacity:.42}
-  .row.drag{background:#22305A;box-shadow:0 8px 24px rgba(0,0,0,.5)}
-  .grip{color:#5A6688;font-size:19px;cursor:grab;padding:4px 2px}
+  .row.moved{background:#22305A}
+  .mv{border:0;background:#22305A;color:#B9C4E6;border-radius:8px;width:42px;height:38px;font-size:13px;cursor:pointer;flex:none}
+  .mv:disabled{opacity:.25}
   .num{color:#8492BC;font-size:12px;width:18px;text-align:center;flex:none}
   .name{flex:1;font-size:15px;font-weight:600}
-  .eye{border:0;background:#22305A;color:#B9C4E6;border-radius:8px;height:32px;padding:0 12px;font-size:12px;font-weight:700;cursor:pointer}
+  .eye{border:0;background:#22305A;color:#B9C4E6;border-radius:8px;height:38px;width:56px;font-size:12px;font-weight:700;cursor:pointer;flex:none}
   .row.off .eye{background:#2A2036;color:#F87171}
   fieldset{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px;display:grid;
            grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin:0}
@@ -573,7 +580,7 @@ async function buildConfigPage() {
   #saved{color:#4ADE80;font-size:13px;font-weight:700;text-align:center;height:18px;margin-top:10px}
 </style></head><body>
 <h1>จัดการการ์ดบนจอ</h1>
-<div class="sub">ลากที่ ⠿ เพื่อสลับลำดับ · แตะปุ่มขวาเพื่อซ่อน/แสดง</div>
+<div class="sub">▲▼ เลื่อนลำดับ · ปุ่มขวาสุดซ่อน/แสดง · ตัวบนสุดขึ้นจอก่อน</div>
 
 <h2>ลำดับการ์ด</h2>
 <ul id="cards">${cardRows}</ul>
@@ -587,55 +594,34 @@ async function buildConfigPage() {
 <script>
 const list = document.getElementById("cards");
 
-// ลากสลับลำดับด้วย pointer events — ใช้ได้ทั้งนิ้วบนมือถือและเมาส์
-let dragEl = null, startY = 0, offset = 0;
-list.addEventListener("pointerdown", (e) => {
-  const grip = e.target.closest(".grip");
-  if (!grip) return;
-  dragEl = grip.closest(".row");
-  dragEl.classList.add("drag");
-  dragEl.setPointerCapture(e.pointerId);
-  startY = e.clientY;
-  offset = 0;
-});
-list.addEventListener("pointermove", (e) => {
-  if (!dragEl) return;
-  offset = e.clientY - startY;
-  dragEl.style.transform = "translateY(" + offset + "px)";
-  const rows = [...list.children].filter((r) => r !== dragEl);
-  const mid = dragEl.getBoundingClientRect().top + dragEl.offsetHeight / 2;
-  for (const r of rows) {
-    const box = r.getBoundingClientRect();
-    if (mid > box.top && mid < box.bottom) {
-      const after = mid > box.top + box.height / 2;
-      dragEl.style.transform = "";
-      list.insertBefore(dragEl, after ? r.nextSibling : r);
-      startY = e.clientY;
-      offset = 0;
-      break;
-    }
-  }
-});
-const endDrag = () => {
-  if (!dragEl) return;
-  dragEl.classList.remove("drag");
-  dragEl.style.transform = "";
-  dragEl = null;
-  renumber();
-};
-list.addEventListener("pointerup", endDrag);
-list.addEventListener("pointercancel", endDrag);
-
 function renumber() {
-  [...list.children].forEach((r, i) => { r.querySelector(".num").textContent = i + 1; });
+  const rows = [...list.children];
+  rows.forEach((r, i) => {
+    r.querySelector(".num").textContent = i + 1;
+    r.querySelector('[data-dir="-1"]').disabled = i === 0;
+    r.querySelector('[data-dir="1"]').disabled = i === rows.length - 1;
+  });
 }
+renumber();
+
+list.addEventListener("click", (e) => {
+  const btn = e.target.closest(".mv");
+  if (!btn) return;
+  const row = btn.closest(".row");
+  const dir = Number(btn.dataset.dir);
+  if (dir < 0 && row.previousElementSibling) list.insertBefore(row, row.previousElementSibling);
+  if (dir > 0 && row.nextElementSibling) list.insertBefore(row.nextElementSibling, row);
+  row.classList.add("moved");
+  setTimeout(() => row.classList.remove("moved"), 300);
+  renumber();
+});
 
 list.addEventListener("click", (e) => {
   const btn = e.target.closest(".eye");
   if (!btn) return;
   const row = btn.closest(".row");
   row.classList.toggle("off");
-  btn.textContent = row.classList.contains("off") ? "ซ่อนอยู่" : "แสดง";
+  btn.textContent = row.classList.contains("off") ? "ซ่อน" : "แสดง";
 });
 
 document.getElementById("save").addEventListener("click", async () => {
