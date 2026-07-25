@@ -14,11 +14,12 @@
 #include <time.h>
 #include <mbedtls/base64.h>
 #include <algorithm>
+#include <esp_task_wdt.h>
 
 LV_FONT_DECLARE(thai18);
 LV_FONT_DECLARE(thai22);
 LV_FONT_DECLARE(thai36);
-LV_FONT_DECLARE(clock60);
+LV_FONT_DECLARE(clock48);
 
 // design tokens — ปรับที่นี่ที่เดียวทั้งจอ
 static const uint32_t C_BG = 0x0A0F1F;      // พื้นจอ
@@ -67,7 +68,7 @@ enum VizKind : uint8_t { VIZ_NONE, VIZ_TOKENS, VIZ_HOURLY, VIZ_SCORE, VIZ_PRICE 
 struct CardViz {
   VizKind kind = VIZ_NONE;
   float v[24] = {0};
-  char lbl[6][10] = {{0}};
+  char lbl[6][28] = {{0}};
   uint8_t n = 0;
   char ticker[8] = {0};
   float changePct = 0;
@@ -94,6 +95,7 @@ static int cardCount = 0;
 
 static uint32_t lastFetch = 0;
 static const uint32_t kRefreshMs = 5UL * 60UL * 1000UL;
+static const uint32_t kRetryMs = 30UL * 1000UL;  // ดึงพลาดแล้วรอ 5 นาทีนานเกินไป
 
 // ponytail: flush เอง — LV_USE_TFT_ESPI สร้าง TFT_eSPI ซ้อนอีกตัวแล้ว pixel ไม่ออกจอ
 static volatile bool flushing = false;
@@ -147,7 +149,7 @@ static void touchRead(lv_indev_t*, lv_indev_data_t* data) {
 
 // รอแตะแล้วคืนค่า raw แบบ median — ค่าเฉลี่ยพังง่ายเพราะตอนนิ้วแตะ/ปล่อย
 // แรงกดยังไม่นิ่ง ค่าจะกระโดด ทำให้จุดคาลิเบรตเพี้ยนไปหลายสิบพิกเซล
-static bool readRawPoint(int32_t& rx, int32_t& ry, uint32_t timeoutMs = 30000) {
+static bool readRawPoint(int32_t& rx, int32_t& ry, uint32_t timeoutMs = 12000) {
   uint32_t start = millis();
   while (millis() - start < timeoutMs) {
     if (!touch.touched()) { delay(10); continue; }
@@ -392,8 +394,8 @@ static void drawBars(lv_obj_t* parent, const CardViz& viz) {
     lv_obj_align(name, LV_ALIGN_LEFT_MID, 0, 0);
 
     lv_obj_t* bar = lv_bar_create(row);
-    lv_obj_set_size(bar, 210, 14);
-    lv_obj_align(bar, LV_ALIGN_LEFT_MID, 95, 0);
+    lv_obj_set_size(bar, 168, 14);
+    lv_obj_align(bar, LV_ALIGN_LEFT_MID, 100, 0);
     lv_obj_set_style_bg_color(bar, lv_color_hex(0x232C4A), LV_PART_MAIN);
     lv_obj_set_style_bg_color(bar, lv_color_hex(0x4ADE80), LV_PART_INDICATOR);
     lv_obj_set_style_radius(bar, 7, LV_PART_INDICATOR);
@@ -416,7 +418,7 @@ static void drawBars(lv_obj_t* parent, const CardViz& viz) {
 // สไตล์กราฟกลาง — เส้นตารางต้องจางกว่าเส้นข้อมูลเสมอ ไม่งั้นแย่งสายตา
 static lv_obj_t* makeChart(lv_obj_t* parent, int h) {
   lv_obj_t* chart = lv_chart_create(parent);
-  lv_obj_set_size(chart, 424, h);
+  lv_obj_set_size(chart, 396, h);
   lv_chart_set_type(chart, LV_CHART_TYPE_LINE);
   lv_obj_set_style_bg_color(chart, lv_color_hex(C_BG), 0);
   lv_obj_set_style_border_width(chart, 0, 0);
@@ -535,8 +537,7 @@ static void cardClicked(lv_event_t* e) {
   int idx = (int)(intptr_t)lv_obj_get_user_data(card);
   if (idx >= 0 && idx < cardCount && cardViz[idx].kind != VIZ_NONE) {
     vizBox = lv_obj_create(detailView);
-    lv_obj_set_size(vizBox, 440, 170);
-    lv_obj_align(vizBox, LV_ALIGN_TOP_LEFT, 20, 76);
+    lv_obj_set_size(vizBox, 404, LV_SIZE_CONTENT);
     lv_obj_set_style_bg_opa(vizBox, LV_OPA_TRANSP, 0);
     lv_obj_set_style_border_width(vizBox, 0, 0);
     lv_obj_set_style_pad_all(vizBox, 0, 0);
@@ -550,7 +551,9 @@ static void cardClicked(lv_event_t* e) {
       case VIZ_PRICE:  drawPrice(vizBox, cardViz[idx]); break;
       default: break;
     }
+    lv_obj_move_to_index(detailText, -1);  // vizBox สร้างทีหลัง ต้องดันคำอธิบายลงท้ายเสมอ
   }
+  lv_obj_scroll_to_y(detailView, 0, LV_ANIM_OFF);  // เปิดการ์ดใหม่ต้องเริ่มอ่านจากบน
   lv_obj_remove_flag(detailView, LV_OBJ_FLAG_HIDDEN);
 }
 
@@ -583,29 +586,6 @@ static void addSpark(lv_obj_t* card, const CardViz& viz) {
   for (int i = 0; i < viz.sparkN; i++) lv_chart_set_next_value(chart, ser, (int32_t)(viz.spark[i] * 100));
 }
 
-static void addGauge(lv_obj_t* card, const CardViz& viz) {
-  lv_obj_t* bar = lv_bar_create(card);
-  lv_obj_set_size(bar, kCardW - 20, 8);
-  lv_obj_align(bar, LV_ALIGN_BOTTOM_MID, 0, -30);
-  lv_obj_set_style_bg_color(bar, lv_color_hex(0x232C4A), LV_PART_MAIN);
-  lv_obj_set_style_bg_color(bar, lv_color_hex(viz.accent), LV_PART_INDICATOR);
-  lv_obj_set_style_radius(bar, 4, LV_PART_MAIN);
-  lv_obj_set_style_radius(bar, 4, LV_PART_INDICATOR);
-  lv_obj_add_flag(bar, LV_OBJ_FLAG_EVENT_BUBBLE);
-  lv_bar_set_range(bar, 0, 1000);
-  lv_bar_set_value(bar, (int32_t)(viz.gaugeVal / max(viz.gaugeMax, 1.0f) * 1000), LV_ANIM_OFF);
-
-  lv_obj_t* txt = lv_label_create(card);
-  lv_obj_set_style_text_font(txt, &thai18, 0);
-  lv_obj_set_style_text_color(txt, lv_color_hex(C_MUTED), 0);
-  lv_obj_set_width(txt, kCardW - 20);
-  lv_label_set_long_mode(txt, LV_LABEL_LONG_DOT);
-  char buf[28];
-  snprintf(buf, sizeof(buf), "%g / %g %s", viz.gaugeVal, viz.gaugeMax, viz.gaugeUnit);
-  setThaiText(txt, buf);
-  lv_obj_align(txt, LV_ALIGN_BOTTOM_LEFT, 10, -5);
-}
-
 static void addCard(const char* title, const char* value, const char* detail, const char* tone, int vizIndex) {
   CardViz& viz = cardViz[vizIndex];
   viz.accent = toneColor(tone);
@@ -624,7 +604,7 @@ static void addCard(const char* title, const char* value, const char* detail, co
   lv_obj_t* t = lv_label_create(card);
   lv_obj_set_style_text_font(t, &thai18, 0);
   lv_obj_set_style_text_color(t, lv_color_hex(C_MUTED), 0);
-  lv_obj_set_width(t, kCardW - 20);
+  lv_obj_set_size(t, kCardW - 20, 20);  // สูง 1 บรรทัด ไม่งั้น LONG_DOT ยัง wrap ได้
   lv_label_set_long_mode(t, LV_LABEL_LONG_DOT);
   setThaiText(t, title);
   lv_obj_align(t, LV_ALIGN_TOP_LEFT, 10, 8);
@@ -632,7 +612,7 @@ static void addCard(const char* title, const char* value, const char* detail, co
   lv_obj_t* v = lv_label_create(card);
   lv_obj_set_style_text_font(v, &thai22, 0);
   lv_obj_set_style_text_color(v, lv_color_hex(C_TEXT), 0);
-  lv_obj_set_width(v, kCardW - 20);
+  lv_obj_set_size(v, kCardW - 20, 26);
   lv_label_set_long_mode(v, LV_LABEL_LONG_DOT);
   setThaiText(v, value);
   lv_obj_align(v, LV_ALIGN_TOP_LEFT, 10, 28);
@@ -641,8 +621,9 @@ static void addCard(const char* title, const char* value, const char* detail, co
   lv_obj_add_flag(d, LV_OBJ_FLAG_HIDDEN);  // เก็บไว้ให้หน้า detail อ่าน ไม่โชว์บนการ์ด
   setThaiText(d, detail);
 
-  if (viz.isGauge && viz.gaugeMax > 0) addGauge(card, viz);
-  else if (viz.sparkN > 1) addSpark(card, viz);
+  // การ์ดที่ไม่มีเส้นแนวโน้มให้ค่าอยู่กลางการ์ด จะได้ดูตั้งใจ ไม่ใช่ว่างเพราะลืม
+  if (viz.sparkN > 1) addSpark(card, viz);
+  else lv_obj_align(v, LV_ALIGN_LEFT_MID, 10, 6);
 }
 
 static void applyBacklight(int hour) {
@@ -679,12 +660,13 @@ static void setStatus(const char* msg, uint32_t color) {
   lv_obj_set_style_text_color(statusLabel, lv_color_hex(color), 0);
 }
 
-static void fetchAndRender() {
+static bool fetchAndRender() {
   if (WiFi.status() != WL_CONNECTED) {
     setStatus("Wi-Fi หลุด", 0xF87171);
-    return;
+    return false;
   }
 
+  Serial.printf("fetch เริ่ม · heap %u\n", (unsigned)ESP.getFreeHeap());
   HTTPClient http;
   http.setTimeout(8000);
   http.begin(DEVICE_SUMMARY_URL);
@@ -692,9 +674,10 @@ static void fetchAndRender() {
   if (code != HTTP_CODE_OK) {
     Serial.printf("http failed: %d\n", code);
     setStatus(String("ต่อ backend ไม่ได้ (").c_str(), 0xF87171);
-    setThaiText(statusLabel, (String("ต่อ backend ไม่ได้ (") + code + ")").c_str());
+    setThaiText(statusLabel, (String("ต่อ backend ไม่ได้ (") + code + ") · ลองใหม่ใน 30 วิ").c_str());
+    lv_obj_set_style_text_color(statusLabel, lv_color_hex(C_DOWN), 0);
     http.end();
-    return;
+    return false;
   }
 
   // ponytail: อ่านเป็น String ก่อน — parse จาก stream ตรง ๆ ได้ InvalidInput (chunked encoding)
@@ -705,7 +688,7 @@ static void fetchAndRender() {
   if (err) {
     Serial.printf("json failed: %s (payload %u bytes)\n", err.c_str(), payload.length());
     setStatus("อ่านข้อมูลไม่ได้", 0xF87171);
-    return;
+    return false;
   }
 
   lv_obj_clean(cardList);
@@ -813,6 +796,7 @@ static void fetchAndRender() {
   setThaiText(statusLabel, (String(n) + " การ์ด · " + (const char*)(doc["status"]["message"] | "ok")).c_str());
   lv_obj_set_style_text_color(statusLabel, lv_color_hex(0x4ADE80), 0);
   Serial.printf("rendered %d cards (payload %u bytes)\n", n, (unsigned)doc.size());
+  return true;
 }
 
 void setup() {
@@ -857,10 +841,10 @@ void setup() {
   lv_obj_clear_flag(hero, LV_OBJ_FLAG_SCROLLABLE);
 
   headValue = lv_label_create(hero);
-  lv_obj_set_style_text_font(headValue, &clock60, 0);
+  lv_obj_set_style_text_font(headValue, &clock48, 0);
   lv_obj_set_style_text_color(headValue, lv_color_hex(C_TEXT), 0);
   lv_label_set_text(headValue, "--:--");
-  lv_obj_align(headValue, LV_ALIGN_TOP_LEFT, 18, 0);
+  lv_obj_align(headValue, LV_ALIGN_TOP_LEFT, 20, 8);
 
   headDetail = lv_label_create(hero);
   lv_obj_set_style_text_font(headDetail, &thai18, 0);
@@ -891,24 +875,24 @@ void setup() {
   lv_obj_clear_flag(statusBar, LV_OBJ_FLAG_SCROLLABLE);
 
   lv_obj_t* calBtn = lv_button_create(statusBar);
-  lv_obj_set_size(calBtn, 74, 22);
+  lv_obj_set_size(calBtn, 116, 22);
   lv_obj_align(calBtn, LV_ALIGN_RIGHT_MID, -2, 0);
   lv_obj_set_style_bg_color(calBtn, lv_color_hex(C_CARD), 0);
   lv_obj_set_style_radius(calBtn, 6, 0);
   lv_obj_add_event_cb(calBtn, [](lv_event_t*) {
     calibrateTouch();
     lv_obj_invalidate(lv_screen_active());  // calibrate วาดทับด้วย tft ตรง ๆ ต้องสั่ง LVGL วาดคืน
-  }, LV_EVENT_CLICKED, nullptr);
+  }, LV_EVENT_LONG_PRESSED, nullptr);
 
   lv_obj_t* calLbl = lv_label_create(calBtn);
   lv_obj_set_style_text_font(calLbl, &thai18, 0);
   lv_obj_set_style_text_color(calLbl, lv_color_hex(C_MUTED), 0);
-  setThaiText(calLbl, "ปรับทัช");
+  setThaiText(calLbl, "กดค้าง=ปรับทัช");
   lv_obj_center(calLbl);
 
   statusLabel = lv_label_create(statusBar);
   lv_obj_set_style_text_font(statusLabel, &thai18, 0);
-  lv_obj_set_width(statusLabel, 376);  // เว้นที่ให้ปุ่มปรับทัช
+  lv_obj_set_width(statusLabel, 334);  // เว้นที่ให้ปุ่มปรับทัช
   lv_label_set_long_mode(statusLabel, LV_LABEL_LONG_DOT);
   setThaiText(statusLabel, "ต่อ Wi-Fi...");
   lv_obj_align(statusLabel, LV_ALIGN_LEFT_MID, 12, 0);
@@ -938,6 +922,7 @@ void setup() {
     lv_obj_align(btn, b.align, -8, b.y);
     lv_obj_set_style_bg_color(btn, lv_color_hex(C_CARD), 0);
     lv_obj_set_style_radius(btn, 12, 0);
+    lv_obj_set_ext_click_area(btn, 8);
     lv_obj_set_user_data(btn, (void*)(intptr_t)b.dy);
     lv_obj_add_event_cb(btn, [](lv_event_t* e) {
       int dy = (int)(intptr_t)lv_obj_get_user_data((lv_obj_t*)lv_event_get_current_target(e));
@@ -957,10 +942,13 @@ void setup() {
   lv_obj_set_style_bg_color(detailView, lv_color_hex(C_CARD), 0);
   lv_obj_set_style_border_width(detailView, 0, 0);
   lv_obj_set_style_radius(detailView, 0, 0);
-  lv_obj_set_style_pad_all(detailView, 0, 0);
+  lv_obj_set_style_pad_all(detailView, 16, 0);
+  lv_obj_set_style_pad_row(detailView, 10, 0);
+  lv_obj_set_style_pad_right(detailView, 44, 0);  // เว้นทางให้ปุ่ม X ไม่ทับเนื้อหา
   lv_obj_add_flag(detailView, LV_OBJ_FLAG_HIDDEN);
   lv_obj_add_flag(detailView, LV_OBJ_FLAG_CLICKABLE);
-  lv_obj_clear_flag(detailView, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_set_flex_flow(detailView, LV_FLEX_FLOW_COLUMN);
+  lv_obj_set_scrollbar_mode(detailView, LV_SCROLLBAR_MODE_OFF);
   lv_obj_add_event_cb(detailView, [](lv_event_t* e) {
     lv_obj_add_flag((lv_obj_t*)lv_event_get_target(e), LV_OBJ_FLAG_HIDDEN);
   }, LV_EVENT_CLICKED, nullptr);
@@ -969,29 +957,66 @@ void setup() {
   detailTitle = lv_label_create(detailView);
   lv_obj_set_style_text_font(detailTitle, &thai18, 0);
   lv_obj_set_style_text_color(detailTitle, lv_color_hex(C_MUTED), 0);
-  lv_obj_align(detailTitle, LV_ALIGN_TOP_LEFT, 20, 12);
 
   detailValue = lv_label_create(detailView);
   lv_obj_set_style_text_font(detailValue, &thai36, 0);
   lv_obj_set_style_text_color(detailValue, lv_color_hex(C_TEXT), 0);
-  lv_obj_set_width(detailValue, 440);
-  lv_label_set_long_mode(detailValue, LV_LABEL_LONG_DOT);
-  lv_obj_align(detailValue, LV_ALIGN_TOP_LEFT, 20, 28);
+  lv_obj_set_width(detailValue, 404);
+  lv_label_set_long_mode(detailValue, LV_LABEL_LONG_WRAP);
 
   detailText = lv_label_create(detailView);
   lv_obj_set_style_text_font(detailText, &thai18, 0);
   lv_obj_set_style_text_color(detailText, lv_color_hex(0xB9C4E6), 0);
-  lv_obj_set_size(detailText, 440, 42);  // สูงตายตัว 2 บรรทัด — เดิม wrap ยาวจนทับกราฟ
-  lv_label_set_long_mode(detailText, LV_LABEL_LONG_DOT);
-  lv_obj_align(detailText, LV_ALIGN_TOP_LEFT, 20, 250);
+  lv_obj_set_width(detailText, 404);
+  lv_label_set_long_mode(detailText, LV_LABEL_LONG_WRAP);  // ยาวแค่ไหนก็เลื่อนอ่านได้
 
-  lv_obj_t* hint = lv_label_create(detailView);
-  lv_obj_set_style_text_font(hint, &thai18, 0);
-  lv_obj_set_style_text_color(hint, lv_color_hex(0x5A6688), 0);
-  setThaiText(hint, "แตะเพื่อปิด");
-  lv_obj_align(hint, LV_ALIGN_BOTTOM_RIGHT, -16, -8);
+  lv_obj_t* closeBtn = lv_button_create(detailView);
+  lv_obj_set_size(closeBtn, 44, 44);
+  // ทัชแบบต้านทาน: ตอนปล่อยนิ้วพิกัดกระโดด ถ้าหลุดนอกปุ่ม LVGL ไม่นับเป็น CLICKED
+  // ขยายพื้นที่รับสัมผัสออกไปอีก 14px รอบด้าน แล้วยิงตั้งแต่กดลง ไม่รอปล่อย
+  lv_obj_set_ext_click_area(closeBtn, 14);
+  lv_obj_add_flag(closeBtn, LV_OBJ_FLAG_FLOATING);  // ลอยอยู่กับที่ ไม่เลื่อนตามเนื้อหา
+  lv_obj_align(closeBtn, LV_ALIGN_TOP_RIGHT, -2, -2);
+  lv_obj_set_style_bg_color(closeBtn, lv_color_hex(0x2A3556), 0);
+  lv_obj_set_style_radius(closeBtn, 19, 0);
+  lv_obj_add_event_cb(closeBtn, [](lv_event_t*) {
+    lv_obj_add_flag(detailView, LV_OBJ_FLAG_HIDDEN);
+  }, LV_EVENT_PRESSED, nullptr);
+
+  // หน้าไหนเลื่อนได้ต้องมีลูกศร — ลากนิ้วบนทัชแบบต้านทานไม่ลื่นพอจะพึ่งอย่างเดียว
+  const struct { const char* icon; int dy; int y; } detailBtns[] = {
+    {LV_SYMBOL_UP, -90, 8},
+    {LV_SYMBOL_DOWN, 90, 74},
+  };
+  for (const auto& b : detailBtns) {
+    lv_obj_t* sb = lv_button_create(detailView);
+    lv_obj_set_size(sb, 40, 60);
+    lv_obj_add_flag(sb, LV_OBJ_FLAG_FLOATING);
+    lv_obj_align(sb, LV_ALIGN_RIGHT_MID, -2, b.y);
+    lv_obj_set_style_bg_color(sb, lv_color_hex(0x2A3556), 0);
+    lv_obj_set_style_radius(sb, 10, 0);
+    lv_obj_set_ext_click_area(sb, 8);
+    lv_obj_set_user_data(sb, (void*)(intptr_t)b.dy);
+    lv_obj_add_event_cb(sb, [](lv_event_t* e) {
+      int dy = (int)(intptr_t)lv_obj_get_user_data((lv_obj_t*)lv_event_get_current_target(e));
+      lv_obj_scroll_by(detailView, 0, -dy, LV_ANIM_ON);
+    }, LV_EVENT_PRESSED, nullptr);
+
+    lv_obj_t* icon = lv_label_create(sb);
+    lv_label_set_text(icon, b.icon);
+    lv_obj_set_style_text_color(icon, lv_color_hex(0xB9C4E6), 0);
+    lv_obj_center(icon);
+  }
+
+  lv_obj_t* closeLbl = lv_label_create(closeBtn);
+  lv_obj_set_style_text_font(closeLbl, &thai22, 0);
+  lv_obj_set_style_text_color(closeLbl, lv_color_hex(C_TEXT), 0);
+  lv_label_set_text(closeLbl, "X");
+  lv_obj_center(closeLbl);
 
   lv_timer_create(updateClock, 1000, nullptr);
+  esp_task_wdt_init(20, true);  // loop ค้างเกิน 20 วิ = รีบูตเอง ดีกว่าค้างถาวร
+  esp_task_wdt_add(nullptr);
   lv_refr_now(disp);
 
   // captive portal: ถ้ายังไม่เคยตั้ง Wi-Fi จะเปิด AP "TanPlanet_Config" ให้ตั้งจากมือถือ
@@ -1017,17 +1042,27 @@ void setup() {
     Serial.printf("ntp: %s", nowSec > 1000000000 ? ctime(&nowSec) : "ไม่ได้เวลา\n");
     setStatus("กำลังดึงข้อมูล...", 0xFBBF24);
     lv_refr_now(disp);
-    fetchAndRender();
-    lastFetch = millis();
+    if (!fetchAndRender()) lastFetch = millis() - kRefreshMs + kRetryMs;
+    else lastFetch = millis();
   }
 }
 
 void loop() {
+  esp_task_wdt_reset();
   lv_timer_handler();
   delay(2);
 
+  // heartbeat: ถ้าจอค้างแล้วบรรทัดนี้ยังมา = loop ยังหมุน ปัญหาอยู่ที่ LVGL/จอ
+  // ถ้าหายไปด้วย = ค้างใน blocking call (HTTP/SPI) หรือ heap หมด
+  static uint32_t beat = 0;
+  if (millis() - beat > 20000) {
+    beat = millis();
+    Serial.printf("[%lus] heap %u · ก้อนใหญ่สุด %u\n", millis() / 1000,
+                  (unsigned)ESP.getFreeHeap(),
+                  (unsigned)heap_caps_get_largest_free_block(MALLOC_CAP_8BIT));
+  }
+
   if (millis() - lastFetch > kRefreshMs) {
-    lastFetch = millis();
-    fetchAndRender();
+    lastFetch = fetchAndRender() ? millis() : millis() - kRefreshMs + kRetryMs;
   }
 }

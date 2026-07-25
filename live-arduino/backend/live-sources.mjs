@@ -186,6 +186,9 @@ async function sumClaudeTokens(sinceMs) {
   }
 
   const total = { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, messages: 0 };
+  const stamps = [];   // เวลาของทุกข้อความ ใช้หาขอบหน้าต่าง 5 ชม.
+  const hourly = new Array(24).fill(0);
+  const nowMs = Date.now();
   for (const file of files) {
     const rl = readline.createInterface({ input: fs.createReadStream(file), crlfDelay: Infinity });
     for await (const line of rl) {
@@ -205,9 +208,32 @@ async function sumClaudeTokens(sinceMs) {
       total.cacheRead += u.cache_read_input_tokens ?? 0;
       total.cacheWrite += u.cache_creation_input_tokens ?? 0;
       total.messages += 1;
+      stamps.push(ts);
+      const hoursAgo = Math.floor((nowMs - ts) / 3600000);
+      if (hoursAgo >= 0 && hoursAgo < 24) hourly[23 - hoursAgo] += u.output_tokens ?? 0;
     }
   }
-  return total;
+
+  // หน้าต่างการใช้งานของ Claude ยาว 5 ชม. เริ่มนับจากข้อความแรกหลังเว้นช่วงเกิน 5 ชม.
+  // (เพดานโควตาจริงอยู่ฝั่งเซิร์ฟเวอร์ อ่านจากไฟล์ในเครื่องไม่ได้ จึงบอกได้แค่ยอดใช้กับเวลารีเซ็ต)
+  stamps.sort((a, b) => a - b);
+  const WINDOW = 5 * 3600 * 1000;
+  let anchor = stamps[0] ?? nowMs;
+  for (let i = 1; i < stamps.length; i++) {
+    if (stamps[i] - stamps[i - 1] > WINDOW) anchor = stamps[i];  // เว้นช่วงนาน = เริ่มนับใหม่
+  }
+  // ใช้ต่อเนื่องยาวกว่า 5 ชม. หน้าต่างจะหมุนไปเรื่อย ๆ ต้องเลื่อนไปรอบปัจจุบัน
+  const windowStart = anchor + Math.floor((nowMs - anchor) / WINDOW) * WINDOW;
+  const windowOutput = stamps.reduce((sum, ts, i) => sum + (ts >= windowStart ? 0 : 0), 0);
+
+  return {
+    ...total,
+    hourly,
+    windowStart,
+    windowResetsAt: windowStart + WINDOW,
+    windowMinutesLeft: Math.max(0, Math.round((windowStart + WINDOW - nowMs) / 60000)),
+    windowOutput,
+  };
 }
 
 async function sumCodexTokens(sinceMs) {
@@ -241,9 +267,32 @@ async function sumCodexTokens(sinceMs) {
       total.input = Math.max(total.input, u.input_tokens ?? 0);
       total.output = Math.max(total.output, u.output_tokens ?? 0);
       total.messages += 1;
+      stamps.push(ts);
+      const hoursAgo = Math.floor((nowMs - ts) / 3600000);
+      if (hoursAgo >= 0 && hoursAgo < 24) hourly[23 - hoursAgo] += u.output_tokens ?? 0;
     }
   }
-  return total;
+
+  // หน้าต่างการใช้งานของ Claude ยาว 5 ชม. เริ่มนับจากข้อความแรกหลังเว้นช่วงเกิน 5 ชม.
+  // (เพดานโควตาจริงอยู่ฝั่งเซิร์ฟเวอร์ อ่านจากไฟล์ในเครื่องไม่ได้ จึงบอกได้แค่ยอดใช้กับเวลารีเซ็ต)
+  stamps.sort((a, b) => a - b);
+  const WINDOW = 5 * 3600 * 1000;
+  let anchor = stamps[0] ?? nowMs;
+  for (let i = 1; i < stamps.length; i++) {
+    if (stamps[i] - stamps[i - 1] > WINDOW) anchor = stamps[i];  // เว้นช่วงนาน = เริ่มนับใหม่
+  }
+  // ใช้ต่อเนื่องยาวกว่า 5 ชม. หน้าต่างจะหมุนไปเรื่อย ๆ ต้องเลื่อนไปรอบปัจจุบัน
+  const windowStart = anchor + Math.floor((nowMs - anchor) / WINDOW) * WINDOW;
+  const windowOutput = stamps.reduce((sum, ts, i) => sum + (ts >= windowStart ? 0 : 0), 0);
+
+  return {
+    ...total,
+    hourly,
+    windowStart,
+    windowResetsAt: windowStart + WINDOW,
+    windowMinutesLeft: Math.max(0, Math.round((windowStart + WINDOW - nowMs) / 60000)),
+    windowOutput,
+  };
 }
 
 export function getAiUsage() {

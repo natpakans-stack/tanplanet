@@ -284,12 +284,19 @@ async function buildAiUsageCard() {
       ...card(
         "ai_status", "token", "AI Status",
         parts.join(" · ") || "ยังไม่มีการใช้งานวันนี้",
-        c ? `วันนี้: ส่งเข้า ${fmtTokens(c.input)} · อ่านแคช ${fmtTokens(c.cacheRead)} · ${c.messages} ข้อความ` : "",
+        c
+          ? `รอบนี้เหลือ ${Math.floor(c.windowMinutesLeft / 60)} ชม. ${c.windowMinutesLeft % 60} นาที · ` +
+            `วันนี้ส่งเข้า ${fmtTokens(c.input)} · อ่านแคช ${fmtTokens(c.cacheRead)} · ${c.messages} ข้อความ`
+          : "",
         "neutral", 80,
       ),
       extra: {
         usage: [
-          c && { name: "Claude", input: c.input, output: c.output, cacheRead: c.cacheRead, cacheWrite: c.cacheWrite, messages: c.messages },
+          c && {
+            name: "Claude", input: c.input, output: c.output, cacheRead: c.cacheRead,
+            cacheWrite: c.cacheWrite, messages: c.messages, hourly: c.hourly,
+            windowMinutesLeft: c.windowMinutesLeft,
+          },
           x && { name: "Codex", input: x.input, output: x.output, messages: x.messages },
         ].filter(Boolean),
         since: usage.since,
@@ -392,8 +399,9 @@ async function buildDeviceSummary() {
     if (c.extra?.stock?.closes) withViz(c, { kind: "spark", points: c.extra.stock.closes });
   }
 
-  const usedToday = tokenCard.extra?.usage?.[0]?.output ?? 0;
-  withViz(tokenCard, { kind: "gauge", value: Math.round(usedToday / 1000), max: 1000, unit: "k" });
+  // เส้นการใช้งานรายชั่วโมง 24 ชม. — เล่าจังหวะการทำงานได้ดีกว่าแถบเทียบเพดานที่ไม่รู้ค่าจริง
+  const hourly = tokenCard.extra?.usage?.[0]?.hourly;
+  if (hourly?.some((v) => v > 0)) withViz(tokenCard, { kind: "spark", points: hourly });
 
   const nsPct = Number(String(northStarCard.detail).match(/(\d+(?:\.\d+)?)\s*%/)?.[1]);
   if (Number.isFinite(nsPct)) withViz(northStarCard, { kind: "gauge", value: nsPct, max: 100, unit: "%" });
