@@ -27,3 +27,29 @@ If `MEGACOACH_ROOT` exists, the service reads sanitized summaries from:
 - `liff-app/northstar.json`
 
 It never exposes raw private portfolio data or API keys.
+
+## รัน backend อัตโนมัติ (launchd)
+
+จอ ESP32 ดึงข้อมูลจาก Mac ผ่าน Wi-Fi ถ้า backend ไม่ได้รันจอจะค้างข้อมูลเดิม
+ติดตั้งเป็น LaunchAgent ให้สตาร์ทเองตอนล็อกอินและฟื้นเองถ้า process ตาย:
+
+```bash
+cp backend/com.tanplanet.astro-backend.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/com.tanplanet.astro-backend.plist
+```
+
+ตรวจสอบ / จัดการ:
+
+```bash
+launchctl list | grep tanplanet          # ดู PID (คอลัมน์แรก) และ exit code
+tail -f /tmp/tanplanet-backend.log       # log ปกติ
+tail -f /tmp/tanplanet-backend.err       # error
+launchctl unload ~/Library/LaunchAgents/com.tanplanet.astro-backend.plist   # หยุด
+```
+
+`KeepAlive` = true จึงฟื้นเองภายใน ~10 วินาทีถ้าถูก kill หรือ crash
+(ทดสอบแล้ว: kill -9 → กลับมาเองพร้อม PID ใหม่)
+
+⚠️ ไม่ทำงานตอน Mac หลับ — จอจะขึ้น "ต่อ backend ไม่ได้" แล้วลองใหม่ทุก 30 วินาที
+ถ้าต้องการให้จอทำงานโดยไม่พึ่ง Mac ต้องย้าย backend ขึ้น cloud (แต่ MegaCoach
+กับ token usage อ่านไฟล์ในเครื่อง ตามไปด้วยไม่ได้)
