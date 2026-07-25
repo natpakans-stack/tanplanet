@@ -12,6 +12,7 @@
 #include <ArduinoJson.h>
 #include <Preferences.h>
 #include <time.h>
+#include <mbedtls/base64.h>
 
 LV_FONT_DECLARE(thai18);
 LV_FONT_DECLARE(thai36);
@@ -43,6 +44,28 @@ static const char* kThaiDays[] = {"อาทิตย์", "จันทร์",
                                   "พฤหัสบดี", "ศุกร์", "เสาร์"};
 static const char* kThaiMonths[] = {"ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
                                     "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."};
+
+// ข้อมูลสำหรับวาดกราฟในหน้า detail — เก็บเฉพาะตัวเลขที่ใช้จริง ไม่เก็บ JSON ทั้งก้อน
+enum VizKind : uint8_t { VIZ_NONE, VIZ_TOKENS, VIZ_HOURLY, VIZ_SCORE, VIZ_PRICE };
+struct CardViz {
+  VizKind kind = VIZ_NONE;
+  float v[24] = {0};
+  char lbl[6][10] = {{0}};
+  uint8_t n = 0;
+  char ticker[8] = {0};
+  float changePct = 0;
+  int8_t logoIdx = -1;
+};
+
+// โลโก้หุ้นมาเป็น RGB565 ดิบ 28x28 จาก backend (ESP32 decode PNG เองไม่ไหว)
+static const int kLogoPx = 28;
+static const int kMaxLogos = 4;
+static uint8_t logoBuf[kMaxLogos][kLogoPx * kLogoPx * 2];
+static lv_image_dsc_t logoDsc[kMaxLogos];
+static int logoUsed = 0;
+static const int kMaxCards = 14;
+static CardViz cardViz[kMaxCards];
+static int cardCount = 0;
 
 static uint32_t lastFetch = 0;
 static const uint32_t kRefreshMs = 5UL * 60UL * 1000UL;
@@ -266,18 +289,187 @@ static uint32_t toneColor(const char* tone) {
 
 // แตะการ์ด → กางรายละเอียดเต็มจอ; แตะที่ไหนก็ได้เพื่อปิด
 // ponytail: อ่านข้อความจาก label ลูกของการ์ดเอง ไม่ต้องเก็บ state ซ้ำอีกชุด
+static lv_obj_t* vizBox = nullptr;
+
+// แท่งนอนพร้อมป้ายชื่อ+ค่า — ใช้กับ token usage ที่ค่าต่างกันหลักพันเท่า
+static void drawBars(lv_obj_t* parent, const CardViz& viz) {
+  float maxV = 1;
+  for (int i = 0; i < viz.n; i++) maxV = max(maxV, viz.v[i]);
+
+  for (int i = 0; i < viz.n; i++) {
+    lv_obj_t* row = lv_obj_create(parent);
+    lv_obj_set_size(row, lv_pct(100), 30);
+    lv_obj_set_style_bg_opa(row, LV_OPA_TRANSP, 0);
+    lv_obj_set_style_border_width(row, 0, 0);
+    lv_obj_set_style_pad_all(row, 0, 0);
+    lv_obj_clear_flag(row, LV_OBJ_FLAG_SCROLLABLE);
+
+    lv_obj_t* name = lv_label_create(row);
+    lv_obj_set_style_text_font(name, &thai18, 0);
+    lv_obj_set_style_text_color(name, lv_color_hex(0x8B95B5), 0);
+    lv_label_set_text(name, viz.lbl[i]);
+    lv_obj_align(name, LV_ALIGN_LEFT_MID, 0, 0);
+
+    lv_obj_t* bar = lv_bar_create(row);
+    lv_obj_set_size(bar, 210, 14);
+    lv_obj_align(bar, LV_ALIGN_LEFT_MID, 95, 0);
+    lv_obj_set_style_bg_color(bar, lv_color_hex(0x232C4A), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(bar, lv_color_hex(0x4ADE80), LV_PART_INDICATOR);
+    lv_obj_set_style_radius(bar, 7, LV_PART_INDICATOR);
+    lv_bar_set_range(bar, 0, 1000);
+    lv_bar_set_value(bar, (int32_t)(viz.v[i] / maxV * 1000), LV_ANIM_ON);
+
+    lv_obj_t* val = lv_label_create(row);
+    lv_obj_set_style_text_font(val, &thai18, 0);
+    lv_obj_set_style_text_color(val, lv_color_hex(0xF5F7FF), 0);
+    char buf[16];
+    float x = viz.v[i];
+    if (x >= 1e6f) snprintf(buf, sizeof(buf), "%.1fM", x / 1e6f);
+    else if (x >= 1e3f) snprintf(buf, sizeof(buf), "%.0fk", x / 1e3f);
+    else snprintf(buf, sizeof(buf), "%.0f", x);
+    lv_label_set_text(val, buf);
+    lv_obj_align(val, LV_ALIGN_RIGHT_MID, 0, 0);
+  }
+}
+
+// กราฟเส้นอุณหภูมิ 24 ชม.
+static void drawHourly(lv_obj_t* parent, const CardViz& viz) {
+  lv_obj_t* chart = lv_chart_create(parent);
+  lv_obj_set_size(chart, 420, 120);
+  lv_chart_set_type(chart, LV_CHART_TYPE_LINE);
+  lv_chart_set_point_count(chart, viz.n);
+  lv_obj_set_style_bg_color(chart, lv_color_hex(0x0B1020), 0);
+  lv_obj_set_style_border_color(chart, lv_color_hex(0x232C4A), 0);
+  lv_obj_set_style_size(chart, 5, 5, LV_PART_INDICATOR);
+  lv_chart_set_div_line_count(chart, 3, 0);
+
+  float lo = viz.v[0], hi = viz.v[0];
+  for (int i = 0; i < viz.n; i++) { lo = min(lo, viz.v[i]); hi = max(hi, viz.v[i]); }
+  lv_chart_set_range(chart, LV_CHART_AXIS_PRIMARY_Y, (int32_t)lo - 1, (int32_t)hi + 1);
+
+  lv_chart_series_t* ser = lv_chart_add_series(chart, lv_color_hex(0xFBBF24), LV_CHART_AXIS_PRIMARY_Y);
+  for (int i = 0; i < viz.n; i++) lv_chart_set_next_value(chart, ser, (int32_t)viz.v[i]);
+
+  lv_obj_t* range = lv_label_create(parent);
+  lv_obj_set_style_text_font(range, &thai18, 0);
+  lv_obj_set_style_text_color(range, lv_color_hex(0x8B95B5), 0);
+  lv_label_set_text_fmt(range, "%d° — %d°  (ทุก 3 ชม.)", (int)lo, (int)hi);
+}
+
+// เกจครึ่งวงกลมสำหรับคะแนน 0-100
+// ราคาหุ้น: โลโก้ + ticker + %เปลี่ยนแปลง แล้วกราฟเส้น 1 เดือน
+static void drawPrice(lv_obj_t* parent, const CardViz& viz) {
+  bool up = viz.changePct >= 0;
+  uint32_t col = up ? 0x4ADE80 : 0xF87171;
+
+  lv_obj_t* head = lv_obj_create(parent);
+  lv_obj_set_size(head, lv_pct(100), 36);
+  lv_obj_set_style_bg_opa(head, LV_OPA_TRANSP, 0);
+  lv_obj_set_style_border_width(head, 0, 0);
+  lv_obj_set_style_pad_all(head, 0, 0);
+  lv_obj_clear_flag(head, LV_OBJ_FLAG_SCROLLABLE);
+
+  int textX = 0;
+  if (viz.logoIdx >= 0) {
+    lv_obj_t* img = lv_image_create(head);
+    lv_image_set_src(img, &logoDsc[viz.logoIdx]);
+    lv_obj_align(img, LV_ALIGN_LEFT_MID, 0, 0);
+    textX = kLogoPx + 10;
+  }
+
+  lv_obj_t* name = lv_label_create(head);
+  lv_obj_set_style_text_font(name, &thai18, 0);
+  lv_obj_set_style_text_color(name, lv_color_hex(0xF5F7FF), 0);
+  lv_label_set_text(name, viz.ticker);
+  lv_obj_align(name, LV_ALIGN_LEFT_MID, textX, 0);
+
+  lv_obj_t* chg = lv_label_create(head);
+  lv_obj_set_style_text_font(chg, &thai18, 0);
+  lv_obj_set_style_text_color(chg, lv_color_hex(col), 0);
+  char buf[24];
+  snprintf(buf, sizeof(buf), "$%.2f  %+.1f%%", viz.v[viz.n - 1], viz.changePct);
+  lv_label_set_text(chg, buf);
+  lv_obj_align(chg, LV_ALIGN_RIGHT_MID, 0, 0);
+
+  lv_obj_t* chart = lv_chart_create(parent);
+  lv_obj_set_size(chart, 420, 110);
+  lv_chart_set_type(chart, LV_CHART_TYPE_LINE);
+  lv_chart_set_point_count(chart, viz.n);
+  lv_obj_set_style_bg_color(chart, lv_color_hex(0x0B1020), 0);
+  lv_obj_set_style_border_color(chart, lv_color_hex(0x232C4A), 0);
+  lv_obj_set_style_size(chart, 0, 0, LV_PART_INDICATOR);  // เส้นล้วน ไม่มีจุด
+  lv_obj_set_style_line_width(chart, 3, LV_PART_ITEMS);
+  lv_chart_set_div_line_count(chart, 3, 0);
+
+  float lo = viz.v[0], hi = viz.v[0];
+  for (int i = 0; i < viz.n; i++) { lo = min(lo, viz.v[i]); hi = max(hi, viz.v[i]); }
+  // คูณ 100 เพราะ lv_chart รับ int — ราคาหุ้นมีทศนิยม 2 ตำแหน่ง
+  lv_chart_set_range(chart, LV_CHART_AXIS_PRIMARY_Y, (int32_t)(lo * 100), (int32_t)(hi * 100));
+  lv_chart_series_t* ser = lv_chart_add_series(chart, lv_color_hex(col), LV_CHART_AXIS_PRIMARY_Y);
+  for (int i = 0; i < viz.n; i++) lv_chart_set_next_value(chart, ser, (int32_t)(viz.v[i] * 100));
+
+  lv_obj_t* range = lv_label_create(parent);
+  lv_obj_set_style_text_font(range, &thai18, 0);
+  lv_obj_set_style_text_color(range, lv_color_hex(0x8B95B5), 0);
+  lv_label_set_text_fmt(range, "1 เดือน · ต่ำ $%d — สูง $%d", (int)lo, (int)hi);
+}
+
+static void drawScore(lv_obj_t* parent, const CardViz& viz) {
+  int score = (int)viz.v[0];
+  lv_obj_t* arc = lv_arc_create(parent);
+  lv_obj_set_size(arc, 150, 150);
+  lv_arc_set_rotation(arc, 135);
+  lv_arc_set_bg_angles(arc, 0, 270);
+  lv_arc_set_range(arc, 0, 100);
+  lv_arc_set_value(arc, score);
+  lv_obj_remove_style(arc, nullptr, LV_PART_KNOB);
+  lv_obj_clear_flag(arc, LV_OBJ_FLAG_CLICKABLE);
+  uint32_t col = score >= 66 ? 0x4ADE80 : score >= 40 ? 0xFBBF24 : 0xF87171;
+  lv_obj_set_style_arc_color(arc, lv_color_hex(0x232C4A), LV_PART_MAIN);
+  lv_obj_set_style_arc_color(arc, lv_color_hex(col), LV_PART_INDICATOR);
+  lv_obj_set_style_arc_width(arc, 14, LV_PART_MAIN);
+  lv_obj_set_style_arc_width(arc, 14, LV_PART_INDICATOR);
+
+  lv_obj_t* num = lv_label_create(arc);
+  lv_obj_set_style_text_font(num, &thai36, 0);
+  lv_obj_set_style_text_color(num, lv_color_hex(col), 0);
+  lv_label_set_text_fmt(num, "%d", score);
+  lv_obj_center(num);
+}
+
 static void cardClicked(lv_event_t* e) {
   lv_obj_t* card = (lv_obj_t*)lv_event_get_target(e);
   lv_label_set_text(detailTitle, lv_label_get_text(lv_obj_get_child(card, 0)));
   lv_label_set_text(detailValue, lv_label_get_text(lv_obj_get_child(card, 1)));
   lv_obj_t* third = lv_obj_get_child(card, 2);
   lv_label_set_text(detailText, third ? lv_label_get_text(third) : "");
+
+  if (vizBox) { lv_obj_delete(vizBox); vizBox = nullptr; }
+  int idx = (int)(intptr_t)lv_obj_get_user_data(card);
+  if (idx >= 0 && idx < cardCount && cardViz[idx].kind != VIZ_NONE) {
+    vizBox = lv_obj_create(detailView);
+    lv_obj_set_size(vizBox, lv_pct(100), LV_SIZE_CONTENT);
+    lv_obj_set_style_bg_opa(vizBox, LV_OPA_TRANSP, 0);
+    lv_obj_set_style_border_width(vizBox, 0, 0);
+    lv_obj_set_style_pad_all(vizBox, 0, 0);
+    lv_obj_set_flex_flow(vizBox, LV_FLEX_FLOW_COLUMN);
+    lv_obj_add_flag(vizBox, LV_OBJ_FLAG_EVENT_BUBBLE);  // แตะกราฟก็ปิดหน้าได้
+
+    switch (cardViz[idx].kind) {
+      case VIZ_TOKENS: drawBars(vizBox, cardViz[idx]); break;
+      case VIZ_HOURLY: drawHourly(vizBox, cardViz[idx]); break;
+      case VIZ_SCORE:  drawScore(vizBox, cardViz[idx]); break;
+      case VIZ_PRICE:  drawPrice(vizBox, cardViz[idx]); break;
+      default: break;
+    }
+  }
   lv_obj_remove_flag(detailView, LV_OBJ_FLAG_HIDDEN);
 }
 
-static void addCard(const char* title, const char* value, const char* detail, const char* tone) {
+static void addCard(const char* title, const char* value, const char* detail, const char* tone, int vizIndex) {
   lv_obj_t* card = lv_obj_create(cardList);
   lv_obj_add_flag(card, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_set_user_data(card, (void*)(intptr_t)vizIndex);
   lv_obj_add_event_cb(card, cardClicked, LV_EVENT_CLICKED, nullptr);
   lv_obj_set_width(card, lv_pct(100));
   lv_obj_set_height(card, LV_SIZE_CONTENT);
@@ -371,7 +563,10 @@ static void fetchAndRender() {
   }
 
   lv_obj_clean(cardList);
+  if (vizBox) { lv_obj_delete(vizBox); vizBox = nullptr; }
   int n = 0;
+  cardCount = 0;
+  logoUsed = 0;
   for (JsonObject c : doc["cards"].as<JsonArray>()) {
     const char* type = c["type"] | "";
     const char* value = c["value"] | "-";
@@ -379,7 +574,68 @@ static void fetchAndRender() {
 
     // การ์ดนาฬิกาข้าม — หัวจอใช้เวลาจาก NTP ในเครื่องแทน แม่นกว่าและไม่ต้องรอ fetch
     if (!strcmp(type, "clock")) continue;
-    addCard(c["title"] | "", value, detail, c["tone"] | "neutral");
+    if (cardCount >= kMaxCards) break;
+
+    CardViz& viz = cardViz[cardCount];
+    viz = CardViz{};
+    JsonObject extra = c["extra"];
+
+    if (!strcmp(type, "token") && extra["usage"][0]) {
+      JsonObject u = extra["usage"][0];
+      const char* names[] = {"ส่งเข้า", "ตอบกลับ", "อ่านแคช", "เขียนแคช"};
+      const char* keys[] = {"input", "output", "cacheRead", "cacheWrite"};
+      for (int i = 0; i < 4; i++) {
+        viz.v[i] = u[keys[i]] | 0.0f;
+        strncpy(viz.lbl[i], names[i], sizeof(viz.lbl[i]) - 1);
+      }
+      viz.n = 4;
+      viz.kind = VIZ_TOKENS;
+    } else if (!strcmp(type, "weather") && extra["hourly"]) {
+      for (JsonObject h : extra["hourly"].as<JsonArray>()) {
+        if (viz.n >= 24) break;
+        viz.v[viz.n++] = h["v"] | 0.0f;
+      }
+      if (viz.n) viz.kind = VIZ_HOURLY;
+    } else if (extra["stock"]) {
+      JsonObject st = extra["stock"];
+      strncpy(viz.ticker, st["ticker"] | "", sizeof(viz.ticker) - 1);
+      viz.changePct = st["changePct"] | 0.0f;
+      for (float close : st["closes"].as<JsonArray>()) {
+        if (viz.n >= 24) break;
+        viz.v[viz.n++] = close;
+      }
+      const char* b64 = st["logo"];
+      if (b64 && logoUsed < kMaxLogos) {
+        size_t written = 0;
+        if (mbedtls_base64_decode(logoBuf[logoUsed], sizeof(logoBuf[0]), &written,
+                                  (const unsigned char*)b64, strlen(b64)) == 0 &&
+            written == sizeof(logoBuf[0])) {
+          logoDsc[logoUsed] = lv_image_dsc_t{};
+          logoDsc[logoUsed].header.magic = LV_IMAGE_HEADER_MAGIC;
+          logoDsc[logoUsed].header.cf = LV_COLOR_FORMAT_RGB565;
+          logoDsc[logoUsed].header.w = kLogoPx;
+          logoDsc[logoUsed].header.h = kLogoPx;
+          logoDsc[logoUsed].header.stride = kLogoPx * 2;
+          logoDsc[logoUsed].data_size = written;
+          logoDsc[logoUsed].data = logoBuf[logoUsed];
+          viz.logoIdx = logoUsed++;
+        }
+      }
+      if (viz.n) viz.kind = VIZ_PRICE;
+    } else if (!strcmp(type, "astro")) {
+      // คะแนนดวงอยู่ท้าย value เช่น "ตั้งรับ · 15/100"
+      const char* slash = strstr(value, "/100");
+      if (slash) {
+        const char* p2 = slash;
+        while (p2 > value && isdigit((unsigned char)*(p2 - 1))) p2--;
+        viz.v[0] = atof(p2);
+        viz.n = 1;
+        viz.kind = VIZ_SCORE;
+      }
+    }
+
+    addCard(c["title"] | "", value, detail, c["tone"] | "neutral", cardCount);
+    cardCount++;
     n++;
   }
 

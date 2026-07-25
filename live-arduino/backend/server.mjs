@@ -56,6 +56,9 @@ function card(id, type, title, value, detail, tone = "neutral", priority = 50) {
   return { id, type, title, value, detail: truncate(detail, 120), tone, priority };
 }
 
+import { thaiLunar, nextUposatha } from "./thai-lunar.mjs";
+import { getWeather, nextHoliday, holidaysInMonth, getAiUsage, getStockViz } from "./live-sources.mjs";
+
 const THAI_MONTHS = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
 const THAI_DAYS = ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสฯ", "ศุกร์", "เสาร์"];
 
@@ -69,51 +72,71 @@ function bangkokNow() {
   return { y: Number(get("year")), m: Number(get("month")), d: Number(get("day")), wd: weekdayIndex };
 }
 
-// ponytail: จันทรคติ/วันพระ/weather เป็น mock ล้วน — แทนด้วยข้อมูลจริงใน Sprint 6
-function buildCalendarCards() {
+async function buildCalendarCards() {
   const now = bangkokNow();
   const be = now.y + 543;
-  const buddhaDays = [3, 10, 18, 25];
-  const holidays = [{ d: 28, label: "วันเฉลิมฯ ร.10" }];
+  const today = new Date(now.y, now.m - 1, now.d);
+  const todayIso = `${now.y}-${String(now.m).padStart(2, "0")}-${String(now.d).padStart(2, "0")}`;
+
+  const [holiday, monthHolidays] = await Promise.all([
+    nextHoliday(todayIso).catch(() => null),
+    holidaysInMonth(now.y, now.m).catch(() => []),
+  ]);
+
+  const holidayText = holiday
+    ? `วันหยุดถัดไป: ${Number(holiday.iso.slice(8))} ${THAI_MONTHS[Number(holiday.iso.slice(5, 7)) - 1]} ${holiday.name}`
+    : "ไม่พบวันหยุดถัดไป";
+
+  const lunar = thaiLunar(today);
+  const nextPhra = nextUposatha(today);
+  const buddhaDays = [];
+  for (let d = 1; d <= 31; d++) {
+    const probe = new Date(now.y, now.m - 1, d);
+    if (probe.getMonth() !== now.m - 1) break;
+    if (thaiLunar(probe).isUposatha) buddhaDays.push(d);
+  }
+
   const calendarCard = {
     ...card(
       "calendar_today", "calendar", "Today",
       `${now.d} ${THAI_MONTHS[now.m - 1]} ${be}`,
-      `วัน${THAI_DAYS[now.wd]} · วันหยุดถัดไป: ${holidays[0].d} ${THAI_MONTHS[now.m - 1]} ${holidays[0].label} (mock)`,
-      "neutral", 20,
+      `วัน${THAI_DAYS[now.wd]} · ${holidayText}`,
+      holiday?.iso === todayIso ? "ok" : "neutral", 20,
     ),
-    extra: { calendar: { y: now.y, m: now.m, today: now.d, buddhaDays, holidays } },
+    extra: { calendar: { y: now.y, m: now.m, today: now.d, buddhaDays, holidays: monthHolidays } },
   };
-  const lunarCard = card(
-    "lunar_today", "lunar", "Lunar",
-    "แรม 4 ค่ำ เดือน 8 🌘",
-    `วันพระถัดไป: ${THAI_DAYS[new Date(now.y, now.m - 1, buddhaDays.find((d) => d > now.d) ?? buddhaDays[0]).getDay()]} ${buddhaDays.find((d) => d > now.d) ?? buddhaDays[0]} ${THAI_MONTHS[now.m - 1]} (mock)`,
-    "neutral", 30,
-  );
+
+  const lunarCard = {
+    ...card(
+      "lunar_today", "lunar", "Lunar",
+      lunar.label,
+      lunar.isUposatha
+        ? "วันพระ"
+        : nextPhra
+          ? `วันพระถัดไป: วัน${THAI_DAYS[nextPhra.date.getDay()]} ${nextPhra.date.getDate()} ${THAI_MONTHS[nextPhra.date.getMonth()]} (${nextPhra.label})`
+          : "",
+      lunar.isUposatha ? "ok" : "neutral", 30,
+    ),
+    extra: { lunar: { phase: lunar.phase, day: lunar.day, month: lunar.monthLabel, isUposatha: lunar.isUposatha } },
+  };
   return { calendarCard, lunarCard };
 }
 
-function buildWeatherCard() {
-  return {
-    ...card(
-      "weather_now", "weather", "Weather",
-      "32° ☀️ แดดจัด",
-      "กรุงเทพฯ · สูงสุด 33° ต่ำสุด 26° · โอกาสฝน 20% (mock)",
-      "ok", 40,
-    ),
-    extra: {
-      hourly: [
-        { t: "06", v: 27 }, { t: "09", v: 30 }, { t: "12", v: 33 }, { t: "15", v: 32 },
-        { t: "18", v: 30 }, { t: "21", v: 28 }, { t: "00", v: 27 }, { t: "03", v: 26 },
-      ],
-      forecast: [
-        { d: "ศ.", e: "☀️", hi: 33, lo: 26 },
-        { d: "ส.", e: "⛅", hi: 32, lo: 26 },
-        { d: "อา.", e: "🌧️", hi: 30, lo: 25 },
-        { d: "จ.", e: "⛅", hi: 32, lo: 26 },
-      ],
-    },
-  };
+async function buildWeatherCard() {
+  try {
+    const w = await getWeather();
+    return {
+      ...card(
+        "weather_now", "weather", "Weather",
+        `${w.temp}° ${w.condition}`,
+        `กรุงเทพฯ · รู้สึก ${w.feels}° · สูงสุด ${w.hi}° ต่ำสุด ${w.lo}° · โอกาสฝน ${w.rain}%`,
+        w.rain >= 60 ? "caution" : "ok", 40,
+      ),
+      extra: { hourly: w.hourly, forecast: w.forecast, humidity: w.humidity, nowHour: w.nowHour },
+    };
+  } catch (error) {
+    return card("weather_now", "weather", "Weather", "ไม่มีข้อมูล", `Open-Meteo error: ${error.message}`, "caution", 40);
+  }
 }
 
 const parseNum = (value) => Number(String(value ?? "").replace(/[^0-9.\-]/g, "")) || 0;
@@ -242,6 +265,41 @@ async function buildAstroCard() {
   }
 }
 
+function fmtTokens(n) {
+  if (n >= 1e6) return `${(n / 1e6).toFixed(1)}M`;
+  if (n >= 1e3) return `${Math.round(n / 1e3)}k`;
+  return String(n);
+}
+
+async function buildAiUsageCard() {
+  try {
+    const usage = await getAiUsage();
+    const c = usage.claude;
+    const x = usage.codex;
+    const parts = [];
+    if (c) parts.push(`Claude ${fmtTokens(c.output)} out`);
+    if (x?.output) parts.push(`Codex ${fmtTokens(x.output)} out`);
+
+    return {
+      ...card(
+        "ai_status", "token", "AI Status",
+        parts.join(" · ") || "ยังไม่มีการใช้งานวันนี้",
+        c ? `วันนี้: ส่งเข้า ${fmtTokens(c.input)} · อ่านแคช ${fmtTokens(c.cacheRead)} · ${c.messages} ข้อความ` : "",
+        "neutral", 80,
+      ),
+      extra: {
+        usage: [
+          c && { name: "Claude", input: c.input, output: c.output, cacheRead: c.cacheRead, cacheWrite: c.cacheWrite, messages: c.messages },
+          x && { name: "Codex", input: x.input, output: x.output, messages: x.messages },
+        ].filter(Boolean),
+        since: usage.since,
+      },
+    };
+  } catch (error) {
+    return card("ai_status", "token", "AI Status", "อ่านไม่ได้", `usage error: ${error.message}`, "caution", 80);
+  }
+}
+
 async function buildDeviceSummary() {
   const sample = await readSampleSummary();
   const runtimeConfig = await loadRuntimeConfig();
@@ -253,23 +311,15 @@ async function buildDeviceSummary() {
 
   const baseCards = sample?.cards || [];
   const clockCard = card("home_clock", "clock", "TanPlanet", "--:--", "Device clock is rendered locally on ESP32", "ok", 10);
-  const { calendarCard, lunarCard } = buildCalendarCards();
-  const weatherCard = buildWeatherCard();
+  const [{ calendarCard, lunarCard }, weatherCard] = await Promise.all([
+    buildCalendarCards(),
+    buildWeatherCard(),
+  ]);
   const astroCard = await buildAstroCard();
   const marketCard = buildMarketCard(entrySignal, runtimeConfig.tickers);
   const ideaCard = buildIdeaRadarCard(ideaRadar);
   const northStarCard = buildNorthStarCard(northstar);
-  // ponytail: usage เป็น mock — ของจริง Claude อ่านจาก ccusage (JSONL ~/.claude), Codex จาก ~/.codex หรือ usage API
-  const tokenCard = {
-    ...card("ai_status", "token", "AI Status", "Claude 62% · Codex 35%", "โควตาที่ใช้ไปของรอบปัจจุบัน (mock)", "caution", 80),
-    extra: {
-      usage: [
-        { name: "Claude", used: 62, cap: "Max 5h block", reset: "รีเซ็ต 23:00" },
-        { name: "Codex", used: 35, cap: "Weekly limit", reset: "รีเซ็ต จ. 07:00" },
-      ],
-      note: "mock — แหล่งจริง: ccusage (Claude Code) + OpenAI usage API (Codex) ผ่าน local bridge",
-    },
-  };
+  const tokenCard = await buildAiUsageCard();
   const swing = monthlyPlan?.swing;
   const swingCurrent = parseNum(
     (entrySignal?.groups || [])
@@ -305,6 +355,21 @@ async function buildDeviceSummary() {
       }
     : null;
 
+  // เติมกราฟราคา + โลโก้ให้การ์ดหุ้น — ticker ตัวแรกที่โผล่ใน value
+  const marketCards = [marketCard, ideaCard, planCard].filter(Boolean);
+  await Promise.all(
+    marketCards.map(async (c) => {
+      const ticker = String(c.value || "").match(/\b[A-Z]{1,5}\b/)?.[0];
+      if (!ticker) return;
+      try {
+        const viz = await getStockViz(ticker);
+        c.extra = { ...(c.extra || {}), stock: viz };
+      } catch (error) {
+        c.extra = { ...(c.extra || {}), stockError: error.message };
+      }
+    }),
+  );
+
   const cards = [
     clockCard,
     calendarCard,
@@ -325,8 +390,8 @@ async function buildDeviceSummary() {
     expiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
     status: {
       overall: entrySignal ? "ok" : "degraded",
-      source: entrySignal ? "megacoach+mock" : "mock",
-      message: entrySignal ? "MegaCoach local files detected" : "MegaCoach local files not found; using mock cards",
+      source: entrySignal ? "megacoach+live" : "live",
+      message: entrySignal ? "ข้อมูลสดครบทุกแหล่ง" : "ไม่พบไฟล์ MegaCoach ในเครื่อง",
       megacoachRoot: MEGACOACH_ROOT,
     },
     cards: cards
