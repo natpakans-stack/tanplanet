@@ -10,6 +10,7 @@
 #include <WiFiManager.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include <Preferences.h>
 
 LV_FONT_DECLARE(thai18);
 LV_FONT_DECLARE(thai36);
@@ -26,6 +27,10 @@ static lv_obj_t* headValue;
 static lv_obj_t* headDetail;
 static lv_obj_t* statusLabel;
 static lv_obj_t* cardList;
+static lv_obj_t* detailView;
+static lv_obj_t* detailTitle;
+static lv_obj_t* detailValue;
+static lv_obj_t* detailText;
 
 static uint32_t lastFetch = 0;
 static const uint32_t kRefreshMs = 5UL * 60UL * 1000UL;
@@ -41,22 +46,136 @@ static void flushCb(lv_display_t* disp, const lv_area_t* area, uint8_t* px_map) 
   lv_display_flush_ready(disp);
 }
 
+// ค่าคาลิเบรตทัช เก็บถาวรใน NVS — แตะจอค้างไว้ตอนเปิดเครื่องเพื่อคาลิเบรตใหม่
+struct TouchCal {
+  bool swapAxes;
+  int32_t xMin, xMax, yMin, yMax;
+} static cal = {false, 200, 3800, 200, 3800};
+
+static Preferences prefs;
+
 static void touchRead(lv_indev_t*, lv_indev_data_t* data) {
   if (!touch.touched()) {
     data->state = LV_INDEV_STATE_RELEASED;
     return;
   }
   TS_Point p = touch.getPoint();
-  // ponytail: calibrate หยาบ — ปรับ 200/3800 ถ้าแตะแล้วเหลื่อมจากตำแหน่งจริง
-  data->point.x = map(constrain(p.x, 200, 3800), 200, 3800, 0, 479);
-  data->point.y = map(constrain(p.y, 200, 3800), 200, 3800, 0, 319);
+  int32_t rx = cal.swapAxes ? p.y : p.x;
+  int32_t ry = cal.swapAxes ? p.x : p.y;
+  data->point.x = map(constrain(rx, min(cal.xMin, cal.xMax), max(cal.xMin, cal.xMax)),
+                      cal.xMin, cal.xMax, 0, 479);
+  data->point.y = map(constrain(ry, min(cal.yMin, cal.yMax), max(cal.yMin, cal.yMax)),
+                      cal.yMin, cal.yMax, 0, 319);
+  data->point.x = constrain(data->point.x, 0, 479);
+  data->point.y = constrain(data->point.y, 0, 319);
   data->state = LV_INDEV_STATE_PRESSED;
+}
+
+// รอแตะ 1 ครั้งแล้วคืนค่า raw เฉลี่ย (กันมือสั่น)
+static bool readRawPoint(int32_t& rx, int32_t& ry, uint32_t timeoutMs = 30000) {
+  uint32_t start = millis();
+  while (millis() - start < timeoutMs) {
+    if (touch.touched()) {
+      int32_t sx = 0, sy = 0, n = 0;
+      while (touch.touched() && n < 40) {
+        TS_Point p = touch.getPoint();
+        sx += p.x; sy += p.y; n++;
+        delay(10);
+      }
+      if (n >= 4) { rx = sx / n; ry = sy / n; return true; }
+    }
+    delay(10);
+  }
+  return false;
+}
+
+static void drawTarget(int x, int y, const char* label) {
+  tft.fillScreen(TFT_BLACK);
+  tft.drawLine(x - 14, y, x + 14, y, TFT_CYAN);
+  tft.drawLine(x, y - 14, x, y + 14, TFT_CYAN);
+  tft.drawCircle(x, y, 9, TFT_CYAN);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.drawString(label, 120, 150, 4);
+}
+
+// 3 จุด: มุมบนซ้าย → บนขวา → ล่างซ้าย
+// จุดที่ 2 บอกว่าแกน x ของจอผูกกับ raw แกนไหน (ตัวไหนขยับมากกว่า)
+static void calibrateTouch() {
+  const int32_t sx1 = 30, sy1 = 30, sx2 = 450, sy2 = 30, sx3 = 30, sy3 = 290;
+  int32_t r1x, r1y, r2x, r2y, r3x, r3y;
+
+  drawTarget(sx1, sy1, "tap the target 1/3");
+  if (!readRawPoint(r1x, r1y)) return;
+  delay(400);
+  drawTarget(sx2, sy2, "tap the target 2/3");
+  if (!readRawPoint(r2x, r2y)) return;
+  delay(400);
+  drawTarget(sx3, sy3, "tap the target 3/3");
+  if (!readRawPoint(r3x, r3y)) return;
+
+  // จุด1→จุด2 จอขยับแกน x อย่างเดียว — raw แกนที่ขยับมากกว่าคือแกน x ของทัช
+  cal.swapAxes = abs(r2y - r1y) > abs(r2x - r1x);
+  int32_t ax1 = cal.swapAxes ? r1y : r1x, ay1 = cal.swapAxes ? r1x : r1y;
+  int32_t ax2 = cal.swapAxes ? r2y : r2x;
+  int32_t ay3 = cal.swapAxes ? r3x : r3y;
+
+  // extrapolate จากจุดที่แตะ (30..450 / 30..290) ออกไปถึงขอบจอ (0..479 / 0..319)
+  double sxSpan = (double)(ax2 - ax1) / (sx2 - sx1);
+  double sySpan = (double)(ay3 - ay1) / (sy3 - sy1);
+  cal.xMin = ax1 - (int32_t)(sx1 * sxSpan);
+  cal.xMax = cal.xMin + (int32_t)(479 * sxSpan);
+  cal.yMin = ay1 - (int32_t)(sy1 * sySpan);
+  cal.yMax = cal.yMin + (int32_t)(319 * sySpan);
+
+  prefs.begin("tanplanet", false);
+  prefs.putBool("swap", cal.swapAxes);
+  prefs.putInt("xMin", cal.xMin);
+  prefs.putInt("xMax", cal.xMax);
+  prefs.putInt("yMin", cal.yMin);
+  prefs.putInt("yMax", cal.yMax);
+  prefs.end();
+
+  Serial.printf("touch cal: swap=%d x[%d..%d] y[%d..%d]\n",
+                cal.swapAxes, cal.xMin, cal.xMax, cal.yMin, cal.yMax);
+  tft.fillScreen(TFT_BLACK);
+}
+
+static void loadTouchCal() {
+  prefs.begin("tanplanet", true);
+  bool has = prefs.isKey("xMin");
+  if (has) {
+    cal.swapAxes = prefs.getBool("swap", false);
+    cal.xMin = prefs.getInt("xMin", 200);
+    cal.xMax = prefs.getInt("xMax", 3800);
+    cal.yMin = prefs.getInt("yMin", 200);
+    cal.yMax = prefs.getInt("yMax", 3800);
+  }
+  prefs.end();
+  Serial.printf("touch cal %s: swap=%d x[%d..%d] y[%d..%d]\n",
+                has ? "loaded" : "default", cal.swapAxes, cal.xMin, cal.xMax, cal.yMin, cal.yMax);
+
+  // แตะจอค้างไว้ตอนเปิดเครื่อง = คาลิเบรตใหม่ (หรือยังไม่เคยคาลิเบรตเลย)
+  if (!has || touch.touched()) calibrateTouch();
 }
 
 // LVGL ไม่ทำ Thai mark stacking — วรรณยุกต์ที่ตามหลังสระบนจะซ้อนทับกัน ("ตั้ง" พัง)
 // สลับเป็นวรรณยุกต์ชุดยกสูงใน PUA ที่ tools/make_thai_font.py ฝังไว้ในฟอนต์
 static bool isUpperVowel(uint32_t cp) {
   return cp == 0x0E31 || (cp >= 0x0E34 && cp <= 0x0E37) || cp == 0x0E4D || cp == 0x0E47;
+}
+
+// ฟอนต์มีเฉพาะ ASCII, ไทย, PUA วรรณยุกต์ยกสูง และสัญลักษณ์ 6 ตัวที่ backend ใช้จริง
+// ที่เหลือ (emoji ☀ 🌘 🔥, variation selector) ทิ้งไป — วาดไม่ได้อยู่ดี โชว์เป็นกล่องยิ่งแย่
+static bool isRenderable(uint32_t cp) {
+  if (cp >= 0x20 && cp <= 0x7E) return true;
+  if (cp >= 0x0E00 && cp <= 0x0E7F) return true;
+  if (cp >= 0xF70A && cp <= 0xF70E) return true;
+  switch (cp) {
+    case 0x00B0: case 0x00B7: case 0x2013:
+    case 0x2014: case 0x2026: case 0x2192:
+      return true;
+  }
+  return cp == '\n';
 }
 
 static String thaiFix(const char* src) {
@@ -74,12 +193,33 @@ static String thaiFix(const char* src) {
       cp = ((*p & 0x1F) << 6) | (p[1] & 0x3F); len = 2;
     } else if ((*p & 0xF0) == 0xE0 && p[1] && p[2]) {
       cp = ((*p & 0x0F) << 12) | ((p[1] & 0x3F) << 6) | (p[2] & 0x3F); len = 3;
+    } else if ((*p & 0xF8) == 0xF0 && p[1] && p[2] && p[3]) {
+      // emoji อยู่ในช่วง 4 ไบต์ — ถ้าไม่กินให้ครบ จะแตกเป็นกล่อง 4 ใบ
+      cp = ((*p & 0x07) << 18) | ((p[1] & 0x3F) << 12) | ((p[2] & 0x3F) << 6) | (p[3] & 0x3F);
+      len = 4;
     } else {
       cp = *p; len = 1;
     }
 
+    // สระอำ (ำ) มีนิคหิตอยู่ข้างบนเหมือนสระบน — วรรณยุกต์ที่มาก่อนมันต้องยกสูงด้วย ("ค่ำ")
+    uint32_t next = 0;
+    {
+      const uint8_t* q = p + len;
+      if (*q) {
+        if (*q < 0x80) next = *q;
+        else if ((*q & 0xE0) == 0xC0 && q[1]) next = ((*q & 0x1F) << 6) | (q[1] & 0x3F);
+        else if ((*q & 0xF0) == 0xE0 && q[1] && q[2])
+          next = ((*q & 0x0F) << 12) | ((q[1] & 0x3F) << 6) | (q[2] & 0x3F);
+      }
+    }
+
+    if (!isRenderable(cp)) {
+      p += len;
+      continue;  // ทิ้ง emoji / อักขระที่ฟอนต์ไม่มี (prev ไม่ต้องอัปเดต)
+    }
+
     uint32_t outCp = cp;
-    if (cp >= 0x0E48 && cp <= 0x0E4C && isUpperVowel(prev)) {
+    if (cp >= 0x0E48 && cp <= 0x0E4C && (isUpperVowel(prev) || next == 0x0E33)) {
       outCp = cp - 0x0E48 + 0xF70A;
     }
 
@@ -112,8 +252,21 @@ static uint32_t toneColor(const char* tone) {
   return 0x8B95B5;
 }
 
+// แตะการ์ด → กางรายละเอียดเต็มจอ; แตะที่ไหนก็ได้เพื่อปิด
+// ponytail: อ่านข้อความจาก label ลูกของการ์ดเอง ไม่ต้องเก็บ state ซ้ำอีกชุด
+static void cardClicked(lv_event_t* e) {
+  lv_obj_t* card = (lv_obj_t*)lv_event_get_target(e);
+  lv_label_set_text(detailTitle, lv_label_get_text(lv_obj_get_child(card, 0)));
+  lv_label_set_text(detailValue, lv_label_get_text(lv_obj_get_child(card, 1)));
+  lv_obj_t* third = lv_obj_get_child(card, 2);
+  lv_label_set_text(detailText, third ? lv_label_get_text(third) : "");
+  lv_obj_remove_flag(detailView, LV_OBJ_FLAG_HIDDEN);
+}
+
 static void addCard(const char* title, const char* value, const char* detail, const char* tone) {
   lv_obj_t* card = lv_obj_create(cardList);
+  lv_obj_add_flag(card, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_add_event_cb(card, cardClicked, LV_EVENT_CLICKED, nullptr);
   lv_obj_set_width(card, lv_pct(100));
   lv_obj_set_height(card, LV_SIZE_CONTENT);
   lv_obj_set_style_bg_color(card, lv_color_hex(0x151C33), 0);
@@ -217,6 +370,7 @@ void setup() {
 
   touch.begin(tft.getSPIinstance());
   touch.setRotation(1);
+  loadTouchCal();
   lv_indev_t* indev = lv_indev_create();
   lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
   lv_indev_set_read_cb(indev, touchRead);
@@ -243,12 +397,74 @@ void setup() {
   lv_obj_align(statusLabel, LV_ALIGN_TOP_RIGHT, 0, 4);
 
   cardList = lv_obj_create(scr);
-  lv_obj_set_size(cardList, lv_pct(100), 220);
-  lv_obj_align(cardList, LV_ALIGN_BOTTOM_MID, 0, 0);
+  lv_obj_set_size(cardList, 390, 220);  // เว้น 66px ขวาให้ปุ่มเลื่อน
+  lv_obj_align(cardList, LV_ALIGN_BOTTOM_LEFT, 0, 0);
   lv_obj_set_style_bg_opa(cardList, LV_OPA_TRANSP, 0);
   lv_obj_set_style_border_width(cardList, 0, 0);
   lv_obj_set_style_pad_all(cardList, 0, 0);
   lv_obj_set_flex_flow(cardList, LV_FLEX_FLOW_COLUMN);
+
+  // ปุ่มเลื่อนขึ้น-ลง — resistive touch ลากไม่ลื่น กดปุ่มแม่นกว่า
+  // ponytail: ใช้ LV_SYMBOL ของ montserrat ในตัว ไม่ต้องเพิ่ม glyph ลูกศรในฟอนต์ไทย
+  struct ScrollBtn { const char* icon; int dy; lv_align_t align; int y; };
+  const ScrollBtn scrollBtns[] = {
+    {LV_SYMBOL_UP, -110, LV_ALIGN_BOTTOM_RIGHT, -118},
+    {LV_SYMBOL_DOWN, 110, LV_ALIGN_BOTTOM_RIGHT, -8},
+  };
+  for (const ScrollBtn& b : scrollBtns) {
+    lv_obj_t* btn = lv_button_create(scr);
+    lv_obj_set_size(btn, 58, 100);  // touch target ใหญ่กว่า 44px ตามที่ควรเป็น
+    lv_obj_align(btn, b.align, 0, b.y);
+    lv_obj_set_style_bg_color(btn, lv_color_hex(0x1F2947), 0);
+    lv_obj_set_style_radius(btn, 10, 0);
+    lv_obj_set_user_data(btn, (void*)(intptr_t)b.dy);
+    lv_obj_add_event_cb(btn, [](lv_event_t* e) {
+      int dy = (int)(intptr_t)lv_obj_get_user_data((lv_obj_t*)lv_event_get_target(e));
+      lv_obj_scroll_by(cardList, 0, -dy, LV_ANIM_ON);
+    }, LV_EVENT_CLICKED, nullptr);
+
+    lv_obj_t* icon = lv_label_create(btn);
+    lv_label_set_text(icon, b.icon);
+    lv_obj_set_style_text_color(icon, lv_color_hex(0xB9C4E6), 0);
+    lv_obj_center(icon);
+  }
+
+  // detail view: ซ้อนเต็มจอ ซ่อนไว้ก่อน แตะที่ไหนก็ปิด
+  detailView = lv_obj_create(scr);
+  lv_obj_set_size(detailView, 480, 320);
+  lv_obj_center(detailView);
+  lv_obj_set_style_bg_color(detailView, lv_color_hex(0x151C33), 0);
+  lv_obj_set_style_border_width(detailView, 0, 0);
+  lv_obj_set_style_pad_all(detailView, 20, 0);
+  lv_obj_set_flex_flow(detailView, LV_FLEX_FLOW_COLUMN);
+  lv_obj_add_flag(detailView, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(detailView, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_add_event_cb(detailView, [](lv_event_t* e) {
+    lv_obj_add_flag((lv_obj_t*)lv_event_get_target(e), LV_OBJ_FLAG_HIDDEN);
+  }, LV_EVENT_CLICKED, nullptr);
+
+  detailTitle = lv_label_create(detailView);
+  lv_obj_set_style_text_font(detailTitle, &thai18, 0);
+  lv_obj_set_style_text_color(detailTitle, lv_color_hex(0x8B95B5), 0);
+
+  detailValue = lv_label_create(detailView);
+  lv_obj_set_style_text_font(detailValue, &thai36, 0);
+  lv_obj_set_style_text_color(detailValue, lv_color_hex(0xF5F7FF), 0);
+  lv_obj_set_width(detailValue, lv_pct(100));
+  lv_label_set_long_mode(detailValue, LV_LABEL_LONG_WRAP);
+
+  detailText = lv_label_create(detailView);
+  lv_obj_set_style_text_font(detailText, &thai18, 0);
+  lv_obj_set_style_text_color(detailText, lv_color_hex(0xB9C4E6), 0);
+  lv_obj_set_width(detailText, lv_pct(100));
+  lv_label_set_long_mode(detailText, LV_LABEL_LONG_WRAP);
+  lv_obj_set_style_pad_top(detailText, 12, 0);
+
+  lv_obj_t* hint = lv_label_create(detailView);
+  lv_obj_set_style_text_font(hint, &thai18, 0);
+  lv_obj_set_style_text_color(hint, lv_color_hex(0x5A6688), 0);
+  setThaiText(hint, "แตะเพื่อปิด");
+
   lv_refr_now(disp);
 
   // captive portal: ถ้ายังไม่เคยตั้ง Wi-Fi จะเปิด AP "TanPlanet_Config" ให้ตั้งจากมือถือ
