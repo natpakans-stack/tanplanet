@@ -370,6 +370,34 @@ async function buildDeviceSummary() {
     }),
   );
 
+  // ทุกการ์ดต้องมีอะไรให้มองเป็นภาพ — spark = เส้นแนวโน้ม, gauge = สัดส่วนเทียบเพดาน
+  // ponytail: normalize ที่ backend ที่เดียว ฝั่งจอจะได้มี renderer แค่ 2 แบบ
+  const withViz = (c, viz) => (c ? Object.assign(c, { viz }) : c);
+
+  const lunarNow = thaiLunar(new Date());
+  withViz(lunarCard, { kind: "gauge", value: lunarNow.day, max: 15, unit: "ค่ำ" });
+
+  const nowParts = bangkokNow();
+  const daysInMonth = new Date(nowParts.y, nowParts.m, 0).getDate();
+  withViz(calendarCard, { kind: "gauge", value: nowParts.d, max: daysInMonth, unit: "วัน" });
+
+  if (weatherCard.extra?.hourly) {
+    withViz(weatherCard, { kind: "spark", points: weatherCard.extra.hourly.map((h) => h.v) });
+  }
+
+  const astroScore = Number(String(astroCard.value).match(/(\d+)\s*\/\s*100/)?.[1]);
+  if (Number.isFinite(astroScore)) withViz(astroCard, { kind: "gauge", value: astroScore, max: 100, unit: "" });
+
+  for (const c of marketCards) {
+    if (c.extra?.stock?.closes) withViz(c, { kind: "spark", points: c.extra.stock.closes });
+  }
+
+  const usedToday = tokenCard.extra?.usage?.[0]?.output ?? 0;
+  withViz(tokenCard, { kind: "gauge", value: Math.round(usedToday / 1000), max: 1000, unit: "k" });
+
+  const nsPct = Number(String(northStarCard.detail).match(/(\d+(?:\.\d+)?)\s*%/)?.[1]);
+  if (Number.isFinite(nsPct)) withViz(northStarCard, { kind: "gauge", value: nsPct, max: 100, unit: "%" });
+
   const cards = [
     clockCard,
     calendarCard,

@@ -13,21 +13,38 @@
 #include <Preferences.h>
 #include <time.h>
 #include <mbedtls/base64.h>
+#include <algorithm>
 
 LV_FONT_DECLARE(thai18);
+LV_FONT_DECLARE(thai22);
 LV_FONT_DECLARE(thai36);
+LV_FONT_DECLARE(clock60);
+
+// design tokens — ปรับที่นี่ที่เดียวทั้งจอ
+static const uint32_t C_BG = 0x0A0F1F;      // พื้นจอ
+static const uint32_t C_HERO = 0x121B36;    // แถบบน
+static const uint32_t C_CARD = 0x161F3C;    // การ์ด
+static const uint32_t C_GRID = 0x223056;    // เส้นตาราง (ต้องจางกว่าเส้นข้อมูลเสมอ)
+static const uint32_t C_TEXT = 0xF2F5FF;
+static const uint32_t C_MUTED = 0x8492BC;
+static const uint32_t C_UP = 0x4ADE80;
+static const uint32_t C_WARN = 0xFBBF24;
+static const uint32_t C_DOWN = 0xF87171;
 
 static TFT_eSPI tft;
 // ponytail: touch แชร์สาย SPI 12/13/14 กับจอ — ห้ามสร้าง SPIClass ใหม่ ไม่งั้นจอตายสนิท
 static XPT2046_Touchscreen touch(TOUCH_CS_PIN, TOUCH_IRQ_PIN);
 
-// ponytail: 16 บรรทัด (15KB) — DRAM เหลือน้อยหลัง WiFi stack, 32 บรรทัดทำ link ล้ม
-static const uint32_t kBufPixels = 480 * 16;
+// ponytail: 32 บรรทัด (30KB) — ยิ่งใหญ่ยิ่ง flush น้อยครั้ง จอลื่นขึ้น
+// เพดานคือ DRAM: 40 บรรทัดล้น 7KB — 32 คือค่ามากสุดที่ลงได้พร้อม WiFi stack
+static const uint32_t kBufPixels = 480 * 32;
 static uint8_t drawBuf[kBufPixels * 2];
 
 static lv_obj_t* headValue;
 static lv_obj_t* headDetail;
 static lv_obj_t* statusLabel;
+static lv_obj_t* heroWeather;
+static lv_obj_t* heroLunar;
 static lv_obj_t* cardList;
 static lv_obj_t* detailView;
 static lv_obj_t* detailTitle;
@@ -55,6 +72,14 @@ struct CardViz {
   char ticker[8] = {0};
   float changePct = 0;
   int8_t logoIdx = -1;
+
+  // กราฟย่อบนหน้าการ์ด — spark = เส้นแนวโน้ม, gauge = สัดส่วนเทียบเพดาน
+  bool isGauge = false;
+  float spark[24] = {0};
+  uint8_t sparkN = 0;
+  float gaugeVal = 0, gaugeMax = 0;
+  char gaugeUnit[12] = {0};
+  uint32_t accent = 0x8492BC;
 };
 
 // โลโก้หุ้นมาเป็น RGB565 ดิบ 28x28 จาก backend (ESP32 decode PNG เองไม่ไหว)
@@ -71,13 +96,16 @@ static uint32_t lastFetch = 0;
 static const uint32_t kRefreshMs = 5UL * 60UL * 1000UL;
 
 // ponytail: flush เอง — LV_USE_TFT_ESPI สร้าง TFT_eSPI ซ้อนอีกตัวแล้ว pixel ไม่ออกจอ
+static volatile bool flushing = false;
 static void flushCb(lv_display_t* disp, const lv_area_t* area, uint8_t* px_map) {
+  flushing = true;
   uint32_t w = area->x2 - area->x1 + 1;
   uint32_t h = area->y2 - area->y1 + 1;
   tft.startWrite();
   tft.setAddrWindow(area->x1, area->y1, w, h);
   tft.pushColors((uint16_t*)px_map, w * h, true);
   tft.endWrite();
+  flushing = false;
   lv_display_flush_ready(disp);
 }
 
@@ -88,10 +116,20 @@ struct TouchCal {
 } static cal = {false, 200, 3800, 200, 3800};
 
 static Preferences prefs;
+// ค่าคาลิเบรตเก่ามาจากอัลกอริทึมที่เพี้ยน — ผูกเวอร์ชันไว้ ของเก่าจะถูกบังคับทำใหม่
+static const int kCalVersion = 3;
 
 static void touchRead(lv_indev_t*, lv_indev_data_t* data) {
+  // ทัชกับจอใช้สาย SPI เส้นเดียวกัน — อ่านทัชระหว่างจอวาดอยู่ = แย่ง bus แล้วสะดุด
+  static lv_indev_state_t lastState = LV_INDEV_STATE_RELEASED;
+  static lv_point_t lastPoint = {0, 0};
+  if (flushing) {
+    data->state = lastState;
+    data->point = lastPoint;
+    return;
+  }
   if (!touch.touched()) {
-    data->state = LV_INDEV_STATE_RELEASED;
+    data->state = lastState = LV_INDEV_STATE_RELEASED;
     return;
   }
   TS_Point p = touch.getPoint();
@@ -103,63 +141,84 @@ static void touchRead(lv_indev_t*, lv_indev_data_t* data) {
                       cal.yMin, cal.yMax, 0, 319);
   data->point.x = constrain(data->point.x, 0, 479);
   data->point.y = constrain(data->point.y, 0, 319);
-  data->state = LV_INDEV_STATE_PRESSED;
+  data->state = lastState = LV_INDEV_STATE_PRESSED;
+  lastPoint = data->point;
 }
 
-// รอแตะ 1 ครั้งแล้วคืนค่า raw เฉลี่ย (กันมือสั่น)
+// รอแตะแล้วคืนค่า raw แบบ median — ค่าเฉลี่ยพังง่ายเพราะตอนนิ้วแตะ/ปล่อย
+// แรงกดยังไม่นิ่ง ค่าจะกระโดด ทำให้จุดคาลิเบรตเพี้ยนไปหลายสิบพิกเซล
 static bool readRawPoint(int32_t& rx, int32_t& ry, uint32_t timeoutMs = 30000) {
   uint32_t start = millis();
   while (millis() - start < timeoutMs) {
-    if (touch.touched()) {
-      int32_t sx = 0, sy = 0, n = 0;
-      while (touch.touched() && n < 40) {
-        TS_Point p = touch.getPoint();
-        sx += p.x; sy += p.y; n++;
-        delay(10);
+    if (!touch.touched()) { delay(10); continue; }
+
+    int32_t xs[48], ys[48];
+    int n = 0;
+    while (touch.touched() && n < 48) {
+      TS_Point p = touch.getPoint();
+      if (p.z > 400) {  // ทิ้งตัวอย่างตอนแรงกดยังเบา ค่าเพี้ยนมาก
+        xs[n] = p.x;
+        ys[n] = p.y;
+        n++;
       }
-      if (n >= 4) { rx = sx / n; ry = sy / n; return true; }
+      delay(8);
     }
-    delay(10);
+    if (n < 8) continue;  // แตะแวบเดียว ไม่พอเชื่อถือ
+
+    std::sort(xs, xs + n);
+    std::sort(ys, ys + n);
+    rx = xs[n / 2];
+    ry = ys[n / 2];
+    while (touch.touched()) delay(10);  // รอปล่อยนิ้วก่อนไปจุดถัดไป
+    return true;
   }
   return false;
 }
 
-static void drawTarget(int x, int y, const char* label) {
+static void drawTarget(int x, int y, int step) {
   tft.fillScreen(TFT_BLACK);
-  tft.drawLine(x - 14, y, x + 14, y, TFT_CYAN);
-  tft.drawLine(x, y - 14, x, y + 14, TFT_CYAN);
-  tft.drawCircle(x, y, 9, TFT_CYAN);
+  tft.drawLine(x - 20, y, x + 20, y, TFT_CYAN);
+  tft.drawLine(x, y - 20, x, y + 20, TFT_CYAN);
+  tft.drawCircle(x, y, 12, TFT_CYAN);
+  tft.fillCircle(x, y, 3, TFT_WHITE);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.drawString(label, 120, 150, 4);
+  tft.drawString("TOUCH CALIBRATION", 120, 120, 4);
+  char msg[48];
+  snprintf(msg, sizeof(msg), "press center of cross  %d/4", step);
+  tft.drawString(msg, 120, 150, 2);
+  tft.drawString("hold until it moves", 120, 170, 2);
 }
 
-// 3 จุด: มุมบนซ้าย → บนขวา → ล่างซ้าย
-// จุดที่ 2 บอกว่าแกน x ของจอผูกกับ raw แกนไหน (ตัวไหนขยับมากกว่า)
+// 4 มุม แล้วเฉลี่ยคู่ตรงข้าม — ทนกว่า 3 จุดเพราะความเพี้ยนที่มุมหนึ่งถูกหักล้าง
 static void calibrateTouch() {
-  const int32_t sx1 = 30, sy1 = 30, sx2 = 450, sy2 = 30, sx3 = 30, sy3 = 290;
-  int32_t r1x, r1y, r2x, r2y, r3x, r3y;
+  const int32_t m = 34;
+  const int32_t sx[4] = {m, 479 - m, m, 479 - m};
+  const int32_t sy[4] = {m, m, 319 - m, 319 - m};
+  int32_t rx[4], ry[4];
 
-  drawTarget(sx1, sy1, "tap the target 1/3");
-  if (!readRawPoint(r1x, r1y)) return;
-  delay(400);
-  drawTarget(sx2, sy2, "tap the target 2/3");
-  if (!readRawPoint(r2x, r2y)) return;
-  delay(400);
-  drawTarget(sx3, sy3, "tap the target 3/3");
-  if (!readRawPoint(r3x, r3y)) return;
+  for (int i = 0; i < 4; i++) {
+    drawTarget(sx[i], sy[i], i + 1);
+    if (!readRawPoint(rx[i], ry[i])) return;
+    delay(250);
+  }
 
-  // จุด1→จุด2 จอขยับแกน x อย่างเดียว — raw แกนที่ขยับมากกว่าคือแกน x ของทัช
-  cal.swapAxes = abs(r2y - r1y) > abs(r2x - r1x);
-  int32_t ax1 = cal.swapAxes ? r1y : r1x, ay1 = cal.swapAxes ? r1x : r1y;
-  int32_t ax2 = cal.swapAxes ? r2y : r2x;
-  int32_t ay3 = cal.swapAxes ? r3x : r3y;
+  // ขอบซ้าย-ขวาของจอ = ค่าเฉลี่ยของสองจุดในคอลัมน์เดียวกัน
+  int32_t leftX = (rx[0] + rx[2]) / 2, rightX = (rx[1] + rx[3]) / 2;
+  int32_t topY = (ry[0] + ry[1]) / 2, botY = (ry[2] + ry[3]) / 2;
 
-  // extrapolate จากจุดที่แตะ (30..450 / 30..290) ออกไปถึงขอบจอ (0..479 / 0..319)
-  double sxSpan = (double)(ax2 - ax1) / (sx2 - sx1);
-  double sySpan = (double)(ay3 - ay1) / (sy3 - sy1);
-  cal.xMin = ax1 - (int32_t)(sx1 * sxSpan);
+  // แกนสลับไหม: ถ้าขยับตามแนวนอนแล้ว raw y เปลี่ยนมากกว่า raw x แสดงว่าสลับ
+  cal.swapAxes = abs((ry[1] + ry[3]) / 2 - (ry[0] + ry[2]) / 2) > abs(rightX - leftX);
+  if (cal.swapAxes) {
+    int32_t t1 = leftX, t2 = rightX;
+    leftX = topY; rightX = botY; topY = t1; botY = t2;
+  }
+
+  // ยืดจากจุดที่แตะ (34..445) ออกไปถึงขอบจอจริง (0..479)
+  double sxSpan = (double)(rightX - leftX) / (sx[1] - sx[0]);
+  double sySpan = (double)(botY - topY) / (sy[2] - sy[0]);
+  cal.xMin = leftX - (int32_t)(m * sxSpan);
   cal.xMax = cal.xMin + (int32_t)(479 * sxSpan);
-  cal.yMin = ay1 - (int32_t)(sy1 * sySpan);
+  cal.yMin = topY - (int32_t)(m * sySpan);
   cal.yMax = cal.yMin + (int32_t)(319 * sySpan);
 
   prefs.begin("tanplanet", false);
@@ -168,16 +227,38 @@ static void calibrateTouch() {
   prefs.putInt("xMax", cal.xMax);
   prefs.putInt("yMin", cal.yMin);
   prefs.putInt("yMax", cal.yMax);
+  prefs.putInt("calv", kCalVersion);
   prefs.end();
 
   Serial.printf("touch cal: swap=%d x[%d..%d] y[%d..%d]\n",
                 cal.swapAxes, cal.xMin, cal.xMax, cal.yMin, cal.yMax);
+
+  // ตรวจงานตัวเอง: ให้แตะเป้ากลางจอ แล้ววัดว่าห่างจากจุดจริงเท่าไร
+  tft.fillScreen(TFT_BLACK);
+  tft.drawLine(220, 160, 260, 160, TFT_GREEN);
+  tft.drawLine(240, 140, 240, 180, TFT_GREEN);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.drawString("verify: press center", 130, 200, 4);
+  int32_t vx, vy;
+  if (readRawPoint(vx, vy, 15000)) {
+    int32_t ax = cal.swapAxes ? vy : vx, ay = cal.swapAxes ? vx : vy;
+    int gotX = map(ax, cal.xMin, cal.xMax, 0, 479);
+    int gotY = map(ay, cal.yMin, cal.yMax, 0, 319);
+    int err = abs(gotX - 240) + abs(gotY - 160);
+    Serial.printf("verify: got (%d,%d) เป้า (240,160) คลาด %d px\n", gotX, gotY, err);
+    tft.fillScreen(TFT_BLACK);
+    tft.setTextColor(err <= 30 ? TFT_GREEN : TFT_ORANGE, TFT_BLACK);
+    char r[48];
+    snprintf(r, sizeof(r), err <= 30 ? "OK  error %d px" : "off by %d px - redo if bad", err);
+    tft.drawString(r, 110, 150, 4);
+    delay(1400);
+  }
   tft.fillScreen(TFT_BLACK);
 }
 
 static void loadTouchCal() {
   prefs.begin("tanplanet", true);
-  bool has = prefs.isKey("xMin");
+  bool has = prefs.isKey("xMin") && prefs.getInt("calv", 1) == kCalVersion;
   if (has) {
     cal.swapAxes = prefs.getBool("swap", false);
     cal.xMin = prefs.getInt("xMin", 200);
@@ -317,7 +398,7 @@ static void drawBars(lv_obj_t* parent, const CardViz& viz) {
     lv_obj_set_style_bg_color(bar, lv_color_hex(0x4ADE80), LV_PART_INDICATOR);
     lv_obj_set_style_radius(bar, 7, LV_PART_INDICATOR);
     lv_bar_set_range(bar, 0, 1000);
-    lv_bar_set_value(bar, (int32_t)(viz.v[i] / maxV * 1000), LV_ANIM_ON);
+    lv_bar_set_value(bar, (int32_t)(viz.v[i] / maxV * 1000), LV_ANIM_OFF);
 
     lv_obj_t* val = lv_label_create(row);
     lv_obj_set_style_text_font(val, &thai18, 0);
@@ -332,28 +413,39 @@ static void drawBars(lv_obj_t* parent, const CardViz& viz) {
   }
 }
 
-// กราฟเส้นอุณหภูมิ 24 ชม.
-static void drawHourly(lv_obj_t* parent, const CardViz& viz) {
+// สไตล์กราฟกลาง — เส้นตารางต้องจางกว่าเส้นข้อมูลเสมอ ไม่งั้นแย่งสายตา
+static lv_obj_t* makeChart(lv_obj_t* parent, int h) {
   lv_obj_t* chart = lv_chart_create(parent);
-  lv_obj_set_size(chart, 420, 120);
+  lv_obj_set_size(chart, 424, h);
   lv_chart_set_type(chart, LV_CHART_TYPE_LINE);
-  lv_chart_set_point_count(chart, viz.n);
-  lv_obj_set_style_bg_color(chart, lv_color_hex(0x0B1020), 0);
-  lv_obj_set_style_border_color(chart, lv_color_hex(0x232C4A), 0);
-  lv_obj_set_style_size(chart, 5, 5, LV_PART_INDICATOR);
-  lv_chart_set_div_line_count(chart, 3, 0);
+  lv_obj_set_style_bg_color(chart, lv_color_hex(C_BG), 0);
+  lv_obj_set_style_border_width(chart, 0, 0);
+  lv_obj_set_style_radius(chart, 10, 0);
+  lv_obj_set_style_pad_all(chart, 8, 0);
+  lv_obj_set_style_line_color(chart, lv_color_hex(C_GRID), LV_PART_MAIN);
+  lv_obj_set_style_line_width(chart, 1, LV_PART_MAIN);
+  lv_obj_set_style_size(chart, 0, 0, LV_PART_INDICATOR);
+  lv_obj_set_style_line_width(chart, 3, LV_PART_ITEMS);
+  lv_obj_set_style_line_rounded(chart, true, LV_PART_ITEMS);
+  lv_chart_set_div_line_count(chart, 4, 0);
+  return chart;
+}
 
+// กราฟอุณหภูมิ 24 ชม. (ทุก 3 ชม.)
+static void drawHourly(lv_obj_t* parent, const CardViz& viz) {
   float lo = viz.v[0], hi = viz.v[0];
   for (int i = 0; i < viz.n; i++) { lo = min(lo, viz.v[i]); hi = max(hi, viz.v[i]); }
-  lv_chart_set_range(chart, LV_CHART_AXIS_PRIMARY_Y, (int32_t)lo - 1, (int32_t)hi + 1);
 
-  lv_chart_series_t* ser = lv_chart_add_series(chart, lv_color_hex(0xFBBF24), LV_CHART_AXIS_PRIMARY_Y);
+  lv_obj_t* chart = makeChart(parent, 112);
+  lv_chart_set_point_count(chart, viz.n);
+  lv_chart_set_range(chart, LV_CHART_AXIS_PRIMARY_Y, (int32_t)lo - 1, (int32_t)hi + 1);
+  lv_chart_series_t* ser = lv_chart_add_series(chart, lv_color_hex(C_WARN), LV_CHART_AXIS_PRIMARY_Y);
   for (int i = 0; i < viz.n; i++) lv_chart_set_next_value(chart, ser, (int32_t)viz.v[i]);
 
   lv_obj_t* range = lv_label_create(parent);
   lv_obj_set_style_text_font(range, &thai18, 0);
-  lv_obj_set_style_text_color(range, lv_color_hex(0x8B95B5), 0);
-  lv_label_set_text_fmt(range, "%d° — %d°  (ทุก 3 ชม.)", (int)lo, (int)hi);
+  lv_obj_set_style_text_color(range, lv_color_hex(C_MUTED), 0);
+  lv_label_set_text_fmt(range, "24 ชม. · ต่ำสุด %d°  ·  สูงสุด %d°", (int)lo, (int)hi);
 }
 
 // เกจครึ่งวงกลมสำหรับคะแนน 0-100
@@ -363,7 +455,7 @@ static void drawPrice(lv_obj_t* parent, const CardViz& viz) {
   uint32_t col = up ? 0x4ADE80 : 0xF87171;
 
   lv_obj_t* head = lv_obj_create(parent);
-  lv_obj_set_size(head, lv_pct(100), 36);
+  lv_obj_set_size(head, lv_pct(100), 32);
   lv_obj_set_style_bg_opa(head, LV_OPA_TRANSP, 0);
   lv_obj_set_style_border_width(head, 0, 0);
   lv_obj_set_style_pad_all(head, 0, 0);
@@ -378,28 +470,21 @@ static void drawPrice(lv_obj_t* parent, const CardViz& viz) {
   }
 
   lv_obj_t* name = lv_label_create(head);
-  lv_obj_set_style_text_font(name, &thai18, 0);
-  lv_obj_set_style_text_color(name, lv_color_hex(0xF5F7FF), 0);
+  lv_obj_set_style_text_font(name, &thai22, 0);
+  lv_obj_set_style_text_color(name, lv_color_hex(C_TEXT), 0);
   lv_label_set_text(name, viz.ticker);
   lv_obj_align(name, LV_ALIGN_LEFT_MID, textX, 0);
 
   lv_obj_t* chg = lv_label_create(head);
-  lv_obj_set_style_text_font(chg, &thai18, 0);
+  lv_obj_set_style_text_font(chg, &thai22, 0);
   lv_obj_set_style_text_color(chg, lv_color_hex(col), 0);
   char buf[24];
   snprintf(buf, sizeof(buf), "$%.2f  %+.1f%%", viz.v[viz.n - 1], viz.changePct);
   lv_label_set_text(chg, buf);
   lv_obj_align(chg, LV_ALIGN_RIGHT_MID, 0, 0);
 
-  lv_obj_t* chart = lv_chart_create(parent);
-  lv_obj_set_size(chart, 420, 110);
-  lv_chart_set_type(chart, LV_CHART_TYPE_LINE);
+  lv_obj_t* chart = makeChart(parent, 106);
   lv_chart_set_point_count(chart, viz.n);
-  lv_obj_set_style_bg_color(chart, lv_color_hex(0x0B1020), 0);
-  lv_obj_set_style_border_color(chart, lv_color_hex(0x232C4A), 0);
-  lv_obj_set_style_size(chart, 0, 0, LV_PART_INDICATOR);  // เส้นล้วน ไม่มีจุด
-  lv_obj_set_style_line_width(chart, 3, LV_PART_ITEMS);
-  lv_chart_set_div_line_count(chart, 3, 0);
 
   float lo = viz.v[0], hi = viz.v[0];
   for (int i = 0; i < viz.n; i++) { lo = min(lo, viz.v[i]); hi = max(hi, viz.v[i]); }
@@ -410,8 +495,8 @@ static void drawPrice(lv_obj_t* parent, const CardViz& viz) {
 
   lv_obj_t* range = lv_label_create(parent);
   lv_obj_set_style_text_font(range, &thai18, 0);
-  lv_obj_set_style_text_color(range, lv_color_hex(0x8B95B5), 0);
-  lv_label_set_text_fmt(range, "1 เดือน · ต่ำ $%d — สูง $%d", (int)lo, (int)hi);
+  lv_obj_set_style_text_color(range, lv_color_hex(C_MUTED), 0);
+  lv_label_set_text_fmt(range, "1 เดือน · ต่ำสุด $%d  ·  สูงสุด $%d", (int)lo, (int)hi);
 }
 
 static void drawScore(lv_obj_t* parent, const CardViz& viz) {
@@ -438,7 +523,9 @@ static void drawScore(lv_obj_t* parent, const CardViz& viz) {
 }
 
 static void cardClicked(lv_event_t* e) {
-  lv_obj_t* card = (lv_obj_t*)lv_event_get_target(e);
+  // ponytail: current_target ไม่ใช่ target — กราฟในการ์ด bubble event ขึ้นมา
+  // ถ้าใช้ target จะได้ตัวกราฟแล้ว lv_label_get_text assert ตาย
+  lv_obj_t* card = (lv_obj_t*)lv_event_get_current_target(e);
   lv_label_set_text(detailTitle, lv_label_get_text(lv_obj_get_child(card, 0)));
   lv_label_set_text(detailValue, lv_label_get_text(lv_obj_get_child(card, 1)));
   lv_obj_t* third = lv_obj_get_child(card, 2);
@@ -448,7 +535,8 @@ static void cardClicked(lv_event_t* e) {
   int idx = (int)(intptr_t)lv_obj_get_user_data(card);
   if (idx >= 0 && idx < cardCount && cardViz[idx].kind != VIZ_NONE) {
     vizBox = lv_obj_create(detailView);
-    lv_obj_set_size(vizBox, lv_pct(100), LV_SIZE_CONTENT);
+    lv_obj_set_size(vizBox, 440, 170);
+    lv_obj_align(vizBox, LV_ALIGN_TOP_LEFT, 20, 76);
     lv_obj_set_style_bg_opa(vizBox, LV_OPA_TRANSP, 0);
     lv_obj_set_style_border_width(vizBox, 0, 0);
     lv_obj_set_style_pad_all(vizBox, 0, 0);
@@ -466,37 +554,95 @@ static void cardClicked(lv_event_t* e) {
   lv_obj_remove_flag(detailView, LV_OBJ_FLAG_HIDDEN);
 }
 
+static const int kCardW = 198;
+static const int kCardH = 96;
+
+// เส้นแนวโน้มบางในการ์ด — ไม่มีกรอบ ไม่มีตาราง ให้รูปทรงเส้นเล่าเรื่องอย่างเดียว
+static void addSpark(lv_obj_t* card, const CardViz& viz) {
+  lv_obj_t* chart = lv_chart_create(card);
+  lv_obj_set_size(chart, kCardW - 20, 34);
+  lv_obj_align(chart, LV_ALIGN_BOTTOM_MID, 0, -6);
+  lv_chart_set_type(chart, LV_CHART_TYPE_LINE);
+  lv_chart_set_point_count(chart, viz.sparkN);
+  lv_chart_set_div_line_count(chart, 0, 0);
+  lv_obj_set_style_bg_opa(chart, LV_OPA_TRANSP, 0);
+  lv_obj_set_style_border_width(chart, 0, 0);
+  lv_obj_set_style_pad_all(chart, 0, 0);
+  lv_obj_set_style_size(chart, 0, 0, LV_PART_INDICATOR);
+  lv_obj_set_style_line_width(chart, 3, LV_PART_ITEMS);
+  lv_obj_set_style_line_rounded(chart, true, LV_PART_ITEMS);
+  lv_obj_clear_flag(chart, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_add_flag(chart, LV_OBJ_FLAG_EVENT_BUBBLE);
+
+  float lo = viz.spark[0], hi = viz.spark[0];
+  for (int i = 0; i < viz.sparkN; i++) { lo = min(lo, viz.spark[i]); hi = max(hi, viz.spark[i]); }
+  if (hi - lo < 0.01f) hi = lo + 1;  // เส้นแบนสนิทจะหายไปกลางกราฟ ดันช่วงให้เห็นเส้น
+  lv_chart_set_range(chart, LV_CHART_AXIS_PRIMARY_Y, (int32_t)(lo * 100), (int32_t)(hi * 100));
+
+  lv_chart_series_t* ser = lv_chart_add_series(chart, lv_color_hex(viz.accent), LV_CHART_AXIS_PRIMARY_Y);
+  for (int i = 0; i < viz.sparkN; i++) lv_chart_set_next_value(chart, ser, (int32_t)(viz.spark[i] * 100));
+}
+
+static void addGauge(lv_obj_t* card, const CardViz& viz) {
+  lv_obj_t* bar = lv_bar_create(card);
+  lv_obj_set_size(bar, kCardW - 20, 8);
+  lv_obj_align(bar, LV_ALIGN_BOTTOM_MID, 0, -30);
+  lv_obj_set_style_bg_color(bar, lv_color_hex(0x232C4A), LV_PART_MAIN);
+  lv_obj_set_style_bg_color(bar, lv_color_hex(viz.accent), LV_PART_INDICATOR);
+  lv_obj_set_style_radius(bar, 4, LV_PART_MAIN);
+  lv_obj_set_style_radius(bar, 4, LV_PART_INDICATOR);
+  lv_obj_add_flag(bar, LV_OBJ_FLAG_EVENT_BUBBLE);
+  lv_bar_set_range(bar, 0, 1000);
+  lv_bar_set_value(bar, (int32_t)(viz.gaugeVal / max(viz.gaugeMax, 1.0f) * 1000), LV_ANIM_OFF);
+
+  lv_obj_t* txt = lv_label_create(card);
+  lv_obj_set_style_text_font(txt, &thai18, 0);
+  lv_obj_set_style_text_color(txt, lv_color_hex(C_MUTED), 0);
+  lv_obj_set_width(txt, kCardW - 20);
+  lv_label_set_long_mode(txt, LV_LABEL_LONG_DOT);
+  char buf[28];
+  snprintf(buf, sizeof(buf), "%g / %g %s", viz.gaugeVal, viz.gaugeMax, viz.gaugeUnit);
+  setThaiText(txt, buf);
+  lv_obj_align(txt, LV_ALIGN_BOTTOM_LEFT, 10, -5);
+}
+
 static void addCard(const char* title, const char* value, const char* detail, const char* tone, int vizIndex) {
+  CardViz& viz = cardViz[vizIndex];
+  viz.accent = toneColor(tone);
+
   lv_obj_t* card = lv_obj_create(cardList);
+  lv_obj_set_size(card, kCardW, kCardH);
   lv_obj_add_flag(card, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_clear_flag(card, LV_OBJ_FLAG_SCROLLABLE);
   lv_obj_set_user_data(card, (void*)(intptr_t)vizIndex);
   lv_obj_add_event_cb(card, cardClicked, LV_EVENT_CLICKED, nullptr);
-  lv_obj_set_width(card, lv_pct(100));
-  lv_obj_set_height(card, LV_SIZE_CONTENT);
-  lv_obj_set_style_bg_color(card, lv_color_hex(0x151C33), 0);
+  lv_obj_set_style_bg_color(card, lv_color_hex(C_CARD), 0);
   lv_obj_set_style_border_width(card, 0, 0);
-  lv_obj_set_style_pad_all(card, 10, 0);
-  lv_obj_set_style_margin_bottom(card, 8, 0);
-  lv_obj_set_flex_flow(card, LV_FLEX_FLOW_COLUMN);
+  lv_obj_set_style_radius(card, 14, 0);
+  lv_obj_set_style_pad_all(card, 0, 0);
 
   lv_obj_t* t = lv_label_create(card);
   lv_obj_set_style_text_font(t, &thai18, 0);
-  lv_obj_set_style_text_color(t, lv_color_hex(toneColor(tone)), 0);
+  lv_obj_set_style_text_color(t, lv_color_hex(C_MUTED), 0);
+  lv_obj_set_width(t, kCardW - 20);
+  lv_label_set_long_mode(t, LV_LABEL_LONG_DOT);
   setThaiText(t, title);
+  lv_obj_align(t, LV_ALIGN_TOP_LEFT, 10, 8);
 
   lv_obj_t* v = lv_label_create(card);
-  lv_obj_set_style_text_font(v, &thai18, 0);
-  lv_obj_set_style_text_color(v, lv_color_hex(0xF5F7FF), 0);
+  lv_obj_set_style_text_font(v, &thai22, 0);
+  lv_obj_set_style_text_color(v, lv_color_hex(C_TEXT), 0);
+  lv_obj_set_width(v, kCardW - 20);
+  lv_label_set_long_mode(v, LV_LABEL_LONG_DOT);
   setThaiText(v, value);
+  lv_obj_align(v, LV_ALIGN_TOP_LEFT, 10, 28);
 
-  if (detail && *detail) {
-    lv_obj_t* d = lv_label_create(card);
-    lv_obj_set_style_text_font(d, &thai18, 0);
-    lv_obj_set_style_text_color(d, lv_color_hex(0x8B95B5), 0);
-    lv_obj_set_width(d, lv_pct(100));
-    lv_label_set_long_mode(d, LV_LABEL_LONG_WRAP);
-    setThaiText(d, detail);
-  }
+  lv_obj_t* d = lv_label_create(card);
+  lv_obj_add_flag(d, LV_OBJ_FLAG_HIDDEN);  // เก็บไว้ให้หน้า detail อ่าน ไม่โชว์บนการ์ด
+  setThaiText(d, detail);
+
+  if (viz.isGauge && viz.gaugeMax > 0) addGauge(card, viz);
+  else if (viz.sparkN > 1) addSpark(card, viz);
 }
 
 static void applyBacklight(int hour) {
@@ -574,11 +720,36 @@ static void fetchAndRender() {
 
     // การ์ดนาฬิกาข้าม — หัวจอใช้เวลาจาก NTP ในเครื่องแทน แม่นกว่าและไม่ต้องรอ fetch
     if (!strcmp(type, "clock")) continue;
+
+    // ยกอากาศกับจันทรคติขึ้นแถบบน — เป็นข้อมูลที่มองแวบเดียวต้องเห็น
+    if (!strcmp(type, "weather")) {
+      setThaiText(heroWeather, value);
+    } else if (!strcmp(type, "lunar")) {
+      setThaiText(heroLunar, value);
+    }
+
     if (cardCount >= kMaxCards) break;
 
     CardViz& viz = cardViz[cardCount];
     viz = CardViz{};
     JsonObject extra = c["extra"];
+
+    // viz มาตรฐานจาก backend — ทุกการ์ดมีอย่างใดอย่างหนึ่งเสมอ
+    JsonObject vz = c["viz"];
+    if (vz) {
+      const char* kind = vz["kind"] | "";
+      if (!strcmp(kind, "spark")) {
+        for (float pt : vz["points"].as<JsonArray>()) {
+          if (viz.sparkN >= 24) break;
+          viz.spark[viz.sparkN++] = pt;
+        }
+      } else if (!strcmp(kind, "gauge")) {
+        viz.isGauge = true;
+        viz.gaugeVal = vz["value"] | 0.0f;
+        viz.gaugeMax = vz["max"] | 1.0f;
+        strncpy(viz.gaugeUnit, vz["unit"] | "", sizeof(viz.gaugeUnit) - 1);
+      }
+    }
 
     if (!strcmp(type, "token") && extra["usage"][0]) {
       JsonObject u = extra["usage"][0];
@@ -647,7 +818,7 @@ static void fetchAndRender() {
 void setup() {
   Serial.begin(115200);
   delay(300);
-  Serial.println("\n=== TanPlanet Smart Astro Calendar ===");
+  Serial.printf("\n=== TanPlanet Smart Astro Calendar (build %s %s) ===\n", __DATE__, __TIME__);
 
   // backlight ผ่าน PWM เพื่อหรี่จอกลางคืนได้ (channel 1 — 0 กันไว้ให้ buzzer)
   ledcSetup(1, 5000, 8);
@@ -671,50 +842,105 @@ void setup() {
   lv_indev_set_read_cb(indev, touchRead);
 
   lv_obj_t* scr = lv_screen_active();
-  lv_obj_set_style_bg_color(scr, lv_color_hex(0x0B1020), 0);
-  lv_obj_set_style_pad_all(scr, 12, 0);
+  lv_obj_set_style_bg_color(scr, lv_color_hex(C_BG), 0);
+  lv_obj_set_style_pad_all(scr, 0, 0);
+  lv_obj_clear_flag(scr, LV_OBJ_FLAG_SCROLLABLE);
 
-  headValue = lv_label_create(scr);
-  lv_obj_set_style_text_font(headValue, &thai36, 0);
-  lv_obj_set_style_text_color(headValue, lv_color_hex(0xF5F7FF), 0);
+  // แถบบน: เวลาใหญ่อ่านได้จากอีกฝั่งห้อง + วันที่ไทย + สภาพอากาศย่อ
+  lv_obj_t* hero = lv_obj_create(scr);
+  lv_obj_set_size(hero, 480, 92);
+  lv_obj_align(hero, LV_ALIGN_TOP_MID, 0, 0);
+  lv_obj_set_style_bg_color(hero, lv_color_hex(C_HERO), 0);
+  lv_obj_set_style_border_width(hero, 0, 0);
+  lv_obj_set_style_radius(hero, 0, 0);
+  lv_obj_set_style_pad_all(hero, 0, 0);
+  lv_obj_clear_flag(hero, LV_OBJ_FLAG_SCROLLABLE);
+
+  headValue = lv_label_create(hero);
+  lv_obj_set_style_text_font(headValue, &clock60, 0);
+  lv_obj_set_style_text_color(headValue, lv_color_hex(C_TEXT), 0);
   lv_label_set_text(headValue, "--:--");
-  lv_obj_align(headValue, LV_ALIGN_TOP_LEFT, 0, 0);
+  lv_obj_align(headValue, LV_ALIGN_TOP_LEFT, 18, 0);
 
-  headDetail = lv_label_create(scr);
+  headDetail = lv_label_create(hero);
   lv_obj_set_style_text_font(headDetail, &thai18, 0);
-  lv_obj_set_style_text_color(headDetail, lv_color_hex(0x8B95B5), 0);
+  lv_obj_set_style_text_color(headDetail, lv_color_hex(C_MUTED), 0);
   setThaiText(headDetail, "กำลังเริ่มระบบ");
-  lv_obj_align(headDetail, LV_ALIGN_TOP_LEFT, 0, 46);
+  lv_obj_align(headDetail, LV_ALIGN_BOTTOM_LEFT, 20, -8);
 
-  statusLabel = lv_label_create(scr);
+  heroLunar = lv_label_create(hero);
+  lv_obj_set_style_text_font(heroLunar, &thai18, 0);
+  lv_obj_set_style_text_color(heroLunar, lv_color_hex(C_WARN), 0);
+  lv_label_set_text(heroLunar, "");
+  lv_obj_align(heroLunar, LV_ALIGN_BOTTOM_RIGHT, -18, -8);
+
+  heroWeather = lv_label_create(hero);
+  lv_obj_set_style_text_font(heroWeather, &thai36, 0);
+  lv_obj_set_style_text_color(heroWeather, lv_color_hex(C_TEXT), 0);
+  lv_label_set_text(heroWeather, "");
+  lv_obj_align(heroWeather, LV_ALIGN_TOP_RIGHT, -18, 10);
+
+  // แถบสถานะล่างสุด — จองพื้นที่ไว้ เดิมลอยทับกราฟในการ์ดแถวล่าง
+  lv_obj_t* statusBar = lv_obj_create(scr);
+  lv_obj_set_size(statusBar, 480, 24);
+  lv_obj_align(statusBar, LV_ALIGN_BOTTOM_MID, 0, 0);
+  lv_obj_set_style_bg_color(statusBar, lv_color_hex(C_HERO), 0);
+  lv_obj_set_style_border_width(statusBar, 0, 0);
+  lv_obj_set_style_radius(statusBar, 0, 0);
+  lv_obj_set_style_pad_all(statusBar, 0, 0);
+  lv_obj_clear_flag(statusBar, LV_OBJ_FLAG_SCROLLABLE);
+
+  lv_obj_t* calBtn = lv_button_create(statusBar);
+  lv_obj_set_size(calBtn, 74, 22);
+  lv_obj_align(calBtn, LV_ALIGN_RIGHT_MID, -2, 0);
+  lv_obj_set_style_bg_color(calBtn, lv_color_hex(C_CARD), 0);
+  lv_obj_set_style_radius(calBtn, 6, 0);
+  lv_obj_add_event_cb(calBtn, [](lv_event_t*) {
+    calibrateTouch();
+    lv_obj_invalidate(lv_screen_active());  // calibrate วาดทับด้วย tft ตรง ๆ ต้องสั่ง LVGL วาดคืน
+  }, LV_EVENT_CLICKED, nullptr);
+
+  lv_obj_t* calLbl = lv_label_create(calBtn);
+  lv_obj_set_style_text_font(calLbl, &thai18, 0);
+  lv_obj_set_style_text_color(calLbl, lv_color_hex(C_MUTED), 0);
+  setThaiText(calLbl, "ปรับทัช");
+  lv_obj_center(calLbl);
+
+  statusLabel = lv_label_create(statusBar);
   lv_obj_set_style_text_font(statusLabel, &thai18, 0);
+  lv_obj_set_width(statusLabel, 376);  // เว้นที่ให้ปุ่มปรับทัช
+  lv_label_set_long_mode(statusLabel, LV_LABEL_LONG_DOT);
   setThaiText(statusLabel, "ต่อ Wi-Fi...");
-  lv_obj_align(statusLabel, LV_ALIGN_TOP_RIGHT, 0, 4);
+  lv_obj_align(statusLabel, LV_ALIGN_LEFT_MID, 12, 0);
 
+  // 2 คอลัมน์ — เห็น 4 การ์ดต่อหน้า แทนที่จะเลื่อนดูทีละใบ
   cardList = lv_obj_create(scr);
-  lv_obj_set_size(cardList, 390, 220);  // เว้น 66px ขวาให้ปุ่มเลื่อน
-  lv_obj_align(cardList, LV_ALIGN_BOTTOM_LEFT, 0, 0);
+  lv_obj_set_size(cardList, 408, 200);
+  lv_obj_align(cardList, LV_ALIGN_TOP_LEFT, 10, 96);
   lv_obj_set_style_bg_opa(cardList, LV_OPA_TRANSP, 0);
   lv_obj_set_style_border_width(cardList, 0, 0);
   lv_obj_set_style_pad_all(cardList, 0, 0);
-  lv_obj_set_flex_flow(cardList, LV_FLEX_FLOW_COLUMN);
+  lv_obj_set_style_pad_row(cardList, 8, 0);
+  lv_obj_set_style_pad_column(cardList, 8, 0);
+  lv_obj_set_flex_flow(cardList, LV_FLEX_FLOW_ROW_WRAP);
+  lv_obj_set_scrollbar_mode(cardList, LV_SCROLLBAR_MODE_OFF);  // แถบขาวบางแทรกระหว่างการ์ดกับปุ่ม
 
   // ปุ่มเลื่อนขึ้น-ลง — resistive touch ลากไม่ลื่น กดปุ่มแม่นกว่า
   // ponytail: ใช้ LV_SYMBOL ของ montserrat ในตัว ไม่ต้องเพิ่ม glyph ลูกศรในฟอนต์ไทย
   struct ScrollBtn { const char* icon; int dy; lv_align_t align; int y; };
   const ScrollBtn scrollBtns[] = {
-    {LV_SYMBOL_UP, -110, LV_ALIGN_BOTTOM_RIGHT, -118},
-    {LV_SYMBOL_DOWN, 110, LV_ALIGN_BOTTOM_RIGHT, -8},
+    {LV_SYMBOL_UP, -(kCardH + 8), LV_ALIGN_TOP_RIGHT, 96},
+    {LV_SYMBOL_DOWN, kCardH + 8, LV_ALIGN_TOP_RIGHT, 200},
   };
   for (const ScrollBtn& b : scrollBtns) {
     lv_obj_t* btn = lv_button_create(scr);
-    lv_obj_set_size(btn, 58, 100);  // touch target ใหญ่กว่า 44px ตามที่ควรเป็น
-    lv_obj_align(btn, b.align, 0, b.y);
-    lv_obj_set_style_bg_color(btn, lv_color_hex(0x1F2947), 0);
-    lv_obj_set_style_radius(btn, 10, 0);
+    lv_obj_set_size(btn, 52, 96);  // touch target ใหญ่กว่า 44px — resistive ต้องกดแรง
+    lv_obj_align(btn, b.align, -8, b.y);
+    lv_obj_set_style_bg_color(btn, lv_color_hex(C_CARD), 0);
+    lv_obj_set_style_radius(btn, 12, 0);
     lv_obj_set_user_data(btn, (void*)(intptr_t)b.dy);
     lv_obj_add_event_cb(btn, [](lv_event_t* e) {
-      int dy = (int)(intptr_t)lv_obj_get_user_data((lv_obj_t*)lv_event_get_target(e));
+      int dy = (int)(intptr_t)lv_obj_get_user_data((lv_obj_t*)lv_event_get_current_target(e));
       lv_obj_scroll_by(cardList, 0, -dy, LV_ANIM_ON);
     }, LV_EVENT_CLICKED, nullptr);
 
@@ -728,37 +954,42 @@ void setup() {
   detailView = lv_obj_create(scr);
   lv_obj_set_size(detailView, 480, 320);
   lv_obj_center(detailView);
-  lv_obj_set_style_bg_color(detailView, lv_color_hex(0x151C33), 0);
+  lv_obj_set_style_bg_color(detailView, lv_color_hex(C_CARD), 0);
   lv_obj_set_style_border_width(detailView, 0, 0);
-  lv_obj_set_style_pad_all(detailView, 20, 0);
-  lv_obj_set_flex_flow(detailView, LV_FLEX_FLOW_COLUMN);
+  lv_obj_set_style_radius(detailView, 0, 0);
+  lv_obj_set_style_pad_all(detailView, 0, 0);
   lv_obj_add_flag(detailView, LV_OBJ_FLAG_HIDDEN);
   lv_obj_add_flag(detailView, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_clear_flag(detailView, LV_OBJ_FLAG_SCROLLABLE);
   lv_obj_add_event_cb(detailView, [](lv_event_t* e) {
     lv_obj_add_flag((lv_obj_t*)lv_event_get_target(e), LV_OBJ_FLAG_HIDDEN);
   }, LV_EVENT_CLICKED, nullptr);
 
+  // ส่วนหัวติดบนเสมอ — เดิม value ใหญ่ดันหัวข้อจนล้นออกนอกจอ
   detailTitle = lv_label_create(detailView);
   lv_obj_set_style_text_font(detailTitle, &thai18, 0);
-  lv_obj_set_style_text_color(detailTitle, lv_color_hex(0x8B95B5), 0);
+  lv_obj_set_style_text_color(detailTitle, lv_color_hex(C_MUTED), 0);
+  lv_obj_align(detailTitle, LV_ALIGN_TOP_LEFT, 20, 12);
 
   detailValue = lv_label_create(detailView);
   lv_obj_set_style_text_font(detailValue, &thai36, 0);
-  lv_obj_set_style_text_color(detailValue, lv_color_hex(0xF5F7FF), 0);
-  lv_obj_set_width(detailValue, lv_pct(100));
-  lv_label_set_long_mode(detailValue, LV_LABEL_LONG_WRAP);
+  lv_obj_set_style_text_color(detailValue, lv_color_hex(C_TEXT), 0);
+  lv_obj_set_width(detailValue, 440);
+  lv_label_set_long_mode(detailValue, LV_LABEL_LONG_DOT);
+  lv_obj_align(detailValue, LV_ALIGN_TOP_LEFT, 20, 28);
 
   detailText = lv_label_create(detailView);
   lv_obj_set_style_text_font(detailText, &thai18, 0);
   lv_obj_set_style_text_color(detailText, lv_color_hex(0xB9C4E6), 0);
-  lv_obj_set_width(detailText, lv_pct(100));
-  lv_label_set_long_mode(detailText, LV_LABEL_LONG_WRAP);
-  lv_obj_set_style_pad_top(detailText, 12, 0);
+  lv_obj_set_size(detailText, 440, 42);  // สูงตายตัว 2 บรรทัด — เดิม wrap ยาวจนทับกราฟ
+  lv_label_set_long_mode(detailText, LV_LABEL_LONG_DOT);
+  lv_obj_align(detailText, LV_ALIGN_TOP_LEFT, 20, 250);
 
   lv_obj_t* hint = lv_label_create(detailView);
   lv_obj_set_style_text_font(hint, &thai18, 0);
   lv_obj_set_style_text_color(hint, lv_color_hex(0x5A6688), 0);
   setThaiText(hint, "แตะเพื่อปิด");
+  lv_obj_align(hint, LV_ALIGN_BOTTOM_RIGHT, -16, -8);
 
   lv_timer_create(updateClock, 1000, nullptr);
   lv_refr_now(disp);
@@ -793,7 +1024,7 @@ void setup() {
 
 void loop() {
   lv_timer_handler();
-  delay(5);
+  delay(2);
 
   if (millis() - lastFetch > kRefreshMs) {
     lastFetch = millis();
