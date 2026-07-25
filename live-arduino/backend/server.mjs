@@ -36,7 +36,7 @@ async function readSampleSummary() {
 
 // จำลอง web config ของ ESP32 (บนเครื่องจริงหน้านี้ serve จากตัวบอร์ดผ่าน IP ในวง Wi-Fi)
 const RUNTIME_CONFIG_PATH = path.join(PROJECT_ROOT, "data", "device-runtime-config.json");
-const DEFAULT_RUNTIME_CONFIG = { tickers: [], hiddenCards: [] };
+const DEFAULT_RUNTIME_CONFIG = { tickers: [], hiddenCards: [], cardOrder: [] };
 
 async function loadRuntimeConfig() {
   const saved = await readJsonMaybe(RUNTIME_CONFIG_PATH);
@@ -47,6 +47,7 @@ async function saveRuntimeConfig(config) {
   const clean = {
     tickers: Array.isArray(config.tickers) ? config.tickers.map(String) : [],
     hiddenCards: Array.isArray(config.hiddenCards) ? config.hiddenCards.map(String) : [],
+    cardOrder: Array.isArray(config.cardOrder) ? config.cardOrder.map(String) : [],
   };
   await writeFile(RUNTIME_CONFIG_PATH, JSON.stringify(clean, null, 2));
   return clean;
@@ -432,7 +433,17 @@ async function buildDeviceSummary() {
     },
     cards: cards
       .filter((c) => !runtimeConfig.hiddenCards.includes(c.id))
-      .sort((a, b) => (a.priority || 50) - (b.priority || 50)),
+      .sort((a, b) => {
+        // ลำดับที่จัดเองจากหน้า /config มาก่อนเสมอ ที่ไม่ได้จัดไว้ไปต่อท้ายตาม priority เดิม
+        const ia = runtimeConfig.cardOrder.indexOf(a.id);
+        const ib = runtimeConfig.cardOrder.indexOf(b.id);
+        if (ia !== -1 || ib !== -1) {
+          if (ia === -1) return 1;
+          if (ib === -1) return -1;
+          return ia - ib;
+        }
+        return (a.priority || 50) - (b.priority || 50);
+      }),
     fallbackCards: baseCards,
   };
 }
@@ -519,42 +530,129 @@ async function buildConfigPage() {
     const checked = !config.tickers.length || config.tickers.includes(t) ? "checked" : "";
     return `<label><input type="checkbox" name="ticker" value="${t}" ${checked}> ${t}</label>`;
   }).join("\n");
-  const cardRows = allCards.map(([id, label]) => {
-    const checked = config.hiddenCards.includes(id) ? "" : "checked";
-    return `<label><input type="checkbox" name="card" value="${id}" ${checked}> ${label}</label>`;
+  // เรียงรายการตาม cardOrder ที่บันทึกไว้ ที่เหลือต่อท้าย
+  const ordered = [
+    ...config.cardOrder.map((id) => allCards.find((c) => c[0] === id)).filter(Boolean),
+    ...allCards.filter((c) => !config.cardOrder.includes(c[0])),
+  ];
+  const cardRows = ordered.map(([id, label], i) => {
+    const hidden = config.hiddenCards.includes(id);
+    return `<li class="row${hidden ? " off" : ""}" data-id="${id}">
+      <span class="grip" aria-hidden="true">⠿</span>
+      <span class="num">${i + 1}</span>
+      <span class="name">${label}</span>
+      <button class="eye" type="button" aria-label="แสดง/ซ่อน">${hidden ? "ซ่อนอยู่" : "แสดง"}</button>
+    </li>`;
   }).join("\n");
+
   return `<!doctype html>
 <html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TanPlanet Device Config</title>
+<title>จัดการการ์ดบนจอ</title>
 <style>
-  body{font-family:-apple-system,"Segoe UI",sans-serif;background:#10121e;color:#f6f3ea;max-width:560px;margin:0 auto;padding:24px}
-  h1{font-size:20px} h2{font-size:14px;color:#a7aec5;margin:20px 0 8px;text-transform:uppercase;letter-spacing:.5px}
-  fieldset{border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
-  label{font-size:14px;display:flex;gap:8px;align-items:center;padding:6px 8px;background:#182039;border-radius:8px;cursor:pointer}
-  button{margin-top:16px;width:100%;height:44px;border:0;border-radius:10px;background:#7aa2ff;color:#0b1020;font-weight:800;font-size:15px;cursor:pointer}
-  .note{color:#a7aec5;font-size:12px;margin-top:12px;line-height:1.5}
-  #saved{color:#20c997;font-weight:700;font-size:13px;margin-top:8px;visibility:hidden}
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,"Segoe UI",sans-serif;background:#0A0F1F;color:#F2F5FF;max-width:520px;margin:0 auto;padding:20px 16px 96px}
+  h1{font-size:19px;margin:0 0 4px}
+  .sub{color:#8492BC;font-size:13px;margin-bottom:20px}
+  h2{font-size:12px;color:#8492BC;margin:22px 0 8px;text-transform:uppercase;letter-spacing:.6px}
+  ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+  .row{display:flex;align-items:center;gap:10px;background:#161F3C;border-radius:12px;padding:12px 14px;
+       touch-action:none;user-select:none;transition:opacity .15s}
+  .row.off{opacity:.42}
+  .row.drag{background:#22305A;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+  .grip{color:#5A6688;font-size:19px;cursor:grab;padding:4px 2px}
+  .num{color:#8492BC;font-size:12px;width:18px;text-align:center;flex:none}
+  .name{flex:1;font-size:15px;font-weight:600}
+  .eye{border:0;background:#22305A;color:#B9C4E6;border-radius:8px;height:32px;padding:0 12px;font-size:12px;font-weight:700;cursor:pointer}
+  .row.off .eye{background:#2A2036;color:#F87171}
+  fieldset{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px;display:grid;
+           grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin:0}
+  fieldset label{font-size:14px;display:flex;gap:8px;align-items:center;padding:8px;background:#161F3C;border-radius:8px}
+  .bar{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+       background:linear-gradient(transparent,#0A0F1F 24%);display:flex;gap:10px;max-width:520px;margin:0 auto}
+  button.save{flex:1;height:48px;border:0;border-radius:12px;background:#4ADE80;color:#06210F;font-weight:800;font-size:16px}
+  #saved{color:#4ADE80;font-size:13px;font-weight:700;text-align:center;height:18px;margin-top:10px}
 </style></head><body>
-<h1>⚙️ TanPlanet Device Config</h1>
-<h2>หุ้นที่แสดงใน Market Focus</h2>
+<h1>จัดการการ์ดบนจอ</h1>
+<div class="sub">ลากที่ ⠿ เพื่อสลับลำดับ · แตะปุ่มขวาเพื่อซ่อน/แสดง</div>
+
+<h2>ลำดับการ์ด</h2>
+<ul id="cards">${cardRows}</ul>
+
+<h2>หุ้นใน Market Focus</h2>
 <fieldset id="tickers">${tickerRows}</fieldset>
-<h2>การ์ดที่แสดงบนจอ</h2>
-<fieldset id="cards">${cardRows}</fieldset>
-<button id="save" type="button">บันทึก</button>
-<div id="saved">✓ บันทึกแล้ว — จอจะอัปเดตรอบ sync ถัดไป</div>
-<div class="note">หน้านี้จำลอง Web Config ของอุปกรณ์จริง — บนเครื่องจริงจะเปิดจาก IP ของ ESP32 ในวง Wi-Fi เดียวกัน ค่า config เก็บใน device และอยู่รอดหลัง restart</div>
+
+<div id="saved"></div>
+<div class="bar"><button class="save" id="save" type="button">บันทึก</button></div>
+
 <script>
+const list = document.getElementById("cards");
+
+// ลากสลับลำดับด้วย pointer events — ใช้ได้ทั้งนิ้วบนมือถือและเมาส์
+let dragEl = null, startY = 0, offset = 0;
+list.addEventListener("pointerdown", (e) => {
+  const grip = e.target.closest(".grip");
+  if (!grip) return;
+  dragEl = grip.closest(".row");
+  dragEl.classList.add("drag");
+  dragEl.setPointerCapture(e.pointerId);
+  startY = e.clientY;
+  offset = 0;
+});
+list.addEventListener("pointermove", (e) => {
+  if (!dragEl) return;
+  offset = e.clientY - startY;
+  dragEl.style.transform = "translateY(" + offset + "px)";
+  const rows = [...list.children].filter((r) => r !== dragEl);
+  const mid = dragEl.getBoundingClientRect().top + dragEl.offsetHeight / 2;
+  for (const r of rows) {
+    const box = r.getBoundingClientRect();
+    if (mid > box.top && mid < box.bottom) {
+      const after = mid > box.top + box.height / 2;
+      dragEl.style.transform = "";
+      list.insertBefore(dragEl, after ? r.nextSibling : r);
+      startY = e.clientY;
+      offset = 0;
+      break;
+    }
+  }
+});
+const endDrag = () => {
+  if (!dragEl) return;
+  dragEl.classList.remove("drag");
+  dragEl.style.transform = "";
+  dragEl = null;
+  renumber();
+};
+list.addEventListener("pointerup", endDrag);
+list.addEventListener("pointercancel", endDrag);
+
+function renumber() {
+  [...list.children].forEach((r, i) => { r.querySelector(".num").textContent = i + 1; });
+}
+
+list.addEventListener("click", (e) => {
+  const btn = e.target.closest(".eye");
+  if (!btn) return;
+  const row = btn.closest(".row");
+  row.classList.toggle("off");
+  btn.textContent = row.classList.contains("off") ? "ซ่อนอยู่" : "แสดง";
+});
+
 document.getElementById("save").addEventListener("click", async () => {
+  const rows = [...list.children];
   const tickers = [...document.querySelectorAll('input[name="ticker"]:checked')].map((el) => el.value);
-  const allTickers = [...document.querySelectorAll('input[name="ticker"]')].length;
-  const shownCards = [...document.querySelectorAll('input[name="card"]:checked')].map((el) => el.value);
-  const allCards = [...document.querySelectorAll('input[name="card"]')].map((el) => el.value);
+  const allTickers = document.querySelectorAll('input[name="ticker"]').length;
   const body = {
     tickers: tickers.length === allTickers ? [] : tickers,
-    hiddenCards: allCards.filter((id) => !shownCards.includes(id)),
+    cardOrder: rows.map((r) => r.dataset.id),
+    hiddenCards: rows.filter((r) => r.classList.contains("off")).map((r) => r.dataset.id),
   };
-  await fetch("/api/config", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
-  document.getElementById("saved").style.visibility = "visible";
+  const res = await fetch("/api/config", {
+    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body),
+  });
+  document.getElementById("saved").textContent = res.ok
+    ? "✓ บันทึกแล้ว — จอจะอัปเดตภายใน 5 นาที"
+    : "บันทึกไม่สำเร็จ";
 });
 </script></body></html>`;
 }
@@ -566,7 +664,7 @@ async function handleRequest(req, res) {
   if (url.pathname === "/ui" || url.pathname === "/mock-ui") {
     return sendHtmlFile(res, path.join(PROJECT_ROOT, "mock-ui", "index.html"));
   }
-  if (url.pathname === "/config") {
+  if (url.pathname === "/config" || url.pathname === "/manage") {
     const body = await buildConfigPage();
     res.writeHead(200, { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" });
     return res.end(body);
