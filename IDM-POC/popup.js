@@ -13,14 +13,54 @@ function buildCmd({ url, headers = {} }) {
 }
 const q = (s) => `'${String(s).replace(/'/g, `'\\''`)}'`; // single-quote ปลอดภัยกับ ; space ใน cookie
 
-function copyBtn(label, text) {
+// ---- สั่ง yt-dlp ในเครื่องผ่าน native host (ติดตั้ง: ./host/install.sh <EXT_ID>) ----
+const HOST = "com.tanplanet.idm";
+const statusEl = document.getElementById("status");
+let statusTimer;
+
+function setStatus(msg, kind = "") {
+  statusEl.textContent = msg;
+  statusEl.className = "status show " + kind;
+  clearTimeout(statusTimer);
+  statusTimer = setTimeout(() => (statusEl.className = "status"), 6000);
+}
+
+function dlBtn(job, label = "Download", cls = "btn primary") {
   const b = document.createElement("button");
-  b.textContent = label;
+  b.className = cls;
+  b.append(icon("download"), label);
+  b.onclick = () => {
+    setStatus("กำลังสั่งโหลด…");
+    chrome.runtime.sendNativeMessage(HOST, job, (res) => {
+      const err = chrome.runtime.lastError;
+      // โชว์ข้อความจริงจาก Chrome — "not found" = ยังไม่ install, "forbidden/undefined" = ยังไม่ reload
+      if (err)
+        return setStatus(
+          `เรียก helper ไม่ได้: ${err.message}\nถ้าเพิ่งติดตั้ง ให้กด Reload ที่ chrome://extensions ก่อน`,
+          "err"
+        );
+      if (!res?.ok) return setStatus(res?.error || "ล้มเหลว", "err");
+      setStatus("เริ่มโหลดแล้ว → ~/Downloads (pid " + res.pid + ")", "ok");
+    });
+  };
+  return b;
+}
+
+// ico=null สำหรับปุ่มที่อยู่ติดกันหลายตัว — ไอคอน copy ซ้ำๆ ในแถวเดียวคืออาการรก ไม่ใช่ข้อมูล
+function copyBtn(label, text, cls = "btn", ico = "copy") {
+  const b = document.createElement("button");
+  b.className = cls;
+  const fill = () => { b.replaceChildren(...(ico ? [icon(ico)] : []), label); };
+  fill();
   b.onclick = () => {
     navigator.clipboard.writeText(text);
-    const t = b.textContent;
-    b.textContent = "✓";
-    setTimeout(() => (b.textContent = t), 1000);
+    b.style.minWidth = b.offsetWidth + "px"; // ล็อกความกว้างก่อนสลับ icon กันปุ่มกระตุก
+    b.classList.add("ok");
+    b.replaceChildren(icon("check"), "คัดลอกแล้ว");
+    setTimeout(() => {
+      b.classList.remove("ok");
+      fill();
+    }, 1200);
   };
   return b;
 }
@@ -88,24 +128,36 @@ async function analyze(url) {
   return a;
 }
 
-// อธิบายคอลัมน์ Quality + Info จากผลแกะ
+// อธิบายแถว: chip + quality + info (info = ลิสต์ segment คั่นด้วย · แต่ละอันมีไอคอนได้)
 function describe(url, a) {
   if (a.kind === "master") {
     const q = a.variants.map((v) => v.label).join(" / ") || "?";
-    const io = [];
-    io.push(a.audio.length ? `🔊 ${a.audio.join(", ")}` : "muxed audio");
-    io.push(a.subs.length ? `💬 ${a.subs.join(", ")}` : "no subs");
-    return { kind: "Master", cls: "master", q, info: io.join(" · ") };
+    return {
+      kind: "Master", cls: "master", q,
+      info: [
+        { icon: "audio", text: a.audio.length ? a.audio.join(", ") : "muxed" },
+        { icon: "subs", text: a.subs.length ? a.subs.join(", ") : "ไม่มี" },
+      ],
+    };
   }
   if (a.kind === "variant") {
-    const info = `${a.segs} segs · ${fmt(a.dur)}` + (a.enc ? ` · 🔒 ${a.enc}` : "");
+    const info = [{ text: `${a.segs} segs` }, { text: fmt(a.dur) }];
+    if (a.enc) info.push({ icon: "lock", text: a.enc });
     return { kind: "Variant", cls: "variant", q: variantRes.get(url) || "?", info };
   }
   if (a.kind === "dash")
-    return { kind: "DASH", cls: "file", q: "?", info: "DASH — ลอง yt-dlp / N_m3u8DL-RE" };
-  if (a.kind === "file")
-    return { kind: "File", cls: "file", q: "—", info: "direct" };
-  return { kind: "m3u8", cls: "variant", q: "?", info: a.err ? "อ่านไม่ได้" : "" };
+    return { kind: "DASH", cls: "file", q: "", info: [{ text: "ลอง yt-dlp / N_m3u8DL-RE" }] };
+  if (a.kind === "file") {
+    // ชื่อไฟล์ + host — ไม่งั้นหลายแถวหน้าตาเหมือนกันหมด แยกไม่ออกว่าอันไหนอันไหน
+    let name = "direct", host = "";
+    try {
+      const u = new URL(url);
+      name = decodeURIComponent(u.pathname.split("/").pop()) || "direct";
+      host = u.hostname.replace(/^www\./, "");
+    } catch {}
+    return { kind: "File", cls: "file", q: "", info: host ? [{ text: name }, { text: host }] : [{ text: name }] };
+  }
+  return { kind: "m3u8", cls: "variant", q: "", info: a.err ? [{ text: "อ่านไม่ได้" }] : [] };
 }
 
 // ---- YouTube: อยู่หน้า watch/shorts → เสนอ yt-dlp จากลิงก์หน้าเว็บ (ไม่ sniff googlevideo) ----
@@ -135,78 +187,118 @@ async function ytCard() {
   const div = document.createElement("div");
   div.className = "yt";
   const head = document.createElement("div");
-  head.innerHTML = "<b>▶ YouTube</b> — โหลดจากหน้าเว็บ (เสถียรกว่า sniff)";
+  head.className = "yt-head";
+  const mark = icon("play", "i yt-mark");
+  mark.setAttribute("fill", "currentColor");
+  const sub = document.createElement("span");
+  sub.className = "yt-sub";
+  sub.textContent = "โหลดจากหน้าเว็บ";
+  head.append(mark, "YouTube", sub);
   const urlDiv = document.createElement("div");
   urlDiv.className = "u";
   urlDiv.textContent = clean;
-  div.append(head, urlDiv, copyBtn("yt-dlp best", best), copyBtn("yt-dlp 1080p", p1080));
+  urlDiv.title = clean;
+  const acts = document.createElement("div");
+  acts.className = "acts";
+  acts.append(
+    dlBtn({ url: clean, format: "bv*+ba/b" }),
+    dlBtn({ url: clean, format: "bv*[height<=1080]+ba/b" }, "1080p", "btn dl"),
+    copyBtn("คัดลอกคำสั่ง", best)
+  );
+  div.append(head, urlDiv, acts);
   return div;
 }
 
-function td(cls, node) {
-  const c = document.createElement("td");
-  if (cls) c.className = cls;
-  c.append(node);
-  return c;
-}
-
-async function activeTabId() {
+// หน้าที่ user ดูอยู่จริง ณ วินาทีที่เปิดป๊อปอัป — ทั้ง id และ URL (ตัด hash)
+async function activeTab() {
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    return tab?.id ?? -1;
-  } catch { return -1; }
+    return { id: tab?.id ?? -1, page: (tab?.url || "").split("#")[0] };
+  } catch { return { id: -1, page: "" }; }
 }
 
+// media ของหน้านี้เท่านั้น — item เก่าที่ page ไม่ตรง (SPA เปลี่ยนคลิป) ต้องไม่โผล่
+const forPage = (items, t) =>
+  items.filter((i) => i.tabId === t.id && (!i.page || i.page === t.page));
+
 async function render() {
-  const tabId = await activeTabId();
+  const tab = await activeTab();
   const { items: all = [] } = await chrome.storage.session.get("items");
-  const items = all.filter((i) => i.tabId === tabId); // โชว์เฉพาะ media ของหน้าที่ดูอยู่
+  const items = forPage(all, tab);
   wrap.innerHTML = "";
   const yt = await ytCard();
   if (yt) wrap.append(yt);
   if (!items.length) {
-    if (!yt) wrap.innerHTML = '<div class="empty">ยังไม่เจอ media URL</div>';
+    if (!yt)
+      wrap.innerHTML =
+        '<div class="empty"><b>ยังไม่เจอวิดีโอในหน้านี้</b>กด Rescan แล้วเล่นวิดีโอสักครู่</div>';
     return;
   }
   // แกะทุกตัวก่อน (master เติม variantRes ให้ variant ก่อนวาดตาราง)
   const analyzed = await Promise.all(items.map((i) => analyze(i.url)));
 
-  const table = document.createElement("table");
-  table.innerHTML =
-    "<thead><tr><th>Type</th><th>Quality</th><th>Info</th><th></th></tr></thead>";
-  const tbody = document.createElement("tbody");
   items.forEach((item, idx) => {
     const d = describe(item.url, analyzed[idx]);
-    const kind = document.createElement("span");
-    kind.className = "kind " + d.cls;
-    kind.textContent = d.kind;
-    const acts = document.createElement("span");
+    const row = document.createElement("div");
+    row.className = "row";
+
+    const top = document.createElement("div");
+    top.className = "row-top";
+    const chip = document.createElement("span");
+    chip.className = "chip " + d.cls;
+    chip.textContent = d.kind;
+    top.append(chip);
+    if (d.q) {
+      const qEl = document.createElement("span"); // ไม่ตั้งชื่อ q — ชนกับ q() ที่ใช้ quote shell
+      qEl.className = "q";
+      qEl.textContent = d.q;
+      top.append(qEl);
+    }
+    const info = document.createElement("div");
+    info.className = "info";
+    info.title = item.url;
+    d.info.forEach((seg, i) => {
+      if (i) info.append(document.createTextNode(" · "));
+      if (seg.icon) info.append(icon(seg.icon));
+      info.append(document.createTextNode(seg.text));
+    });
+
+    const main = document.createElement("div");
+    main.className = "row-main";
+    main.append(top, info);
+
+    const acts = document.createElement("div");
     acts.className = "acts";
-    acts.append(copyBtn("URL", item.url), copyBtn("yt-dlp", buildCmd(item)));
-    const tr = document.createElement("tr");
-    tr.append(td("", kind), td("q", document.createTextNode(d.q)),
-              td("info", document.createTextNode(d.info)), td("acts", acts));
-    tbody.append(tr);
+    acts.append(
+      copyBtn("URL", item.url, "btn", null),
+      copyBtn("cmd", buildCmd(item), "btn", null),
+      dlBtn({ url: item.url, headers: item.headers }, "โหลด", "btn dl")
+    );
+
+    row.append(main, acts);
+    wrap.append(row);
   });
-  table.append(tbody);
-  wrap.append(table);
 }
+
+// ไอคอนปุ่ม header
+for (const [id, name] of [["rescan", "rescan"], ["copyAll", "copy"], ["clear", "clear"]])
+  document.getElementById(id).prepend(icon(name));
 
 // Rescan = reload tab → main_frame ล้างของเก่า + จับ media ใหม่รอบสด
 document.getElementById("rescan").onclick = async () => {
-  const tabId = await activeTabId();
-  if (tabId >= 0) chrome.tabs.reload(tabId);
+  const { id } = await activeTab();
+  if (id >= 0) chrome.tabs.reload(id);
 };
 document.getElementById("copyAll").onclick = async () => {
-  const tabId = await activeTabId();
+  const tab = await activeTab();
   const { items = [] } = await chrome.storage.session.get("items");
-  const urls = items.filter((i) => i.tabId === tabId).map((i) => i.url);
+  const urls = forPage(items, tab).map((i) => i.url);
   if (urls.length) navigator.clipboard.writeText(urls.join("\n"));
 };
 document.getElementById("clear").onclick = async () => {
-  const tabId = await activeTabId();
+  const tab = await activeTab();
   const { items = [] } = await chrome.storage.session.get("items");
-  await chrome.storage.session.set({ items: items.filter((i) => i.tabId !== tabId) });
+  await chrome.storage.session.set({ items: items.filter((i) => i.tabId !== tab.id) });
 };
 
 chrome.storage.session.onChanged.addListener(render);

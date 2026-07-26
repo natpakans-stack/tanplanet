@@ -1,30 +1,191 @@
 <!doctype html>
 <meta charset="utf-8" />
 <style>
-  body { width: 460px; margin: 0; font: 13px system-ui, sans-serif; }
-  header { display: flex; gap: 8px; padding: 8px; border-bottom: 1px solid #ddd; }
-  button { cursor: pointer; border: 1px solid #ccc; background: #f5f5f5; border-radius: 6px; padding: 4px 10px; }
-  table { border-collapse: collapse; width: 100%; }
-  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #eee; vertical-align: top; }
-  th { font-size: 11px; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; }
-  .kind { font-weight: 700; white-space: nowrap; }
-  .kind.master { color: #1e6b2e; }
-  .kind.variant { color: #6b6b1e; }
-  .kind.file { color: #1e4e6b; }
-  .q { white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .info { color: #666; font-size: 12px; }
-  .acts { white-space: nowrap; }
-  .acts button { padding: 2px 8px; margin-left: 4px; }
-  .empty { padding: 16px; color: #888; text-align: center; }
-  .yt { margin: 8px; padding: 8px 10px; border: 1px solid #e0b3b3; background: #fff5f5; border-radius: 8px; }
-  .yt b { color: #c00; }
-  .yt .u { color: #666; font-size: 11px; word-break: break-all; margin: 2px 0 6px; }
-  .yt button { padding: 3px 8px; margin-right: 4px; }
+  /* Anuphan variable (wght 100–700) — ไฟล์เดียวครอบทุกน้ำหนัก */
+  @font-face {
+    font-family: 'Anuphan'; font-style: normal; font-weight: 100 700; font-display: swap;
+    src: url(fonts/anuphan-thai.woff2) format('woff2');
+    unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+  }
+  @font-face {
+    font-family: 'Anuphan'; font-style: normal; font-weight: 100 700; font-display: swap;
+    src: url(fonts/anuphan-latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+      U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --surface: #f7f6f5;
+    --border: #e7e5e4;
+    --text: #1c1917;
+    --muted: #6f6763;
+    --accent: #c0102a;
+    --accent-fg: #ffffff;
+    --chip-master: #15803d;
+    --chip-variant: #92610b;
+    --chip-file: #1d4ed8;
+    --r: 8px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1917;
+      --surface: #262220;
+      --border: #3b3633;
+      --text: #f5f5f4;
+      --muted: #a8a29d;
+      --accent: #f0455f;
+      --accent-fg: #23100f;
+      --chip-master: #7ee2a8;
+      --chip-variant: #f4c757;
+      --chip-file: #9dbcff;
+    }
+  }
+
+  body {
+    width: 420px;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 13px/1.5 'Anuphan', -apple-system, system-ui, sans-serif;
+  }
+
+  /* ---- buttons ---- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font: inherit;
+    font-size: 12px;
+    line-height: 1;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0 10px;
+    height: 26px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .i { width: 14px; height: 14px; flex-shrink: 0; }
+  .info .i { width: 13px; height: 13px; vertical-align: -2px; margin-right: 2px; }
+  .btn:hover { background: var(--surface); }
+  .btn:active { transform: translateY(0.5px); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .btn.primary {
+    background: var(--accent);
+    border-color: transparent;
+    color: var(--accent-fg);
+    font-weight: 600;
+  }
+  .btn.primary:hover { filter: brightness(1.08); }
+  /* secondary download — primary มีได้ตัวเดียวต่อการ์ด ไม่งั้นแดงตีกันหมดจอ */
+  .btn.dl {
+    color: var(--accent);
+    font-weight: 600;
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  }
+  .btn.dl:hover { background: color-mix(in srgb, var(--accent) 8%, var(--bg)); }
+  .btn.ok { color: var(--chip-master); border-color: currentColor; background: var(--bg); }
+  .btn.primary.ok { background: var(--bg); }
+
+  /* ---- header ---- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  header .spacer { flex: 1; }
+
+  /* ---- youtube card ---- */
+  .yt {
+    margin: 10px;
+    padding: 10px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--r);
+  }
+  .yt-head { font-weight: 600; display: flex; align-items: baseline; gap: 6px; }
+  .yt-mark { color: var(--accent); }
+  .yt-sub { color: var(--muted); font-size: 12px; font-weight: 400; }
+  .u {
+    margin: 4px 0 9px;
+    color: var(--muted);
+    font-size: 11px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .acts { display: flex; gap: 6px; flex-shrink: 0; }
+
+  /* ---- media rows ---- */
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-top: 1px solid var(--border);
+  }
+  .row:hover { background: var(--surface); }
+  .row-main { flex: 1; min-width: 0; }
+  .row-top { display: flex; align-items: baseline; gap: 8px; }
+  .chip {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--chip-file);
+  }
+  .chip.master { color: var(--chip-master); }
+  .chip.variant { color: var(--chip-variant); }
+  .q { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .info {
+    color: var(--muted);
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .empty { padding: 28px 16px; color: var(--muted); text-align: center; }
+  .empty b { display: block; color: var(--text); margin-bottom: 3px; }
+
+  /* ---- status bar ---- */
+  .status {
+    position: sticky;
+    bottom: 0;
+    padding: 0 12px;
+    max-height: 0;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1.45;
+    white-space: pre-line; /* ข้อความ error ขึ้นบรรทัดใหม่ได้ */
+    color: var(--muted);
+    background: var(--surface);
+    border-top: 1px solid transparent;
+    transition: max-height .15s ease;
+  }
+  .status.show { max-height: 80px; padding: 7px 12px; border-top-color: var(--border); }
+  .status.ok { color: var(--chip-master); }
+  .status.err { color: var(--accent); }
+  @media (prefers-reduced-motion: reduce) { .status { transition: none; } }
 </style>
 <header>
-  <button id="rescan">↻ Rescan</button>
-  <button id="copyAll">Copy all</button>
-  <button id="clear">Clear</button>
+  <button class="btn" id="rescan" title="โหลดหน้าใหม่แล้วดักซ้ำ">Rescan</button>
+  <button class="btn" id="copyAll">Copy all</button>
+  <span class="spacer"></span>
+  <button class="btn" id="clear" title="ล้างรายการของแท็บนี้">Clear</button>
 </header>
 <div id="wrap"></div>
+<div class="status" id="status" role="status" aria-live="polite"></div>
+<script src="icons.js"></script>
 <script src="popup.js"></script>
