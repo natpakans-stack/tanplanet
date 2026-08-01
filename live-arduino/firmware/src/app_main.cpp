@@ -661,35 +661,109 @@ static void drawRainHours(lv_obj_t* parent) {
   }
 }
 
-// พลังงานรายยาม 12 ช่วง — สูง 3 ระดับ ช่วงที่ยืนอยู่ไฮไลต์เหมือนกราฟฝน
+// พลังงานรายยาม — เส้นต่อจุด 3 ระดับ แบบเดียวกับหน้าปฏิทินของแอป saju
 static uint32_t sajuColor(int lv) {
   return lv >= 2 ? C_UP : lv == 1 ? C_WARN : C_DOWN;
 }
 
-static void drawSaju(lv_obj_t* parent) {
-  int n = gSaju.n;
-  if (n < 2) return;
-  const int slot = kGraphW / n, top = 20, h = 76;
+static const int kSjAxis = 40;                 // ที่ของป้ายระดับฝั่งซ้าย
+static const int kSjTop = 16, kSjPlot = 74;    // แถบคำอธิบายด้านบน + ความสูงพื้นที่กราฟ
+static int sjX[12], sjY[12], sjN = 0;
 
-  lv_obj_t* wrap = plainBox(parent, kGraphW, top + h + 20);
+// เส้นต่อจุดต้องวาดเอง — lv_chart ผูกกับสเกลตัวเลข แต่นี่เป็นระดับ 3 ขั้นที่ไม่ใช่ปริมาณ
+static void drawSajuLine(lv_event_t* e) {
+  lv_obj_t* obj = (lv_obj_t*)lv_event_get_target(e);
+  lv_layer_t* layer = lv_event_get_layer(e);
+  lv_area_t a;
+  lv_obj_get_coords(obj, &a);
+
+  lv_draw_line_dsc_t line;
+  lv_draw_line_dsc_init(&line);
+  line.color = lv_color_hex(0x6B7BA8);
+  line.width = 2;
+  line.opa = LV_OPA_COVER;
+  line.round_start = line.round_end = 1;
+  for (int i = 0; i + 1 < sjN; i++) {
+    line.p1.x = a.x1 + sjX[i];     line.p1.y = a.y1 + sjY[i];
+    line.p2.x = a.x1 + sjX[i + 1]; line.p2.y = a.y1 + sjY[i + 1];
+    lv_draw_line(layer, &line);
+  }
+}
+
+static void drawSaju(lv_obj_t* parent) {
+  int n = min((int)gSaju.n, 12);
+  if (n < 2) return;
+  sjN = n;
+
+  lv_obj_t* wrap = plainBox(parent, kGraphW, kSjTop + kSjPlot + 20);
+
+  // คำอธิบายสีอยู่บนสุด อ่านก่อนแล้วค่อยลงมาดูกราฟ
+  static const struct { const char* t; int lv; } keys[] = {{"ดี", 2}, {"ท้าทาย", 1}, {"ระวัง", 0}};
+  int kx = kGraphW;
+  for (int i = 2; i >= 0; i--) {
+    lv_obj_t* t = lv_label_create(wrap);
+    lv_obj_set_style_text_font(t, &thai14, 0);
+    lv_obj_set_style_text_color(t, lv_color_hex(C_MUTED), 0);
+    setThaiText(t, keys[i].t);
+    lv_obj_update_layout(t);
+    kx -= lv_obj_get_width(t);
+    lv_obj_set_pos(t, kx, 0);
+    kx -= 10;
+
+    lv_obj_t* d = plainBox(wrap, 6, 6);
+    lv_obj_set_style_bg_opa(d, LV_OPA_COVER, 0);
+    lv_obj_set_style_bg_color(d, lv_color_hex(sajuColor(keys[i].lv)), 0);
+    lv_obj_set_style_radius(d, 3, 0);
+    lv_obj_set_pos(d, kx, 6);
+    kx -= 14;
+  }
+
+  // เส้นระดับ + ป้ายซ้าย
+  const int rowY[3] = {kSjTop + 6, kSjTop + kSjPlot / 2, kSjTop + kSjPlot - 8};
+  for (int r = 0; r < 3; r++) {
+    lv_obj_t* g = plainBox(wrap, kGraphW - kSjAxis, 1);
+    lv_obj_set_style_bg_opa(g, 60, 0);
+    lv_obj_set_style_bg_color(g, lv_color_hex(C_GRID), 0);
+    lv_obj_set_pos(g, kSjAxis, rowY[r]);
+
+    lv_obj_t* t = lv_label_create(wrap);
+    lv_obj_set_style_text_font(t, &thai14, 0);
+    lv_obj_set_style_text_color(t, lv_color_hex(C_MUTED), 0);
+    lv_obj_set_style_text_align(t, LV_TEXT_ALIGN_RIGHT, 0);
+    lv_obj_set_width(t, kSjAxis - 6);
+    setThaiText(t, keys[r].t);
+    lv_obj_set_pos(t, 0, rowY[r] - 9);
+  }
+
+  const int slot = (kGraphW - kSjAxis) / n;
+  for (int i = 0; i < n; i++) {
+    sjX[i] = kSjAxis + slot * i + slot / 2;
+    sjY[i] = rowY[2 - gSaju.lv[i]];
+  }
+
+  lv_obj_t* plot = plainBox(wrap, kGraphW, kSjTop + kSjPlot);
+  lv_obj_set_pos(plot, 0, 0);
+  lv_obj_add_event_cb(plot, drawSajuLine, LV_EVENT_DRAW_MAIN_END, nullptr);
+
   for (int i = 0; i < n; i++) {
     bool nowSlot = (gSaju.hr[i] == gSaju.nowH);
-    int x = i * slot;
-    int bh = 14 + gSaju.lv[i] * ((h - 14) / 2);  // 3 ระดับ ไม่ใช่สัดส่วนต่อเนื่อง
+    uint32_t col = sajuColor(gSaju.lv[i]);
 
+    // ยามปัจจุบันเป็นวงแหวน ไม่ใช่จุดใหญ่ — ตายังหาเจอแม้สีเดียวกับเพื่อนบ้าน
     if (nowSlot) {
-      lv_obj_t* band = plainBox(wrap, slot, h + 20);
-      lv_obj_set_style_bg_opa(band, LV_OPA_COVER, 0);
-      lv_obj_set_style_bg_color(band, lv_color_hex(C_GRID), 0);
-      lv_obj_set_style_radius(band, 8, 0);
-      lv_obj_set_pos(band, x, top);
+      lv_obj_t* ring = plainBox(wrap, 18, 18);
+      lv_obj_set_style_radius(ring, 9, 0);
+      lv_obj_set_style_border_width(ring, 2, 0);
+      lv_obj_set_style_border_color(ring, lv_color_hex(col), 0);
+      lv_obj_set_style_bg_opa(ring, LV_OPA_COVER, 0);
+      lv_obj_set_style_bg_color(ring, lv_color_hex(C_CARD), 0);
+      lv_obj_set_pos(ring, sjX[i] - 9, sjY[i] - 9);
     }
-
-    lv_obj_t* bar = plainBox(wrap, slot - 5, bh);
-    lv_obj_set_style_bg_opa(bar, LV_OPA_COVER, nowSlot ? LV_OPA_COVER : LV_OPA_70);
-    lv_obj_set_style_bg_color(bar, lv_color_hex(sajuColor(gSaju.lv[i])), 0);
-    lv_obj_set_style_radius(bar, 4, 0);
-    lv_obj_set_pos(bar, x + 2, top + h - bh);
+    lv_obj_t* dot = plainBox(wrap, nowSlot ? 8 : 9, nowSlot ? 8 : 9);
+    lv_obj_set_style_bg_opa(dot, LV_OPA_COVER, 0);
+    lv_obj_set_style_bg_color(dot, lv_color_hex(col), 0);
+    lv_obj_set_style_radius(dot, 5, 0);
+    lv_obj_set_pos(dot, sjX[i] - (nowSlot ? 4 : 5), sjY[i] - (nowSlot ? 4 : 5));
 
     lv_obj_t* hr = lv_label_create(wrap);
     lv_obj_set_style_text_font(hr, &thai14, 0);
@@ -697,13 +771,8 @@ static void drawSaju(lv_obj_t* parent) {
     lv_obj_set_style_text_align(hr, LV_TEXT_ALIGN_CENTER, 0);
     lv_obj_set_width(hr, slot);
     lv_label_set_text_fmt(hr, "%02d", gSaju.hr[i]);
-    lv_obj_set_pos(hr, x, top + h + 2);
+    lv_obj_set_pos(hr, sjX[i] - slot / 2, kSjTop + kSjPlot + 2);
   }
-
-  lv_obj_t* key = lv_label_create(parent);
-  lv_obj_set_style_text_font(key, &thai14, 0);
-  lv_obj_set_style_text_color(key, lv_color_hex(C_MUTED), 0);
-  setThaiText(key, "สูง = พลังดี · กลาง = ท้าทาย · เตี้ย = ควรระวัง");
 }
 
 // แถวพยากรณ์รายวัน — วันนี้ไฮไลต์ไว้เป็นจุดอ้างอิงสายตา
@@ -1094,12 +1163,13 @@ static void openMonthView() {
       lv_obj_set_style_radius(cell, 8, 0);
     }
 
-    // แถบบางขอบล่างช่อง = ระดับพลังของวันนั้น แยกจากจุดวันพระ/นัด ไม่แย่งที่กัน
-    if (gCal.sajuLv[day] >= 0 && !isToday) {
-      lv_obj_t* lvBar = plainBox(cell, cellW - 10, 2);
-      lv_obj_set_style_bg_opa(lvBar, LV_OPA_COVER, 0);
-      lv_obj_set_style_bg_color(lvBar, lv_color_hex(sajuColor(gCal.sajuLv[day])), 0);
-      lv_obj_align(lvBar, LV_ALIGN_BOTTOM_MID, 0, 0);
+    // ระดับพลังสาจูเป็นพื้นจาง ๆ ของช่อง ไม่ใช่แถบ — แถบกินขอบล่างซึ่งเป็นที่ของจุดวันพระ/นัด
+    // และโชว์เฉพาะวันที่สุดขั้ว (พลังดี/ควรระวัง) เพราะถ้าระบายทุกวันจะไม่เหลือสัญญาณอะไรเลย
+    int sajuLv = gCal.sajuLv[day];
+    if (!isToday && (sajuLv == 0 || sajuLv == 2)) {
+      lv_obj_set_style_bg_opa(cell, 46, 0);
+      lv_obj_set_style_bg_color(cell, lv_color_hex(sajuColor(sajuLv)), 0);
+      lv_obj_set_style_radius(cell, 8, 0);
     }
 
     lv_obj_t* num = lv_label_create(cell);
@@ -1129,7 +1199,9 @@ static void openMonthView() {
   lv_obj_t* legend = lv_label_create(monthGrid);
   lv_obj_set_style_text_font(legend, &thai14, 0);
   lv_obj_set_style_text_color(legend, lv_color_hex(C_MUTED), 0);
-  setThaiText(legend, "แดง = วันหยุด · จุดน้ำเงิน = วันพระ · แตะวันเพื่อดูรายละเอียด");
+  setThaiText(legend, gCal.sajuLv[gCal.today] >= 0
+                          ? "แดง = วันหยุด · จุดน้ำเงิน = วันพระ · พื้นเขียว/แดง = พลังวันนั้น"
+                          : "แดง = วันหยุด · จุดน้ำเงิน = วันพระ · แตะวันเพื่อดูรายละเอียด");
   lv_obj_set_pos(legend, 0, kGridTop + cellH * 6 + 4);
 
   lv_obj_scroll_to_y(monthBody, 0, LV_ANIM_OFF);

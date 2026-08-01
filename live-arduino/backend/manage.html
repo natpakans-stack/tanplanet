@@ -161,13 +161,22 @@
   /* ---------- แถบบันทึก ---------- */
   .bar{position:fixed;left:0;right:0;bottom:0;padding:14px 18px calc(14px + env(safe-area-inset-bottom));
        background:linear-gradient(transparent,var(--bg) 30%)}
-  .bar>div{max-width:560px;margin:0 auto;display:flex;align-items:center;gap:12px}
-  .save{flex:1;height:50px;border:0;border-radius:12px;background:var(--accent);color:var(--accent-ink);
-        font-size:16px;font-weight:600;cursor:pointer;transition:opacity .15s var(--ease)}
+  .bar>div{max-width:560px;margin:0 auto}
+  .save{display:block;width:100%;height:50px;border:0;border-radius:12px;background:var(--accent);
+        color:var(--accent-ink);font-size:16px;font-weight:600;cursor:pointer;
+        transition:opacity .15s var(--ease)}
   .save:disabled{opacity:.5;cursor:default}
-  .status{font-size:13px;color:var(--muted);min-width:78px;text-align:right}
-  .status[data-ok="true"]{color:var(--accent)}
-  .status[data-ok="false"]{color:var(--danger)}
+
+  /* ผลการบันทึกเด้งจากขอบบน — ไม่ต้องแย่งความกว้างกับปุ่ม และตาไปเจอโดยไม่ต้องหา */
+  .toast{position:fixed;top:calc(12px + env(safe-area-inset-top));left:50%;z-index:50;
+         padding:12px 20px;border-radius:12px;font-size:14.5px;font-weight:500;
+         background:var(--raised);color:var(--text);border:1px solid var(--line);
+         box-shadow:0 14px 34px -10px oklch(0.10 0.03 265 / .8);
+         transform:translate(-50%,-180%);opacity:0;pointer-events:none;
+         transition:transform .34s var(--ease),opacity .22s var(--ease)}
+  .toast[data-show="true"]{transform:translate(-50%,0);opacity:1}
+  .toast[data-ok="true"]{border-color:var(--accent);color:var(--accent)}
+  .toast[data-ok="false"]{border-color:var(--danger);color:var(--danger)}
 
   :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -297,8 +306,9 @@
   </div>
 </section>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <div class="bar"><div>
-  <span class="status" id="status"></span>
   <button class="save" id="save" type="button">บันทึก</button>
 </div></div>
 
@@ -530,13 +540,22 @@ $("dsStart").value = CFG.display.nightStart;
 $("dsEnd").value = CFG.display.nightEnd;
 
 /* ---------------- บันทึก ---------------- */
-const status = $("status"), saveBtn = $("save");
+const toast = $("toast"), saveBtn = $("save");
+let toastTimer;
+
+function say(msg, ok) {
+  clearTimeout(toastTimer);
+  toast.textContent = msg;
+  if (ok === undefined) toast.removeAttribute("data-ok");
+  else toast.dataset.ok = String(ok);
+  toast.dataset.show = "true";
+  if (ok !== undefined) toastTimer = setTimeout(() => { toast.dataset.show = "false"; }, 2800);
+}
 saveBtn.addEventListener("click", async () => {
   const chips = [...tickersEl.children];
   const on = chips.filter((c) => c.getAttribute("aria-pressed") === "true").map((c) => c.textContent);
   saveBtn.disabled = true;
-  status.removeAttribute("data-ok");
-  status.textContent = "กำลังบันทึก…";
+  say("กำลังบันทึก…");
   const body = {
     tickers: on.length === chips.length ? [] : on,
     cardOrder: [...cardsEl.children].map((r) => r.dataset.id),
@@ -569,14 +588,11 @@ saveBtn.addEventListener("click", async () => {
       method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body),
     });
     if (!res.ok) throw new Error();
-    status.dataset.ok = "true";
-    status.textContent = "บันทึกแล้ว";
+    say("บันทึกแล้ว — จอจะดึงค่าใหม่รอบถัดไป", true);
   } catch {
-    status.dataset.ok = "false";
-    status.textContent = "ไม่สำเร็จ";
+    say("บันทึกไม่สำเร็จ ลองใหม่อีกครั้ง", false);
   } finally {
     saveBtn.disabled = false;
-    setTimeout(() => { status.textContent = ""; status.removeAttribute("data-ok"); }, 4000);
   }
 });
 </script>

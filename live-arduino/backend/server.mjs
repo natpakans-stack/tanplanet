@@ -242,8 +242,9 @@ function buildSajuCard(birthIso) {
   return {
     ...card(
       "saju_today", "saju", "พลังวันนี้",
-      `${info.now.lvLabel} · ${info.pillar}`,
-      `${info.now.note} · สีของวัน${info.color.name} (ธาตุ${info.dayElem}) · เจ้าเรือนธาตุ${info.dm.elem}`,
+      // ไม่ใส่เสาวันเป็นอักษรจีน ฟอนต์บนจอมีแค่ไทย+ASCII จะกลายเป็นช่องว่างเปล่า
+      `${info.now.lvLabel} · วันธาตุ${info.dayElem}`,
+      `${info.now.note} · สีของวัน${info.color.name} · เจ้าเรือนธาตุ${info.dm.elem}`,
       tone, 45,
     ),
     extra: {
