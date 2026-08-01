@@ -36,7 +36,12 @@ async function readSampleSummary() {
 
 // จำลอง web config ของ ESP32 (บนเครื่องจริงหน้านี้ serve จากตัวบอร์ดผ่าน IP ในวง Wi-Fi)
 const RUNTIME_CONFIG_PATH = path.join(PROJECT_ROOT, "data", "device-runtime-config.json");
-const DEFAULT_RUNTIME_CONFIG = { tickers: [], hiddenCards: [], cardOrder: [] };
+const DEFAULT_RUNTIME_CONFIG = {
+  tickers: [], hiddenCards: [], cardOrder: [],
+  weather: { label: "ย่านตาขาว", lat: 7.38622, lon: 99.66692 },
+  ideaRadar: { themes: 5, tickers: 3 },
+  monthlyPlan: { focus: "swing" },  // ticker ไหนได้กราฟ/ladder: swing | alpha
+};
 
 async function loadRuntimeConfig() {
   const saved = await readJsonMaybe(RUNTIME_CONFIG_PATH);
@@ -44,13 +49,28 @@ async function loadRuntimeConfig() {
 }
 
 async function saveRuntimeConfig(config) {
-  const clean = {
+  const d = DEFAULT_RUNTIME_CONFIG;
+  const num = (v, fallback) => (Number.isFinite(Number(v)) ? Number(v) : fallback);
+  const saved = {
     tickers: Array.isArray(config.tickers) ? config.tickers.map(String) : [],
     hiddenCards: Array.isArray(config.hiddenCards) ? config.hiddenCards.map(String) : [],
     cardOrder: Array.isArray(config.cardOrder) ? config.cardOrder.map(String) : [],
+    weather: {
+      label: String(config.weather?.label ?? d.weather.label).slice(0, 40),
+      // พิกัดนอกช่วงจริงทำให้ Open-Meteo ตอบ error ทั้งการ์ด — กันไว้ที่นี่ที่เดียว
+      lat: Math.min(90, Math.max(-90, num(config.weather?.lat, d.weather.lat))),
+      lon: Math.min(180, Math.max(-180, num(config.weather?.lon, d.weather.lon))),
+    },
+    ideaRadar: {
+      themes: Math.min(6, Math.max(1, Math.round(num(config.ideaRadar?.themes, d.ideaRadar.themes)))),
+      tickers: Math.min(5, Math.max(1, Math.round(num(config.ideaRadar?.tickers, d.ideaRadar.tickers)))),
+    },
+    monthlyPlan: {
+      focus: config.monthlyPlan?.focus === "alpha" ? "alpha" : "swing",
+    },
   };
-  await writeFile(RUNTIME_CONFIG_PATH, JSON.stringify(clean, null, 2));
-  return clean;
+  await writeFile(RUNTIME_CONFIG_PATH, JSON.stringify(saved, null, 2), "utf8");
+  return saved;
 }
 
 function card(id, type, title, value, detail, tone = "neutral", priority = 50) {
@@ -123,15 +143,15 @@ async function buildCalendarCards() {
   return { calendarCard, lunarCard };
 }
 
-async function buildWeatherCard() {
+async function buildWeatherCard(loc) {
   try {
-    const w = await getWeather();
+    const w = await getWeather(loc);
     return {
       ...card(
         "weather_now", "weather", "Weather",
         `${w.temp}° ${w.condition}`,
         // สั้นพอให้จอ 480px จบในบรรทัดเดียว — ขึ้นบรรทัดสองแล้วแถวพยากรณ์จะโดนดันตกจอ
-        `ย่านตาขาว · รู้สึก ${w.feels}° · ชื้น ${w.humidity}% · ลม ${w.wind} · ฝน ${w.rain}%`,
+        `${loc.label} · รู้สึก ${w.feels}° · ชื้น ${w.humidity}% · ลม ${w.wind} · ฝน ${w.rain}%`,
         w.rain >= 60 ? "caution" : "ok", 40,
       ),
       extra: {
@@ -188,10 +208,10 @@ function buildMarketCard(entrySignal, allowedTickers = []) {
   };
 }
 
-function buildIdeaRadarCard(ideaRadar) {
+function buildIdeaRadarCard(ideaRadar, opts) {
   const topPick = ideaRadar?.topPick || ideaRadar?.items?.topPick;
   if (!topPick) return null;
-  const themes = (ideaRadar?.themes || []).slice(0, 5).map((theme) => ({
+  const themes = (ideaRadar?.themes || []).slice(0, opts.themes).map((theme) => ({
     name: theme.name,
     score: theme.score,
     stage: theme.stageLabel || theme.stage,
@@ -201,7 +221,7 @@ function buildIdeaRadarCard(ideaRadar) {
       "idea_radar",
       "market",
       "Idea Radar",
-      (topPick.tickers || []).slice(0, 3).join(" / ") || topPick.theme || "Radar",
+      (topPick.tickers || []).slice(0, opts.tickers).join(" / ") || topPick.theme || "Radar",
       topPick.note || topPick.theme,
       "ok",
       62,
@@ -331,13 +351,15 @@ async function buildDeviceSummary() {
   const clockCard = card("home_clock", "clock", "TanPlanet", "--:--", "Device clock is rendered locally on ESP32", "ok", 10);
   const [{ calendarCard, lunarCard }, weatherCard] = await Promise.all([
     buildCalendarCards(),
-    buildWeatherCard(),
+    buildWeatherCard(runtimeConfig.weather),
   ]);
   const astroCard = await buildAstroCard();
   const marketCard = buildMarketCard(entrySignal, runtimeConfig.tickers);
-  const ideaCard = buildIdeaRadarCard(ideaRadar);
+  const ideaCard = buildIdeaRadarCard(ideaRadar, runtimeConfig.ideaRadar);
   const northStarCard = buildNorthStarCard(northstar);
   const tokenCard = await buildAiUsageCard();
+  // เลือกได้ว่าการ์ดนี้จะโฟกัสตัวไหน — alpha ไม่มีโซนเข้า/stop เลยได้แค่กราฟราคา
+  const planFocus = runtimeConfig.monthlyPlan.focus;
   const swing = monthlyPlan?.swing;
   const swingCurrent = parseNum(
     (entrySignal?.groups || [])
@@ -351,12 +373,18 @@ async function buildDeviceSummary() {
           "monthly_plan",
           "market",
           "Monthly Plan",
-          [monthlyPlan.alpha?.ticker, monthlyPlan.swing?.ticker].filter(Boolean).join(" / ") || monthlyPlan.monthLabel,
-          monthlyPlan.swing?.exec || monthlyPlan.alpha?.note || "Monthly plan loaded",
+          // ticker ตัวแรกใน value คือตัวที่ระบบไปดึงกราฟราคามาให้ — เรียงตาม focus ที่เลือก
+          (planFocus === "alpha"
+            ? [monthlyPlan.alpha?.ticker, monthlyPlan.swing?.ticker]
+            : [monthlyPlan.swing?.ticker, monthlyPlan.alpha?.ticker]
+          ).filter(Boolean).join(" / ") || monthlyPlan.monthLabel,
+          (planFocus === "alpha"
+            ? monthlyPlan.alpha?.note || monthlyPlan.swing?.exec
+            : monthlyPlan.swing?.exec || monthlyPlan.alpha?.note) || "Monthly plan loaded",
           "caution",
           65,
         ),
-        extra: swing?.hasSetup
+        extra: planFocus === "swing" && swing?.hasSetup
           ? {
               ladder: {
                 ticker: swing.ticker,
@@ -560,8 +588,11 @@ async function buildConfigPage() {
 <html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>จัดการการ์ดบนจอ</title>
 <style>
-  *{box-sizing:border-box}
-  body{font-family:-apple-system,"Segoe UI",sans-serif;background:#0A0F1F;color:#F2F5FF;max-width:520px;margin:0 auto;padding:20px 16px 96px}
+  /* ponytail: ฟอนต์ตัวเดียวทั้งหน้า vendored ในเครื่อง — ไม่พึ่ง Google Fonts จะได้ไม่พังตอนเน็ตล่ม */
+  @font-face{font-family:Anuphan;src:url("/assets/anuphan.woff2") format("woff2-variations");
+             font-weight:200 700;font-display:swap}
+  *{box-sizing:border-box;font-family:Anuphan,-apple-system,"Segoe UI",sans-serif}
+  body{background:#0A0F1F;color:#F2F5FF;max-width:520px;margin:0 auto;padding:20px 16px 96px}
   h1{font-size:19px;margin:0 0 4px}
   .sub{color:#8492BC;font-size:13px;margin-bottom:20px}
   h2{font-size:12px;color:#8492BC;margin:22px 0 8px;text-transform:uppercase;letter-spacing:.6px}
@@ -583,6 +614,19 @@ async function buildConfigPage() {
        background:linear-gradient(transparent,#0A0F1F 24%);display:flex;gap:10px;max-width:520px;margin:0 auto}
   button.save{flex:1;height:48px;border:0;border-radius:12px;background:#4ADE80;color:#06210F;font-weight:800;font-size:16px}
   #saved{color:#4ADE80;font-size:13px;font-weight:700;text-align:center;height:18px;margin-top:10px}
+  .panel{background:#161F3C;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}
+  .panel .hint{color:#8492BC;font-size:12.5px;line-height:1.5}
+  .field{display:flex;gap:8px;align-items:center}
+  input[type=text],input[type=number],select{flex:1;min-width:0;height:42px;border-radius:10px;border:1px solid rgba(255,255,255,.14);
+    background:#0E1730;color:#F2F5FF;padding:0 12px;font-size:15px}
+  .btn{border:0;background:#22305A;color:#B9C4E6;border-radius:10px;height:42px;padding:0 16px;font-size:14px;font-weight:700;flex:none}
+  .hits{display:flex;flex-direction:column;gap:6px}
+  .hit{text-align:left;background:#0E1730;border:1px solid rgba(255,255,255,.1);color:#F2F5FF;
+       border-radius:10px;padding:10px 12px;font-size:14px}
+  .hit.on{border-color:#4ADE80;background:#12261C}
+  .cur{color:#B9C4E6;font-size:13px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .two label{font-size:12.5px;color:#8492BC;display:flex;flex-direction:column;gap:6px}
 </style></head><body>
 <h1>จัดการการ์ดบนจอ</h1>
 <div class="sub">▲▼ เลื่อนลำดับ · ปุ่มขวาสุดซ่อน/แสดง · ตัวบนสุดขึ้นจอก่อน</div>
@@ -592,6 +636,37 @@ async function buildConfigPage() {
 
 <h2>หุ้นใน Market Focus</h2>
 <fieldset id="tickers">${tickerRows}</fieldset>
+
+<h2>Weather — สถานที่</h2>
+<div class="panel">
+  <div class="cur">ตอนนี้: <b id="locNow">${config.weather.label}</b> (${config.weather.lat.toFixed(4)}, ${config.weather.lon.toFixed(4)})</div>
+  <div class="field">
+    <input type="text" id="q" placeholder="พิมพ์ชื่ออำเภอ/จังหวัด เช่น ย่านตาขาว" autocomplete="off">
+    <button class="btn" id="find" type="button">ค้นหา</button>
+  </div>
+  <div class="hits" id="hits"></div>
+  <div class="hint">เลือกจากผลค้นหาแล้วกดบันทึก — พยากรณ์ทั้งหมดจะย้ายไปพิกัดนั้น</div>
+</div>
+
+<h2>Idea Radar</h2>
+<div class="panel">
+  <div class="two">
+    <label>จำนวนธีมที่โชว์
+      <input type="number" id="irThemes" min="1" max="6" value="${config.ideaRadar.themes}"></label>
+    <label>จำนวน ticker บนหน้าการ์ด
+      <input type="number" id="irTickers" min="1" max="5" value="${config.ideaRadar.tickers}"></label>
+  </div>
+  <div class="hint">ธีมโชว์ในหน้า detail · ticker คือบรรทัดใหญ่บนการ์ด (เช่น OKLO / CEG / …)</div>
+</div>
+
+<h2>Monthly Plan</h2>
+<div class="panel">
+  <select id="mpFocus">
+    <option value="swing"${config.monthlyPlan.focus === "swing" ? " selected" : ""}>Swing — โชว์ราคา + โซนเข้า/stop/target</option>
+    <option value="alpha"${config.monthlyPlan.focus === "alpha" ? " selected" : ""}>Alpha — โชว์กราฟราคาตัว alpha</option>
+  </select>
+  <div class="hint">ตัวที่เลือกจะได้กราฟราคาและขึ้นชื่อก่อน · โซนเข้า/stop มีเฉพาะ swing (alpha ไม่มีข้อมูลนั้นในแผน)</div>
+</div>
 
 <div id="saved"></div>
 <div class="bar"><button class="save" id="save" type="button">บันทึก</button></div>
@@ -629,6 +704,36 @@ list.addEventListener("click", (e) => {
   btn.textContent = row.classList.contains("off") ? "ซ่อน" : "แสดง";
 });
 
+let picked = null;
+const hits = document.getElementById("hits");
+
+async function search() {
+  const q = document.getElementById("q").value.trim();
+  if (!q) return;
+  hits.innerHTML = '<div class="hint">กำลังค้นหา…</div>';
+  try {
+    const r = await fetch("/api/geocode?q=" + encodeURIComponent(q));
+    const data = await r.json();
+    if (!data.results?.length) { hits.innerHTML = '<div class="hint">ไม่พบสถานที่นี้</div>'; return; }
+    hits.innerHTML = "";
+    data.results.forEach((x) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "hit";
+      b.textContent = x.label + "  (" + x.lat.toFixed(3) + ", " + x.lon.toFixed(3) + ")";
+      b.addEventListener("click", () => {
+        picked = x;
+        [...hits.children].forEach((c) => c.classList.remove("on"));
+        b.classList.add("on");
+        document.getElementById("locNow").textContent = x.label;
+      });
+      hits.appendChild(b);
+    });
+  } catch { hits.innerHTML = '<div class="hint">ค้นหาไม่สำเร็จ</div>'; }
+}
+document.getElementById("find").addEventListener("click", search);
+document.getElementById("q").addEventListener("keydown", (e) => { if (e.key === "Enter") search(); });
+
 document.getElementById("save").addEventListener("click", async () => {
   const rows = [...list.children];
   const tickers = [...document.querySelectorAll('input[name="ticker"]:checked')].map((el) => el.value);
@@ -637,6 +742,14 @@ document.getElementById("save").addEventListener("click", async () => {
     tickers: tickers.length === allTickers ? [] : tickers,
     cardOrder: rows.map((r) => r.dataset.id),
     hiddenCards: rows.filter((r) => r.classList.contains("off")).map((r) => r.dataset.id),
+    weather: picked
+      ? { label: picked.label, lat: picked.lat, lon: picked.lon }
+      : ${JSON.stringify(config.weather)},
+    ideaRadar: {
+      themes: Number(document.getElementById("irThemes").value),
+      tickers: Number(document.getElementById("irTickers").value),
+    },
+    monthlyPlan: { focus: document.getElementById("mpFocus").value },
   };
   const res = await fetch("/api/config", {
     method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body),
@@ -673,6 +786,49 @@ async function handleRequest(req, res) {
   }
   if (url.pathname === "/api/device-summary") {
     return sendJson(res, 200, await buildDeviceSummary());
+  }
+  // ฟอนต์ Anuphan เก็บในเครื่อง — หน้า /manage เปิดจากมือถือตอนเน็ตนอกล่มก็ยังได้ฟอนต์ไทย
+  if (url.pathname === "/assets/anuphan.woff2") {
+    try {
+      const font = await readFile(path.join(PROJECT_ROOT, "data", "fonts", "anuphan.woff2"));
+      res.writeHead(200, { "content-type": "font/woff2", "cache-control": "max-age=31536000" });
+      return res.end(font);
+    } catch {
+      return sendJson(res, 404, { error: "font not found" });
+    }
+  }
+  // ค้นหาสถานที่ → พิกัด ให้หน้า config ไม่ต้องให้คนไปหา lat/lon เอง
+  if (url.pathname === "/api/geocode") {
+    const q = (url.searchParams.get("q") || "").trim();
+    if (!q) return sendJson(res, 200, { results: [] });
+    try {
+      const r = await fetch(
+        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=6&language=th&format=json`,
+        { signal: AbortSignal.timeout(8000) },
+      );
+      const data = await r.json();
+      return sendJson(res, 200, {
+        results: (data.results || []).map((x) => ({
+          label: [x.name, x.admin1].filter(Boolean).join(" · "),
+          lat: x.latitude,
+          lon: x.longitude,
+        })),
+      });
+    } catch (error) {
+      return sendJson(res, 502, { error: String(error.message || error) });
+    }
+  }
+  // ปฏิทินเดือนใดก็ได้ — จอเรียกตอนกดเลื่อนเดือน (device-summary ส่งมาแค่เดือนปัจจุบัน)
+  if (url.pathname === "/api/month") {
+    const y = Number(url.searchParams.get("y")) || new Date().getFullYear();
+    const m = Math.min(12, Math.max(1, Number(url.searchParams.get("m")) || 1));
+    const buddhaDays = [];
+    for (let d = 1; d <= 31; d++) {
+      const probe = new Date(y, m - 1, d);
+      if (probe.getMonth() !== m - 1) break;
+      if (thaiLunar(probe).isUposatha) buddhaDays.push(d);
+    }
+    return sendJson(res, 200, { y, m, buddhaDays, holidays: await holidaysInMonth(y, m) });
   }
   if (url.pathname === "/api/price") {
     const ticker = (url.searchParams.get("ticker") || "VST").toUpperCase().replace(/[^A-Z.\-]/g, "");

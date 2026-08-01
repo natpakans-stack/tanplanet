@@ -68,7 +68,7 @@ static const char* kThaiMonths[] = {"ม.ค.", "ก.พ.", "มี.ค.", "เ�
                                     "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."};
 
 // ข้อมูลสำหรับวาดกราฟในหน้า detail — เก็บเฉพาะตัวเลขที่ใช้จริง ไม่เก็บ JSON ทั้งก้อน
-enum VizKind : uint8_t { VIZ_NONE, VIZ_TOKENS, VIZ_HOURLY, VIZ_SCORE, VIZ_PRICE };
+enum VizKind : uint8_t { VIZ_NONE, VIZ_TOKENS, VIZ_HOURLY, VIZ_SCORE, VIZ_PRICE, VIZ_CALENDAR };
 struct CardViz {
   VizKind kind = VIZ_NONE;
   float v[24] = {0};
@@ -103,6 +103,16 @@ struct WeatherViz {
   uint8_t fcN = 0;
 };
 static WeatherViz gWeather;
+
+// ปฏิทินเดือนปัจจุบัน — backend ส่งวันพระ/วันหยุดมาครบทั้งเดือนอยู่แล้ว
+struct CalMonth {
+  int y = 0, m = 0, today = 0;
+  uint32_t buddhaMask = 0;  // บิตที่ n = วันพระวันที่ n (1-31) เก็บเป็น mask ไม่ต้องวนหา
+  uint8_t holidayDay[6] = {0};
+  char holidayLbl[6][72] = {{0}};
+  uint8_t holidayN = 0;
+};
+static CalMonth gCal;
 
 // โลโก้หุ้นมาเป็น RGB565 ดิบ 28x28 จาก backend (ESP32 decode PNG เองไม่ไหว)
 static const int kLogoPx = 28;
@@ -742,10 +752,306 @@ static void drawScore(lv_obj_t* parent, const CardViz& viz) {
   lv_obj_center(num);
 }
 
+// โครงหน้าเต็มจอ: คอลัมน์เนื้อหา (เลื่อนได้) + แถบปุ่มขวาถาวร ปิด/ขึ้น/ลง
+// ปุ่มต้องอยู่คนละ container กับเนื้อหา ไม่ใช่ปุ่มลอย — ปุ่มลอยทับเนื้อหาที่กว้างเต็มจอ
+static lv_obj_t* makeFullView(lv_obj_t* parent, lv_obj_t** bodyOut) {
+  lv_obj_t* view = lv_obj_create(parent);
+  lv_obj_set_size(view, 480, 320);
+  lv_obj_center(view);
+  lv_obj_set_style_bg_color(view, lv_color_hex(C_CARD), 0);
+  lv_obj_set_style_border_width(view, 0, 0);
+  lv_obj_set_style_radius(view, 0, 0);
+  lv_obj_set_style_pad_all(view, 0, 0);
+  lv_obj_set_style_pad_column(view, 0, 0);
+  lv_obj_add_flag(view, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(view, LV_OBJ_FLAG_CLICKABLE);
+  lv_obj_set_flex_flow(view, LV_FLEX_FLOW_ROW);
+  lv_obj_remove_flag(view, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_add_event_cb(view, [](lv_event_t* e) {
+    lv_obj_add_flag((lv_obj_t*)lv_event_get_current_target(e), LV_OBJ_FLAG_HIDDEN);
+  }, LV_EVENT_CLICKED, nullptr);
+
+  lv_obj_t* body = lv_obj_create(view);
+  lv_obj_set_size(body, kBodyW, 320);
+  lv_obj_set_style_bg_opa(body, LV_OPA_TRANSP, 0);
+  lv_obj_set_style_border_width(body, 0, 0);
+  lv_obj_set_style_pad_all(body, 16, 0);
+  lv_obj_set_style_pad_row(body, 10, 0);
+  lv_obj_set_flex_flow(body, LV_FLEX_FLOW_COLUMN);
+  lv_obj_set_scrollbar_mode(body, LV_SCROLLBAR_MODE_OFF);
+  lv_obj_add_flag(body, LV_OBJ_FLAG_EVENT_BUBBLE);  // แตะพื้นที่ว่างก็ปิดหน้าได้
+  *bodyOut = body;
+
+  lv_obj_t* nav = lv_obj_create(view);
+  lv_obj_set_size(nav, kNavW, 320);
+  lv_obj_set_style_bg_color(nav, lv_color_hex(C_HERO), 0);
+  lv_obj_set_style_border_width(nav, 0, 0);
+  lv_obj_set_style_radius(nav, 0, 0);
+  lv_obj_set_style_pad_all(nav, 8, 0);
+  lv_obj_set_style_pad_row(nav, 10, 0);
+  lv_obj_set_flex_flow(nav, LV_FLEX_FLOW_COLUMN);
+  lv_obj_set_flex_align(nav, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+  lv_obj_remove_flag(nav, LV_OBJ_FLAG_SCROLLABLE);
+
+  // ทัชแบบต้านทาน: ตอนปล่อยนิ้วพิกัดกระโดด ถ้าหลุดนอกปุ่ม LVGL ไม่นับเป็น CLICKED
+  // จึงยิงตั้งแต่กดลง ไม่รอปล่อย และขยายพื้นที่รับสัมผัสเผื่อไว้
+  lv_obj_t* closeBtn = lv_button_create(nav);
+  lv_obj_set_size(closeBtn, 44, 44);
+  lv_obj_set_ext_click_area(closeBtn, 8);
+  lv_obj_set_style_bg_color(closeBtn, lv_color_hex(0x2A3556), 0);
+  lv_obj_set_style_radius(closeBtn, 22, 0);
+  lv_obj_add_event_cb(closeBtn, [](lv_event_t* e) {
+    lv_obj_t* btn = (lv_obj_t*)lv_event_get_current_target(e);
+    lv_obj_add_flag(lv_obj_get_parent(lv_obj_get_parent(btn)), LV_OBJ_FLAG_HIDDEN);
+  }, LV_EVENT_PRESSED, nullptr);
+
+  lv_obj_t* closeLbl = lv_label_create(closeBtn);
+  lv_obj_set_style_text_font(closeLbl, &thai22, 0);
+  lv_obj_set_style_text_color(closeLbl, lv_color_hex(C_TEXT), 0);
+  lv_label_set_text(closeLbl, "X");
+  lv_obj_center(closeLbl);
+
+  // ลากนิ้วบนทัชแบบต้านทานไม่ลื่นพอจะพึ่งอย่างเดียว — ต้องมีลูกศรทุกหน้า
+  const struct { const char* icon; int dy; } btns[] = {{LV_SYMBOL_UP, -90}, {LV_SYMBOL_DOWN, 90}};
+  for (const auto& b : btns) {
+    lv_obj_t* sb = lv_button_create(nav);
+    lv_obj_set_size(sb, 44, 74);
+    lv_obj_set_style_bg_color(sb, lv_color_hex(0x2A3556), 0);
+    lv_obj_set_style_radius(sb, 10, 0);
+    lv_obj_set_ext_click_area(sb, 8);
+    lv_obj_set_user_data(sb, (void*)(intptr_t)b.dy);
+    lv_obj_add_event_cb(sb, [](lv_event_t* e) {
+      lv_obj_t* btn = (lv_obj_t*)lv_event_get_current_target(e);
+      int dy = (int)(intptr_t)lv_obj_get_user_data(btn);
+      lv_obj_t* v = lv_obj_get_parent(lv_obj_get_parent(btn));
+      lv_obj_scroll_by(lv_obj_get_child(v, 0), 0, -dy, LV_ANIM_ON);  // ลูกคนแรกคือ body
+    }, LV_EVENT_PRESSED, nullptr);
+
+    lv_obj_t* icon = lv_label_create(sb);
+    lv_label_set_text(icon, b.icon);
+    lv_obj_set_style_text_color(icon, lv_color_hex(0xB9C4E6), 0);
+    lv_obj_center(icon);
+  }
+  return view;
+}
+
+static lv_obj_t* monthView = nullptr;
+static lv_obj_t* monthBody = nullptr;
+static lv_obj_t* monthGrid = nullptr;
+
+static const char* kThaiDayShort[] = {"อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"};
+static const char* kThaiMonthsFull[] = {"มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม",
+                                        "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม",
+                                        "พฤศจิกายน", "ธันวาคม"};
+
+// Sakamoto — 0 = อาทิตย์ ใช้ได้ทุกเดือน ไม่ต้องอิงวันนี้
+static int weekdayOf(int y, int m, int d) {
+  static const int t[] = {0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4};
+  int yy = y - (m < 3 ? 1 : 0);
+  return (yy + yy / 4 - yy / 100 + yy / 400 + t[m - 1] + d) % 7;
+}
+
+static int daysInMonth(int y, int m) {
+  static const int t[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+  if (m == 2 && ((y % 4 == 0 && y % 100 != 0) || y % 400 == 0)) return 29;
+  return t[m - 1];
+}
+
+static const char* holidayOf(int day) {
+  for (int i = 0; i < gCal.holidayN; i++) {
+    if (gCal.holidayDay[i] == day) return gCal.holidayLbl[i];
+  }
+  return nullptr;
+}
+
+// ดึงปฏิทินเดือนอื่น — device-summary ส่งมาแค่เดือนปัจจุบัน
+// URL ประกอบจาก DEVICE_SUMMARY_URL ตัวเดียว จะได้ไม่ต้องมี build flag ให้ลืม sync
+static bool fetchMonth(int y, int m) {
+  if (WiFi.status() != WL_CONNECTED) return false;
+  String url = DEVICE_SUMMARY_URL;
+  url.replace("/api/device-summary", "/api/month");
+  url += "?y=" + String(y) + "&m=" + String(m);
+
+  HTTPClient http;
+  http.setTimeout(8000);
+  http.begin(url);
+  if (http.GET() != HTTP_CODE_OK) { http.end(); return false; }
+  String payload = http.getString();
+  http.end();
+
+  JsonDocument doc;
+  if (deserializeJson(doc, payload)) return false;
+  int today = gCal.today;
+  gCal = CalMonth{};
+  gCal.y = doc["y"] | y;
+  gCal.m = doc["m"] | m;
+  gCal.today = today;
+  for (int d : doc["buddhaDays"].as<JsonArray>()) {
+    if (d >= 1 && d <= 31) gCal.buddhaMask |= 1UL << d;
+  }
+  for (JsonObject h : doc["holidays"].as<JsonArray>()) {
+    if (gCal.holidayN >= 6) break;
+    uint8_t k = gCal.holidayN;
+    gCal.holidayDay[k] = h["d"] | 0;
+    strncpy(gCal.holidayLbl[k], h["label"] | "", sizeof(gCal.holidayLbl[0]) - 1);
+    gCal.holidayN++;
+  }
+  return true;
+}
+
+static void openMonthView();
+
+// เปลี่ยนเดือนต้องทำนอก event — openMonthView ลบ monthGrid ที่ปุ่มตัวเองอยู่ข้างใน
+static void monthStep(void* arg) {
+  int delta = (int)(intptr_t)arg;
+  int y = gCal.y, m = gCal.m + delta;
+  if (m > 12) { m = 1; y++; }
+  if (m < 1) { m = 12; y--; }
+  if (fetchMonth(y, m)) openMonthView();
+}
+
+// แตะวันในปฏิทิน → เปิดหน้า detail เดิมซ้อนทับ ปิดแล้วกลับมาที่ปฏิทิน
+static void dayClicked(lv_event_t* e) {
+  int day = (int)(intptr_t)lv_obj_get_user_data((lv_obj_t*)lv_event_get_current_target(e));
+  if (day < 1) return;
+
+  int wd = weekdayOf(gCal.y, gCal.m, day);
+
+  char buf[128];
+  snprintf(buf, sizeof(buf), "%d %s %d", day, kThaiMonths[gCal.m - 1], gCal.y + 543);
+  setThaiText(detailTitle, "ปฏิทิน");
+  setThaiText(detailValue, buf);
+
+  const char* hol = holidayOf(day);
+  bool buddha = gCal.buddhaMask & (1UL << day);
+  snprintf(buf, sizeof(buf), "วัน%s%s%s%s", kThaiDays[wd],
+           hol ? " · " : "", hol ? hol : "",
+           buddha ? (hol ? "\nวันพระ" : " · วันพระ") : "");
+  if (!hol && !buddha) snprintf(buf, sizeof(buf), "วัน%s · ไม่มีวันสำคัญ", kThaiDays[wd]);
+  setThaiText(detailText, buf);
+
+  if (vizBox) { lv_obj_delete(vizBox); vizBox = nullptr; }
+  for (lv_obj_t* o : {detailTitle, detailValue, detailText}) lv_obj_remove_flag(o, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_scroll_to_y(detailBody, 0, LV_ANIM_OFF);
+  lv_obj_remove_flag(detailView, LV_OBJ_FLAG_HIDDEN);
+}
+
+// ตารางปฏิทินรายเดือน 7x6 — วันนี้ไฮไลต์ วันหยุดเป็นสีแดง วันพระมีจุดใต้ตัวเลข
+static void openMonthView() {
+  if (!gCal.m) return;
+  if (monthGrid) lv_obj_delete(monthGrid);
+
+  const int cellW = kGraphW / 7, cellH = 30;
+  // 64 = หัวเดือน + ระยะหายใจ + แถวชื่อวัน, ท้ายเผื่อ 24 ให้ legend ไม่โดนกล่องตัดขาด
+  const int kGridTop = 64;
+  monthGrid = plainBox(monthBody, kGraphW, kGridTop + cellH * 6 + 24);
+  lv_obj_remove_flag(monthGrid, LV_OBJ_FLAG_EVENT_BUBBLE);  // แตะช่องว่างไม่ต้องปิดหน้า
+
+  lv_obj_t* title = lv_label_create(monthGrid);
+  lv_obj_set_style_text_font(title, &thai22, 0);
+  lv_obj_set_style_text_color(title, lv_color_hex(C_TEXT), 0);
+  char buf[48];
+  snprintf(buf, sizeof(buf), "%s %d", kThaiMonthsFull[gCal.m - 1], gCal.y + 543);
+  setThaiText(title, buf);
+  lv_obj_set_pos(title, 0, 0);
+
+  // ปุ่มเลื่อนเดือนอยู่ในเนื้อหา ไม่ใช่แถบ nav ขวา — แถบนั้นสงวนไว้ให้ ปิด/เลื่อนจอ
+  const struct { const char* icon; int delta; int x; } steps[] = {
+    {LV_SYMBOL_LEFT, -1, kGraphW - 88},
+    {LV_SYMBOL_RIGHT, 1, kGraphW - 40},
+  };
+  for (const auto& st : steps) {
+    lv_obj_t* b = lv_button_create(monthGrid);
+    lv_obj_set_size(b, 40, 32);
+    lv_obj_set_style_bg_color(b, lv_color_hex(0x2A3556), 0);
+    lv_obj_set_style_radius(b, 8, 0);
+    lv_obj_set_ext_click_area(b, 6);
+    lv_obj_set_pos(b, st.x, 0);
+    lv_obj_set_user_data(b, (void*)(intptr_t)st.delta);
+    lv_obj_add_event_cb(b, [](lv_event_t* e) {
+      void* d = lv_obj_get_user_data((lv_obj_t*)lv_event_get_current_target(e));
+      lv_async_call(monthStep, d);
+    }, LV_EVENT_PRESSED, nullptr);
+
+    lv_obj_t* ic = lv_label_create(b);
+    lv_label_set_text(ic, st.icon);
+    lv_obj_set_style_text_color(ic, lv_color_hex(0xB9C4E6), 0);
+    lv_obj_center(ic);
+  }
+
+  for (int c = 0; c < 7; c++) {
+    lv_obj_t* w = lv_label_create(monthGrid);
+    lv_obj_set_style_text_font(w, &thai14, 0);
+    lv_obj_set_style_text_color(w, lv_color_hex(c == 0 ? 0xF87171 : C_MUTED), 0);
+    lv_obj_set_style_text_align(w, LV_TEXT_ALIGN_CENTER, 0);
+    lv_obj_set_width(w, cellW);
+    setThaiText(w, kThaiDayShort[c]);
+    lv_obj_set_pos(w, c * cellW, kGridTop - 20);
+  }
+
+  time_t nowSec = time(nullptr);
+  struct tm tmNow;
+  localtime_r(&nowSec, &tmNow);
+  bool thisMonth = (gCal.y == tmNow.tm_year + 1900 && gCal.m == tmNow.tm_mon + 1);
+  int firstWd = weekdayOf(gCal.y, gCal.m, 1);
+  int total = daysInMonth(gCal.y, gCal.m);
+
+  for (int day = 1; day <= total; day++) {
+    int slot = firstWd + day - 1;
+    int col = slot % 7, row = slot / 7;
+    bool isToday = thisMonth && day == tmNow.tm_mday;
+    const char* hol = holidayOf(day);
+    bool buddha = gCal.buddhaMask & (1UL << day);
+
+    lv_obj_t* cell = plainBox(monthGrid, cellW - 2, cellH - 2);
+    lv_obj_remove_flag(cell, LV_OBJ_FLAG_EVENT_BUBBLE);
+    lv_obj_add_flag(cell, LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_set_ext_click_area(cell, 2);
+    lv_obj_set_user_data(cell, (void*)(intptr_t)day);
+    lv_obj_add_event_cb(cell, dayClicked, LV_EVENT_CLICKED, nullptr);
+    lv_obj_set_pos(cell, col * cellW + 1, kGridTop + row * cellH);
+    if (isToday) {
+      lv_obj_set_style_bg_opa(cell, LV_OPA_COVER, 0);
+      lv_obj_set_style_bg_color(cell, lv_color_hex(C_WARN), 0);
+      lv_obj_set_style_radius(cell, 8, 0);
+    }
+
+    lv_obj_t* num = lv_label_create(cell);
+    lv_obj_set_style_text_font(num, &thai18, 0);
+    lv_obj_set_style_text_color(
+        num, lv_color_hex(isToday ? C_BG : hol ? 0xF87171 : C_TEXT), 0);
+    lv_label_set_text_fmt(num, "%d", day);
+    lv_obj_align(num, LV_ALIGN_TOP_MID, 0, buddha ? -1 : 2);
+
+    if (buddha) {  // จุดเล็กใต้ตัวเลข — วันพระกับวันหยุดซ้อนกันได้ ต้องแยกสัญญาณ
+      lv_obj_t* dot = plainBox(cell, 4, 4);
+      lv_obj_set_style_bg_opa(dot, LV_OPA_COVER, 0);
+      lv_obj_set_style_bg_color(dot, lv_color_hex(isToday ? C_BG : 0x60A5FA), 0);
+      lv_obj_set_style_radius(dot, 2, 0);
+      lv_obj_align(dot, LV_ALIGN_BOTTOM_MID, 0, -1);
+    }
+  }
+
+  lv_obj_t* legend = lv_label_create(monthGrid);
+  lv_obj_set_style_text_font(legend, &thai14, 0);
+  lv_obj_set_style_text_color(legend, lv_color_hex(C_MUTED), 0);
+  setThaiText(legend, "แดง = วันหยุด · จุดน้ำเงิน = วันพระ · แตะวันเพื่อดูรายละเอียด");
+  lv_obj_set_pos(legend, 0, kGridTop + cellH * 6 + 4);
+
+  lv_obj_scroll_to_y(monthBody, 0, LV_ANIM_OFF);
+  lv_obj_remove_flag(monthView, LV_OBJ_FLAG_HIDDEN);
+}
+
 static void cardClicked(lv_event_t* e) {
   // ponytail: current_target ไม่ใช่ target — กราฟในการ์ด bubble event ขึ้นมา
   // ถ้าใช้ target จะได้ตัวกราฟแล้ว lv_label_get_text assert ตาย
   lv_obj_t* card = (lv_obj_t*)lv_event_get_current_target(e);
+  int cardIdx = (int)(intptr_t)lv_obj_get_user_data(card);
+  // การ์ดปฏิทินเข้าหน้าเดือนก่อน แล้วค่อยแตะรายวันเข้า detail
+  if (cardIdx >= 0 && cardIdx < cardCount && cardViz[cardIdx].kind == VIZ_CALENDAR) {
+    openMonthView();
+    return;
+  }
   lv_label_set_text(detailTitle, lv_label_get_text(lv_obj_get_child(card, 0)));
   lv_label_set_text(detailValue, lv_label_get_text(lv_obj_get_child(card, 1)));
   lv_obj_t* third = lv_obj_get_child(card, 2);
@@ -1008,6 +1314,23 @@ static bool fetchAndRender() {
         gWeather.fcN++;
       }
       if (viz.n) viz.kind = VIZ_HOURLY;
+    } else if (!strcmp(type, "calendar") && extra["calendar"]) {
+      JsonObject cal = extra["calendar"];
+      gCal = CalMonth{};
+      gCal.y = cal["y"] | 0;
+      gCal.m = cal["m"] | 0;
+      gCal.today = cal["today"] | 0;
+      for (int d : cal["buddhaDays"].as<JsonArray>()) {
+        if (d >= 1 && d <= 31) gCal.buddhaMask |= 1UL << d;
+      }
+      for (JsonObject h : cal["holidays"].as<JsonArray>()) {
+        if (gCal.holidayN >= 6) break;
+        uint8_t k = gCal.holidayN;
+        gCal.holidayDay[k] = h["d"] | 0;
+        strncpy(gCal.holidayLbl[k], h["label"] | "", sizeof(gCal.holidayLbl[0]) - 1);
+        gCal.holidayN++;
+      }
+      if (gCal.m) viz.kind = VIZ_CALENDAR;
     } else if (extra["stock"]) {
       JsonObject st = extra["stock"];
       strncpy(viz.ticker, st["ticker"] | "", sizeof(viz.ticker) - 1);
@@ -1177,33 +1500,9 @@ void setup() {
     lv_obj_center(icon);
   }
 
-  // detail view: ซ้อนเต็มจอ — แบ่ง 2 คอลัมน์ เนื้อหาเลื่อนได้ / แถบปุ่มขวาอยู่กับที่
-  // ponytail: แยก container แทนปุ่มลอย เพราะปุ่มลอยทับเนื้อหาที่กว้างเต็มจอ
-  detailView = lv_obj_create(scr);
-  lv_obj_set_size(detailView, 480, 320);
-  lv_obj_center(detailView);
-  lv_obj_set_style_bg_color(detailView, lv_color_hex(C_CARD), 0);
-  lv_obj_set_style_border_width(detailView, 0, 0);
-  lv_obj_set_style_radius(detailView, 0, 0);
-  lv_obj_set_style_pad_all(detailView, 0, 0);
-  lv_obj_set_style_pad_column(detailView, 0, 0);
-  lv_obj_add_flag(detailView, LV_OBJ_FLAG_HIDDEN);
-  lv_obj_add_flag(detailView, LV_OBJ_FLAG_CLICKABLE);
-  lv_obj_set_flex_flow(detailView, LV_FLEX_FLOW_ROW);
-  lv_obj_remove_flag(detailView, LV_OBJ_FLAG_SCROLLABLE);
-  lv_obj_add_event_cb(detailView, [](lv_event_t*) {
-    lv_obj_add_flag(detailView, LV_OBJ_FLAG_HIDDEN);
-  }, LV_EVENT_CLICKED, nullptr);
-
-  detailBody = lv_obj_create(detailView);
-  lv_obj_set_size(detailBody, kBodyW, 320);
-  lv_obj_set_style_bg_opa(detailBody, LV_OPA_TRANSP, 0);
-  lv_obj_set_style_border_width(detailBody, 0, 0);
-  lv_obj_set_style_pad_all(detailBody, 16, 0);
-  lv_obj_set_style_pad_row(detailBody, 10, 0);
-  lv_obj_set_flex_flow(detailBody, LV_FLEX_FLOW_COLUMN);
-  lv_obj_set_scrollbar_mode(detailBody, LV_SCROLLBAR_MODE_OFF);
-  lv_obj_add_flag(detailBody, LV_OBJ_FLAG_EVENT_BUBBLE);  // แตะเนื้อหาก็ปิดหน้าได้
+  // ปฏิทินสร้างก่อน detail เพื่อให้ detail ซ้อนทับได้ — ปิด detail แล้วกลับมาเห็นเดือนเดิม
+  monthView = makeFullView(scr, &monthBody);
+  detailView = makeFullView(scr, &detailBody);
 
   // ส่วนหัวติดบนเสมอ — เดิม value ใหญ่ดันหัวข้อจนล้นออกนอกจอ
   detailTitle = lv_label_create(detailBody);
@@ -1221,58 +1520,6 @@ void setup() {
   lv_obj_set_style_text_color(detailText, lv_color_hex(0xB9C4E6), 0);
   lv_obj_set_width(detailText, kGraphW);
   lv_label_set_long_mode(detailText, LV_LABEL_LONG_WRAP);  // ยาวแค่ไหนก็เลื่อนอ่านได้
-
-  // แถบปุ่มขวา: ปิด / เลื่อนขึ้น / เลื่อนลง — มีทุกหน้า เนื้อหาไม่มีทางทับ
-  lv_obj_t* nav = lv_obj_create(detailView);
-  lv_obj_set_size(nav, kNavW, 320);
-  lv_obj_set_style_bg_color(nav, lv_color_hex(C_HERO), 0);
-  lv_obj_set_style_border_width(nav, 0, 0);
-  lv_obj_set_style_radius(nav, 0, 0);
-  lv_obj_set_style_pad_all(nav, 8, 0);
-  lv_obj_set_style_pad_row(nav, 10, 0);
-  lv_obj_set_flex_flow(nav, LV_FLEX_FLOW_COLUMN);
-  lv_obj_set_flex_align(nav, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-  lv_obj_remove_flag(nav, LV_OBJ_FLAG_SCROLLABLE);
-
-  // ทัชแบบต้านทาน: ตอนปล่อยนิ้วพิกัดกระโดด ถ้าหลุดนอกปุ่ม LVGL ไม่นับเป็น CLICKED
-  // จึงยิงตั้งแต่กดลง ไม่รอปล่อย และขยายพื้นที่รับสัมผัสเผื่อไว้
-  lv_obj_t* closeBtn = lv_button_create(nav);
-  lv_obj_set_size(closeBtn, 44, 44);
-  lv_obj_set_ext_click_area(closeBtn, 8);
-  lv_obj_set_style_bg_color(closeBtn, lv_color_hex(0x2A3556), 0);
-  lv_obj_set_style_radius(closeBtn, 22, 0);
-  lv_obj_add_event_cb(closeBtn, [](lv_event_t*) {
-    lv_obj_add_flag(detailView, LV_OBJ_FLAG_HIDDEN);
-  }, LV_EVENT_PRESSED, nullptr);
-
-  lv_obj_t* closeLbl = lv_label_create(closeBtn);
-  lv_obj_set_style_text_font(closeLbl, &thai22, 0);
-  lv_obj_set_style_text_color(closeLbl, lv_color_hex(C_TEXT), 0);
-  lv_label_set_text(closeLbl, "X");
-  lv_obj_center(closeLbl);
-
-  // ลากนิ้วบนทัชแบบต้านทานไม่ลื่นพอจะพึ่งอย่างเดียว — ต้องมีลูกศรเสมอ
-  const struct { const char* icon; int dy; } detailBtns[] = {
-    {LV_SYMBOL_UP, -90},
-    {LV_SYMBOL_DOWN, 90},
-  };
-  for (const auto& b : detailBtns) {
-    lv_obj_t* sb = lv_button_create(nav);
-    lv_obj_set_size(sb, 44, 74);
-    lv_obj_set_style_bg_color(sb, lv_color_hex(0x2A3556), 0);
-    lv_obj_set_style_radius(sb, 10, 0);
-    lv_obj_set_ext_click_area(sb, 8);
-    lv_obj_set_user_data(sb, (void*)(intptr_t)b.dy);
-    lv_obj_add_event_cb(sb, [](lv_event_t* e) {
-      int dy = (int)(intptr_t)lv_obj_get_user_data((lv_obj_t*)lv_event_get_current_target(e));
-      lv_obj_scroll_by(detailBody, 0, -dy, LV_ANIM_ON);
-    }, LV_EVENT_PRESSED, nullptr);
-
-    lv_obj_t* icon = lv_label_create(sb);
-    lv_label_set_text(icon, b.icon);
-    lv_obj_set_style_text_color(icon, lv_color_hex(0xB9C4E6), 0);
-    lv_obj_center(icon);
-  }
 
   lv_timer_create(updateClock, 1000, nullptr);
   esp_task_wdt_init(20, true);  // loop ค้างเกิน 20 วิ = รีบูตเอง ดีกว่าค้างถาวร

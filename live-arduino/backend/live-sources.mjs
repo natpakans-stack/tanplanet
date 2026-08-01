@@ -10,8 +10,8 @@ import os from "node:os";
 import path from "node:path";
 import readline from "node:readline";
 
-// ย่านตาขาว จ.ตรัง (พิกัดจาก open-meteo geocoding) — ย้ายบ้านเมื่อไหร่แก้บรรทัดนี้บรรทัดเดียว
-const HOME = { lat: 7.38622, lon: 99.66692 };
+// ค่าตั้งต้นเมื่อยังไม่เคยตั้งค่าในหน้า /manage — ปกติพิกัดมาจาก device-runtime-config.json
+const HOME = { label: "ย่านตาขาว", lat: 7.38622, lon: 99.66692 };
 const HOLIDAY_ICS =
   "https://calendar.google.com/calendar/ical/th.th%23holiday%40group.v.calendar.google.com/public/basic.ics";
 
@@ -43,10 +43,11 @@ const WMO = {
   95: "พายุฝนฟ้าคะนอง", 96: "พายุฝนฟ้าคะนอง", 99: "พายุฝนฟ้าคะนองรุนแรง",
 };
 
-export function getWeather() {
-  return cached("weather", 15 * 60 * 1000, async () => {
+export function getWeather(loc = HOME) {
+  // key ผูกกับพิกัด — เปลี่ยนสถานที่ในหน้า config แล้วต้องเห็นผลทันที ไม่ใช่รอ cache 15 นาทีหมดอายุ
+  return cached(`weather:${loc.lat},${loc.lon}`, 15 * 60 * 1000, async () => {
     const url =
-      `https://api.open-meteo.com/v1/forecast?latitude=${HOME.lat}&longitude=${HOME.lon}` +
+      `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}` +
       "&current=temperature_2m,relative_humidity_2m,weather_code,apparent_temperature,wind_speed_10m" +
       "&hourly=temperature_2m,precipitation_probability&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code" +
       "&timezone=Asia%2FBangkok&forecast_days=8";
