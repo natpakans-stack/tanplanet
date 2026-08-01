@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>ตั้งค่าจอ · TanPlanet</title>
+<style>
+  @font-face{font-family:Anuphan;src:url("/assets/anuphan.woff2") format("woff2-variations");
+             font-weight:200 700;font-display:swap}
+
+  :root{
+    --bg:oklch(0.18 0.022 265);
+    --surface:oklch(0.235 0.026 265);
+    --raised:oklch(0.285 0.030 265);
+    --line:oklch(0.34 0.030 265);
+    --line-soft:oklch(0.28 0.026 265);
+    --text:oklch(0.965 0.008 265);
+    --muted:oklch(0.735 0.030 265);
+    --faint:oklch(0.60 0.028 265);
+    --accent:oklch(0.78 0.155 150);
+    --accent-ink:oklch(0.22 0.06 150);
+    --danger:oklch(0.70 0.155 25);
+    --focus:oklch(0.80 0.11 230);
+    --r:12px;
+    --ease:cubic-bezier(0.22,1,0.36,1);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;font:inherit}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:Anuphan,-apple-system,"Segoe UI",system-ui,sans-serif;
+    font-size:15px;line-height:1.5;font-weight:400;
+    background:var(--bg);color:var(--text);
+    padding:24px 18px calc(104px + env(safe-area-inset-bottom));
+    max-width:560px;margin:0 auto;
+  }
+
+  /* ---------- หัวเรื่อง ---------- */
+  header{margin-bottom:28px}
+  h1{font-size:21px;font-weight:600;letter-spacing:-0.01em}
+  header p{color:var(--muted);font-size:13.5px;margin-top:3px}
+
+  section{padding:22px 0;border-top:1px solid var(--line-soft)}
+  section:first-of-type{border-top:0;padding-top:0}
+  h2{font-size:12px;font-weight:600;color:var(--faint);letter-spacing:.09em;
+     text-transform:uppercase;margin-bottom:14px}
+  .note{color:var(--muted);font-size:13px;line-height:1.55;margin-top:10px}
+  .stack{display:flex;flex-direction:column;gap:10px}
+
+  /* ---------- แถวตั้งค่า ---------- */
+  .setting{display:flex;align-items:center;gap:14px;min-height:46px}
+  .setting .label{flex:1;min-width:0}
+  .setting .label b{font-weight:500;font-size:15px;display:block}
+  .setting .label span{color:var(--muted);font-size:12.5px}
+
+  /* ---------- สวิตช์ ---------- */
+  .sw{width:50px;height:30px;border-radius:999px;background:var(--raised);border:1px solid var(--line);
+      position:relative;flex:none;cursor:pointer;transition:background .18s var(--ease),border-color .18s var(--ease)}
+  .sw::after{content:"";position:absolute;inset:3px auto 3px 3px;width:22px;border-radius:50%;
+             background:var(--muted);transition:transform .22s var(--ease),background .18s var(--ease)}
+  .sw[aria-checked="true"]{background:color-mix(in oklch,var(--accent) 26%,transparent);border-color:var(--accent)}
+  .sw[aria-checked="true"]::after{transform:translateX(20px);background:var(--accent)}
+
+  /* ---------- ตัวนับ ---------- */
+  .stepper{display:flex;align-items:center;background:var(--surface);border:1px solid var(--line);
+           border-radius:10px;overflow:hidden;flex:none}
+  .stepper button{width:42px;height:42px;background:none;border:0;color:var(--muted);font-size:19px;
+                  cursor:pointer;transition:background .15s var(--ease),color .15s var(--ease)}
+  .stepper button:hover:not(:disabled){background:var(--raised);color:var(--text)}
+  .stepper button:disabled{opacity:.3;cursor:default}
+  .stepper input{width:58px;height:42px;text-align:center;background:none;border:0;color:var(--text);
+                 font-size:15px;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+  .stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none}
+
+  /* ---------- ช่องกรอก ---------- */
+  .input{width:100%;height:46px;padding:0 14px;background:var(--surface);color:var(--text);
+         border:1px solid var(--line);border-radius:10px;transition:border-color .15s var(--ease)}
+  .input::placeholder{color:var(--faint)}
+  .input:hover{border-color:var(--muted)}
+  textarea.input{height:auto;padding:12px 14px;resize:vertical;line-height:1.5;font-size:13px}
+
+  /* ---------- ปุ่มเลือก (แทน select) ---------- */
+  .pick{position:relative}
+  .pick>button{width:100%;height:46px;padding:0 44px 0 14px;text-align:left;background:var(--surface);
+    color:var(--text);border:1px solid var(--line);border-radius:10px;cursor:pointer;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:border-color .15s var(--ease)}
+  .pick>button:hover{border-color:var(--muted)}
+  .pick>button::after{content:"";position:absolute;right:17px;top:50%;width:7px;height:7px;
+    border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);
+    transform:translateY(-70%) rotate(45deg);transition:transform .2s var(--ease)}
+  .pick[data-open="true"]>button{border-color:var(--focus)}
+  .pick[data-open="true"]>button::after{transform:translateY(-25%) rotate(225deg)}
+  .menu{position:absolute;z-index:20;top:calc(100% + 6px);left:0;right:0;background:var(--raised);
+    border:1px solid var(--line);border-radius:12px;padding:5px;max-height:270px;overflow:auto;
+    box-shadow:0 16px 40px -12px oklch(0.10 0.03 265 / .75);
+    opacity:0;transform:translateY(-5px);pointer-events:none;transition:opacity .16s var(--ease),transform .16s var(--ease)}
+  .pick[data-open="true"] .menu{opacity:1;transform:none;pointer-events:auto}
+  .menu li{list-style:none}
+  .menu button{display:flex;align-items:center;gap:9px;width:100%;padding:11px 12px;text-align:left;
+    background:none;border:0;color:var(--text);border-radius:8px;cursor:pointer;font-size:14.5px}
+  .menu button:hover,.menu button[data-active="true"]{background:var(--surface)}
+  .menu button::before{content:"";width:6px;height:6px;border-radius:50%;background:transparent;flex:none}
+  .menu button[aria-selected="true"]::before{background:var(--accent)}
+
+  /* ---------- ปุ่มเลือกแบบแถบ ---------- */
+  .seg{display:flex;gap:4px;background:var(--surface);border:1px solid var(--line);
+       border-radius:11px;padding:4px}
+  .seg button{flex:1;height:38px;border:0;border-radius:8px;background:none;color:var(--muted);
+              font-size:14px;cursor:pointer;transition:background .18s var(--ease),color .18s var(--ease)}
+  .seg button[aria-pressed="true"]{background:var(--raised);color:var(--text);font-weight:500}
+
+  /* ---------- ลำดับการ์ด ---------- */
+  ol{list-style:none}
+  .card-row{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line-soft);
+            border-radius:var(--r);padding:9px 10px 9px 14px;transition:opacity .18s var(--ease)}
+  .card-row[data-off="true"]{opacity:.4}
+  .card-row .idx{color:var(--faint);font-size:12px;width:15px;font-variant-numeric:tabular-nums}
+  .card-row .nm{flex:1;font-size:15px;font-weight:500}
+  .icon-btn{width:38px;height:38px;border:0;border-radius:9px;background:var(--raised);color:var(--muted);
+            cursor:pointer;flex:none;transition:background .15s var(--ease),color .15s var(--ease)}
+  .icon-btn:hover:not(:disabled){background:var(--line);color:var(--text)}
+  .icon-btn:disabled{opacity:.25;cursor:default}
+  .icon-btn.eye[data-off="true"]{color:var(--danger)}
+
+  /* ---------- หุ้น ---------- */
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{padding:9px 15px;border-radius:999px;border:1px solid var(--line);background:var(--surface);
+        color:var(--muted);font-size:14px;cursor:pointer;font-variant-numeric:tabular-nums;
+        transition:border-color .15s var(--ease),color .15s var(--ease),background .15s var(--ease)}
+  .chip[aria-pressed="true"]{border-color:var(--accent);color:var(--text);
+        background:color-mix(in oklch,var(--accent) 15%,transparent)}
+
+  /* ---------- ค้นหาสถานที่ ---------- */
+  .row{display:flex;gap:8px}
+  .btn{height:46px;padding:0 18px;border:1px solid var(--line);border-radius:10px;background:var(--raised);
+       color:var(--text);font-size:14px;font-weight:500;cursor:pointer;flex:none;
+       transition:background .15s var(--ease)}
+  .btn:hover{background:var(--line)}
+  .hits{display:flex;flex-direction:column;gap:6px}
+  .hit{padding:12px 14px;border-radius:10px;border:1px solid var(--line-soft);background:var(--surface);
+       color:var(--text);text-align:left;cursor:pointer;font-size:14px;
+       transition:border-color .15s var(--ease)}
+  .hit small{color:var(--muted);font-variant-numeric:tabular-nums}
+  .hit[aria-pressed="true"]{border-color:var(--accent)}
+  .current{display:flex;align-items:baseline;gap:8px;font-size:14px}
+  .current b{font-weight:500}
+  .current small{color:var(--faint);font-variant-numeric:tabular-nums}
+
+  /* ---------- ปฏิทินภายนอก ---------- */
+  .feed{border:1px solid var(--line-soft);border-radius:var(--r);padding:12px;background:var(--surface);
+        display:flex;flex-direction:column;gap:9px}
+  .feed .head{display:flex;align-items:center;gap:10px}
+  .dot{width:11px;height:11px;border-radius:50%;flex:none}
+  .feed .head .input{height:40px}
+  .ghost{border:1px dashed var(--line);border-radius:var(--r);background:none;color:var(--muted);
+         height:46px;width:100%;cursor:pointer;font-size:14px;transition:color .15s var(--ease),border-color .15s var(--ease)}
+  .ghost:hover{color:var(--text);border-color:var(--muted)}
+  .ghost:disabled{opacity:.4;cursor:default}
+
+  /* ---------- แถบบันทึก ---------- */
+  .bar{position:fixed;left:0;right:0;bottom:0;padding:14px 18px calc(14px + env(safe-area-inset-bottom));
+       background:linear-gradient(transparent,var(--bg) 30%)}
+  .bar>div{max-width:560px;margin:0 auto;display:flex;align-items:center;gap:12px}
+  .save{flex:1;height:50px;border:0;border-radius:12px;background:var(--accent);color:var(--accent-ink);
+        font-size:16px;font-weight:600;cursor:pointer;transition:opacity .15s var(--ease)}
+  .save:disabled{opacity:.5;cursor:default}
+  .status{font-size:13px;color:var(--muted);min-width:78px;text-align:right}
+  .status[data-ok="true"]{color:var(--accent)}
+  .status[data-ok="false"]{color:var(--danger)}
+
+  :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ตั้งค่าจอ</h1>
+  <p>แก้แล้วกดบันทึก จอจะดึงค่าใหม่รอบถัดไป</p>
+</header>
+
+<section>
+  <h2>ลำดับการ์ด</h2>
+  <ol class="stack" id="cards"></ol>
+  <p class="note">ตัวบนสุดขึ้นจอก่อน · ปุ่มขวาสุดซ่อนการ์ดโดยไม่ต้องลบลำดับทิ้ง</p>
+</section>
+
+<section>
+  <h2>Market Focus</h2>
+  <div class="stack">
+    <div>
+      <div class="setting"><div class="label"><b>หุ้นที่เอาขึ้นจอ</b></div></div>
+      <div class="chips" id="tickers"></div>
+    </div>
+    <div>
+      <div class="setting"><div class="label"><b>ตัวที่ขึ้นกราฟ</b></div></div>
+      <div class="pick" id="mfChart"></div>
+    </div>
+  </div>
+  <p class="note">ในหน้า detail กด ◀ ▶ เลื่อนดูตัวอื่นได้ทุกตัวอยู่แล้ว ค่านี้แค่กำหนดตัวตั้งต้น</p>
+</section>
+
+<section>
+  <h2>Weather</h2>
+  <div class="stack">
+    <div class="current">ตอนนี้ <b id="locNow"></b> <small id="locXY"></small></div>
+    <div class="row">
+      <input class="input" id="q" type="text" placeholder="พิมพ์ชื่ออำเภอ/จังหวัด" autocomplete="off" enterkeyhint="search">
+      <button class="btn" id="find" type="button">ค้นหา</button>
+    </div>
+    <div class="hits" id="hits"></div>
+  </div>
+</section>
+
+<section>
+  <h2>Idea Radar</h2>
+  <div class="stack">
+    <div class="setting">
+      <div class="label"><b>ธีมในหน้า detail</b><span>รายการธีมที่ไล่ให้ดู</span></div>
+      <div class="stepper" data-stepper="irThemes" data-min="1" data-max="6"></div>
+    </div>
+    <div class="setting">
+      <div class="label"><b>Ticker บนหน้าการ์ด</b><span>บรรทัดใหญ่ เช่น OKLO / CEG</span></div>
+      <div class="stepper" data-stepper="irTickers" data-min="1" data-max="5"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Monthly Plan</h2>
+  <div class="seg" id="mpFocus">
+    <button type="button" data-v="swing">Swing</button>
+    <button type="button" data-v="alpha">Alpha</button>
+  </div>
+  <p class="note">ตัวที่เลือกได้กราฟราคาและขึ้นชื่อก่อน · โซนเข้า/stop/target มีเฉพาะ swing</p>
+</section>
+
+<section>
+  <h2>AI Status</h2>
+  <div class="setting">
+    <div class="label"><b>โควตารอบ 7 วัน</b><span>ปิดแล้วเหลือแค่รอบ 5 ชม.</span></div>
+    <button class="sw" id="aiWeek" role="switch" type="button"></button>
+  </div>
+</section>
+
+<section>
+  <h2>ปฏิทิน</h2>
+  <div class="stack">
+    <div class="setting">
+      <div class="label"><b>วันพระ</b><span>จุดน้ำเงินใต้วันที่</span></div>
+      <button class="sw" id="calBuddha" role="switch" type="button"></button>
+    </div>
+    <div class="setting">
+      <div class="label"><b>วันหยุดราชการ</b><span>เลขสีแดง</span></div>
+      <button class="sw" id="calHoliday" role="switch" type="button"></button>
+    </div>
+    <div id="feeds" class="stack"></div>
+    <button class="ghost" id="addFeed" type="button">เพิ่มปฏิทินภายนอก</button>
+  </div>
+  <p class="note">ลิงก์ .ics อะไรก็ได้ เช่น ตารางแข่งสโมสร หรือ Google Calendar สาธารณะ · รองรับทั้งงานทั้งวันและงานที่มีเวลา · ใส่ได้สูงสุด 4 ชุด สีจุดไล่ตามลำดับ</p>
+</section>
+
+<section>
+  <h2>จอ</h2>
+  <div class="stack">
+    <div class="setting">
+      <div class="label"><b>รอบดึงข้อมูล</b><span>หน่วยวินาที · 60 ถึง 3600</span></div>
+      <div class="stepper" data-stepper="dvRefresh" data-min="60" data-max="3600" data-step="30"></div>
+    </div>
+    <div class="setting">
+      <div class="label"><b>ความสว่างกลางวัน</b><span>10 ถึง 255</span></div>
+      <div class="stepper" data-stepper="dsDay" data-min="10" data-max="255" data-step="5"></div>
+    </div>
+    <div class="setting">
+      <div class="label"><b>ความสว่างกลางคืน</b><span>0 = ดับไฟพื้นหลัง</span></div>
+      <div class="stepper" data-stepper="dsNight" data-min="0" data-max="255" data-step="5"></div>
+    </div>
+    <div class="setting">
+      <div class="label"><b>ช่วงกลางคืน</b><span>เวลาในเครื่อง (NTP)</span></div>
+      <div class="row" style="flex:none">
+        <input class="input" id="dsStart" type="time" style="width:118px">
+        <input class="input" id="dsEnd" type="time" style="width:118px">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="bar"><div>
+  <span class="status" id="status"></span>
+  <button class="save" id="save" type="button">บันทึก</button>
+</div></div>
+
+<script>
+const CFG = window.__CONFIG__;
+const DATA = window.__DATA__;
+const $ = (id) => document.getElementById(id);
+
+/* ---------------- สวิตช์ ---------------- */
+function switchInit(el, on) {
+  const set = (v) => el.setAttribute("aria-checked", String(v));
+  set(on);
+  el.addEventListener("click", () => set(el.getAttribute("aria-checked") !== "true"));
+  return () => el.getAttribute("aria-checked") === "true";
+}
+
+/* ---------------- ตัวนับ ---------------- */
+function stepperInit(box, value) {
+  const min = +box.dataset.min, max = +box.dataset.max, step = +(box.dataset.step || 1);
+  box.innerHTML = '<button type="button" aria-label="ลด">−</button>' +
+                  '<input type="number" inputmode="numeric">' +
+                  '<button type="button" aria-label="เพิ่ม">+</button>';
+  const [dec, input, inc] = box.children;
+  const clamp = (v) => Math.min(max, Math.max(min, Number.isFinite(v) ? v : min));
+  const paint = () => {
+    dec.disabled = +input.value <= min;
+    inc.disabled = +input.value >= max;
+  };
+  const set = (v) => { input.value = clamp(v); paint(); };
+  set(value);
+  dec.addEventListener("click", () => set(+input.value - step));
+  inc.addEventListener("click", () => set(+input.value + step));
+  input.addEventListener("change", () => set(+input.value));
+  return () => clamp(+input.value);
+}
+
+/* ---------------- ปุ่มเลือก ---------------- */
+// select ของเบราว์เซอร์บนมือถือเปิดเป็นวงล้อระบบ คุมหน้าตาไม่ได้เลย จึงทำเอง
+function pickInit(host, options, value) {
+  let cur = options.some((o) => o.v === value) ? value : options[0].v;
+  host.innerHTML = '<button type="button" aria-haspopup="listbox"></button><ul class="menu" role="listbox"></ul>';
+  const [trigger, menu] = host.children;
+
+  options.forEach((o) => {
+    const li = document.createElement("li");
+    const b = document.createElement("button");
+    b.type = "button";
+    b.role = "option";
+    b.textContent = o.t;
+    b.addEventListener("click", () => { cur = o.v; paint(); close(); trigger.focus(); });
+    li.appendChild(b);
+    menu.appendChild(li);
+  });
+
+  const paint = () => {
+    trigger.textContent = options.find((o) => o.v === cur).t;
+    [...menu.querySelectorAll("button")].forEach((b, i) =>
+      b.setAttribute("aria-selected", String(options[i].v === cur)));
+  };
+  const open = () => {
+    host.dataset.open = "true";
+    const sel = menu.querySelector('[aria-selected="true"]') || menu.querySelector("button");
+    sel?.focus();
+  };
+  const close = () => { host.dataset.open = "false"; };
+
+  trigger.addEventListener("click", () => (host.dataset.open === "true" ? close() : open()));
+  host.addEventListener("keydown", (e) => {
+    const items = [...menu.querySelectorAll("button")];
+    const at = items.indexOf(document.activeElement);
+    if (e.key === "Escape") { close(); trigger.focus(); }
+    else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      if (host.dataset.open !== "true") return open();
+      items[Math.min(items.length - 1, Math.max(0, at + (e.key === "ArrowDown" ? 1 : -1)))].focus();
+    }
+  });
+  document.addEventListener("click", (e) => { if (!host.contains(e.target)) close(); });
+  paint();
+  return () => cur;
+}
+
+/* ---------------- แถบเลือก ---------------- */
+function segInit(host, value) {
+  const btns = [...host.children];
+  const paint = () => btns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.v === value)));
+  btns.forEach((b) => b.addEventListener("click", () => { value = b.dataset.v; paint(); }));
+  paint();
+  return () => value;
+}
+
+/* ---------------- ลำดับการ์ด ---------------- */
+const cardsEl = $("cards");
+const ordered = [
+  ...CFG.cardOrder.map((id) => DATA.cards.find((c) => c[0] === id)).filter(Boolean),
+  ...DATA.cards.filter((c) => !CFG.cardOrder.includes(c[0])),
+];
+ordered.forEach(([id, label]) => {
+  const li = document.createElement("li");
+  li.className = "card-row";
+  li.dataset.id = id;
+  li.dataset.off = String(CFG.hiddenCards.includes(id));
+  li.innerHTML = '<span class="idx"></span><span class="nm"></span>' +
+    '<button class="icon-btn" data-dir="-1" type="button" aria-label="เลื่อนขึ้น">↑</button>' +
+    '<button class="icon-btn" data-dir="1" type="button" aria-label="เลื่อนลง">↓</button>' +
+    '<button class="icon-btn eye" type="button" aria-label="ซ่อนหรือแสดง">◉</button>';
+  li.querySelector(".nm").textContent = label;
+  cardsEl.appendChild(li);
+});
+
+function renumber() {
+  [...cardsEl.children].forEach((r, i, all) => {
+    r.querySelector(".idx").textContent = i + 1;
+    r.querySelector('[data-dir="-1"]').disabled = i === 0;
+    r.querySelector('[data-dir="1"]').disabled = i === all.length - 1;
+    const eye = r.querySelector(".eye");
+    eye.dataset.off = r.dataset.off;
+    eye.textContent = r.dataset.off === "true" ? "○" : "◉";
+  });
+}
+cardsEl.addEventListener("click", (e) => {
+  const row = e.target.closest(".card-row");
+  if (!row) return;
+  const mv = e.target.closest("[data-dir]");
+  if (mv) {
+    const dir = +mv.dataset.dir;
+    if (dir < 0 && row.previousElementSibling) cardsEl.insertBefore(row, row.previousElementSibling);
+    if (dir > 0 && row.nextElementSibling) cardsEl.insertBefore(row.nextElementSibling, row);
+  } else if (e.target.closest(".eye")) {
+    row.dataset.off = String(row.dataset.off !== "true");
+  } else return;
+  renumber();
+});
+renumber();
+
+/* ---------------- หุ้น ---------------- */
+const tickersEl = $("tickers");
+DATA.tickers.forEach((t) => {
+  const b = document.createElement("button");
+  b.className = "chip";
+  b.type = "button";
+  b.textContent = t;
+  b.setAttribute("aria-pressed", String(!CFG.tickers.length || CFG.tickers.includes(t)));
+  b.addEventListener("click", () =>
+    b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true")));
+  tickersEl.appendChild(b);
+});
+const getChart = pickInit($("mfChart"),
+  [{ v: "", t: "อัตโนมัติ — ตามสัญญาณ" }, ...DATA.tickers.map((t) => ({ v: t, t }))],
+  CFG.marketFocus.chart);
+
+/* ---------------- สถานที่ ---------------- */
+let picked = null;
+const hits = $("hits");
+$("locNow").textContent = CFG.weather.label;
+$("locXY").textContent = CFG.weather.lat.toFixed(3) + ", " + CFG.weather.lon.toFixed(3);
+
+async function search() {
+  const q = $("q").value.trim();
+  if (!q) return;
+  hits.innerHTML = '<p class="note">กำลังค้นหา…</p>';
+  try {
+    const res = await fetch("/api/geocode?q=" + encodeURIComponent(q));
+    const { results = [] } = await res.json();
+    if (!results.length) { hits.innerHTML = '<p class="note">ไม่พบสถานที่นี้ ลองพิมพ์ชื่ออำเภอหรือจังหวัด</p>'; return; }
+    hits.innerHTML = "";
+    results.forEach((x) => {
+      const b = document.createElement("button");
+      b.className = "hit";
+      b.type = "button";
+      b.setAttribute("aria-pressed", "false");
+      b.innerHTML = "<span></span> <small></small>";
+      b.children[0].textContent = x.label;
+      b.children[1].textContent = x.lat.toFixed(3) + ", " + x.lon.toFixed(3);
+      b.addEventListener("click", () => {
+        picked = x;
+        [...hits.children].forEach((c) => c.setAttribute("aria-pressed", "false"));
+        b.setAttribute("aria-pressed", "true");
+        $("locNow").textContent = x.label;
+        $("locXY").textContent = x.lat.toFixed(3) + ", " + x.lon.toFixed(3);
+      });
+      hits.appendChild(b);
+    });
+  } catch { hits.innerHTML = '<p class="note">ค้นหาไม่สำเร็จ — เช็คเน็ตของเครื่องที่รัน backend</p>'; }
+}
+$("find").addEventListener("click", search);
+$("q").addEventListener("keydown", (e) => { if (e.key === "Enter") search(); });
+
+/* ---------------- ปฏิทินภายนอก ---------------- */
+const FEED_DOTS = ["oklch(0.78 0.155 150)", "oklch(0.74 0.16 350)", "oklch(0.72 0.14 300)", "oklch(0.80 0.12 210)"];
+const feedsEl = $("feeds");
+
+function addFeed(f = { label: "", url: "", on: true }) {
+  const box = document.createElement("div");
+  box.className = "feed";
+  box.innerHTML =
+    '<div class="head"><span class="dot"></span>' +
+    '<input class="input fl" type="text" placeholder="ชื่อย่อ">' +
+    '<button class="sw fo" role="switch" type="button"></button>' +
+    '<button class="icon-btn del" type="button" aria-label="ลบ">✕</button></div>' +
+    '<textarea class="input fu" rows="2" placeholder="webcal:// หรือ https:// … .ics" spellcheck="false"></textarea>';
+  box.querySelector(".fl").value = f.label;
+  box.querySelector(".fu").value = f.url;
+  switchInit(box.querySelector(".fo"), f.on !== false);
+  box.querySelector(".del").addEventListener("click", () => { box.remove(); paintFeeds(); });
+  feedsEl.appendChild(box);
+  paintFeeds();
+}
+function paintFeeds() {
+  [...feedsEl.children].forEach((b, i) => { b.querySelector(".dot").style.background = FEED_DOTS[i]; });
+  $("addFeed").disabled = feedsEl.children.length >= 4;
+}
+CFG.calendar.feeds.forEach(addFeed);
+paintFeeds();
+$("addFeed").addEventListener("click", () => addFeed());
+
+/* ---------------- ที่เหลือ ---------------- */
+const getThemes = stepperInit(document.querySelector('[data-stepper="irThemes"]'), CFG.ideaRadar.themes);
+const getTickN = stepperInit(document.querySelector('[data-stepper="irTickers"]'), CFG.ideaRadar.tickers);
+const getRefresh = stepperInit(document.querySelector('[data-stepper="dvRefresh"]'), CFG.device.refreshSeconds);
+const getDay = stepperInit(document.querySelector('[data-stepper="dsDay"]'), CFG.display.brightnessDay);
+const getNight = stepperInit(document.querySelector('[data-stepper="dsNight"]'), CFG.display.brightnessNight);
+const getFocus = segInit($("mpFocus"), CFG.monthlyPlan.focus);
+const getAiWeek = switchInit($("aiWeek"), CFG.aiStatus.showWeek);
+const getBuddha = switchInit($("calBuddha"), CFG.calendar.showBuddha);
+const getHoliday = switchInit($("calHoliday"), CFG.calendar.showHolidays);
+$("dsStart").value = CFG.display.nightStart;
+$("dsEnd").value = CFG.display.nightEnd;
+
+/* ---------------- บันทึก ---------------- */
+const status = $("status"), saveBtn = $("save");
+saveBtn.addEventListener("click", async () => {
+  const chips = [...tickersEl.children];
+  const on = chips.filter((c) => c.getAttribute("aria-pressed") === "true").map((c) => c.textContent);
+  saveBtn.disabled = true;
+  status.removeAttribute("data-ok");
+  status.textContent = "กำลังบันทึก…";
+  const body = {
+    tickers: on.length === chips.length ? [] : on,
+    cardOrder: [...cardsEl.children].map((r) => r.dataset.id),
+    hiddenCards: [...cardsEl.children].filter((r) => r.dataset.off === "true").map((r) => r.dataset.id),
+    weather: picked || CFG.weather,
+    ideaRadar: { themes: getThemes(), tickers: getTickN() },
+    monthlyPlan: { focus: getFocus() },
+    marketFocus: { chart: getChart() },
+    aiStatus: { showWeek: getAiWeek() },
+    calendar: {
+      showBuddha: getBuddha(),
+      showHolidays: getHoliday(),
+      feeds: [...feedsEl.children].map((b) => ({
+        label: b.querySelector(".fl").value,
+        url: b.querySelector(".fu").value.trim(),
+        on: b.querySelector(".fo").getAttribute("aria-checked") === "true",
+      })).filter((f) => f.url),
+    },
+    device: { refreshSeconds: getRefresh() },
+    display: {
+      brightnessDay: getDay(),
+      brightnessNight: getNight(),
+      nightStart: $("dsStart").value,
+      nightEnd: $("dsEnd").value,
+    },
+  };
+  try {
+    const res = await fetch("/api/config", {
+      method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error();
+    status.dataset.ok = "true";
+    status.textContent = "บันทึกแล้ว";
+  } catch {
+    status.dataset.ok = "false";
+    status.textContent = "ไม่สำเร็จ";
+  } finally {
+    saveBtn.disabled = false;
+    setTimeout(() => { status.textContent = ""; status.removeAttribute("data-ok"); }, 4000);
+  }
+});
+</script>
+</body>
+</html>

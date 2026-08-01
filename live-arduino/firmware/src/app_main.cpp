@@ -46,6 +46,7 @@ static uint8_t drawBuf[kBufPixels * 2];
 
 static lv_obj_t* headValue;
 static lv_obj_t* headDetail;
+static lv_obj_t* busyRing;
 static lv_obj_t* statusDot;
 static lv_obj_t* heroWeather;
 static lv_obj_t* heroLunar;
@@ -109,8 +110,16 @@ struct CalMonth {
   int y = 0, m = 0, today = 0;
   uint32_t buddhaMask = 0;  // บิตที่ n = วันพระวันที่ n (1-31) เก็บเป็น mask ไม่ต้องวนหา
   uint8_t holidayDay[6] = {0};
-  char holidayLbl[6][72] = {{0}};
+  char holidayLbl[6][128] = {{0}};
   uint8_t holidayN = 0;
+
+  // นัดจากปฏิทินภายนอก (ตารางแข่ง ฯลฯ) — จุดสีต่อฟีด
+  uint8_t evDay[16] = {0};
+  uint8_t evFeed[16] = {0};
+  char evTime[16][6] = {{0}};
+  char evLabel[16][56] = {{0}};
+  uint8_t evN = 0;
+  uint32_t feedColor[4] = {0x4ADE80, 0xF472B6, 0xA78BFA, 0x22D3EE};
 };
 static CalMonth gCal;
 
@@ -125,7 +134,11 @@ static CardViz cardViz[kMaxCards];
 static int cardCount = 0;
 
 static uint32_t lastFetch = 0;
-static const uint32_t kRefreshMs = 5UL * 60UL * 1000UL;
+static uint32_t kRefreshMs = 5UL * 60UL * 1000UL;  // หลังบ้านสั่งเปลี่ยนได้ ไม่ต้อง flash
+
+// ความสว่าง: หลังบ้านคุมทั้งค่ากลางวัน/กลางคืนและช่วงเวลา
+static int briDay = kBacklightDay, briNight = kBacklightNight;
+static int nightStartMin = 22 * 60, nightEndMin = 6 * 60 + 30;
 static const uint32_t kRetryMs = 30UL * 1000UL;  // ดึงพลาดแล้วรอ 5 นาทีนานเกินไป
 
 // ponytail: flush เอง — LV_USE_TFT_ESPI สร้าง TFT_eSPI ซ้อนอีกตัวแล้ว pixel ไม่ออกจอ
@@ -927,8 +940,15 @@ static void dayClicked(lv_event_t* e) {
   snprintf(buf, sizeof(buf), "วัน%s%s%s%s", kThaiDays[wd],
            hol ? " · " : "", hol ? hol : "",
            buddha ? (hol ? "\nวันพระ" : " · วันพระ") : "");
-  if (!hol && !buddha) snprintf(buf, sizeof(buf), "วัน%s · ไม่มีวันสำคัญ", kThaiDays[wd]);
-  setThaiText(detailText, buf);
+  if (!hol && !buddha) snprintf(buf, sizeof(buf), "วัน%s", kThaiDays[wd]);
+  String text = buf;
+  for (int i = 0; i < gCal.evN; i++) {
+    if (gCal.evDay[i] != day) continue;
+    text += "\n";
+    if (gCal.evTime[i][0]) { text += gCal.evTime[i]; text += " · "; }
+    text += gCal.evLabel[i];
+  }
+  setThaiText(detailText, text.c_str());
 
   if (vizBox) { lv_obj_delete(vizBox); vizBox = nullptr; }
   for (lv_obj_t* o : {detailTitle, detailValue, detailText}) lv_obj_remove_flag(o, LV_OBJ_FLAG_HIDDEN);
@@ -1002,6 +1022,10 @@ static void openMonthView() {
     bool isToday = thisMonth && day == tmNow.tm_mday;
     const char* hol = holidayOf(day);
     bool buddha = gCal.buddhaMask & (1UL << day);
+    int evIdx = -1;
+    for (int i = 0; i < gCal.evN; i++) {
+      if (gCal.evDay[i] == day) { evIdx = i; break; }
+    }
 
     lv_obj_t* cell = plainBox(monthGrid, cellW - 2, cellH - 2);
     lv_obj_remove_flag(cell, LV_OBJ_FLAG_EVENT_BUBBLE);
@@ -1023,12 +1047,20 @@ static void openMonthView() {
     lv_label_set_text_fmt(num, "%d", day);
     lv_obj_align(num, LV_ALIGN_TOP_MID, 0, buddha ? -1 : 2);
 
-    if (buddha) {  // จุดเล็กใต้ตัวเลข — วันพระกับวันหยุดซ้อนกันได้ ต้องแยกสัญญาณ
+    // จุดใต้ตัวเลข — วันพระซ้าย นัดจากปฏิทินภายนอกขวา วันเดียวเป็นได้ทั้งคู่
+    if (buddha) {
       lv_obj_t* dot = plainBox(cell, 4, 4);
       lv_obj_set_style_bg_opa(dot, LV_OPA_COVER, 0);
       lv_obj_set_style_bg_color(dot, lv_color_hex(isToday ? C_BG : 0x60A5FA), 0);
       lv_obj_set_style_radius(dot, 2, 0);
-      lv_obj_align(dot, LV_ALIGN_BOTTOM_MID, 0, -1);
+      lv_obj_align(dot, LV_ALIGN_BOTTOM_MID, buddha && evIdx >= 0 ? -5 : 0, -1);
+    }
+    if (evIdx >= 0) {
+      lv_obj_t* dot = plainBox(cell, 4, 4);
+      lv_obj_set_style_bg_opa(dot, LV_OPA_COVER, 0);
+      lv_obj_set_style_bg_color(dot, lv_color_hex(gCal.feedColor[gCal.evFeed[evIdx] & 3]), 0);
+      lv_obj_set_style_radius(dot, 2, 0);
+      lv_obj_align(dot, LV_ALIGN_BOTTOM_MID, buddha ? 5 : 0, -1);
     }
   }
 
@@ -1162,10 +1194,13 @@ static void addCard(const char* title, const char* value, const char* detail, co
   else lv_obj_align(v, LV_ALIGN_LEFT_MID, 10, 6);
 }
 
-static void applyBacklight(int hour) {
-  bool night = (hour >= kNightStartHour || hour < kNightEndHour);
+// ค่าความสว่างและช่วงเวลามาจากหลังบ้าน — ช่วงกลางคืนคร่อมเที่ยงคืนได้ จึงเช็คสองแบบ
+static void applyBacklight(int mins) {
+  bool night = nightStartMin <= nightEndMin
+                   ? (mins >= nightStartMin && mins < nightEndMin)
+                   : (mins >= nightStartMin || mins < nightEndMin);
   static int lastLevel = -1;
-  int level = night ? kBacklightNight : kBacklightDay;
+  int level = night ? briNight : briDay;
   if (level == lastLevel) return;
   lastLevel = level;
   ledcWrite(1, level);
@@ -1188,7 +1223,7 @@ static void updateClock(lv_timer_t*) {
   setThaiText(headDetail, (String("วัน") + kThaiDays[tm.tm_wday] + "ที่ " + tm.tm_mday + " " +
                            kThaiMonths[tm.tm_mon] + " " + (tm.tm_year + 1900 + 543))
                               .c_str());
-  applyBacklight(tm.tm_hour);
+  applyBacklight(tm.tm_hour * 60 + tm.tm_min);
 }
 
 static void setStatus(const char* msg, uint32_t color) {
@@ -1198,7 +1233,15 @@ static void setStatus(const char* msg, uint32_t color) {
   lv_obj_set_style_text_color(headDetail, lv_color_hex(color), 0);
 }
 
+static void setBusy(bool on) {
+  if (!busyRing) return;
+  if (on) lv_obj_remove_flag(busyRing, LV_OBJ_FLAG_HIDDEN);
+  else lv_obj_add_flag(busyRing, LV_OBJ_FLAG_HIDDEN);
+}
+
 static bool fetchAndRender() {
+  setBusy(true);
+  struct Done { ~Done() { setBusy(false); } } done;  // ออกทางไหนก็ปิดวงแหวนเสมอ
   if (WiFi.status() != WL_CONNECTED) {
     setStatus("Wi-Fi หลุด", 0xF87171);
     return false;
@@ -1226,6 +1269,22 @@ static bool fetchAndRender() {
     Serial.printf("json failed: %s (payload %u bytes)\n", err.c_str(), payload.length());
     setStatus("อ่านข้อมูลไม่ได้", 0xF87171);
     return false;
+  }
+
+  // ค่าคุมตัวจอมาจากหลังบ้าน — ปรับรอบรีเฟรช/ความสว่างได้โดยไม่ต้อง flash ใหม่
+  JsonObject dev = doc["device"];
+  if (dev) {
+    uint32_t sec = dev["refreshSeconds"] | 300;
+    kRefreshMs = constrain(sec, 60UL, 3600UL) * 1000UL;
+    JsonObject disp = dev["display"];
+    if (disp) {
+      briDay = constrain((int)(disp["brightnessDay"] | 255), 10, 255);
+      briNight = constrain((int)(disp["brightnessNight"] | 40), 0, 255);
+      const char* ns = disp["nightStart"] | "22:00";
+      const char* ne = disp["nightEnd"] | "06:30";
+      nightStartMin = atoi(ns) * 60 + atoi(ns + 3);
+      nightEndMin = atoi(ne) * 60 + atoi(ne + 3);
+    }
   }
 
   lv_obj_clean(cardList);
@@ -1330,6 +1389,20 @@ static bool fetchAndRender() {
         strncpy(gCal.holidayLbl[k], h["label"] | "", sizeof(gCal.holidayLbl[0]) - 1);
         gCal.holidayN++;
       }
+      for (JsonObject ev : cal["events"].as<JsonArray>()) {
+        if (gCal.evN >= 16) break;
+        uint8_t k = gCal.evN;
+        gCal.evDay[k] = ev["d"] | 0;
+        gCal.evFeed[k] = ev["f"] | 0;
+        strncpy(gCal.evTime[k], ev["time"] | "", sizeof(gCal.evTime[0]) - 1);
+        strncpy(gCal.evLabel[k], ev["label"] | "", sizeof(gCal.evLabel[0]) - 1);
+        gCal.evN++;
+      }
+      int fi = 0;
+      for (JsonObject f : cal["feeds"].as<JsonArray>()) {
+        if (fi >= 4) break;
+        gCal.feedColor[fi++] = strtoul(f["color"] | "4ADE80", nullptr, 16);
+      }
       if (gCal.m) viz.kind = VIZ_CALENDAR;
     } else if (extra["stock"]) {
       JsonObject st = extra["stock"];
@@ -1426,6 +1499,15 @@ void setup() {
   lv_obj_set_style_text_color(headValue, lv_color_hex(C_TEXT), 0);
   lv_label_set_text(headValue, "--:--");
   lv_obj_align(headValue, LV_ALIGN_TOP_LEFT, 20, 8);
+
+  // ตัวบอกว่ากำลังทำงาน — arc หมุนเอง ไม่ใช้ฟอนต์ จึงไม่มีทางกลายเป็นกล่องว่าง
+  busyRing = lv_spinner_create(hero);
+  lv_obj_set_size(busyRing, 26, 26);
+  lv_obj_align(busyRing, LV_ALIGN_TOP_RIGHT, -18, 14);
+  lv_obj_set_style_arc_width(busyRing, 3, LV_PART_MAIN);
+  lv_obj_set_style_arc_width(busyRing, 3, LV_PART_INDICATOR);
+  lv_obj_set_style_arc_color(busyRing, lv_color_hex(C_GRID), LV_PART_MAIN);
+  lv_obj_set_style_arc_color(busyRing, lv_color_hex(C_WARN), LV_PART_INDICATOR);
 
   headDetail = lv_label_create(hero);
   lv_obj_set_style_text_font(headDetail, &thai18, 0);
@@ -1531,7 +1613,7 @@ void setup() {
   // ponytail: ไม่ตั้ง timeout — เป็นจอตั้งโต๊ะ ให้ portal ค้างรอจนกว่าจะตั้งเสร็จ
   wm.setConfigPortalTimeout(0);
   setStatus("รอตั้ง Wi-Fi", 0xFBBF24);
-  setThaiText(headValue, "ตั้ง Wi-Fi");
+  // ponytail: ห้ามยัดไทยลง headValue — ฟอนต์นาฬิกามีแค่ตัวเลขกับโคลอน ที่เหลือออกมาเป็นกล่องว่าง
   setThaiText(headDetail,
               "มือถือ → ต่อ Wi-Fi ชื่อ TanPlanet_Config\n"
               "ถ้าไม่เด้งหน้าตั้งค่า เปิด 192.168.4.1\n"

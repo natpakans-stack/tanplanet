@@ -99,18 +99,55 @@ export function getWeather(loc = HOME) {
 
 // ---------------------------------------------------------------- วันหยุด
 
+// รองรับทั้ง event ทั้งวัน (วันหยุด) และ event มีเวลา UTC (ตารางแข่ง) — แปลงเป็นเวลาไทยให้เลย
 function parseIcs(text) {
+  const unfolded = text.replace(/\r?\n[ \t]/g, "");  // ICS ตัดบรรทัดยาวด้วยการขึ้นบรรทัดใหม่+เว้นวรรค
   const events = [];
-  for (const block of text.split("BEGIN:VEVENT").slice(1)) {
-    const date = block.match(/DTSTART;VALUE=DATE:(\d{4})(\d{2})(\d{2})/);
-    const summary = block.match(/SUMMARY:(.*)/);
-    if (!date || !summary) continue;
-    events.push({
-      iso: `${date[1]}-${date[2]}-${date[3]}`,
-      name: summary[1].trim().replace(/\\,/g, ","),
-    });
+  for (const block of unfolded.split("BEGIN:VEVENT").slice(1)) {
+    const summary = block.match(/^SUMMARY:(.*)$/m);
+    if (!summary) continue;
+    const allDay = block.match(/DTSTART;VALUE=DATE:(\d{4})(\d{2})(\d{2})/);
+    const timed = block.match(/DTSTART[^:\n]*:(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})(Z?)/);
+    let iso, time = null;
+    if (allDay) {
+      iso = `${allDay[1]}-${allDay[2]}-${allDay[3]}`;
+    } else if (timed) {
+      const [, y, mo, d, h, mi, , z] = timed;
+      const at = z === "Z"
+        ? new Date(Date.UTC(+y, +mo - 1, +d, +h, +mi))
+        : new Date(+y, +mo - 1, +d, +h, +mi);
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Bangkok", year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", hour12: false,
+      }).formatToParts(at);
+      const get = (t) => parts.find((x) => x.type === t).value;
+      iso = `${get("year")}-${get("month")}-${get("day")}`;
+      time = `${get("hour")}:${get("minute")}`;
+    } else continue;
+    events.push({ iso, time, name: summary[1].trim().replace(/\\,/g, ",").replace(/\\n/g, " ") });
   }
   return events.sort((a, b) => a.iso.localeCompare(b.iso));
+}
+
+/** ปฏิทิน ICS จากภายนอก เช่น ตารางแข่งสโมสร — cache 6 ชม. */
+export function getIcsCalendar(url) {
+  return cached(`ics:${url}`, 6 * 60 * 60 * 1000, async () => {
+    const https = url.replace(/^webcal:\/\//, "https://");
+    const res = await fetch(https, { signal: AbortSignal.timeout(12000) });
+    if (!res.ok) throw new Error(`ics ${res.status}`);
+    return { events: parseIcs(await res.text()) };
+  });
+}
+
+export async function icsEventsInMonth(url, year, month) {
+  const { events } = await getIcsCalendar(url);
+  const prefix = `${year}-${String(month).padStart(2, "0")}-`;
+  return events.filter((e) => e.iso.startsWith(prefix)).map((e) => ({
+    d: Number(e.iso.slice(8)),
+    time: e.time,
+    // ฟอนต์บนจอมีแค่ ASCII + ไทย — อีโมจิจะกลายเป็นกล่องว่าง ตัดทิ้งตั้งแต่ต้นทาง
+    label: e.name.replace(/[^\u0020-\u007E\u0E00-\u0E7F]/g, "").replace(/\s+/g, " ").trim(),
+  }));
 }
 
 export function getHolidays() {
@@ -131,7 +168,8 @@ export async function holidaysInMonth(year, month) {
   const prefix = `${year}-${String(month).padStart(2, "0")}-`;
   return events.filter((e) => e.iso.startsWith(prefix)).map((e) => ({
     d: Number(e.iso.slice(8)),
-    label: e.name,
+    // ตัดฝั่งนี้เพราะ JS นับเป็นตัวอักษร — ถ้าให้ firmware ตัดด้วย strncpy จะขาดกลางไบต์ UTF-8
+    label: e.name.length > 44 ? `${e.name.slice(0, 43)}…` : e.name,
   }));
 }
 
