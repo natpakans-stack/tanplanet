@@ -10,7 +10,8 @@ import os from "node:os";
 import path from "node:path";
 import readline from "node:readline";
 
-const BANGKOK = { lat: 13.7563, lon: 100.5018 };
+// ย่านตาขาว จ.ตรัง (พิกัดจาก open-meteo geocoding) — ย้ายบ้านเมื่อไหร่แก้บรรทัดนี้บรรทัดเดียว
+const HOME = { lat: 7.38622, lon: 99.66692 };
 const HOLIDAY_ICS =
   "https://calendar.google.com/calendar/ical/th.th%23holiday%40group.v.calendar.google.com/public/basic.ics";
 
@@ -45,7 +46,7 @@ const WMO = {
 export function getWeather() {
   return cached("weather", 15 * 60 * 1000, async () => {
     const url =
-      `https://api.open-meteo.com/v1/forecast?latitude=${BANGKOK.lat}&longitude=${BANGKOK.lon}` +
+      `https://api.open-meteo.com/v1/forecast?latitude=${HOME.lat}&longitude=${HOME.lon}` +
       "&current=temperature_2m,relative_humidity_2m,weather_code,apparent_temperature" +
       "&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code" +
       "&timezone=Asia%2FBangkok&forecast_days=4";

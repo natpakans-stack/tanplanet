@@ -130,7 +130,7 @@ async function buildWeatherCard() {
       ...card(
         "weather_now", "weather", "Weather",
         `${w.temp}° ${w.condition}`,
-        `กรุงเทพฯ · รู้สึก ${w.feels}° · สูงสุด ${w.hi}° ต่ำสุด ${w.lo}° · โอกาสฝน ${w.rain}%`,
+        `ย่านตาขาว · รู้สึก ${w.feels}° · สูงสุด ${w.hi}° ต่ำสุด ${w.lo}° · โอกาสฝน ${w.rain}%`,
         w.rain >= 60 ? "caution" : "ok", 40,
       ),
       extra: { hourly: w.hourly, forecast: w.forecast, humidity: w.humidity, nowHour: w.nowHour },
