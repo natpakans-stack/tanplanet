@@ -16,6 +16,9 @@
 #include <algorithm>
 #include <esp_task_wdt.h>
 
+#include "icons/weather_icons.h"
+
+LV_FONT_DECLARE(thai14);
 LV_FONT_DECLARE(thai18);
 LV_FONT_DECLARE(thai22);
 LV_FONT_DECLARE(thai36);
@@ -48,6 +51,7 @@ static lv_obj_t* heroWeather;
 static lv_obj_t* heroLunar;
 static lv_obj_t* cardList;
 static lv_obj_t* detailView;
+static lv_obj_t* detailBody;
 static lv_obj_t* detailTitle;
 static lv_obj_t* detailValue;
 static lv_obj_t* detailText;
@@ -84,6 +88,21 @@ struct CardViz {
   char gaugeUnit[12] = {0};
   uint32_t accent = 0x8492BC;
 };
+
+// อากาศมีการ์ดเดียวเสมอ — เก็บก้อนเดียวแยกไว้ ดีกว่าบวม cardViz[] ทั้ง 14 ช่อง
+struct WeatherViz {
+  char hourLbl[8][8] = {{0}};
+  uint8_t hourRain[8] = {0};
+  uint8_t hourN = 0;
+  int nowTemp = 0, nowRain = 0, nowHum = 0, nowWind = 0;
+  uint16_t nowCode = 0;
+  char nowCond[40] = {0};
+  char fcDay[8][10] = {{0}};
+  int8_t fcHi[8] = {0}, fcLo[8] = {0};
+  uint16_t fcCode[8] = {0};
+  uint8_t fcN = 0;
+};
+static WeatherViz gWeather;
 
 // โลโก้หุ้นมาเป็น RGB565 ดิบ 28x28 จาก backend (ESP32 decode PNG เองไม่ไหว)
 static const int kLogoPx = 28;
@@ -478,21 +497,175 @@ static lv_obj_t* makeChart(lv_obj_t* parent, int h) {
   return chart;
 }
 
-// กราฟอุณหภูมิ 24 ชม. (ทุก 3 ชม.)
-static void drawHourly(lv_obj_t* parent, const CardViz& viz) {
-  float lo = viz.v[0], hi = viz.v[0];
-  for (int i = 0; i < viz.n; i++) { lo = min(lo, viz.v[i]); hi = max(hi, viz.v[i]); }
+// กล่องโปร่งไม่มีขอบ ไม่เลื่อน — ใช้เป็นโครงวางของอย่างเดียว
+static lv_obj_t* plainBox(lv_obj_t* parent, int w, int h) {
+  lv_obj_t* box = lv_obj_create(parent);
+  lv_obj_set_size(box, w, h);
+  lv_obj_set_style_bg_opa(box, LV_OPA_TRANSP, 0);
+  lv_obj_set_style_border_width(box, 0, 0);
+  lv_obj_set_style_pad_all(box, 0, 0);
+  lv_obj_remove_flag(box, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_add_flag(box, LV_OBJ_FLAG_EVENT_BUBBLE);  // แตะตรงไหนก็ปิดหน้าได้เหมือนเดิม
+  return box;
+}
 
-  lv_obj_t* chart = makeChart(parent, 112);
-  lv_chart_set_point_count(chart, viz.n);
-  lv_chart_set_range(chart, LV_CHART_AXIS_PRIMARY_Y, (int32_t)lo - 1, (int32_t)hi + 1);
-  lv_chart_series_t* ser = lv_chart_add_series(chart, lv_color_hex(C_WARN), LV_CHART_AXIS_PRIMARY_Y);
-  for (int i = 0; i < viz.n; i++) lv_chart_set_next_value(chart, ser, (int32_t)viz.v[i]);
+static const int kNavW = 64, kBodyW = 480 - kNavW;
+static const int kGraphW = kBodyW - 32, kGraphH = 72, kGraphTop = 20;
 
-  lv_obj_t* range = lv_label_create(parent);
-  lv_obj_set_style_text_font(range, &thai18, 0);
-  lv_obj_set_style_text_color(range, lv_color_hex(C_MUTED), 0);
-  lv_label_set_text_fmt(range, "24 ชม. · ต่ำสุด %d°  ·  สูงสุด %d°", (int)lo, (int)hi);
+// WMO code → ไอคอน Google (ชุด dark เพราะ UI พื้นเข้ม) — ตารางย่อเท่าที่ไทยเจอจริง
+static const lv_image_dsc_t* weatherIcon(uint16_t code) {
+  switch (code) {
+    case 0:  case 1:  return &wi_sunny;
+    case 2:            return &wi_partly_cloudy;
+    case 3:            return &wi_mostly_cloudy;
+    case 45: case 48:  return &wi_mist;
+    case 51: case 53:  return &wi_drizzle;
+    case 55: case 61:  return &wi_showers;
+    case 63:           return &wi_showers;
+    case 65: case 82:  return &wi_heavy;
+    case 80: case 81:  return &wi_scattered_showers;
+    case 95: case 96:  return &wi_isolated_tstorms;
+    case 99:           return &wi_strong_tstorms;
+    default:           return &wi_cloudy;
+  }
+}
+
+static void drawWeatherIcon(lv_obj_t* parent, uint16_t code) {
+  lv_obj_t* img = lv_image_create(parent);
+  lv_image_set_src(img, weatherIcon(code));
+  lv_obj_add_flag(img, LV_OBJ_FLAG_EVENT_BUBBLE);
+}
+
+// header อากาศ: ไอคอน + อุณหภูมิใหญ่ + ตัวเลขย่อยซ้าย / วัน-เวลา-สภาพอากาศชิดขวา
+static void drawWeatherHeader(lv_obj_t* parent) {
+  lv_obj_t* head = plainBox(parent, kGraphW, 60);
+
+  lv_obj_t* icon = lv_image_create(head);
+  lv_image_set_src(icon, weatherIcon(gWeather.nowCode));
+  lv_image_set_scale(icon, 366);  // 256 = ขนาดจริง 28px → 366 ได้ ~40px
+  lv_obj_add_flag(icon, LV_OBJ_FLAG_EVENT_BUBBLE);
+  lv_obj_align(icon, LV_ALIGN_LEFT_MID, 6, 0);
+
+  lv_obj_t* temp = lv_label_create(head);
+  lv_obj_set_style_text_font(temp, &thai36, 0);
+  lv_obj_set_style_text_color(temp, lv_color_hex(C_TEXT), 0);
+  lv_label_set_text_fmt(temp, "%d°", gWeather.nowTemp);
+  lv_obj_align(temp, LV_ALIGN_LEFT_MID, 48, 0);
+
+  lv_obj_t* stats = lv_label_create(head);
+  lv_obj_set_style_text_font(stats, &thai14, 0);
+  lv_obj_set_style_text_color(stats, lv_color_hex(C_MUTED), 0);
+  lv_obj_set_style_text_line_space(stats, 2, 0);
+  char buf[96];
+  snprintf(buf, sizeof(buf), "โอกาสฝนตก: %d%%\nความชื้น: %d%%\nลม: %d กม./ชม.",
+           gWeather.nowRain, gWeather.nowHum, gWeather.nowWind);
+  setThaiText(stats, buf);
+  lv_obj_align(stats, LV_ALIGN_LEFT_MID, 120, 0);
+
+  // ขวา: ชื่อหัวข้อ + วันเวลาเครื่อง (NTP) + คำบรรยายสภาพอากาศ
+  lv_obj_t* right = lv_label_create(head);
+  lv_obj_set_style_text_font(right, &thai14, 0);
+  lv_obj_set_style_text_color(right, lv_color_hex(C_MUTED), 0);
+  lv_obj_set_style_text_align(right, LV_TEXT_ALIGN_RIGHT, 0);
+  lv_obj_set_style_text_line_space(right, 2, 0);
+  time_t nowSec = time(nullptr);
+  struct tm tmNow;
+  localtime_r(&nowSec, &tmNow);
+  snprintf(buf, sizeof(buf), "สภาพอากาศ\nวัน%s %02d:%02d\n%s",
+           kThaiDays[tmNow.tm_wday], tmNow.tm_hour, tmNow.tm_min, gWeather.nowCond);
+  setThaiText(right, buf);
+  lv_obj_align(right, LV_ALIGN_RIGHT_MID, -2, 0);
+}
+
+// กราฟโอกาสฝน 24 ชม.ข้างหน้า (ทุก 3 ชม.) — แท่งขั้นบันไดสเกลตายตัว 0-100%
+// สเกลตายตัวเพราะ % ต้องเทียบกันได้ข้ามวัน ถ้า auto-scale วันฝน 5% จะดูสูงเท่าวันฝน 90%
+static void drawRainHours(lv_obj_t* parent) {
+  int n = gWeather.hourN;
+  if (n < 2) return;
+
+  lv_obj_t* wrap = plainBox(parent, kGraphW, kGraphTop + kGraphH + 20);
+  const int slot = kGraphW / n;
+  for (int i = 0; i < n; i++) {
+    bool nowSlot = (i == 0);  // backend ไล่จากชั่วโมงปัจจุบัน แท่งแรกจึงคือช่วงที่ยืนอยู่
+    int x = i * slot;
+    int h = kGraphH * gWeather.hourRain[i] / 100;
+    if (h < 3) h = 3;  // 0% ก็ยังต้องเห็นเส้นฐาน ไม่งั้นดูเหมือนข้อมูลหาย
+
+    // ช่วงปัจจุบันมีแถบพื้นเต็มความสูง — ระบุตำแหน่งได้แม้ฝน 0% แท่งเตี้ยติดพื้น
+    if (nowSlot) {
+      lv_obj_t* band = plainBox(wrap, slot, kGraphH + 20);
+      lv_obj_set_style_bg_opa(band, LV_OPA_COVER, 0);
+      lv_obj_set_style_bg_color(band, lv_color_hex(C_GRID), 0);
+      lv_obj_set_style_radius(band, 8, 0);
+      lv_obj_set_pos(band, x, kGraphTop);
+    }
+
+    lv_obj_t* bar = plainBox(wrap, slot - 4, h);
+    lv_obj_set_style_bg_opa(bar, LV_OPA_COVER, 0);
+    lv_obj_set_style_bg_color(bar, lv_color_hex(nowSlot ? 0x2F4372 : 0x1C2949), 0);
+    lv_obj_set_pos(bar, x + 2, kGraphTop + kGraphH - h);
+
+    lv_obj_t* cap = plainBox(wrap, slot - 4, 3);  // ขอบบนสีน้ำ = เส้นข้อมูลจริง
+    lv_obj_set_style_bg_opa(cap, LV_OPA_COVER, 0);
+    lv_obj_set_style_bg_color(cap, lv_color_hex(nowSlot ? C_WARN : 0x60A5FA), 0);
+    lv_obj_set_pos(cap, x + 2, kGraphTop + kGraphH - h);
+
+    lv_obj_t* pct = lv_label_create(wrap);
+    lv_obj_set_style_text_font(pct, &thai14, 0);
+    lv_obj_set_style_text_color(pct, lv_color_hex(nowSlot ? C_WARN : 0x60A5FA), 0);
+    lv_obj_set_style_text_align(pct, LV_TEXT_ALIGN_CENTER, 0);
+    lv_obj_set_width(pct, slot);
+    lv_label_set_text_fmt(pct, "%d%%", gWeather.hourRain[i]);
+    lv_obj_set_pos(pct, x, 0);
+
+    lv_obj_t* hr = lv_label_create(wrap);
+    lv_obj_set_style_text_font(hr, &thai14, 0);
+    lv_obj_set_style_text_color(hr, lv_color_hex(nowSlot ? C_WARN : C_MUTED), 0);
+    lv_obj_set_style_text_align(hr, LV_TEXT_ALIGN_CENTER, 0);
+    lv_obj_set_width(hr, slot);
+    if (nowSlot) setThaiText(hr, "ตอนนี้");
+    else lv_label_set_text(hr, gWeather.hourLbl[i]);
+    lv_obj_set_pos(hr, x, kGraphTop + kGraphH + 2);
+  }
+}
+
+// แถวพยากรณ์รายวัน — วันนี้ไฮไลต์ไว้เป็นจุดอ้างอิงสายตา
+static void drawForecast(lv_obj_t* parent) {
+  int n = min((int)gWeather.fcN, 8);
+  if (!n) return;
+
+  lv_obj_t* row = plainBox(parent, kGraphW, 80);
+  lv_obj_set_flex_flow(row, LV_FLEX_FLOW_ROW);
+  lv_obj_set_flex_align(row, LV_FLEX_ALIGN_SPACE_BETWEEN, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+
+  for (int i = 0; i < n; i++) {
+    lv_obj_t* tile = plainBox(row, kGraphW / 8, 78);
+    lv_obj_set_style_radius(tile, 10, 0);
+    if (i == 0) {
+      lv_obj_set_style_bg_opa(tile, LV_OPA_COVER, 0);
+      lv_obj_set_style_bg_color(tile, lv_color_hex(C_GRID), 0);
+    }
+    lv_obj_set_flex_flow(tile, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(tile, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_set_style_pad_row(tile, 0, 0);
+
+    lv_obj_t* day = lv_label_create(tile);
+    lv_obj_set_style_text_font(day, &thai14, 0);
+    lv_obj_set_style_text_color(day, lv_color_hex(C_TEXT), 0);
+    setThaiText(day, gWeather.fcDay[i]);
+
+    drawWeatherIcon(tile, gWeather.fcCode[i]);
+
+    lv_obj_t* hi = lv_label_create(tile);
+    lv_obj_set_style_text_font(hi, &thai14, 0);
+    lv_obj_set_style_text_color(hi, lv_color_hex(C_TEXT), 0);
+    lv_label_set_text_fmt(hi, "%d°", gWeather.fcHi[i]);
+
+    lv_obj_t* lo = lv_label_create(tile);
+    lv_obj_set_style_text_font(lo, &thai14, 0);
+    lv_obj_set_style_text_color(lo, lv_color_hex(C_MUTED), 0);
+    lv_label_set_text_fmt(lo, "%d°", gWeather.fcLo[i]);
+  }
 }
 
 // เกจครึ่งวงกลมสำหรับคะแนน 0-100
@@ -581,8 +754,8 @@ static void cardClicked(lv_event_t* e) {
   if (vizBox) { lv_obj_delete(vizBox); vizBox = nullptr; }
   int idx = (int)(intptr_t)lv_obj_get_user_data(card);
   if (idx >= 0 && idx < cardCount && cardViz[idx].kind != VIZ_NONE) {
-    vizBox = lv_obj_create(detailView);
-    lv_obj_set_size(vizBox, 386, LV_SIZE_CONTENT);
+    vizBox = lv_obj_create(detailBody);
+    lv_obj_set_size(vizBox, kGraphW, LV_SIZE_CONTENT);
     lv_obj_set_style_bg_opa(vizBox, LV_OPA_TRANSP, 0);
     lv_obj_set_style_border_width(vizBox, 0, 0);
     lv_obj_set_style_pad_all(vizBox, 0, 0);
@@ -594,15 +767,24 @@ static void cardClicked(lv_event_t* e) {
         if (cardViz[idx].quotaPct >= 0) drawQuota(vizBox, cardViz[idx]);
         drawBars(vizBox, cardViz[idx]);
         break;
-      case VIZ_HOURLY: drawHourly(vizBox, cardViz[idx]); break;
+      case VIZ_HOURLY: drawWeatherHeader(vizBox); drawRainHours(vizBox); drawForecast(vizBox); break;
       case VIZ_SCORE:  drawScore(vizBox, cardViz[idx]); break;
       case VIZ_PRICE:  drawPrice(vizBox, cardViz[idx]); break;
       default: break;
     }
     lv_obj_move_to_index(detailText, -1);  // vizBox สร้างทีหลัง ต้องดันคำอธิบายลงท้ายเสมอ
   }
-  lv_obj_scroll_to_y(detailView, 0, LV_ANIM_OFF);  // เปิดการ์ดใหม่ต้องเริ่มอ่านจากบน
+  // อากาศเนื้อหาแน่น — ตัดหัวข้อทิ้งแล้วย่อบรรทัดค่าลง ให้จบในจอเดียวไม่ต้องเลื่อน
+  bool weather = idx >= 0 && idx < cardCount && cardViz[idx].kind == VIZ_HOURLY;
+  // อากาศมี header ของตัวเองใน vizBox — หัวมาตรฐาน 3 บรรทัดซ้ำซ้อน ซ่อนทิ้ง
+  for (lv_obj_t* o : {detailTitle, detailValue, detailText}) {
+    if (weather) lv_obj_add_flag(o, LV_OBJ_FLAG_HIDDEN);
+    else lv_obj_remove_flag(o, LV_OBJ_FLAG_HIDDEN);
+  }
+
+  lv_obj_scroll_to_y(detailBody, 0, LV_ANIM_OFF);  // เปิดการ์ดใหม่ต้องเริ่มอ่านจากบน
   lv_obj_remove_flag(detailView, LV_OBJ_FLAG_HIDDEN);
+
 }
 
 static const int kCardW = 198;
@@ -800,9 +982,30 @@ static bool fetchAndRender() {
       viz.n = 4;
       viz.kind = VIZ_TOKENS;
     } else if (!strcmp(type, "weather") && extra["hourly"]) {
+      gWeather = WeatherViz{};
       for (JsonObject h : extra["hourly"].as<JsonArray>()) {
-        if (viz.n >= 24) break;
-        viz.v[viz.n++] = h["v"] | 0.0f;
+        if (viz.n >= 8) break;
+        viz.v[viz.n] = h["v"] | 0.0f;
+        gWeather.hourRain[viz.n] = h["p"] | 0;
+        strncpy(gWeather.hourLbl[viz.n], h["t"] | "", sizeof(gWeather.hourLbl[0]) - 1);
+        viz.n++;
+      }
+      gWeather.hourN = viz.n;
+      JsonObject nw = extra["now"];
+      gWeather.nowTemp = nw["temp"] | 0;
+      gWeather.nowRain = nw["rain"] | 0;
+      gWeather.nowHum = nw["humidity"] | 0;
+      gWeather.nowWind = nw["wind"] | 0;
+      gWeather.nowCode = nw["code"] | 0;
+      strncpy(gWeather.nowCond, nw["condition"] | "", sizeof(gWeather.nowCond) - 1);
+      for (JsonObject f : extra["forecast"].as<JsonArray>()) {
+        if (gWeather.fcN >= 8) break;
+        uint8_t k = gWeather.fcN;
+        strncpy(gWeather.fcDay[k], f["d"] | "", sizeof(gWeather.fcDay[0]) - 1);
+        gWeather.fcHi[k] = f["hi"] | 0;
+        gWeather.fcLo[k] = f["lo"] | 0;
+        gWeather.fcCode[k] = f["code"] | 0;
+        gWeather.fcN++;
       }
       if (viz.n) viz.kind = VIZ_HOURLY;
     } else if (extra["stock"]) {
@@ -974,70 +1177,95 @@ void setup() {
     lv_obj_center(icon);
   }
 
-  // detail view: ซ้อนเต็มจอ ซ่อนไว้ก่อน แตะที่ไหนก็ปิด
+  // detail view: ซ้อนเต็มจอ — แบ่ง 2 คอลัมน์ เนื้อหาเลื่อนได้ / แถบปุ่มขวาอยู่กับที่
+  // ponytail: แยก container แทนปุ่มลอย เพราะปุ่มลอยทับเนื้อหาที่กว้างเต็มจอ
   detailView = lv_obj_create(scr);
   lv_obj_set_size(detailView, 480, 320);
   lv_obj_center(detailView);
   lv_obj_set_style_bg_color(detailView, lv_color_hex(C_CARD), 0);
   lv_obj_set_style_border_width(detailView, 0, 0);
   lv_obj_set_style_radius(detailView, 0, 0);
-  lv_obj_set_style_pad_all(detailView, 16, 0);
-  lv_obj_set_style_pad_row(detailView, 10, 0);
+  lv_obj_set_style_pad_all(detailView, 0, 0);
+  lv_obj_set_style_pad_column(detailView, 0, 0);
   lv_obj_add_flag(detailView, LV_OBJ_FLAG_HIDDEN);
   lv_obj_add_flag(detailView, LV_OBJ_FLAG_CLICKABLE);
-  lv_obj_set_flex_flow(detailView, LV_FLEX_FLOW_COLUMN);
-  lv_obj_set_scrollbar_mode(detailView, LV_SCROLLBAR_MODE_OFF);
-  lv_obj_add_event_cb(detailView, [](lv_event_t* e) {
-    lv_obj_add_flag((lv_obj_t*)lv_event_get_target(e), LV_OBJ_FLAG_HIDDEN);
+  lv_obj_set_flex_flow(detailView, LV_FLEX_FLOW_ROW);
+  lv_obj_remove_flag(detailView, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_add_event_cb(detailView, [](lv_event_t*) {
+    lv_obj_add_flag(detailView, LV_OBJ_FLAG_HIDDEN);
   }, LV_EVENT_CLICKED, nullptr);
 
+  detailBody = lv_obj_create(detailView);
+  lv_obj_set_size(detailBody, kBodyW, 320);
+  lv_obj_set_style_bg_opa(detailBody, LV_OPA_TRANSP, 0);
+  lv_obj_set_style_border_width(detailBody, 0, 0);
+  lv_obj_set_style_pad_all(detailBody, 16, 0);
+  lv_obj_set_style_pad_row(detailBody, 10, 0);
+  lv_obj_set_flex_flow(detailBody, LV_FLEX_FLOW_COLUMN);
+  lv_obj_set_scrollbar_mode(detailBody, LV_SCROLLBAR_MODE_OFF);
+  lv_obj_add_flag(detailBody, LV_OBJ_FLAG_EVENT_BUBBLE);  // แตะเนื้อหาก็ปิดหน้าได้
+
   // ส่วนหัวติดบนเสมอ — เดิม value ใหญ่ดันหัวข้อจนล้นออกนอกจอ
-  detailTitle = lv_label_create(detailView);
+  detailTitle = lv_label_create(detailBody);
   lv_obj_set_style_text_font(detailTitle, &thai18, 0);
   lv_obj_set_style_text_color(detailTitle, lv_color_hex(C_MUTED), 0);
 
-  detailValue = lv_label_create(detailView);
+  detailValue = lv_label_create(detailBody);
   lv_obj_set_style_text_font(detailValue, &thai36, 0);
   lv_obj_set_style_text_color(detailValue, lv_color_hex(C_TEXT), 0);
-  lv_obj_set_width(detailValue, 386);
+  lv_obj_set_width(detailValue, kGraphW);
   lv_label_set_long_mode(detailValue, LV_LABEL_LONG_WRAP);
 
-  detailText = lv_label_create(detailView);
+  detailText = lv_label_create(detailBody);
   lv_obj_set_style_text_font(detailText, &thai18, 0);
   lv_obj_set_style_text_color(detailText, lv_color_hex(0xB9C4E6), 0);
-  lv_obj_set_width(detailText, 386);
+  lv_obj_set_width(detailText, kGraphW);
   lv_label_set_long_mode(detailText, LV_LABEL_LONG_WRAP);  // ยาวแค่ไหนก็เลื่อนอ่านได้
 
-  lv_obj_t* closeBtn = lv_button_create(detailView);
-  lv_obj_set_size(closeBtn, 44, 44);
+  // แถบปุ่มขวา: ปิด / เลื่อนขึ้น / เลื่อนลง — มีทุกหน้า เนื้อหาไม่มีทางทับ
+  lv_obj_t* nav = lv_obj_create(detailView);
+  lv_obj_set_size(nav, kNavW, 320);
+  lv_obj_set_style_bg_color(nav, lv_color_hex(C_HERO), 0);
+  lv_obj_set_style_border_width(nav, 0, 0);
+  lv_obj_set_style_radius(nav, 0, 0);
+  lv_obj_set_style_pad_all(nav, 8, 0);
+  lv_obj_set_style_pad_row(nav, 10, 0);
+  lv_obj_set_flex_flow(nav, LV_FLEX_FLOW_COLUMN);
+  lv_obj_set_flex_align(nav, LV_FLEX_ALIGN_SPACE_EVENLY, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+  lv_obj_remove_flag(nav, LV_OBJ_FLAG_SCROLLABLE);
+
   // ทัชแบบต้านทาน: ตอนปล่อยนิ้วพิกัดกระโดด ถ้าหลุดนอกปุ่ม LVGL ไม่นับเป็น CLICKED
-  // ขยายพื้นที่รับสัมผัสออกไปอีก 14px รอบด้าน แล้วยิงตั้งแต่กดลง ไม่รอปล่อย
-  lv_obj_set_ext_click_area(closeBtn, 14);
-  lv_obj_add_flag(closeBtn, LV_OBJ_FLAG_FLOATING);  // ลอยอยู่กับที่ ไม่เลื่อนตามเนื้อหา
-  lv_obj_align(closeBtn, LV_ALIGN_TOP_RIGHT, 8, -8);
+  // จึงยิงตั้งแต่กดลง ไม่รอปล่อย และขยายพื้นที่รับสัมผัสเผื่อไว้
+  lv_obj_t* closeBtn = lv_button_create(nav);
+  lv_obj_set_size(closeBtn, 44, 44);
+  lv_obj_set_ext_click_area(closeBtn, 8);
   lv_obj_set_style_bg_color(closeBtn, lv_color_hex(0x2A3556), 0);
-  lv_obj_set_style_radius(closeBtn, 19, 0);
+  lv_obj_set_style_radius(closeBtn, 22, 0);
   lv_obj_add_event_cb(closeBtn, [](lv_event_t*) {
     lv_obj_add_flag(detailView, LV_OBJ_FLAG_HIDDEN);
   }, LV_EVENT_PRESSED, nullptr);
 
-  // หน้าไหนเลื่อนได้ต้องมีลูกศร — ลากนิ้วบนทัชแบบต้านทานไม่ลื่นพอจะพึ่งอย่างเดียว
-  const struct { const char* icon; int dy; int y; } detailBtns[] = {
-    {LV_SYMBOL_UP, -90, 8},
-    {LV_SYMBOL_DOWN, 90, 74},
+  lv_obj_t* closeLbl = lv_label_create(closeBtn);
+  lv_obj_set_style_text_font(closeLbl, &thai22, 0);
+  lv_obj_set_style_text_color(closeLbl, lv_color_hex(C_TEXT), 0);
+  lv_label_set_text(closeLbl, "X");
+  lv_obj_center(closeLbl);
+
+  // ลากนิ้วบนทัชแบบต้านทานไม่ลื่นพอจะพึ่งอย่างเดียว — ต้องมีลูกศรเสมอ
+  const struct { const char* icon; int dy; } detailBtns[] = {
+    {LV_SYMBOL_UP, -90},
+    {LV_SYMBOL_DOWN, 90},
   };
   for (const auto& b : detailBtns) {
-    lv_obj_t* sb = lv_button_create(detailView);
-    lv_obj_set_size(sb, 40, 60);
-    lv_obj_add_flag(sb, LV_OBJ_FLAG_FLOATING);
-    lv_obj_align(sb, LV_ALIGN_RIGHT_MID, 8, b.y);
+    lv_obj_t* sb = lv_button_create(nav);
+    lv_obj_set_size(sb, 44, 74);
     lv_obj_set_style_bg_color(sb, lv_color_hex(0x2A3556), 0);
     lv_obj_set_style_radius(sb, 10, 0);
     lv_obj_set_ext_click_area(sb, 8);
     lv_obj_set_user_data(sb, (void*)(intptr_t)b.dy);
     lv_obj_add_event_cb(sb, [](lv_event_t* e) {
       int dy = (int)(intptr_t)lv_obj_get_user_data((lv_obj_t*)lv_event_get_current_target(e));
-      lv_obj_scroll_by(detailView, 0, -dy, LV_ANIM_ON);
+      lv_obj_scroll_by(detailBody, 0, -dy, LV_ANIM_ON);
     }, LV_EVENT_PRESSED, nullptr);
 
     lv_obj_t* icon = lv_label_create(sb);
@@ -1045,12 +1273,6 @@ void setup() {
     lv_obj_set_style_text_color(icon, lv_color_hex(0xB9C4E6), 0);
     lv_obj_center(icon);
   }
-
-  lv_obj_t* closeLbl = lv_label_create(closeBtn);
-  lv_obj_set_style_text_font(closeLbl, &thai22, 0);
-  lv_obj_set_style_text_color(closeLbl, lv_color_hex(C_TEXT), 0);
-  lv_label_set_text(closeLbl, "X");
-  lv_obj_center(closeLbl);
 
   lv_timer_create(updateClock, 1000, nullptr);
   esp_task_wdt_init(20, true);  // loop ค้างเกิน 20 วิ = รีบูตเอง ดีกว่าค้างถาวร
@@ -1100,7 +1322,10 @@ void loop() {
                   (unsigned)heap_caps_get_largest_free_block(MALLOC_CAP_8BIT));
   }
 
-  if (millis() - lastFetch > kRefreshMs) {
+  // ponytail: เปิดหน้า detail ค้างอยู่ = พักการรีเฟรช เพราะ fetchAndRender ลบกล่องกราฟทิ้ง
+  // (กราฟผูกกับ cardViz[] ที่ถูกสร้างใหม่ทั้งชุด) — ปิดหน้าเมื่อไหร่ค่อยดึงรอบที่ค้างไว้ทันที
+  bool detailOpen = !lv_obj_has_flag(detailView, LV_OBJ_FLAG_HIDDEN);
+  if (!detailOpen && millis() - lastFetch > kRefreshMs) {
     lastFetch = fetchAndRender() ? millis() : millis() - kRefreshMs + kRetryMs;
   }
 }

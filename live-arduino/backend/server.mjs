@@ -130,10 +130,15 @@ async function buildWeatherCard() {
       ...card(
         "weather_now", "weather", "Weather",
         `${w.temp}° ${w.condition}`,
-        `ย่านตาขาว · รู้สึก ${w.feels}° · สูงสุด ${w.hi}° ต่ำสุด ${w.lo}° · โอกาสฝน ${w.rain}%`,
+        // สั้นพอให้จอ 480px จบในบรรทัดเดียว — ขึ้นบรรทัดสองแล้วแถวพยากรณ์จะโดนดันตกจอ
+        `ย่านตาขาว · รู้สึก ${w.feels}° · ชื้น ${w.humidity}% · ลม ${w.wind} · ฝน ${w.rain}%`,
         w.rain >= 60 ? "caution" : "ok", 40,
       ),
-      extra: { hourly: w.hourly, forecast: w.forecast, humidity: w.humidity, nowHour: w.nowHour },
+      extra: {
+        hourly: w.hourly, forecast: w.forecast, humidity: w.humidity, wind: w.wind, nowHour: w.nowHour,
+        // แยกฟิลด์ให้จอประกอบ header เอง — ส่งเป็นประโยคเดียวแล้วจอจัดเลย์เอาต์ไม่ได้
+        now: { temp: w.temp, code: w.code, condition: w.condition, rain: w.rain, humidity: w.humidity, wind: w.wind },
+      },
     };
   } catch (error) {
     return card("weather_now", "weather", "Weather", "ไม่มีข้อมูล", `Open-Meteo error: ${error.message}`, "caution", 40);

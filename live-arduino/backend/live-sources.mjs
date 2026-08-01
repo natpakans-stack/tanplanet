@@ -47,22 +47,32 @@ export function getWeather() {
   return cached("weather", 15 * 60 * 1000, async () => {
     const url =
       `https://api.open-meteo.com/v1/forecast?latitude=${HOME.lat}&longitude=${HOME.lon}` +
-      "&current=temperature_2m,relative_humidity_2m,weather_code,apparent_temperature" +
-      "&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code" +
-      "&timezone=Asia%2FBangkok&forecast_days=4";
+      "&current=temperature_2m,relative_humidity_2m,weather_code,apparent_temperature,wind_speed_10m" +
+      "&hourly=temperature_2m,precipitation_probability&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code" +
+      "&timezone=Asia%2FBangkok&forecast_days=8";
     const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
     if (!res.ok) throw new Error(`open-meteo ${res.status}`);
     const d = await res.json();
 
-    const nowHour = new Date().getHours();
+    // กราฟ = 24 ชม.ข้างหน้าจากตอนนี้ ทุก 3 ชม. — เดิมยิงจาก 00:00 ของวันนี้ ทำให้ครึ่งกราฟเป็นอดีต
+    const now = new Date();
+    const nowHour = now.getHours();
+    // -1 เพื่อถอยมาที่ชั่วโมงปัจจุบัน ไม่ใช่ชั่วโมงถัดไป — แท่งแรกบนกราฟจะได้แปลว่า "ตอนนี้"
+    const start = Math.max(0, d.hourly.time.findIndex((t) => new Date(t) > now) - 1);
     const hourly = [];
-    for (let h = 0; h < 24; h += 3) {
-      hourly.push({ t: String(h).padStart(2, "0"), v: Math.round(d.hourly.temperature_2m[h]) });
+    for (let k = 0; k < 24 && start + k < d.hourly.time.length; k += 3) {
+      const i = start + k;
+      hourly.push({
+        t: d.hourly.time[i].slice(11, 16),
+        v: Math.round(d.hourly.temperature_2m[i]),   // กราฟย่อบนการ์ด = เส้นอุณหภูมิ
+        p: d.hourly.precipitation_probability[i] ?? 0,  // กราฟหน้า detail = โอกาสฝน
+      });
     }
 
     const days = ["อา.", "จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส."];
     const forecast = d.daily.time.map((iso, i) => ({
       d: days[new Date(iso).getDay()],
+      code: d.daily.weather_code[i],
       label: WMO[d.daily.weather_code[i]] ?? "-",
       hi: Math.round(d.daily.temperature_2m_max[i]),
       lo: Math.round(d.daily.temperature_2m_min[i]),
@@ -73,6 +83,8 @@ export function getWeather() {
       temp: Math.round(d.current.temperature_2m),
       feels: Math.round(d.current.apparent_temperature),
       humidity: d.current.relative_humidity_2m,
+      wind: Math.round(d.current.wind_speed_10m),
+      code: d.current.weather_code,
       condition: WMO[d.current.weather_code] ?? "-",
       hi: forecast[0].hi,
       lo: forecast[0].lo,
