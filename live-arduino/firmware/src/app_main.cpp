@@ -76,9 +76,10 @@ struct CardViz {
   uint8_t n = 0;
   char ticker[8] = {0};
   float changePct = 0;
-  int8_t logoIdx = -1;
+  int8_t logoIdx = -1;  // -2 = ใช้ stockLogoDsc (ตัวที่ดึงมาตอนกดเลื่อน)
 
   // กราฟย่อบนหน้าการ์ด — spark = เส้นแนวโน้ม, gauge = สัดส่วนเทียบเพดาน
+  bool isMarket = false;  // การ์ด Market Focus เท่านั้นที่มีรายชื่อให้เลื่อน
   bool isGauge = false;
   float spark[24] = {0};
   uint8_t sparkN = 0;
@@ -112,6 +113,18 @@ struct SajuViz {
   uint8_t n = 0;
 };
 static SajuViz gSaju;
+
+// รายชื่อหุ้นใน Market Focus ไว้กด ◀ ▶ เลื่อนดูในหน้า detail
+// โลโก้ของตัวที่ดึงมาทีหลังใช้บัฟเฟอร์แยก ไม่ไปแย่งช่องกับโลโก้ของการ์ดบนหน้าแรก
+struct MarketViz {
+  char tickers[6][8] = {{0}};
+  uint8_t n = 0, cur = 0;
+};
+static MarketViz gMarket;
+static CardViz gStockCur;
+static bool gStockPaging = false;
+static uint8_t stockLogoBuf[28 * 28 * 2];
+static lv_image_dsc_t stockLogoDsc;
 
 // ปฏิทินเดือนปัจจุบัน — backend ส่งวันพระ/วันหยุดมาครบทั้งเดือนอยู่แล้ว
 struct CalMonth {
@@ -828,9 +841,9 @@ static void drawPrice(lv_obj_t* parent, const CardViz& viz) {
   lv_obj_clear_flag(head, LV_OBJ_FLAG_SCROLLABLE);
 
   int textX = 0;
-  if (viz.logoIdx >= 0) {
+  if (viz.logoIdx >= -2 && viz.logoIdx != -1) {
     lv_obj_t* img = lv_image_create(head);
-    lv_image_set_src(img, &logoDsc[viz.logoIdx]);
+    lv_image_set_src(img, viz.logoIdx == -2 ? &stockLogoDsc : &logoDsc[viz.logoIdx]);
     lv_obj_align(img, LV_ALIGN_LEFT_MID, 0, 0);
     textX = kLogoPx + 10;
   }
@@ -1046,6 +1059,65 @@ static void monthStep(void* arg) {
   if (fetchMonth(y, m)) openMonthView();
 }
 
+// ดึงกราฟหุ้นตัวอื่นตอนกดเลื่อน — device-summary ส่งกราฟมาแค่ตัวที่โชว์บนการ์ด
+static bool fetchStock(const char* ticker) {
+  if (WiFi.status() != WL_CONNECTED) return false;
+  String url = DEVICE_SUMMARY_URL;
+  url.replace("/api/device-summary", "/api/stock");
+  url += "?ticker=" + String(ticker);
+
+  HTTPClient http;
+  http.setTimeout(8000);
+  http.begin(url);
+  if (http.GET() != HTTP_CODE_OK) { http.end(); return false; }
+  String payload = http.getString();
+  http.end();
+
+  JsonDocument doc;
+  if (deserializeJson(doc, payload)) return false;
+
+  CardViz next{};
+  next.kind = VIZ_PRICE;
+  next.isMarket = true;
+  strncpy(next.ticker, doc["ticker"] | ticker, sizeof(next.ticker) - 1);
+  next.changePct = doc["changePct"] | 0.0f;
+  for (float close : doc["closes"].as<JsonArray>()) {
+    if (next.n >= 24) break;
+    next.v[next.n++] = close;
+  }
+  if (!next.n) return false;
+
+  const char* b64 = doc["logo"];
+  if (b64) {
+    size_t written = 0;
+    if (mbedtls_base64_decode(stockLogoBuf, sizeof(stockLogoBuf), &written,
+                              (const unsigned char*)b64, strlen(b64)) == 0 &&
+        written == sizeof(stockLogoBuf)) {
+      stockLogoDsc = lv_image_dsc_t{};
+      stockLogoDsc.header.magic = LV_IMAGE_HEADER_MAGIC;
+      stockLogoDsc.header.cf = LV_COLOR_FORMAT_RGB565;
+      stockLogoDsc.header.w = kLogoPx;
+      stockLogoDsc.header.h = kLogoPx;
+      stockLogoDsc.header.stride = kLogoPx * 2;
+      stockLogoDsc.data_size = written;
+      stockLogoDsc.data = stockLogoBuf;
+      next.logoIdx = -2;
+    }
+  }
+  gStockCur = next;
+  return true;
+}
+
+static void showStockViz();
+
+// เปลี่ยนตัวต้องทำนอก event — showStockViz ล้าง vizBox ที่ปุ่มตัวเองอยู่ข้างใน
+static void stockStep(void* arg) {
+  int delta = (int)(intptr_t)arg;
+  if (!gMarket.n) return;
+  gMarket.cur = (gMarket.cur + gMarket.n + delta) % gMarket.n;
+  if (fetchStock(gMarket.tickers[gMarket.cur])) showStockViz();
+}
+
 // แตะวันในปฏิทิน → เปิดหน้า detail เดิมซ้อนทับ ปิดแล้วกลับมาที่ปฏิทิน
 static void dayClicked(lv_event_t* e) {
   int day = (int)(intptr_t)lv_obj_get_user_data((lv_obj_t*)lv_event_get_current_target(e));
@@ -1208,6 +1280,45 @@ static void openMonthView() {
   lv_obj_remove_flag(monthView, LV_OBJ_FLAG_HIDDEN);
 }
 
+static void showStockViz() {
+  if (!vizBox) return;
+  lv_obj_clean(vizBox);
+  drawPrice(vizBox, gStockCur);
+  if (!gStockPaging || gMarket.n < 2) return;
+
+  lv_obj_t* pager = plainBox(vizBox, kGraphW, 44);
+  lv_obj_remove_flag(pager, LV_OBJ_FLAG_EVENT_BUBBLE);  // แตะแถบนี้ไม่ควรปิดหน้า
+
+  lv_obj_t* pos = lv_label_create(pager);
+  lv_obj_set_style_text_font(pos, &thai18, 0);
+  lv_obj_set_style_text_color(pos, lv_color_hex(C_MUTED), 0);
+  lv_obj_set_style_text_align(pos, LV_TEXT_ALIGN_CENTER, 0);
+  lv_obj_set_width(pos, kGraphW);
+  lv_label_set_text_fmt(pos, "%d / %d", gMarket.cur + 1, gMarket.n);
+  lv_obj_set_pos(pos, 0, 12);
+
+  const struct { const char* icon; int delta; bool left; } steps[] = {
+    {LV_SYMBOL_LEFT, -1, true}, {LV_SYMBOL_RIGHT, 1, false},
+  };
+  for (const auto& st : steps) {
+    lv_obj_t* b = lv_button_create(pager);
+    lv_obj_set_size(b, 56, 40);
+    lv_obj_set_style_bg_color(b, lv_color_hex(0x2A3556), 0);
+    lv_obj_set_style_radius(b, 9, 0);
+    lv_obj_set_ext_click_area(b, 6);
+    lv_obj_set_pos(b, st.left ? 0 : kGraphW - 56, 0);
+    lv_obj_set_user_data(b, (void*)(intptr_t)st.delta);
+    lv_obj_add_event_cb(b, [](lv_event_t* e) {
+      lv_async_call(stockStep, lv_obj_get_user_data((lv_obj_t*)lv_event_get_current_target(e)));
+    }, LV_EVENT_PRESSED, nullptr);
+
+    lv_obj_t* ic = lv_label_create(b);
+    lv_label_set_text(ic, st.icon);
+    lv_obj_set_style_text_color(ic, lv_color_hex(0xB9C4E6), 0);
+    lv_obj_center(ic);
+  }
+}
+
 static void cardClicked(lv_event_t* e) {
   // ponytail: current_target ไม่ใช่ target — กราฟในการ์ด bubble event ขึ้นมา
   // ถ้าใช้ target จะได้ตัวกราฟแล้ว lv_label_get_text assert ตาย
@@ -1242,7 +1353,11 @@ static void cardClicked(lv_event_t* e) {
       case VIZ_HOURLY: drawWeatherHeader(vizBox); drawRainHours(vizBox); drawForecast(vizBox); break;
       case VIZ_SAJU:   drawSaju(vizBox); break;
       case VIZ_SCORE:  drawScore(vizBox, cardViz[idx]); break;
-      case VIZ_PRICE:  drawPrice(vizBox, cardViz[idx]); break;
+      case VIZ_PRICE:
+        gStockCur = cardViz[idx];
+        gStockPaging = cardViz[idx].isMarket;
+        showStockViz();
+        break;
       default: break;
     }
     lv_obj_move_to_index(detailText, -1);  // vizBox สร้างทีหลัง ต้องดันคำอธิบายลงท้ายเสมอ
@@ -1612,6 +1727,16 @@ static bool fetchAndRender() {
           logoDsc[logoUsed].data = logoBuf[logoUsed];
           viz.logoIdx = logoUsed++;
         }
+      }
+      if (extra["stocks"]) {  // มีเฉพาะการ์ด Market Focus — การ์ดหุ้นอื่นเลื่อนไม่ได้
+        gMarket = MarketViz{};
+        for (JsonObject one : extra["stocks"].as<JsonArray>()) {
+          if (gMarket.n >= 6) break;
+          strncpy(gMarket.tickers[gMarket.n], one["ticker"] | "", sizeof(gMarket.tickers[0]) - 1);
+          if (!strcmp(gMarket.tickers[gMarket.n], viz.ticker)) gMarket.cur = gMarket.n;
+          gMarket.n++;
+        }
+        viz.isMarket = true;
       }
       if (viz.n) viz.kind = VIZ_PRICE;
     } else if (!strcmp(type, "astro")) {
