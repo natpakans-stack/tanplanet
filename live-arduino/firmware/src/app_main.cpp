@@ -47,7 +47,6 @@ static uint8_t drawBuf[kBufPixels * 2];
 static lv_obj_t* headValue;
 static lv_obj_t* headDetail;
 static lv_obj_t* busyRing;
-static lv_obj_t* statusDot;
 static lv_obj_t* heroWeather;
 static lv_obj_t* heroLunar;
 static lv_obj_t* cardList;
@@ -69,7 +68,7 @@ static const char* kThaiMonths[] = {"ม.ค.", "ก.พ.", "มี.ค.", "เ�
                                     "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."};
 
 // ข้อมูลสำหรับวาดกราฟในหน้า detail — เก็บเฉพาะตัวเลขที่ใช้จริง ไม่เก็บ JSON ทั้งก้อน
-enum VizKind : uint8_t { VIZ_NONE, VIZ_TOKENS, VIZ_HOURLY, VIZ_SCORE, VIZ_PRICE, VIZ_CALENDAR };
+enum VizKind : uint8_t { VIZ_NONE, VIZ_TOKENS, VIZ_HOURLY, VIZ_SCORE, VIZ_PRICE, VIZ_CALENDAR, VIZ_SAJU };
 struct CardViz {
   VizKind kind = VIZ_NONE;
   float v[24] = {0};
@@ -105,6 +104,15 @@ struct WeatherViz {
 };
 static WeatherViz gWeather;
 
+// พลังงานรายยามแบบสาจู — 12 ยาม ระดับ 0 ระวัง / 1 ท้าทาย / 2 พลังดี
+struct SajuViz {
+  uint8_t lv[12] = {0};
+  uint8_t hr[12] = {0};
+  uint8_t nowH = 99;
+  uint8_t n = 0;
+};
+static SajuViz gSaju;
+
 // ปฏิทินเดือนปัจจุบัน — backend ส่งวันพระ/วันหยุดมาครบทั้งเดือนอยู่แล้ว
 struct CalMonth {
   int y = 0, m = 0, today = 0;
@@ -120,6 +128,7 @@ struct CalMonth {
   char evLabel[16][56] = {{0}};
   uint8_t evN = 0;
   uint32_t feedColor[4] = {0x4ADE80, 0xF472B6, 0xA78BFA, 0x22D3EE};
+  int8_t sajuLv[32];  // -1 = ไม่ได้ตั้งวันเกิด จึงไม่มีระดับพลัง
 };
 static CalMonth gCal;
 
@@ -652,6 +661,51 @@ static void drawRainHours(lv_obj_t* parent) {
   }
 }
 
+// พลังงานรายยาม 12 ช่วง — สูง 3 ระดับ ช่วงที่ยืนอยู่ไฮไลต์เหมือนกราฟฝน
+static uint32_t sajuColor(int lv) {
+  return lv >= 2 ? C_UP : lv == 1 ? C_WARN : C_DOWN;
+}
+
+static void drawSaju(lv_obj_t* parent) {
+  int n = gSaju.n;
+  if (n < 2) return;
+  const int slot = kGraphW / n, top = 20, h = 76;
+
+  lv_obj_t* wrap = plainBox(parent, kGraphW, top + h + 20);
+  for (int i = 0; i < n; i++) {
+    bool nowSlot = (gSaju.hr[i] == gSaju.nowH);
+    int x = i * slot;
+    int bh = 14 + gSaju.lv[i] * ((h - 14) / 2);  // 3 ระดับ ไม่ใช่สัดส่วนต่อเนื่อง
+
+    if (nowSlot) {
+      lv_obj_t* band = plainBox(wrap, slot, h + 20);
+      lv_obj_set_style_bg_opa(band, LV_OPA_COVER, 0);
+      lv_obj_set_style_bg_color(band, lv_color_hex(C_GRID), 0);
+      lv_obj_set_style_radius(band, 8, 0);
+      lv_obj_set_pos(band, x, top);
+    }
+
+    lv_obj_t* bar = plainBox(wrap, slot - 5, bh);
+    lv_obj_set_style_bg_opa(bar, LV_OPA_COVER, nowSlot ? LV_OPA_COVER : LV_OPA_70);
+    lv_obj_set_style_bg_color(bar, lv_color_hex(sajuColor(gSaju.lv[i])), 0);
+    lv_obj_set_style_radius(bar, 4, 0);
+    lv_obj_set_pos(bar, x + 2, top + h - bh);
+
+    lv_obj_t* hr = lv_label_create(wrap);
+    lv_obj_set_style_text_font(hr, &thai14, 0);
+    lv_obj_set_style_text_color(hr, lv_color_hex(nowSlot ? C_TEXT : C_MUTED), 0);
+    lv_obj_set_style_text_align(hr, LV_TEXT_ALIGN_CENTER, 0);
+    lv_obj_set_width(hr, slot);
+    lv_label_set_text_fmt(hr, "%02d", gSaju.hr[i]);
+    lv_obj_set_pos(hr, x, top + h + 2);
+  }
+
+  lv_obj_t* key = lv_label_create(parent);
+  lv_obj_set_style_text_font(key, &thai14, 0);
+  lv_obj_set_style_text_color(key, lv_color_hex(C_MUTED), 0);
+  setThaiText(key, "สูง = พลังดี · กลาง = ท้าทาย · เตี้ย = ควรระวัง");
+}
+
 // แถวพยากรณ์รายวัน — วันนี้ไฮไลต์ไว้เป็นจุดอ้างอิงสายตา
 static void drawForecast(lv_obj_t* parent) {
   int n = min((int)gWeather.fcN, 8);
@@ -1040,6 +1094,14 @@ static void openMonthView() {
       lv_obj_set_style_radius(cell, 8, 0);
     }
 
+    // แถบบางขอบล่างช่อง = ระดับพลังของวันนั้น แยกจากจุดวันพระ/นัด ไม่แย่งที่กัน
+    if (gCal.sajuLv[day] >= 0 && !isToday) {
+      lv_obj_t* lvBar = plainBox(cell, cellW - 10, 2);
+      lv_obj_set_style_bg_opa(lvBar, LV_OPA_COVER, 0);
+      lv_obj_set_style_bg_color(lvBar, lv_color_hex(sajuColor(gCal.sajuLv[day])), 0);
+      lv_obj_align(lvBar, LV_ALIGN_BOTTOM_MID, 0, 0);
+    }
+
     lv_obj_t* num = lv_label_create(cell);
     lv_obj_set_style_text_font(num, &thai18, 0);
     lv_obj_set_style_text_color(
@@ -1106,6 +1168,7 @@ static void cardClicked(lv_event_t* e) {
         drawBars(vizBox, cardViz[idx]);
         break;
       case VIZ_HOURLY: drawWeatherHeader(vizBox); drawRainHours(vizBox); drawForecast(vizBox); break;
+      case VIZ_SAJU:   drawSaju(vizBox); break;
       case VIZ_SCORE:  drawScore(vizBox, cardViz[idx]); break;
       case VIZ_PRICE:  drawPrice(vizBox, cardViz[idx]); break;
       default: break;
@@ -1209,7 +1272,7 @@ static void applyBacklight(int mins) {
 static void updateClock(lv_timer_t*) {
   time_t now = time(nullptr);
   if (now < 1000000000) {  // ยังไม่ได้เวลาจริงจาก NTP
-    lv_label_set_text(headValue, "--:--");
+    lv_label_set_text(headValue, "");  // clock48 มีแค่ 0-9 : ° — ขีดจะออกมาเป็นกล่องว่าง
     return;
   }
   struct tm tm;
@@ -1226,17 +1289,50 @@ static void updateClock(lv_timer_t*) {
   applyBacklight(tm.tm_hour * 60 + tm.tm_min);
 }
 
-static void setStatus(const char* msg, uint32_t color) {
-  lv_obj_set_style_bg_color(statusDot, lv_color_hex(color), 0);
-  if (color == C_UP) return;  // ปกติดีก็ไม่ต้องรบกวนด้วยข้อความ
-  setThaiText(headDetail, msg);
-  lv_obj_set_style_text_color(headDetail, lv_color_hex(color), 0);
+// เส้นขอบบนเป็นตัวบอกสถานะตัวเดียวของทั้งเครื่อง:
+//   วิ่งอำพัน = กำลังดึงข้อมูล · แดงเต็มความกว้าง = มีปัญหา · หายไป = ปกติ
+// เดิมมีจุดสถานะข้างนาฬิกาด้วย แต่มันวางทับเลขและซ้ำหน้าที่กับเส้นนี้
+static bool busyError = false;
+
+static void busyAnimate() {
+  lv_anim_t a;
+  lv_anim_init(&a);
+  lv_anim_set_var(&a, busyRing);
+  lv_anim_set_values(&a, -130, 480);
+  lv_anim_set_duration(&a, 1100);
+  lv_anim_set_repeat_count(&a, LV_ANIM_REPEAT_INFINITE);
+  lv_anim_set_exec_cb(&a, [](void* o, int32_t v) { lv_obj_set_x((lv_obj_t*)o, v); });
+  lv_anim_start(&a);
 }
 
 static void setBusy(bool on) {
-  if (!busyRing) return;
-  if (on) lv_obj_remove_flag(busyRing, LV_OBJ_FLAG_HIDDEN);
-  else lv_obj_add_flag(busyRing, LV_OBJ_FLAG_HIDDEN);
+  if (!busyRing || busyError) return;  // ขึ้นแดงค้างไว้แล้วอย่าให้ตัววิ่งมาทับ
+  if (on) {
+    lv_obj_set_width(busyRing, 130);
+    lv_obj_set_style_bg_color(busyRing, lv_color_hex(C_WARN), 0);
+    busyAnimate();
+    lv_obj_remove_flag(busyRing, LV_OBJ_FLAG_HIDDEN);
+  } else {
+    lv_anim_delete(busyRing, nullptr);
+    lv_obj_add_flag(busyRing, LV_OBJ_FLAG_HIDDEN);
+  }
+}
+
+static void setStatus(const char* msg, uint32_t color) {
+  busyError = (color != C_UP && color != C_WARN);
+  if (busyError) {
+    lv_anim_delete(busyRing, nullptr);
+    lv_obj_set_x(busyRing, 0);
+    lv_obj_set_width(busyRing, 480);
+    lv_obj_set_style_bg_color(busyRing, lv_color_hex(color), 0);
+    lv_obj_remove_flag(busyRing, LV_OBJ_FLAG_HIDDEN);
+  } else if (color == C_UP) {
+    lv_anim_delete(busyRing, nullptr);
+    lv_obj_add_flag(busyRing, LV_OBJ_FLAG_HIDDEN);
+    return;  // ปกติดีก็ไม่ต้องรบกวนด้วยข้อความ
+  }
+  setThaiText(headDetail, msg);
+  lv_obj_set_style_text_color(headDetail, lv_color_hex(color), 0);
 }
 
 static bool fetchAndRender() {
@@ -1373,9 +1469,21 @@ static bool fetchAndRender() {
         gWeather.fcN++;
       }
       if (viz.n) viz.kind = VIZ_HOURLY;
+    } else if (!strcmp(type, "saju") && extra["saju"]) {
+      JsonObject sj = extra["saju"];
+      gSaju = SajuViz{};
+      for (JsonObject b : sj["blocks"].as<JsonArray>()) {
+        if (gSaju.n >= 12) break;
+        gSaju.hr[gSaju.n] = b["h"] | 0;
+        gSaju.lv[gSaju.n] = b["lv"] | 0;
+        gSaju.n++;
+      }
+      gSaju.nowH = sj["nowH"] | 99;
+      if (gSaju.n) viz.kind = VIZ_SAJU;
     } else if (!strcmp(type, "calendar") && extra["calendar"]) {
       JsonObject cal = extra["calendar"];
       gCal = CalMonth{};
+      memset(gCal.sajuLv, -1, sizeof(gCal.sajuLv));
       gCal.y = cal["y"] | 0;
       gCal.m = cal["m"] | 0;
       gCal.today = cal["today"] | 0;
@@ -1397,6 +1505,10 @@ static bool fetchAndRender() {
         strncpy(gCal.evTime[k], ev["time"] | "", sizeof(gCal.evTime[0]) - 1);
         strncpy(gCal.evLabel[k], ev["label"] | "", sizeof(gCal.evLabel[0]) - 1);
         gCal.evN++;
+      }
+      for (JsonObject sv : cal["saju"].as<JsonArray>()) {
+        int d = sv["d"] | 0;
+        if (d >= 1 && d <= 31) gCal.sajuLv[d] = sv["lv"] | -1;
       }
       int fi = 0;
       for (JsonObject f : cal["feeds"].as<JsonArray>()) {
@@ -1497,17 +1609,20 @@ void setup() {
   headValue = lv_label_create(hero);
   lv_obj_set_style_text_font(headValue, &clock48, 0);
   lv_obj_set_style_text_color(headValue, lv_color_hex(C_TEXT), 0);
-  lv_label_set_text(headValue, "--:--");
+  lv_label_set_text(headValue, "");
   lv_obj_align(headValue, LV_ALIGN_TOP_LEFT, 20, 8);
 
-  // ตัวบอกว่ากำลังทำงาน — arc หมุนเอง ไม่ใช้ฟอนต์ จึงไม่มีทางกลายเป็นกล่องว่าง
-  busyRing = lv_spinner_create(hero);
-  lv_obj_set_size(busyRing, 26, 26);
-  lv_obj_align(busyRing, LV_ALIGN_TOP_RIGHT, -18, 14);
-  lv_obj_set_style_arc_width(busyRing, 3, LV_PART_MAIN);
-  lv_obj_set_style_arc_width(busyRing, 3, LV_PART_INDICATOR);
-  lv_obj_set_style_arc_color(busyRing, lv_color_hex(C_GRID), LV_PART_MAIN);
-  lv_obj_set_style_arc_color(busyRing, lv_color_hex(C_WARN), LV_PART_INDICATOR);
+  // ตัวบอกว่ากำลังทำงาน = เส้นบางวิ่งที่ขอบบนสุดของจอ อยู่นอกพื้นที่เนื้อหาทั้งหมด
+  // ทับอะไรไม่ได้ และไม่ใช้ฟอนต์จึงไม่มีทางกลายเป็นกล่องว่างเหมือนแบบเดิม
+  busyRing = lv_obj_create(scr);
+  lv_obj_set_size(busyRing, 130, 3);
+  lv_obj_set_pos(busyRing, 0, 0);
+  lv_obj_set_style_bg_color(busyRing, lv_color_hex(C_WARN), 0);
+  lv_obj_set_style_bg_opa(busyRing, LV_OPA_COVER, 0);
+  lv_obj_set_style_border_width(busyRing, 0, 0);
+  lv_obj_set_style_radius(busyRing, 0, 0);
+  lv_obj_remove_flag(busyRing, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_add_flag(busyRing, LV_OBJ_FLAG_HIDDEN);
 
   headDetail = lv_label_create(hero);
   lv_obj_set_style_text_font(headDetail, &thai18, 0);
@@ -1526,15 +1641,6 @@ void setup() {
   lv_obj_set_style_text_color(heroWeather, lv_color_hex(C_TEXT), 0);
   lv_label_set_text(heroWeather, "");
   lv_obj_align(heroWeather, LV_ALIGN_TOP_RIGHT, -18, 10);
-
-  // จุดสถานะข้างนาฬิกา: เขียว = ข้อมูลสด, เหลือง = กำลังต่อ, แดง = ต่อไม่ได้
-  // รายละเอียดเต็มโผล่แทนบรรทัดวันที่เฉพาะตอนมีปัญหา ปกติไม่ต้องกินพื้นที่
-  statusDot = lv_obj_create(hero);
-  lv_obj_set_size(statusDot, 10, 10);
-  lv_obj_align(statusDot, LV_ALIGN_TOP_LEFT, 132, 26);
-  lv_obj_set_style_radius(statusDot, 5, 0);
-  lv_obj_set_style_border_width(statusDot, 0, 0);
-  lv_obj_set_style_bg_color(statusDot, lv_color_hex(C_WARN), 0);
 
   // กดค้างที่นาฬิกาเพื่อคาลิเบรตทัช — ไม่ต้องมีปุ่มกินพื้นที่
   lv_obj_add_flag(headValue, LV_OBJ_FLAG_CLICKABLE);

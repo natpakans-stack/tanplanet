@@ -53,6 +53,7 @@ const DEFAULT_RUNTIME_CONFIG = {
       on: true,
     }],
   },
+  saju: { birthDate: "" },  // ว่าง = ปิดการ์ด เพราะพลังงานรายยามต้องรู้เจ้าเรือนก่อน
   device: { refreshSeconds: 300 },
   display: { brightnessDay: 255, brightnessNight: 40, nightStart: "22:00", nightEnd: "06:30" },
 };
@@ -97,6 +98,7 @@ async function saveRuntimeConfig(config) {
           on: f.on !== false,
         })),
     },
+    saju: { birthDate: /^\d{4}-\d{2}-\d{2}$/.test(config.saju?.birthDate || "") ? config.saju.birthDate : "" },
     // จอยิงมาทุก refreshSeconds — ต่ำกว่า 60 วิ ไม่มีประโยชน์ ข้อมูลต้นทางไม่ได้ขยับเร็วขนาดนั้น
     device: { refreshSeconds: Math.min(3600, Math.max(60, Math.round(num(config.device?.refreshSeconds, d.device.refreshSeconds)))) },
     display: {
@@ -115,6 +117,7 @@ function card(id, type, title, value, detail, tone = "neutral", priority = 50) {
 }
 
 import { thaiLunar, nextUposatha } from "./thai-lunar.mjs";
+import { sajuDay, sajuMonth } from "./saju.mjs";
 import { getWeather, nextHoliday, holidaysInMonth, getAiUsage, getStockViz, getClaudeQuota, icsEventsInMonth } from "./live-sources.mjs";
 
 const THAI_MONTHS = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
@@ -182,6 +185,7 @@ async function buildCalendarCards(opts) {
         y: now.y, m: now.m, today: now.d, buddhaDays, holidays: monthHolidays,
         events,
         feeds: activeFeeds.map((f, i) => ({ label: f.label, color: FEED_COLORS[i] })),
+        saju: sajuMonth(now.y, now.m, opts.birth),
       },
     },
   };
@@ -222,6 +226,37 @@ async function buildWeatherCard(loc) {
   } catch (error) {
     return card("weather_now", "weather", "Weather", "ไม่มีข้อมูล", `Open-Meteo error: ${error.message}`, "caution", 40);
   }
+}
+
+function parseBirth(iso) {
+  if (!iso) return null;
+  const [y, m, d] = iso.split("-").map(Number);
+  return { y, m, d };
+}
+
+function buildSajuCard(birthIso) {
+  const birth = parseBirth(birthIso);
+  if (!birth) return null;
+  const info = sajuDay(new Date(), birth);
+  const tone = info.now.lv === 2 ? "ok" : info.now.lv === 1 ? "caution" : "neutral";
+  return {
+    ...card(
+      "saju_today", "saju", "พลังวันนี้",
+      `${info.now.lvLabel} · ${info.pillar}`,
+      `${info.now.note} · สีของวัน${info.color.name} (ธาตุ${info.dayElem}) · เจ้าเรือนธาตุ${info.dm.elem}`,
+      tone, 45,
+    ),
+    extra: {
+      saju: {
+        blocks: info.blocks.map((b) => ({ h: b.h, lv: b.lv })),
+        nowH: info.now.h,
+        color: info.color.hex,
+        colorName: info.color.name,
+        dayElem: info.dayElem,
+        dm: info.dm.elem,
+      },
+    },
+  };
 }
 
 const parseNum = (value) => Number(String(value ?? "").replace(/[^0-9.\-]/g, "")) || 0;
@@ -410,10 +445,11 @@ async function buildDeviceSummary() {
   const baseCards = sample?.cards || [];
   const clockCard = card("home_clock", "clock", "TanPlanet", "--:--", "Device clock is rendered locally on ESP32", "ok", 10);
   const [{ calendarCard, lunarCard }, weatherCard] = await Promise.all([
-    buildCalendarCards(runtimeConfig.calendar),
+    buildCalendarCards({ ...runtimeConfig.calendar, birth: parseBirth(runtimeConfig.saju.birthDate) }),
     buildWeatherCard(runtimeConfig.weather),
   ]);
   const astroCard = await buildAstroCard();
+  const sajuCard = buildSajuCard(runtimeConfig.saju.birthDate);
   const marketCard = buildMarketCard(entrySignal, runtimeConfig.tickers);
   const ideaCard = buildIdeaRadarCard(ideaRadar, runtimeConfig.ideaRadar);
   const northStarCard = buildNorthStarCard(northstar);
@@ -517,6 +553,7 @@ async function buildDeviceSummary() {
     lunarCard,
     weatherCard,
     astroCard,
+    sajuCard,
     marketCard,
     ideaCard,
     planCard,
@@ -630,6 +667,7 @@ async function buildConfigPage() {
     ["calendar_today", "Calendar"], ["lunar_today", "Lunar"], ["weather_now", "Weather"],
     ["astro_today", "ดวงลงทุนวันนี้"], ["market_focus", "Market Focus"], ["idea_radar", "Idea Radar"],
     ["monthly_plan", "Monthly Plan"], ["northstar", "North Star"], ["ai_status", "AI Status"],
+    ["saju_today", "พลังวันนี้ (สาจู)"],
   ];
   // หน้าตาอยู่ในไฟล์จริง แก้ CSS/JS ได้โดยไม่ต้องแหย่ string ใน server.mjs
   const html = await readFile(path.join(__dirname, "manage.html"), "utf8");
@@ -713,6 +751,7 @@ async function handleRequest(req, res) {
       holidays: cfg.showHolidays ? await holidaysInMonth(y, m) : [],
       events: await feedEventsInMonth(cfg.feeds, y, m),
       feeds: cfg.feeds.filter((f) => f.on).map((f, i) => ({ label: f.label, color: FEED_COLORS[i] })),
+      saju: sajuMonth(y, m, parseBirth((await loadRuntimeConfig()).saju.birthDate)),
     });
   }
   // จอกดเลื่อนดูหุ้นตัวอื่นในหน้า detail — ดึงทีละตัว ไม่ต้องยัดทุกตัวมากับ device-summary

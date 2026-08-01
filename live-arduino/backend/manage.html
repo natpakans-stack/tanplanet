@@ -262,6 +262,17 @@
 </section>
 
 <section>
+  <h2>พลังวันนี้ (สาจู)</h2>
+  <div class="stack">
+    <div class="setting">
+      <div class="label"><b>วันเกิด</b><span>ใช้หาธาตุเจ้าเรือน · เว้นว่าง = ปิดการ์ด</span></div>
+      <input class="input" id="sjBirth" type="date" style="width:170px;flex:none">
+    </div>
+  </div>
+  <p class="note">คำนวณเสาวันจากวัฏจักร 60 และเสายามด้วย 五鼠遁 แล้วเทียบธาตุยามกับธาตุเจ้าเรือน · ปฏิทินรายเดือนจะขึ้นแถบสีบอกวันพลังดี/ท้าทาย/ควรระวังด้วย</p>
+</section>
+
+<section>
   <h2>จอ</h2>
   <div class="stack">
     <div class="setting">
@@ -514,6 +525,7 @@ const getFocus = segInit($("mpFocus"), CFG.monthlyPlan.focus);
 const getAiWeek = switchInit($("aiWeek"), CFG.aiStatus.showWeek);
 const getBuddha = switchInit($("calBuddha"), CFG.calendar.showBuddha);
 const getHoliday = switchInit($("calHoliday"), CFG.calendar.showHolidays);
+$("sjBirth").value = CFG.saju.birthDate;
 $("dsStart").value = CFG.display.nightStart;
 $("dsEnd").value = CFG.display.nightEnd;
 
@@ -543,6 +555,7 @@ saveBtn.addEventListener("click", async () => {
         on: b.querySelector(".fo").getAttribute("aria-checked") === "true",
       })).filter((f) => f.url),
     },
+    saju: { birthDate: $("sjBirth").value },
     device: { refreshSeconds: getRefresh() },
     display: {
       brightnessDay: getDay(),
