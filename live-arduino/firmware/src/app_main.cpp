@@ -9,6 +9,7 @@
 #include <WiFi.h>
 #include <WiFiManager.h>
 #include <HTTPClient.h>
+#include <ESPmDNS.h>
 #include <ArduinoJson.h>
 #include <Preferences.h>
 #include <time.h>
@@ -426,6 +427,20 @@ static String thaiFix(const char* src) {
 
 static void setThaiText(lv_obj_t* label, const char* text) {
   lv_label_set_text(label, thaiFix(text).c_str());
+}
+
+// ตัดข้อความให้พอดีความกว้างจริง แล้วต่อ "..." — ปล่อยให้ LVGL จัดการเองมันขึ้นบรรทัดใหม่ไปทับของอื่น
+// ถอยทีละตัวอักษร UTF-8 (ห้าม pop_back เดี่ยวๆ เพราะไทยเป็น 3 ไบต์)
+static void setThaiTextFit(lv_obj_t* label, const char* text, const lv_font_t* font, int32_t maxW) {
+  String s = thaiFix(text);
+  lv_point_t sz;
+  lv_text_get_size(&sz, s.c_str(), font, 0, 0, LV_COORD_MAX, LV_TEXT_FLAG_EXPAND);
+  while (sz.x > maxW && s.length() > 0) {
+    do { s.remove(s.length() - 1); } while (s.length() > 0 && (static_cast<uint8_t>(s[s.length() - 1]) & 0xC0) == 0x80);
+    lv_text_get_size(&sz, (s + "...").c_str(), font, 0, 0, LV_COORD_MAX, LV_TEXT_FLAG_EXPAND);
+    if (sz.x <= maxW) { s += "..."; break; }
+  }
+  lv_label_set_text(label, s.c_str());
 }
 
 static uint32_t toneColor(const char* tone) {
@@ -1013,11 +1028,31 @@ static const char* holidayOf(int day) {
   return nullptr;
 }
 
+// lwip resolve "ชื่อ.local" ได้บ้างไม่ได้บ้าง (คืน IPv6/แคชค้าง → connect timeout 5 วิ แล้วขึ้น -1)
+// ถาม mDNS ตรง ๆ เอา IPv4 มาเสียบแทนชื่อ แล้วจำไว้ ถ้า fetch พังค่อยล้างแคชถามใหม่
+static String mdnsIp;
+static String backendUrl() {
+  String url = DEVICE_SUMMARY_URL;
+  int hs = url.indexOf("://") + 3;
+  int he = url.indexOf(':', hs);
+  if (he < 0) he = url.indexOf('/', hs);
+  if (he < 0) he = url.length();
+  String host = url.substring(hs, he);
+  if (!host.endsWith(".local")) return url;
+  if (mdnsIp.isEmpty()) {
+    IPAddress ip = MDNS.queryHost(host.substring(0, host.length() - 6), 3000);
+    if ((uint32_t)ip == 0) { Serial.printf("mdns หา %s ไม่เจอ\n", host.c_str()); return url; }
+    mdnsIp = ip.toString();
+    Serial.printf("mdns %s = %s\n", host.c_str(), mdnsIp.c_str());
+  }
+  return url.substring(0, hs) + mdnsIp + url.substring(he);
+}
+
 // ดึงปฏิทินเดือนอื่น — device-summary ส่งมาแค่เดือนปัจจุบัน
 // URL ประกอบจาก DEVICE_SUMMARY_URL ตัวเดียว จะได้ไม่ต้องมี build flag ให้ลืม sync
 static bool fetchMonth(int y, int m) {
   if (WiFi.status() != WL_CONNECTED) return false;
-  String url = DEVICE_SUMMARY_URL;
+  String url = backendUrl();
   url.replace("/api/device-summary", "/api/month");
   url += "?y=" + String(y) + "&m=" + String(m);
 
@@ -1062,7 +1097,7 @@ static void monthStep(void* arg) {
 // ดึงกราฟหุ้นตัวอื่นตอนกดเลื่อน — device-summary ส่งกราฟมาแค่ตัวที่โชว์บนการ์ด
 static bool fetchStock(const char* ticker) {
   if (WiFi.status() != WL_CONNECTED) return false;
-  String url = DEVICE_SUMMARY_URL;
+  String url = backendUrl();
   url.replace("/api/device-summary", "/api/stock");
   url += "?ticker=" + String(ticker);
 
@@ -1533,10 +1568,11 @@ static bool fetchAndRender() {
   Serial.printf("fetch เริ่ม · heap %u\n", (unsigned)ESP.getFreeHeap());
   HTTPClient http;
   http.setTimeout(8000);
-  http.begin(DEVICE_SUMMARY_URL);
+  http.begin(backendUrl());
   int code = http.GET();
   if (code != HTTP_CODE_OK) {
     Serial.printf("http failed: %d\n", code);
+    mdnsIp = "";  // IP เครื่อง backend อาจย้าย — ถามใหม่รอบหน้า
     setStatus(String("ต่อ backend ไม่ได้ (").c_str(), 0xF87171);
     setStatus((String("ต่อ backend ไม่ได้ (") + code + ") · ลองใหม่ใน 30 วิ").c_str(), C_DOWN);
     http.end();
@@ -1585,7 +1621,7 @@ static bool fetchAndRender() {
 
     // ยกอากาศกับจันทรคติขึ้นแถบบน — เป็นข้อมูลที่มองแวบเดียวต้องเห็น
     if (!strcmp(type, "weather")) {
-      setThaiText(heroWeather, value);
+      setThaiTextFit(heroWeather, value, &thai36, 290);  // 290 = ที่ว่างขวาของนาฬิกา
     } else if (!strcmp(type, "lunar")) {
       setThaiText(heroLunar, value);
     }
@@ -1927,6 +1963,7 @@ void setup() {
     Serial.println("wifi portal failed");
   } else {
     Serial.printf("wifi ok: %s\n", WiFi.localIP().toString().c_str());
+    MDNS.begin("live-arduino");  // ต้อง begin ก่อน queryHost ถึงจะถาม .local ได้
     // ICT-7 = UTC+7 ไม่มี DST — ตั้งผ่าน TZ string ให้ localtime_r คำนวณให้เอง
     configTzTime("ICT-7", "pool.ntp.org", "time.google.com");
     for (int i = 0; i < 20 && time(nullptr) < 1000000000; i++) delay(250);
