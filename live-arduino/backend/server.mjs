@@ -771,6 +771,11 @@ async function handleRequest(req, res) {
   if (url.pathname === "/api/device-summary") {
     return sendJson(res, 200, await buildDeviceSummary());
   }
+  // การ์ดเดียวก้อนเล็ก — จอดึงถี่ ๆ ได้โดยไม่ต้องลาก device-summary ทั้งก้อนมาทุก 10 วิ
+  if (url.pathname === "/api/claude") {
+    const c = await buildClaudeCard();
+    return sendJson(res, 200, { value: c.value, detail: c.detail, tone: c.tone, extra: c.extra });
+  }
   // ฟอนต์ Anuphan เก็บในเครื่อง — หน้า /manage เปิดจากมือถือตอนเน็ตนอกล่มก็ยังได้ฟอนต์ไทย
   if (url.pathname === "/assets/anuphan.woff2") {
     try {

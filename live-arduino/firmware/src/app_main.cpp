@@ -1119,7 +1119,9 @@ static lv_obj_t* makeMascot(lv_obj_t* parent, float px) {
 
 // หน้า detail: ฉากแบบต้นฉบับ — ฟ้า เมฆ หญ้า แล้วมาสคอตยืนบนเส้นขอบฟ้า
 static void drawClaude(lv_obj_t* parent) {
-  const int stageH = 150;
+  // สูงพอให้กรอบมาสคอต (17.6 unit) + ระยะที่ยกพ้นหญ้า อยู่ในฉากครบ
+  // เตี้ยกว่านี้ LVGL จะ clip ของที่ลอยเหนือหัว (นาฬิกา/zZ) หายไปครึ่งชิ้น
+  const int stageH = (int)lroundf((CT_BOX_Y1 - CT_BOX_Y0) * kMascotBigPx) + 36;
   lv_obj_t* stage = lv_obj_create(parent);
   lv_obj_set_size(stage, kGraphW, stageH);
   lv_obj_set_style_bg_color(stage, lv_color_hex(0xBDDFF7), 0);  // CT_COL_SKY_DAY
@@ -1532,6 +1534,37 @@ static bool fetchMonth(int y, int m) {
     gCal.holidayN++;
   }
   return true;
+}
+
+// การ์ด Claude ต้องสดกว่ารอบรีเฟรชใหญ่ — ดึงเฉพาะการ์ดใบนี้ก้อนเล็ก ๆ ทุก 10 วิ
+// ponytail: อัปเดตป้ายในที่ ไม่ render ใหม่ทั้งจอ — เลื่อนการ์ดค้างอยู่ตรงไหนก็ไม่กระตุก
+static lv_obj_t* claudeCardVal = nullptr, *claudeCardDetail = nullptr;
+
+static void fetchClaudeNow() {
+  if (WiFi.status() != WL_CONNECTED || !claudeCardVal) return;
+  String url = backendUrl();
+  url.replace("/api/device-summary", "/api/claude");
+
+  HTTPClient http;
+  http.setTimeout(5000);
+  http.begin(url);
+  if (http.GET() != HTTP_CODE_OK) { http.end(); return; }
+  String payload = http.getString();
+  http.end();
+
+  JsonDocument doc;
+  if (deserializeJson(doc, payload)) return;
+  JsonObject extra = doc["extra"];
+  const char* st = extra["state"] | "none";
+  gClaude.state = !strcmp(st, "busy")      ? CL_BUSY
+                  : !strcmp(st, "waiting") ? CL_WAITING
+                  : !strcmp(st, "idle")    ? CL_IDLE
+                                           : CL_NONE;
+  strncpy(gClaude.tool, extra["tool"] | "", sizeof(gClaude.tool) - 1);
+  strncpy(gClaude.project, extra["project"] | "", sizeof(gClaude.project) - 1);
+  gClaude.live = extra["live"] | 0;
+  setThaiText(claudeCardVal, doc["value"] | "-");
+  if (claudeCardDetail) setThaiText(claudeCardDetail, doc["detail"] | "");
 }
 
 static void openMonthView();
@@ -2145,6 +2178,7 @@ static bool fetchAndRender() {
 
   lv_obj_clean(cardList);
   pomoCardVal = remindCardVal = nullptr;  // ป้ายเก่าถูกลบไปแล้ว — ห้ามให้ tick แตะต่อ
+  claudeCardVal = claudeCardDetail = nullptr;
   remindHintShown = false;                // การ์ดใหม่ซ่อนคำใบ้ไว้ ต้องให้ tick วาดใหม่ได้
   if (vizBox) { lv_obj_delete(vizBox); vizBox = nullptr; }
   int n = 0;
@@ -2341,6 +2375,12 @@ static bool fetchAndRender() {
     }
 
     addCard(c["title"] | "", value, detail, c["tone"] | "neutral", cardCount);
+    // การ์ด Claude เปลี่ยนสถานะเป็นวินาที — จำป้ายไว้ให้รอบดึงสั้นเขียนทับได้ ไม่ต้องรอ 5 นาที
+    if (viz.kind == VIZ_CLAUDE) {
+      lv_obj_t* card = lv_obj_get_child(cardList, lv_obj_get_child_count(cardList) - 1);
+      claudeCardVal = lv_obj_get_child(card, 1);
+      claudeCardDetail = lv_obj_get_child(card, 2);
+    }
     cardCount++;
     n++;
     if (!localAdded && n >= kLocalAfter) { addLocalCards(); localAdded = true; }
@@ -2553,5 +2593,13 @@ void loop() {
   bool detailOpen = !lv_obj_has_flag(detailView, LV_OBJ_FLAG_HIDDEN);
   if (!detailOpen && millis() - lastFetch > kRefreshMs) {
     lastFetch = fetchAndRender() ? millis() : millis() - kRefreshMs + kRetryMs;
+    return;
+  }
+
+  // การ์ด Claude ดึงถี่แยกต่างหาก — สถานะ "รอคำตอบ" ต้องเด้งใน 10 วิ ไม่ใช่ 5 นาที
+  static uint32_t lastClaude = 0;
+  if (!detailOpen && millis() - lastClaude > 10000) {
+    lastClaude = millis();
+    fetchClaudeNow();
   }
 }

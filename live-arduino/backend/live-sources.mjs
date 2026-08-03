@@ -324,7 +324,7 @@ function tailEntries(file, bytes = 256 * 1024) {
 }
 
 export function getClaudeSessions() {
-  return cached("claude-sessions", 10 * 1000, async () => {
+  return cached("claude-sessions", 4 * 1000, async () => {
     const root = path.join(os.homedir(), ".claude", "projects");
     if (!fs.existsSync(root)) return { sessions: [], pulse: [] };
 
