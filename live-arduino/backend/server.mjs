@@ -134,7 +134,7 @@ function card(id, type, title, value, detail, tone = "neutral", priority = 50) {
 
 import { thaiLunar, nextUposatha } from "./thai-lunar.mjs";
 import { sajuDay, sajuMonth } from "./saju.mjs";
-import { getWeather, nextHoliday, holidaysInMonth, getAiUsage, getStockViz, getClaudeQuota, icsEventsInMonth } from "./live-sources.mjs";
+import { getWeather, nextHoliday, holidaysInMonth, getAiUsage, getStockViz, getClaudeQuota, getClaudeSessions, icsEventsInMonth } from "./live-sources.mjs";
 
 const THAI_MONTHS = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
 const THAI_DAYS = ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสฯ", "ศุกร์", "เสาร์"];
@@ -450,6 +450,51 @@ async function buildAiUsageCard(opts) {
   }
 }
 
+function fmtAgo(sec) {
+  if (sec < 60) return `${sec} วินาทีที่แล้ว`;
+  if (sec < 3600) return `${Math.round(sec / 60)} นาทีที่แล้ว`;
+  return `${Math.round(sec / 3600)} ชม.ที่แล้ว`;
+}
+
+// "ตอนนี้ Claude ทำอะไรอยู่" — รอคำตอบต้องเด้งที่สุด เพราะเป็นสถานะเดียวที่ต้องลุกไปทำอะไร
+async function buildClaudeCard() {
+  try {
+    const { sessions, pulse } = await getClaudeSessions();
+    const live = sessions.filter((s) => s.state !== "idle");
+    const top = live[0];
+
+    const value = !top
+      ? "ไม่มี session ที่ทำงานอยู่"
+      : top.state === "waiting"
+        ? `รอคำตอบ · ${top.project}`
+        : `${top.tool || "กำลังคิด"} · ${top.project}`;
+
+    const others = live.slice(1).map((s) => `${s.project} ${s.state === "waiting" ? "รอคำตอบ" : "ทำงานอยู่"}`);
+    const detail = !top
+      ? sessions.length ? `${sessions.length} session เงียบอยู่` : "วันนี้ยังไม่ได้เปิด Claude Code"
+      : [top.branch, fmtAgo(top.idleSec), ...others].filter(Boolean).join(" · ");
+
+    return {
+      ...card(
+        "claude_now", "claude", "Claude Code", value, detail,
+        top?.state === "waiting" ? "alert" : top ? "ok" : "neutral", 82,
+      ),
+      viz: pulse.some((v) => v > 0) ? { kind: "spark", points: pulse } : undefined,
+      // ส่งเท่าที่จอ/mock-ui จะโชว์ได้จริง — payload ก้อนนี้ต้องผ่าน JsonDocument บน ESP32
+      // state/tool/project แบนไว้ให้เฟิร์มแวร์อ่านตรง ๆ ไม่ต้องวน array หาตัวที่ควรโชว์
+      extra: {
+        state: top?.state ?? "none",
+        tool: top?.tool ?? "",
+        project: top?.project ?? "",
+        live: live.length,
+        sessions: live.slice(0, 3).map((s) => ({ project: s.project, state: s.state, tool: s.tool })),
+      },
+    };
+  } catch (error) {
+    return card("claude_now", "claude", "Claude Code", "อ่านไม่ได้", `sessions error: ${error.message}`, "caution", 82);
+  }
+}
+
 async function buildDeviceSummary() {
   const sample = await readSampleSummary();
   const runtimeConfig = await loadRuntimeConfig();
@@ -471,6 +516,7 @@ async function buildDeviceSummary() {
   const ideaCard = buildIdeaRadarCard(ideaRadar, runtimeConfig.ideaRadar);
   const northStarCard = buildNorthStarCard(northstar);
   const tokenCard = await buildAiUsageCard(runtimeConfig.aiStatus);
+  const claudeCard = await buildClaudeCard();
   // เลือกได้ว่าการ์ดนี้จะโฟกัสตัวไหน — alpha ไม่มีโซนเข้า/stop เลยได้แค่กราฟราคา
   const planFocus = runtimeConfig.monthlyPlan.focus;
   const swing = monthlyPlan?.swing;
@@ -576,6 +622,7 @@ async function buildDeviceSummary() {
     planCard,
     northStarCard,
     tokenCard,
+    claudeCard,
   ].filter(Boolean);
 
   return {
@@ -688,6 +735,7 @@ async function buildConfigPage() {
     ["calendar_today", "Calendar"], ["lunar_today", "Lunar"], ["weather_now", "Weather"],
     ["astro_today", "ดวงลงทุนวันนี้"], ["market_focus", "Market Focus"], ["idea_radar", "Idea Radar"],
     ["monthly_plan", "Monthly Plan"], ["northstar", "North Star"], ["ai_status", "AI Status"],
+    ["claude_now", "Claude Code"],
     ["saju_today", "พลังวันนี้ (สาจู)"],
   ];
   // หน้าตาอยู่ในไฟล์จริง แก้ CSS/JS ได้โดยไม่ต้องแหย่ string ใน server.mjs

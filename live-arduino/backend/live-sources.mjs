@@ -263,6 +263,106 @@ export function getClaudeQuota() {
   });
 }
 
+// ---------------------------------------------------------------- Claude Code สด
+
+// จอบอกว่า "ตอนนี้ Claude ทำอะไรอยู่" — ไม่ต้องติดตั้ง hook อะไรเลย
+// เพราะ Claude Code เขียน transcript ลง ~/.claude/projects/<โปรเจกต์>/<session>.jsonl สดอยู่แล้ว
+// ponytail: อ่านไฟล์ที่มีอยู่ ดีกว่าไปแก้ settings.json ของผู้ใช้ให้ยิง webhook มาหาเรา
+
+// สรุปสถานะจากบรรทัดท้าย ๆ ของ session เดียว — แยกออกมาเป็นฟังก์ชันบริสุทธิ์เพื่อเทสต์ได้
+// (ดู claude-sessions.test.mjs)
+export function sessionState(entries, nowMs) {
+  const last = entries[entries.length - 1];
+  if (!last) return null;
+  const idleSec = Math.round((nowMs - last.ts) / 1000);
+
+  // ข้อความสุดท้ายของ Claude บอกว่ากำลังทำอะไร: เรียกเครื่องมือ = ยังทำงาน, ข้อความเปล่า = พูดจบแล้ว
+  const lastAssistant = [...entries].reverse().find((e) => e.role === "assistant");
+  const tool = lastAssistant?.tool ?? null;
+
+  let state;
+  if (idleSec <= 90) state = "busy";               // ยังไหลอยู่
+  else if (!tool && idleSec <= 30 * 60) state = "waiting";  // ตอบจบแล้วเงียบ = รอคนตอบ
+  else state = "idle";
+
+  return { ...last, idleSec, tool, state };
+}
+
+// อ่านแค่หางไฟล์ — transcript ยาวได้หลายสิบ MB และเราสนใจแค่ไม่กี่ข้อความสุดท้าย
+function tailEntries(file, bytes = 256 * 1024) {
+  const size = fs.statSync(file).size;
+  const fd = fs.openSync(file, "r");
+  const buf = Buffer.alloc(Math.min(size, bytes));
+  fs.readSync(fd, buf, 0, buf.length, Math.max(0, size - buf.length));
+  fs.closeSync(fd);
+
+  const lines = buf.toString("utf8").split("\n");
+  if (size > buf.length) lines.shift();  // บรรทัดแรกโดนตัดหัว อ่านไม่ได้แน่
+
+  const out = [];
+  for (const line of lines) {
+    if (!line.startsWith("{")) continue;
+    let e;
+    try {
+      e = JSON.parse(line);
+    } catch {
+      continue;
+    }
+    const ts = Date.parse(e.timestamp ?? "");
+    if (!Number.isFinite(ts)) continue;
+    if (e.isSidechain) continue;  // subagent — ไม่ใช่สิ่งที่คนหน้าจอกำลังคุยด้วย
+    const role = e.message?.role ?? e.type;
+    const blocks = Array.isArray(e.message?.content) ? e.message.content : [];
+    out.push({
+      ts, role,
+      cwd: e.cwd ?? null,
+      branch: e.gitBranch ?? null,
+      tool: blocks.find((b) => b.type === "tool_use")?.name ?? null,
+    });
+  }
+  return out;
+}
+
+export function getClaudeSessions() {
+  return cached("claude-sessions", 10 * 1000, async () => {
+    const root = path.join(os.homedir(), ".claude", "projects");
+    if (!fs.existsSync(root)) return { sessions: [], pulse: [] };
+
+    const nowMs = Date.now();
+    const SINCE = nowMs - 6 * 3600 * 1000;   // เก่ากว่า 6 ชม. ถือว่าจบไปแล้ว ไม่ต้องอ่าน
+    const sessions = [];
+    const pulse = new Array(24).fill(0);     // ข้อความต่อ 5 นาที ย้อนหลัง 2 ชม.
+
+    for (const dir of fs.readdirSync(root)) {
+      const full = path.join(root, dir);
+      if (!fs.statSync(full).isDirectory()) continue;
+      for (const f of fs.readdirSync(full)) {
+        if (!f.endsWith(".jsonl")) continue;
+        const p = path.join(full, f);
+        if (fs.statSync(p).mtimeMs < SINCE) continue;
+
+        let entries;
+        try {
+          entries = tailEntries(p);
+        } catch {
+          continue;
+        }
+        for (const e of entries) {
+          const slot = 23 - Math.floor((nowMs - e.ts) / (5 * 60 * 1000));
+          if (slot >= 0 && slot < 24 && e.role === "assistant") pulse[slot] += 1;
+        }
+        const s = sessionState(entries, nowMs);
+        if (s) sessions.push({ ...s, project: s.cwd ? path.basename(s.cwd) : dir });
+      }
+    }
+
+    // ที่กำลังไหลอยู่ขึ้นก่อน แล้วค่อยเรียงตามความสด
+    const rank = { busy: 0, waiting: 1, idle: 2 };
+    sessions.sort((a, b) => rank[a.state] - rank[b.state] || a.idleSec - b.idleSec);
+    return { sessions, pulse };
+  });
+}
+
 // ---------------------------------------------------------------- AI usage
 
 // อ่านบรรทัดสุดท้าย ๆ ของ JSONL แล้วรวม token ของวันนี้

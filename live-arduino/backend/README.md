@@ -11,6 +11,15 @@ open http://localhost:8787/api/device-summary
 
 No dependencies are required. The service uses Node built-ins only.
 
+**บนเครื่องจริง backend รันผ่าน launchd — แก้โค้ดแล้วต้องรีสตาร์ต ไม่งั้นจอยังกินของเก่า:**
+
+```bash
+launchctl kickstart -k gui/501/com.tanplanet.astro-backend
+```
+
+อาการเวลาลืม: การ์ดบนจอมีข้อความถูกต้อง แต่กราฟ/ฉาก/ค่าที่อ่านจาก `extra` เป็นค่าว่าง
+— เพราะฟิลด์ใหม่ยังไม่มีในเวอร์ชันที่รันอยู่
+
 ## Environment
 
 | Variable | Default | Purpose |

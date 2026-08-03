@@ -20,6 +20,11 @@
 #include "icons/weather_icons.h"
 #include "pomodoro_sched.h"
 
+// มาสคอต Claude — โค้ดสร้างรูปยกมาจาก tamaclaude (MIT) ดู tamaclaude/README.md
+extern "C" {
+#include "tamaclaude/ct_mascot.h"
+}
+
 LV_FONT_DECLARE(thai14);
 LV_FONT_DECLARE(thai18);
 LV_FONT_DECLARE(thai22);
@@ -70,7 +75,7 @@ static const char* kThaiMonths[] = {"ม.ค.", "ก.พ.", "มี.ค.", "เ�
                                     "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."};
 
 // ข้อมูลสำหรับวาดกราฟในหน้า detail — เก็บเฉพาะตัวเลขที่ใช้จริง ไม่เก็บ JSON ทั้งก้อน
-enum VizKind : uint8_t { VIZ_NONE, VIZ_TOKENS, VIZ_HOURLY, VIZ_SCORE, VIZ_PRICE, VIZ_CALENDAR, VIZ_SAJU };
+enum VizKind : uint8_t { VIZ_NONE, VIZ_TOKENS, VIZ_HOURLY, VIZ_SCORE, VIZ_PRICE, VIZ_CALENDAR, VIZ_SAJU, VIZ_CLAUDE };
 struct CardViz {
   VizKind kind = VIZ_NONE;
   float v[24] = {0};
@@ -87,7 +92,7 @@ struct CardViz {
   uint8_t sparkN = 0;
   float gaugeVal = 0, gaugeMax = 0;
   float quotaPct = -1, quotaWeekPct = -1;
-  int quotaMinutes = 0;
+  int quotaMinutes = 0, quotaWeekMinutes = 0;
   char gaugeUnit[12] = {0};
   uint32_t accent = 0x8492BC;
 };
@@ -115,6 +120,16 @@ struct SajuViz {
   uint8_t n = 0;
 };
 static SajuViz gSaju;
+
+// สถานะ Claude Code สด — มาสคอตอ่านจากตรงนี้ว่าจะทำท่าไหน
+enum ClaudeState : uint8_t { CL_NONE, CL_BUSY, CL_WAITING, CL_IDLE };
+struct ClaudeViz {
+  ClaudeState state = CL_NONE;
+  char tool[24] = {0};
+  char project[32] = {0};
+  uint8_t live = 0;
+};
+static ClaudeViz gClaude;
 
 // รายชื่อหุ้นใน Market Focus ไว้กด ◀ ▶ เลื่อนดูในหน้า detail
 // โลโก้ของตัวที่ดึงมาทีหลังใช้บัฟเฟอร์แยก ไม่ไปแย่งช่องกับโลโก้ของการ์ดบนหน้าแรก
@@ -456,47 +471,135 @@ static uint32_t toneColor(const char* tone) {
 // ponytail: อ่านข้อความจาก label ลูกของการ์ดเอง ไม่ต้องเก็บ state ซ้ำอีกชุด
 static lv_obj_t* vizBox = nullptr;
 
-// โควตาจริงจาก Anthropic — มีเพดาน 100% จึงวาดเป็นวงได้อย่างมีความหมาย
-static void drawQuota(lv_obj_t* parent, const CardViz& viz) {
-  lv_obj_t* row = lv_obj_create(parent);
-  lv_obj_set_size(row, lv_pct(100), 104);
-  lv_obj_set_style_bg_opa(row, LV_OPA_TRANSP, 0);
-  lv_obj_set_style_border_width(row, 0, 0);
-  lv_obj_set_style_pad_all(row, 0, 0);
-  lv_obj_clear_flag(row, LV_OBJ_FLAG_SCROLLABLE);
-  lv_obj_add_flag(row, LV_OBJ_FLAG_EVENT_BUBBLE);
+// กล่องโปร่งไม่มีขอบ ไม่เลื่อน — ใช้เป็นโครงวางของอย่างเดียว
+static lv_obj_t* plainBox(lv_obj_t* parent, int w, int h) {
+  lv_obj_t* box = lv_obj_create(parent);
+  lv_obj_set_size(box, w, h);
+  lv_obj_set_style_bg_opa(box, LV_OPA_TRANSP, 0);
+  lv_obj_set_style_border_width(box, 0, 0);
+  lv_obj_set_style_pad_all(box, 0, 0);
+  lv_obj_remove_flag(box, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_add_flag(box, LV_OBJ_FLAG_EVENT_BUBBLE);  // แตะตรงไหนก็ปิดหน้าได้เหมือนเดิม
+  return box;
+}
 
-  int pct = (int)(viz.quotaPct + 0.5f);
-  uint32_t col = pct >= 80 ? C_DOWN : pct >= 50 ? C_WARN : C_UP;
+static const int kNavW = 64, kBodyW = 480 - kNavW;
+static const int kGraphW = kBodyW - 32, kGraphH = 72, kGraphTop = 20;
 
-  lv_obj_t* arc = lv_arc_create(row);
-  lv_obj_set_size(arc, 96, 96);
-  lv_obj_align(arc, LV_ALIGN_LEFT_MID, 0, 0);
-  lv_arc_set_rotation(arc, 270);
-  lv_arc_set_bg_angles(arc, 0, 360);
-  lv_arc_set_range(arc, 0, 100);
-  lv_arc_set_value(arc, max(pct, 1));  // 0% จะมองไม่เห็นเลยว่ามีวง
-  lv_obj_remove_style(arc, nullptr, LV_PART_KNOB);
-  lv_obj_clear_flag(arc, LV_OBJ_FLAG_CLICKABLE);
-  lv_obj_set_style_arc_color(arc, lv_color_hex(0x232C4A), LV_PART_MAIN);
-  lv_obj_set_style_arc_color(arc, lv_color_hex(col), LV_PART_INDICATOR);
-  lv_obj_set_style_arc_width(arc, 11, LV_PART_MAIN);
-  lv_obj_set_style_arc_width(arc, 11, LV_PART_INDICATOR);
+// สีแถบโควตา — แดงทันทีที่ใช้ "เร็วกว่าเข็มนาฬิกา" ไม่ต้องรอถึงเกณฑ์ %
+// (สูตรจาก tamaclaude: usage_bar_color) "60% ตอนเหลือเวลาอีกครึ่ง" เป็นปัญหา
+// คนละแบบกับ "60% ตอนหมดเวลาพอดี" — เกณฑ์ % อย่างเดียวแยกสองอย่างนี้ไม่ออก
+static uint32_t quotaBarColor(float pct, int minutesLeft, int windowMin) {
+  if (pct < 0) return C_MUTED;
+  if (minutesLeft > 0 && windowMin > 0) {
+    int elapsed = windowMin - minutesLeft;
+    elapsed = constrain(elapsed, 0, windowMin);
+    if (pct * windowMin > (float)elapsed * 100) return C_DOWN;  // ใช้นำเวลา = เตือน
+  }
+  return pct >= 85 ? C_DOWN : pct >= 60 ? C_WARN : C_UP;
+}
 
-  lv_obj_t* num = lv_label_create(arc);
-  lv_obj_set_style_text_font(num, &thai22, 0);
+// หนึ่งแถวโควตา: % ตัวโต · เวลารีเซ็ต · ป้ายชื่อรอบ · แถบยาว + ขีดบอกจังหวะที่ควรใช้
+// เลย์เอาต์ตาม tamaclaude (ct_ui.c: build_usage/layout_usage)
+static void drawQuotaRow(lv_obj_t* parent, float pct, int minutesLeft, int windowMin,
+                         const char* label, uint32_t pillCol) {
+  // 66 = เลข %(thai36 สูง ~40) + ช่องหายใจ 10 + ราง 10 + ขอบล่าง 6
+  // เตี้ยกว่านี้เลขจะนั่งทับรางทันที — thai36 สูงกว่า montserrat_24 ของต้นฉบับ
+  const int rowW = kGraphW;
+  lv_obj_t* row = plainBox(parent, rowW, 66);
+
+  const uint32_t col = quotaBarColor(pct, minutesLeft, windowMin);
+  const bool known = pct >= 0;
+
+  lv_obj_t* num = lv_label_create(row);
+  lv_obj_set_style_text_font(num, &thai36, 0);
   lv_obj_set_style_text_color(num, lv_color_hex(col), 0);
-  lv_label_set_text_fmt(num, "%d%%", pct);
-  lv_obj_center(num);
+  if (known) lv_label_set_text_fmt(num, "%d%%", (int)(pct + 0.5f));
+  else lv_label_set_text(num, "--%");  // ไม่รู้ = ขีด ไม่ใช่ 0 ที่ดูเหมือนข้อมูลจริง
+  lv_obj_align(num, LV_ALIGN_TOP_LEFT, 0, 0);
 
-  lv_obj_t* info = lv_label_create(row);
-  lv_obj_set_style_text_font(info, &thai18, 0);
-  lv_obj_set_style_text_color(info, lv_color_hex(C_MUTED), 0);
-  setThaiText(info, (String("รอบ 5 ชม. · รีเซ็ตอีก ") + (viz.quotaMinutes / 60) + " ชม. " +
-                     (viz.quotaMinutes % 60) + " นาที" +
-                     (viz.quotaWeekPct >= 0 ? String("\nรอบ 7 วัน · ") + (int)viz.quotaWeekPct + "%" : ""))
-                        .c_str());
-  lv_obj_align(info, LV_ALIGN_LEFT_MID, 112, 0);
+  // เวลารีเซ็ตเกาะขอบขวาของเลข % ไม่ใช่พิกัดตายตัว — เลขสองหลักกับสามหลักกว้างไม่เท่ากัน
+  lv_obj_t* reset = lv_label_create(row);
+  lv_obj_set_style_text_font(reset, &thai18, 0);
+  lv_obj_set_style_text_color(reset, lv_color_hex(C_MUTED), 0);
+  // "รีเซ็ตอีก" ยาวกว่า "Resets in" ของต้นฉบับพอที่จะมุดใต้ pill — ตัดคำเหลือ "อีก"
+  // pill บอกอยู่แล้วว่ากำลังอ่านรอบไหน คำเต็มไม่ได้เพิ่มความหมาย
+  char buf[40];
+  if (minutesLeft <= 0) snprintf(buf, sizeof(buf), " ");
+  else if (minutesLeft >= 1440)
+    snprintf(buf, sizeof(buf), "อีก %d วัน %d ชม.", minutesLeft / 1440, (minutesLeft % 1440) / 60);
+  else if (minutesLeft >= 60)
+    snprintf(buf, sizeof(buf), "อีก %d ชม. %02d นาที", minutesLeft / 60, minutesLeft % 60);
+  else
+    snprintf(buf, sizeof(buf), "อีก %d นาที", minutesLeft);
+  setThaiText(reset, buf);
+  lv_obj_update_layout(num);  // ต้องบังคับคิดขนาดใหม่ ไม่งั้นเกาะความกว้างของเฟรมก่อน
+  lv_obj_align_to(reset, num, LV_ALIGN_OUT_RIGHT_MID, 12, 2);
+  // กันข้อความยาวมุดใต้ pill — ตัดที่ระยะจริงที่เหลือ ไม่ใช่เดาความยาวคำ
+  int resetMaxW = rowW - lv_obj_get_x(reset) - 96;
+  if (resetMaxW > 40) setThaiTextFit(reset, buf, &thai18, resetMaxW);
+
+  // ป้ายชื่อรอบ — สีคือสิ่งที่บอกว่ากำลังอ่านแถวไหน ก่อนจะทันอ่านตัวอักษร
+  lv_obj_t* pill = lv_obj_create(row);
+  lv_obj_set_size(pill, 84, 26);
+  lv_obj_align(pill, LV_ALIGN_TOP_RIGHT, 0, 2);
+  lv_obj_set_style_bg_color(pill, lv_color_hex(pillCol), 0);
+  lv_obj_set_style_border_width(pill, 0, 0);
+  lv_obj_set_style_radius(pill, 13, 0);
+  lv_obj_set_style_pad_all(pill, 0, 0);
+  lv_obj_remove_flag(pill, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_add_flag(pill, LV_OBJ_FLAG_EVENT_BUBBLE);
+  lv_obj_t* pillText = lv_label_create(pill);
+  lv_obj_set_style_text_font(pillText, &thai18, 0);
+  lv_obj_set_style_text_color(pillText, lv_color_hex(0x0E1424), 0);  // หมึกเข้มบนพื้นสว่าง
+  setThaiText(pillText, label);
+  lv_obj_center(pillText);
+
+  // รางต้องสว่างกว่าพื้นพอให้เห็นความยาวเต็มตอนใช้ไปน้อย
+  lv_obj_t* track = lv_obj_create(row);
+  lv_obj_set_size(track, rowW, 10);
+  lv_obj_align(track, LV_ALIGN_BOTTOM_LEFT, 0, -6);
+  lv_obj_set_style_bg_color(track, lv_color_hex(0x2B3556), 0);
+  lv_obj_set_style_border_width(track, 0, 0);
+  lv_obj_set_style_radius(track, LV_RADIUS_CIRCLE, 0);
+  lv_obj_set_style_pad_all(track, 0, 0);
+  lv_obj_remove_flag(track, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_add_flag(track, LV_OBJ_FLAG_EVENT_BUBBLE);
+
+  int w = known ? (int)(rowW * constrain(pct, 0.0f, 100.0f) / 100.0f + 0.5f) : 0;
+  if (w > 0) {
+    lv_obj_t* fill = lv_obj_create(track);
+    lv_obj_set_size(fill, w, 10);
+    lv_obj_set_pos(fill, 0, 0);
+    lv_obj_set_style_bg_color(fill, lv_color_hex(col), 0);
+    lv_obj_set_style_border_width(fill, 0, 0);
+    lv_obj_set_style_radius(fill, LV_RADIUS_CIRCLE, 0);
+    lv_obj_set_style_pad_all(fill, 0, 0);
+    lv_obj_remove_flag(fill, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_add_flag(fill, LV_OBJ_FLAG_EVENT_BUBBLE);
+  }
+
+  // ขีดบอกว่า "ควรใช้ถึงไหนแล้ว" — คำนวณจากเวลาที่เหลือล้วน ๆ ไม่ต้องส่งอะไรเพิ่มมาจากหลังบ้าน
+  if (minutesLeft > 0 && windowMin > 0) {
+    int elapsed = constrain(windowMin - minutesLeft, 0, windowMin);
+    lv_obj_t* pace = lv_obj_create(row);
+    lv_obj_set_size(pace, 2, 16);
+    // คร่อมรางพอดี ยื่นพ้นหัวท้ายข้างละ 3 — ยาวกว่านี้อ่านเป็นเส้นแบ่ง ไม่ใช่หมุดบอกจังหวะ
+    lv_obj_align(pace, LV_ALIGN_BOTTOM_LEFT, (int)((int64_t)rowW * elapsed / windowMin), -3);
+    lv_obj_set_style_bg_color(pace, lv_color_hex(C_TEXT), 0);
+    lv_obj_set_style_border_width(pace, 0, 0);
+    lv_obj_set_style_radius(pace, 0, 0);
+    lv_obj_set_style_pad_all(pace, 0, 0);
+    lv_obj_remove_flag(pace, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_add_flag(pace, LV_OBJ_FLAG_EVENT_BUBBLE);
+  }
+}
+
+// โควตาจริงจาก Anthropic — สองรอบ อ่านเทียบกันได้ในบรรทัดเดียวกัน
+static void drawQuota(lv_obj_t* parent, const CardViz& viz) {
+  drawQuotaRow(parent, viz.quotaPct, viz.quotaMinutes, 5 * 60, "รอบนี้", 0xE8A87C);
+  if (viz.quotaWeekPct >= 0)
+    drawQuotaRow(parent, viz.quotaWeekPct, viz.quotaWeekMinutes, 7 * 24 * 60, "7 วัน", 0x7FCF8E);
 }
 
 // แท่งนอนพร้อมป้ายชื่อ+ค่า — ใช้กับ token usage ที่ค่าต่างกันหลักพันเท่า
@@ -557,21 +660,6 @@ static lv_obj_t* makeChart(lv_obj_t* parent, int h) {
   lv_chart_set_div_line_count(chart, 4, 0);
   return chart;
 }
-
-// กล่องโปร่งไม่มีขอบ ไม่เลื่อน — ใช้เป็นโครงวางของอย่างเดียว
-static lv_obj_t* plainBox(lv_obj_t* parent, int w, int h) {
-  lv_obj_t* box = lv_obj_create(parent);
-  lv_obj_set_size(box, w, h);
-  lv_obj_set_style_bg_opa(box, LV_OPA_TRANSP, 0);
-  lv_obj_set_style_border_width(box, 0, 0);
-  lv_obj_set_style_pad_all(box, 0, 0);
-  lv_obj_remove_flag(box, LV_OBJ_FLAG_SCROLLABLE);
-  lv_obj_add_flag(box, LV_OBJ_FLAG_EVENT_BUBBLE);  // แตะตรงไหนก็ปิดหน้าได้เหมือนเดิม
-  return box;
-}
-
-static const int kNavW = 64, kBodyW = 480 - kNavW;
-static const int kGraphW = kBodyW - 32, kGraphH = 72, kGraphTop = 20;
 
 // WMO code → ไอคอน Google (ชุด dark เพราะ UI พื้นเข้ม) — ตารางย่อเท่าที่ไทยเจอจริง
 static const lv_image_dsc_t* weatherIcon(uint16_t code) {
@@ -917,6 +1005,194 @@ static void drawScore(lv_obj_t* parent, const CardViz& viz) {
   lv_obj_center(num);
 }
 
+// ---------------------------------------------------------------- มาสคอต Claude
+// รูปมาสคอตมาจาก tamaclaude (MIT) — ดู src/tamaclaude/README.md
+// ที่นี่มีแค่ตัววาด: rect list ในพิกัด unit → lv_draw_rect ใน LV_EVENT_DRAW_MAIN
+// ponytail: วาดใน draw event ไม่ต้องจอง canvas buffer เลยสักไบต์
+
+// px ต่อ unit — กรอบวาดมาตรฐานคือ 23.9 x 17.6 unit (กว้างกว่าตัว เพราะเผื่อที่ให้ prop)
+static const float kMascotCardPx = 2.6f;   // 62 x 46 px บนการ์ด
+static const float kMascotBigPx = 8.0f;    // 191 x 141 px ในหน้า detail
+
+static lv_timer_t* mascotTimer = nullptr;
+static float mascotPhase = 0;   // 0..1 ต่อหนึ่งลูปอนิเมชัน (~1 วินาที)
+static int mascotCycle = 0;
+
+// ทะเบียนมาสคอตที่อยู่บนจอ — ตัวจับเวลาตัวเดียวสั่งวาดใหม่ให้ทุกตัว
+// ถอนตัวเองออกตอนถูกลบ (การ์ดถูกสร้างใหม่ทุกรอบ refresh) ไม่งั้นจะเหลือ pointer ค้าง
+static lv_obj_t* gMascots[4];
+static int gMascotN = 0;
+
+// เครื่องมือที่ Claude ใช้อยู่ → ท่าของมาสคอต (prop บอกว่าทำอะไร)
+static ct_state_t claudeVisualState() {
+  switch (gClaude.state) {
+    case CL_WAITING: return CT_STATE_WAITING;    // นาฬิกาลอยเหนือหัว
+    case CL_IDLE:    return CT_STATE_SLEEPING;   // zZ
+    case CL_NONE:    return CT_STATE_SLEEPING;
+    default: break;
+  }
+  const char* t = gClaude.tool;
+  if (!t[0]) return CT_STATE_THINKING;                                  // จุดไข่ปลา
+  if (!strcmp(t, "Bash") || !strcmp(t, "BashOutput")) return CT_STATE_BUILDING;  // ค้อน
+  if (!strcmp(t, "Read") || !strcmp(t, "Grep") || !strcmp(t, "Glob")) return CT_STATE_READING;
+  if (!strcmp(t, "WebSearch") || !strcmp(t, "WebFetch")) return CT_STATE_SEARCHING;  // ลูกโลก
+  if (!strcmp(t, "Task") || !strcmp(t, "Agent")) return CT_STATE_CONDUCTING;  // วาทยกร
+  return CT_STATE_WRITING;  // Edit/Write/อื่น ๆ — นั่งพิมพ์แล็ปท็อป
+}
+
+// ต้นฉบับวาดแบบนี้เป๊ะ (ct_ui.c: draw_mascot_rects) — clamp รัศมีเองไม่ปล่อยให้ LVGL
+static void drawMascotRects(lv_layer_t* layer, const ct_rects_t* rects, float ox, float oy, float px) {
+  lv_draw_rect_dsc_t dsc;
+  lv_draw_rect_dsc_init(&dsc);
+  dsc.bg_opa = LV_OPA_COVER;
+  dsc.border_width = 0;
+
+  for (int i = 0; i < rects->count; i++) {
+    const ct_rect_t* r = &rects->items[i];
+    int x0 = (int)lroundf(ox + r->x * px);
+    int y0 = (int)lroundf(oy + r->y * px);
+    int x1 = (int)lroundf(ox + (r->x + r->w) * px);
+    int y1 = (int)lroundf(oy + (r->y + r->h) * px);
+    if (x1 <= x0 || y1 <= y0) continue;  // ชิ้นที่บางกว่าหนึ่งพิกเซลหายไปเลย
+    int radius = (int)lroundf(r->r * px);
+    int half = ((x1 - x0) < (y1 - y0) ? (x1 - x0) : (y1 - y0)) / 2;
+    dsc.radius = radius < half ? radius : half;
+    dsc.bg_color = lv_color_hex(((r->color & 0xF800) << 8) | ((r->color & 0x07E0) << 5) |
+                                ((r->color & 0x001F) << 3));  // RGB565 → 888
+    lv_area_t a = {.x1 = x0, .y1 = y0, .x2 = x1 - 1, .y2 = y1 - 1};
+    lv_draw_rect(layer, &dsc, &a);
+  }
+}
+
+// user_data เก็บ px แบบ float ที่ยัดลง pointer — เลี่ยง malloc ต่อมาสคอตหนึ่งตัว
+union MascotUD { void* p; float px; };
+
+static void mascotDraw(lv_event_t* e) {
+  lv_obj_t* obj = (lv_obj_t*)lv_event_get_target_obj(e);
+  lv_layer_t* layer = lv_event_get_layer(e);
+  MascotUD ud;
+  ud.p = lv_obj_get_user_data(obj);
+  const float px = ud.px;
+
+  lv_area_t coords;
+  lv_obj_get_coords(obj, &coords);
+
+  // ponytail: static — ct_rects_t หนัก 1.7KB ใหญ่เกินจะวางบน stack ของ draw callback
+  static ct_rects_t rects;  // draw callback รันบน task เดียว ไม่ reentrant
+  ct_mascot_build_centered(&rects, claudeVisualState(), mascotPhase, true, mascotCycle);
+  // ต้นฉบับวาง "ฝ่าเท้า" ไว้ที่ y = 12 unit — จับก้นกรอบวาดให้ตรงฝ่าเท้าเสมอ
+  drawMascotRects(layer, &rects, coords.x1 - CT_BOX_X0 * px,
+                  coords.y2 + 1 - CT_BOX_Y1 * px, px);
+}
+
+// เดินอนิเมชันของทุกตัวพร้อมกันจากตัวจับเวลาตัวเดียว แล้วสั่งวาดใหม่
+static void mascotTick(lv_timer_t*) {
+  mascotPhase += 0.08f;  // ~12 fps, ลูปละ ~1 วินาที
+  if (mascotPhase >= 1.0f) { mascotPhase -= 1.0f; mascotCycle++; }
+  for (int i = 0; i < gMascotN; i++) lv_obj_invalidate(gMascots[i]);
+}
+
+static void mascotDeleted(lv_event_t* e) {
+  lv_obj_t* obj = (lv_obj_t*)lv_event_get_target_obj(e);
+  for (int i = 0; i < gMascotN; i++) {
+    if (gMascots[i] != obj) continue;
+    gMascots[i] = gMascots[--gMascotN];
+    return;
+  }
+}
+
+// px = พิกเซลต่อ unit. คืน object ที่เอาไป align ต่อได้ — ฝ่าเท้าอยู่ที่ขอบล่างพอดี
+static lv_obj_t* makeMascot(lv_obj_t* parent, float px) {
+  const int w = (int)lroundf((CT_BOX_X1 - CT_BOX_X0) * px);
+  const int h = (int)lroundf((CT_BOX_Y1 - CT_BOX_Y0) * px);
+  lv_obj_t* o = plainBox(parent, w, h);
+  lv_obj_remove_flag(o, LV_OBJ_FLAG_CLICKABLE);
+  MascotUD ud;
+  ud.px = px;
+  lv_obj_set_user_data(o, ud.p);
+  lv_obj_add_event_cb(o, mascotDraw, LV_EVENT_DRAW_MAIN, nullptr);
+  lv_obj_add_event_cb(o, mascotDeleted, LV_EVENT_DELETE, nullptr);
+  if (gMascotN < (int)(sizeof(gMascots) / sizeof(gMascots[0]))) gMascots[gMascotN++] = o;
+  if (!mascotTimer) mascotTimer = lv_timer_create(mascotTick, 80, nullptr);
+  return o;
+}
+
+// หน้า detail: ฉากแบบต้นฉบับ — ฟ้า เมฆ หญ้า แล้วมาสคอตยืนบนเส้นขอบฟ้า
+static void drawClaude(lv_obj_t* parent) {
+  const int stageH = 150;
+  lv_obj_t* stage = lv_obj_create(parent);
+  lv_obj_set_size(stage, kGraphW, stageH);
+  lv_obj_set_style_bg_color(stage, lv_color_hex(0xBDDFF7), 0);  // CT_COL_SKY_DAY
+  lv_obj_set_style_border_width(stage, 0, 0);
+  lv_obj_set_style_radius(stage, 10, 0);
+  lv_obj_set_style_pad_all(stage, 0, 0);
+  lv_obj_remove_flag(stage, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_add_flag(stage, LV_OBJ_FLAG_EVENT_BUBBLE);
+
+  const int horizon = stageH - 34;
+  lv_obj_t* grass = lv_obj_create(stage);
+  lv_obj_set_size(grass, kGraphW, stageH - horizon);
+  lv_obj_align(grass, LV_ALIGN_BOTTOM_MID, 0, 0);
+  lv_obj_set_style_bg_color(grass, lv_color_hex(0x6BAB5A), 0);  // CT_COL_GRASS_DAY
+  lv_obj_set_style_border_width(grass, 0, 0);
+  lv_obj_set_style_radius(grass, 0, 0);
+  lv_obj_set_style_pad_all(grass, 0, 0);
+  lv_obj_remove_flag(grass, LV_OBJ_FLAG_SCROLLABLE);
+  lv_obj_add_flag(grass, LV_OBJ_FLAG_EVENT_BUBBLE);
+
+  // เมฆ 2 ก้อน — ก้อนละสองแถบซ้อน ให้ได้ทรงป่องกลางแบบต้นฉบับ
+  const int cloud[2][2] = {{40, 22}, {kGraphW - 120, 40}};
+  for (auto& c : cloud) {
+    for (int k = 0; k < 2; k++) {
+      lv_obj_t* p = lv_obj_create(stage);
+      lv_obj_set_size(p, k ? 46 : 30, 9);
+      lv_obj_set_pos(p, c[0] + (k ? 0 : 8), c[1] + (k ? 8 : 0));
+      lv_obj_set_style_bg_color(p, lv_color_hex(0xF7FBFF), 0);
+      lv_obj_set_style_border_width(p, 0, 0);
+      lv_obj_set_style_radius(p, 4, 0);
+      lv_obj_set_style_pad_all(p, 0, 0);
+      lv_obj_remove_flag(p, LV_OBJ_FLAG_SCROLLABLE);
+      lv_obj_add_flag(p, LV_OBJ_FLAG_EVENT_BUBBLE);
+    }
+  }
+
+  lv_obj_t* m = makeMascot(stage, kMascotBigPx);
+  lv_obj_align(m, LV_ALIGN_BOTTOM_LEFT, 26, -(stageH - horizon) + 6);
+
+  // ป้ายชื่อโปรเจกต์ใต้เท้า เหมือนต้นฉบับ
+  lv_obj_t* tag = lv_label_create(stage);
+  lv_obj_set_style_text_font(tag, &thai14, 0);
+  lv_obj_set_style_text_color(tag, lv_color_hex(0x0A2A12), 0);
+  setThaiText(tag, gClaude.project[0] ? gClaude.project : "ไม่มี session");
+  lv_obj_align_to(tag, m, LV_ALIGN_OUT_BOTTOM_MID, 0, 2);
+
+  const char* headline = gClaude.state == CL_BUSY      ? "กำลังทำงาน"
+                         : gClaude.state == CL_WAITING ? "รอคำตอบจากเรา"
+                                                       : "ไม่มีอะไรทำ";
+  lv_obj_t* h = lv_label_create(stage);
+  lv_obj_set_style_text_font(h, &thai22, 0);
+  lv_obj_set_style_text_color(h, lv_color_hex(0x14304A), 0);
+  setThaiText(h, headline);
+  lv_obj_align(h, LV_ALIGN_TOP_RIGHT, -14, 16);
+
+  if (gClaude.tool[0]) {
+    lv_obj_t* p = lv_label_create(stage);
+    lv_obj_set_style_text_font(p, &thai18, 0);
+    lv_obj_set_style_text_color(p, lv_color_hex(0x3A5A74), 0);
+    setThaiText(p, gClaude.tool);
+    lv_obj_align(p, LV_ALIGN_TOP_RIGHT, -14, 44);
+  }
+  if (gClaude.live > 1) {
+    char line[48];
+    snprintf(line, sizeof(line), "อีก %d session ทำงานอยู่", gClaude.live - 1);
+    lv_obj_t* n = lv_label_create(stage);
+    lv_obj_set_style_text_font(n, &thai18, 0);
+    lv_obj_set_style_text_color(n, lv_color_hex(0x3A5A74), 0);
+    setThaiText(n, line);
+    lv_obj_align(n, LV_ALIGN_TOP_RIGHT, -14, 68);
+  }
+}
+
 // โครงหน้าเต็มจอ: คอลัมน์เนื้อหา (เลื่อนได้) + แถบปุ่มขวาถาวร ปิด/ขึ้น/ลง
 // ปุ่มต้องอยู่คนละ container กับเนื้อหา ไม่ใช่ปุ่มลอย — ปุ่มลอยทับเนื้อหาที่กว้างเต็มจอ
 static lv_obj_t* makeFullView(lv_obj_t* parent, lv_obj_t** bodyOut) {
@@ -1017,6 +1293,8 @@ static lv_obj_t* pomoView = nullptr;
 static lv_obj_t* pomoTimeLbl = nullptr, *pomoPhaseLbl = nullptr, *pomoBtnLbl = nullptr,
                 *pomoDoneLbl = nullptr;
 static lv_obj_t* pomoCardVal = nullptr, *remindCardVal = nullptr;
+// คำใบ้ "แตะเพื่อปิด" โชว์อยู่หรือยัง — ต้องรีเซ็ตคู่กับ remindCardVal เพราะการ์ดถูกสร้างใหม่ทุกรอบ refresh
+static bool remindHintShown = false;
 
 static uint32_t pomoLeft() {
   if (!pomoRun) return pomoLeftMs;
@@ -1146,6 +1424,25 @@ static void tickPomodoro(int nowMin) {
     else snprintf(b, sizeof(b), "วันนี้ครบแล้ว");
     setThaiText(remindCardVal, b);
     lv_obj_set_style_text_color(remindCardVal, lv_color_hex(alarmMsg ? alertCol : C_TEXT), 0);
+
+    // ทั้งใบกระพริบ ไม่ใช่แค่สีตัวอักษร — ตัวอักษรใบเดียวใน 12 ใบมองไม่เห็นจากมุมตา
+    // และบอกวิธีปิดไว้บนใบเลย ไม่ใช่ซ่อนในหน้า detail ที่ต้องกดเข้าไปถึงจะเห็น
+    lv_obj_t* card = lv_obj_get_parent(remindCardVal);
+    lv_obj_set_style_bg_color(card, lv_color_hex(blink ? 0x3A2A12 : C_CARD), 0);
+    // คำใบ้เปลี่ยนแค่ตอนขึ้น/ลงเตือน ไม่ใช่ทุกวินาที — จัดข้อความใหม่ทุก tick เปลืองเปล่า
+    lv_obj_t* hint = lv_obj_get_child(card, 2);  // ลูกที่ 2 = บรรทัดคำอธิบาย ปกติซ่อนอยู่
+    if (hint && (bool)alarmMsg != remindHintShown) {
+      remindHintShown = alarmMsg;
+      if (alarmMsg) {
+        setThaiText(hint, "แตะเพื่อปิด");
+        lv_obj_set_style_text_font(hint, &thai14, 0);
+        lv_obj_set_style_text_color(hint, lv_color_hex(C_WARN), 0);
+        lv_obj_align(hint, LV_ALIGN_BOTTOM_LEFT, 10, -8);
+        lv_obj_remove_flag(hint, LV_OBJ_FLAG_HIDDEN);
+      } else {
+        lv_obj_add_flag(hint, LV_OBJ_FLAG_HIDDEN);
+      }
+    }
   }
   if (pomoView && !lv_obj_has_flag(pomoView, LV_OBJ_FLAG_HIDDEN)) {
     lv_label_set_text(pomoTimeLbl, t);
@@ -1514,7 +1811,13 @@ static void cardClicked(lv_event_t* e) {
   lv_obj_t* card = (lv_obj_t*)lv_event_get_current_target(e);
   int cardIdx = (int)(intptr_t)lv_obj_get_user_data(card);
   if (cardIdx == kPomoIdx) { openPomoView(); return; }
-  if (cardIdx == kRemindIdx) alarmMsg = nullptr;  // แตะ = รับทราบ หยุดกระพริบ แล้วเปิด detail ปกติ
+  // กำลังเตือนอยู่ → แตะ = ปิดเสียงอย่างเดียว จบในจังหวะเดียว
+  // เด้งเข้า detail ต่อจะกลายเป็นว่าปิดเตือนแล้วต้องกดปิดหน้าอีกที ทั้งที่ตั้งใจแค่ "รับทราบ"
+  // อยากอ่านรายละเอียดค่อยแตะซ้ำตอนไม่ได้กระพริบ
+  if (cardIdx == kRemindIdx && alarmMsg) {
+    alarmMsg = nullptr;
+    return;
+  }
   // การ์ดปฏิทินเข้าหน้าเดือนก่อน แล้วค่อยแตะรายวันเข้า detail
   if (cardIdx >= 0 && cardIdx < cardCount && cardViz[cardIdx].kind == VIZ_CALENDAR) {
     openMonthView();
@@ -1543,6 +1846,7 @@ static void cardClicked(lv_event_t* e) {
         break;
       case VIZ_HOURLY: drawWeatherHeader(vizBox); drawRainHours(vizBox); drawForecast(vizBox); break;
       case VIZ_SAJU:   drawSaju(vizBox); break;
+      case VIZ_CLAUDE: drawClaude(vizBox); break;
       case VIZ_SCORE:  drawScore(vizBox, cardViz[idx]); break;
       case VIZ_PRICE:
         gStockCur = cardViz[idx];
@@ -1630,9 +1934,18 @@ static void addCard(const char* title, const char* value, const char* detail, co
   lv_obj_add_flag(d, LV_OBJ_FLAG_HIDDEN);  // เก็บไว้ให้หน้า detail อ่าน ไม่โชว์บนการ์ด
   setThaiText(d, detail);
 
-  // การ์ดที่ไม่มีเส้นแนวโน้มให้ค่าอยู่กลางการ์ด จะได้ดูตั้งใจ ไม่ใช่ว่างเพราะลืม
-  if (viz.sparkN > 1) addSpark(card, viz);
-  else lv_obj_align(v, LV_ALIGN_LEFT_MID, 10, 6);
+  // การ์ด Claude โชว์มาสคอตแทนกราฟ — ท่าทางบอกสถานะได้เร็วกว่าอ่านตัวหนังสือ
+  if (viz.kind == VIZ_CLAUDE) {
+    // มาสคอตอยู่แถวล่าง (y 54..100) ส่วนข้อความอยู่แถวบน (y 8..54) — คนละชั้น ไม่ต้องหลบกัน
+    // ให้ข้อความกินความกว้างเต็มใบเหมือนการ์ดอื่น จะได้เห็นชื่อโปรเจกต์ไม่ใช่ "fi..."
+    lv_obj_t* m = makeMascot(card, kMascotCardPx);
+    lv_obj_align(m, LV_ALIGN_BOTTOM_RIGHT, -6, -4);
+  } else if (viz.sparkN > 1) {
+    // การ์ดที่ไม่มีเส้นแนวโน้มให้ค่าอยู่กลางการ์ด จะได้ดูตั้งใจ ไม่ใช่ว่างเพราะลืม
+    addSpark(card, viz);
+  } else {
+    lv_obj_align(v, LV_ALIGN_LEFT_MID, 10, 6);
+  }
 }
 
 // สองใบนี้ไม่ได้มาจากหลังบ้าน — วางตายตัวที่ช่อง 3-4 (หลังการ์ดหลังบ้าน 2 ใบแรก)
@@ -1649,7 +1962,7 @@ static void addLocalCards() {
            "แตะเพื่อเปิดหน้าจับเวลา ทำงาน %d นาที พัก %d นาที", cfgWorkMin, cfgBreakMin);
   snprintf(remindDetail, sizeof(remindDetail),
            "กินน้ำ ทุก %d นาที %d:%02d-%d:%02d\nข้าวเที่ยง %d:%02d\nเลิกงาน %d:%02d\n"
-           "แตะการ์ดเพื่อรับทราบ",
+           "ตอนกระพริบ แตะการ์ดครั้งเดียวเพื่อปิด · ไม่แตะก็เงียบเองใน 2 นาที",
            cfgWaterEvery, cfgWaterFrom / 60, cfgWaterFrom % 60, cfgWaterTo / 60, cfgWaterTo % 60,
            cfgLunch / 60, cfgLunch % 60, cfgOffWork / 60, cfgOffWork % 60);
 
@@ -1832,6 +2145,7 @@ static bool fetchAndRender() {
 
   lv_obj_clean(cardList);
   pomoCardVal = remindCardVal = nullptr;  // ป้ายเก่าถูกลบไปแล้ว — ห้ามให้ tick แตะต่อ
+  remindHintShown = false;                // การ์ดใหม่ซ่อนคำใบ้ไว้ ต้องให้ tick วาดใหม่ได้
   if (vizBox) { lv_obj_delete(vizBox); vizBox = nullptr; }
   int n = 0;
   cardCount = 0;
@@ -1881,6 +2195,7 @@ static bool fetchAndRender() {
         viz.quotaPct = sess["pct"] | 0.0f;
         viz.quotaMinutes = sess["minutesLeft"] | 0;
         viz.quotaWeekPct = extra["quota"]["week"]["pct"] | -1.0f;
+        viz.quotaWeekMinutes = extra["quota"]["week"]["minutesLeft"] | 0;
       }
       JsonObject u = extra["usage"][0];
       const char* names[] = {"ส่งเข้า", "ตอบกลับ", "อ่านแคช", "เขียนแคช"};
@@ -1918,6 +2233,18 @@ static bool fetchAndRender() {
         gWeather.fcN++;
       }
       if (viz.n) viz.kind = VIZ_HOURLY;
+    } else if (!strcmp(type, "claude")) {
+      gClaude = ClaudeViz{};
+      const char* st = extra["state"] | "none";
+      gClaude.state = !strcmp(st, "busy")      ? CL_BUSY
+                      : !strcmp(st, "waiting") ? CL_WAITING
+                      : !strcmp(st, "idle")    ? CL_IDLE
+                                               : CL_NONE;
+      strncpy(gClaude.tool, extra["tool"] | "", sizeof(gClaude.tool) - 1);
+      strncpy(gClaude.project, extra["project"] | "", sizeof(gClaude.project) - 1);
+      gClaude.live = extra["live"] | 0;
+      viz.kind = VIZ_CLAUDE;
+      viz.sparkN = 0;  // มาสคอตกินที่ตรงกราฟย่อ จะวาดสองอย่างซ้อนกันไม่ได้
     } else if (!strcmp(type, "saju") && extra["saju"]) {
       JsonObject sj = extra["saju"];
       gSaju = SajuViz{};
@@ -2041,6 +2368,7 @@ void setup() {
   tft.fillScreen(TFT_BLACK);
 
   lv_init();
+  ct_mascot_init();  // คำนวณกรอบของแต่ละท่าไว้ล่วงหน้า — ต้องเรียกก่อนวาดมาสคอตครั้งแรก
   lv_tick_set_cb([]() -> uint32_t { return millis(); });
   lv_display_t* disp = lv_display_create(480, 320);
   lv_display_set_flush_cb(disp, flushCb);
