@@ -18,6 +18,7 @@
 #include <esp_task_wdt.h>
 
 #include "icons/weather_icons.h"
+#include "pomodoro_sched.h"
 
 LV_FONT_DECLARE(thai14);
 LV_FONT_DECLARE(thai18);
@@ -999,6 +1000,159 @@ static lv_obj_t* makeFullView(lv_obj_t* parent, lv_obj_t** bodyOut) {
   return view;
 }
 
+// ---------- โพโมโดโร + เตือนกิจวัตร ----------
+// ทำงานในเครื่องล้วน: จับเวลาด้วย millis (ไม่วูบตาม NTP) เตือนกิจวัตรอิงนาฬิกาจริง
+// การ์ด 2 ใบนี้ไม่ได้มาจากหลังบ้าน จึงใช้ user_data ค่าติดลบเป็นตัวแยกออกจากการ์ด backend
+static const int kPomoIdx = -2, kRemindIdx = -3;
+
+static bool pomoRun = false, pomoBreak = false;
+static uint32_t pomoDeadline = 0, pomoLeftMs = (uint32_t)kPomoWorkMin * 60000UL;
+static int pomoDone = 0;
+
+// ปลุกที่ยังไม่รับทราบ — กระพริบจนกดการ์ด/ปุ่ม หรือครบ 2 นาทีก็เลิกเอง
+static const char* alarmMsg = nullptr;
+static uint32_t alarmAt = 0;
+
+static lv_obj_t* pomoView = nullptr;
+static lv_obj_t* pomoTimeLbl = nullptr, *pomoPhaseLbl = nullptr, *pomoBtnLbl = nullptr,
+                *pomoDoneLbl = nullptr;
+static lv_obj_t* pomoCardVal = nullptr, *remindCardVal = nullptr;
+
+static uint32_t pomoLeft() {
+  if (!pomoRun) return pomoLeftMs;
+  uint32_t now = millis();
+  return pomoDeadline > now ? pomoDeadline - now : 0;
+}
+
+static void pomoRefreshView() {
+  if (!pomoView) return;
+  char t[8];
+  fmtMMSS(t, sizeof(t), pomoLeft());
+  lv_label_set_text(pomoTimeLbl, t);
+  setThaiText(pomoBtnLbl, pomoRun ? "หยุด" : "เริ่ม");
+  setThaiText(pomoPhaseLbl, pomoBreak ? "ช่วงพัก" : "ช่วงทำงาน");
+  char b[32];
+  snprintf(b, sizeof(b), "วันนี้ครบ %d รอบ", pomoDone);
+  setThaiText(pomoDoneLbl, b);
+}
+
+static void pomoStartStop(lv_event_t*) {
+  alarmMsg = nullptr;
+  if (pomoRun) {
+    pomoLeftMs = pomoLeft();  // ค้างเวลาที่เหลือไว้ กดเริ่มต่อจากเดิมได้
+    pomoRun = false;
+  } else {
+    pomoDeadline = millis() + pomoLeftMs;
+    pomoRun = true;
+  }
+  pomoRefreshView();
+}
+
+static void pomoReset(lv_event_t*) {
+  alarmMsg = nullptr;
+  pomoRun = false;
+  pomoBreak = false;
+  pomoLeftMs = (uint32_t)kPomoWorkMin * 60000UL;
+  pomoRefreshView();
+}
+
+static void openPomoView() {
+  alarmMsg = nullptr;
+  if (!pomoView) {
+    lv_obj_t* body;
+    pomoView = makeFullView(lv_screen_active(), &body);
+    lv_obj_set_flex_align(body, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+
+    pomoPhaseLbl = lv_label_create(body);
+    lv_obj_set_style_text_font(pomoPhaseLbl, &thai22, 0);
+    lv_obj_set_style_text_color(pomoPhaseLbl, lv_color_hex(C_MUTED), 0);
+
+    pomoTimeLbl = lv_label_create(body);  // clock48 มีแค่ 0-9 : ° — MM:SS จึงใช้ได้
+    lv_obj_set_style_text_font(pomoTimeLbl, &clock48, 0);
+    lv_obj_set_style_text_color(pomoTimeLbl, lv_color_hex(C_TEXT), 0);
+
+    pomoDoneLbl = lv_label_create(body);
+    lv_obj_set_style_text_font(pomoDoneLbl, &thai18, 0);
+    lv_obj_set_style_text_color(pomoDoneLbl, lv_color_hex(C_MUTED), 0);
+
+    lv_obj_t* row = lv_obj_create(body);
+    lv_obj_set_size(row, kGraphW, 76);
+    lv_obj_set_style_bg_opa(row, LV_OPA_TRANSP, 0);
+    lv_obj_set_style_border_width(row, 0, 0);
+    lv_obj_set_style_pad_all(row, 0, 0);
+    lv_obj_set_style_pad_column(row, 16, 0);
+    lv_obj_set_flex_flow(row, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(row, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+    lv_obj_remove_flag(row, LV_OBJ_FLAG_SCROLLABLE);
+
+    // ยิงตั้งแต่ PRESSED เหมือนปุ่มอื่นทั้งจอ — resistive touch ปล่อยนิ้วแล้วพิกัดกระโดด
+    const struct { const char* txt; lv_event_cb_t cb; } btns[] = {
+      {nullptr, pomoStartStop}, {"รีเซ็ต", pomoReset}};
+    for (const auto& b : btns) {
+      lv_obj_t* btn = lv_button_create(row);
+      lv_obj_set_size(btn, 140, 60);
+      lv_obj_set_style_bg_color(btn, lv_color_hex(0x2A3556), 0);
+      lv_obj_set_style_radius(btn, 12, 0);
+      lv_obj_set_ext_click_area(btn, 8);
+      lv_obj_add_event_cb(btn, b.cb, LV_EVENT_PRESSED, nullptr);
+
+      lv_obj_t* lbl = lv_label_create(btn);
+      lv_obj_set_style_text_font(lbl, &thai22, 0);
+      lv_obj_set_style_text_color(lbl, lv_color_hex(C_TEXT), 0);
+      lv_obj_center(lbl);
+      if (b.txt) setThaiText(lbl, b.txt);
+      else pomoBtnLbl = lbl;
+    }
+  }
+  pomoRefreshView();
+  lv_obj_remove_flag(pomoView, LV_OBJ_FLAG_HIDDEN);
+}
+
+// เรียกทุกวินาทีจาก updateClock — nowMin < 0 = ยังไม่ได้เวลาจาก NTP (จับเวลาได้ แต่เตือนไม่ได้)
+static void tickPomodoro(int nowMin) {
+  if (pomoRun && pomoLeft() == 0) {
+    pomoRun = false;
+    if (!pomoBreak) pomoDone++;
+    pomoBreak = !pomoBreak;
+    // สลับช่วงให้เอง แต่ไม่นับต่อทันที — คนต้องได้เห็นว่าครบรอบก่อน
+    pomoLeftMs = (uint32_t)(pomoBreak ? kPomoBreakMin : kPomoWorkMin) * 60000UL;
+    alarmMsg = pomoBreak ? "หมดเวลาทำงาน พักได้" : "หมดเวลาพัก กลับมาทำงาน";
+    alarmAt = millis();
+    pomoRefreshView();
+  }
+
+  static int lastMin = -1;
+  if (nowMin >= 0 && nowMin != lastMin) {
+    lastMin = nowMin;
+    if (const char* due = remindDueAt(nowMin)) { alarmMsg = due; alarmAt = millis(); }
+  }
+  if (alarmMsg && millis() - alarmAt > 120000UL) alarmMsg = nullptr;
+
+  bool blink = alarmMsg && ((millis() / 1000) & 1);
+  uint32_t alertCol = blink ? C_WARN : C_TEXT;
+
+  char t[8];
+  fmtMMSS(t, sizeof(t), pomoLeft());
+  if (pomoCardVal) {
+    lv_label_set_text(pomoCardVal, t);
+    lv_obj_set_style_text_color(pomoCardVal, lv_color_hex(pomoRun ? C_UP : alertCol), 0);
+  }
+  if (remindCardVal) {
+    const char* nm = nullptr;
+    int nx = nowMin >= 0 ? nextRemindMin(nowMin, &nm) : -1;
+    char b[48];
+    if (alarmMsg) snprintf(b, sizeof(b), "%s", alarmMsg);
+    else if (nx >= 0) snprintf(b, sizeof(b), "%s อีก %d:%02d", nm, (nx - nowMin) / 60, (nx - nowMin) % 60);
+    else snprintf(b, sizeof(b), "วันนี้ครบแล้ว");
+    setThaiText(remindCardVal, b);
+    lv_obj_set_style_text_color(remindCardVal, lv_color_hex(alarmMsg ? alertCol : C_TEXT), 0);
+  }
+  if (pomoView && !lv_obj_has_flag(pomoView, LV_OBJ_FLAG_HIDDEN)) {
+    lv_label_set_text(pomoTimeLbl, t);
+    lv_obj_set_style_text_color(pomoTimeLbl, lv_color_hex(pomoRun ? C_TEXT : alertCol), 0);
+  }
+}
+
 static lv_obj_t* monthView = nullptr;
 static lv_obj_t* monthBody = nullptr;
 static lv_obj_t* monthGrid = nullptr;
@@ -1359,6 +1513,8 @@ static void cardClicked(lv_event_t* e) {
   // ถ้าใช้ target จะได้ตัวกราฟแล้ว lv_label_get_text assert ตาย
   lv_obj_t* card = (lv_obj_t*)lv_event_get_current_target(e);
   int cardIdx = (int)(intptr_t)lv_obj_get_user_data(card);
+  if (cardIdx == kPomoIdx) { openPomoView(); return; }
+  if (cardIdx == kRemindIdx) alarmMsg = nullptr;  // แตะ = รับทราบ หยุดกระพริบ แล้วเปิด detail ปกติ
   // การ์ดปฏิทินเข้าหน้าเดือนก่อน แล้วค่อยแตะรายวันเข้า detail
   if (cardIdx >= 0 && cardIdx < cardCount && cardViz[cardIdx].kind == VIZ_CALENDAR) {
     openMonthView();
@@ -1479,6 +1635,31 @@ static void addCard(const char* title, const char* value, const char* detail, co
   else lv_obj_align(v, LV_ALIGN_LEFT_MID, 10, 6);
 }
 
+// สองใบนี้ไม่ได้มาจากหลังบ้าน — วางตายตัวที่ช่อง 3-4 (หลังการ์ดหลังบ้าน 2 ใบแรก)
+// /manage เลื่อนหรือซ่อนไม่ได้ตั้งใจ — อยากได้ตลอดโดยไม่ต้องพึ่งหลังบ้าน
+static const int kLocalAfter = 2;
+static void addLocalCards() {
+  if (cardCount + 2 > kMaxCards) return;
+  char t[8];
+  fmtMMSS(t, sizeof(t), pomoLeft());
+
+  const struct { const char* title; const char* value; const char* detail; int idx; } local[] = {
+    {"โพโมโดโร", t, "แตะเพื่อเปิดหน้าจับเวลา ทำงาน 25 นาที พัก 5 นาที", kPomoIdx},
+    {"เตือนกิจวัตร", "-",
+     "กินน้ำ ทุก 60 นาที 9:00-18:00\nข้าวเที่ยง 12:00\nเลิกงาน 18:00\nแตะการ์ดเพื่อรับทราบ", kRemindIdx},
+  };
+  for (const auto& l : local) {
+    cardViz[cardCount] = CardViz{};
+    addCard(l.title, l.value, l.detail, "neutral", cardCount);
+    lv_obj_t* c = lv_obj_get_child(cardList, lv_obj_get_child_count(cardList) - 1);
+    lv_obj_set_user_data(c, (void*)(intptr_t)l.idx);
+    lv_obj_t* val = lv_obj_get_child(c, 1);  // ลูกที่ 1 = บรรทัดค่า — ให้ tick เขียนทับทุกวินาที
+    if (l.idx == kPomoIdx) pomoCardVal = val;
+    else remindCardVal = val;
+    cardCount++;
+  }
+}
+
 // ค่าความสว่างและช่วงเวลามาจากหลังบ้าน — ช่วงกลางคืนคร่อมเที่ยงคืนได้ จึงเช็คสองแบบ
 static void applyBacklight(int mins) {
   bool night = nightStartMin <= nightEndMin
@@ -1495,6 +1676,7 @@ static void updateClock(lv_timer_t*) {
   time_t now = time(nullptr);
   if (now < 1000000000) {  // ยังไม่ได้เวลาจริงจาก NTP
     lv_label_set_text(headValue, "");  // clock48 มีแค่ 0-9 : ° — ขีดจะออกมาเป็นกล่องว่าง
+    tickPomodoro(-1);  // จับเวลาใช้ millis ไม่ต้องรอ NTP — เตือนกิจวัตรเท่านั้นที่ต้องรอ
     return;
   }
   struct tm tm;
@@ -1509,6 +1691,7 @@ static void updateClock(lv_timer_t*) {
                            kThaiMonths[tm.tm_mon] + " " + (tm.tm_year + 1900 + 543))
                               .c_str());
   applyBacklight(tm.tm_hour * 60 + tm.tm_min);
+  tickPomodoro(tm.tm_hour * 60 + tm.tm_min);
 }
 
 // เส้นขอบบนเป็นตัวบอกสถานะตัวเดียวของทั้งเครื่อง:
@@ -1607,10 +1790,12 @@ static bool fetchAndRender() {
   }
 
   lv_obj_clean(cardList);
+  pomoCardVal = remindCardVal = nullptr;  // ป้ายเก่าถูกลบไปแล้ว — ห้ามให้ tick แตะต่อ
   if (vizBox) { lv_obj_delete(vizBox); vizBox = nullptr; }
   int n = 0;
   cardCount = 0;
   logoUsed = 0;
+  bool localAdded = false;
   for (JsonObject c : doc["cards"].as<JsonArray>()) {
     const char* type = c["type"] | "";
     const char* value = c["value"] | "-";
@@ -1790,7 +1975,10 @@ static bool fetchAndRender() {
     addCard(c["title"] | "", value, detail, c["tone"] | "neutral", cardCount);
     cardCount++;
     n++;
+    if (!localAdded && n >= kLocalAfter) { addLocalCards(); localAdded = true; }
   }
+
+  if (!localAdded) addLocalCards();  // หลังบ้านส่งมาไม่ถึง 2 ใบก็ยังต้องมีสองใบนี้
 
   setStatus("ok", C_UP);
   lv_obj_set_style_text_color(headDetail, lv_color_hex(C_MUTED), 0);  // คืนสีบรรทัดวันที่
