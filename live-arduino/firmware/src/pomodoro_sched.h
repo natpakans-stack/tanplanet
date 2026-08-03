@@ -4,25 +4,26 @@
 #include <cstdio>
 #include <cstddef>
 
-// ponytail: knob ทั้งหมดอยู่ 5 บรรทัดนี้ — อยากเปลี่ยนเวลาก็แก้แล้ว flash ใหม่
-static const int kPomoWorkMin = 25;
-static const int kPomoBreakMin = 5;
-static const int kWaterEveryMin = 60, kWaterFromMin = 9 * 60, kWaterToMin = 18 * 60;
-static const int kLunchMin = 12 * 60;
-static const int kOffWorkMin = 18 * 60;
+// ค่าเริ่มต้น — หลังบ้านส่ง device.focus มาทับได้ทุกตัว (ตั้งที่ /manage ไม่ต้อง flash)
+// ค่าที่ตั้งไว้นี่คือค่าที่ใช้ตอนยังดึงข้อมูลไม่ได้ ห้ามปล่อยว่าง
+static int cfgWorkMin = 25;
+static int cfgBreakMin = 5;
+static int cfgWaterEvery = 60, cfgWaterFrom = 9 * 60, cfgWaterTo = 18 * 60;
+static int cfgLunch = 12 * 60;
+static int cfgOffWork = 18 * 60;
 
 // นาทีของวันที่ต้องเตือนกินน้ำครั้งถัดไป (-1 = หมดโควตาวันนี้แล้ว)
 inline int nextWaterMin(int nowMin) {
-  if (nowMin >= kWaterToMin) return -1;
-  int t = kWaterFromMin;
-  while (t <= nowMin) t += kWaterEveryMin;
-  return t <= kWaterToMin ? t : -1;
+  if (nowMin >= cfgWaterTo) return -1;
+  int t = cfgWaterFrom;
+  while (t <= nowMin) t += cfgWaterEvery;
+  return t <= cfgWaterTo ? t : -1;
 }
 
 // อันไหนถึงก่อน — คืนนาทีของวัน (-1 = วันนี้ไม่เหลือแล้ว) พร้อมชื่อไว้โชว์บนการ์ด
 inline int nextRemindMin(int nowMin, const char** name) {
-  const struct { const char* n; int m; } fixed[] = {{"ข้าวเที่ยง", kLunchMin},
-                                                    {"เลิกงาน", kOffWorkMin}};
+  const struct { const char* n; int m; } fixed[] = {{"ข้าวเที่ยง", cfgLunch},
+                                                    {"เลิกงาน", cfgOffWork}};
   int best = nextWaterMin(nowMin);
   const char* bn = best >= 0 ? "กินน้ำ" : nullptr;
   for (const auto& f : fixed)
@@ -34,10 +35,10 @@ inline int nextRemindMin(int nowMin, const char** name) {
 
 // นาทีนี้ถึงเวลาเตือนไหม (เรียกนาทีละครั้ง) — nullptr = ยังไม่ถึง
 inline const char* remindDueAt(int nowMin) {
-  if (nowMin == kLunchMin) return "ได้เวลาข้าวเที่ยง";
-  if (nowMin == kOffWorkMin) return "เลิกงานแล้ว";
-  if (nowMin >= kWaterFromMin && nowMin <= kWaterToMin &&
-      (nowMin - kWaterFromMin) % kWaterEveryMin == 0)
+  if (nowMin == cfgLunch) return "ได้เวลาข้าวเที่ยง";
+  if (nowMin == cfgOffWork) return "เลิกงานแล้ว";
+  if (nowMin >= cfgWaterFrom && nowMin <= cfgWaterTo &&
+      (nowMin - cfgWaterFrom) % cfgWaterEvery == 0)
     return "ได้เวลากินน้ำ";
   return nullptr;
 }

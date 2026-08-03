@@ -13,8 +13,8 @@ int main() {
 
   const char* nm = nullptr;
   assert(nextRemindMin(9 * 60 + 5, &nm) == 10 * 60 && !strcmp(nm, "กินน้ำ"));
-  assert(nextRemindMin(11 * 60 + 30, &nm) == kLunchMin && !strcmp(nm, "ข้าวเที่ยง"));
-  assert(nextRemindMin(17 * 60 + 30, &nm) == kOffWorkMin && !strcmp(nm, "เลิกงาน"));
+  assert(nextRemindMin(11 * 60 + 30, &nm) == cfgLunch && !strcmp(nm, "ข้าวเที่ยง"));
+  assert(nextRemindMin(17 * 60 + 30, &nm) == cfgOffWork && !strcmp(nm, "เลิกงาน"));
   assert(nextRemindMin(19 * 60, &nm) == -1 && nm == nullptr);
 
   // ชนกัน (12:00 เป็นทั้งรอบน้ำและข้าวเที่ยง) → ข้าวเที่ยงต้องชนะ

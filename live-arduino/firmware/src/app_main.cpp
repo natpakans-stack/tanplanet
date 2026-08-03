@@ -1006,7 +1006,7 @@ static lv_obj_t* makeFullView(lv_obj_t* parent, lv_obj_t** bodyOut) {
 static const int kPomoIdx = -2, kRemindIdx = -3;
 
 static bool pomoRun = false, pomoBreak = false;
-static uint32_t pomoDeadline = 0, pomoLeftMs = (uint32_t)kPomoWorkMin * 60000UL;
+static uint32_t pomoDeadline = 0, pomoLeftMs = (uint32_t)cfgWorkMin * 60000UL;
 static int pomoDone = 0;
 
 // ปลุกที่ยังไม่รับทราบ — กระพริบจนกดการ์ด/ปุ่ม หรือครบ 2 นาทีก็เลิกเอง
@@ -1052,7 +1052,7 @@ static void pomoReset(lv_event_t*) {
   alarmMsg = nullptr;
   pomoRun = false;
   pomoBreak = false;
-  pomoLeftMs = (uint32_t)kPomoWorkMin * 60000UL;
+  pomoLeftMs = (uint32_t)cfgWorkMin * 60000UL;
   pomoRefreshView();
 }
 
@@ -1115,7 +1115,7 @@ static void tickPomodoro(int nowMin) {
     if (!pomoBreak) pomoDone++;
     pomoBreak = !pomoBreak;
     // สลับช่วงให้เอง แต่ไม่นับต่อทันที — คนต้องได้เห็นว่าครบรอบก่อน
-    pomoLeftMs = (uint32_t)(pomoBreak ? kPomoBreakMin : kPomoWorkMin) * 60000UL;
+    pomoLeftMs = (uint32_t)(pomoBreak ? cfgBreakMin : cfgWorkMin) * 60000UL;
     alarmMsg = pomoBreak ? "หมดเวลาทำงาน พักได้" : "หมดเวลาพัก กลับมาทำงาน";
     alarmAt = millis();
     pomoRefreshView();
@@ -1643,10 +1643,19 @@ static void addLocalCards() {
   char t[8];
   fmtMMSS(t, sizeof(t), pomoLeft());
 
+  // คำอธิบายต้องสะกดตามค่าที่หลังบ้านส่งมาจริง ไม่งั้นตั้งที่ /manage แล้วหน้า detail โกหก
+  char pomoDetail[80], remindDetail[200];
+  snprintf(pomoDetail, sizeof(pomoDetail),
+           "แตะเพื่อเปิดหน้าจับเวลา ทำงาน %d นาที พัก %d นาที", cfgWorkMin, cfgBreakMin);
+  snprintf(remindDetail, sizeof(remindDetail),
+           "กินน้ำ ทุก %d นาที %d:%02d-%d:%02d\nข้าวเที่ยง %d:%02d\nเลิกงาน %d:%02d\n"
+           "แตะการ์ดเพื่อรับทราบ",
+           cfgWaterEvery, cfgWaterFrom / 60, cfgWaterFrom % 60, cfgWaterTo / 60, cfgWaterTo % 60,
+           cfgLunch / 60, cfgLunch % 60, cfgOffWork / 60, cfgOffWork % 60);
+
   const struct { const char* title; const char* value; const char* detail; int idx; } local[] = {
-    {"โพโมโดโร", t, "แตะเพื่อเปิดหน้าจับเวลา ทำงาน 25 นาที พัก 5 นาที", kPomoIdx},
-    {"เตือนกิจวัตร", "-",
-     "กินน้ำ ทุก 60 นาที 9:00-18:00\nข้าวเที่ยง 12:00\nเลิกงาน 18:00\nแตะการ์ดเพื่อรับทราบ", kRemindIdx},
+    {"โพโมโดโร", t, pomoDetail, kPomoIdx},
+    {"เตือนกิจวัตร", "-", remindDetail, kRemindIdx},
   };
   for (const auto& l : local) {
     cardViz[cardCount] = CardViz{};
@@ -1786,6 +1795,19 @@ static bool fetchAndRender() {
       const char* ne = disp["nightEnd"] | "06:30";
       nightStartMin = atoi(ns) * 60 + atoi(ns + 3);
       nightEndMin = atoi(ne) * 60 + atoi(ne + 3);
+    }
+    JsonObject fc = dev["focus"];
+    if (fc) {
+      auto hhmm = [](const char* s) { return atoi(s) * 60 + atoi(s + 3); };
+      cfgWorkMin = constrain((int)(fc["workMin"] | cfgWorkMin), 1, 180);
+      cfgBreakMin = constrain((int)(fc["breakMin"] | cfgBreakMin), 1, 60);
+      cfgWaterEvery = constrain((int)(fc["waterEveryMin"] | cfgWaterEvery), 5, 240);
+      cfgWaterFrom = hhmm(fc["waterFrom"] | "09:00");
+      cfgWaterTo = hhmm(fc["waterTo"] | "18:00");
+      cfgLunch = hhmm(fc["lunch"] | "12:00");
+      cfgOffWork = hhmm(fc["offWork"] | "18:00");
+      // นาฬิกาที่ยังไม่ได้เริ่ม/ไม่ได้ค้างไว้ ต้องรับความยาวใหม่ทันที ไม่ต้องรอรอบหน้า
+      if (!pomoRun && !pomoBreak) pomoLeftMs = (uint32_t)cfgWorkMin * 60000UL;
     }
   }
 

@@ -122,6 +122,9 @@
   .icon-btn:hover:not(:disabled){background:var(--line);color:var(--text)}
   .icon-btn:disabled{opacity:.25;cursor:default}
   .icon-btn.eye[data-off="true"]{color:var(--danger)}
+  /* การ์ดที่จอวาดเอง — โชว์ให้เห็นว่ากินช่องไหนอยู่ แต่ไม่มีปุ่มให้กด */
+  .card-row[data-fixed="true"]{background:transparent;border-style:dashed}
+  .card-row .lock{font-size:12px;color:var(--muted);background:var(--raised);border-radius:999px;padding:6px 12px}
 
   /* ---------- หุ้น ---------- */
   .chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -192,7 +195,8 @@
 <section>
   <h2>ลำดับการ์ด</h2>
   <ol class="stack" id="cards"></ol>
-  <p class="note">ตัวบนสุดขึ้นจอก่อน · ปุ่มขวาสุดซ่อนการ์ดโดยไม่ต้องลบลำดับทิ้ง</p>
+  <p class="note">ตัวบนสุดขึ้นจอก่อน · ปุ่มขวาสุดซ่อนการ์ดโดยไม่ต้องลบลำดับทิ้ง<br>
+    ช่อง 3-4 เป็นการ์ดที่จอวาดเอง (ทำงานแม้หลังบ้านล่ม) จึงเลื่อนหรือซ่อนไม่ได้ — ตั้งเวลาได้ที่หัวข้อ โฟกัส &amp; เตือน</p>
 </section>
 
 <section>
@@ -279,6 +283,38 @@
     </div>
   </div>
   <p class="note">คำนวณเสาวันจากวัฏจักร 60 และเสายามด้วย 五鼠遁 แล้วเทียบธาตุยามกับธาตุเจ้าเรือน · ปฏิทินรายเดือนจะขึ้นแถบสีบอกวันพลังดี/ท้าทาย/ควรระวังด้วย</p>
+</section>
+
+<section>
+  <h2>โฟกัส &amp; เตือน</h2>
+  <div class="stack">
+    <div class="setting">
+      <div class="label"><b>ช่วงทำงาน</b><span>นาทีต่อรอบโพโมโดโร</span></div>
+      <div class="stepper" data-stepper="fcWork" data-min="1" data-max="180" data-step="5"></div>
+    </div>
+    <div class="setting">
+      <div class="label"><b>ช่วงพัก</b><span>นาที · ครบรอบแล้วจอสลับให้เอง</span></div>
+      <div class="stepper" data-stepper="fcBreak" data-min="1" data-max="60" data-step="1"></div>
+    </div>
+    <div class="setting">
+      <div class="label"><b>เตือนกินน้ำ</b><span>ทุกกี่นาที</span></div>
+      <div class="stepper" data-stepper="fcWater" data-min="5" data-max="240" data-step="5"></div>
+    </div>
+    <div class="setting">
+      <div class="label"><b>ช่วงเตือนกินน้ำ</b><span>นอกช่วงนี้ไม่เตือน</span></div>
+      <div class="row" style="flex:none">
+        <input class="input" id="fcWaterFrom" type="time" style="width:118px">
+        <input class="input" id="fcWaterTo" type="time" style="width:118px">
+      </div>
+    </div>
+    <div class="setting">
+      <div class="label"><b>ข้าวเที่ยง / เลิกงาน</b><span>เตือนครั้งเดียวตรงเวลา</span></div>
+      <div class="row" style="flex:none">
+        <input class="input" id="fcLunch" type="time" style="width:118px">
+        <input class="input" id="fcOff" type="time" style="width:118px">
+      </div>
+    </div>
+  </div>
 </section>
 
 <section>
@@ -419,11 +455,35 @@ ordered.forEach(([id, label]) => {
   cardsEl.appendChild(li);
 });
 
+// สองใบนี้ firmware วาดเอง ไม่ผ่านหลังบ้าน — ล็อกไว้ช่อง 3-4 ตลอด เลื่อน/ซ่อนไม่ได้
+const FIXED_AT = 2;
+const fixedRows = ["โพโมโดโร", "เตือนกิจวัตร"].map((label) => {
+  const li = document.createElement("li");
+  li.className = "card-row";
+  li.dataset.fixed = "true";
+  li.innerHTML = '<span class="idx"></span><span class="nm"></span><span class="lock">ตายตัว</span>';
+  li.querySelector(".nm").textContent = label;
+  return li;
+});
+
+const movable = () => [...cardsEl.children].filter((r) => r.dataset.fixed !== "true");
+
+// appendChild ย้ายโหนดเดิม ไม่ใช่ก๊อป — เรียงใหม่ทั้งลิสต์ได้โดยไม่ต้องลบก่อน
+function relayout(rows) {
+  const out = [...rows];
+  out.splice(FIXED_AT, 0, ...fixedRows);
+  out.forEach((r) => cardsEl.appendChild(r));
+  renumber();
+}
+
 function renumber() {
-  [...cardsEl.children].forEach((r, i, all) => {
+  const move = movable();
+  [...cardsEl.children].forEach((r, i) => {
     r.querySelector(".idx").textContent = i + 1;
-    r.querySelector('[data-dir="-1"]').disabled = i === 0;
-    r.querySelector('[data-dir="1"]').disabled = i === all.length - 1;
+    if (r.dataset.fixed === "true") return;
+    const k = move.indexOf(r);
+    r.querySelector('[data-dir="-1"]').disabled = k === 0;
+    r.querySelector('[data-dir="1"]').disabled = k === move.length - 1;
     const eye = r.querySelector(".eye");
     eye.dataset.off = r.dataset.off;
     eye.textContent = r.dataset.off === "true" ? "○" : "◉";
@@ -431,18 +491,22 @@ function renumber() {
 }
 cardsEl.addEventListener("click", (e) => {
   const row = e.target.closest(".card-row");
-  if (!row) return;
+  if (!row || row.dataset.fixed === "true") return;
   const mv = e.target.closest("[data-dir]");
   if (mv) {
-    const dir = +mv.dataset.dir;
-    if (dir < 0 && row.previousElementSibling) cardsEl.insertBefore(row, row.previousElementSibling);
-    if (dir > 0 && row.nextElementSibling) cardsEl.insertBefore(row.nextElementSibling, row);
-  } else if (e.target.closest(".eye")) {
-    row.dataset.off = String(row.dataset.off !== "true");
-  } else return;
+    // เลื่อนในหมู่การ์ดหลังบ้านด้วยกัน แล้ววางใบตายตัวคืนช่องเดิม — ไม่งั้นมันโดนดันหลุด
+    const rows = movable();
+    const i = rows.indexOf(row), j = i + Number(mv.dataset.dir);
+    if (j < 0 || j >= rows.length) return;
+    rows.splice(j, 0, ...rows.splice(i, 1));
+    relayout(rows);
+    return;
+  }
+  if (!e.target.closest(".eye")) return;
+  row.dataset.off = String(row.dataset.off !== "true");
   renumber();
 });
-renumber();
+relayout(movable());
 
 /* ---------------- หุ้น ---------------- */
 const tickersEl = $("tickers");
@@ -538,6 +602,13 @@ const getHoliday = switchInit($("calHoliday"), CFG.calendar.showHolidays);
 $("sjBirth").value = CFG.saju.birthDate;
 $("dsStart").value = CFG.display.nightStart;
 $("dsEnd").value = CFG.display.nightEnd;
+const getWork = stepperInit(document.querySelector('[data-stepper="fcWork"]'), CFG.focus.workMin);
+const getBreak = stepperInit(document.querySelector('[data-stepper="fcBreak"]'), CFG.focus.breakMin);
+const getWater = stepperInit(document.querySelector('[data-stepper="fcWater"]'), CFG.focus.waterEveryMin);
+$("fcWaterFrom").value = CFG.focus.waterFrom;
+$("fcWaterTo").value = CFG.focus.waterTo;
+$("fcLunch").value = CFG.focus.lunch;
+$("fcOff").value = CFG.focus.offWork;
 
 /* ---------------- บันทึก ---------------- */
 const toast = $("toast"), saveBtn = $("save");
@@ -558,8 +629,8 @@ saveBtn.addEventListener("click", async () => {
   say("กำลังบันทึก…");
   const body = {
     tickers: on.length === chips.length ? [] : on,
-    cardOrder: [...cardsEl.children].map((r) => r.dataset.id),
-    hiddenCards: [...cardsEl.children].filter((r) => r.dataset.off === "true").map((r) => r.dataset.id),
+    cardOrder: movable().map((r) => r.dataset.id),
+    hiddenCards: movable().filter((r) => r.dataset.off === "true").map((r) => r.dataset.id),
     weather: picked || CFG.weather,
     ideaRadar: { themes: getThemes(), tickers: getTickN() },
     monthlyPlan: { focus: getFocus() },
@@ -575,6 +646,15 @@ saveBtn.addEventListener("click", async () => {
       })).filter((f) => f.url),
     },
     saju: { birthDate: $("sjBirth").value },
+    focus: {
+      workMin: getWork(),
+      breakMin: getBreak(),
+      waterEveryMin: getWater(),
+      waterFrom: $("fcWaterFrom").value,
+      waterTo: $("fcWaterTo").value,
+      lunch: $("fcLunch").value,
+      offWork: $("fcOff").value,
+    },
     device: { refreshSeconds: getRefresh() },
     display: {
       brightnessDay: getDay(),

@@ -56,6 +56,12 @@ const DEFAULT_RUNTIME_CONFIG = {
   saju: { birthDate: "" },  // ว่าง = ปิดการ์ด เพราะพลังงานรายยามต้องรู้เจ้าเรือนก่อน
   device: { refreshSeconds: 300 },
   display: { brightnessDay: 255, brightnessNight: 40, nightStart: "22:00", nightEnd: "06:30" },
+  // โพโมโดโร + เตือนกิจวัตร — จอจับเวลาเองในเครื่อง หลังบ้านแค่บอกความยาว/เวลาเตือน
+  focus: {
+    workMin: 25, breakMin: 5,
+    waterEveryMin: 60, waterFrom: "09:00", waterTo: "18:00",
+    lunch: "12:00", offWork: "18:00",
+  },
 };
 
 async function loadRuntimeConfig() {
@@ -66,6 +72,7 @@ async function loadRuntimeConfig() {
 async function saveRuntimeConfig(config) {
   const d = DEFAULT_RUNTIME_CONFIG;
   const num = (v, fallback) => (Number.isFinite(Number(v)) ? Number(v) : fallback);
+  const hhmm = (v, fallback) => (/^\d{2}:\d{2}$/.test(v || "") ? v : fallback);
   const saved = {
     tickers: Array.isArray(config.tickers) ? config.tickers.map(String) : [],
     hiddenCards: Array.isArray(config.hiddenCards) ? config.hiddenCards.map(String) : [],
@@ -106,6 +113,15 @@ async function saveRuntimeConfig(config) {
       brightnessNight: Math.min(255, Math.max(0, Math.round(num(config.display?.brightnessNight, d.display.brightnessNight)))),
       nightStart: /^\d{2}:\d{2}$/.test(config.display?.nightStart || "") ? config.display.nightStart : d.display.nightStart,
       nightEnd: /^\d{2}:\d{2}$/.test(config.display?.nightEnd || "") ? config.display.nightEnd : d.display.nightEnd,
+    },
+    focus: {
+      workMin: Math.min(180, Math.max(1, Math.round(num(config.focus?.workMin, d.focus.workMin)))),
+      breakMin: Math.min(60, Math.max(1, Math.round(num(config.focus?.breakMin, d.focus.breakMin)))),
+      waterEveryMin: Math.min(240, Math.max(5, Math.round(num(config.focus?.waterEveryMin, d.focus.waterEveryMin)))),
+      waterFrom: hhmm(config.focus?.waterFrom, d.focus.waterFrom),
+      waterTo: hhmm(config.focus?.waterTo, d.focus.waterTo),
+      lunch: hhmm(config.focus?.lunch, d.focus.lunch),
+      offWork: hhmm(config.focus?.offWork, d.focus.offWork),
     },
   };
   await writeFile(RUNTIME_CONFIG_PATH, JSON.stringify(saved, null, 2), "utf8");
@@ -566,7 +582,11 @@ async function buildDeviceSummary() {
     schemaVersion: "1.0.0",
     deviceProfile: "tanplanet-smart-astro-calendar",
     // จอตั้งค่าตัวเองจากตรงนี้ — ปรับรอบรีเฟรช/ความสว่างได้โดยไม่ต้อง flash ใหม่
-    device: { refreshSeconds: runtimeConfig.device.refreshSeconds, display: runtimeConfig.display },
+    device: {
+      refreshSeconds: runtimeConfig.device.refreshSeconds,
+      display: runtimeConfig.display,
+      focus: runtimeConfig.focus,
+    },
     updatedAt: now,
     expiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
     status: {
