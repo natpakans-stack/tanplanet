@@ -1681,6 +1681,9 @@ static void applyBacklight(int mins) {
   ledcWrite(1, level);
 }
 
+// เส้นขอบบนขึ้นแดง = มีปัญหา — ประกาศไว้ก่อน updateClock เพราะนาฬิกาต้องเช็คก่อนเขียนทับข้อความ
+static bool busyError = false;
+
 static void updateClock(lv_timer_t*) {
   time_t now = time(nullptr);
   if (now < 1000000000) {  // ยังไม่ได้เวลาจริงจาก NTP
@@ -1696,9 +1699,11 @@ static void updateClock(lv_timer_t*) {
   lv_label_set_text(headValue, buf);
 
   // พ.ศ. = ค.ศ. + 543
-  setThaiText(headDetail, (String("วัน") + kThaiDays[tm.tm_wday] + "ที่ " + tm.tm_mday + " " +
-                           kThaiMonths[tm.tm_mon] + " " + (tm.tm_year + 1900 + 543))
-                              .c_str());
+  // ขึ้นแดงอยู่ห้ามเขียนทับ — ไม่งั้นข้อความบอกสาเหตุหายใน 1 วิ เหลือแถบแดงเปล่าที่อ่านไม่ออก
+  if (!busyError)
+    setThaiText(headDetail, (String("วัน") + kThaiDays[tm.tm_wday] + "ที่ " + tm.tm_mday + " " +
+                             kThaiMonths[tm.tm_mon] + " " + (tm.tm_year + 1900 + 543))
+                                .c_str());
   applyBacklight(tm.tm_hour * 60 + tm.tm_min);
   tickPomodoro(tm.tm_hour * 60 + tm.tm_min);
 }
@@ -1706,8 +1711,6 @@ static void updateClock(lv_timer_t*) {
 // เส้นขอบบนเป็นตัวบอกสถานะตัวเดียวของทั้งเครื่อง:
 //   วิ่งอำพัน = กำลังดึงข้อมูล · แดงเต็มความกว้าง = มีปัญหา · หายไป = ปกติ
 // เดิมมีจุดสถานะข้างนาฬิกาด้วย แต่มันวางทับเลขและซ้ำหน้าที่กับเส้นนี้
-static bool busyError = false;
-
 static void busyAnimate() {
   lv_anim_t a;
   lv_anim_init(&a);
@@ -1749,11 +1752,14 @@ static void setStatus(const char* msg, uint32_t color) {
   lv_obj_set_style_text_color(headDetail, lv_color_hex(color), 0);
 }
 
+static int failStreak = 0;
+
 static bool fetchAndRender() {
   setBusy(true);
   struct Done { ~Done() { setBusy(false); } } done;  // ออกทางไหนก็ปิดวงแหวนเสมอ
   if (WiFi.status() != WL_CONNECTED) {
     setStatus("Wi-Fi หลุด", 0xF87171);
+    if (++failStreak >= 10) ESP.restart();  // เน็ตไม่กลับมาเองใน 5 นาที = รีบูตแทนถอดสาย
     return false;
   }
 
@@ -1764,12 +1770,25 @@ static bool fetchAndRender() {
   int code = http.GET();
   if (code != HTTP_CODE_OK) {
     Serial.printf("http failed: %d\n", code);
-    mdnsIp = "";  // IP เครื่อง backend อาจย้าย — ถามใหม่รอบหน้า
-    setStatus(String("ต่อ backend ไม่ได้ (").c_str(), 0xF87171);
-    setStatus((String("ต่อ backend ไม่ได้ (") + code + ") · ลองใหม่ใน 30 วิ").c_str(), C_DOWN);
+    // IP เครื่อง backend อาจย้าย — ล้างทั้งแคชเราและแคชในไลบรารี mDNS
+    // ล้างแค่ mdnsIp ไม่พอ: A record ของ macOS มี TTL 4500 วิ (75 นาที) ถามใหม่ก็ได้เลขเก่ากลับมา
+    mdnsIp = "";
+    MDNS.end();
+    MDNS.begin("live-arduino");
+    // โชว์ IP ของจอเองด้วย — ถ้าคนละวงกับเครื่อง backend จะเห็นทันทีจากเลขวง (192.168.x.)
+    // ต่อให้รีบูตก็ไม่หาย เพราะปัญหาคืออยู่คนละ Wi-Fi ไม่ใช่ค้าง
+    setStatus((String("ต่อ backend ไม่ได้ (") + code + ") · จอ " + WiFi.localIP().toString()).c_str(),
+              C_DOWN);
     http.end();
+    // ponytail: พังติดกัน 10 รอบ (~5 นาที) = รีบูตเอง แทนที่จะต้องถอดสายเสียบใหม่
+    // ถ้ายังพังหลังรีบูต แปลว่าไม่ใช่อาการค้าง — ดูเลข IP บนจอว่าอยู่วงเดียวกับ backend ไหม
+    if (++failStreak >= 10) {
+      Serial.println("http พัง 10 รอบติด · รีสตาร์ตเอง");
+      ESP.restart();
+    }
     return false;
   }
+  failStreak = 0;
 
   // ponytail: อ่านเป็น String ก่อน — parse จาก stream ตรง ๆ ได้ InvalidInput (chunked encoding)
   String payload = http.getString();
