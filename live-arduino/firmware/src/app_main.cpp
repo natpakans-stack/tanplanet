@@ -2136,13 +2136,16 @@ static bool fetchAndRender() {
   }
   failStreak = 0;
 
-  // ponytail: อ่านเป็น String ก่อน — parse จาก stream ตรง ๆ ได้ InvalidInput (chunked encoding)
-  String payload = http.getString();
-  http.end();
+  // parse จาก stream ตรง ๆ — กอง String ทั้งก้อนต้องขอ heap ต่อเนื่อง ~16KB
+  // ซึ่งพังเมื่อ heap แตกเป็นเสี่ยง (ว่าง 105KB แต่ก้อนใหญ่สุดเหลือ 32KB)
+  // ใช้ได้เพราะ backend ส่ง content-length แล้ว ไม่ใช่ chunked (เคยได้ InvalidInput เพราะเหตุนี้)
   JsonDocument doc;
-  DeserializationError err = deserializeJson(doc, payload);
+  DeserializationError err = deserializeJson(doc, http.getStream());
+  int len = http.getSize();
+  http.end();
   if (err) {
-    Serial.printf("json failed: %s (payload %u bytes)\n", err.c_str(), payload.length());
+    Serial.printf("json failed: %s (payload %d bytes · ก้อนใหญ่สุด %u)\n", err.c_str(), len,
+                  (unsigned)heap_caps_get_largest_free_block(MALLOC_CAP_8BIT));
     setStatus("อ่านข้อมูลไม่ได้", 0xF87171);
     return false;
   }

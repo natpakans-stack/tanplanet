@@ -496,7 +496,6 @@ async function buildClaudeCard() {
 }
 
 async function buildDeviceSummary() {
-  const sample = await readSampleSummary();
   const runtimeConfig = await loadRuntimeConfig();
   const now = new Date().toISOString();
   const entrySignal = await readJsonMaybe(path.join(MEGACOACH_ROOT, "liff-app", "entry-signal-data.json"));
@@ -504,7 +503,6 @@ async function buildDeviceSummary() {
   const northstar = await readJsonMaybe(path.join(MEGACOACH_ROOT, "liff-app", "northstar.json"));
   const monthlyPlan = await readJsonMaybe(path.join(MEGACOACH_ROOT, "liff-app", "monthly-plan.json"));
 
-  const baseCards = sample?.cards || [];
   const clockCard = card("home_clock", "clock", "TanPlanet", "--:--", "Device clock is rendered locally on ESP32", "ok", 10);
   const [{ calendarCard, lunarCard }, weatherCard] = await Promise.all([
     buildCalendarCards({ ...runtimeConfig.calendar, birth: parseBirth(runtimeConfig.saju.birthDate) }),
@@ -655,14 +653,17 @@ async function buildDeviceSummary() {
         }
         return (a.priority || 50) - (b.priority || 50);
       }),
-    fallbackCards: baseCards,
   };
 }
 
 function sendJson(res, status, payload) {
-  const body = JSON.stringify(payload, null, 2);
+  // compact + content-length: จอ ESP32 มี heap ต่อเนื่องแค่ ~32KB
+  // เว้นวรรคสวย ๆ กิน 13KB ฟรี ๆ และไม่มี content-length = Node ส่ง chunked
+  // ทำให้ firmware parse จาก stream ตรง ๆ ไม่ได้ ต้องกอง String ทั้งก้อนก่อน
+  const body = JSON.stringify(payload);
   res.writeHead(status, {
     "content-type": "application/json; charset=utf-8",
+    "content-length": Buffer.byteLength(body),
     "cache-control": "no-store",
     "access-control-allow-origin": "*",
   });
