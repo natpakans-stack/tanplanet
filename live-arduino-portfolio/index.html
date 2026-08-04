@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TanPlanet Live — จอตั้งโต๊ะ ESP32 ที่รู้ว่าวันนี้ต้องสนใจอะไร</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TanPlanet Live — จอตั้งโต๊ะ ESP32 ที่รู้ว่าวันนี้ต้องสนใจอะไร">
+  <meta name="twitter:description" content="Portfolio: จอ ESP32 3.5&quot; ฿640 + backend บน Mac — ปฏิทินไทย จันทรคติ อากาศ ดวงลงทุน พอร์ตหุ้น โควตา AI และสถานะ Claude Code รวมเป็นการ์ดแตะดูได้ ด้วย LVGL 9 และฟอนต์ไทยที่เจนเอง">
+  <meta property="og:url" content="https://projects.tanplanet.info/live-arduino-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="Portfolio: จอ ESP32 3.5&quot; ฿640 + backend บน Mac — ปฏิทินไทย จันทรคติ อากาศ ดวงลงทุน พอร์ตหุ้น โควตา AI และสถานะ Claude Code รวมเป็นการ์ดแตะดูได้ ด้วย LVGL 9 และฟอนต์ไทยที่เจนเอง">
+  <meta property="og:title" content="TanPlanet Live — จอตั้งโต๊ะ ESP32 ที่รู้ว่าวันนี้ต้องสนใจอะไร">
+  <meta name="description" content="Portfolio: จอ ESP32 3.5&quot; ฿640 + backend บน Mac — ปฏิทินไทย จันทรคติ อากาศ ดวงลงทุน พอร์ตหุ้น โควตา AI และสถานะ Claude Code รวมเป็นการ์ดแตะดูได้ ด้วย LVGL 9 และฟอนต์ไทยที่เจนเอง">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0f1f'/><rect x='24' y='18' width='52' height='64' rx='7' fill='%23f59e0b'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #b45309;
+      --accent-light: #fef3c7;
+      --accent-dark: #78350f;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #0a0f1f 0%, #121b36 40%, #3f2d12 78%, #78350f 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(251,191,36,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #78350f, #f59e0b, #fde68a);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent { color: #fcd34d; }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro { padding: 56px 0 32px; }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .section-intro p { color: var(--text-secondary); font-size: 1rem; }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0a0f1f, #223056);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block code { background: rgba(255,255,255,0.14); color: #fcd34d; }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p { font-size: 1.05rem; line-height: 1.7; position: relative; z-index: 1; }
+    .quote-block .author { margin-top: 12px; font-size: 0.82rem; opacity: 0.78; }
+
+    /* ===== Pain / Solution Cards ===== */
+    .pain-grid, .solution-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .pain-card, .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .pain-card { border-left: 4px solid var(--red); }
+    .solution-card { border-left: 4px solid var(--accent); }
+    .pain-card .emoji, .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3, .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p, .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(180,83,9,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers { display: flex; flex-direction: column; gap: 12px; max-width: 560px; margin: 0 auto; }
+    .arch-layer { padding: 14px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(180,83,9,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: var(--navy); color: #cbd5e1; border: 1px solid #223056; }
+    .arch-arrow { text-align: center; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+    .arch-sub { display: flex; justify-content: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .arch-layer.infra .arch-sub span { background: rgba(255,255,255,0.10); }
+
+    /* ===== Device Mockup (320x480 @ scale) ===== */
+    .dev-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .dev-frame {
+      width: 348px;
+      max-width: 100%;
+      background: #1a1a1c;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 14px 40px rgba(10,15,31,0.35);
+    }
+    .dev-screen {
+      background: var(--navy);
+      border-radius: 6px;
+      overflow: hidden;
+      color: #f2f5ff;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+    .dev-hero {
+      background: #121b36;
+      padding: 12px 14px 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .dev-clock { font-size: 2.4rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+    .dev-date { color: #8492bc; font-size: 0.72rem; margin-top: 4px; }
+    .dev-hero-right { text-align: right; font-size: 0.72rem; color: #8492bc; }
+    .dev-hero-right .t { color: #f2f5ff; font-size: 1.05rem; font-weight: 600; }
+    .dev-list { padding: 8px; display: flex; flex-direction: column; gap: 7px; }
+    .dev-card {
+      background: #161f3c;
+      border-radius: 8px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dev-card .body { flex: 1; min-width: 0; }
+    .dev-card .ttl { color: #8492bc; font-size: 0.68rem; letter-spacing: 0.02em; }
+    .dev-card .val { font-size: 0.95rem; font-weight: 600; }
+    .dev-card .sub { color: #8492bc; font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dev-card .up { color: #4ade80; }
+    .dev-card .warn { color: #fbbf24; }
+    .dev-card .down { color: #f87171; }
+    .dev-blob {
+      width: 42px;
+      height: 34px;
+      border-radius: 6px;
+      background: #223056;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .dev-bar { height: 5px; border-radius: 3px; background: #223056; margin-top: 6px; overflow: hidden; }
+    .dev-bar i { display: block; height: 100%; background: #fbbf24; }
+    .dev-caption { font-size: 0.8rem; color: var(--text-secondary); text-align: center; max-width: 420px; }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img { width: 100%; height: auto; display: block; }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons { margin-top: 24px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+    .closing .links { margin-top: 24px; display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .closing .links a { color: var(--accent); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark">&#128421;&#65039;</div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        ESP32-035 &middot; ST7796 320&times;480 &middot; LVGL 9
+      </div>
+      <h1>TanPlanet Live<br><span class="accent">จอตั้งโต๊ะ ESP32 ที่รู้ว่าวันนี้ต้องสนใจอะไร</span></h1>
+      <p>จอ 3.5" ราคา ฿640 บนโต๊ะทำงาน ที่ดึงปฏิทินไทย จันทรคติ อากาศ ดวงลงทุน พอร์ตหุ้น โควตา AI และสถานะ Claude Code มาเรียงเป็นการ์ดแตะดูได้ — โดยให้ ESP32 เป็นแค่ "จอ" ส่วนสมองอยู่บน Mac</p>
+      <div class="hero-tags">
+        <span class="hero-tag">ESP32</span>
+        <span class="hero-tag">LVGL 9</span>
+        <span class="hero-tag">TFT_eSPI</span>
+        <span class="hero-tag">XPT2046 Touch</span>
+        <span class="hero-tag">Node Backend</span>
+        <span class="hero-tag">launchd</span>
+        <span class="hero-tag">mDNS</span>
+        <span class="hero-tag">ฟอนต์ไทยเจนเอง</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#screen">ดูหน้าจอจริง</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>ปัญหาที่เจอ</h2>
+      <p>ข้อมูลที่ต้องดูทุกเช้ามีไม่กี่อย่าง แต่มันกระจายอยู่คนละที่ และไม่มีอันไหน "อยู่ตรงหน้า" ตลอดเวลา</p>
+    </section>
+
+    <div class="quote-block">
+      <p>ทุกเช้าต้องเปิด 6 อย่าง — ปฏิทินดูวันพระ, แอปอากาศ, พอร์ตหุ้นใน Dime, การ์ดโค้ชจาก LINE, เช็คโควตา Claude เหลือเท่าไร, แล้วดูว่า agent ที่สั่งไว้ทำอะไรอยู่ ทั้งหมดนี้คือข้อมูล "ชำเลืองดู" ไม่ใช่ข้อมูลที่ต้องเปิดแอปมานั่งอ่าน — แต่บนคอมมันโดนหน้าต่างอื่นทับตลอด</p>
+      <div class="author">— โจทย์ตั้งต้น ก่อนสั่งบอร์ด ESP32</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <span class="emoji">&#128241;</span>
+        <h3>ข้อมูลกระจาย 6 แอป แต่ละอันดูแค่ 3 วินาที</h3>
+        <p>อากาศ / วันพระ / ราคาหุ้นที่เฝ้า / โควตา AI — ข้อมูลที่ใช้เวลาดูรวมกันไม่ถึงนาที แต่ต้องปลดล็อกมือถือ เปิดแอป สลับแท็บ ทุกวัน</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128454;</span>
+        <h3>Dashboard บนจอคอม = ไม่มีอยู่จริง</h3>
+        <p>เปิด dashboard ไว้อีกแท็บ สุดท้ายก็โดนหน้าต่างงานทับ ข้อมูลที่ต้อง "ชำเลืองเห็น" ต้องมีพื้นที่ของตัวเองที่ไม่แย่งกับงาน</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#127991;&#65039;</span>
+        <h3>โมดูลจอสำเร็จรูปพูดไทยไม่ได้</h3>
+        <p>เฟิร์มแวร์สำเร็จรูปของจอ ESP32 แทบทั้งหมดมีแต่ฟอนต์ละติน — ภาษาไทยออกมาเป็นกล่องสี่เหลี่ยม และวรรณยุกต์ซ้อนผิดตำแหน่ง</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#129504;</span>
+        <h3>ESP32 คิดเองไม่ไหว</h3>
+        <p>คำนวณดวงสุริยยาตร์ เรียก AI สรุป อ่านโควตา OAuth — งานพวกนี้กิน RAM และต้องใช้ secret ซึ่งไม่ควรฝังในบอร์ดที่วางอยู่บนโต๊ะ</p>
+      </div>
+      <div class="pain-card">
+        <span class="emoji">&#128268;</span>
+        <h3>เปลี่ยนวง Wi-Fi ทีต้อง flash ใหม่ที</h3>
+        <p>เฟิร์มแวร์ที่ hardcode IP ของ backend ไว้ พอ Mac ย้าย IP หรือเปลี่ยนเราเตอร์ จอก็ตายเงียบ ต้องต่อสาย USB มา flash ใหม่ทุกครั้ง</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>แยกให้ชัดว่าอะไรคือ "จอ" อะไรคือ "สมอง" แล้วให้ทั้งสองคุยกันด้วยสัญญาข้อมูลเดียว</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <span class="emoji">&#128225;</span>
+        <h3>ESP32 เป็น thin client ไม่ใช่สมอง</h3>
+        <p>Backend บน Mac รวมข้อมูลทุกแหล่ง คำนวณให้เสร็จ แล้วส่ง JSON การ์ดสั้น ๆ ให้จอวาด — เฟิร์มแวร์ไม่ต้องรู้จัก API ไหนเลย และไม่มี key อยู่ในบอร์ด</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#127183;</span>
+        <h3>ทุกอย่างคือ "การ์ด" หน้าตาเดียวกัน</h3>
+        <p>ไม่ว่าจะอากาศ หุ้น ดวง หรือโควตา AI ทุกใบใช้สัญญาเดียวกัน <code>id / type / title / value / detail / tone / priority</code> — เพิ่มการ์ดใหม่ = เพิ่ม 1 ฟังก์ชันใน backend ไม่ต้องแตะจอ</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128241;</span>
+        <h3>ตั้งค่าจากมือถือ ไม่ต้อง flash</h3>
+        <p>หน้า <code>/manage</code> จัดลำดับการ์ด ซ่อน/แสดง เลือกหุ้นที่เฝ้า ตั้งเวลาโพโมโดโร ความสว่างกลางวัน-กลางคืน — จอดึง config รอบถัดไปแล้วเปลี่ยนตามทันที</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128292;</span>
+        <h3>ฟอนต์ไทยเจนเอง พร้อมวรรณยุกต์ยกสูง</h3>
+        <p>สร้าง bitmap font จาก Anuphan 5 ขนาดเข้าเฟิร์มแวร์ แล้วทำ glyph วรรณยุกต์ตำแหน่งสูงเก็บใน Private Use Area เอง เพราะ LVGL ไม่อ่านตาราง GPOS ของ OpenType</p>
+      </div>
+      <div class="solution-card">
+        <span class="emoji">&#128246;</span>
+        <h3>หา backend ด้วยชื่อ ไม่ใช่ IP</h3>
+        <p>จอ resolve <code>Workspace-3.local</code> ผ่าน mDNS แล้วแคช IP ไว้ — ย้ายเราเตอร์ เปลี่ยนวง Wi-Fi หรือ Mac ได้ IP ใหม่ ก็ยังหากันเจอโดยไม่ต้องต่อสาย</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Flow ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน — 4 จังหวะ</h2>
+      <p>จากแหล่งข้อมูลดิบ ถึงการ์ดที่แตะดูได้บนจอ ใช้เวลารอบละ 60 วินาที</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <span class="emoji">&#128229;</span>
+        <h4>รวมของ</h4>
+        <p>Backend ดึงอากาศ ปฏิทิน .ics ราคาหุ้น ดวง โควตา Claude และหางไฟล์ session ของ agent</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <span class="emoji">&#129521;</span>
+        <h4>ย่อยเป็นการ์ด</h4>
+        <p>คำนวณให้จบบน Mac แล้วเหลือแต่ข้อความสั้น + ตัวเลขที่จอเอาไปวาดได้ทันที</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <span class="emoji">&#128260;</span>
+        <h4>จอดึงแล้ววาด</h4>
+        <p>ESP32 ยิง HTTP ทุก 60 วิ (การ์ด Claude แยกท่อ 10 วิ) แล้ว render ด้วย LVGL</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <span class="emoji">&#128070;</span>
+        <h4>แตะเพื่อเจาะ</h4>
+        <p>แตะการ์ด → หน้า detail กราฟราคา กราฟฝนรายชั่วโมง ปฏิทินเดือน หรือ price ladder</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>ไม่มีคลาวด์ ไม่มีบัญชีผู้ใช้ ไม่มี key ในบอร์ด — ทุกอย่างจบใน LAN บ้าน</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          แหล่งข้อมูล
+          <div class="arch-sub">
+            <span>Open-Meteo</span>
+            <span>MegaCoach JSON</span>
+            <span>Thai Astrology API</span>
+            <span>Claude usage API</span>
+            <span>~/.claude/projects/*.jsonl</span>
+            <span>ปฏิทิน .ics</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Backend Node บน Mac (launchd) &mdash; พอร์ต 8787
+          <div class="arch-sub">
+            <span>/api/device-summary</span>
+            <span>/api/claude</span>
+            <span>/manage</span>
+            <span>saju.mjs</span>
+            <span>thai-lunar.mjs</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Firmware (Arduino + LVGL 9)
+          <div class="arch-sub">
+            <span>mDNS resolve</span>
+            <span>HTTP poll</span>
+            <span>ฟอนต์ไทย 5 ขนาด</span>
+            <span>touch + scroll</span>
+            <span>auto-dim</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          ESP32-035 &mdash; ฿640
+          <div class="arch-sub">
+            <span>ST7796 320&times;480</span>
+            <span>XPT2046 resistive</span>
+            <span>LDR</span>
+            <span>RGB LED</span>
+            <span>audio amp</span>
+            <span>Flash 4MB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+      <strong>ทำไมเลือก stack นี้?</strong>
+      <p><strong>ESP32-035</strong> มีจอ ทัช LDR RGB และ audio amp มาในบอร์ดเดียว ฿640 — ไม่ต้องต่อ sensor เพิ่มเลยสักตัว &middot; <strong>LVGL 9</strong> ให้ scroll/touch/animation ระดับใช้งานจริงบน MCU &middot; <strong>Backend เป็น Node ล้วน ไม่มี dependency</strong> รันด้วย <code>launchd</code> สตาร์ตเองตอนเปิดเครื่อง &middot; <strong>วางไว้ใน LAN</strong> ทำให้เข้าถึงไฟล์ในเครื่อง (session ของ agent, ข้อมูลพอร์ต) ได้โดยไม่ต้องอัปอะไรขึ้นคลาวด์</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>สิ่งที่สร้าง — การ์ด 12 ใบ</h2>
+      <p>ทุกใบเป็นข้อมูลจริง ไม่มี mock เหลืออยู่บนจอ</p>
+    </section>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <span class="emoji">&#128336;</span>
+        <h3>นาฬิกา + วันที่ไทย</h3>
+        <p>NTP sync แล้ววาดด้วยฟอนต์ตัวเลข 48px แยกต่างหาก + วันที่ พ.ศ. เต็มรูปแบบบนแถบหัวจอ</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128197;</span>
+        <h3>ปฏิทินรายเดือน</h3>
+        <p>เลื่อนดูเดือนอื่นได้ · จุดน้ำเงินใต้วันพระ · เลขแดงวันหยุดราชการ · ดึงปฏิทินภายนอกผ่าน .ics ได้</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#127765;</span>
+        <h3>จันทรคติ / วันพระ</h3>
+        <p>คำนวณข้างขึ้นข้างแรมด้วยสูตรสุริยยาตร์ในฝั่ง backend เอง ไม่พึ่ง API ภายนอก</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#127782;&#65039;</span>
+        <h3>Weather แบบ Google Weather</h3>
+        <p>Open-Meteo + กราฟโอกาสฝนรายชั่วโมงที่วาดเอง + ไอคอนสไตล์ Google ฝังเป็น C array RGB565A8</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128302;</span>
+        <h3>ดวงลงทุนวันนี้</h3>
+        <p>ต่อกับ Thai Astrology engine ของโปรเจกต์ MegaCoach — ให้คะแนน 0-100 พร้อมคำอธิบายสั้น</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#9775;&#65039;</span>
+        <h3>พลังวันนี้ (สาจู)</h3>
+        <p>เขียน engine เองใน <code>saju.mjs</code> ตรวจตรงกับแอปอ้างอิงทุกช่วงยาม — กราฟพลังรายยามเป็นเส้นต่อจุด</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128200;</span>
+        <h3>Market Focus</h3>
+        <p>ราคาหุ้นที่เฝ้าพร้อมกราฟ 1 เดือน กด &#9668; &#9658; เลื่อนดูได้ทุกตัว เลือกรายชื่อจากหน้า manage</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#127914;</span>
+        <h3>Monthly Plan &amp; Price Ladder</h3>
+        <p>แสดงโซนเข้า / stop / target เทียบกับราคาปัจจุบันเป็นบันได เห็นทันทีว่าอยู่ตรงไหนของแผน</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#11088;</span>
+        <h3>North Star</h3>
+        <p>เป้าหมายระยะยาวและหลักการคุมความเสี่ยง <code>Fear of Ruin &gt; FOMO</code> ที่ต้องเห็นทุกวัน</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#128202;</span>
+        <h3>AI Status</h3>
+        <p>โควตา Claude รอบ 5 ชม. และ 7 วัน เป็นแถบเส้น + ขีด pace — สีเปลี่ยนเมื่อ % ใช้ไปแซงเวลาที่ผ่านไป</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#129302;</span>
+        <h3>Claude Code + มาสคอต</h3>
+        <p>อ่านหางไฟล์ session ว่า agent กำลังใช้เครื่องมืออะไร แล้วให้มาสคอตทำท่าตามนั้น รีเฟรชทุก 10 วินาที</p>
+      </div>
+      <div class="module-card">
+        <span class="emoji">&#127813;</span>
+        <h3>โพโมโดโร + เตือนกิจวัตร</h3>
+        <p>จับเวลาทำงาน/พัก และเตือนกินน้ำ ข้าวเที่ยง เลิกงาน — แตะตอนกระพริบเพื่อปิดจบในจังหวะเดียว</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Device Mockup ===== -->
+    <section class="section-intro" id="screen">
+      <span class="eyebrow">Prototype</span>
+      <h2>หน้าตาบนจอ</h2>
+      <p>320&times;480 แนวตั้ง — แถบหัวคงที่ ด้านล่างเป็นการ์ดที่เลื่อนและแตะได้</p>
+    </section>
+
+    <div class="dev-wrap">
+      <div class="dev-frame">
+        <div class="dev-screen">
+          <div class="dev-hero">
+            <div>
+              <div class="dev-clock">09:42</div>
+              <div class="dev-date">อังคาร 5 สิงหาคม 2569</div>
+            </div>
+            <div class="dev-hero-right">
+              <div class="t">31&deg;</div>
+              <div>เมฆเป็นส่วนมาก</div>
+              <div>ขึ้น 12 ค่ำ เดือน 9</div>
+            </div>
+          </div>
+          <div class="dev-list">
+            <div class="dev-card">
+              <div class="dev-blob">&#129302;</div>
+              <div class="body">
+                <div class="ttl">CLAUDE CODE</div>
+                <div class="val">กำลังแก้ไฟล์</div>
+                <div class="sub">live-arduino &middot; app_main.cpp</div>
+              </div>
+            </div>
+            <div class="dev-card">
+              <div class="dev-blob">&#128202;</div>
+              <div class="body">
+                <div class="ttl">AI STATUS</div>
+                <div class="val warn">รอบ 5 ชม. 62%</div>
+                <div class="dev-bar"><i style="width:62%"></i></div>
+              </div>
+            </div>
+            <div class="dev-card">
+              <div class="dev-blob">&#128200;</div>
+              <div class="body">
+                <div class="ttl">MARKET FOCUS</div>
+                <div class="val">NVDA <span class="up">$206.69 &#9650; 1.2%</span></div>
+                <div class="sub">1 เดือน &middot; ต่ำสุด $188 &middot; สูงสุด $212</div>
+              </div>
+            </div>
+            <div class="dev-card">
+              <div class="dev-blob">&#9775;&#65039;</div>
+              <div class="body">
+                <div class="ttl">พลังวันนี้</div>
+                <div class="val">ธาตุไฟ &middot; 71/100</div>
+                <div class="sub">ยามแรง 09:00-11:00</div>
+              </div>
+            </div>
+            <div class="dev-card">
+              <div class="dev-blob">&#127813;</div>
+              <div class="body">
+                <div class="ttl">โพโมโดโร</div>
+                <div class="val">18:24</div>
+                <div class="sub">ช่วงทำงาน &middot; เตือนกินน้ำอีก 12 นาที</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="dev-caption">แถบหัวไม่เปลี่ยนตำแหน่งเลยตลอดวัน เพื่อให้ "ชำเลืองเห็น" เวลาและอากาศได้โดยไม่ต้องโฟกัส ส่วนการ์ดด้านล่างเรียงตาม priority ที่ตั้งจากมือถือได้</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hacks ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hack กับปัญหา</h2>
+      <p>7 โจทย์ที่เจอตอนของจริงอยู่บนโต๊ะ — ส่วนใหญ่ไม่มีในเอกสาร ต้องไล่เอง</p>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card perf" data-label="Memory">
+        <span class="emoji">&#128165;</span>
+        <h3>กดแล้วค้าง ทั้งที่ heap ว่าง 165KB</h3>
+        <p>แตะการ์ดแล้วจอค้างเป็นระยะ ตอนแรกนึกว่า RAM หมด แต่ ESP รายงาน heap ว่างตั้ง 165KB</p>
+        <div class="highlight">แก้: LVGL ไม่ได้ใช้ heap ของระบบ มันใช้ pool ของตัวเองที่ <code>LV_MEM_SIZE</code> = 32KB และเต็มไปแล้ว 89% → เปลี่ยนไปใช้ <code>LV_STDLIB_CLIB</code> ให้ LVGL ขอ memory จาก heap จริงแทน &mdash; บทเรียน: บน MCU ต้องถามว่า "หน่วยความจำก้อนไหนเต็ม" ไม่ใช่แค่ "ว่างเท่าไร"</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Stack">
+        <span class="emoji">&#128260;</span>
+        <h3>บอร์ดรีบูตตอนกดเข้าหน้า detail</h3>
+        <p>เปิดหน้า detail ของการ์ดมาสคอตทีไรบอร์ดรีบูตทันที ทั้งที่ heap เหลือเฟือ 163KB</p>
+        <div class="highlight">แก้: struct ของรูปมาสคอตขนาด 1.7KB ถูกประกาศเป็นตัวแปร local ใน draw callback ซึ่งอยู่บน <strong>stack</strong> ของ task ไม่ใช่ heap → ย้ายไปเป็น static &mdash; บทเรียน: stack overflow บน ESP32 หน้าตาเหมือน "รีบูตเฉย ๆ" ไม่มี error ให้อ่าน</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Fonts">
+        <span class="emoji">&#128499;&#65039;</span>
+        <h3>วรรณยุกต์ไทยซ้อนผิดตำแหน่ง</h3>
+        <p>คำที่มีสระบนซ้อนวรรณยุกต์ เช่น "ที่" ออกมาชนกันเป็นก้อน เพราะ LVGL ไม่อ่านตาราง GPOS ของ OpenType</p>
+        <div class="highlight">แก้: เขียน <code>make_thai_font.py</code> เจน bitmap font 5 ขนาดจาก Anuphan เอง แล้ว<strong>สร้าง glyph วรรณยุกต์ตำแหน่งยกสูงเก็บใน Private Use Area</strong> ตอน render ก็ map อักขระเป็นตัว PUA เมื่อเจอบริบทที่ต้องยก &mdash; ได้ตำแหน่งถูกโดยไม่ต้องมี shaping engine</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Debug">
+        <span class="emoji">&#11036;</span>
+        <h3>กล่องสี่เหลี่ยมบนจอ ไม่ใช่ loading</h3>
+        <p>ตัวเลขนาฬิกาบางสถานะขึ้นเป็นกล่องสี่เหลี่ยม — ไล่หา race condition ของการโหลดข้อมูลอยู่นาน</p>
+        <div class="highlight">แก้: มันคือ glyph ที่ไม่มีในฟอนต์ ฟอนต์นาฬิกา 48px มีแค่ <code>0-9 : &deg;</code> พอส่ง <code>--:--</code> เข้าไป ขีดจึงกลายเป็นกล่อง → เปลี่ยนเป็นส่งสตริงว่างตอนยังไม่มีเวลา &mdash; บทเรียน: กล่องสี่เหลี่ยม = ฟอนต์ ไม่ใช่ state</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Network">
+        <span class="emoji">&#128246;</span>
+        <h3>จอไม่มีข้อมูล แต่ backend ไม่ได้ล่ม</h3>
+        <p>จอขึ้น error ทั้งที่ <code>curl</code> จาก Mac ได้ 200 ปกติ — เสียเวลาไล่หาสาเหตุที่ฝั่ง backend อยู่นาน</p>
+        <div class="highlight">แก้: เฟิร์มแวร์ไม่เคยเรียก <code>MDNS.begin()</code> เลย lwip จึง resolve ชื่อ <code>.local</code> ไม่ได้ → ใช้ <code>MDNS.queryHost()</code> เอา IP มาเสียบแล้วแคชไว้ &mdash; <strong>หลุมที่ทำให้หลงทาง: curl ชื่อ .local จาก Mac เองมันวิ่งเข้า 127.0.0.1 ต้อง curl ด้วย LAN IP ถึงจะรู้ความจริง</strong></div>
+      </div>
+
+      <div class="hack-card ux" data-label="Text">
+        <span class="emoji">&#9986;</span>
+        <h3>ชื่อสภาพอากาศยาวเกินไปทับนาฬิกา</h3>
+        <p>ใส่ <code>LV_LABEL_LONG_DOT</code> แล้วยังทับอยู่ เพราะ LVGL จะ wrap ขึ้นบรรทัดสองก่อน แล้วค่อยใส่จุดไข่ปลา</p>
+        <div class="highlight">แก้: เขียน <code>setThaiTextFit()</code> วัดความกว้างจริงด้วย <code>lv_text_get_size</code> แล้วถอยข้อความทีละ<strong>ตัวอักษร UTF-8</strong> จนพอดีกรอบ &mdash; ห้ามถอยทีละไบต์ เพราะจะตัดกลางอักขระไทยแล้วได้ขยะ</div>
+      </div>
+
+      <div class="hack-card arch" data-label="Refresh">
+        <span class="emoji">&#9889;</span>
+        <h3>การ์ด Claude ช้าไป 5 นาที</h3>
+        <p>การ์ดที่บอกว่า agent กำลังทำอะไร ต้องสด แต่มันรออัปเดตพร้อมรอบใหญ่ 60 วินาที/5 นาที ทำให้ข้อมูลตกยุคตลอด</p>
+        <div class="highlight">แก้: แยกท่อ <code>/api/claude</code> ที่ส่งเฉพาะการ์ดใบเดียว (~300 bytes) ทุก 10 วิ แล้ว<strong>เขียนทับ label เดิมในที่</strong> โดยจำ pointer ไว้ ไม่ <code>lv_obj_clean</code> ทั้งจอ &mdash; ถ้าล้างทั้งจอ scroll จะเด้งกลับหัวทุก 10 วินาที</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Design Decision ที่ตั้งใจเลือก</h2>
+      <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอ ๆ กับสิ่งที่ทำ</p>
+    </section>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>จอนี้ทำหน้าที่เดียว: <strong>แสดงผล</strong> — มันไม่คำนวณดวงเอง ไม่เรียก AI เอง ไม่เก็บ key ใด ๆ และไม่ต่อออกอินเทอร์เน็ตนอกจากไปหา backend ในบ้าน พอขอบเขตคมขนาดนี้ เฟิร์มแวร์ก็เหลือแค่ "ดึง JSON แล้ววาด" ซึ่ง debug ง่ายและพังยาก</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128421;&#65039;</strong><br>
+        <strong>จอ ไม่ใช่สมอง</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">logic หนักอยู่บน Mac จอแค่ดึง JSON มาวาด</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128273;</strong><br>
+        <strong>ไม่มี key ในเฟิร์มแวร์</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">บอร์ดวางอยู่บนโต๊ะ ใครหยิบไปก็ไม่ได้อะไรติดมือ</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#127968;</strong><br>
+        <strong>อยู่ใน LAN เท่านั้น</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">ข้อมูลพอร์ตและ session ไม่ต้องขึ้นคลาวด์</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128241;</strong><br>
+        <strong>config ไม่ต้อง flash</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">ปรับทุกอย่างจากมือถือ สาย USB เก็บเข้าลิ้นชักได้</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge Domain ที่แข็งขึ้น</h2>
+      <p>5 พื้นที่ความรู้ที่ระดับขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
+    </section>
+
+    <div class="learning-card">
+      <strong>1. Embedded UI ด้วย LVGL 9 — จาก "วาดข้อความ" เป็น "ออกแบบระบบการ์ด":</strong>
+      <p>เข้าใจ object tree, style selector, scroll container, draw callback และวิธีอัปเดต widget ในที่โดยไม่สร้างใหม่ทั้งจอ — ซึ่งเป็นความต่างระหว่าง UI ที่ลื่นกับ UI ที่เด้ง บทเรียน: บน MCU การ "ไม่วาดใหม่" สำคัญกว่าการวาดให้สวย</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. ฟอนต์ไทยบนระบบฝังตัว — ลงลึกถึงระดับ glyph:</strong>
+      <p>รู้ว่า rendering ภาษาไทยต้องมี shaping (GPOS) ที่ LVGL ไม่มีให้ จึงต้องแก้ที่ชั้นฟอนต์เอง ด้วยการเจน glyph ยกสูงเข้า PUA และ map ตอน render บวกกับการจัดการ UTF-8 ที่ห้ามตัดกลางไบต์ บทเรียน: การรองรับภาษาไม่ใช่ฟีเจอร์ปลายทาง มันเป็นข้อจำกัดตั้งแต่ชั้นเลือกไลบรารี</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. หน่วยความจำบน MCU — แยก stack / heap / pool ของไลบรารีออกจากกัน:</strong>
+      <p>เจอทั้งอาการ pool ของ LVGL เต็มขณะ heap ว่าง และ stack overflow ที่หน้าตาเหมือนรีบูตเฉย ๆ ทำให้อ่านอาการเป็นและวางขนาด draw buffer ได้ตามขอบเขต DRAM จริง บทเรียน: "RAM เหลือเท่าไร" เป็นคำถามที่กว้างเกินไปสำหรับงานฝังตัว</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. เครือข่ายในบ้าน — mDNS, subnet และการ debug ที่หลอกตา:</strong>
+      <p>เข้าใจว่า <code>.local</code> ต้องมี responder ทั้งสองฝั่ง, อุปกรณ์ 2.4GHz กับ 5GHz อาจอยู่คนละ subnet จนคุยกันไม่ได้ และการทดสอบจากเครื่องตัวเองมักให้ผลลวง บทเรียน: ทดสอบจากมุมของอุปกรณ์ที่มีปัญหาเสมอ ไม่ใช่จากเครื่องที่สะดวก</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. สถาปัตยกรรม thin client — สัญญาข้อมูลเดียวที่ทำให้ต่อยอดถูก:</strong>
+      <p>การบังคับให้ทุกฟีเจอร์ลงในรูป "การ์ด" เดียวกัน ทำให้เพิ่มของใหม่ 12 อย่างโดยแทบไม่แตะเฟิร์มแวร์ และย้าย logic หนักไปอยู่ฝั่งที่แก้ง่ายกว่าเสมอ บทเรียน: ออกแบบสัญญาข้อมูลให้ดีตั้งแต่แรก คือการลดงาน flash ในอนาคต</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">12</div>
+        <div class="label">การ์ดข้อมูลจริงบนจอ</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">25</div>
+        <div class="label">commits จาก bring-up ถึงใช้จริง</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">฿640</div>
+        <div class="label">ต้นทุนฮาร์ดแวร์ทั้งหมด</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">key ที่อยู่ในบอร์ด</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <div class="mascot-half">
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+    </div>
+    <h2>TanPlanet Live</h2>
+    <p>จอตั้งโต๊ะ ESP32 ส่วนตัว ที่เปลี่ยนการเปิด 6 แอปทุกเช้า ให้เหลือแค่ชำเลืองมองจอข้างคีย์บอร์ด — ฮาร์ดแวร์ ฿640 หนึ่งบอร์ด กับ backend Node ที่รันอยู่บน Mac เครื่องเดิม ไม่มีคลาวด์ ไม่มี key ในบอร์ด ข้อมูลไม่ออกนอกบ้าน</p>
+    <div class="stack-icons">
+      <span class="stack-icon">ESP32-035</span>
+      <span class="stack-icon">LVGL 9</span>
+      <span class="stack-icon">TFT_eSPI</span>
+      <span class="stack-icon">XPT2046</span>
+      <span class="stack-icon">PlatformIO</span>
+      <span class="stack-icon">Node.js</span>
+      <span class="stack-icon">launchd</span>
+      <span class="stack-icon">mDNS</span>
+      <span class="stack-icon">Open-Meteo</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.info/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "TanPlanet Live — จอตั้งโต๊ะ ESP32",
+      "item": "https://projects.tanplanet.info/live-arduino-portfolio/"
+    }
+  ]
+}
+</script>
+
+</body>
+</html>
