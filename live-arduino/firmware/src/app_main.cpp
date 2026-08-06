@@ -131,6 +131,10 @@ struct ClaudeViz {
 };
 static ClaudeViz gClaude;
 
+// โควตาที่แย่ที่สุดที่อยู่บนจอตอนนี้ (session หรือ 7 วัน) — มาสคอตเอาไปกำหนดจังหวะ
+// ติดลบ = ยังไม่รู้ ไม่ใช่ศูนย์ และไม่ใช่เหตุให้ทำท่าเหนื่อย
+static float gQuotaWorst = -1;
+
 // รายชื่อหุ้นใน Market Focus ไว้กด ◀ ▶ เลื่อนดูในหน้า detail
 // โลโก้ของตัวที่ดึงมาทีหลังใช้บัฟเฟอร์แยก ไม่ไปแย่งช่องกับโลโก้ของการ์ดบนหน้าแรก
 struct MarketViz {
@@ -1085,9 +1089,21 @@ static void mascotDraw(lv_event_t* e) {
                   coords.y2 + 1 - CT_BOX_Y1 * px, px);
 }
 
+// โควตาเหลือน้อย = มาสคอตขยับช้าลง (ท่าเดียวกับ tamaclaude `7038a43` ที่ลดความเร็วเดิน
+// 34/25/17 px/s) ใช้ขั้นเดียวกับสีแถบโควตาเป๊ะ ไม่ตั้งเกณฑ์ชุดที่สองให้เลื่อนจากกันทีหลัง
+// ต้นฉบับสลับระดับได้เฉพาะตอนขึ้นเที่ยวใหม่เพราะความเร็วที่เปลี่ยนกลางทางทำให้ตัวที่เดินอยู่
+// กระโดด — ของเราไม่ต้อง เพราะ phase เดินสะสมทีละก้าว เปลี่ยนขนาดก้าวกลางลูปก็ยังต่อเนื่อง
+static constexpr float mascotPhaseStep(float pct) {
+  return pct >= 85 ? 0.04f : pct >= 60 ? 0.06f : 0.08f;  // ลูปละ ~2 / 1.3 / 1 วินาที
+}
+static_assert(mascotPhaseStep(-1) == 0.08f, "ยังไม่รู้โควตา = จังหวะปกติ ไม่ใช่ช้าสุด");
+static_assert(mascotPhaseStep(59) == 0.08f, "");
+static_assert(mascotPhaseStep(60) == 0.06f, "");
+static_assert(mascotPhaseStep(85) == 0.04f, "");
+
 // เดินอนิเมชันของทุกตัวพร้อมกันจากตัวจับเวลาตัวเดียว แล้วสั่งวาดใหม่
 static void mascotTick(lv_timer_t*) {
-  mascotPhase += 0.08f;  // ~12 fps, ลูปละ ~1 วินาที
+  mascotPhase += mascotPhaseStep(gQuotaWorst);
   if (mascotPhase >= 1.0f) { mascotPhase -= 1.0f; mascotCycle++; }
   for (int i = 0; i < gMascotN; i++) lv_obj_invalidate(gMascots[i]);
 }
@@ -2233,6 +2249,7 @@ static bool fetchAndRender() {
         viz.quotaMinutes = sess["minutesLeft"] | 0;
         viz.quotaWeekPct = extra["quota"]["week"]["pct"] | -1.0f;
         viz.quotaWeekMinutes = extra["quota"]["week"]["minutesLeft"] | 0;
+        gQuotaWorst = viz.quotaWeekPct > viz.quotaPct ? viz.quotaWeekPct : viz.quotaPct;
       }
       JsonObject u = extra["usage"][0];
       const char* names[] = {"ส่งเข้า", "ตอบกลับ", "อ่านแคช", "เขียนแคช"};
