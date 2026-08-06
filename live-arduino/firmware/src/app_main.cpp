@@ -163,6 +163,11 @@ struct CalMonth {
   uint8_t evN = 0;
   uint32_t feedColor[4] = {0x4ADE80, 0xF472B6, 0xA78BFA, 0x22D3EE};
   int8_t sajuLv[32];  // -1 = ไม่ได้ตั้งวันเกิด จึงไม่มีระดับพลัง
+
+  // นัดถัดไป — การ์ดวาดฟ้าของชั่วโมงนั้นเป็นพื้น แล้วนับถอยหลังจาก nextAt
+  uint32_t nextAt = 0;      // epoch วินาที · 0 = ไม่มีนัด
+  char nextTime[8] = {0};   // "" = นัดทั้งวัน
+  char nextLabel[128] = {0};  // ไทย 40 ตัว = 120 ไบต์ — backend ตัดมาให้พอดีแล้ว
 };
 static CalMonth gCal;
 
@@ -474,6 +479,7 @@ static uint32_t toneColor(const char* tone) {
 // แตะการ์ด → กางรายละเอียดเต็มจอ; แตะที่ไหนก็ได้เพื่อปิด
 // ponytail: อ่านข้อความจาก label ลูกของการ์ดเอง ไม่ต้องเก็บ state ซ้ำอีกชุด
 static lv_obj_t* vizBox = nullptr;
+static lv_obj_t* skyBg = nullptr;  // ฟ้าเต็มหน้าใต้ทุกอย่างในหน้า detail ของวัน
 
 // กล่องโปร่งไม่มีขอบ ไม่เลื่อน — ใช้เป็นโครงวางของอย่างเดียว
 static lv_obj_t* plainBox(lv_obj_t* parent, int w, int h) {
@@ -1654,6 +1660,137 @@ static void stockStep(void* arg) {
 }
 
 // แตะวันในปฏิทิน → เปิดหน้า detail เดิมซ้อนทับ ปิดแล้วกลับมาที่ปฏิทิน
+// ---------------------------------------------------------------- ฟ้าของนัดถัดไป
+// แนวคิดจาก tamaclaude (ADR-0009 + ct_sky.h): การ์ดปฏิทินนั่งอยู่ใต้ฟ้า *ของชั่วโมงนัด*
+// ไม่ใช่ฟ้าตอนนี้ — เหลือบแล้วรู้ว่านัดเช้าหรือเย็นก่อนจะทันได้อ่านตัวเลข
+// ขอบช่วงเวลาและสีเป็นชุดเดียวกับต้นฉบับ (แปลง RGB565 → 888 แล้ว)
+enum SkyPhase : uint8_t { SKY_NIGHT, SKY_DAWN, SKY_DAY, SKY_DUSK };
+static SkyPhase skyPhaseAt(int hour) {
+  if (hour < 5 || hour >= 19) return SKY_NIGHT;
+  if (hour < 7) return SKY_DAWN;
+  if (hour < 17) return SKY_DAY;
+  return SKY_DUSK;
+}
+static const uint32_t kSkyTop[4] = {0x080C18, 0x384878, 0x5FA8DC, 0x682C78};
+static const uint32_t kSkyBot[4] = {0x1E2748, 0x9A7A90, 0xB8DCF0, 0xE0743C};
+static const uint32_t kSkyDisc[4] = {0xC8CCD8, 0xF0A428, 0xFFD75E, 0xF06428};
+static const uint32_t kSkyCloud[4] = {0x2A3454, 0x586C98, 0xF0F8F8, 0xC06890};
+// ตัวหนังสือบนฟ้า — กลางวันฟ้าสว่างต้องใช้หมึกเข้ม ที่เหลือฟ้ามืดพอจะใช้สีอ่อนได้
+static const uint32_t kSkyInk[4] = {0xF2F5FF, 0xF2F5FF, 0x0B1526, 0xF2F5FF};
+static const uint32_t kSkyInkDim[4] = {0xB9C4E6, 0xC9D2EC, 0x2E4258, 0xF0D8E4};
+// เมฆฝนเทากว่าเมฆแดด — ฟ้าฝนที่เมฆยังขาวจั๊วะอ่านเหมือนวาดผิด
+static const uint32_t kSkyCloudWet[4] = {0x1E2740, 0x3E4E70, 0x8A97AC, 0x8A6A80};
+
+// รหัส WMO มีหลายสิบค่า แต่ฉากบนจอแยกได้จริงแค่ 4 แบบ — ขอบเขตเดียวกับ ct_sky_bucket
+enum WxKind : uint8_t { WX_CLEAR, WX_CLOUD, WX_RAIN, WX_STORM };
+static WxKind wxFromCode(int code) {
+  if (code >= 95) return WX_STORM;
+  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 86) || (code >= 71 && code <= 77)) return WX_RAIN;
+  if (code >= 2) return WX_CLOUD;  // 45/48 หมอกก็นับเป็นฟ้าปิด — จอเล็กแยกหมอกกับเมฆไม่ออก
+  return WX_CLEAR;
+}
+
+// ดวง + เมฆสองก้อน วาดใน draw event — ไม่ต้องจอง object ให้ LVGL ไล่ layout ทีละใบ
+// พื้นไล่สีเป็น style ของกล่องเอง เลยไม่ต้องแตะ gradient dsc ตรงนี้
+static void skyDraw(lv_event_t* e) {
+  lv_obj_t* obj = (lv_obj_t*)lv_event_get_target_obj(e);
+  lv_layer_t* layer = lv_event_get_layer(e);
+  const uint32_t ud = (uint32_t)(intptr_t)lv_obj_get_user_data(obj);
+  const SkyPhase p = (SkyPhase)(ud & 0xFF);
+  const WxKind wx = (WxKind)(ud >> 8);
+  lv_area_t box;
+  lv_obj_get_coords(obj, &box);
+
+  const int w = lv_area_get_width(&box), h = lv_area_get_height(&box);
+
+  lv_draw_rect_dsc_t d;
+  lv_draw_rect_dsc_init(&d);
+  d.bg_opa = LV_OPA_COVER;
+
+  // ทุกชิ้นวัดจากขนาดฉาก ไม่ใช่พิกเซลตายตัว — ฉากจะได้ย้ายที่/เปลี่ยนขนาดโดยไม่ต้องแก้เลข
+  // ของทั้งหมดอยู่ครึ่งบน ครึ่งล่างเป็นที่ของตัวหนังสือ เมฆกับคำจะได้ไม่ต้องแย่งที่กัน
+  // ฟ้าปิดก็ไม่มีดวงให้เห็น — ดวงอาทิตย์ส่องผ่านเมฆฝนคือจอที่เถียงตัวเอง
+  if (wx == WX_CLEAR) {
+    const int r = h / 7;
+    const int cx = box.x2 - w / 7, cy = box.y1 + r + h / 12;
+    d.radius = LV_RADIUS_CIRCLE;
+    d.bg_color = lv_color_hex(kSkyDisc[p]);
+    lv_area_t disc = {cx - r, cy - r, cx + r, cy + r};
+    lv_draw_rect(layer, &d, &disc);
+  }
+
+  // ดาวเฉพาะตอนกลางคืนที่ฟ้าเปิด — ฟ้ามืดที่ไม่มีอะไรเลยอ่านเหมือนกล่องดำที่ลืมวาด
+  if (p == SKY_NIGHT && wx == WX_CLEAR) {
+    d.bg_color = lv_color_hex(0xF2F5FF);
+    const struct { float x, y; } stars[] = {{0.12f, 0.16f}, {0.28f, 0.30f}, {0.55f, 0.12f},
+                                            {0.68f, 0.34f}, {0.86f, 0.44f}};
+    for (auto& s : stars) {
+      const int x = box.x1 + (int)(w * s.x), y = box.y1 + (int)(h * s.y);
+      lv_area_t dot = {x, y, x + 2, y + 2};
+      lv_draw_rect(layer, &d, &dot);
+    }
+  }
+
+  // เมฆ = แท่งมนกับก้อนกลมสองก้อนคนละขนาด — ก้อนเดียวได้เงาเป็นแท่งขนมปัง ไม่ใช่เมฆ
+  // ลอยตามเวลาจริง (millis) ไม่ใช่ตามลูปมาสคอต เพราะลูปนั้นยืด-หดตามโควตาไปแล้ว
+  const float t = millis() / 1000.0f;
+  d.bg_color = lv_color_hex(wx >= WX_RAIN ? kSkyCloudWet[p] : kSkyCloud[p]);
+  const int bar_h = h / 11;
+  // เมฆลอยต่ำ ใกล้เส้นขอบฟ้า — ครึ่งบนซ้ายเป็นที่ของตัวหนังสือ เมฆลอยผ่านคำแล้วอ่านไม่ออก
+  // ฟ้าปิดได้ก้อนที่สาม ไม่ใช่แค่เปลี่ยนสี — "เมฆเยอะขึ้น" อ่านออกจากมุมสายตา สีไม่
+  const struct { float y, w, speed; } clouds[] = {
+      {0.62f, 0.26f, 4.5f}, {0.78f, 0.18f, 2.8f}, {0.70f, 0.22f, 6.0f}};
+  const int cloudN = wx == WX_CLEAR ? 2 : 3;
+  for (int ci = 0; ci < cloudN; ci++) {
+    const auto& c = clouds[ci];
+    const int cw = (int)(w * c.w), span = w + cw;
+    // เข้าจากนอกจอซ้ายไปออกนอกจอขวาแล้ววนใหม่ — ก้อนที่สองเริ่มคนละที่ จะได้ไม่เดินคู่กัน
+    const int x = box.x1 - cw + (int)fmodf(t * c.speed + c.y * span * 2, (float)span);
+    const int y = box.y1 + (int)(h * c.y);
+    d.radius = bar_h / 2;
+    lv_area_t bar = {x, y, x + cw, y + bar_h};
+    lv_draw_rect(layer, &d, &bar);
+    d.radius = LV_RADIUS_CIRCLE;
+    const int r1 = bar_h, r2 = bar_h * 2 / 3;
+    lv_area_t puff1 = {x + cw / 4 - r1, y - r1, x + cw / 4 + r1, y + r1};
+    lv_area_t puff2 = {x + cw * 3 / 5 - r2, y - r2, x + cw * 3 / 5 + r2, y + r2};
+    lv_draw_rect(layer, &d, &puff1);
+    lv_draw_rect(layer, &d, &puff2);
+  }
+
+  // ฝนเป็นเส้นตกจากขอบบนถึงขอบล่าง ไม่ใช่จากใต้ก้อนเมฆ — เมฆบนจอมีสามก้อน แต่ฝนจริงตกทั้งฟ้า
+  if (wx >= WX_RAIN) {
+    d.radius = 0;
+    d.bg_color = lv_color_hex(p == SKY_DAY ? 0x6E93C4 : 0x9FB6DC);
+    const int len = h / 9;
+    const float fall = wx == WX_STORM ? 150.0f : 95.0f;
+    for (int i = 0; i < 18; i++) {
+      const int x = box.x1 + (i * 53) % w;  // 53 เป็นจำนวนเฉพาะ เส้นจะได้ไม่เรียงเป็นแถว
+      const int y = box.y1 - len + (int)fmodf(t * (fall + (i % 4) * 22) + i * 41.0f,
+                                              (float)(h + len));
+      lv_area_t drop = {x, y < box.y1 ? box.y1 : y, x + 1, y + len > box.y2 ? box.y2 : y + len};
+      if (drop.y2 > drop.y1) lv_draw_rect(layer, &d, &drop);
+    }
+  }
+}
+
+// ฉากฟ้าหนึ่งผืน — พื้นไล่สีเป็น style ของกล่อง ส่วนดวง/ดาว/เมฆวาดใน draw event
+// ฝากไว้กับตัวจับเวลา 80 มิลลิฯ ตัวเดียวกับมาสคอต เมฆจะได้ลอยโดยไม่ต้องมี timer ใบที่สอง
+static lv_obj_t* makeSkyBand(lv_obj_t* parent, int w, int h, SkyPhase p, WxKind wx) {
+  lv_obj_t* sky = plainBox(parent, w, h);
+  lv_obj_add_event_cb(sky, mascotDeleted, LV_EVENT_DELETE, nullptr);
+  if (gMascotN < (int)(sizeof(gMascots) / sizeof(gMascots[0]))) gMascots[gMascotN++] = sky;
+  if (!mascotTimer) mascotTimer = lv_timer_create(mascotTick, 80, nullptr);
+  lv_obj_set_style_bg_opa(sky, LV_OPA_COVER, 0);
+  lv_obj_set_style_bg_color(sky, lv_color_hex(kSkyTop[p]), 0);
+  lv_obj_set_style_bg_grad_color(sky, lv_color_hex(kSkyBot[p]), 0);
+  lv_obj_set_style_bg_grad_dir(sky, LV_GRAD_DIR_VER, 0);
+  lv_obj_set_style_radius(sky, 12, 0);
+  lv_obj_set_user_data(sky, (void*)(intptr_t)(p | (wx << 8)));
+  lv_obj_add_event_cb(sky, skyDraw, LV_EVENT_DRAW_MAIN_END, nullptr);
+  return sky;
+}
+
 static void dayClicked(lv_event_t* e) {
   int day = (int)(intptr_t)lv_obj_get_user_data((lv_obj_t*)lv_event_get_current_target(e));
   if (day < 1) return;
@@ -1681,6 +1818,45 @@ static void dayClicked(lv_event_t* e) {
   setThaiText(detailText, text.c_str());
 
   if (vizBox) { lv_obj_delete(vizBox); vizBox = nullptr; }
+  if (skyBg) { lv_obj_delete(skyBg); skyBg = nullptr; }  // เปิดวันใหม่ = ฟ้าใหม่
+
+  // ฉากฟ้าของวันนั้น — ชั่วโมงมาจากนัดแรกที่มีเวลา ไม่มีนัดก็เป็นฟ้ากลางวัน
+  int first = -1;
+  for (int i = 0; i < gCal.evN; i++) {
+    if (gCal.evDay[i] == day) { first = i; break; }
+  }
+  const char* headTime = (first >= 0 && gCal.evTime[first][0]) ? gCal.evTime[first] : nullptr;
+
+  // วันนี้ใช้ชั่วโมง *ตอนนี้* — เปิดหน้าเดิมตอนเช้ากับตอนค่ำต้องได้คนละฟ้า ไม่งั้นไม่ใช่ฉากของวัน
+  // วันอื่นใช้ชั่วโมงของนัดแรก ไม่มีนัดก็เที่ยงวัน (ไม่ใช่เที่ยงคืน — วันเปล่าไม่ได้แปลว่ามืด)
+  time_t nowSec = time(nullptr);
+  struct tm tmNow;
+  localtime_r(&nowSec, &tmNow);
+  struct tm tmDay = tmNow, tmToday = tmNow;
+  tmDay.tm_year = gCal.y - 1900;
+  tmDay.tm_mon = gCal.m - 1;
+  tmDay.tm_mday = day;
+  tmDay.tm_hour = tmToday.tm_hour = 12;
+  tmDay.tm_min = tmToday.tm_min = tmDay.tm_sec = tmToday.tm_sec = 0;
+  const int dayOff = (int)((mktime(&tmDay) - mktime(&tmToday)) / 86400);
+
+  const int hour = dayOff == 0 ? tmNow.tm_hour : headTime ? atoi(headTime) : 12;
+  const SkyPhase p = skyPhaseAt(hour);
+  // สภาพอากาศมาจากพยากรณ์ที่การ์ดอากาศดึงมาแล้ว 8 วัน — นอกช่วงนั้นไม่มีใครรู้ ให้ฟ้าเปิดไว้
+  const WxKind wx = (dayOff >= 0 && dayOff < gWeather.fcN) ? wxFromCode(gWeather.fcCode[dayOff])
+                                                           : WX_CLEAR;
+  // ฟ้าเป็นพื้นหลังของทั้งหน้า ไม่ใช่แถบในหน้า — วันที่กับรายละเอียดนั่งอยู่บนฟ้าเลย
+  // ต้องกัน IGNORE_LAYOUT ไว้ ไม่งั้น flex ของ detailView จะนับเป็นคอลัมน์ที่สามแล้วดัน nav ตกจอ
+  skyBg = makeSkyBand(detailView, kBodyW, 320, p, wx);
+  lv_obj_add_flag(skyBg, LV_OBJ_FLAG_IGNORE_LAYOUT);
+  lv_obj_set_style_radius(skyBg, 0, 0);
+  lv_obj_set_pos(skyBg, 0, 0);
+  lv_obj_move_to_index(skyBg, 0);  // ลูกคนแรก = วาดก่อน = อยู่หลังทุกอย่าง
+
+  lv_obj_set_style_text_color(detailTitle, lv_color_hex(kSkyInkDim[p]), 0);
+  lv_obj_set_style_text_color(detailValue, lv_color_hex(kSkyInk[p]), 0);
+  lv_obj_set_style_text_color(detailText, lv_color_hex(kSkyInk[p]), 0);
+
   for (lv_obj_t* o : {detailTitle, detailValue, detailText}) lv_obj_remove_flag(o, LV_OBJ_FLAG_HIDDEN);
   lv_obj_scroll_to_y(detailBody, 0, LV_ANIM_OFF);
   lv_obj_remove_flag(detailView, LV_OBJ_FLAG_HIDDEN);
@@ -1877,6 +2053,12 @@ static void cardClicked(lv_event_t* e) {
   lv_obj_t* third = lv_obj_get_child(card, 2);
   lv_label_set_text(detailText, third ? lv_label_get_text(third) : "");
 
+  // การ์ดอื่นใช้หน้า detail ใบเดียวกัน — ต้องเก็บฟ้ากับสีหมึกของหน้าวันคืนให้หมด
+  if (skyBg) { lv_obj_delete(skyBg); skyBg = nullptr; }
+  lv_obj_set_style_text_color(detailTitle, lv_color_hex(C_MUTED), 0);
+  lv_obj_set_style_text_color(detailValue, lv_color_hex(C_TEXT), 0);
+  lv_obj_set_style_text_color(detailText, lv_color_hex(0xB9C4E6), 0);
+
   if (vizBox) { lv_obj_delete(vizBox); vizBox = nullptr; }
   int idx = (int)(intptr_t)lv_obj_get_user_data(card);
   if (idx >= 0 && idx < cardCount && cardViz[idx].kind != VIZ_NONE) {
@@ -1948,6 +2130,45 @@ static void addSpark(lv_obj_t* card, const CardViz& viz) {
   for (int i = 0; i < viz.sparkN; i++) lv_chart_set_next_value(chart, ser, (int32_t)(viz.spark[i] * 100));
 }
 
+
+// นัดทั้งวันนับเป็น "วัน" ไม่ใช่ "ชั่วโมง" — backend ส่ง at = เที่ยงคืนของวันนั้น
+// วันหยุดของวันนี้จึงมี secs ติดลบได้ และต้องอ่านว่า "วันนี้" ไม่ใช่ของที่เลยไปแล้ว
+enum CountdownKind : uint8_t { CD_NOW, CD_MIN, CD_HOUR, CD_DAY, CD_TODAY, CD_TOMORROW };
+static constexpr CountdownKind countdownKind(long secs, bool allDay) {
+  return allDay ? (secs <= 0 ? CD_TODAY : secs <= 86400 ? CD_TOMORROW : CD_DAY)
+                : (secs <= 60 ? CD_NOW : secs < 3600 ? CD_MIN : secs < 86400 ? CD_HOUR : CD_DAY);
+}
+static_assert(countdownKind(43 * 60, false) == CD_MIN, "");
+static_assert(countdownKind(-10, true) == CD_TODAY, "วันหยุดวันนี้ต้องไม่กลายเป็นของที่ผ่านไปแล้ว");
+static_assert(countdownKind(86400, true) == CD_TOMORROW, "");
+static_assert(countdownKind(3 * 86400, false) == CD_DAY, "");
+static_assert(countdownKind(30, false) == CD_NOW, "");
+
+static void fmtCountdown(char* out, size_t n, long secs, bool allDay) {
+  const long mins = secs / 60;
+  switch (countdownKind(secs, allDay)) {
+    case CD_NOW:      snprintf(out, n, "ถึงเวลาแล้ว"); return;
+    case CD_MIN:      snprintf(out, n, "อีก %ld นาที", mins); return;
+    case CD_TODAY:    snprintf(out, n, "วันนี้"); return;
+    case CD_TOMORROW: snprintf(out, n, "พรุ่งนี้"); return;
+    case CD_DAY:      snprintf(out, n, "อีก %ld วัน", (secs + 86399) / 86400); return;
+    default:
+      if (mins % 60) snprintf(out, n, "อีก %ld ชม. %ld น.", mins / 60, mins % 60);
+      else snprintf(out, n, "อีก %ld ชม.", mins / 60);
+  }
+}
+
+// ป้ายนับถอยหลังบนการ์ด — updateClock เขียนทับทุกนาที ไม่ต้องรอรอบ refresh ใหญ่ 5 นาที
+static lv_obj_t* calCountdown = nullptr;
+static void tickCountdown() {
+  if (!calCountdown || !gCal.nextAt) return;
+  const time_t now = time(nullptr);
+  if (now < 1000000000) return;  // ยังไม่ได้เวลาจริงจาก NTP — ทิ้งค่าเดิมไว้ดีกว่าโกหก
+  char buf[24];
+  fmtCountdown(buf, sizeof(buf), (long)gCal.nextAt - (long)now, gCal.nextTime[0] == '\0');
+  if (strcmp(lv_label_get_text(calCountdown), buf)) setThaiText(calCountdown, buf);
+}
+
 static void addCard(const char* title, const char* value, const char* detail, const char* tone, int vizIndex) {
   CardViz& viz = cardViz[vizIndex];
   viz.accent = toneColor(tone);
@@ -1989,6 +2210,30 @@ static void addCard(const char* title, const char* value, const char* detail, co
     // ให้ข้อความกินความกว้างเต็มใบเหมือนการ์ดอื่น จะได้เห็นชื่อโปรเจกต์ไม่ใช่ "fi..."
     lv_obj_t* m = makeMascot(card, kMascotCardPx);
     lv_obj_align(m, LV_ALIGN_BOTTOM_RIGHT, -6, -4);
+  } else if (viz.kind == VIZ_CALENDAR && gCal.nextAt) {
+    // วันที่วันนี้อยู่บนหัวจอแล้ว การ์ดเลยเอาที่ไปบอก "นัดถัดไป" ซึ่งเป็นของที่ยังไม่รู้
+    const bool allDay = gCal.nextTime[0] == '\0';
+    if (allDay) {
+      // ทั้งวันไม่มีเวลาให้โชว์ — ป้ายค่าหลักเป็นตัวนับเอง จะได้ไม่มีคำว่า "ทั้งวัน" ลอย ๆ
+      calCountdown = v;
+    } else {
+      setThaiText(v, gCal.nextTime);
+      calCountdown = lv_label_create(card);
+      lv_obj_set_style_text_font(calCountdown, &thai14, 0);
+      lv_obj_set_style_text_color(calCountdown, lv_color_hex(C_WARN), 0);
+      lv_obj_align(calCountdown, LV_ALIGN_TOP_RIGHT, -10, 34);
+      setThaiText(calCountdown, "");
+    }
+    tickCountdown();
+
+    // ชื่อนัดสองบรรทัดเต็มความกว้าง — ฉากฟ้าอยู่หน้า detail ที่มีที่พอจะเป็นภาพจริง
+    lv_obj_t* name = lv_label_create(card);
+    lv_obj_set_style_text_font(name, &thai14, 0);
+    lv_obj_set_style_text_color(name, lv_color_hex(C_MUTED), 0);
+    lv_obj_set_size(name, kCardW - 20, 40);
+    lv_label_set_long_mode(name, LV_LABEL_LONG_DOT);
+    setThaiText(name, gCal.nextLabel);
+    lv_obj_align(name, LV_ALIGN_TOP_LEFT, 10, 58);
   } else if (viz.sparkN > 1) {
     // การ์ดที่ไม่มีเส้นแนวโน้มให้ค่าอยู่กลางการ์ด จะได้ดูตั้งใจ ไม่ใช่ว่างเพราะลืม
     addSpark(card, viz);
@@ -2068,6 +2313,7 @@ static void updateClock(lv_timer_t*) {
                                 .c_str());
   applyBacklight(tm.tm_hour * 60 + tm.tm_min);
   tickPomodoro(tm.tm_hour * 60 + tm.tm_min);
+  tickCountdown();
 }
 
 // เส้นขอบบนเป็นตัวบอกสถานะตัวเดียวของทั้งเครื่อง:
@@ -2198,6 +2444,7 @@ static bool fetchAndRender() {
   lv_obj_clean(cardList);
   pomoCardVal = remindCardVal = nullptr;  // ป้ายเก่าถูกลบไปแล้ว — ห้ามให้ tick แตะต่อ
   claudeCardVal = claudeCardDetail = nullptr;
+  calCountdown = nullptr;
   remindHintShown = false;                // การ์ดใหม่ซ่อนคำใบ้ไว้ ต้องให้ tick วาดใหม่ได้
   if (vizBox) { lv_obj_delete(vizBox); vizBox = nullptr; }
   int n = 0;
@@ -2339,6 +2586,12 @@ static bool fetchAndRender() {
       for (JsonObject sv : cal["saju"].as<JsonArray>()) {
         int d = sv["d"] | 0;
         if (d >= 1 && d <= 31) gCal.sajuLv[d] = sv["lv"] | -1;
+      }
+      JsonObject nx = cal["next"];
+      if (nx) {
+        gCal.nextAt = nx["at"] | 0UL;
+        strncpy(gCal.nextTime, nx["time"] | "", sizeof(gCal.nextTime) - 1);
+        strncpy(gCal.nextLabel, nx["label"] | "", sizeof(gCal.nextLabel) - 1);
       }
       int fi = 0;
       for (JsonObject f : cal["feeds"].as<JsonArray>()) {

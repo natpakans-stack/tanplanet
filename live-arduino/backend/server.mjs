@@ -158,6 +158,16 @@ async function feedEventsInMonth(feeds, y, m) {
   return lists.flatMap((list, i) => list.map((e) => ({ ...e, f: i }))).sort((a, b) => a.d - b.d);
 }
 
+// ชื่อยาวกว่าการ์ดกว้าง — 40 ตัวอักษรไทย = 120 ไบต์ พอดีบัฟเฟอร์ 128 ไบต์ฝั่ง firmware
+const shortEventName = (s) => (s.length > 40 ? `${s.slice(0, 39)}…` : s);
+
+// วินาที epoch ของนัด — เวลาในฟีดเป็นเวลาไทยแล้ว (ICT = UTC+7 ไม่มี DST)
+// นัดทั้งวันนับจากเที่ยงคืนของวันนั้น จะได้เรียงมาก่อนนัดที่มีเวลาในวันเดียวกัน
+function eventEpoch(y, m, e) {
+  const [hh, mm] = e.time ? e.time.split(":").map(Number) : [0, 0];
+  return Math.floor(Date.UTC(y, m - 1, e.d, hh - 7, mm) / 1000);
+}
+
 async function buildCalendarCards(opts) {
   const now = bangkokNow();
   const be = now.y + 543;
@@ -185,14 +195,25 @@ async function buildCalendarCards(opts) {
 
   const activeFeeds = opts.feeds.filter((f) => f.on);
   const events = await feedEventsInMonth(opts.feeds, now.y, now.m);
-  const nextEvent = events.find((e) => e.d >= now.d);
+
+  // นัดถัดไปแบบรู้เวลา ไม่ใช่แค่รู้วัน — จอนับถอยหลังจาก `at` ตัวนี้
+  // ต้องมองข้ามไปเดือนหน้าด้วย ไม่งั้นทุกสิ้นเดือนการ์ดจะบอกว่าไม่มีนัดทั้งที่มี
+  const nowSec = Math.floor(Date.now() / 1000);
+  const withAt = (list, y, m) => list.map((e) => ({ ...e, m, at: eventEpoch(y, m, e) }));
+  let upcoming = withAt(events, now.y, now.m).filter((e) => e.at >= nowSec);
+  if (!upcoming.length) {
+    const ny = now.m === 12 ? now.y + 1 : now.y;
+    const nm = now.m === 12 ? 1 : now.m + 1;
+    upcoming = withAt(await feedEventsInMonth(opts.feeds, ny, nm), ny, nm);
+  }
+  const nextEvent = upcoming[0];
 
   const calendarCard = {
     ...card(
       "calendar_today", "calendar", "Today",
       `${now.d} ${THAI_MONTHS[now.m - 1]} ${be}`,
       [`วัน${THAI_DAYS[now.wd]}`, holidayText,
-       nextEvent && `${activeFeeds[nextEvent.f]?.label || "ปฏิทิน"}: ${nextEvent.d} ${THAI_MONTHS[now.m - 1]} ${nextEvent.time || ""}`,
+       nextEvent && `${activeFeeds[nextEvent.f]?.label || "ปฏิทิน"}: ${nextEvent.d} ${THAI_MONTHS[nextEvent.m - 1]} ${nextEvent.time || ""}`,
       ].filter(Boolean).join(" · "),
       holiday?.iso === todayIso ? "ok" : "neutral", 20,
     ),
@@ -200,6 +221,16 @@ async function buildCalendarCards(opts) {
       calendar: {
         y: now.y, m: now.m, today: now.d, buddhaDays, holidays: monthHolidays,
         events,
+        // ยังไม่ได้ผูกปฏิทินภายนอกก็ยังมีของให้บอก — วันหยุดถัดไปที่คำนวณไว้แล้วข้างบน
+        // ตัดชื่อฝั่งนี้เพราะ JS นับเป็นตัวอักษร — ให้ firmware ตัดเองจะขาดกลางไบต์ UTF-8
+        next: nextEvent
+          ? { at: nextEvent.at, time: nextEvent.time || "", label: shortEventName(nextEvent.label) }
+          : holiday && {
+              at: eventEpoch(Number(holiday.iso.slice(0, 4)), Number(holiday.iso.slice(5, 7)),
+                             { d: Number(holiday.iso.slice(8)), time: "" }),
+              time: "",
+              label: shortEventName(holiday.name),
+            },
         feeds: activeFeeds.map((f, i) => ({ label: f.label, color: FEED_COLORS[i] })),
         saju: sajuMonth(now.y, now.m, opts.birth),
       },
