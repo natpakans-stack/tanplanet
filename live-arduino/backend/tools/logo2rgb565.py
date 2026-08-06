@@ -27,9 +27,13 @@ def main():
     with open(out + ".png", "wb") as f:
         f.write(raw)
 
-    img = Image.open(out + ".png").convert("RGBA").resize((size, size), Image.LANCZOS)
-    bg = Image.new("RGBA", img.size, CARD_BG + (255,))
-    img = Image.alpha_composite(bg, img).convert("RGB")
+    # ย่อให้พอดีกรอบโดยคงสัดส่วน แล้ววางกลางผืนจัตุรัส — resize((size, size)) ตรง ๆ
+    # จะยืดโลโก้ที่อาร์ตเวิร์กไม่จัตุรัส (บั๊กเดียวกับ tamaclaude `19daa2b`)
+    art = Image.open(out + ".png").convert("RGBA")
+    art.thumbnail((size, size), Image.LANCZOS)
+    img = Image.new("RGBA", (size, size), CARD_BG + (255,))
+    img.paste(art, ((size - art.width) // 2, (size - art.height) // 2), art)
+    img = img.convert("RGB")
 
     # RGB565 little-endian — ตรงกับที่ LVGL คาดไว้บน ESP32
     data = bytearray()
