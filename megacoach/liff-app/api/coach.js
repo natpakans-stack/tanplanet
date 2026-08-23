@@ -48,6 +48,36 @@ function buildPortfolioContext(esd, ns) {
       if (s.chartTA?.summary) lines.push(`  กราฟ(TA): ${s.chartTA.verdict} · ${s.chartTA.summary}`);
     }
   }
+  return lines.join("\n");
+}
+
+// โซนแผนจริง (coach-data.json — sanitized) — ให้ AI ตอบ "เข้าได้ยัง" ด้วยตัวเลขแผนจริง ไม่ใช่เดา
+function zonesContext(cd) {
+  if (!cd?.tickers) return "";
+  const L = [`\n# โซนแผนจริง (watchlist — entry/stop/trim, อัปเดต ${cd.updated || "—"})`];
+  for (const [t, z] of Object.entries(cd.tickers)) {
+    const e = z.entry || {};
+    const entry = e.breakout != null ? `ปิดเหนือ $${e.breakout} ยืน ≥2 วัน`
+      : e.pullbackLo != null ? `pullback-buy $${e.pullbackLo}–$${e.pullbackHi}` : "ยังไม่มีโซน";
+    const px = cd.prices?.[t]?.price;
+    L.push(`- ${t}${z.held ? " (ถืออยู่)" : ""}: entry ${entry} · stop ${z.stop != null ? "$" + z.stop : "—"} · trim ${z.trim != null ? "$" + z.trim : "—"}${z.cooldownUntil ? ` · cooldown ถึง ${z.cooldownUntil}` : ""}${px != null ? ` · ราคาล่าสุด $${px}` : ""}`);
+  }
+  L.push(`กฎเข้า: breakout ต้อง "ปิด" เหนือระดับ ≥2 วันติด · pullback เข้าเฉพาะในโซน ห้ามไล่เหนือโซน/ช้อนใต้โซน · ทุกไม้ต้องมี stop+trim ก่อนเข้า`);
+  return L.join("\n");
+}
+
+// Idea Radar รายสัปดาห์ — ให้ AI ต่อยอด research ได้ ไม่เริ่มจากศูนย์
+function radarContext(r) {
+  if (!r?.themes?.length) return "";
+  const L = [`\n# Idea Radar ล่าสุด (${r.updated || ""}) — ธีม research ที่ระบบสแกนแล้ว`];
+  for (const th of r.themes)
+    L.push(`- ${th.name} (${th.score}/25, ${th.stageLabel || th.stage || ""}): ${th.thesis || ""} · หุ้น: ${(th.tickers || []).join(", ")}`);
+  L.push(`เมื่อถูกถามเชิง research/หาหุ้นใหม่ ให้เริ่มจากธีมเหล่านี้ + ค้นเว็บหาข้อมูลสดมาต่อยอด/หักล้าง อย่าตอบลอย ๆ`);
+  return L.join("\n");
+}
+
+function northStarContext(ns) {
+  const lines = [];
   if (ns) {
     lines.push(`\n# North Star`);
     lines.push(`- เป้า ${ns.goalLabel || "อิสรภาพการเงิน"} · อายุปัจจุบัน ${ns.currentAge ?? "—"} → เป้า ${ns.targetAge ?? 60}`);
@@ -70,9 +100,13 @@ export default async function handler(req, res) {
   const host = req.headers.host || "";
   const base = `${host.includes("localhost") ? "http" : "https"}://${host}`;
   const get = p => fetch(`${base}/${p}`).then(r => (r.ok ? r.json() : null)).catch(() => null);
-  const [esd, ns] = await Promise.all([get("entry-signal-data.json"), get("northstar.json")]);
+  const [esd, ns, cd, radar] = await Promise.all([
+    get("entry-signal-data.json"), get("northstar.json"),
+    get("coach-data.json"), get("idea-radar.json"),
+  ]);
 
-  const ctx = buildPortfolioContext(esd, ns);
+  const ctx = [buildPortfolioContext(esd, ns), zonesContext(cd), radarContext(radar), northStarContext(ns)]
+    .filter(Boolean).join("\n");
   const userText = ctx
     ? `[ข้อมูลพอร์ตของผู้ใช้]\n${ctx}\n\n[คำถาม]\n${question.trim()}`
     : question.trim();

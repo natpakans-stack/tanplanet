@@ -681,6 +681,23 @@
   #guide .dca,#guide .wk{background:none;border:none;box-shadow:none;padding:0;margin:0}
   #guide .wk>summary{pointer-events:none}
   #guide .wk-chev{display:none}
+  /* ---------- การ์ด "วันนี้" — วันนี้ต้องทำอะไร / เข้าตัวนี้ได้ยัง ---------- */
+  #today .card{padding:var(--s4)}
+  .td-title{font-size:15.5px;font-weight:700;letter-spacing:-.01em;margin-bottom:2px}
+  .td-sub{font-size:11px;color:var(--ink-3);margin-bottom:10px}
+  .td-act{display:block;padding:9px 11px;border-radius:var(--r-md);font-size:13px;font-weight:600;margin-bottom:6px;border:1px solid}
+  .td-act.go{background:var(--go-bg);border-color:var(--go-line);color:var(--go)}
+  .td-act.avoid{background:var(--avoid-bg);border-color:var(--avoid-line);color:var(--avoid)}
+  .td-act.none{background:var(--panel);border-color:var(--hair);color:var(--ink-3);font-weight:500}
+  .td-h{font-size:12px;font-weight:700;color:var(--ink-3);margin:12px 0 4px;letter-spacing:.02em}
+  .td-row{display:flex;align-items:baseline;gap:8px;padding:7px 2px;border-top:1px solid var(--hair);font-size:12.5px}
+  .td-row .tk{font-weight:700;min-width:44px}
+  .td-row .px{min-width:62px}
+  .td-row .why{color:var(--ink-3);flex:1;min-width:0}
+  .td-chip{font-size:11px;font-weight:700;border-radius:var(--r-pill);padding:2px 9px;white-space:nowrap;align-self:center}
+  .td-chip.go{background:var(--go-bg);color:var(--go)}
+  .td-chip.wait{background:var(--wait-bg);color:var(--wait)}
+  .td-chip.avoid{background:var(--avoid-bg);color:var(--avoid)}
 </style>
 </head>
 <body>
@@ -704,6 +721,9 @@
 
   <div class="wrap">
     <div id="notice"></div>
+
+    <!-- การ์ด "วันนี้" — ตอบ 2 คำถามหลัก: วันนี้ต้องทำอะไร / เข้าตัวนี้ได้ยัง (เติมโดย loadToday) -->
+    <section id="today" class="rise" hidden aria-label="วันนี้ต้องทำอะไร"></section>
 
     <!-- ปุ่มเปิดคู่มือ bottom sheet -->
     <button class="guide-open" onclick="openGuide()" aria-haspopup="dialog">
@@ -1795,10 +1815,90 @@
       nsRenderLocked("");
     }
 
+    /* ---------- การ์ด "วันนี้" — rule engine ฝั่ง client (กฎเดียวกับการ์ดเช้า: ปิดเหนือ breakout 2 วัน / โซน pullback / cooldown) ---------- */
+    const fmt$ = v => "$" + (+v).toFixed(2).replace(/\.00$/, "");
+    const pctv = (a, b) => (a / b - 1) * 100;
+
+    // นับจำนวนวันติดกันล่าสุดที่ "ปิด" เหนือ level (จาก price-history EOD)
+    function streakAbove(hist, t, level){
+      let n = 0;
+      for(let i = hist.length - 1; i >= 0; i--){
+        const c = hist[i]?.close?.[t];
+        if(c == null) continue;
+        if(c > level) n++; else break;
+      }
+      return n;
+    }
+
+    function verdictFor(t, z, p, hist){
+      if(z.held){
+        if(z.stop != null && p <= z.stop) return {cls:"avoid", chip:"หลุด stop", why:`ต่ำกว่า stop ${fmt$(z.stop)} — ออกตามแผน`, action:`${t} หลุด stop ${fmt$(z.stop)} — ขายตามแผนวันนี้`};
+        if(z.trim != null && p >= z.trim) return {cls:"go", chip:"ถึง trim", why:`แตะ trim ${fmt$(z.trim)} — ขายส่วนตามแผน`, action:`${t} ถึง trim ${fmt$(z.trim)} — ขายส่วนตามแผน`};
+        return {cls:"wait", chip:"ถืออยู่", why:`เฝ้า stop ${z.stop != null ? fmt$(z.stop) : "—"}${z.trim != null ? ` / trim ${fmt$(z.trim)}` : ""}${z.stop != null ? ` · เหนือ stop ${pctv(p, z.stop).toFixed(1)}%` : ""}`};
+      }
+      const today = new Date().toISOString().slice(0, 10);
+      if(z.cooldownUntil && z.cooldownUntil >= today)
+        return {cls:"avoid", chip:"cooldown", why:`ห้ามเข้า ถึง ${z.cooldownUntil}`};
+      const e = z.entry || {};
+      if(e.pullbackLo != null && e.pullbackHi != null){
+        if(z.stop != null && p < z.stop) return {cls:"avoid", chip:"setup พัง", why:`หลุด stop ${fmt$(z.stop)} ก่อนได้เข้า — รอตั้งโซนใหม่ ห้ามช้อน`};
+        if(p >= e.pullbackLo && p <= e.pullbackHi) return {cls:"go", chip:"เข้าได้", why:`อยู่ในโซนเข้า ${fmt$(e.pullbackLo)}–${fmt$(e.pullbackHi)}`, action:`${t} ราคาเข้าโซน ${fmt$(e.pullbackLo)}–${fmt$(e.pullbackHi)} — เข้าได้ตามแผน (stop ${fmt$(z.stop)}${z.trim != null ? ` · trim ${fmt$(z.trim)}` : ""})`};
+        if(p > e.pullbackHi) return {cls:"wait", chip:"รอย่อ", why:`เหนือโซนอยู่ +${pctv(p, e.pullbackHi).toFixed(1)}% — รอย่อเข้า ${fmt$(e.pullbackLo)}–${fmt$(e.pullbackHi)} ห้ามไล่`};
+        return {cls:"wait", chip:"ใต้โซน", why:`ต่ำกว่าโซน ${fmt$(e.pullbackLo)} — รอกลับเข้าโซน ห้ามช้อน`};
+      }
+      if(e.breakout != null){
+        const n = streakAbove(hist, t, e.breakout);
+        if(n >= 2) return {cls:"go", chip:"สัญญาณครบ", why:`ปิดเหนือ ${fmt$(e.breakout)} ครบ ${n} วัน`, action:`${t} ปิดเหนือ ${fmt$(e.breakout)} ครบ 2 วัน — สัญญาณครบ ตั้งโซน stop/trim ให้ครบก่อนยิง`};
+        if(n === 1) return {cls:"wait", chip:"1/2 วัน", why:`ปิดเหนือ ${fmt$(e.breakout)} แล้ว 1 วัน — รอปิดวันที่ 2`};
+        if(p > e.breakout) return {cls:"wait", chip:"รอปิด", why:`เหนือ ${fmt$(e.breakout)} ระหว่างวัน — นับเฉพาะราคา "ปิด"`};
+        return {cls:"wait", chip:"รอ breakout", why:`รอปิดเหนือ ${fmt$(e.breakout)} ยืน 2 วัน (ห่าง ${pctv(p, e.breakout).toFixed(1)}%)`};
+      }
+      return {cls:"wait", chip:"เฝ้าดู", why:"ยังไม่มีโซน entry — research candidate"};
+    }
+
+    async function loadToday(){
+      const el = document.getElementById("today");
+      try{
+        const [cd, hist] = await Promise.all([
+          fetch("./coach-data.json?t=" + Date.now()).then(r => r.json()),
+          fetch("./price-history.json?t=" + Date.now()).then(r => r.ok ? r.json() : []).catch(() => []),
+        ]);
+        const ticks = Object.keys(cd.tickers || {});
+        if(!ticks.length) return;
+        let quotes = {};
+        try{ quotes = (await fetch("/api/quote?t=" + ticks.join(",")).then(r => r.json())).quotes || {}; }catch(e){}
+        const live = t => quotes[t]?.price != null ? quotes[t]
+          : cd.prices?.[t] ? {price: cd.prices[t].price, state: "EOD"} : null;
+        const rows = [], actions = [];
+        for(const t of ticks){
+          const l = live(t); if(!l) continue;
+          const v = verdictFor(t, cd.tickers[t], l.price, hist);
+          if(v.action) actions.push({cls: v.cls, text: v.action});
+          rows.push(`<div class="td-row"><span class="tk mono">${t}</span><span class="px mono">${fmt$(l.price)}</span><span class="why">${v.why}</span><span class="td-chip ${v.cls}">${v.chip}</span></div>`);
+        }
+        const age = Object.values(quotes).find(q => q?.ageMin != null)?.ageMin;
+        const stLabel = age == null ? "ราคาปิดล่าสุดจาก cron เช้า (EOD)"
+          : age <= 20 ? `ราคาสด (รวม pre/post) · อัปเดต ${age} นาทีก่อน`
+          : `ตลาดปิด · ราคาซื้อขายล่าสุด ${age >= 90 ? Math.round(age / 60) + " ชม." : age + " นาที"}ก่อน`;
+        const actHtml = actions.length
+          ? actions.map(a => `<div class="td-act ${a.cls === "go" ? "go" : "avoid"}">⚡ ${a.text}</div>`).join("")
+          : `<div class="td-act none">วันนี้ไม่มีอะไรต้องทำ — เฝ้าเฉย ๆ ตามแผน ✓</div>`;
+        el.innerHTML = `<div class="card">
+          <div class="td-title">วันนี้ต้องทำอะไร</div>
+          <div class="td-sub">${stLabel} · engine เดียวกับการ์ดเช้า (ปิดเหนือ 2 วัน · โซน pullback · cooldown)</div>
+          ${actHtml}
+          <div class="td-h">เข้าตัวนี้ได้ยัง?</div>
+          ${rows.join("")}
+        </div>`;
+        el.hidden = false;
+      }catch(e){ /* เงียบ — ส่วนอื่นของ dashboard ทำงานต่อได้ */ }
+    }
+
     async function boot(){
       if(window.liff && LIFF_ID && LIFF_ID !== "PUT_YOUR_LIFF_ID_HERE"){
         try{ await liff.init({ liffId: LIFF_ID }); }catch(e){ /* opened outside LINE — keep rendering */ }
       }
+      loadToday();
       loadData();
       loadRadar();
       loadNorthStar();
