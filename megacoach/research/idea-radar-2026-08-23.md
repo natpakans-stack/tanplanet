@@ -177,4 +177,64 @@ Themes scoring ≥18/25 this round — all four qualify for LINE broadcast:
 
 ---
 
+# ADDENDUM — Mac deep-scan (บ่าย 23 ส.ค. — สแกนเสริมจากรอบเช้า cloud)
+
+รอบเช้า cloud พลาด 2 catalyst จริงของสัปดาห์นี้ (mRNA Phase 3 win 19 ส.ค. + critical minerals rally) — เพิ่ม 2 ธีมใหม่:
+
+## Theme 5 (NEW): mRNA Oncology Rebirth — Moderna/Merck Phase 3 Win
+
+**Why now:** intismeran autogene (mRNA-4157) + Keytruda ผ่าน Phase 3 INTerpath-001 melanoma (19 ส.ค., 1,137 คน, ผ่านทั้ง RFS+DMFS) = **personalized mRNA neoantigen therapy ตัวแรกของโลกที่ผ่าน Phase 3 ใหญ่** — validate ทั้งหมวดยา ไม่ใช่แค่ยาเดียว · healthcare sector สัปดาห์ดีสุดตั้งแต่ มิ.ย. (+4%) · MRK ได้ทางต่ออายุ Keytruda (patent cliff 2028)
+
+**One-line Thai thesis:** Phase 3 สำเร็จครั้งแรกของ mRNA มะเร็งเฉพาะบุคคล (19 ส.ค.) = เปิดหมวดยาใหม่ทั้งหมวด บนหุ้น MRNA ที่ตลาดเกลียดมา 3 ปี + MRK ที่ต้องต่ออายุ Keytruda
+
+**Sample tickers:** MRK (large-cap, gap ขึ้นสู่ 3m high, ADR20 แค่ 2.7%), MRNA (⚠️ +129% ใน 5 วัน, ADR20 8.7% — **ห้ามไล่เด็ดขาด**), BNTX (อานิสงส์ validation ทั้งหมวด)
+
+| Axis | Score | Rationale |
+|---|---|---|
+| Durability | 4 | หมวดยาใหม่อายุเป็นทศวรรษ ถ้า approve จริง · ยังพึ่ง readout ต่อไป (NSCLC ฯลฯ) |
+| Evidence | 5 | Topline Phase 3 จาก Merck PR + STAT/Fierce/C&EN ยืนยันตรงกัน |
+| Investability | 4 | MRK mega-cap · MRNA mid-cap liquid · Dime ซื้อได้หมด |
+| Timing | 4 | Catalyst 4 วันก่อน ยังไม่ digest · คิวถัดไป: accelerated approval filing + full data |
+| Edge | 3 | มุม "validate ทั้ง platform" + มุม MRK patent-cliff ยังไม่อยู่ใน consensus |
+| **TOTAL** | **20/25** | ✅ PROMOTE (NEW) |
+
+## Theme 6 (NEW): US Rare Earth Magnet Onshoring — Price Floor + ผลิตจริง
+
+**Why now:** จากธีม "นโยบาย" → "ผลิตจริง": USAR เริ่มส่งมอบ NdFeB magnet เชิงพาณิชย์ (Q2, Stillwater OK) + จะซื้อ Serra Verde + เลือกไซต์โรงงานที่ 2 · MP ขาย magnet จาก Independence H2 นี้ · MP-Pentagon: **NdPr price floor $110/kg 10 ปี + รับซื้อ output 10X ทั้งหมด** = de-risk ที่หุ้นเหมืองปกติไม่มี · White House เติม ~$3B ส.ค. นี้ · USAR +8% / MP +5% (21 ส.ค.) วิ่งสองรอบในสัปดาห์เดียว
+
+**One-line Thai thesis:** รัฐเปลี่ยนจาก "ให้ทุนวิจัย" เป็น "การันตีราคา 10 ปี + รับซื้อทั้งหมด" ขณะโรงงาน magnet ในประเทศเริ่มส่งมอบจริงไตรมาสนี้
+
+**Sample tickers:** MP ($60, Pentagon-backed — ตัว vol เข้าเกณฑ์กว่า), USAR (⚠️ ADR20 7.3% ติดเกณฑ์เดียวกับที่เคยปฏิเสธ SEI/BE), UUUU (ทับธีม nuclear fuel เดิม)
+
+| Axis | Score | Rationale |
+|---|---|---|
+| Durability | 4 | National security = bipartisan · สัญญา 10 ปี · demand magnet โต (EV/defense/humanoid) |
+| Evidence | 5 | MP-Pentagon terms เอกสารจริง · USAR 8-K Q2 ยืนยันผลิตจริง · Reuters ยืนยันแพ็กเกจ $3B |
+| Investability | 3 | MP mid-cap ok · USAR เล็กและแกว่งแรงมาก |
+| Timing | 3 | Momentum กำลังวิ่ง = เสี่ยงซื้อยอด · catalyst: magnet sales milestones H2 |
+| Edge | 3 | Economics ของ price floor (รัฐรับ downside) ยังไม่ priced แบบ commodity ปกติ |
+| **TOTAL** | **18/25** | ✅ PROMOTE (NEW) |
+
+## COMBINED SCORECARD (รวมสองรอบ)
+
+| Rank | Theme | Score | ที่มา |
+|---|---|---|---|
+| 1 | AI Power — Natural Gas Bridge (EQT, AR, LNG) | 21/25 | cloud เช้า |
+| 2 | mRNA Oncology (MRK, MRNA, BNTX) | 20/25 | 🆕 Mac บ่าย |
+| 3 | Financial Sector Rotation (JPM, BAC, KRE) | 19/25 | cloud เช้า |
+| 4 | NVDA Blackwell Upstream (TSM, MRVL, SMCI) | 19/25 | cloud เช้า |
+| 5 | GLP-1 Wave 2 (LLY, GPCR, RYTM) | 18/25 | cloud เช้า |
+| 6 | US Rare Earth Magnets (MP, USAR, UUUU) | 18/25 | 🆕 Mac บ่าย |
+
+**หมายเหตุวินัย (Fear of Ruin):** ทุกธีม = research candidates ยังไม่มีโซน entry/stop/trim — ห้ามยิงจนกว่าตั้งโซนครบ (entry/stop/trim ตั้งแต่วันเข้า) · MRNA +129%/5d และ USAR ADR 7%+ = ห้ามไล่ ผิดเกณฑ์เดียวกับ SEI $73/BE
+
+## สัปดาห์หน้า (24–30 ส.ค.) — catalyst อัดแน่นสุดของเดือน
+
+1. **NVDA earnings พุธ 26 ส.ค.** → ตั้งโซน NVDA ใหม่หลังงบ + เป็น read ให้ทั้งสาย AI
+2. **CRM earnings พฤหัส 27 ส.ค.** (ชนวันเงินเดือน ~27) — Agentforce ARR คือตัวชี้
+3. **Warsh keynote @ Jackson Hole ศุกร์ 28 ส.ค.** — สุนทรพจน์แรกในฐานะประธาน Fed, hike/hold ก.ย. ~ครึ่งต่อครึ่ง
+4. mRNA: timeline accelerated approval · MP/USAR: รอ pullback ที่ให้ R:R จริง
+
+---
+
 Research material, not investment advice. Verify all prices/figures with a fresh quote before acting.
