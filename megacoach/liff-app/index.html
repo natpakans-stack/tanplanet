@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>MegaCoach · จังหวะเข้าซื้อ</title>
-<meta name="theme-color" content="#f6f5f1">
+<meta name="theme-color" content="#f5f5f8">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -13,20 +13,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* paper neutrals, tinted toward brand hue 265 */
-    --bg:oklch(0.982 0.004 265);
-    --surface:oklch(0.998 0.0015 265);
-    --panel:oklch(0.965 0.005 265);
-    --ink:oklch(0.255 0.02 265);
-    --ink-2:oklch(0.475 0.02 265);
-    --ink-3:oklch(0.63 0.016 265);
-    --border:oklch(0.915 0.006 265);
-    --border-2:oklch(0.86 0.008 265);
-    --hair:oklch(0.93 0.005 265);
+    /* alphaos-light: cool near-white ground, crisp borders, violet accent */
+    --bg:oklch(0.972 0.004 280);
+    --surface:oklch(0.997 0.0015 280);
+    --panel:oklch(0.955 0.006 280);
+    --ink:oklch(0.22 0.025 280);
+    --ink-2:oklch(0.46 0.022 280);
+    --ink-3:oklch(0.60 0.018 280);
+    --border:oklch(0.895 0.010 280);
+    --border-2:oklch(0.835 0.014 280);
+    --hair:oklch(0.925 0.007 280);
 
-    --accent:oklch(0.52 0.15 265);
-    --accent-ink:oklch(0.40 0.13 265);
-    --accent-bg:oklch(0.965 0.022 265);
+    --accent:oklch(0.51 0.19 285);
+    --accent-ink:oklch(0.42 0.17 285);
+    --accent-bg:oklch(0.958 0.028 285);
 
     /* signals — muted, AA on their tints */
     --go:oklch(0.48 0.12 150);   --go-bg:oklch(0.955 0.034 150);   --go-line:oklch(0.60 0.14 150);
@@ -35,9 +35,9 @@
 
     --up:oklch(0.50 0.13 150); --down:oklch(0.54 0.18 25);
 
-    --r-sm:9px; --r-md:13px; --r-lg:18px; --r-xl:22px; --r-pill:999px;
-    --sh-1:0 1px 1px oklch(0.4 0.03 265/.04), 0 2px 5px oklch(0.4 0.03 265/.05);
-    --sh-2:0 1px 2px oklch(0.4 0.03 265/.05), 0 6px 16px oklch(0.4 0.03 265/.07);
+    --r-sm:7px; --r-md:10px; --r-lg:12px; --r-xl:16px; --r-pill:999px;
+    --sh-1:0 1px 2px oklch(0.4 0.03 280/.04);
+    --sh-2:0 2px 4px oklch(0.4 0.03 280/.05), 0 10px 24px oklch(0.4 0.03 280/.08);
     --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s8:32px; --s10:40px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -59,38 +59,41 @@
   .mark i:nth-child(1){background:var(--go-line)}
   .mark i:nth-child(2){background:var(--wait-line)}
   .mark i:nth-child(3){background:var(--avoid-line)}
-  .brand .word{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+  .brand .word{font-size:17px;font-weight:700;letter-spacing:-.02em;text-transform:lowercase;color:var(--ink)}
+  .brand .word b{font-weight:700;color:var(--accent)}
 
   .top h1{font-size:27px;font-weight:700;line-height:1.15;letter-spacing:-.01em}
   .top .sub{color:var(--ink-2);font-size:13.5px;margin-top:7px;max-width:34ch}
-  .updated{display:inline-flex;align-items:center;gap:7px;margin-top:var(--s4);font-size:12px;font-weight:500;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);padding:5px 11px 5px 9px;border-radius:var(--r-pill)}
+  .updated{display:inline-flex;align-items:center;gap:7px;margin-top:var(--s4);font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.01em;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);padding:5px 11px 5px 9px;border-radius:var(--r-sm)}
   .updated::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--go-line);box-shadow:0 0 0 3px oklch(0.60 0.14 150/.2);animation:pulse 2.4s ease-in-out infinite}
 
   /* ---------- today tally (doubles as legend) ---------- */
-  .tally{display:grid;grid-template-columns:1fr 1fr 1fr;margin-top:var(--s5);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh-1);overflow:hidden}
-  .t-cell{padding:var(--s4) var(--s3);position:relative}
-  .t-cell + .t-cell::before{content:"";position:absolute;left:0;top:18%;bottom:18%;width:1px;background:var(--hair)}
-  .t-head{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--ink-2)}
-  .t-dot{width:9px;height:9px;border-radius:50%}
+  /* stat tiles — separate cards, tiny label on top, big mono number (alphaos stat row) */
+  .tally{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--s2);margin-top:var(--s5)}
+  .t-cell{padding:var(--s3) var(--s3) var(--s4);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);box-shadow:var(--sh-1)}
+  .t-head{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:.02em;color:var(--ink-3)}
+  .t-dot{width:8px;height:8px;border-radius:50%}
   .t-cell.go .t-dot{background:var(--go-line)} .t-cell.go .t-n{color:var(--go)}
   .t-cell.wait .t-dot{background:var(--wait-line)} .t-cell.wait .t-n{color:var(--wait)}
   .t-cell.avoid .t-dot{background:var(--avoid-line)} .t-cell.avoid .t-n{color:var(--avoid)}
-  .t-n{font-family:"IBM Plex Mono",monospace;font-size:25px;font-weight:600;line-height:1.1;margin-top:5px}
-  .t-d{font-size:10.5px;color:var(--ink-3);margin-top:2px;line-height:1.35}
+  .t-n{font-family:"IBM Plex Mono",monospace;font-size:28px;font-weight:600;line-height:1.1;margin-top:7px}
+  .t-d{font-size:10.5px;color:var(--ink-3);margin-top:3px;line-height:1.35}
 
   /* ---------- notice ---------- */
-  .notice{display:flex;gap:10px;align-items:flex-start;background:var(--wait-bg);border:1px solid oklch(0.85 0.06 85);color:oklch(0.42 0.08 70);border-radius:var(--r-md);padding:11px 13px;font-size:12.5px;margin-top:var(--s5);line-height:1.5}
+  .notice{display:flex;gap:10px;align-items:flex-start;background:var(--wait-bg);border:1px solid oklch(0.85 0.06 85);border-left:3px solid var(--wait-line);color:oklch(0.42 0.08 70);border-radius:var(--r-sm);padding:11px 13px;font-size:12.5px;margin-top:var(--s5);line-height:1.5}
   .notice svg{width:18px;height:18px;flex-shrink:0;margin-top:1px;color:var(--wait)}
-  .notice.err{background:var(--avoid-bg);border-color:oklch(0.85 0.07 25);color:var(--avoid)}
+  .notice.err{background:var(--avoid-bg);border-color:oklch(0.85 0.07 25);border-left-color:var(--avoid-line);color:var(--avoid)}
   .notice.err svg{color:var(--avoid)}
 
   /* ---------- section ---------- */
   section{margin-top:var(--s8)}
-  .sec-head{display:flex;align-items:center;gap:10px;margin-bottom:var(--s4);padding:0 var(--s1)}
-  .sec-ic{display:grid;place-items:center;width:30px;height:30px;border-radius:var(--r-sm);background:var(--panel);border:1px solid var(--border);color:var(--ink-2);flex-shrink:0}
-  .sec-ic svg{width:17px;height:17px}
-  .sec-head h2{font-size:15.5px;font-weight:700;letter-spacing:-.01em}
-  .sec-head .meta{margin-left:auto;font-size:11.5px;font-weight:500;color:var(--ink-3);text-align:right;flex-shrink:0;max-width:42%}
+  /* alphaos section label: small mono uppercase + underline rule */
+  .sec-head{display:flex;align-items:center;gap:9px;margin-bottom:var(--s4);padding:0 var(--s1) 9px;border-bottom:1px solid var(--border)}
+  .sec-ic{display:grid;place-items:center;width:16px;height:16px;color:var(--accent);flex-shrink:0}
+  .sec-ic{background:none;border:none}
+  .sec-ic svg{width:15px;height:15px}
+  .sec-head h2{font-family:"IBM Plex Mono","Anuphan",ui-monospace,monospace;font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-2)}
+  .sec-head .meta{margin-left:auto;font-family:"IBM Plex Mono","Anuphan",ui-monospace,monospace;font-size:10px;font-weight:500;color:var(--ink-3);text-align:right;flex-shrink:0;max-width:42%}
 
   /* ---------- card ---------- */
   .stack{display:flex;flex-direction:column;gap:var(--s4)}
@@ -698,6 +701,36 @@
   .td-chip.go{background:var(--go-bg);color:var(--go)}
   .td-chip.wait{background:var(--wait-bg);color:var(--wait)}
   .td-chip.avoid{background:var(--avoid-bg);color:var(--avoid)}
+
+  /* ---------- overview charts (alphaos: performance line + allocation donut) ---------- */
+  .charts{display:flex;flex-direction:column;gap:var(--s4)}
+  .chart-card{padding:var(--s4)}
+  .ch-k{font-family:"IBM Plex Mono","Anuphan",ui-monospace,monospace;font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-ink)}
+  .ch-sub{display:block;font-size:11.5px;color:var(--ink-3);margin-top:3px;line-height:1.45}
+  .chart-card svg.perf{width:100%;height:auto;margin-top:var(--s3)}
+  .perf .grid-l{stroke:var(--hair)}
+  .perf .zero-l{stroke:var(--border-2)}
+  .perf .ax{font-family:"IBM Plex Mono",monospace;font-size:10px;fill:var(--ink-3)}
+  .ch-legend{display:flex;flex-wrap:wrap;gap:7px 14px;margin-top:var(--s3);padding-top:var(--s3);border-top:1px solid var(--hair)}
+  .ch-legend span{display:inline-flex;align-items:center;gap:6px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;color:var(--ink-2)}
+  .ch-legend i{width:10px;height:3px;border-radius:2px;flex-shrink:0}
+  .ch-legend em{font-style:normal}
+  .ch-legend em.up{color:var(--up)} .ch-legend em.down{color:var(--down)}
+  .donut-wrap{display:flex;flex-direction:column;align-items:center;gap:var(--s4);margin-top:var(--s4)}
+  .donut-wrap svg{width:150px;height:150px;flex-shrink:0}
+  .dn-big{font-family:"IBM Plex Mono",monospace;font-size:16px;font-weight:600;fill:var(--ink)}
+  .dn-sub{font-size:10px;fill:var(--ink-3)}
+  .donut-list{width:100%;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px 18px}
+  .dl-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-2);white-space:nowrap}
+  .dl-row i{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+  .dl-row .dl-v{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;color:var(--ink)}
+  .ch-foot{font-size:10.5px;color:var(--ink-3);margin-top:var(--s3);line-height:1.45}
+  /* sparkline strip in stock card */
+  .spark-wrap{padding:0 var(--s4) 8px}
+  .spark{width:100%;height:34px;display:block}
+  @media (min-width:768px){
+    .charts{display:grid;grid-template-columns:1.45fr 1fr;align-items:stretch}
+  }
 </style>
 </head>
 <body>
@@ -706,7 +739,7 @@
     <div class="wrap">
       <div class="brand">
         <span class="mark"><i></i><i></i><i></i></span>
-        <span class="word">MegaCoach</span>
+        <span class="word">mega<b>coach</b></span>
       </div>
       <h1>จังหวะเข้าซื้อ</h1>
       <p class="sub">ไฟจราจรบอกจังหวะเข้า ไม่ใช่คำสั่งซื้อขาย · อัปเดตทุกเช้าวันทำการ</p>
@@ -724,6 +757,9 @@
 
     <!-- การ์ด "วันนี้" — ตอบ 2 คำถามหลัก: วันนี้ต้องทำอะไร / เข้าตัวนี้ได้ยัง (เติมโดย loadToday) -->
     <section id="today" class="rise" hidden aria-label="วันนี้ต้องทำอะไร"></section>
+
+    <!-- overview: performance chart + allocation donut (เติมโดย renderCharts) -->
+    <div id="charts"></div>
 
     <!-- ปุ่มเปิดคู่มือ bottom sheet -->
     <button class="guide-open" onclick="openGuide()" aria-haspopup="dialog">
@@ -942,6 +978,7 @@
               <div class="chg ${dirClass(s.dir)} mono">${chgIcon(s.dir)} ${s.change}</div>
             </div>
           </div>
+          ${sparkHtml(s.ticker)}
           <div class="signal ${sig.cls}">
             <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${sig.ic}</svg></span>
             <div class="txt">
@@ -1064,6 +1101,7 @@
 
     async function loadData(){
       try{
+        HIST = await HISTP;   // ให้ sparkline ในการ์ดวาดได้ตอน render
         const res = await fetch("./entry-signal-data.json?t=" + Date.now());
         if(!res.ok) throw new Error("HTTP " + res.status);
         render(await res.json());
@@ -1861,7 +1899,7 @@
       try{
         const [cd, hist] = await Promise.all([
           fetch("./coach-data.json?t=" + Date.now()).then(r => r.json()),
-          fetch("./price-history.json?t=" + Date.now()).then(r => r.ok ? r.json() : []).catch(() => []),
+          HISTP,
         ]);
         const ticks = Object.keys(cd.tickers || {});
         if(!ticks.length) return;
@@ -1894,10 +1932,122 @@
       }catch(e){ /* เงียบ — ส่วนอื่นของ dashboard ทำงานต่อได้ */ }
     }
 
+    /* ---------- overview charts — pure SVG, no lib ---------- */
+    const HISTP = fetch("./price-history.json?t=" + Date.now()).then(r => r.ok ? r.json() : []).catch(() => []);
+    let HIST = [];
+    const CH_COLOR = { VOO:"#6d5ae6", QQQ:"#0e8ac8", NVDA:"#1f9d55", SEI:"#d97b16", BE:"#d6455d" };
+    const chColor = (t,i) => CH_COLOR[t] || ["#8b5cf6","#0d9488","#b45309","#be185d"][i % 4];
+    const TH_M = ["","ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+    const dShort = d => { const p = (d||"").split("-"); return p.length === 3 ? `${+p[2]} ${TH_M[+p[1]] || ""}` : d; };
+
+    function sparkHtml(t){
+      const pts = HIST.map(r => r.close?.[t]).filter(v => v != null);
+      if(pts.length < 2) return "";
+      const mn = Math.min(...pts), mx = Math.max(...pts), sp = (mx - mn) || 1, n = pts.length;
+      const xy = pts.map((v,i) => `${(i/(n-1)*100).toFixed(2)},${(27 - 24*(v-mn)/sp).toFixed(2)}`);
+      const c = pts[n-1] >= pts[0] ? "#1f9d55" : "#d6455d";
+      return `<div class="spark-wrap"><svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true">
+        <polygon points="0,30 ${xy.join(" ")} 100,30" fill="${c}" opacity="0.08"/>
+        <polyline points="${xy.join(" ")}" fill="none" stroke="${c}" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
+      </svg></div>`;
+    }
+
+    function perfCardHtml(){
+      const ticks = Object.keys(HIST.at(-1)?.close || {});
+      const series = ticks.map((t,i) => {
+        const pts = HIST.filter(r => r.close?.[t] != null).map(r => r.close[t]);
+        return { t, c: chColor(t,i), pct: pts.map(v => (v/pts[0] - 1) * 100) };
+      }).filter(s => s.pct.length > 1);
+      if(!series.length) return "";
+      let mn = 0, mx = 0;
+      series.forEach(s => s.pct.forEach(v => { mn = Math.min(mn,v); mx = Math.max(mx,v); }));
+      const padY = (mx - mn) * 0.08 || 1; mn -= padY; mx += padY;
+      const W = 600, H = 230, L = 42, R = 10, T = 10, B = 26;
+      const Y = v => T + (H-T-B) * (mx - v) / (mx - mn);
+      // nice grid step ~4 เส้น
+      const raw = (mx - mn) / 4, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+      const step = [1,2,2.5,5,10].map(m => m*mag).find(s => s >= raw);
+      let grids = "";
+      for(let v = Math.ceil(mn/step)*step; v <= mx; v += step){
+        const y = Y(v).toFixed(1), zero = Math.abs(v) < step/100;
+        grids += `<line class="${zero ? "zero-l" : "grid-l"}" x1="${L}" y1="${y}" x2="${W-R}" y2="${y}" stroke-width="1"${zero ? "" : ' stroke-dasharray="1 4"'}/>
+          <text class="ax" x="${L-7}" y="${+y+3.5}" text-anchor="end">${v > 0 ? "+" : ""}${+v.toFixed(1)}%</text>`;
+      }
+      const lines = series.map(s => {
+        const n = s.pct.length;
+        const d = s.pct.map((v,i) => `${i ? "L" : "M"}${(L + (W-L-R)*i/(n-1)).toFixed(1)} ${Y(v).toFixed(1)}`).join(" ");
+        return `<path d="${d}" fill="none" stroke="${s.c}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"${s.t === "VOO" ? ' stroke-dasharray="6 5"' : ""}/>`;
+      }).join("");
+      const legend = series.map(s => {
+        const v = s.pct.at(-1);
+        return `<span><i style="background:${s.c}"></i><b>${s.t}</b><em class="${v >= 0 ? "up" : "down"}">${v >= 0 ? "+" : ""}${v.toFixed(1)}%</em></span>`;
+      }).join("");
+      return `<div class="card chart-card">
+        <span class="ch-k">Performance · ${HIST.length}D</span>
+        <span class="ch-sub">% เทียบราคาปิดวันแรกของช่วง · เส้นประ = VOO (benchmark)</span>
+        <svg class="perf" viewBox="0 0 ${W} ${H}" role="img" aria-label="กราฟผลตอบแทนเทียบ ${HIST.length} วัน">
+          ${grids}${lines}
+          <text class="ax" x="${L}" y="${H-8}">${dShort(HIST[0].date)}</text>
+          <text class="ax" x="${W-R}" y="${H-8}" text-anchor="end">${dShort(HIST.at(-1).date)}</text>
+        </svg>
+        <div class="ch-legend">${legend}</div>
+      </div>`;
+    }
+
+    function allocCardHtml(){
+      const SEG = [
+        { k: "แกน",        v: 5000, c: "#6d5ae6" },
+        { k: "ตัวทำกำไร", v: 2000, c: "#1f9d55" },
+        { k: "Swing",      v: 1500, c: "#d97b16" },
+        { k: "RMF",        v: 1500, c: "#0e8ac8" },
+      ];
+      const total = SEG.reduce((a,s) => a + s.v, 0);
+      const CIRC = 2 * Math.PI * 54;
+      let acc = 0;
+      const rings = SEG.map(s => {
+        const f = s.v / total;
+        const el = `<circle r="54" cx="66" cy="66" fill="none" stroke="${s.c}" stroke-width="19"
+          stroke-dasharray="${Math.max(f*CIRC - 2, 1).toFixed(1)} ${CIRC.toFixed(1)}"
+          stroke-dashoffset="${(-acc*CIRC).toFixed(1)}" transform="rotate(-90 66 66)"/>`;
+        acc += f; return el;
+      }).join("");
+      const list = SEG.map(s => `<div class="dl-row"><i style="background:${s.c}"></i><span>${s.k}</span>
+        <span class="dl-v">${Math.round(s.v/total*100)}% · ${s.v.toLocaleString()}฿</span></div>`).join("");
+      return `<div class="card chart-card">
+        <span class="ch-k">Allocation · เงินใหม่/เดือน</span>
+        <span class="ch-sub">แผน DCA ผูกวันเงินเดือน ~27 · สิ้นเดือนต้องลงครบ</span>
+        <div class="donut-wrap">
+          <svg viewBox="0 0 132 132" role="img" aria-label="สัดส่วนแผน DCA รายเดือน">
+            ${rings}
+            <text class="dn-big" x="66" y="63" text-anchor="middle">10,000฿</text>
+            <text class="dn-sub" x="66" y="80" text-anchor="middle">ต่อเดือน</text>
+          </svg>
+          <div class="donut-list">${list}</div>
+        </div>
+        <div class="ch-foot">สัดส่วนเป้าหมายจากแผน ไม่ใช่มูลค่าพอร์ตจริง (ตัวเลขจริงอยู่หลังปลดล็อก North Star)</div>
+      </div>`;
+    }
+
+    async function renderCharts(){
+      HIST = await HISTP;
+      const el = document.getElementById("charts");
+      if(!el) return;
+      const perf = HIST.length > 2 ? perfCardHtml() : "";
+      el.innerHTML = `<section class="rise">
+        <div class="sec-head">
+          <span class="sec-ic">${svg(ICON.pulse)}</span>
+          <h2>Overview</h2>
+          <span class="meta">${HIST.length ? "ราคาปิด " + dShort(HIST.at(-1).date) : ""}</span>
+        </div>
+        <div class="charts">${perf}${allocCardHtml()}</div>
+      </section>`;
+    }
+
     async function boot(){
       if(window.liff && LIFF_ID && LIFF_ID !== "PUT_YOUR_LIFF_ID_HERE"){
         try{ await liff.init({ liffId: LIFF_ID }); }catch(e){ /* opened outside LINE — keep rendering */ }
       }
+      renderCharts();
       loadToday();
       loadData();
       loadRadar();
