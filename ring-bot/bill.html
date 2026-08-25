@@ -1,0 +1,577 @@
+<?!= HtmlService.createHtmlOutputFromFile('banklogos').getContent() ?>
+<?!= HtmlService.createHtmlOutputFromFile('qrlib').getContent() ?>
+<!-- ฟอร์มสร้างบิล — เสิร์ฟจาก doGet() เปิดในเบราว์เซอร์ในแอป LINE ได้เลย ไม่ต้องใช้ LIFF -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFCF5; --card:#FFFFFF; --ink:#1F2328; --muted:#8A9099;
+    --line:#ECE3D2; --accent:#F2B705; --accent-ink:#3A2E00;
+    --ok:#2F8F5B; --err:#D64545; --focus:#2F6BD6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);
+       font-family:"IBM Plex Sans Thai",system-ui,-apple-system,sans-serif;
+       font-size:16px;line-height:1.5;padding:20px 16px 40px}
+  .wrap{max-width:520px;margin:0 auto}
+  h1{font-size:24px;font-weight:600;letter-spacing:-0.3px}
+  .lead{color:var(--muted);font-size:14px;margin-top:4px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+        padding:16px;margin-top:16px}
+  .card h2{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.02em;margin-bottom:12px}
+  label{display:block;font-size:14px;font-weight:500;margin-bottom:6px}
+  .hint{font-size:12px;color:var(--muted);font-weight:400}
+  input,select,textarea{width:100%;min-height:48px;padding:12px 14px;font:inherit;
+    color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:12px;
+    -webkit-appearance:none;appearance:none}
+  select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A9099' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat:no-repeat;background-position:right 14px center}
+  textarea{min-height:72px;resize:vertical}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--focus);outline-offset:1px;border-color:var(--focus)}
+  .field + .field{margin-top:14px}
+  .row{display:flex;gap:10px}
+  .row > *{flex:1;min-width:0}
+  .seg{display:flex;gap:8px}
+  .seg button{flex:1;min-height:48px;font:inherit;font-weight:500;cursor:pointer;
+    background:#fff;color:var(--muted);border:1px solid var(--line);border-radius:12px}
+  .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);
+    border-color:var(--accent);font-weight:600}
+  .submit{width:100%;min-height:52px;margin-top:20px;font:inherit;font-size:17px;font-weight:600;
+    cursor:pointer;background:var(--accent);color:var(--accent-ink);border:0;border-radius:14px}
+  .submit:disabled{opacity:.5;cursor:default}
+  .msg{margin-top:16px;padding:14px;border-radius:12px;font-size:14px;white-space:pre-line}
+  .msg.ok{background:#EAF6EF;color:#1E5C3A;border:1px solid #BFE3CE}
+  .msg.err{background:#FBECEC;color:#8C2B2B;border:1px solid #F0C6C6}
+  .msg:empty{display:none}
+  fieldset{border:0}
+
+  /* ตัวเลือกธนาคาร — <select> ใส่ชิปสีไม่ได้ เลยทำ listbox เอง */
+  .pickerWrap{position:relative}
+  .picker{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;
+    padding:8px 40px 8px 10px;font:inherit;text-align:left;cursor:pointer;
+    background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A9099' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>") no-repeat right 14px center;
+    border:1px solid var(--line);border-radius:12px;color:var(--ink)}
+  .picker:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+  .picker[aria-expanded="true"]{border-color:var(--focus)}
+  /* กล่องโลโก้ — โลโก้ชุดนี้เป็น glyph ขาว ต้องวางบนพื้นสีแบรนด์ ไม่ใช่พื้นขาว
+     (ttb เป็นโลโก้สีเต็ม เลยได้พื้นขาว+เส้นขอบแทน) */
+  .chip{flex:none;display:inline-flex;align-items:center;justify-content:center;
+    width:40px;height:40px;border-radius:11px;overflow:hidden;
+    font-size:10px;font-weight:600;border:1px solid transparent}
+  .chip img{width:100%;height:100%;object-fit:contain;display:block}
+  .chip.light{background:#fff;border-color:var(--line);padding:4px}
+  .chip.empty{background:var(--line)}
+  .pname{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pname.ph{color:var(--muted)}
+  .list{position:absolute;z-index:20;top:calc(100% + 6px);left:0;right:0;max-height:300px;
+    overflow-y:auto;padding:6px;margin:0;list-style:none;background:#fff;
+    border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 32px rgba(31,35,40,.14)}
+  .list li{display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 10px;
+    border-radius:10px;cursor:pointer}
+  .list li.on{background:#F6F1E6}
+  /* แถวที่เลือก: ไฮไลต์ด้วยสีแบรนด์ของธนาคารนั้นเอง (ตั้งค่าจาก JS) + ติ๊กถูก */
+  .list li[aria-selected="true"]{font-weight:600}
+  .qrBox{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:14px;
+    background:#fff;text-align:center}
+  .qrBox canvas{width:100%;max-width:240px;height:auto;image-rendering:pixelated;display:block;margin:0 auto}
+  .qrBox p{margin-top:10px;font-size:13px;color:var(--muted)}
+  .qrBox .amt{color:var(--ink);font-weight:600}
+  .list li .tick{flex:none;width:20px;text-align:center;font-size:16px;line-height:1;opacity:0}
+  .list li[aria-selected="true"] .tick{opacity:1}
+</style>
+
+<div class="wrap">
+  <h1>สร้างบิล</h1>
+  <p class="lead">น้องกริ่งจะยิงการ์ดนี้เข้าแชตที่เลือก ตามวัน-เวลาที่ตั้งไว้</p>
+
+  <form id="f" novalidate>
+    <div class="card">
+      <h2>บิลนี้คืออะไร</h2>
+      <div class="field">
+        <label id="modeLabel">ประเภท</label>
+        <div class="seg" role="group" aria-labelledby="modeLabel">
+          <button type="button" id="mCollect" aria-pressed="true">เก็บเงิน</button>
+          <button type="button" id="mPay" aria-pressed="false">ต้องจ่าย</button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="title">ชื่อบิล</label>
+        <input id="title" required placeholder="เช่น ค่างวดผ่อน">
+      </div>
+      <div class="field">
+        <label for="amount">ยอดเงิน (บาท) <span class="hint">เว้นว่าง = ให้ผู้จ่ายกรอกเอง</span></label>
+        <input id="amount" type="text" inputmode="decimal" autocomplete="off" placeholder="เว้นว่างได้">
+      </div>
+      <div class="field">
+        <label for="who">คู่กรณี <span class="hint">ไม่ใส่ก็ได้</span></label>
+        <input id="who" placeholder="เก็บจากใคร / จ่ายให้ใคร">
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>ส่งเข้าแชตไหน</h2>
+      <div class="field">
+        <label for="to">ปลายทาง</label>
+        <select id="to" required></select>
+        <p class="hint" style="margin-top:6px">ไม่เจอกลุ่มที่ต้องการ? พิมพ์อะไรก็ได้ในกลุ่มนั้นหนึ่งครั้ง แล้วเปิดหน้านี้ใหม่</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>ช่องทางรับเงิน <span class="hint">ไม่ใส่ก็ได้</span></h2>
+      <div class="field" style="margin-top:0">
+        <label id="payLabel">รับเงินทาง</label>
+        <div class="seg" role="group" aria-labelledby="payLabel">
+          <button type="button" id="pBank" aria-pressed="true">บัญชีธนาคาร</button>
+          <button type="button" id="pPP" aria-pressed="false">พร้อมเพย์</button>
+        </div>
+      </div>
+      <div class="field pickerWrap">
+        <label id="bankLabel" for="bankBtn">ธนาคาร <span class="hint" id="bankOpt"></span></label>
+        <button type="button" id="bankBtn" class="picker" role="combobox"
+                aria-haspopup="listbox" aria-expanded="false"
+                aria-controls="bankList" aria-labelledby="bankLabel bankBtn">
+          <span class="chip" id="bankChip" aria-hidden="true"></span>
+          <span class="pname ph" id="bankName">เลือกธนาคาร</span>
+        </button>
+        <ul class="list" id="bankList" role="listbox" aria-labelledby="bankLabel" hidden></ul>
+      </div>
+      <div class="field" id="bankOtherWrap" hidden>
+        <label for="bankOther">ชื่อธนาคาร</label>
+        <input id="bankOther" placeholder="พิมพ์ชื่อธนาคาร">
+      </div>
+      <div class="field" id="ppTypeWrap" hidden>
+        <label for="ppType">พร้อมเพย์ผูกกับ</label>
+        <select id="ppType">
+          <option value="phone">เบอร์โทรศัพท์</option>
+          <option value="id">เลขบัตรประชาชน</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="accName">ชื่อบัญชี</label>
+        <input id="accName" placeholder="ชื่อเจ้าของบัญชี">
+      </div>
+      <div class="qrBox" id="qrBox" hidden>
+        <canvas id="qr" aria-label="คิวอาร์โค้ดพร้อมเพย์"></canvas>
+        <p id="qrCap"></p>
+      </div>
+      <div class="field">
+        <label for="acc" id="accLabel">เลขที่บัญชี <span class="hint">การ์ดจะมีปุ่มก๊อปให้</span></label>
+        <input id="acc" inputmode="numeric" autocomplete="off" placeholder="000-0-00000-0">
+        <p class="hint" id="accHint" style="margin-top:6px"></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>เตือนเมื่อไหร่</h2>
+      <div class="row">
+        <div class="field" style="margin-top:0">
+          <label for="date">วันที่</label>
+          <input id="date" type="date" required>
+        </div>
+        <div class="field" style="margin-top:0">
+          <label for="time">เวลา</label>
+          <input id="time" type="time" step="300" required>
+        </div>
+      </div>
+      <div class="field">
+        <label for="repeat">ทำซ้ำ</label>
+        <select id="repeat">
+          <option value="">ไม่ซ้ำ — เตือนครั้งเดียว</option>
+          <option value="เดือน">ทุกเดือน</option>
+          <option value="สัปดาห์">ทุกสัปดาห์</option>
+        </select>
+      </div>
+      <div class="field" id="endWrap" hidden>
+        <label for="end">สิ้นสุดเมื่อ</label>
+        <select id="end">
+          <option value="">ไม่มีจุดสิ้นสุด</option>
+          <option value="n">กำหนดจำนวนครั้ง</option>
+        </select>
+      </div>
+      <div class="field" id="timesWrap" hidden>
+        <label for="times">กี่ครั้งทั้งหมด</label>
+        <input id="times" type="number" inputmode="numeric" min="1" max="120" value="4">
+      </div>
+      <p class="hint" style="margin-top:10px">เดือนที่ไม่มีวันที่ที่เลือก (29/30/31) จะเลื่อนไปวันสิ้นเดือนแทน แล้วเดือนถัดไปกลับมาวันเดิม</p>
+    </div>
+
+    <div class="card">
+      <h2>โน้ตท้ายการ์ด <span class="hint">ไม่ใส่ก็ได้</span></h2>
+      <textarea id="note" placeholder="ข้อความเพิ่มเติมที่อยากให้ขึ้นบนการ์ด"></textarea>
+    </div>
+
+    <button class="submit" id="go" type="submit">สร้างบิล</button>
+    <div class="msg" id="msg" role="status" aria-live="polite"></div>
+  </form>
+</div>
+
+<script>
+  var TARGETS = <?!= targets ?>;
+  var $ = function (id) { return document.getElementById(id); };
+  var mode = 'ทวง';
+
+  // สีประจำแบรนด์ ไม่ใช่โลโก้ — โลโก้จริงเป็นเครื่องหมายการค้า ถ้าจะใช้ต้องฝังไฟล์จริง
+  var BANKS = [
+    { k: 'ktb', code: 'KTB',   name: 'ธนาคารกรุงไทย',          c: '#1BA5E1' },
+    { k: 'kbank', code: 'KBANK', name: 'ธนาคารกสิกรไทย',         c: '#138F2D' },
+    { k: 'scb', code: 'SCB',   name: 'ธนาคารไทยพาณิชย์',        c: '#4E2E7F' },
+    { k: 'bbl', code: 'BBL',   name: 'ธนาคารกรุงเทพ',           c: '#1E4598' },
+    { k: 'bay', code: 'BAY',   name: 'ธนาคารกรุงศรีอยุธยา',      c: '#FEC43B' },
+    { k: 'ttb', code: 'TTB',   name: 'ธนาคารทหารไทยธนชาต',      c: '#1279BE', light: true },
+    { k: 'gsb', code: 'GSB',   name: 'ธนาคารออมสิน',            c: '#EB198D' },
+    { k: 'ghb', code: 'GHB',   name: 'ธนาคารอาคารสงเคราะห์',     c: '#F57F20' },
+    { k: 'baac', code: 'BAAC',  name: 'ธ.ก.ส.',                 c: '#4B9B1D' },
+    { k: 'kkp', code: 'KKP',   name: 'ธนาคารเกียรตินาคินภัทร',   c: '#199CC5' },
+    { k: 'tisco', code: 'TISCO', name: 'ธนาคารทิสโก้',            c: '#12549F' },
+    { k: 'cimb', code: 'CIMB',  name: 'ธนาคารซีไอเอ็มบี ไทย',     c: '#7E2F36' },
+    { k: 'uob', code: 'UOB',   name: 'ธนาคารยูโอบี',            c: '#0B3979' },
+    { k: 'lhb', code: 'LH',    name: 'ธนาคารแลนด์ แอนด์ เฮ้าส์',  c: '#6D6E71' },
+    { code: '···',   name: 'อื่น ๆ (พิมพ์เอง)',        c: '#B0B6BD', other: true }
+  ];
+  var bankPick = null;
+  var payMode = 'bank';
+
+  /* รูปแบบเลขบัญชี: ส่วนใหญ่ 10 หลัก xxx-x-xxxxx-x
+     ออมสิน/ธ.ก.ส. 12 หลัก รูปแบบไม่มาตรฐานพอจะ mask — ปล่อยเป็นตัวเลขล้วน */
+  var ACC_10 = '###-#-#####-#';
+  var MASKS = {
+    ktb: ACC_10, kbank: ACC_10, scb: ACC_10, bbl: ACC_10, bay: ACC_10, ttb: ACC_10,
+    ghb: ACC_10, kkp: ACC_10, tisco: ACC_10, cimb: ACC_10, uob: ACC_10, lhb: ACC_10,
+    gsb: '', baac: ''
+  };
+  var LENS = { gsb: 12, baac: 12 };
+  var PP = {
+    phone: { mask: '###-###-####', len: 10, label: 'เบอร์พร้อมเพย์', hint: 'เบอร์โทร 10 หลัก' },
+    id:    { mask: '#-####-#####-##-#', len: 13, label: 'เลขบัตรประชาชน', hint: 'เลขบัตร 13 หลัก' }
+  };
+
+  /** ยอดเงิน: โชว์เป็น 1,234.56 ระหว่างพิมพ์ แต่ค่าที่ส่งออกเป็นตัวเลขล้วน */
+  function amountValue() { return Number($('amount').value.replace(/,/g, '')); }
+
+  function formatAmount(raw) {
+    var v = String(raw).replace(/[^0-9.]/g, '');
+    var dot = v.indexOf('.');
+    if (dot >= 0) v = v.slice(0, dot + 1) + v.slice(dot + 1).replace(/\./g, '').slice(0, 2);
+    var parts = v.split('.');
+    parts[0] = parts[0].replace(/^0+(?=\d)/, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.length > 1 ? parts[0] + '.' + parts[1] : parts[0];
+  }
+
+  /* คืนตำแหน่งเคอร์เซอร์โดยนับ "จำนวนหลัก" ไม่ใช่จำนวนตัวอักษร — จุลภาคที่แทรกเข้ามาเลยไม่ทำให้เคอร์เซอร์กระโดด */
+  function reformatAmount(el) {
+    var before = el.value.slice(0, el.selectionStart || 0).replace(/[^0-9.]/g, '').length;
+    el.value = formatAmount(el.value);
+    var i = 0, seen = 0;
+    while (i < el.value.length && seen < before) {
+      if (/[0-9.]/.test(el.value[i])) seen++;
+      i++;
+    }
+    try { el.setSelectionRange(i, i); } catch (e) { /* บางเบราว์เซอร์ห้ามตอนยังไม่ focus */ }
+  }
+
+  function applyMask(raw, mask, len) {
+    var d = String(raw).replace(/[^0-9]/g, '').slice(0, len);
+    if (!mask) return d;
+    var out = '', i = 0;
+    for (var k = 0; k < mask.length && i < d.length; k++) {
+      out += mask[k] === '#' ? d[i++] : mask[k];
+    }
+    return out;
+  }
+
+  /* ตัวย่อบนชิปต้องอ่านออกทั้งบนสีเข้มและสีอ่อน — เลือกสีตัวอักษรจากความสว่างจริง */
+  function inkOn(hex) {
+    var r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+    var lum = [r, g, b].map(function (v) {
+      v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return (0.2126 * lum[0] + 0.7152 * lum[1] + 0.0722 * lum[2]) > 0.45 ? '#1F2328' : '#FFFFFF';
+  }
+  function paintChip(el, b) {
+    el.textContent = '';
+    el.className = 'chip';
+    el.style.background = '';
+    el.style.color = '';
+    if (!b) { el.className = 'chip empty'; return; }
+    var logo = b.k && BANK_LOGOS[b.k];
+    if (logo) {
+      el.className = 'chip' + (b.light ? ' light' : '');
+      if (!b.light) el.style.background = b.c;
+      var img = document.createElement('img');
+      img.src = logo; img.alt = '';
+      el.appendChild(img);
+      return;
+    }
+    // ไม่มีโลโก้ (ตัวเลือก "อื่น ๆ") → ถอยไปใช้ชิปสี + ตัวย่อ
+    el.style.background = b.c;
+    el.style.color = inkOn(b.c);
+    el.textContent = b.code;
+  }
+
+  (function initBank() {
+    var btn = $('bankBtn'), list = $('bankList'), cur = -1;
+
+    BANKS.forEach(function (b, i) {
+      var li = document.createElement('li');
+      li.id = 'bank-' + i;
+      li.setAttribute('role', 'option');
+      li.setAttribute('aria-selected', 'false');
+      var chip = document.createElement('span');
+      chip.className = 'chip'; chip.setAttribute('aria-hidden', 'true');
+      paintChip(chip, b);
+      var nm = document.createElement('span');
+      nm.className = 'pname'; nm.textContent = b.name;
+      var tick = document.createElement('span');
+      tick.className = 'tick'; tick.setAttribute('aria-hidden', 'true');
+      tick.textContent = '\u2713';
+      li.appendChild(chip); li.appendChild(nm); li.appendChild(tick);
+      li.onclick = function () { choose(i); };
+      list.appendChild(li);
+    });
+
+    function open(v) {
+      list.hidden = !v;
+      btn.setAttribute('aria-expanded', String(v));
+      if (v) { highlight(cur < 0 ? 0 : cur); list.scrollTop = 0; }
+      else btn.removeAttribute('aria-activedescendant');
+    }
+    function highlight(i) {
+      cur = Math.max(0, Math.min(BANKS.length - 1, i));
+      Array.prototype.forEach.call(list.children, function (el, k) {
+        el.classList.toggle('on', k === cur);
+      });
+      btn.setAttribute('aria-activedescendant', 'bank-' + cur);
+      list.children[cur].scrollIntoView({ block: 'nearest' });
+    }
+    function choose(i) {
+      var b = BANKS[i];
+      bankPick = b;
+      Array.prototype.forEach.call(list.children, function (el, k) {
+        var on = k === i;
+        el.setAttribute('aria-selected', String(on));
+        // ไฮไลต์เป็นสีแบรนด์แบบจาง — ตัวหนังสือกับติ๊กใช้สีเต็ม
+        el.style.background = on ? BANKS[k].c + '1F' : '';
+        el.style.color = on ? BANKS[k].c : '';
+      });
+      paintChip($('bankChip'), b);
+      $('bankName').textContent = b.other ? 'อื่น ๆ' : b.name;
+      $('bankName').classList.remove('ph');
+      $('bankOtherWrap').hidden = !b.other;
+      cur = i;
+      open(false);
+      btn.focus();
+      syncAcc();
+      if (b.other) $('bankOther').focus();
+    }
+
+    btn.onclick = function () { open(list.hidden); };
+    btn.onkeydown = function (e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (list.hidden) open(true);
+        else highlight(cur + (e.key === 'ArrowDown' ? 1 : -1));
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        if (!list.hidden) { e.preventDefault(); choose(cur); }
+      } else if (e.key === 'Escape' && !list.hidden) {
+        e.preventDefault(); open(false);
+      }
+    };
+    document.addEventListener('click', function (e) {
+      if (!list.hidden && !btn.contains(e.target) && !list.contains(e.target)) open(false);
+    });
+  })();
+
+  function bankValue() {
+    if (payMode === 'pp') {
+      var via = $('ppType').value === 'phone' ? 'เบอร์โทร' : 'เลขบัตรประชาชน';
+      return 'พร้อมเพย์ (' + via + ')' + (bankPick && !bankPick.other ? ' · ' + bankPick.name : '');
+    }
+    if (!bankPick) return '';
+    return bankPick.other ? $('bankOther').value.trim() : bankPick.name;
+  }
+  syncAcc();
+
+  // ปลายทาง: กลุ่มขึ้นก่อน แล้วค่อยคน
+  (function () {
+    var sel = $('to');
+    var sorted = TARGETS.slice().sort(function (a, b) {
+      return (a.type === 'group' ? 0 : 1) - (b.type === 'group' ? 0 : 1);
+    });
+    if (!sorted.length) {
+      sel.innerHTML = '<option value="">— ยังไม่มีปลายทาง —</option>';
+      return;
+    }
+    sorted.forEach(function (t) {
+      var o = document.createElement('option');
+      o.value = t.id;
+      o.textContent = (t.type === 'group' ? 'กลุ่ม · ' : 'คน · ') + t.name;
+      sel.appendChild(o);
+    });
+  })();
+
+  // ค่าเริ่มต้น: พรุ่งนี้ 09:00
+  (function () {
+    var d = new Date(); d.setDate(d.getDate() + 1);
+    var p = function (n) { return String(n).padStart(2, '0'); };
+    $('date').value = d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+    $('time').value = '09:00';
+  })();
+
+  function setMode(m) {
+    mode = m;
+    $('mCollect').setAttribute('aria-pressed', m === 'ทวง');
+    $('mPay').setAttribute('aria-pressed', m === 'จ่าย');
+  }
+  $('mCollect').onclick = function () { setMode('ทวง'); };
+  $('mPay').onclick = function () { setMode('จ่าย'); };
+
+  function accRule() {
+    if (payMode === 'pp') {
+      var t = PP[$('ppType').value];
+      return { mask: t.mask, len: t.len, label: t.label, hint: t.hint };
+    }
+    var k = bankPick && bankPick.k;
+    var mask = k ? MASKS[k] : ACC_10;
+    var len = k && LENS[k] ? LENS[k] : (mask ? (mask.match(/#/g) || []).length : 15);
+    return { mask: mask, len: len, label: 'เลขที่บัญชี',
+             hint: mask ? '' : 'ตัวเลข ' + len + ' หลัก' };
+  }
+  function syncAcc() {
+    var r = accRule();
+    $('accLabel').innerHTML = r.label + ' <span class="hint">การ์ดจะมีปุ่มก๊อปให้</span>';
+    $('acc').placeholder = r.mask ? r.mask.replace(/#/g, '0') : '0'.repeat(Math.min(r.len, 13));
+    $('accHint').textContent = r.hint;
+    $('acc').value = applyMask($('acc').value, r.mask, r.len);
+  }
+  $('acc').oninput = function () {
+    var r = accRule();
+    this.value = applyMask(this.value, r.mask, r.len);
+    queueQr();
+  };
+  $('ppType').onchange = syncAcc;
+  $('amount').addEventListener('input', function () { reformatAmount(this); queueQr(); });
+  $('amount').addEventListener('blur', function () {
+    var n = amountValue();
+    if (n > 0) this.value = n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  });
+
+  // ---- QR พร้อมเพย์ ----
+  var qrTimer = null, qrReady = false;
+
+  function drawQR(text) {
+    var q = qrcode(0, 'M');
+    q.addData(text);
+    q.make();
+    var n = q.getModuleCount(), quiet = 4;
+    var scale = Math.max(2, Math.floor(640 / (n + quiet * 2)));
+    var size = (n + quiet * 2) * scale;
+    var cv = $('qr');
+    cv.width = size; cv.height = size;
+    var ctx = cv.getContext('2d');
+    ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, size, size);
+    ctx.fillStyle = '#000000';
+    for (var r = 0; r < n; r++) {
+      for (var c = 0; c < n; c++) {
+        if (q.isDark(r, c)) ctx.fillRect((c + quiet) * scale, (r + quiet) * scale, scale, scale);
+      }
+    }
+  }
+
+  function queueQr() {
+    clearTimeout(qrTimer);
+    qrTimer = setTimeout(buildQr, 350);
+  }
+
+  function buildQr() {
+    qrReady = false;
+    if (payMode !== 'pp') { $('qrBox').hidden = true; return; }
+    var digits = $('acc').value.replace(/[^0-9]/g, '');
+    var need = PP[$('ppType').value].len;
+    if (digits.length !== need) {
+      $('qrBox').hidden = true;
+      return;
+    }
+    var amt = amountValue();
+    $('qrBox').hidden = false;
+    $('qrCap').textContent = 'กำลังสร้าง QR…';
+    // payload สร้างฝั่งเซิร์ฟเวอร์ ที่เดียว มี self-test คุมอยู่ — ฝั่งนี้แค่วาด
+    google.script.run
+      .withSuccessHandler(function (payload) {
+        drawQR(payload);
+        qrReady = true;
+        $('qrCap').innerHTML = amt > 0
+          ? 'ยอด <span class="amt">฿' + amt.toLocaleString('en-US', { minimumFractionDigits: 2 }) + '</span> ติดมากับ QR แล้ว'
+          : 'ยังไม่ระบุยอด — ผู้จ่ายกรอกเอง';
+      })
+      .withFailureHandler(function () {
+        $('qrBox').hidden = true;
+      })
+      .ppPayload({ target: digits, amount: amt > 0 ? amt : 0 });
+  }
+
+  function setPay(m) {
+    payMode = m;
+    $('pBank').setAttribute('aria-pressed', String(m === 'bank'));
+    $('pPP').setAttribute('aria-pressed', String(m === 'pp'));
+    $('ppTypeWrap').hidden = m !== 'pp';
+    $('bankOpt').textContent = m === 'pp' ? 'ธนาคารที่ผูกไว้ — ไม่ใส่ก็ได้' : '';
+    queueQr();
+    syncAcc();
+  }
+  $('pBank').onclick = function () { setPay('bank'); };
+  $('pPP').onclick = function () { setPay('pp'); };
+
+  function syncRepeat() {
+    var on = $('repeat').value !== '';
+    $('endWrap').hidden = !on;
+    $('timesWrap').hidden = !(on && $('end').value === 'n');
+  }
+  $('repeat').onchange = syncRepeat;
+  $('end').onchange = syncRepeat;
+
+  function say(text, kind) {
+    var m = $('msg');
+    m.className = 'msg ' + kind;
+    m.textContent = text;
+  }
+
+  $('f').onsubmit = function (e) {
+    e.preventDefault();
+    var repeat = $('repeat').value;
+    var payload = {
+      mode: mode,
+      title: $('title').value,
+      amount: amountValue(),
+      who: $('who').value,
+      to: $('to').value,
+      bank: bankValue(),
+      accName: $('accName').value,
+      acc: $('acc').value,
+      when: $('date').value + 'T' + ($('time').value || '').slice(0, 5),
+      repeat: repeat,
+      times: !repeat ? 1 : ($('end').value === 'n' ? $('times').value : ''),
+      note: $('note').value,
+      qr: qrReady ? $('qr').toDataURL('image/png') : ''
+    };
+    if (!payload.to) return say('ยังไม่มีปลายทางให้เลือก — พิมพ์อะไรในกลุ่มหนึ่งครั้งก่อน', 'err');
+    if (!payload.title.trim()) return say('ใส่ชื่อบิลด้วย', 'err');
+    if ($('amount').value.trim() && !(payload.amount > 0)) return say('ยอดเงินต้องมากกว่า 0', 'err');
+    if (!$('date').value || !$('time').value) return say('เลือกวันและเวลาให้ครบ', 'err');
+
+    $('go').disabled = true;
+    say('กำลังบันทึก…', 'ok');
+    google.script.run
+      .withSuccessHandler(function (r) {
+        $('go').disabled = false;
+        say(r, 'ok');
+        $('title').value = ''; $('amount').value = ''; $('who').value = ''; $('note').value = '';
+      })
+      .withFailureHandler(function (err) {
+        $('go').disabled = false;
+        say('บันทึกไม่สำเร็จ: ' + (err && err.message ? err.message : err), 'err');
+      })
+      .saveBill(payload);
+  };
+</script>
