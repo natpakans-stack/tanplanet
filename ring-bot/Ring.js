@@ -210,7 +210,8 @@ function saveBill(o) {
   var amount = Number(o.amount) || 0;
   if (!isFinite(amount) || amount < 0) throw new Error('ยอดเงินไม่ถูกต้อง');
 
-  var repeat = ['เดือน', 'สัปดาห์'].indexOf(o.repeat) >= 0 ? o.repeat : '';
+  var now = !!o.sendNow;
+  var repeat = !now && ['เดือน', 'สัปดาห์'].indexOf(o.repeat) >= 0 ? o.repeat : '';
   var times = '';
   if (repeat) {
     if (o.times === '' || o.times === null || o.times === undefined) times = '';   // ไม่มีจุดสิ้นสุด
@@ -220,25 +221,42 @@ function saveBill(o) {
     }
   } else times = 1;
 
-  var m = String(o.when || '').match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
-  if (!m) throw new Error('วัน-เวลาไม่ถูกต้อง');
-  var start = new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], 0, 0);
-  if (isNaN(start.getTime())) throw new Error('วัน-เวลาไม่ถูกต้อง');
+  var start;
+  if (now) start = new Date();
+  else {
+    var m = String(o.when || '').match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
+    if (!m) throw new Error('วัน-เวลาไม่ถูกต้อง');
+    start = new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], 0, 0);
+    if (isNaN(start.getTime())) throw new Error('วัน-เวลาไม่ถูกต้อง');
+  }
 
-  var stamp = new Date();
-  var billId = 'b' + Utilities.formatDate(stamp, TZ, 'yyMMddHHmmss');
+  var billId = 'b' + Utilities.formatDate(new Date(), TZ, 'yyMMddHHmmss');
   var qrUrl = o.qr ? saveQr_(billId, o.qr) : '';
-  sheet_('bills').appendRow([
-    billId, stamp,
-    o.mode === 'ทวง' ? 'ทวง' : 'จ่าย', known.id, title, String(o.who || '').trim(), amount,
+
+  var row = [
+    billId, new Date(), o.mode === 'ทวง' ? 'ทวง' : 'จ่าย', known.id, title,
+    String(o.who || '').trim(), amount,
     String(o.bank || '').trim(), String(o.accName || '').trim(), String(o.acc || '').trim(),
-    start, start, repeat, times, 0, '', '', String(o.note || '').trim(), qrUrl
-  ]);
+    start, start, repeat, times,
+    now ? 1 : 0, now ? 'จบแล้ว' : '', now ? start : '',
+    String(o.note || '').trim(), qrUrl
+  ];
+  sheet_('bills').appendRow(row);
+
+  if (now) {
+    var bill = {};
+    HEADERS.bills.forEach(function (h, i) { bill[h] = row[i]; });
+    bill['ส่งไปแล้ว'] = 0;   // การ์ดโชว์ "ครั้งที่ 1"
+    var alt = title + (amount > 0 ? ' ฿' + baht_(amount) : '');
+    ringPush(known.id, { type: 'flex', altText: alt, contents: billBubble_(bill) }, 'บิล');
+    return 'ส่งเข้า ' + known['ชื่อ'] + ' แล้ว' + (amount > 0 ? ' — ฿' + baht_(amount) : ' (ไม่ระบุยอด)');
+  }
 
   var tail = !repeat ? 'ครั้งเดียว'
     : times === '' ? 'ทำซ้ำทุก' + repeat + ' ไม่มีจุดสิ้นสุด'
     : 'ทำซ้ำทุก' + repeat + ' ' + times + ' ครั้ง (ครั้งสุดท้าย ' + thaiDate_(fireAt_(start, repeat, times - 1)) + ')';
-  return 'สร้างบิลแล้ว' + (amount > 0 ? '' : ' (ไม่ระบุยอด — ผู้จ่ายกรอกเอง)') + '\nเตือนครั้งแรก ' + thaiDateTime_(start) + '\nส่งเข้า ' + known['ชื่อ'] + '\n' + tail;
+  return 'ตั้งเวลาแล้ว' + (amount > 0 ? '' : ' (ไม่ระบุยอด — ผู้จ่ายกรอกเอง)') +
+    '\nเตือนครั้งแรก ' + thaiDateTime_(start) + '\nส่งเข้า ' + known['ชื่อ'] + '\n' + tail;
 }
 
 // ---------- webhook ----------

@@ -57,11 +57,11 @@
   /* กล่องโลโก้ — โลโก้ชุดนี้เป็น glyph ขาว ต้องวางบนพื้นสีแบรนด์ ไม่ใช่พื้นขาว
      (ttb เป็นโลโก้สีเต็ม เลยได้พื้นขาว+เส้นขอบแทน) */
   .chip{flex:none;display:inline-flex;align-items:center;justify-content:center;
-    width:40px;height:40px;border-radius:11px;overflow:hidden;
+    width:40px;height:40px;padding:9px;border-radius:12px;overflow:hidden;
     font-size:10px;font-weight:600;border:1px solid transparent}
   .chip img{width:100%;height:100%;object-fit:contain;display:block}
-  .chip.light{background:#fff;border-color:var(--line);padding:4px}
-  .chip.empty{background:var(--line)}
+  .chip.light{background:#fff;border-color:var(--line);padding:6px}
+  .chip.empty{background:#F6F1E6;border-color:var(--line);padding:8px}
   .pname{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .pname.ph{color:var(--muted)}
   .list{position:absolute;z-index:20;top:calc(100% + 6px);left:0;right:0;max-height:300px;
@@ -127,20 +127,24 @@
           <button type="button" id="pPP" aria-pressed="false">พร้อมเพย์</button>
         </div>
       </div>
-      <div class="field pickerWrap">
-        <label id="bankLabel" for="bankBtn">ธนาคาร <span class="hint" id="bankOpt"></span></label>
-        <button type="button" id="bankBtn" class="picker" role="combobox"
-                aria-haspopup="listbox" aria-expanded="false"
-                aria-controls="bankList" aria-labelledby="bankLabel bankBtn">
-          <span class="chip" id="bankChip" aria-hidden="true"></span>
-          <span class="pname ph" id="bankName">เลือกธนาคาร</span>
-        </button>
-        <ul class="list" id="bankList" role="listbox" aria-labelledby="bankLabel" hidden></ul>
+
+      <div id="bankWrap">
+        <div class="field pickerWrap">
+          <label id="bankLabel" for="bankBtn">ธนาคาร</label>
+          <button type="button" id="bankBtn" class="picker" role="combobox"
+                  aria-haspopup="listbox" aria-expanded="false"
+                  aria-controls="bankList" aria-labelledby="bankLabel bankBtn">
+            <span class="chip" id="bankChip" aria-hidden="true"></span>
+            <span class="pname ph" id="bankName">เลือกธนาคาร</span>
+          </button>
+          <ul class="list" id="bankList" role="listbox" aria-labelledby="bankLabel" hidden></ul>
+        </div>
+        <div class="field" id="bankOtherWrap" hidden>
+          <label for="bankOther">ชื่อธนาคาร</label>
+          <input id="bankOther" placeholder="พิมพ์ชื่อธนาคาร">
+        </div>
       </div>
-      <div class="field" id="bankOtherWrap" hidden>
-        <label for="bankOther">ชื่อธนาคาร</label>
-        <input id="bankOther" placeholder="พิมพ์ชื่อธนาคาร">
-      </div>
+
       <div class="field" id="ppTypeWrap" hidden>
         <label for="ppType">พร้อมเพย์ผูกกับ</label>
         <select id="ppType">
@@ -148,53 +152,66 @@
           <option value="id">เลขบัตรประชาชน</option>
         </select>
       </div>
+
       <div class="field">
-        <label for="accName">ชื่อบัญชี</label>
-        <input id="accName" placeholder="ชื่อเจ้าของบัญชี">
+        <label for="acc" id="accLabel">เลขที่บัญชี</label>
+        <input id="acc" inputmode="numeric" autocomplete="off" placeholder="000-0-00000-0">
+        <p class="hint" id="accHint" style="margin-top:6px"></p>
       </div>
+
       <div class="qrBox" id="qrBox" hidden>
         <canvas id="qr" aria-label="คิวอาร์โค้ดพร้อมเพย์"></canvas>
         <p id="qrCap"></p>
       </div>
+
       <div class="field">
-        <label for="acc" id="accLabel">เลขที่บัญชี <span class="hint">การ์ดจะมีปุ่มก๊อปให้</span></label>
-        <input id="acc" inputmode="numeric" autocomplete="off" placeholder="000-0-00000-0">
-        <p class="hint" id="accHint" style="margin-top:6px"></p>
+        <label for="accName">ชื่อบัญชี</label>
+        <input id="accName" placeholder="ชื่อเจ้าของบัญชี">
       </div>
     </div>
 
     <div class="card">
-      <h2>เตือนเมื่อไหร่</h2>
-      <div class="row">
-        <div class="field" style="margin-top:0">
-          <label for="date">วันที่</label>
-          <input id="date" type="date" required>
-        </div>
-        <div class="field" style="margin-top:0">
-          <label for="time">เวลา</label>
-          <input id="time" type="time" step="300" required>
+      <h2>ส่งเมื่อไหร่</h2>
+      <div class="field" style="margin-top:0">
+        <label id="whenLabel">จังหวะส่ง</label>
+        <div class="seg" role="group" aria-labelledby="whenLabel">
+          <button type="button" id="wNow" aria-pressed="true">ส่งตอนนี้เลย</button>
+          <button type="button" id="wLater" aria-pressed="false">ตั้งเวลา</button>
         </div>
       </div>
-      <div class="field">
-        <label for="repeat">ทำซ้ำ</label>
-        <select id="repeat">
-          <option value="">ไม่ซ้ำ — เตือนครั้งเดียว</option>
-          <option value="เดือน">ทุกเดือน</option>
-          <option value="สัปดาห์">ทุกสัปดาห์</option>
-        </select>
+
+      <div id="laterWrap" hidden>
+        <div class="row" style="margin-top:14px">
+          <div class="field" style="margin-top:0">
+            <label for="date">วันที่</label>
+            <input id="date" type="date">
+          </div>
+          <div class="field" style="margin-top:0">
+            <label for="time">เวลา</label>
+            <input id="time" type="time" step="300">
+          </div>
+        </div>
+        <div class="field">
+          <label for="repeat">ทำซ้ำ</label>
+          <select id="repeat">
+            <option value="">ไม่ซ้ำ — เตือนครั้งเดียว</option>
+            <option value="เดือน">ทุกเดือน</option>
+            <option value="สัปดาห์">ทุกสัปดาห์</option>
+          </select>
+        </div>
+        <div class="field" id="endWrap" hidden>
+          <label for="end">สิ้นสุดเมื่อ</label>
+          <select id="end">
+            <option value="">ไม่มีจุดสิ้นสุด</option>
+            <option value="n">กำหนดจำนวนครั้ง</option>
+          </select>
+        </div>
+        <div class="field" id="timesWrap" hidden>
+          <label for="times">กี่ครั้งทั้งหมด</label>
+          <input id="times" type="number" inputmode="numeric" min="1" max="120" value="4">
+        </div>
+        <p class="hint" style="margin-top:10px">เดือนที่ไม่มีวันที่ที่เลือก (29/30/31) จะเลื่อนไปวันสิ้นเดือนแทน แล้วเดือนถัดไปกลับมาวันเดิม</p>
       </div>
-      <div class="field" id="endWrap" hidden>
-        <label for="end">สิ้นสุดเมื่อ</label>
-        <select id="end">
-          <option value="">ไม่มีจุดสิ้นสุด</option>
-          <option value="n">กำหนดจำนวนครั้ง</option>
-        </select>
-      </div>
-      <div class="field" id="timesWrap" hidden>
-        <label for="times">กี่ครั้งทั้งหมด</label>
-        <input id="times" type="number" inputmode="numeric" min="1" max="120" value="4">
-      </div>
-      <p class="hint" style="margin-top:10px">เดือนที่ไม่มีวันที่ที่เลือก (29/30/31) จะเลื่อนไปวันสิ้นเดือนแทน แล้วเดือนถัดไปกลับมาวันเดิม</p>
     </div>
 
     <div class="card">
@@ -294,7 +311,14 @@
     el.className = 'chip';
     el.style.background = '';
     el.style.color = '';
-    if (!b) { el.className = 'chip empty'; return; }
+    if (!b) {
+      // ไอคอนธนาคารจาก lucide (landmark) — placeholder ตอนยังไม่เลือก
+      el.className = 'chip empty';
+      var ph = document.createElement('img');
+      ph.src = BANK_PLACEHOLDER; ph.alt = '';
+      el.appendChild(ph);
+      return;
+    }
     var logo = b.k && BANK_LOGOS[b.k];
     if (logo) {
       el.className = 'chip' + (b.light ? ' light' : '');
@@ -362,7 +386,9 @@
       cur = i;
       open(false);
       btn.focus();
-      syncAcc();
+      paintChip($('bankChip'), null);
+  setWhen(true);
+  syncAcc();
       if (b.other) $('bankOther').focus();
     }
 
@@ -385,12 +411,13 @@
 
   function bankValue() {
     if (payMode === 'pp') {
-      var via = $('ppType').value === 'phone' ? 'เบอร์โทร' : 'เลขบัตรประชาชน';
-      return 'พร้อมเพย์ (' + via + ')' + (bankPick && !bankPick.other ? ' · ' + bankPick.name : '');
+      return 'พร้อมเพย์ (' + ($('ppType').value === 'phone' ? 'เบอร์โทร' : 'เลขบัตรประชาชน') + ')';
     }
     if (!bankPick) return '';
     return bankPick.other ? $('bankOther').value.trim() : bankPick.name;
   }
+  paintChip($('bankChip'), null);
+  setWhen(true);
   syncAcc();
 
   // ปลายทาง: กลุ่มขึ้นก่อน แล้วค่อยคน
@@ -441,6 +468,7 @@
   function syncAcc() {
     var r = accRule();
     $('accLabel').innerHTML = r.label + ' <span class="hint">การ์ดจะมีปุ่มก๊อปให้</span>';
+    $('accName').placeholder = payMode === 'pp' ? 'ชื่อที่ผูกพร้อมเพย์' : 'ชื่อเจ้าของบัญชี';
     $('acc').placeholder = r.mask ? r.mask.replace(/#/g, '0') : '0'.repeat(Math.min(r.len, 13));
     $('accHint').textContent = r.hint;
     $('acc').value = applyMask($('acc').value, r.mask, r.len);
@@ -515,13 +543,25 @@
     payMode = m;
     $('pBank').setAttribute('aria-pressed', String(m === 'bank'));
     $('pPP').setAttribute('aria-pressed', String(m === 'pp'));
+    // พร้อมเพย์ไม่ผูกกับธนาคารใดธนาคารหนึ่ง — ซ่อนตัวเลือกธนาคารไปเลย
+    $('bankWrap').hidden = m === 'pp';
     $('ppTypeWrap').hidden = m !== 'pp';
-    $('bankOpt').textContent = m === 'pp' ? 'ธนาคารที่ผูกไว้ — ไม่ใส่ก็ได้' : '';
+    paintChip($('bankChip'), null);
+  setWhen(true);
+  syncAcc();
     queueQr();
-    syncAcc();
   }
   $('pBank').onclick = function () { setPay('bank'); };
   $('pPP').onclick = function () { setPay('pp'); };
+
+  var sendNow = true;
+  function setWhen(now) {
+    sendNow = now;
+    $('wNow').setAttribute('aria-pressed', String(now));
+    $('wLater').setAttribute('aria-pressed', String(!now));
+    $('laterWrap').hidden = now;
+    $('go').textContent = now ? 'ส่งบิลเลย' : 'ตั้งเวลาส่ง';
+  }
 
   function syncRepeat() {
     var on = $('repeat').value !== '';
@@ -530,6 +570,8 @@
   }
   $('repeat').onchange = syncRepeat;
   $('end').onchange = syncRepeat;
+  $('wNow').onclick = function () { setWhen(true); };
+  $('wLater').onclick = function () { setWhen(false); };
 
   function say(text, kind) {
     var m = $('msg');
@@ -539,7 +581,7 @@
 
   $('f').onsubmit = function (e) {
     e.preventDefault();
-    var repeat = $('repeat').value;
+    var repeat = sendNow ? '' : $('repeat').value;
     var payload = {
       mode: mode,
       title: $('title').value,
@@ -549,7 +591,8 @@
       bank: bankValue(),
       accName: $('accName').value,
       acc: $('acc').value,
-      when: $('date').value + 'T' + ($('time').value || '').slice(0, 5),
+      sendNow: sendNow,
+      when: sendNow ? '' : $('date').value + 'T' + ($('time').value || '').slice(0, 5),
       repeat: repeat,
       times: !repeat ? 1 : ($('end').value === 'n' ? $('times').value : ''),
       note: $('note').value,
@@ -558,10 +601,10 @@
     if (!payload.to) return say('ยังไม่มีปลายทางให้เลือก — พิมพ์อะไรในกลุ่มหนึ่งครั้งก่อน', 'err');
     if (!payload.title.trim()) return say('ใส่ชื่อบิลด้วย', 'err');
     if ($('amount').value.trim() && !(payload.amount > 0)) return say('ยอดเงินต้องมากกว่า 0', 'err');
-    if (!$('date').value || !$('time').value) return say('เลือกวันและเวลาให้ครบ', 'err');
+    if (!sendNow && (!$('date').value || !$('time').value)) return say('เลือกวันและเวลาให้ครบ', 'err');
 
     $('go').disabled = true;
-    say('กำลังบันทึก…', 'ok');
+    say(sendNow ? 'กำลังส่ง…' : 'กำลังบันทึก…', 'ok');
     google.script.run
       .withSuccessHandler(function (r) {
         $('go').disabled = false;
