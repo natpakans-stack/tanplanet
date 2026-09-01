@@ -688,14 +688,214 @@
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">📈</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         AI Coach &middot; LINE + LIFF &middot; Zero-Knowledge
@@ -736,27 +936,27 @@
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#129513;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
         <h3>ข้อมูลพอร์ตกระจัดกระจาย</h3>
         <p>holdings, watchlist, กองทุน RMF, เป้าหมายเกษียณ — อยู่คนละที่ ไม่มีมุมมองรวมที่เห็น "ภาพพอร์ตทั้งใบ" ในหน้าจอเดียว</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128293;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg>
         <h3>อารมณ์พาไล่ของร้อน (FOMO)</h3>
         <p>เห็นหุ้นซิ่งทำ new high แล้วอยากกระโดดตาม — เข้าแบบไม่มีแผน ไม่มีจุด stop ที่กล้าผิด สุดท้ายเสี่ยงล้างพอร์ตมากกว่าได้กำไร</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#9200;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/><path d="M6.38 18.7 4 21"/><path d="M17.64 18.67 20 21"/></svg>
         <h3>ลืม DCA / ลืม stop</h3>
         <p>วินัยหลุดทันทีที่ไม่มีคนเตือน — เดือนนี้ลืมเติมพอร์ต, ราคาหลุดจุดตัดขาดทุนแล้วไม่รู้ตัว, ใกล้สิ้นปีเพิ่งนึกได้ว่ายังซื้อ RMF ไม่ถึงเป้า</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#129302;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
         <h3>chatbot ทั่วไปตอบลอย ๆ</h3>
         <p>ถาม AI เรื่องหุ้นได้ แต่มันไม่รู้ว่าเราถืออะไร งบเท่าไหร่ รับความเสี่ยงแค่ไหน — คำแนะนำเลยเป็นสูตรสำเร็จ ไม่เข้ากับพอร์ตจริง</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128274;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>ตัวเลขเงินอ่อนไหวมาก</h3>
         <p>อยากดู dashboard บนมือถือ/ส่งลิงก์ให้ตัวเองเปิดที่ไหนก็ได้ แต่ถ้า deploy ขึ้น cloud ตรง ๆ = มูลค่าพอร์ตจริงไปนอนอยู่บนเซิร์ฟเวอร์คนอื่น</p>
       </div>
@@ -773,27 +973,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#128241;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
         <h3>รวมทุกอย่างไว้ที่ LIFF dashboard เดียว</h3>
         <p>เปิดจาก LINE → เห็นจังหวะเข้าซื้อ (entry signal), เกจ North Star, สถานะ RMF, แผน DCA รายเดือน ครบในหน้าจอเดียว บนมือถือ</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#129504;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
         <h3>AI coach ที่รู้พอร์ตจริง</h3>
         <p>ก่อนตอบทุกครั้ง เสียบ context พอร์ต + ปรัชญา <code>Fear of Ruin &gt; FOMO</code> เข้า system prompt แล้วเปิด web search ดึงข้อมูลสด — ตอบตามงบ/ความเสี่ยงจริง ไม่เชียร์ลอย ๆ</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128276;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
         <h3>เตือนอัตโนมัติทุกเช้าใน LINE</h3>
         <p>DCA รายเดือน, RMF ควรสับ, ราคาหลุด stop / ถึงเป้าทำกำไร — ส่งเป็น Flex card ที่ <strong>สีหัวการ์ดสื่อระดับความเร่ง</strong> (ปกติ / มีจังหวะ / ด่วน)</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128273;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
         <h3>Zero-Knowledge — เข้ารหัสในเครื่อง</h3>
         <p>ตัวเลขจริงถูก encrypt ด้วย AES-256-GCM ในเบราว์เซอร์/เครื่องก่อนส่ง — cloud, relay, git เห็นแค่ ciphertext ถอดได้เฉพาะคนที่รู้ passphrase</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128421;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
         <h3>Mac = แหล่งความจริงเดียว</h3>
         <p>เครื่องส่วนตัวดึงราคาสด → คำนวณมูลค่า → เข้ารหัส → publish โซนราคาที่ sanitize แล้ว → git push เอง คีย์ไม่เคยออกจากเครื่อง</p>
       </div>
@@ -811,25 +1011,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#128200;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>
         <h4>ดึงราคาสด</h4>
         <p>Mac ดึงราคาหุ้น/FX (Yahoo) + ผลตอบแทนกองทุน (Finnomena) แบบ keyless</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#128273;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
         <h4>คำนวณ + เข้ารหัส</h4>
         <p>คิดมูลค่าพอร์ต + requiredCAGR → เข้ารหัส AES-256-GCM → publish โซน sanitized</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#9729;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
         <h4>push → deploy</h4>
         <p>git push → Vercel deploy · LIFF dashboard + serverless routines อ่านข้อมูลใหม่</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#128276;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
         <h4>เตือน / เปิดดู</h4>
         <p>LINE ส่ง Flex card เมื่อถึงเงื่อนไข · เปิด dashboard = ถอดรหัสในเครื่องด้วย passphrase</p>
       </div>
@@ -886,7 +1086,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมเลือก stack นี้?</strong>
       <p><strong>LINE + LIFF</strong> = แอปที่เปิดอยู่แล้วทุกวัน ไม่ต้องติดตั้งอะไรใหม่ &middot; <strong>Vercel Serverless</strong> — webhook/coach/relay เป็น stateless function เล็ก ๆ ไม่ต้องดูแลเซิร์ฟเวอร์ &middot; <strong>Web Crypto (AES-256-GCM + PBKDF2 250k)</strong> — เข้ารหัสได้ทั้งใน Node/Bun และในเบราว์เซอร์ด้วยโค้ดชุดเดียวกัน = zero-knowledge จริง &middot; <strong>Mac + launchd</strong> ทำหน้าที่เป็น source of truth ที่ถือคีย์ไว้ — cloud จึงไม่มีวันเห็นตัวเลขเงิน</p>
     </div>
@@ -902,42 +1102,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#129504;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
         <h3>AI Portfolio Coach</h3>
         <p>เสียบ context พอร์ต + North Star เข้า system prompt ก่อนตอบ + เปิด web search ดึงข้อมูลสด · มองภาพรวมพอร์ต ไม่ใช่หุ้นตัวเดียว</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127749;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
         <h3>Morning Brief Engine</h3>
         <p>ประกอบ Flex card ตาม "mood" — calm / warn / urgent — สีหัวการ์ด + แถบเตือนสื่อระดับความเร่งของ action</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127919;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         <h3>North Star Gauge</h3>
         <p>เกจเป้าหมายระยะยาว + pace tracker · คำนวณ requiredCAGR สดจากมูลค่าปัจจุบันด้วย bisection solver</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128273;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
         <h3>Zero-Knowledge Layer</h3>
         <p>AES-256-GCM + PBKDF2 250k · เข้ารหัส/ถอดรหัสด้วยโค้ดชุดเดียวทั้งฝั่งเครื่องและเบราว์เซอร์ · ปลดล็อกด้วย passphrase</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128221;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg>
         <h3>LINE Form + ZK Relay</h3>
         <p>พิมพ์ keyword → bubble → ฟอร์ม LIFF → เข้ารหัสในเบราว์เซอร์ → KV relay → Mac ดึงมาถอด · relay รับเฉพาะ ciphertext</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128225;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
         <h3>Watchlist Triggers</h3>
         <p>ดึงราคาสด (keyless) เทียบโซน entry / stop / trim · ยิงเตือนเฉพาะเมื่อแตะโซน + cooldown กันสแปมราย ticker</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128260;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
         <h3>RMF Switch Advisor</h3>
         <p>ดึงผลตอบแทน 1/3/5 ปีจาก Finnomena → ตัด verdict (ควรสับ / พิจารณา / โอเค) + เตือนซื้อให้ถึงเป้าโซนภาษีก่อนสิ้นปี</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128737;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
         <h3>Sanitized Publish Pipeline</h3>
         <p>publish เฉพาะโซนราคา + held-flag ให้ cloud อ่าน · มี self-check regex กันข้อมูล sensitive (จำนวนหุ้น/เงิน) หลุด</p>
       </div>
@@ -998,42 +1198,42 @@
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Zero-Knowledge">
-        <span class="emoji">&#128273;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
         <h3>อยากดู dashboard บน cloud แต่ห้าม cloud เห็นเงิน</h3>
         <p>deploy static ขึ้น Vercel = ใครเปิดลิงก์ก็เห็น ถ้าฝังตัวเลขจริงลงไฟล์ = มูลค่าพอร์ตหลุดทันที</p>
         <div class="highlight">แก้: เข้ารหัส payload ด้วย <code>AES-256-GCM + PBKDF2 250k</code> ในเครื่องก่อน แล้ว push เฉพาะ ciphertext · dashboard ถอดรหัสฝั่ง client ด้วย Web Crypto หลังผู้ใช้ใส่ passphrase — cloud ถือแต่ blob ที่อ่านไม่ออก</div>
       </div>
 
       <div class="hack-card arch" data-label="Serverless">
-        <span class="emoji">&#128274;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>LINE webhook verify signature ไม่ผ่าน</h3>
         <p>ต้อง verify <code>x-line-signature</code> จาก raw body — แต่ Vercel parse body เป็น object ให้ก่อน ทำให้ HMAC ที่คำนวณไม่ตรง เลย reject ของจริง</p>
         <div class="highlight">แก้: ปิด parser (<code>bodyParser: false</code>) แล้วอ่าน raw stream เอง → คำนวณ HMAC-SHA256 บน byte ดิบเป๊ะ ๆ ก่อนค่อย <code>JSON.parse</code> — signature จึงตรง กันคนยิง webhook ปลอมได้จริง</div>
       </div>
 
       <div class="hack-card devops" data-label="Automation">
-        <span class="emoji">&#128421;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
         <h3>เลขต้องสดทุกวัน แต่คีย์ห้ามออกจากเครื่อง</h3>
         <p>ถ้าให้ cloud คำนวณมูลค่า = ต้องเอาคีย์ขึ้น cloud (ขัดกับ zero-knowledge) แต่ถ้าไม่อัปเดต ตัวเลขก็ค้าง</p>
         <div class="highlight">แก้: ให้ Mac เป็น source of truth — <code>launchd</code> ปลุก Bun script ทุกเช้า ดึงราคา → คำนวณ → เข้ารหัส → git push เอง · คีย์อ่านจาก macOS Keychain ไม่เคยขึ้น cloud · git push กลายเป็น deploy pipeline</div>
       </div>
 
       <div class="hack-card platform" data-label="Data Privacy">
-        <span class="emoji">&#128200;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>
         <h3>cloud routine ต้องรู้ "โซนราคา" แต่ห้ามรู้ "จำนวนหุ้น/เงิน"</h3>
         <p>routine ฝั่ง cloud ต้องเทียบราคาสดกับ entry/stop เพื่อเตือน — แต่ข้อมูลพวกนั้นอยู่ปนกับจำนวนหุ้นและมูลค่าจริง</p>
         <div class="highlight">แก้: สร้าง <code>publish-levels</code> ที่คัดออกมาเฉพาะ ticker + โซน + held-flag ลง JSON สาธารณะ · มี <code>--check</code> รัน regex กันคำอย่าง share/cash/value/บาท หลุด — ผิดเมื่อไหร่ build fail</div>
       </div>
 
       <div class="hack-card ux" data-label="Anti-Spam">
-        <span class="emoji">&#128276;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
         <h3>เตือนซ้ำ ๆ ทุกวันจนน่ารำคาญ</h3>
         <p>ราคายังอยู่ใต้ stop หลายวันติด = ถ้ายิงทุกวันคนก็เลิกอ่าน · แถม Mac กับ cloud อาจเตือนเรื่องเดียวกันซ้อนกัน</p>
         <div class="highlight">แก้: cooldown ราย <code>ticker:kind</code> (เตือนแล้วเงียบ N วัน) + แบ่งหน้าที่ชัด — Mac ยิงเฉพาะ stop/trim ที่ safety-critical, cloud รับ entry nudge ไป กันเตือนซ้ำและกัน alert fatigue</div>
       </div>
 
       <div class="hack-card perf" data-label="Reliability">
-        <span class="emoji">&#9749;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>
         <h3>ดึงราคาพลาดตอนเครื่องเพิ่งตื่นจาก sleep</h3>
         <p>launchd ปลุกงานตอน Mac เพิ่งตื่น — บางครั้ง WiFi ยังไม่กลับมา ทำให้ fetch ราคาแรก ๆ ล้มเหลว แล้วงานทั้งรอบพัง</p>
         <div class="highlight">แก้: ห่อ fetch ด้วย retry 3 ครั้ง + หน่วง 4 วินาทีต่อรอบ (เผื่อเน็ตกลับ) · ทั้ง flow ออกแบบ best-effort — pull ไม่ได้ก็ update ต่อ, publish พลาดก็ไม่ล้มทั้งงาน — บทเรียน: งาน cron ต้องทน network ไม่พร้อม</div>

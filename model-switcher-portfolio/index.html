@@ -763,14 +763,214 @@
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">🔀</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         VS Code Extension &middot; Claude Code &middot; Bun
@@ -811,27 +1011,27 @@
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#9000;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg>
         <h3>พิมพ์ <code>/model</code> ทุกครั้งช้า + ต้องจำ flag</h3>
         <p>ชื่อ flag ไม่ตรงกับชื่อที่เห็น (<code>sonnet[1m]</code>, <code>fable</code>) แถมเปลี่ยนตามเวอร์ชัน Claude Code — จำผิดทีก็สลับพลาด ต้องพิมพ์ใหม่</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128200;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>
         <h3>โมเดลเยอะขึ้น เลยสลับบ่อย</h3>
         <p>Haiku / Sonnet / Sonnet 1M / Opus / Fable — งานเบาใช้ตัวถูก งานยากค่อยขยับขึ้น การสลับกลับไปมาเพื่อคุมงบต่อคุณภาพเลยเกิดหลายครั้งต่อ session</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#9000;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg>
         <h3>อยากสลับจากหน้าจอแยก ไม่แย่งพื้นที่พิมพ์</h3>
         <p>การพิมพ์คำสั่งกลาง prompt ทำให้เสียโฟลว์ — อยากมีปุ่มอยู่ "นอก" TUI ที่กดแล้วสลับได้เลยโดยไม่ต้องละมือจากบทสนทนา</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128421;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
         <h3>ไม่เห็นสถานะเป็นภาพ</h3>
         <p>โมเดลไหนกำลังติดอยู่? context ใกล้เต็มหรือยัง? ทุกอย่างเป็นตัวหนังสือ — อยากได้ readout แบบหน้าปัดรถที่กวาดตาแล้วรู้ทันที</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128266;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>
         <h3>เสียงแจ้งงานเสร็จปิดยากตอนประชุม</h3>
         <p>ตั้งเสียงแจ้งเวลา task เสร็จไว้ให้รู้ตัว แต่พอเข้าประชุมต้องรีบปิด — ถ้าต้องไปไล่แก้ config หรือ restart claude ก็ไม่ทันการณ์</p>
       </div>
@@ -848,27 +1048,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#9881;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
         <h3>คันเกียร์ H-pattern บน panel แยก</h3>
         <p>Panel ในแถบข้าง (activity bar) หน้าตาเหมือนคันเกียร์รถ 6 ตำแหน่ง — ลาก knob หรือคลิกป้ายเพื่อสลับโมเดลทันที ไม่ขัดจังหวะการพิมพ์ prompt</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128228;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
         <h3>ยิง <code>/model</code> เข้า terminal ตรงๆ</h3>
         <p>Claude Code ไม่มี API ให้สลับจากภายนอก — ปุ่มเลยยิง <code>terminal.sendText("/model opus")</code> เข้า integrated terminal ที่ claude รันอยู่ (surface web ใช้ <code>tmux send-keys</code>)</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128421;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
         <h3>สื่อสารสถานะเป็นภาพ</h3>
         <p>เกียร์ที่ติด + VU meter (ความแรงโมเดล) + เกจ context แบบหน้าปัดน้ำมัน E&rarr;F — กวาดตาแล้วรู้ทันทีว่าโมเดลไหนอยู่ และ context ใกล้เต็มหรือยัง</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128260;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
         <h3>Sync โมเดลจริงจาก transcript</h3>
         <p>Poll ไฟล์ session <code>*.jsonl</code> อ่าน <code>message.model</code> จริง แล้วเลื่อนเกียร์ไปตำแหน่งนั้นแบบเงียบ — เผื่อผู้ใช้พิมพ์ <code>/model</code> เอง UI จะไม่หลุด sync</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128263;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
         <h3>สวิตช์ mute เสียงจากจุดเดียว</h3>
         <p>กดสวิตช์ = <code>touch</code>/<code>rm</code> ไฟล์ flag <code>.tts-muted</code> ที่ TTS hooks เช็ค — เงียบ/ดังทั้งชุดทันที ไม่ต้อง restart claude ปิดทันประชุม</p>
       </div>
@@ -886,25 +1086,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#9881;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
         <h4>เปิด panel</h4>
         <p>คลิกไอคอนเกียร์ใน activity bar → panel คันเกียร์ H-pattern โผล่ในแถบข้าง</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#128228;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
         <h4>โยกเกียร์</h4>
         <p>ลาก knob / คลิกป้าย → <code>sendText("/model opus")</code> ยิงเข้า terminal + เสียง ka-chunk</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#128260;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
         <h4>Panel sync</h4>
         <p>Poll transcript ทุก 5 วิ อ่านโมเดลจริง + tokens → เลื่อนเกียร์ + ขยับเกจ context</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#128263;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
         <h4>กดสวิตช์เสียง</h4>
         <p>touch/rm <code>.tts-muted</code> → เสียงแจ้งงานเสร็จเงียบ/ดังทันที ไม่ต้อง restart</p>
       </div>
@@ -961,7 +1161,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมเลือก stack นี้?</strong>
       <p><strong>VS Code Extension API</strong> = ปุ่มอยู่ "นอก" TUI ได้จริง แล้ว <code>sendText</code> ยิง <code>/model</code> เข้า integrated terminal โดยไม่ต้องพึ่ง API ที่ Claude Code ไม่มี &middot; <strong>Bun.serve + tmux</strong> เป็น surface สำรองสำหรับคนใช้ terminal เปล่า &mdash; native, ไม่ต้อง express &middot; <strong>Flag file</strong> (<code>.tts-muted</code>) ให้ mute ทั้งชุด hooks จากจุดเดียวโดยไม่ต้อง restart &middot; <strong>Vanilla JS ล้วน + zero npm dependency</strong> &mdash; ดีไซเนอร์แก้ UI ใน 1 ไฟล์ได้ ไม่มี build step</p>
     </div>
@@ -977,42 +1177,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#9881;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
         <h3>H-Pattern Gear Shifter</h3>
         <p>คันเกียร์ 6 ตำแหน่ง (1–5 + R) ลาก knob แล้ว snap ไปเกียร์ที่ใกล้สุด หรือคลิกป้ายตรงๆ — feel เหมือนโยกเกียร์รถจริง</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128228;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
         <h3>Model Switcher</h3>
         <p>ยิง <code>sendText("/model &lt;name&gt;")</code> เข้า integrated terminal (surface B ใช้ <code>tmux send-keys</code>) — สลับโมเดลโดยไม่ต้องพิมพ์เอง</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128260;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
         <h3>Real-Model Sync</h3>
         <p>Poll <code>*.jsonl</code> ทุก 5 วิ อ่าน <code>message.model</code> จริง → เลื่อนเกียร์เงียบ ๆ ให้ตรงสถานะ กัน UI หลุด sync</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#9981;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"/><path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"/><path d="M2 21h13"/><path d="M3 9h11"/></svg>
         <h3>Context Gauge</h3>
         <p>หน้าปัดน้ำมัน E&rarr;F คิดจาก <code>input + cache_read + cache_creation</code> ของ message ล่าสุด เทียบหน้าต่าง 200K</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128202;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
         <h3>VU Meter</h3>
         <p>ช่องไฟบอกความ "แรง" ของโมเดลตามค่า rpm ที่ map ไว้ในแต่ละเกียร์ — สื่อสารว่ากำลังใช้ตัวเบาหรือตัวหนัก</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128264;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/></svg>
         <h3>Ka-chunk Sound</h3>
         <p>เสียงคลิกตอนเข้าเกียร์สร้างสดจาก Web Audio (<code>clack()</code>) — ไม่มีไฟล์เสียง เป็น feel ของคันเกียร์</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127908;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg>
         <h3>เสียงแจ้งงานเสร็จ 17 บุคลิก</h3>
         <p>Stop hook สุ่ม 1 ใน 17 บุคลิกทุกครั้งที่ task เสร็จ (ผู้ประกาศข่าว / หุ่นยนต์ / บัตเลอร์ ฯลฯ) ผ่าน TTS + fallback <code>say</code></p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128263;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
         <h3>Mute Switch</h3>
         <p>สวิตช์ใน panel touch/rm ไฟล์ <code>.tts-muted</code> ที่ hooks เช็ค — ปิด/เปิดเสียงทั้งชุดทันที ไม่ต้อง restart claude</p>
       </div>
@@ -1069,42 +1269,42 @@
 
     <div class="hack-grid">
       <div class="hack-card arch" data-label="No API">
-        <span class="emoji">&#128228;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
         <h3>Claude Code ไม่มี API ให้สลับโมเดลจากภายนอก</h3>
         <p>อยากมีปุ่มสลับโมเดล แต่ไม่มี endpoint / SDK ให้เรียก — จะสั่งจากหน้าจอแยกได้ยังไง</p>
         <div class="highlight">แก้: ปุ่มอยู่ "นอก" TUI แล้วยิง <code>/model &lt;name&gt; + Enter</code> เข้า terminal ที่ claude รันอยู่ — surface หลักใช้ <code>activeTerminal.sendText()</code> ของ VS Code (ไม่ต้อง tmux), surface สำรองใช้ <code>tmux send-keys</code> รับคนที่ใช้ terminal เปล่า</div>
       </div>
 
       <div class="hack-card precision" data-label="Injection">
-        <span class="emoji">&#128737;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
         <h3>ชื่อโมเดลยิงเข้า shell/terminal เสี่ยง injection</h3>
         <p>ค่าที่เอาไปต่อเป็นคำสั่ง <code>send-keys</code> / <code>sendText</code> ถ้าไม่ตรวจก่อน อาจถูกยัดคำสั่งอื่นแฝงมา</p>
         <div class="highlight">แก้: whitelist ด้วย regex <code>^[\w\[\]-]+$</code> ก่อนส่งทุกครั้ง (ทั้ง 2 surface) — ผ่านเฉพาะ a–z 0–9 <code>[</code> <code>]</code> <code>-</code> + ฝั่ง web ใช้ <code>Bun.$</code> interpolation ที่ escape ให้อัตโนมัติ ส่งเป็น arg เดียว</div>
       </div>
 
       <div class="hack-card platform" data-label="One-way Sync">
-        <span class="emoji">&#128260;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
         <h3>UI เป็น one-way — ไม่รู้โมเดลจริง</h3>
         <p>สั่งโมเดลได้ แต่ถ้าผู้ใช้พิมพ์ <code>/model</code> เองในบทสนทนา เกียร์บน panel จะหลุด sync กับของจริง</p>
         <div class="highlight">แก้: poll ท้ายไฟล์ 128KB ของ <code>*.jsonl</code> ที่ mtime ใหม่สุดทุก 5 วิ อ่าน <code>message.model</code> → เลื่อนเกียร์เงียบ ๆ (ไม่ยิง <code>/model</code> ซ้ำ ไม่มีเสียง) + หลังสับเกียร์เองพัก sync 30 วิ กัน transcript ที่ยังไม่อัปเดตดึงเกียร์กลับ</div>
       </div>
 
       <div class="hack-card ux" data-label="Feel">
-        <span class="emoji">&#9881;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
         <h3>คันเกียร์ต้องรู้สึกเหมือนของจริง</h3>
         <p>ถ้าเป็นแค่ปุ่มธรรมดา ก็ไม่ต่างจาก <code>/model</code> picker เดิม — ต้องมี "feel" ของการโยกเกียร์</p>
         <div class="highlight">แก้: knob ลากด้วยเมาส์แล้ว snap ไปเกียร์ที่ระยะใกล้สุด (<code>(g.x-px)&sup2;+(g.y-py)&sup2;</code>) + เสียง ka-chunk สร้างสดจาก Web Audio ตอนเข้าเกียร์ — visual layer ทับ logic เดิมโดยไม่แตะกลไกส่งคำสั่ง</div>
       </div>
 
       <div class="hack-card devops" data-label="Mute">
-        <span class="emoji">&#128263;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
         <h3>เสียงต้องปิดได้เร็ว โดยไม่ restart</h3>
         <p>เสียงแจ้งงานเสร็จมาจาก hooks หลายตัวที่รันแยกกัน — จะปิดทั้งชุดตอนประชุมให้ทันได้ยังไง</p>
         <div class="highlight">แก้: ทุก hook source <code>tts-lib.sh</code> ร่วมกัน แล้วใส่ guard <code>[ -f ~/.claude/hooks/.tts-muted ] &amp;&amp; return 0</code> ที่หัวฟังก์ชันพูด — สวิตช์แค่ touch/rm ไฟล์ flag = เงียบ/ดังทั้งชุดทันที ไม่ต้อง restart claude</div>
       </div>
 
       <div class="hack-card perf" data-label="Cost / Cache">
-        <span class="emoji">&#127908;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg>
         <h3>TTS ยิง API ทุกครั้งแพงและช้า</h3>
         <p>ถ้า gen เสียงใหม่ทุกครั้งที่งานเสร็จ ก็เปลืองเงิน + ต้องต่อเน็ต + หน่วง แถมแต่ละบุคลิกดังไม่เท่ากัน</p>
         <div class="highlight">แก้: cache แยกต่อบุคลิก hash = <code>md5(voice+instructions+text)</code> — มีไฟล์แล้ว <code>afplay</code> เลย (ยิง API 0 ครั้ง, $0), ไม่มีค่อย gen 1 ครั้งแล้วเซฟ + normalize ทุกเสียงด้วย <code>ffmpeg loudnorm</code> ไป <strong>-16 LUFS</strong> ให้ดังเท่ากัน (ไม่มี ffmpeg ก็ข้าม ไม่พัง)</div>

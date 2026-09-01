@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plikplan Internal — แพลตฟอร์มบริหารงานภายในทีม (Next.js 16 · Supabase · Serverless)</title>
+  <title>แพลตฟอร์มบริหารงานภายในทีม — บอร์ด ปฏิทิน ลูกค้า เอกสาร และโน้ตประชุม AI</title>
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Plikplan Internal — แพลตฟอร์มบริหารงานภายในทีม">
+  <meta name="twitter:title" content="แพลตฟอร์มบริหารงานภายในทีม — บอร์ด ปฏิทิน ลูกค้า เอกสาร และโน้ตประชุม AI">
   <meta name="twitter:description" content="Portfolio: แพลตฟอร์มภายใน — Kanban board, ปฏิทิน, CRM, ใบเสนอราคา/เบิกจ่าย, โน้ตประชุม AI — Next.js 16 + Supabase (RLS) + serverless cron ไม่มี host รัน 24/7">
-  <meta property="og:url" content="https://projects.tanplanet.info/plikplan-internal-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.info/team-platform-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/plikplan-internal-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.info/team-platform-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: แพลตฟอร์มภายใน — Kanban board, ปฏิทิน, CRM, ใบเสนอราคา/เบิกจ่าย, โน้ตประชุม AI — Next.js 16 + Supabase (RLS) + serverless cron ไม่มี host รัน 24/7">
-  <meta property="og:title" content="Plikplan Internal — แพลตฟอร์มบริหารงานภายในทีม">
+  <meta property="og:title" content="แพลตฟอร์มบริหารงานภายในทีม — บอร์ด ปฏิทิน ลูกค้า เอกสาร และโน้ตประชุม AI">
   <meta name="description" content="Portfolio: แพลตฟอร์มภายใน — Kanban board, ปฏิทิน, CRM, ใบเสนอราคา/เบิกจ่าย, โน้ตประชุม AI — Next.js 16 + Supabase (RLS) + serverless cron ไม่มี host รัน 24/7">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%231e3a8a'/><text x='50' y='62' text-anchor='middle' font-size='54'>🗂️</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -699,19 +699,219 @@
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">🗂️</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2.5a1 1 0 0 1-.8-.4l-.9-1.2A1 1 0 0 0 15 3h-2a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M20 21a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-2.9a1 1 0 0 1-.88-.55l-.42-.85a1 1 0 0 0-.92-.6H13a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M3 5a2 2 0 0 0 2 2h3"/><path d="M3 3v13a2 2 0 0 0 2 2h3"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         Internal Platform &middot; Next.js 16 &middot; Supabase &middot; Serverless
       </div>
-      <h1>Plikplan Internal<br><span class="accent">แพลตฟอร์มบริหารงานภายในทีม — บอร์ด ปฏิทิน ลูกค้า เอกสาร และโน้ตประชุม AI ในที่เดียว</span></h1>
+      <h1>แพลตฟอร์มบริหารงานภายในทีม<br><span class="accent">บอร์ด ปฏิทิน ลูกค้า เอกสาร และโน้ตประชุม AI</span></h1>
       <p>เครื่องมือภายในของทีม ที่รวม Kanban board, ปฏิทิน, CRM ลูกค้า, ใบเสนอราคา/เบิกจ่าย และโน้ตประชุม AI ไว้ในแอปเดียว — สร้างบน Next.js 16 + Supabase (RLS) และขับ automation ด้วย serverless cron ล้วน <code>ไม่มี host รัน 24/7</code> ออกแบบ multi-tenant ตั้งแต่ migration แรกเพื่อต่อยอดเป็น product</p>
       <div class="hero-tags">
         <span class="hero-tag">Next.js 16</span>
@@ -743,32 +943,32 @@
 
     <div class="quote-block">
       <p>งานทีมกระจายอยู่คนละที่ — คิวงานคุยกันใน chat, นัดประชุมอยู่ในปฏิทินส่วนตัว, ข้อมูลลูกค้าอยู่ในสเปรดชีต, สรุปประชุมทำมือทุกครั้ง ไม่มีจุดเดียวที่เห็นภาพรวมว่าใครทำอะไรถึงไหน งานเลยตกหล่น ตามยาก และซ้ำซ้อน</p>
-      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ Plikplan Internal</div>
+      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ แพลตฟอร์มภายในทีม</div>
     </div>
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#129513;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
         <h3>งานกระจายหลายเครื่องมือ ไม่มี single source of truth</h3>
         <p>บอร์ดงานอยู่ใน chat, นัดอยู่ในปฏิทินส่วนตัว, ลูกค้าอยู่ในชีต — จะรู้ว่างานลูกค้ารายหนึ่งถึงไหนต้องเปิดหลายที่ประกอบเอง</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#129302;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
         <h3>บอทแจ้งเตือนต้องเปิดเครื่องรัน 24/7</h3>
         <p>ระบบเตือนงาน/ประชุมแบบเดิมต้องมี process ค้างตลอดเวลา — เปลือง host, ล่มแล้วเงียบไม่มีใครรู้ ดูแลลำบาก</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128221;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg>
         <h3>สรุปประชุมทำมือทุกครั้ง</h3>
         <p>ทีมอัดเสียงประชุมไว้ แต่กว่าจะมีคนมานั่งฟังย้อน ถอด แล้วสรุปเป็นบันทึก เสียเวลามาก และคุณภาพไม่คงที่ในแต่ละครั้ง</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#129534;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 16H8"/><path d="M14 8H8"/><path d="M16 12H8"/><path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"/></svg>
         <h3>ใบเสนอราคา/เบิกจ่ายทำมือ ไม่มี flow อนุมัติ</h3>
         <p>เอกสารทำในไฟล์แยก ไล่ถามกันเองว่าใครอนุมัติ เวอร์ชันปนกัน ไม่มีสถานะชัดว่าอันไหนร่าง อันไหนอนุมัติแล้ว</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#127970;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg>
         <h3>อยากต่อยอดขายลูกค้า แต่ระบบผูกกับบริษัทเดียว</h3>
         <p>ถ้าสร้างเป็นเครื่องมือใช้ภายในตรงๆ โดยไม่คิดเผื่อหลายองค์กร วันหนึ่งจะเอาไปขายลูกค้าต้องรื้อ data model ใหม่ทั้งหมด</p>
       </div>
@@ -785,27 +985,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#128202;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
         <h3>รวมทุกงานไว้แพลตฟอร์มเดียว</h3>
         <p>บอร์ด, ปฏิทิน, CRM ลูกค้า, เอกสาร และโน้ตประชุม ใช้ข้อมูลชุดเดียวกัน — เปิดหน้าเดียวเห็นว่างานลูกค้าแต่ละรายถึงไหน ใครถือ</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#9729;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
         <h3>ทิ้ง host 24/7 เปลี่ยนเป็น serverless cron</h3>
         <p>GitHub Actions ยิง <code>/api/cron/*</code> บน Vercel ทุก 30 นาที — งานเตือน/แจ้งเป็น tick แบบ stateless ไม่มี process ค้าง RAM ไม่มีเครื่องต้องเลี้ยง</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#127908;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg>
         <h3>pipeline โน้ตประชุมอัตโนมัติ</h3>
         <p>วางลิงก์ไฟล์อัดเสียงประชุม → ระบบ cook เสียงรายคน → ถอด → สรุปเป็น brief มีโครงสร้าง (การตัดสินใจ/สิ่งที่ต้องทำ/ความเสี่ยง) + คะแนนความครบถ้วน</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#9989;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
         <h3>เอกสารมี flow อนุมัติจริง</h3>
         <p>ใบเสนอราคา/เบิกจ่าย เดินสถานะ ร่าง &rarr; รออนุมัติ &rarr; อนุมัติ/ปฏิเสธ ตาม role ผู้ใช้ พร้อมออก PDF ภาษาไทย และคลังลายเซ็น</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#129521;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect x="14" y="2" width="8" height="8" rx="1"/></svg>
         <h3>ออกแบบ multi-tenant ตั้งแต่ migration แรก</h3>
         <p>ทุกตารางมี <code>org_id</code> + Row Level Security กันข้ามองค์กรตั้งแต่วันแรก — v1 รันบริษัทเดียว แต่พร้อมกลายเป็น product ขายลูกค้าโดยไม่ต้องรื้อ</p>
       </div>
@@ -823,25 +1023,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#128451;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
         <h4>ทีมทำงานบนแพลตฟอร์ม</h4>
         <p>ลากการ์ดบนบอร์ด ตั้งนัดในปฏิทิน วางลิงก์ไฟล์อัดประชุม</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#9201;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
         <h4>Cron tick ทุก 30 นาที</h4>
         <p>GitHub Actions ยิง <code>/api/cron/*</code> บน Vercel — ไม่มี host ค้าง</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#9881;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
         <h4>ประมวลผลเป็นชุด</h4>
         <p>เตือนงานใกล้ครบ/เลยกำหนด, sync Google, cook + ถอดเสียงประชุม</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#128227;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14"/><path d="M8 6v8"/></svg>
         <h4>ส่งออกอัตโนมัติ</h4>
         <p>แจ้ง Discord/อีเมล + สรุปภาพรวมรายสัปดาห์ทุกเช้าจันทร์</p>
       </div>
@@ -900,7 +1100,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมเลือก stack นี้?</strong>
       <p><strong>Next.js 16 (App Router) + Server Actions</strong> — เขียน mutation ฝั่ง server ได้ตรงๆ ไม่ต้องปั้น REST เอง &middot; <strong>Supabase + RLS</strong> ให้ auth, realtime และความปลอดภัยระดับแถวมาในตัว — บังคับ multi-tenant ที่ชั้นฐานข้อมูล &middot; <strong>Bun workspaces monorepo</strong> — <code>packages/shared</code> เป็นแหล่งเดียวของ domain vocabulary + query builders ใช้ร่วมกันระหว่างเว็บกับ cron &middot; <strong>Serverless cron (GitHub Actions &rarr; Vercel)</strong> แทนบอทที่ต้องรัน 24/7 — stateless, ไม่มีเครื่องต้องเลี้ยง</p>
     </div>
@@ -916,42 +1116,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#128203;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
         <h3>Kanban Board</h3>
         <p>ลากจัดคิว 5 คอลัมน์ + sync realtime + ระดับความสำคัญ (สูง/กลาง/ต่ำ) + มอบหมายหลายคนต่อการ์ด</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128197;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
         <h3>ปฏิทินทีม</h3>
         <p>มุมมองเดือน/สัปดาห์ + งานประจำ (recurrence) + ผูกลิงก์ห้อง Discord ของแต่ละนัด</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128101;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
         <h3>CRM ลูกค้า</h3>
         <p>จัดสถานะ มุ่งหวัง/ประจำ/พัก แยกนิติบุคคล-บุคคล + ผูกช่อง Discord ต่อลูกค้าแต่ละราย</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128220;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
         <h3>ใบเสนอราคา</h3>
         <p>เดินสถานะ ร่าง&rarr;รอตอบรับ&rarr;ตอบรับ + ออก PDF ภาษาไทย + คลังลายเซ็นแนบท้าย</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128181;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
         <h3>เบิกจ่าย</h3>
         <p>แยกประเภทค่าใช้จ่าย + เติมอัตราหัก ณ ที่จ่ายอัตโนมัติ + flow อนุมัติตาม role ผู้ใช้</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127908;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg>
         <h3>โน้ตประชุม AI</h3>
         <p>ลิงก์ไฟล์อัด &rarr; ถอดเสียงรายคน &rarr; brief มีโครงสร้าง (ตัดสินใจ/สิ่งที่ต้องทำ/ความเสี่ยง) + คะแนนความครบ</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128276;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
         <h3>แจ้งเตือน Serverless</h3>
         <p>เตือน Discord/อีเมลงานใกล้ครบ &amp; เลยกำหนด + สรุปภาพรวมรายสัปดาห์ ขับด้วย cron ไม่มี host</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128260;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
         <h3>Sync Google Calendar</h3>
         <p>เชื่อม OAuth สองทาง นัดในแอป &harr; Google + activity log ทุกการเปลี่ยนแปลง + changelog "มีอะไรใหม่"</p>
       </div>
@@ -1021,42 +1221,42 @@
 
     <div class="hack-grid">
       <div class="hack-card arch" data-label="Serverless">
-        <span class="emoji">&#127785;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16.326A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 .5 8.973"/><path d="m13 12-3 5h4l-3 5"/></svg>
         <h3>ฆ่าบอทที่ต้องรัน 24/7</h3>
         <p>ระบบเตือน/แจ้งเดิมต้องมี process ค้างตลอด — เปลือง host และล่มเงียบ อยากได้ automation ที่ไม่มีเครื่องต้องเลี้ยง</p>
         <div class="highlight">แก้: cron tick เดียวทุก 30 นาที (GitHub Actions) ขับ 2 งานใน job เดียว (repo ส่วนตัว = Actions minutes มีค่าใช้จ่าย จึงไม่แตกหลาย workflow) — digest รายสัปดาห์ self-gate ด้วยการเช็คว่าเป็น tick เช้าจันทร์ (08:00–08:29 เขตไทย) ในโค้ด route เอง</div>
       </div>
 
       <div class="hack-card platform" data-label="Recording API">
-        <span class="emoji">&#127908;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg>
         <h3>ถอดประชุมจากลิงก์อัดที่ไม่มี public API</h3>
         <p>ไฟล์อัดประชุมอยู่บนบริการภายนอกที่ไม่เปิด API ทางการ — และ serverless function ลง ffmpeg ไม่ได้ ทำ audio processing หนักๆ ไม่ได้</p>
         <div class="highlight">แก้: reverse-engineer endpoint จากหน้าดาวน์โหลด (metadata &rarr; สั่ง cook &rarr; poll &rarr; ดึง zip) ให้ฝั่งบริการ cook เสียงรายคนเป็น AAC ให้ แล้ว unzip ใน memory ด้วย <code>fflate</code> — ไม่ต้องพึ่ง ffmpeg เลย รันบน serverless ได้</div>
       </div>
 
       <div class="hack-card precision" data-label="AI Grounding">
-        <span class="emoji">&#129504;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
         <h3>กัน AI มโนชื่อลูกค้า/ข้อสรุป</h3>
         <p>ให้ LLM สรุปประชุมดิบๆ มันเดาชื่อลูกค้าและ project ที่ไม่มีจริง — สรุปสวยแต่เชื่อไม่ได้</p>
         <div class="highlight">แก้: ฉีด context ของบอร์ดจริง (รายชื่อลูกค้า + การ์ดที่มีกำหนด) เข้าไปใน prompt ให้ model ground กับข้อมูลจริง + บังคับ JSON output มีโครงสร้าง &middot; ส่วน "Next Actions" ไม่ให้ AI ทำ แต่ roll up จากการ์ดที่มี due date ตรงๆ (factual ไม่ใช่ generative)</div>
       </div>
 
       <div class="hack-card perf" data-label="Realtime">
-        <span class="emoji">&#9889;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
         <h3>ลากการ์ดแล้วต้องไม่กระตุก/ชนกัน</h3>
         <p>บอร์ดหลายคนใช้พร้อมกัน — ลากการ์ดแล้วรอ round-trip ถึงขยับ = หน่วง และถ้าสองคนขยับพร้อมกันลำดับพัง</p>
         <div class="highlight">แก้: optimistic update ขยับการ์ดในจอทันที แล้วค่อย reconcile กับ Supabase Realtime ที่ broadcast การเปลี่ยนแปลงให้ทุก client — ลำดับ (position) คำนวณจาก weight ของ priority + ordering ในคอลัมน์ ให้ผลตรงกันทุกเครื่อง</div>
       </div>
 
       <div class="hack-card devops" data-label="Discord REST">
-        <span class="emoji">&#128225;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
         <h3>ยิง Discord จาก serverless โดยไม่มี gateway</h3>
         <p><code>discord.js</code> ปกติต้องเปิด gateway (websocket ค้าง) — ขัดกับโมเดล serverless ที่ function จบแล้วดับ</p>
         <div class="highlight">แก้: โพสต์ embed ผ่าน Discord REST v10 ตรงๆ (<code>POST /channels/:id/messages</code>) ไม่พึ่ง discord.js เลย รันจาก cron ได้สบาย + ออกแบบให้ fail soft (log ไม่ throw) ช่องเดียวพังไม่ล้มทั้ง batch</div>
       </div>
 
       <div class="hack-card ux" data-label="Multi-tenant">
-        <span class="emoji">&#127970;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg>
         <h3>เครื่องมือภายในที่พร้อมกลายเป็น product</h3>
         <p>ถ้าสร้างแบบผูกบริษัทเดียว วันหนึ่งจะขายลูกค้าต้องรื้อ data model — แต่ทำ multi-tenant เต็มรูปตั้งแต่แรกก็ over-engineer สำหรับ v1</p>
         <div class="highlight">แก้: ใส่ <code>org_id</code> + Row Level Security ทุกตารางตั้งแต่ migration ต้นๆ (v1 รัน org เดียว) — schema ค่อยๆ โตแบบ incremental ผ่าน migration หลายสิบไฟล์ ไม่ big-bang จึงพร้อมขยายเป็นหลายองค์กรโดยไม่ต้องรื้อ</div>
@@ -1073,7 +1273,7 @@
     </section>
 
     <div class="quote-block" style="margin-bottom: 24px;">
-      <p>Plikplan Internal จงใจไม่พยายามเป็นทุกอย่าง — ไม่ทำห้องประชุมเอง (ใช้ Discord voice แอปแค่แจ้งเตือน/ลิงก์), ไม่มี host รัน 24/7 (serverless ล้วน), ไม่สร้าง design system ใหม่ (reuse จาก Plikplan Hub) ขอบเขตที่คมทำให้ implement ตรงและ maintain ง่าย</p>
+      <p>แพลตฟอร์มภายในทีม จงใจไม่พยายามเป็นทุกอย่าง — ไม่ทำห้องประชุมเอง (ใช้ Discord voice แอปแค่แจ้งเตือน/ลิงก์), ไม่มี host รัน 24/7 (serverless ล้วน), ไม่สร้าง design system ใหม่ (reuse จาก แพลตฟอร์มภายในทีม Hub) ขอบเขตที่คมทำให้ implement ตรงและ maintain ง่าย</p>
     </div>
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
@@ -1090,7 +1290,7 @@
       <div class="learning-card" style="text-align:center; padding:20px;">
         <strong style="font-size:1.5rem;">&#127912;</strong><br>
         <strong>ไม่สร้าง design system ใหม่</strong>
-        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">reuse tokens/ฟอนต์/คอมโพเนนต์จาก Plikplan Hub</p>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">reuse tokens/ฟอนต์/คอมโพเนนต์จาก แพลตฟอร์มภายในทีม Hub</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
         <strong style="font-size:1.5rem;">&#127970;</strong><br>
@@ -1156,7 +1356,7 @@
     <div class="mascot-half">
       <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
     </div>
-    <h2>Plikplan Internal</h2>
+    <h2>แพลตฟอร์มภายในทีม</h2>
     <p>แพลตฟอร์มบริหารงานภายในทีม ที่รวมบอร์ด ปฏิทิน CRM เอกสาร และโน้ตประชุม AI ไว้ในที่เดียว — สร้างบน Next.js 16 + Supabase ขับ automation ด้วย serverless cron ล้วน ไม่มี host รัน 24/7 และออกแบบ multi-tenant ตั้งแต่ migration แรกเพื่อต่อยอดเป็น product</p>
     <div class="stack-icons">
       <span class="stack-icon">Next.js 16</span>
@@ -1203,8 +1403,8 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Plikplan Internal Portfolio",
-      "item": "https://projects.tanplanet.info/plikplan-internal-portfolio/"
+      "name": "แพลตฟอร์มภายในทีม Portfolio",
+      "item": "https://projects.tanplanet.info/team-platform-portfolio/"
     }
   ]
 }

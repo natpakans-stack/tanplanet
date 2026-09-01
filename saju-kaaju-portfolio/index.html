@@ -835,14 +835,214 @@
       .ui-decisions { grid-template-columns: 1fr; }
       .ui-swatches { gap: 8px; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">🔮</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 3 8 9l4 13 4-13-2.5-6"/><path d="M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z"/><path d="M2 9h20"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         Next.js 15 &middot; Supabase &middot; Korean Saju Engine
@@ -883,27 +1083,27 @@
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#128561;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10V9"/><path d="M9 10V9"/><path d="M9 16a5 5 0 016 0"/><circle cx="12" cy="12" r="10"/></svg>
         <h3>ดูดวงออนไลน์ส่วนใหญ่ "ฟันธง" + ขายความกลัว</h3>
         <p>บอกว่าลื้อจะเป็นอย่างนี้แน่ ๆ แล้วปิดท้ายด้วยของมงคลให้ซื้อ — ไม่เหลือทางเลือกให้คนฟัง ไม่ได้ช่วยให้เข้าใจตัวเองจริง ๆ</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128207;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg>
         <h3>คำนวณสาจูเกาหลีให้แม่นระดับนาที ยากมาก</h3>
         <p>ต้องรู้จัก <code>입춘</code>/<code>절기</code> boundary, แก้ <code>진태양시</code> ตาม longitude, แยก <code>야자시</code>/<code>조자시</code> — พลาดนาทีเดียวเสาวัน/เสาชั่วโมงเปลี่ยน</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#129302;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
         <h3>ให้ AI คำนวณดวงเอง = มโนเลข</h3>
         <p>โมเดลภาษาไม่ใช่เครื่องคิดเลขดาราศาสตร์ — ถามว่าเสาชั่วโมงคืออะไร มันเดา (hallucinate) ตอบผิดแบบมั่นใจ เชื่อไม่ได้เลย</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128220;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
         <h3>ศัพท์ 오행 / 십신 / 격국 คนทั่วไปอ่านไม่รู้เรื่อง</h3>
         <p>ผลลัพธ์ของศาสตร์เป็นฮันจา/เกาหลีล้วน — ต่อให้คำนวณถูก ถ้าเล่าไม่เป็นภาษาคน คนก็ไม่ได้อะไรกลับไป</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128179;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
         <h3>ต้องมี auth จริง + โควตา + จ่ายเงิน โดยกันโกง</h3>
         <p>ไม่ใช่แค่หน้า demo — ต้อง login จริง, นับโควตาคำถามแบบกันแก้ฝั่ง client, รับเงินผ่าน Stripe แล้วเติมโควตาให้ถูกต้องแบบ idempotent</p>
       </div>
@@ -920,27 +1120,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#129513;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
         <h3>แยก "คำนวณ" ออกจาก "เล่า" — กัน hallucination</h3>
         <p>Python engine คำนวณ 4 เสา, 격국, 용신, forecast เป็น <em>ข้อเท็จจริง</em> → ส่งให้ AI แค่ "เล่าต่อ" ไม่ให้ AI แตะการคำนวณเลย ตัวเลขจึงเชื่อได้</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128116;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
         <h3>"อาแปะ" — character voice อบอุ่น อ่านดวงเป็นกระจก</h3>
         <p>system prompt เป็นบุคลิกอาแปะชาวเกาหลี พูดตรงแต่มีเมตตา ไม่ขู่ ไม่ฟันธง ไม่ขายของมงคล — เหลือทางเลือกให้คนฟังเสมอ</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#127793;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3"/><path d="M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4"/><path d="M5 21h14"/></svg>
         <h3>เครื่องคำนวณสาจูเกาหลีของจริง (KASI)</h3>
         <p>ใช้ engine <code>korean-saju</code> ฝังข้อมูล KASI จริง แก้ <code>진태양시</code> ตาม longitude ของเมืองเกิด แม่นระดับนาที ครอบคลุมปฏิทินถึงปี 2050</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128197;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
         <h3>ปฏิทินดวง personalized + cache รายวัน</h3>
         <p>forecast รายวัน/รายยามอิงดวงกำเนิดของแต่ละคน — deterministic จึง cache ต่อ user ต่อวันใน DB ได้ เปิดซ้ำไม่ต้องคำนวณใหม่</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128274;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>โควตา + จ่ายเงินฝั่ง server เท่านั้น</h3>
         <p>หักโควตาด้วย Postgres function แบบ atomic, เปิด RLS ทุกตาราง, เติมเงินผ่าน Stripe webhook แบบ idempotent — client แก้โควตาเองไม่ได้</p>
       </div>
@@ -958,25 +1158,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#128203;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
         <h4>กรอกวันเกิด</h4>
         <p>Onboarding: วัน·เวลา·เมืองเกิด → ดึง longitude จาก city list</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#129518;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
         <h4>Engine คำนวณ</h4>
         <p>Python (KASI) คำนวณ 4 เสา + 격국/용신 → cache ลง DB</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#128172;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg>
         <h4>อาแปะเล่า</h4>
         <p>AI รับข้อเท็จจริงมาเล่าเป็นภาษาคน แบบ streaming เบสวันเกิด</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#127793;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3"/><path d="M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4"/><path d="M5 21h14"/></svg>
         <h4>ปฏิทิน + คุยต่อ</h4>
         <p>เปิดปฏิทินดวงรายวัน → คุยต่อ → หมดโควตา → เติม 99฿</p>
       </div>
@@ -1035,7 +1235,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมเลือก stack นี้?</strong>
       <p><strong>Next.js 15 App Router</strong> — web + API route + Python function อยู่ deploy เดียว แชร์ session ตรง ๆ &middot; <strong>Supabase</strong> ตัวเดียวจบ Postgres + Google/Email Auth + <code>merge-by-email</code> + RLS — ลด moving parts &middot; <strong>Python บน Vercel</strong> รัน engine <code>korean-saju</code> ที่ <em>0 dependency</em> ได้เลย (คำนวณดาราศาสตร์ = งานของ Python) &middot; <strong>Provider abstraction</strong> — สลับ AI (Gemini ↔ OpenAI ↔ Claude) ได้ที่ไฟล์เดียว ไม่ต้องแตะ route/UI</p>
     </div>
@@ -1051,42 +1251,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#128172;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg>
         <h3>แชตกับอาแปะ</h3>
         <p>ห้องแชต streaming เบสจากวันเกิด — ปักหมุด/เปลี่ยนชื่อ/ลบ/แชตใหม่ + starter prompts (ภาพรวม/การงาน/ความรัก/เงิน)</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#129518;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
         <h3>Korean Saju Engine</h3>
         <p>คำนวณ 4 เสา · 오행 · 십신 · 격국 · 용신 · 대운/세운 จากฐาน KASI จริง แก้ <code>진태양시</code> ตาม longitude</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128197;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
         <h3>ปฏิทินดวง personalized</h3>
         <p>forecast รายวัน/รายยามตามดวงผู้ใช้ — ไฮไลต์วันดี/ระวัง, ฤกษ์ยามราย ชม. → deep-link คุยกับแปะเรื่องวันนั้น</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127881;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/><path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"/><path d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"/><path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"/></svg>
         <h3>Onboarding + ผังธาตุ</h3>
         <p>กรอกวัน·เวลา·เมืองเกิด (city picker → longitude) → สร้างผังสาจู แสดง 4 เสา + สมดุลธาตุ (오행 balance)</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128101;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
         <h3>Multi-profile</h3>
         <p>ดูดวงให้คนอื่นได้ — สลับโปรไฟล์ (active profile), เพิ่มคนใหม่, แต่ละคนมีผังสาจู + ห้องแชตของตัวเอง</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128220;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
         <h3>รายงานดวงเต็ม + Reveal</h3>
         <p>สร้างรายงานดวงฉบับเต็ม + หน้า reveal พร้อม share card (html-to-image) และเสียงอาแปะเล่า (TTS)</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128274;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>Auth + โควตา atomic</h3>
         <p>Google + Email/Password (merge-by-email), หักโควตาด้วย Postgres function แบบ atomic + ledger append-only + RLS</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128179;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
         <h3>Payment + Admin หลังบ้าน</h3>
         <p>Stripe consumable (99฿ = 100 คำถาม) เติมผ่าน webhook idempotent + admin dashboard: ลูกค้า/โควตา/รายได้/cost</p>
       </div>
@@ -1311,42 +1511,42 @@
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Saju Accuracy">
-        <span class="emoji">&#128207;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg>
         <h3>เวลามาตรฐานเกาหลีอิงเส้นญี่ปุ่น — เสาชั่วโมงเพี้ยน</h3>
         <p>KST อิงเมอริเดียน 135° (ญี่ปุ่น) แต่โซลอยู่ 126.98° — เวลาสุริยะจริงช้ากว่า ~32 นาที เอา KST มาคิดเสาชั่วโมงตรง ๆ เสาผิด</p>
         <div class="highlight">แก้: ใช้ engine <code>korean-saju</code> ที่แก้ <code>진태양시</code> ตาม longitude ของเมืองเกิด + อ้าง <code>절기</code>/<code>입춘</code> boundary จาก KASI + แยก <code>야자시</code>/<code>조자시</code> — verify ตรง 100% กับ 35,000 วัน</div>
       </div>
 
       <div class="hack-card arch" data-label="No Hallucination">
-        <span class="emoji">&#129302;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
         <h3>ถ้าให้ AI คำนวณดวง มันมโนตัวเลข</h3>
         <p>โมเดลภาษาตอบเลขดวงแบบมั่นใจแต่ผิด — จะเชื่อคำทำนายไม่ได้ถ้าฐานตัวเลขมั่ว</p>
         <div class="highlight">แก้: แยกหน้าที่เด็ดขาด — Python engine คำนวณ "ข้อเท็จจริง" (เสา/격국/forecast) ส่งเป็น context ให้ AI, AI มีหน้าที่ "เล่า" อย่างเดียว + prompt caching ส่วน system + ผังสาจู กัน token บาน</div>
       </div>
 
       <div class="hack-card platform" data-label="Python on Vercel">
-        <span class="emoji">&#128013;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg>
         <h3>รัน engine เกาหลี (Python) ร่วมกับ Next.js</h3>
         <p>เว็บเป็น TypeScript/Next.js แต่ศาสตร์คำนวณอยู่ในแพ็กเกจ Python — จะเอามารันบน serverless เดียวกันยังไง</p>
         <div class="highlight">แก้: วาง engine เป็น Vercel Python function (<code>/api/*.py</code>) — inject <code>korean_saju/src</code> เข้า <code>sys.path</code>, แพ็กเกจ 0 dependency จึง bundle ง่าย, Next.js เรียกผ่าน fetch ภายใน แล้ว cache ผลลง DB</div>
       </div>
 
       <div class="hack-card devops" data-label="Atomic Quota">
-        <span class="emoji">&#128179;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
         <h3>กันโกงโควตา + race condition ตอนหักเลข</h3>
         <p>ถ้าหักโควตาฝั่ง client แก้ได้เอง / ยิงพร้อมกันหลาย request อาจหักพลาดหรือติดลบ + เติมเงินซ้ำจาก webhook ที่มาซ้ำ</p>
         <div class="highlight">แก้: Postgres function <code>consume_question()</code> หัก free/paid แบบ atomic ใน query เดียว + RLS เขียนได้เฉพาะ service-role + <code>quota_ledger</code> append-only + Stripe webhook idempotent ด้วย <code>stripe_session_id</code> unique</div>
       </div>
 
       <div class="hack-card ux" data-label="Voice / Character">
-        <span class="emoji">&#128116;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
         <h3>ศาสตร์เป็นฮันจา + AI ต้องอบอุ่นไม่ขู่</h3>
         <p>ผล engine เป็น 오행/십신/격국 ล้วน คนอ่านไม่ออก — และ AI default มักฟันธง/ทางการเกินไป ไม่ใช่เสียงอาแปะ</p>
         <div class="highlight">แก้: engine map ป้ายเป็นภาษาไทยก่อนส่ง + system prompt ฝัง brand pillars ของอาแปะ (อ่านดวงเป็นกระจก ไม่ขู่ ไม่ขายของมงคล เหลือทางเลือกเสมอ) + starter prompts พาคนเริ่มคุย</div>
       </div>
 
       <div class="hack-card perf" data-label="Forecast Cache">
-        <span class="emoji">&#9203;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
         <h3>ปฏิทินเดือน = คำนวณหลายสิบวัน ช้า + เปลือง</h3>
         <p>เปิดปฏิทินมุมมองเดือนต้อง forecast ทุกวัน ถ้าเรียก Python ใหม่ทุกครั้งที่เปิด ทั้งช้าและเปลือง</p>
         <div class="highlight">แก้: forecast เป็น deterministic (ดวงเดิม + วันเดิม = ผลเดิม) จึง cache ต่อ user ต่อวันในตาราง <code>daily_forecast_cache</code> — เปิดปฏิทินเช็ค cache ก่อน ไม่มีค่อยเรียก engine แล้วเก็บไว้</div>

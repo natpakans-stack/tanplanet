@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TAKRA AI — แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar (Full-stack SaaS · Multi-tenant)</title>
+  <title>แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar — ให้ AI Avatar ไลฟ์ขายของแทน — ต่อได้ทุกชั่วโมง</title>
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="TAKRA AI — แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar">
+  <meta name="twitter:title" content="แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar — ให้ AI Avatar ไลฟ์ขายของแทน — ต่อได้ทุกชั่วโมง">
   <meta name="twitter:description" content="Portfolio: integration/orchestration layer สำหรับไลฟ์ขายของด้วย AI Avatar — monorepo (Next.js 16 + NestJS/Fastify + Drizzle/Postgres RLS), multi-tenant, real-time Live Console (SSE), auto-reply pipeline">
-  <meta property="og:url" content="https://projects.tanplanet.info/takka-ai-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.info/avatar-commerce-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/takka-ai-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.info/avatar-commerce-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: integration/orchestration layer สำหรับไลฟ์ขายของด้วย AI Avatar — monorepo (Next.js 16 + NestJS/Fastify + Drizzle/Postgres RLS), multi-tenant, real-time Live Console (SSE), auto-reply pipeline">
-  <meta property="og:title" content="TAKRA AI — แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar">
+  <meta property="og:title" content="แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar — ให้ AI Avatar ไลฟ์ขายของแทน — ต่อได้ทุกชั่วโมง">
   <meta name="description" content="Portfolio: integration/orchestration layer สำหรับไลฟ์ขายของด้วย AI Avatar — monorepo (Next.js 16 + NestJS/Fastify + Drizzle/Postgres RLS), multi-tenant, real-time Live Console (SSE), auto-reply pipeline">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%237c3aed'/><text x='50' y='62' text-anchor='middle' font-size='54'>🤖</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -714,19 +714,219 @@
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">🤖</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         Full-stack SaaS &middot; Monorepo &middot; Multi-tenant
       </div>
-      <h1>TAKRA AI<br><span class="accent">แพลตฟอร์มไลฟ์คอมเมิร์ซที่ให้ AI Avatar ไลฟ์ขายของแทน — ต่อได้ทุกชั่วโมง</span></h1>
+      <h1>แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar<br><span class="accent">ให้ AI Avatar ไลฟ์ขายของแทน — ต่อได้ทุกชั่วโมง</span></h1>
       <p>Operating System สำหรับไลฟ์ขายของด้วย AI Avatar — เป็น <strong>integration / orchestration layer</strong> เหนือ Avatar Engine ที่มีอยู่เดิม (TTS · lip-sync · render · RAG) แล้วเติมส่วนที่ขาด: Live Studio, real-time Console, auto-reply pipeline และ multi-tenant back office ให้ครบ loop ตั้งแต่จัดฉากถึงปิดการขาย</p>
       <div class="hero-tags">
         <span class="hero-tag">Next.js 16</span>
@@ -759,32 +959,32 @@
 
     <div class="quote-block">
       <p>Host มนุษย์ไลฟ์ได้จำกัด — พักก็ต้องพัก นอกเวลาก็ไม่มีคน ร้านเล็กหลายที่ยังไม่มี Host ด้วยซ้ำ ชั่วโมงที่ไม่มีใครไลฟ์คือยอดที่หายไปเฉยๆ ขณะเดียวกันเครื่องมือ AI avatar ที่มีในตลาดส่วนใหญ่ทำได้แค่ "อัดวิดีโอ" ไม่ใช่ "ไลฟ์" และไม่มี commerce loop — ตอบคอมเมนต์สด สลับสินค้า ปิดการขาย ไม่ได้</p>
-      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ TAKRA AI (positioning: เสริม Host ไม่ใช่แทน)</div>
+      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ แพลตฟอร์มไลฟ์ AI Avatar (positioning: เสริม Host ไม่ใช่แทน)</div>
     </div>
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#9200;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/><path d="M6.38 18.7 4 21"/><path d="M17.64 18.67 20 21"/></svg>
         <h3>Host ไลฟ์ได้จำกัดชั่วโมง</h3>
         <p>คนต้องพัก ต้องนอน ไลฟ์นอกเวลาทำการ/ดึกๆ แทบเป็นไปไม่ได้ — ชั่วโมงว่างที่ไม่มีใครไลฟ์คือ demand ที่ปล่อยหลุด โดยเฉพาะร้านที่ยังไม่มี Host ประจำ</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128181;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
         <h3>ต้นทุน Host หลายกะสูง</h3>
         <p>จะไลฟ์ครอบคลุมทั้งวันต้องจ้างหลายคนหลายกะ — SME แบกไม่ไหว ทำให้เลือกไลฟ์ได้แค่บางช่วง เสียโอกาสในชั่วโมงที่ traffic ดีแต่ไม่มีคนไลฟ์</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128172;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg>
         <h3>คอมเมนต์ถล่ม ตอบไม่ทัน</h3>
         <p>ช่วง peak ลูกค้าถามราคา/สต็อก/โปร พร้อมกันเป็นสิบ — ตอบช้าคือปิดการขายไม่ได้ และตอบผิด/ตอบเกินจริงเรื่องสรรพคุณก็เสี่ยงด้านกฎหมาย</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#127909;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
         <h3>เครื่องมือ AI avatar = async ไม่ใช่ไลฟ์</h3>
         <p>tool ทำวิดีโอ avatar ที่มีอยู่ตอบโต้สดไม่ได้ ไม่มี live commerce loop (สลับสินค้า, CTA timing, ตอบคอมเมนต์สด) — ใช้ปิดการขายแบบไลฟ์จริงไม่ได้</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128274;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>หลายร้าน/หลาย workspace ข้อมูลต้องแยกเด็ดขาด</h3>
         <p>แพลตฟอร์มที่ให้ Agency ดูแลลูกค้าหลายราย = ข้อมูลข้ามร้านห้ามรั่วแม้แถวเดียว — ทำ isolation เองแบบ manual พลาดง่ายและตรวจยาก</p>
       </div>
@@ -801,27 +1001,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#129513;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
         <h3>Integration layer เหนือ Avatar Engine</h3>
-        <p>Engine เดิมมี TTS / lip-sync / render / RAG อยู่แล้ว — TAKRA ทำหน้าที่ wire trigger logic, ป้อน script/สินค้า context, จัด session lifecycle ไม่สร้าง avatar core ใหม่ให้ซ้ำซ้อน</p>
+        <p>Engine เดิมมี TTS / lip-sync / render / RAG อยู่แล้ว — แพลตฟอร์มไลฟ์ AI Avatar ทำหน้าที่ wire trigger logic, ป้อน script/สินค้า context, จัด session lifecycle ไม่สร้าง avatar core ใหม่ให้ซ้ำซ้อน</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#127916;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
         <h3>Live Studio จัดฉาก + ไลฟ์ผ่านอุปกรณ์จริง</h3>
         <p>Compose ฉาก/เลเยอร์/สินค้าแบบ free-form บน canvas เดียว แล้ว broadcast ผ่านอุปกรณ์จริงของร้าน (phone-as-camera) — avatar พูดตาม script ที่ผูกกับสินค้า</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#129504;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
         <h3>Auto-Reply pipeline พร้อม Risk Filter</h3>
         <p>Comment → intent detection → Risk Keyword block ก่อนตอบ → Reply Burst จัดคิว priority (ราคา/สต็อกแทรกก่อน) ให้ avatar ตอบสดในงบ latency ที่กำหนด</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128225;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
         <h3>Live Console real-time (SSE)</h3>
         <p>Manager เฝ้าดูสถานะ avatar, สุขภาพสตรีม, ฟีดคอมเมนต์, และ risk panel แบบสด ผ่าน SSE stream ที่ทน reconnect + รักษาลำดับ + กัน event ซ้ำ</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128273;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
         <h3>Multi-tenant แยกข้อมูลระดับฐานข้อมูล</h3>
         <p>ทุก query ผูก <code>workspace_id</code> + Postgres RLS เป็นด่านสุดท้าย (Model B tenancy: authority อยู่ที่ hub กลาง, identity แยกที่ Zitadel) — isolation เป็น non-negotiable มี negative test คุม</p>
       </div>
@@ -839,25 +1039,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#9881;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
         <h4>ตั้งค่า</h4>
         <p>เลือก Avatar/Voice, ทำ Product Catalog + Risk Words, ตั้ง Live Schedule</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#127917;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 11h.01"/><path d="M14 6h.01"/><path d="M18 6h.01"/><path d="M6.5 13.1h.01"/><path d="M22 5c0 9-4 12-6 12s-6-3-6-12c0-2 2-3 6-3s6 1 6 3"/><path d="M17.4 9.9c-.8.8-2 .8-2.8 0"/><path d="M10.1 7.1C9 7.2 7.7 7.7 6 8.6c-3.5 2-4.7 3.9-3.7 5.6 4.5 7.8 9.5 8.4 11.2 7.4.9-.5 1.9-2.1 1.9-4.7"/><path d="M9.1 16.5c.3-1.1 1.4-1.7 2.4-1.4"/></svg>
         <h4>Compose Studio</h4>
         <p>จัดฉาก/เลเยอร์/สินค้า + เขียน script เอง หรือให้ AI gen</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#128250;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2-5 5-5-5"/><rect width="20" height="15" x="2" y="7" rx="2"/></svg>
         <h4>Broadcast</h4>
         <p>ไลฟ์ผ่านอุปกรณ์จริง avatar พูดตาม script ผูกกับสินค้า</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#128202;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
         <h4>Engage + สรุป</h4>
         <p>auto-reply คอมเมนต์ + Console เฝ้าดู → Post-Live Recap</p>
       </div>
@@ -916,7 +1116,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมเลือก stack นี้?</strong>
       <p><strong>NestJS 11 + Fastify</strong> — Live Orchestrator เป็น long-running process (route handler ไม่เหมาะ) + DI/module-per-feature ทำให้ scale ทีมได้ &middot; <strong>Drizzle ORM</strong> — TS-first, schema เป็น TS ตรงกับ FE type sharing, ใกล้ raw SQL ดีต่อ multi-tenant query + audit &middot; <strong>PostgreSQL + RLS</strong> — 100% data isolation ระดับฐานข้อมูล &middot; <strong>Zitadel (identity) + Model B tenancy</strong> — แยก identity ออกจาก authority ของ workspace/entitlement (อยู่ที่ hub กลาง) &middot; <strong>pnpm workspaces</strong> + <strong>OpenAPI → generated client</strong> (มี contract drift gate ใน CI) — type-safe ข้าม package โดยไม่ต้อง build matrix ซับซ้อน</p>
     </div>
@@ -932,42 +1132,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#127970;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg>
         <h3>Multi-tenant Workspace &amp; Roles</h3>
         <p>4 roles (Owner/Manager/Admin/Agency) + workspace scoping ทุก query + RLS — Agency ดูหลาย workspace ได้โดยข้อมูลไม่ปน</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128230;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/></svg>
         <h3>Catalog &amp; Live Schedule</h3>
         <p>Product/SKU/Product Set CRUD + Live Schedule ผูกกับ LiveSession state machine 8 สถานะ (Live/Paused/Completed/Interrupted ฯลฯ)</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127917;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 11h.01"/><path d="M14 6h.01"/><path d="M18 6h.01"/><path d="M6.5 13.1h.01"/><path d="M22 5c0 9-4 12-6 12s-6-3-6-12c0-2 2-3 6-3s6 1 6 3"/><path d="M17.4 9.9c-.8.8-2 .8-2.8 0"/><path d="M10.1 7.1C9 7.2 7.7 7.7 6 8.6c-3.5 2-4.7 3.9-3.7 5.6 4.5 7.8 9.5 8.4 11.2 7.4.9-.5 1.9-2.1 1.9-4.7"/><path d="M9.1 16.5c.3-1.1 1.4-1.7 2.4-1.4"/></svg>
         <h3>Live Studio (free-form)</h3>
         <p>Compositor จัดฉากแบบ free-form — scenes &le;5, layers &le;10/scene, 9 layer types + custom upload + auto-switch เมื่อ script จบ</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#9997;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 21h8"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
         <h3>AI Script Generation</h3>
         <p>8 script types + multi-content ต่อ slot (1-5) + lifecycle 5 สถานะ gate ด้วย role + risk check ต่อ content + rotation/cool-down/shuffle</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128250;</span>
-        <h3>Avatar Live Broadcasting</h3>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2-5 5-5-5"/><rect width="20" height="15" x="2" y="7" rx="2"/></svg>
+        <h3>แพลตฟอร์มไลฟ์ AI Avatar Broadcasting</h3>
         <p>Phone-as-camera PWA + WebRTC composition + session cap 20 นาที + preload &amp; seamless handover ให้ไลฟ์ต่อเนื่องไม่สะดุด</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#129504;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
         <h3>Comment Auto-Reply</h3>
         <p>Intent detection + Risk Keyword block ก่อนตอบ + Reply Burst &le;6/batch จัด priority P1/P2/P3 + per-script TTL drop</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128225;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
         <h3>Live Console (SSE)</h3>
         <p>Monitor สด: session list + Control Room + comment feed + risk panel ผ่าน SSE stream ที่ auto-reconnect + รักษาลำดับ</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128203;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
         <h3>Post-Live Recap</h3>
         <p>Aggregate AI-outcomes ต่อ session แล้ว join กับ raw comments ที่ pull จาก source — rebuild-from-source ได้ ไม่ผูกกับ snapshot อย่างเดียว</p>
       </div>
@@ -1034,45 +1234,45 @@
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Multi-tenant">
-        <span class="emoji">&#128273;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
         <h3>ข้อมูลข้าม workspace ห้ามรั่วแม้แถวเดียว</h3>
         <p>Agency ดูหลายร้านใน dashboard เดียว — พลาด scope query แค่ครั้งเดียวก็ข้อมูลรั่วข้ามลูกค้า ซึ่งเป็น non-negotiable</p>
         <div class="highlight">แก้: บังคับ <code>workspace_id</code> scoping ทุก query + <strong>Postgres RLS</strong> เป็นด่านสุดท้ายที่ DB, มี <strong>ESLint guard</strong> กันเขียน query ที่ไม่ scope, และ <strong>negative isolation test</strong> ยืนยันว่าไม่มี leak — isolation ฝังใน Definition of Done ไม่ดองไป hardening ท้าย</div>
       </div>
 
       <div class="hack-card arch" data-label="Tenancy">
-        <span class="emoji">&#127760;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
         <h3>ใครเป็นเจ้าของข้อมูล tenancy? (Model B)</h3>
         <p>ทั้ง ecosystem มีหลาย product — ถ้าแต่ละตัวเก็บ workspace/membership/subscription เองจะ sync ไม่ตรงและ entitlement เพี้ยน</p>
-        <div class="highlight">แก้: แยกหน้าที่ชัด — <strong>hub กลางเป็น authority</strong> ของ tenancy/entitlement (resolve workspace + verify สิทธิ์ผ่าน Hub API), <strong>Zitadel ทำแค่ identity (login)</strong> ส่วน TAKRA mirror membership มาใช้ในเครื่อง มี Prism mock ของ Hub ให้ dev ไม่ต้องรัน hub จริงทุกครั้ง</div>
+        <div class="highlight">แก้: แยกหน้าที่ชัด — <strong>hub กลางเป็น authority</strong> ของ tenancy/entitlement (resolve workspace + verify สิทธิ์ผ่าน Hub API), <strong>Zitadel ทำแค่ identity (login)</strong> ส่วน แพลตฟอร์มไลฟ์ AI Avatar mirror membership มาใช้ในเครื่อง มี Prism mock ของ Hub ให้ dev ไม่ต้องรัน hub จริงทุกครั้ง</div>
       </div>
 
       <div class="hack-card perf" data-label="Realtime">
-        <span class="emoji">&#9889;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
         <h3>คอมเมนต์ถล่ม แต่ avatar ตอบได้ทีละอย่าง</h3>
         <p>ช่วง peak คอมเมนต์เข้ามาพร้อมกันเป็นสิบ — ตอบทุกอันไม่ได้และไม่ควร ต้องเลือกตอบอันสำคัญก่อนในงบเวลาที่จำกัด</p>
         <div class="highlight">แก้: <strong>Reply Burst</strong> จัดคิว priority — ราคา/สต็อก (P1) แทรกก่อน chit-chat (P3), จำกัด &le;6 ต่อ batch, และ <strong>per-script TTL drop</strong> ทิ้งคอมเมนต์ที่ค้างเกินอายุเมื่อ script ถัดไปมา — กันคิวบวมและตอบตรงจังหวะ</div>
       </div>
 
       <div class="hack-card platform" data-label="SSE Stream">
-        <span class="emoji">&#128225;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
         <h3>Console ต้องสด แต่เน็ตหลุด/ต่อใหม่ตลอด</h3>
         <p>ไลฟ์บนมือถือเน็ตกระตุก — ถ้า stream หลุดแล้ว event หาย/ซ้ำ/สลับลำดับ Manager จะอ่านสถานะผิดและตัดสินใจพลาด</p>
         <div class="highlight">แก้: ออกแบบ <strong>SSE console stream</strong> ให้ <strong>auto-reconnect</strong>, รักษา <strong>ordering</strong>, <strong>dedupe</strong> event ซ้ำ และมี <strong>backpressure</strong> เมื่อ client ตามไม่ทัน — reliability contract เขียนเป็น NFR แยกไม่ใช่ best-effort</div>
       </div>
 
       <div class="hack-card devops" data-label="Contract-first">
-        <span class="emoji">&#129309;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
         <h3>ต่อกับ engine/service ภายนอกที่ยังไม่มีจริง</h3>
         <p>Avatar Engine, comment source และ Hub บาง endpoint ยังไม่พร้อมตอนเริ่ม dev — ถ้ารอให้เสร็จก่อนถึงเขียน integration จะบล็อกทั้ง pipeline</p>
         <div class="highlight">แก้: <strong>contract-first</strong> — เขียน contract test แบบ network-free จาก spec ก่อน (red-first แม้ impl ยัง pending), มี <strong>OpenAPI/contract drift gate</strong> ใน CI Tier 1 ทุก PR และ Prism mock ให้ dev รันคู่ขนานได้โดยไม่ต้องมีของจริง</div>
       </div>
 
       <div class="hack-card ux" data-label="Live Session">
-        <span class="emoji">&#128260;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
         <h3>Engine cap session 20 นาที แต่ไลฟ์ต้องต่อเนื่อง</h3>
         <p>Avatar Engine ปิด session ทุก 20 นาที — ถ้าปล่อยให้จบดื้อๆ ภาพจะกระตุก เสียงขาด ผู้ชมรู้สึกสะดุดทันที</p>
-        <div class="highlight">แก้: TAKRA จัด <strong>session lifecycle</strong> — preload session ถัดไป &ge;90s ก่อน cap (หรือ &ge;30s ก่อนสลับ scene) แล้วทำ <strong>seamless handover</strong> โดย budget audio &le;200ms / visual &le;100ms + รักษา pose continuity — ผู้ชมไม่รู้ว่ามีการสลับ session อยู่เบื้องหลัง</div>
+        <div class="highlight">แก้: แพลตฟอร์มไลฟ์ AI Avatar จัด <strong>session lifecycle</strong> — preload session ถัดไป &ge;90s ก่อน cap (หรือ &ge;30s ก่อนสลับ scene) แล้วทำ <strong>seamless handover</strong> โดย budget audio &le;200ms / visual &le;100ms + รักษา pose continuity — ผู้ชมไม่รู้ว่ามีการสลับ session อยู่เบื้องหลัง</div>
       </div>
     </div>
 
@@ -1086,7 +1286,7 @@
     </section>
 
     <div class="quote-block" style="margin-bottom: 24px;">
-      <p>TAKRA ไม่สร้าง core avatar ใหม่ — TTS, lip-sync, render, RAG, latency ≤2s, GPU pooling มีอยู่ใน Avatar Engine เดิมแล้ว จึงโฟกัสเป็น <strong>integration layer</strong>: จัด orchestration + commerce loop + multi-tenant back office + real-time console. Positioning ก็คมตั้งแต่ต้น — <strong>เสริม Host ไม่ใช่แทน</strong> ปลดล็อกชั่วโมงที่คนทำไม่ได้ ขอบเขตที่ชัด = implement ตรง maintain ง่าย</p>
+      <p>แพลตฟอร์มไลฟ์ AI Avatar ไม่สร้าง core avatar ใหม่ — TTS, lip-sync, render, RAG, latency ≤2s, GPU pooling มีอยู่ใน Avatar Engine เดิมแล้ว จึงโฟกัสเป็น <strong>integration layer</strong>: จัด orchestration + commerce loop + multi-tenant back office + real-time console. Positioning ก็คมตั้งแต่ต้น — <strong>เสริม Host ไม่ใช่แทน</strong> ปลดล็อกชั่วโมงที่คนทำไม่ได้ ขอบเขตที่ชัด = implement ตรง maintain ง่าย</p>
     </div>
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
@@ -1169,7 +1369,7 @@
     <div class="mascot-half">
       <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
     </div>
-    <h2>TAKRA AI</h2>
+    <h2>แพลตฟอร์มไลฟ์ AI Avatar</h2>
     <p>แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar สำหรับ SME ไทย — เป็น integration/orchestration layer เหนือ Avatar Engine เดิม เติม Live Studio, real-time Console, auto-reply pipeline และ multi-tenant back office ให้ครบ loop สร้างบน monorepo (Next.js 16 · NestJS/Fastify · Drizzle/Postgres RLS) ด้วยแนวทาง TDD + contract-first</p>
     <div class="stack-icons">
       <span class="stack-icon">Next.js 16</span>
@@ -1217,8 +1417,8 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Takka AI Portfolio",
-      "item": "https://projects.tanplanet.info/takka-ai-portfolio/"
+      "name": "แพลตฟอร์มไลฟ์ AI Avatar Portfolio",
+      "item": "https://projects.tanplanet.info/avatar-commerce-portfolio/"
     }
   ]
 }

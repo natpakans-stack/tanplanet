@@ -517,14 +517,214 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">&#128218;</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         Chrome Extension &middot; Manifest V3 &middot; 4 โหมดเก็บ
@@ -564,27 +764,27 @@
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#128274;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>reader อยู่ใน iframe แกะ DOM ไม่ได้</h3>
         <p>Reader แบบ epub.js วางเนื้อหาไว้ใน iframe แบบ <code>blob:</code> / <code>srcdoc</code> ซึ่ง extension เข้าไปอ่านตรง ๆ ไม่ได้ — เครื่องมือที่ทำงานด้วยการดูดข้อความจาก DOM จึงใช้ไม่ได้เลย</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128260;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
         <h3>กด next แล้วไม่ได้เปลี่ยนหน้าจริง</h3>
         <p>บาง reader กดลูกศรขวา = เลื่อนลง 1 จอ ไม่ใช่ข้ามบท บางทีก็ยังโหลดไม่เสร็จ ผลคือแคปได้หน้าเดิมซ้ำ หรือกระโดดข้ามเนื้อหาไปโดยไม่รู้ตัว</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128203;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
         <h3>ภาพร้อยไฟล์ที่ต้องมารวมเอง</h3>
         <p>แคปได้แล้วยังไม่จบ ต้องเรียงลำดับ ตัดขอบ บีบอัด แล้วรวมเป็น PDF — และระหว่างนั้นภาพต้นฉบับก็นอนอยู่บนดิสก์เต็มไปหมด</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128465;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
         <h3>เอกสารยาวเป็นร้อยจอ = แท็บตาย</h3>
         <p>เอกสารที่ต้องเลื่อนเก็บทีละจอ ถ้ากองภาพไว้ในหน่วยความจำรอเย็บทีเดียวตอนจบ RAM จะบวมจนแท็บตายก่อนได้ไฟล์</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128683;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg>
         <h3>บางเล่มแตะไม่ได้เลย</h3>
         <p>แอปห้องสมุดที่ติด DRM แคปได้แต่ภาพดำ ส่วน viewer บางเจ้าฝัง forensic watermark ที่มีอีเมลเจ้าของบัญชีติดไปทุกหน้า — สองกรณีนี้ไม่ใช่ปัญหาเทคนิค แต่เป็นเส้นที่ต้องหยุด</p>
       </div>
@@ -601,27 +801,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#128444;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
         <h3>แคปจากสิ่งที่ตาเห็น ไม่ใช่จาก DOM</h3>
         <p>ใช้ <code>captureVisibleTab</code> ถ่ายภาพจอเหมือนกดปุ่ม screenshot — reader จะเป็น iframe, canvas, epub.js หรืออะไรก็ตาม ก็เก็บได้เหมือนกันหมด เพราะทุกตัวจบลงที่ pixel บนจอเดียวกัน</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#129517;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg>
         <h3>ตรวจ "เปลี่ยนหน้าจริงไหม" ด้วยลายเซ็น 2 ระดับ</h3>
         <p>ลายเซ็นระดับ <strong>จอ</strong> (ตำแหน่งเลื่อน + ข้อความ) ใช้ตอนปล่อยให้ reader เลื่อนเอง · ลายเซ็นระดับ <strong>บท</strong> (ข้อความล้วน) ใช้ตอนเราเลื่อนเอง — คนละโหมดต้องวัดคนละระดับ ไม่งั้นได้หน้าซ้ำทั้งบท</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128209;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"/><path d="M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"/><path d="M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1"/></svg>
         <h3>4 โหมดเก็บ ครอบคลุมทุกทรงของหน้า</h3>
         <p>หน้าเดียว · เลื่อนยาวแบบภาพต่อเนื่อง · เลื่อนยาวแบบแบ่งหน้าเท่ากัน · เอกสารยาวรวดเดียวที่ไม่มีปุ่มถัดไป (Google Docs / เว็บนิยายหน้าเดียว)</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128190;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>
         <h3>PDF ประกอบในหน่วยความจำ ไม่มีไฟล์ตกค้าง</h3>
         <p>ภาพทุกหน้าอยู่เป็น jpeg bytes ใน offscreen document แล้วเขียน PDF เองด้วย <code>DCTDecode</code> (ฝัง jpeg ตรง ๆ ไม่ต้องถอด-เข้ารหัสใหม่) — ได้ไฟล์เดียวจบ ไม่มีรูปหลงเหลือบนดิสก์</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#9986;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
         <h3>เลือกพื้นที่แล้วยืนยันด้วยตา</h3>
         <p>ลากกรอบบนหน้าเว็บจริง ปรับด้วยจุดจับ 4 มุม กด <code>Shift</code> ล็อกจัตุรัส/ล็อกแกน แล้ว popup เด้งกลับมาโชว์การ์ด preview พร้อมขนาดจริง — เห็นก่อนเริ่มว่าตัดถูกไหม</p>
       </div>
@@ -639,25 +839,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#9881;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
         <h4>ตั้งค่าหนังสือ</h4>
         <p>เลือกโหมดเก็บ ใส่ชื่อเรื่อง จำนวนหน้า (เว้นว่าง = เก็บจนจบเล่มเอง) และความละเอียด</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#9986;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
         <h4>เลือกพื้นที่</h4>
         <p>ลากกรอบครอบเฉพาะเนื้อหา ตัดแถบเครื่องมือของ reader ทิ้ง แล้วดู preview ยืนยัน</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#9654;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
         <h4>ปล่อยให้เก็บ</h4>
         <p>แคป → ตรวจว่าเปลี่ยนหน้าจริง → กด next → วนซ้ำ พร้อมสุ่มจังหวะพลิกหน้าเหมือนคนอ่าน</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#128196;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
         <h4>ได้ PDF</h4>
         <p>เย็บทุกหน้าเป็นไฟล์เดียวพร้อมชื่อเรื่อง แล้วดาวน์โหลดอัตโนมัติ กดหยุดกลางคันก็ได้ไฟล์</p>
       </div>
@@ -719,7 +919,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมต้องมี Offscreen Document?</strong>
       <p>Service worker ใน MV3 ไม่มี DOM จึงใช้ <code>canvas</code> ไม่ได้เลย — แต่งานทั้งหมดที่นี่คือการตัดภาพ ย่อ และเย็บเป็นหน้า ซึ่งต้องใช้ canvas <strong>Offscreen Document</strong> คือหน้า HTML ที่ไม่มีใครเห็น ที่ extension เปิดไว้เป็นห้องทำงานภาพโดยเฉพาะ ทำให้ตัดภาพและประกอบ PDF ได้โดยไม่ต้องเปิดแท็บจริงให้ผู้ใช้เห็น</p>
     </div>
@@ -735,42 +935,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#128209;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"/><path d="M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"/><path d="M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1"/></svg>
         <h3>4 โหมดเก็บ</h3>
         <p>หน้าเดียว / เลื่อนยาวต่อเนื่อง / เลื่อนยาวแบ่งหน้าเท่ากัน / เอกสารยาวรวดเดียวที่ไม่มีปุ่มถัดไป</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#129517;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg>
         <h3>ตัวตรวจหน้าเบิ้ล 2 ชั้น</h3>
         <p>ชั้นแรกเทียบภาพหัวหน้าทุกไบต์ (ไม่มี false positive) ชั้นสองเทียบลายเซ็นข้อความ เผื่อภาพขยับนิดแต่เนื้อหาเดิม</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#9654;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
         <h3>goNext — กดจนกว่าจะเปลี่ยนจริง</h3>
         <p>ไม่ใช่กดครั้งเดียวแล้วเชื่อ แต่กดซ้ำจนลายเซ็นเนื้อหาเปลี่ยน = ถึงบทใหม่จริง ไม่เปลี่ยนเลย = จบเล่ม</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128196;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
         <h3>PDF writer เขียนเอง</h3>
         <p>ไม่ใช้ไลบรารี — เขียน object ของ PDF ตรง ๆ ฝัง jpeg ด้วย <code>DCTDecode</code> และใส่ชื่อไทยผ่าน <code>/Title</code> แบบ UTF-16BE</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128257;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>
         <h3>ทยอยเย็บ ระบาย RAM</h3>
         <p>เอกสารยาวเย็บเป็นหน้า PDF ทุก 8 จอ แล้วปล่อย bitmap ทิ้ง — จำนวนบน badge คือหน้า PDF จริง ไม่ใช่จำนวนจอ</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128220;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
         <h3>โหมด Google Docs</h3>
         <p>อ่านขอบหน้ากระดาษจริงจาก DOM แล้วเลื่อนให้หัวหน้าชนขอบบน แคปทีเดียวได้ทั้งหน้า — ไม่มีแถบเทาคั่น ไม่ต้องเลือก crop</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#9986;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
         <h3>Crop overlay + preview</h3>
         <p>จุดจับ 4 มุม ลากกลางเพื่อย้าย <code>Shift</code> ล็อกจัตุรัส/ล็อกแกน แล้วเด้งกลับมาโชว์ thumbnail พร้อมขนาดจริง</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128241;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
         <h3>phone-capture.sh</h3>
         <p>สคริปต์ทำงานเดียวกันบน Android ผ่าน <code>adb</code> — ปัดหน้า แคป บีบอัด รวมเป็น PDF พร้อมชื่อเรื่อง</p>
       </div>
@@ -824,49 +1024,49 @@
 
     <div class="hack-grid">
       <div class="hack-card platform" data-label="iframe">
-        <span class="emoji">&#128273;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
         <h3>กดลูกศรขวาแล้วไม่มีอะไรเกิดขึ้น</h3>
         <p>Reader แบบ epub.js วางเนื้อหาไว้ใน iframe แล้ว<strong>ดัก keyboard event ไว้ข้างในนั้น</strong> — ยิงคีย์ที่ document ข้างนอกจึงไม่มีผล นี่คือต้นเหตุจริงของอาการหน้าเบิ้ล</p>
         <div class="highlight">แก้: ต้องยิงคีย์เข้าไปถึงข้างใน iframe ด้วย แต่ <code>chrome.scripting</code> เข้า iframe แบบ <code>blob:</code>/<code>srcdoc</code> ไม่ได้ → ต้องไต่ <code>contentDocument</code> จากหน้าแม่เอาเอง แล้ว dispatch event ลงไปตรง ๆ</div>
       </div>
 
       <div class="hack-card precision" data-label="Zoom">
-        <span class="emoji">&#128207;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg>
         <h3>1 หน่วย scrollTop ไม่เท่ากับ 1 พิกเซลบนจอ</h3>
         <p>Reader ที่ซูมด้วย CSS <code>transform</code> ทำให้กล่องดูใหญ่/เล็กกว่าขนาด layout จริง ถ้าเลื่อนตามตัวเลข layout ตรง ๆ จะเลื่อนเกิน (เนื้อหาขาด) หรือเลื่อนไม่พอ (เนื้อหาซ้ำ) แล้วแต่ระดับซูมของแต่ละเล่ม</p>
         <div class="highlight">แก้: คำนวณอัตราส่วนระหว่างขนาดบนจอกับขนาด layout ก่อนทุกครั้ง แล้วแปลงระยะเลื่อนตามนั้น &mdash; นี่คือคำอธิบายของอาการกวนใจที่สุดคือ "บางเล่มได้ บางเล่มไม่ได้"</div>
       </div>
 
       <div class="hack-card arch" data-label="Lazy load">
-        <span class="emoji">&#127919;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         <h3>หน้าเว็บแอบขยับ scroll เองระหว่างรอ</h3>
         <p>สั่งเลื่อนไป 1200 แล้วรอ delay — ระหว่างนั้น reader lazy-load เนื้อหาเพิ่มแล้วดึง scroll ขยับเอง พอถ่ายจริงจึงไม่ใช่ตำแหน่งที่สั่งไป การตัดส่วนซ้ำเลยผิดทั้งหมด</p>
         <div class="highlight">แก้: <strong>วัดตำแหน่งจริงก่อนถ่ายทุกจอ</strong> แล้วคิดส่วนซ้ำจากค่าที่วัดได้ ไม่ใช่ค่าที่สั่งไป · และถ้าวัดแล้วตำแหน่งไม่ขยับจากรอบก่อนเลย = เว็บดึง scroll กลับ (scroll-snap / virtual list) ต้องยอมแพ้ ไม่ใช่วนถ่ายซ้ำที่เดิม</div>
       </div>
 
       <div class="hack-card precision" data-label="Detection">
-        <span class="emoji">&#128269;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
         <h3>หน้าที่เป็นรูปล้วนมีข้อความ 0 ตัว</h3>
         <p>ตอนแรกหากล่องเนื้อหาด้วยการนับจำนวนตัวอักษร — พอเจอหนังสือที่เป็นภาพสแกน กล่องเนื้อหามีข้อความ 0 ตัว จึงหาไม่เจอ แล้วตกไปเดาว่ากล่องไหนใหญ่สุด = จับผิดกล่องทุกครั้ง</p>
         <div class="highlight">แก้: เปลี่ยนไปวัดจาก <strong>ขนาดบนจอ</strong> เป็นหลัก ไม่ใช่ปริมาณข้อความ · และลายเซ็นตรวจหน้าซ้ำก็เลิกมองแค่ "กล่องที่เลื่อนได้" เพราะหน้าที่เนื้อหาสั้นจนไม่ต้องเลื่อนจะได้ลายเซ็นว่าง = ปิดตัวตรวจทิ้งทั้งดุ้นโดยไม่รู้ตัว</div>
       </div>
 
       <div class="hack-card perf" data-label="Memory">
-        <span class="emoji">&#128165;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="13" r="9"/><path d="M14.35 4.65 16.3 2.7a2.41 2.41 0 0 1 3.4 0l1.6 1.6a2.4 2.4 0 0 1 0 3.4l-1.95 1.95"/><path d="m22 2-1.5 1.5"/></svg>
         <h3>เอกสารร้อยจอทำแท็บตายก่อนได้ไฟล์</h3>
         <p>เก็บ bitmap ทุกจอไว้รอเย็บทีเดียวตอนจบ พอเอกสารยาวจริง RAM บวมจนแท็บถูกฆ่า ได้ศูนย์</p>
         <div class="highlight">แก้: ทยอยเย็บเป็นหน้า PDF ทุก 8 จอแล้วปล่อย bitmap ทิ้ง · แต่ต้อง<strong>ล็อกความสูงหน้าจากจอแรกของเล่มเท่านั้น</strong> เพราะถ้าวัดใหม่ทุกกลุ่ม จะไปวัดจอที่โดนตัดหัวส่วนซ้ำไปแล้ว ผลคือได้หน้าสูง 906 กับ 899 ปนกันในเล่มเดียว</div>
       </div>
 
       <div class="hack-card ux" data-label="Paging">
-        <span class="emoji">&#128196;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
         <h3>อ่าน ๆ อยู่แล้วเจอหน้าเปล่าคั่น</h3>
         <p>เย็บกลางคันทุก 8 จอ แล้วเศษท้ายที่ยังไม่ครบ 1 หน้าถูกปิดเป็นหน้าไปเลย ผลคือได้หน้าว่างเกือบทั้งใบคั่นทุกครั้งที่เย็บ เหมือนหนังสือล่นหน้า</p>
         <div class="highlight">แก้: แยก <code>final=false</code> (เย็บเพื่อระบาย RAM เท่านั้น) ออกจาก <code>final=true</code> (ปิดเล่มจริง) — เศษท้ายของรอบก่อนต้อง<strong>ยกไปต่อหัวรอบถัดไปเสมอ</strong> ไม่ใช่ปิดหน้าทิ้ง</div>
       </div>
 
       <div class="hack-card devops" data-label="Timing">
-        <span class="emoji">&#9203;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
         <h3>Google Docs "นิ่งแล้ว" แต่ยังวาดไม่เสร็จ</h3>
         <p>ตัวรอความนิ่งดูจาก scrollTop/scrollHeight ซึ่งคงที่แล้ว — แต่ Docs เรนเดอร์แบบ virtualized ยังวาดตัวหนังสือไม่เสร็จ ถ่ายตอนนั้นได้หน้าขาว</p>
         <div class="highlight">แก้: เผื่อเวลาวาดเพิ่มเฉพาะโหมดที่ต้องการ แล้ว<strong>วัดตำแหน่งซ้ำอีกรอบหลังรอ</strong> เพราะถ้าเอกสารขยับเองระหว่างนั้น ค่าที่วัดไว้ก่อนหน้าจะเพี้ยนและตัดส่วนซ้ำผิด · บวกกับหน่วงขั้นต่ำ 700ms เพื่อไม่ชน quota ของ <code>captureVisibleTab</code> ที่ราว 2 ครั้ง/วินาที</div>

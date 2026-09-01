@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Takra Rerun — Desktop Control Room สำหรับ Re-broadcast คลิปออกไลฟ์ (Electron + Go + ffmpeg)</title>
+  <title>Desktop Control Room สำหรับ Re-broadcast — เอาคลิปออกไปเป็นไลฟ์ live commerce</title>
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Takra Rerun — Desktop Control Room สำหรับ Re-broadcast คลิปออกไลฟ์">
+  <meta name="twitter:title" content="Desktop Control Room สำหรับ Re-broadcast — เอาคลิปออกไปเป็นไลฟ์ live commerce">
   <meta name="twitter:description" content="Portfolio: เดสก์ท็อปแอปที่แพ็ก Go backend + ffmpeg streaming engine + React SPA เข้า Electron เป็นแอปเดียว — re-air คลิปออก RTMP, overlay, chat สด, ผ่าน browser oracle">
-  <meta property="og:url" content="https://projects.tanplanet.info/takra-rerun-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.info/live-rebroadcast-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/takra-rerun-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.info/live-rebroadcast-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: เดสก์ท็อปแอปที่แพ็ก Go backend + ffmpeg streaming engine + React SPA เข้า Electron เป็นแอปเดียว — re-air คลิปออก RTMP, overlay, chat สด, ผ่าน browser oracle">
-  <meta property="og:title" content="Takra Rerun — Desktop Control Room สำหรับ Re-broadcast คลิปออกไลฟ์">
+  <meta property="og:title" content="Desktop Control Room สำหรับ Re-broadcast — เอาคลิปออกไปเป็นไลฟ์ live commerce">
   <meta name="description" content="Portfolio: เดสก์ท็อปแอปที่แพ็ก Go backend + ffmpeg streaming engine + React SPA เข้า Electron เป็นแอปเดียว — re-air คลิปออก RTMP, overlay, chat สด, ผ่าน browser oracle">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23c2410c'/><text x='50' y='62' text-anchor='middle' font-size='54'>🔁</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -701,19 +701,219 @@
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">🔁</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         Desktop App &middot; Electron + Go &middot; ffmpeg Streaming Engine
       </div>
-      <h1>Takra Rerun<br><span class="accent">เดสก์ท็อป control room สำหรับ re-broadcast คลิปออกไปเป็นไลฟ์ live commerce</span></h1>
+      <h1>Desktop Control Room สำหรับ Re-broadcast<br><span class="accent">เอาคลิปออกไปเป็นไลฟ์ live commerce</span></h1>
       <p>แอปเดสก์ท็อปที่แพ็ก <code>Go backend</code> + <code>ffmpeg engine</code> + React SPA เข้ามาเป็นแอปเดียว — วนคลิปที่บันทึกไว้ออก RTMP เป็นสตรีมสด พร้อม overlay นาฬิกา/ข้อความ, chat สด, ปักตะกร้าสินค้า และคุมหลายบัญชีจากหน้าจอเดียว โดยข้อมูลไม่ต้องออกจากเครื่อง</p>
       <div class="hero-tags">
         <span class="hero-tag">Electron</span>
@@ -744,32 +944,32 @@
 
     <div class="quote-block">
       <p>ร้านที่ขายผ่านไลฟ์ต้อง "ติดจอ" ให้นานที่สุดถึงจะมียอด — แต่คนพูดสดทั้งวันไม่ไหว โดยเฉพาะกะดึก เครื่องมือที่ใช้กันคือเอา OBS + สคริปต์ + เครื่อง VM หลายตัวมาต่อกันเอง เปราะและพังกลางไลฟ์บ่อย ยิ่งถ้าดูแลหลายบัญชี/หลายห้องพร้อมกัน ยิ่งคุมไม่อยู่ โจทย์คือ: ทำ control room ตัวเดียวที่เอา "คลิปที่อัดไว้" มาวนออกเป็นไลฟ์ได้อย่างเสถียร</p>
-      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ Takra Rerun</div>
+      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ แอป re-broadcast</div>
     </div>
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#128564;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
         <h3>ยืนไลฟ์สดทั้งวันไม่ไหว</h3>
         <p>ยอดขายผูกกับเวลาออกอากาศ — แต่คนมีลิมิต โดยเฉพาะช่วงดึก ต้องมีวิธีเอาคลิปที่อัดไว้มา re-air โดยที่ประสบการณ์ผู้ชมยังใกล้เคียงไลฟ์จริง</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#129513;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
         <h3>เครื่องมือ = ต่อเอง เปราะ พังง่าย</h3>
         <p>OBS + สคริปต์ + VM หลายตัวมาต่อกันเอง ไม่มีตัวคุมกลาง — สตรีมหลุด ต้องมานั่งเฝ้ารีสตาร์ตเอง ไม่มี auto-restart / keep-alive ในตัว</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128421;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
         <h3>หลายบัญชี/หลายห้อง คุมจากที่เดียวไม่ได้</h3>
         <p>เอเจนซีดูหลายแบรนด์พร้อมกัน แต่ละบัญชีต้องแยก identity + network egress ของตัวเอง — ไม่มีหน้าจอเดียวที่เห็นสถานะทุกห้องรวมกัน</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128263;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
         <h3>คลิปเสียงหลุด/เงียบกลางไลฟ์</h3>
         <p>ไฟล์ที่เอามาวนบางทีเสียงสั้นกว่าภาพ หรือเงียบยาวกลางทาง — ออกอากาศความเงียบไปโดยไม่รู้ตัว เสียลูกค้าฟรีๆ</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128273;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
         <h3>บาง action server เรียกเองไม่ได้</h3>
         <p>งานอย่าง chat / ปักตะกร้า / อ่านยอดขายสด ต้องมี "ลายเซ็นคำขอ" ที่สร้างจาก JS ของแพลตฟอร์มในหน้าเว็บที่ login แล้วเท่านั้น — backend ยิงเองตรงๆ ไม่ได้</p>
       </div>
@@ -786,27 +986,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#128250;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2-5 5-5-5"/><rect width="20" height="15" x="2" y="7" rx="2"/></svg>
         <h3>Re-air engine ในเครื่อง</h3>
         <p>ffmpeg push คลิปออก RTMP แบบ <code>-c copy</code> เดินตาม native frame-rate (ไม่ re-encode ถ้าไม่จำเป็น) + keep-alive ping ห้อง + auto-stop/auto-restart เมื่อสตรีมสะดุด</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128230;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/></svg>
         <h3>แพ็กทุกอย่างเป็นแอปเดียว</h3>
         <p>Electron หุ้ม Go backend (spawn เป็น sidecar loopback), ffmpeg static และ React SPA ไว้ในตัวเดียว — ผู้ใช้ไม่ต้องลง Docker/Go/Node เอง ติดตั้งแล้วรันได้ทันที</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#127917;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 11h.01"/><path d="M14 6h.01"/><path d="M18 6h.01"/><path d="M6.5 13.1h.01"/><path d="M22 5c0 9-4 12-6 12s-6-3-6-12c0-2 2-3 6-3s6 1 6 3"/><path d="M17.4 9.9c-.8.8-2 .8-2.8 0"/><path d="M10.1 7.1C9 7.2 7.7 7.7 6 8.6c-3.5 2-4.7 3.9-3.7 5.6 4.5 7.8 9.5 8.4 11.2 7.4.9-.5 1.9-2.1 1.9-4.7"/><path d="M9.1 16.5c.3-1.1 1.4-1.7 2.4-1.4"/></svg>
         <h3>Command center คุมทุกห้องที่เดียว</h3>
         <p>หน้าคอนโซล React เดียวเห็นทุก session — เริ่ม/หยุดไลฟ์, สลับคลิป, ตั้ง overlay, ดู chat และยอดขายสด แยกตามบัญชีชัดเจน</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128266;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>
         <h3>การ์ดเสียงหลุดในตัว</h3>
         <p>pre-flight ตรวจไฟล์ด้วย ffprobe (เสียงสั้น/ไม่มีเสียง) ก่อนไลฟ์ + monitor เงียบยาวระหว่างออกอากาศ — กันไม่ให้ออกอากาศความเงียบ</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#129497;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg>
         <h3>Browser oracle เป็น "ตัวเซ็น"</h3>
         <p>hidden window ที่ login ไว้ ทำหน้าที่ยิงคำขอในหน้าเว็บ ให้ JS ของแพลตฟอร์มเติมลายเซ็นให้เอง — ปลดล็อก chat / ปักตะกร้า / GMV ที่ server เซ็นเองไม่ได้</p>
       </div>
@@ -824,25 +1024,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#127916;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
         <h4>เตรียม session</h4>
         <p>เลือกคลิป + ตั้ง overlay / proxy / ชุดสินค้าที่จะปักตะกร้า</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#128250;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2-5 5-5-5"/><rect width="20" height="15" x="2" y="7" rx="2"/></svg>
         <h4>กดไลฟ์</h4>
         <p>backend เปิดห้อง + ffmpeg push RTMP + keep-alive ping</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#129497;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg>
         <h4>Oracle ดักสด</h4>
         <p>hidden window ถอด chat/GMV → backend → SSE → คอนโซล</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#128293;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg>
         <h4>เฝ้า + วน</h4>
         <p>monitor เสียงหลุด + auto-restart ให้ไลฟ์ไม่ขาดจนจบ</p>
       </div>
@@ -901,7 +1101,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมเลือก stack นี้?</strong>
       <p><strong>Electron หุ้ม Go sidecar</strong> — แพ็ก backend + ffmpeg + SPA เป็นแอปเดียว ผู้ใช้ zero-setup, และ window เปิดบน origin ของ backend ทำให้ flow login OIDC เป็น first-party &middot; <strong>SQLite (<code>file:</code> DSN)</strong> — desktop mode รันแบบ self-contained, migrate-on-start, ไม่ต้องมี DB server &middot; <strong>Go (chi + sqlc)</strong> — production shape: ไม่มี ORM, ไม่มี inline SQL, multi-tenant ด้วย <code>workspace_id</code> ตั้งแต่วันแรก &middot; <strong>React 19 + Vite + Tailwind v4</strong> — คอนโซลที่ backend เสิร์ฟเองที่ origin เดียวกัน</p>
     </div>
@@ -917,42 +1117,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#128250;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2-5 5-5-5"/><rect width="20" height="15" x="2" y="7" rx="2"/></svg>
         <h3>Re-air Engine</h3>
         <p>ffmpeg push RTMP แบบ <code>-c copy</code> native-rate + keep-alive ping + auto-stop/restart — แกนหลักที่วนคลิปออกเป็นไลฟ์</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128347;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         <h3>Overlay Compositor</h3>
         <p>ซ้อนนาฬิกา LED / ข้อความบนวิดีโอด้วย <code>filter_complex</code> + ขยับตำแหน่งสดผ่าน ZMQ — re-encode เฉพาะ session ที่มี overlay</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128266;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>
         <h3>Audio-Drop Guard</h3>
         <p>pre-flight ffprobe จับ <code>NO_AUDIO</code>/<code>AUDIO_SHORT</code> + runtime <code>silencedetect</code> — กันออกอากาศเงียบ</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#129497;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg>
         <h3>Browser Oracle</h3>
         <p>hidden partitioned window ต่อบัญชี รัน <code>executeJavaScript</code> ที่ preload ไว้ ให้หน้าเว็บเซ็นคำขอเอง — โครงกลางที่ chat/basket/GMV ใช้ร่วม</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128172;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg>
         <h3>Realtime Chat</h3>
         <p>oracle ถอด comment/viewer สด → <code>/ingest/chat</code> → SSE broker fan-out → panel ในคอนโซล (dedup by msgId)</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#9997;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 21h8"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
         <h3>Manual Reply</h3>
         <p>พิมพ์ตอบจาก UI → in-memory queue → oracle ยิง <code>message/chat</code> ในหน้าเว็บ → โชว์เมื่อ delivered จริง (ไม่ optimistic)</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128722;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
         <h3>Product Pin (ตะกร้า)</h3>
         <p>เตรียมชุดสินค้า (<code>product_sets</code>) → กดไลฟ์ → pin queue + afterLive hook → oracle ปักอัตโนมัติ พร้อมสถานะ "ปักแล้ว X/X"</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127760;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
         <h3>Per-Account Egress</h3>
         <p>network egress ต่อบัญชี (utls fingerprint + SOCKS5/HTTP CONNECT) — traffic ของแต่ละ identity แยกกันชัด</p>
       </div>
@@ -1020,42 +1220,42 @@
 
     <div class="hack-grid">
       <div class="hack-card platform" data-label="Desktop Runtime">
-        <span class="emoji">&#128230;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/></svg>
         <h3>รวม 3 โปรเซสให้เป็นแอปเดียวติดตั้งง่าย</h3>
         <p>Go backend, ffmpeg และ SPA เป็นคนละ runtime — จะให้ seller ลงเองทีละตัวไม่ได้ ต้องแพ็กรวมและคุม lifecycle ให้เนียน</p>
         <div class="highlight">แก้: Electron main <code>spawn</code> Go binary เป็น sidecar (loopback), รอ <code>/healthz</code> 200 ก่อนเปิด BrowserWindow บน origin ของ backend — ทำให้ flow OIDC login → callback → cookie เป็น first-party ทั้งหมด · ffmpeg static ฝังมากับ package (electron-builder)</div>
       </div>
 
       <div class="hack-card precision" data-label="Media Core">
-        <span class="emoji">&#128347;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         <h3>Overlay ชนกฎ "ห้าม re-encode"</h3>
         <p>แกน re-air ล็อก <code>-c copy</code> ไว้ (invariant: ไม่ re-encode = คุณภาพ/CPU คงที่) แต่การซ้อนนาฬิกา/ข้อความต้องผ่าน <code>filter_complex</code> = ต้อง re-encode</p>
         <div class="highlight">แก้: เปิด re-encode branch (<code>libx264</code> + filtergraph) <strong>เฉพาะ session ที่มี overlay</strong> เท่านั้น — no-overlay ยังเป็น <code>-c copy</code> เป๊ะ · เป็น decision ระดับ media core ที่ตั้งใจ scope ไว้แคบ</div>
       </div>
 
       <div class="hack-card arch" data-label="Concurrency">
-        <span class="emoji">&#128266;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>
         <h3>ใส่ตัวจับเสียงเงียบใน stream-copy ไม่ได้</h3>
         <p><code>silencedetect</code> เป็น audio filter (<code>-af</code>) แต่ push หลักเป็น <code>-c copy</code> — เติม <code>-af</code> ลงไปตรงๆ ทำ stream-copy พัง</p>
         <div class="highlight">แก้: รัน ffmpeg <strong>ตัวที่สองคู่ขนาน</strong> (<code>-af silencedetect -f null -</code>) เป็น co-goroutine ที่ decode แค่เสียงแล้วทิ้งผล — push หลักยัง <code>-c copy</code> วิดีโอไม่ถูกแตะ · scan stderr สดแทนอ่าน log ทั้งไฟล์</div>
       </div>
 
       <div class="hack-card devops" data-label="Signing">
-        <span class="emoji">&#129497;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg>
         <h3>บาง action ต้องลายเซ็นจากหน้าเว็บที่ login</h3>
         <p>chat / ปักตะกร้า / GMV ต้องมีลายเซ็นคำขอที่สร้างโดย JS ของแพลตฟอร์มในหน้า login แล้วเท่านั้น — Go เซ็นเองไม่ได้</p>
         <div class="highlight">แก้: browser oracle — hidden BrowserWindow ต่อบัญชี (<code>session.fromPartition</code>) รับงานจาก backend ผ่าน validated IPC (sender id + size cap) แล้วเรียก <code>executeJavaScript</code> ที่ preload ไว้ (ห้าม string-interpolate logic เข้าหน้า remote) ให้หน้าเว็บ fetch + เซ็นเอง → ส่งผลกลับ</div>
       </div>
 
       <div class="hack-card ux" data-label="Transient State">
-        <span class="emoji">&#128268;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M15 8V2"/><path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"/><path d="M9 8V2"/></svg>
         <h3>chat/GMV เป็นข้อมูลสด — ไม่ควรลง DB ทุกชิ้น</h3>
         <p>คอมเมนต์และยอดขายสดไหลเข้ามาเร็วมาก ถ้าเขียน DB ทุก event = คอขวด และไม่ได้ต้องการ history ข้าม restart</p>
         <div class="highlight">แก้: ทำ SSE broker เป็น live transport — chat/GMV/pin เป็น <strong>ephemeral</strong> (in-memory queue, fan-out ผ่าน SSE) ไม่แตะ DB · persist เฉพาะสิ่งที่ควร persist จริง (product_sets, overlay config, accounts) ผ่าน migration</div>
       </div>
 
       <div class="hack-card perf" data-label="Security">
-        <span class="emoji">&#128273;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
         <h3>credential ต่อบัญชีต้องไม่รั่ว</h3>
         <p>cookie/credential ของแต่ละ identity คือความลับชั้นสูงสุด — เก็บ plaintext หรือ log ออกมาเมื่อไหร่คือจบ</p>
         <div class="highlight">แก้: vault envelope encryption (AES-256 ผ่าน OS keychain) เก็บ secret ทุกตัว · log แค่ <code>length</code> ไม่เคย log ค่า · desktop↔backend ใช้ per-machine key (constant-time bearer, loopback เท่านั้น) แทน static key ที่ hardcode ไว้</div>
@@ -1155,7 +1355,7 @@
     <div class="mascot-half">
       <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
     </div>
-    <h2>Takra Rerun</h2>
+    <h2>แอป re-broadcast</h2>
     <p>เดสก์ท็อป control room สำหรับ live commerce ที่แพ็ก Go backend, ffmpeg engine และ React SPA เข้ามาเป็นแอปเดียวติดตั้งง่าย — วนคลิปที่บันทึกไว้ออกเป็นไลฟ์อย่างเสถียร พร้อม overlay, chat สด และปักตะกร้าอัตโนมัติผ่าน browser oracle โดยข้อมูลไม่ต้องออกจากเครื่องผู้ใช้</p>
     <div class="stack-icons">
       <span class="stack-icon">Electron</span>
@@ -1202,8 +1402,8 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Takra Rerun Portfolio",
-      "item": "https://projects.tanplanet.info/takra-rerun-portfolio/"
+      "name": "แอป re-broadcast Portfolio",
+      "item": "https://projects.tanplanet.info/live-rebroadcast-portfolio/"
     }
   ]
 }

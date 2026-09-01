@@ -694,14 +694,214 @@
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">🎞️</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         Internal Tool &middot; AI Video Pipeline &middot; React + Bun
@@ -742,27 +942,27 @@
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#128176;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
         <h3>ผลิตช้าและแพง — จ้างถ่าย+ตัดต่อทุกคลิป</h3>
         <p>วิดีโอขายของแต่ละตัวต้องมีคนถ่าย คนตัดต่อ กว่าจะได้คลิปเดียวก็กินเวลาและงบ — พอต้องเทสต์คอนเทนต์หลายเวอร์ชัน ยิ่งไม่คุ้ม</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#9201;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
         <h3>สคริปต์ต้องพูดจบพอดีเวลา</h3>
         <p>คลิปแนวตั้งต้องจบใน ~15-30 วิ — เขียนสคริปต์ให้ยาวพอดี ไม่ล้น ไม่โล่ง เป็นงานที่ต้องลองผิดลองถูกหลายรอบ</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#127919;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         <h3>keyword ต้องเด้งตรงจังหวะที่พูด</h3>
         <p>วิดีโอ UGC ที่ดูดีต้องมีคำสำคัญเด้งบนจอ "ตรงคำ" ที่พรีเซนเตอร์พูดพอดี — sync ด้วยมือในตัวตัดต่อ ทำทีละคลิปนานมาก</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#129513;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
         <h3>เครื่องมือ AI หลายตัวไม่คุยกัน</h3>
         <p>gen รูปอยู่ที่หนึ่ง พากย์เสียงอีกที่ ตัดต่ออีกที่ — ต้องเอา output แต่ละตัวมาต่อมือเอง เสียเวลาและพลาดง่าย</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128273;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
         <h3>เรียก AI ตรงจาก browser = key หลุด</h3>
         <p>ถ้าให้หน้าเว็บยิง OpenAI / ElevenLabs ตรงๆ API key จะโผล่ใน network — เป็นเครื่องมือภายในก็ยอมให้หลุดไม่ได้</p>
       </div>
@@ -779,27 +979,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#127916;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
         <h3>AI Director วาง "shot plan" ให้</h3>
         <p>OpenAI แตก brief เป็นแผนช็อตแบบ JSON — แต่ละช็อตกำหนดชนิด (โคลสอัป/มุม/พรีเซนเตอร์), ความยาว, ประโยคพากย์ และ <code>keyword</code> ที่จะเด้ง แล้ว validate schema กันเพี้ยน</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#9997;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 21h8"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
         <h3>สคริปต์ไทยยาวพอดีเวลา</h3>
         <p>คำนวณจำนวนตัวอักษรตามวินาที (ไทยพูด ~8 ตัว/วินาที) ให้ AI เขียนบทพูดที่ "พูดจบพอดี" ในความยาวที่ตั้ง ไม่ล้นไม่โล่ง</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128257;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>
         <h3>keyword sync อัตโนมัติจาก timestamp</h3>
         <p>ElevenLabs คืน timestamp ของ "ทุกตัวอักษร" — เดินตัวชี้บน alignment หาว่าแต่ละประโยคเริ่ม/จบวินาทีไหน แล้วให้ keyword เด้งตรงจังหวะนั้นเป๊ะ</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128279;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         <h3>ต่อ AI 4 ตัวเป็นสายเดียว</h3>
         <p>OpenAI → Higgsfield → ElevenLabs → Remotion ทำงานต่อเนื่องเป็น pipeline เดียว — อัปรูป กด Generate ครั้งเดียว ได้ .mp4 ออกมา ไม่ต้องต่อมือ</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128272;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>Bun server ซ่อน key หลังบ้าน</h3>
         <p>ทุก API call วิ่งผ่าน Bun server ที่อ่าน key จาก <code>.env</code> — browser ไม่เคยเห็น key เลย ทั้งยังใช้ server รัน Higgsfield CLI + Remotion ที่ browser ทำเองไม่ได้</p>
       </div>
@@ -817,25 +1017,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#128228;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
         <h4>อัป &amp; ตั้งค่า</h4>
         <p>อัปรูปสินค้า + เลือกพรีเซนเตอร์ + พิมพ์ brief/สคริปต์ + ตั้งขนาด/ความยาว</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#127916;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
         <h4>AI วางแผน &amp; สร้าง</h4>
         <p>OpenAI วาง shot plan → Higgsfield แตกรูปมุม แล้วเติม motion ให้เป็นคลิป</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#128266;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>
         <h4>พากย์ &amp; sync</h4>
         <p>ElevenLabs พากย์ไทย + timestamp → map keyword ให้ตรงจังหวะที่พูด</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#127916;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
         <h4>ตัดต่อ &amp; render</h4>
         <p>Remotion ประกอบคลิป+เสียง+keyword → .mp4 (ส่งงานแล้ว poll จนเสร็จ)</p>
       </div>
@@ -894,7 +1094,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมเลือก stack นี้?</strong>
       <p><strong>React + Bun bundler</strong> — อยาก component-based แต่ไม่อยากลง Vite/Next; Bun bundle + HMR + CSS ให้ครบในตัว รันทั้ง frontend และ backend ด้วยคำสั่งเดียว &middot; <strong>Bun.serve() ตัวเดียว</strong> เสิร์ฟทั้ง frontend และ API — ลด moving parts &middot; <strong>async job + poll</strong> เพราะ gen ใช้เวลาเป็นนาที ถ้าถือ HTTP request ค้าง idle-timeout จะตัดก่อน &middot; <strong>Higgsfield CLI + Remotion render</strong> รันบน browser ไม่ได้ ต้องมี server shell out ให้ &middot; <strong>key อยู่ใน <code>.env</code> หลังบ้าน</strong> ไม่หลุดสู่ browser</p>
     </div>
@@ -910,42 +1110,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#127916;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
         <h3>AI Director (Shot Plan)</h3>
         <p>OpenAI วางแผนช็อตเป็น JSON (ชนิด/ความยาว/ประโยค/keyword) + <code>validatePlan()</code> กัน schema เพี้ยน และ sync ความยาวรวมให้ตรงผลรวมช็อต</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#9997;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 21h8"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
         <h3>Thai Script Writer</h3>
         <p><code>draftFullScript()</code> คำนวณตัวอักษร/วินาที ให้ AI ร่างบทพูดไทยที่พูดจบพอดีเวลา — auto-sync ความยาวคลิปตามบทที่พิมพ์</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128444;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
         <h3>Angle Image Gen</h3>
         <p>Higgsfield <code>nano_banana_2</code> แตกรูปสินค้าหลายมุมจากรูปเดียว — prompt เฉพาะต่อชนิดช็อต (โคลสอัป / flat-lay / มือถือสินค้า)</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127909;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
         <h3>Image → Video (i2v)</h3>
         <p><code>seedance1_5</code> เติม motion ให้รูปมุมกลายเป็นคลิปสั้น — motion prompt คุมให้ขยับพอดี ไม่ให้ภาพ morph เพี้ยน</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128266;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>
         <h3>Voice + Char Timestamp</h3>
         <p>ElevenLabs <code>eleven_v3</code> พากย์ไทย + คืน timestamp ทุกตัวอักษร (with-timestamps) — กุญแจของการ sync keyword</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127918;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>
         <h3>Keyword Sync Compositor</h3>
         <p>Remotion ตัดสลับช็อตตาม timeline + ทำ keyword เด้งบนจอตรงช่วงที่ประโยคนั้นถูกพูด พร้อม hook เปิดคลิปและ sfx</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#129321;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>
         <h3>3 Output Templates</h3>
         <p>avatar (พรีเซนเตอร์ lip-sync ช็อตเดียว) / full / no-person + เลือกอัตราส่วน 9:16 · 1:1 · 16:9 และ resolution</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#9203;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
         <h3>Async Job + Poll</h3>
         <p>ส่งงานคืน jobId ทันที แล้ว client poll สถานะทุก 5 วิ จนได้ mp4 — พร้อมแปล error ของ external ให้ผู้ใช้อ่านรู้เรื่อง</p>
       </div>
@@ -1003,42 +1203,42 @@
 
     <div class="hack-grid">
       <div class="hack-card arch" data-label="Async Jobs">
-        <span class="emoji">&#9203;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
         <h3>gen ใช้เวลาเป็นนาที — HTTP request เดียวถือไม่ไหว</h3>
         <p>สร้างวิดีโอทั้งตัวใช้เวลาหลายนาที ถ้าถือ connection ค้างรอผล idle-timeout จะตัดก่อนเสมอ</p>
         <div class="highlight">แก้: แยก "ส่งงาน" ออกจาก "รอผล" — <code>/api/generate</code> คืน jobId ทันที เก็บสถานะใน in-memory map, client <code>poll</code> <code>/api/status</code> ทุก 5 วิ; ตั้ง idleTimeout สูงเฉพาะช่วง upload รูป</div>
       </div>
 
       <div class="hack-card platform" data-label="Server-side">
-        <span class="emoji">&#128421;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
         <h3>Higgsfield CLI + Remotion render รันบน browser ไม่ได้</h3>
         <p>ขั้น gen ฟุตเทจและ render ต้องเรียก CLI / spawn process — สิ่งที่หน้าเว็บทำเองไม่ได้เลย</p>
         <div class="highlight">แก้: Bun server เป็นตัว <code>spawn</code> CLI + <code>bunx remotion render</code> ให้ แล้ว pre-warm Remotion Studio ไว้ล่วงหน้า (fixed port) เพื่อให้ปุ่ม Edit เปิดแท็บได้ทันทีหลัง render เสร็จ</div>
       </div>
 
       <div class="hack-card precision" data-label="Timestamp Sync">
-        <span class="emoji">&#127919;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         <h3>keyword ต้องเด้ง "ตรงคำ" ที่พูดพอดี</h3>
         <p>รู้แค่ข้อความไม่พอ — ต้องรู้ว่าแต่ละประโยคเริ่ม/จบวินาทีที่เท่าไหร่ในเสียงจริง</p>
         <div class="highlight">แก้: TTS ทุกบรรทัดเป็นก้อนเดียว แล้วเดินตัวชี้ตัวอักษรบน alignment หา start/end ของแต่ละ line → โชว์ keyword แทน text; ใช้ความยาวเสียงจริงจาก <code>ffprobe</code> + tail กันคำท้ายลากเสียงโดนตัด</div>
       </div>
 
       <div class="hack-card perf" data-label="Flaky API">
-        <span class="emoji">&#128260;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
         <h3>external ล่มเป็นครั้ง (429 / timeout / reach ไม่ได้)</h3>
         <p>Higgsfield เป็น service ภายนอกที่มี blip เป็นครั้งคราว — พลาดทีเดียวทำทั้ง render พังทั้งตัว</p>
         <div class="highlight">แก้: <code>withRetry()</code> backoff 3 ครั้ง ห่อทุก external call + gen ช็อตแบบขนานด้วย <code>Promise.all</code> (รูปมุม+เสียงพร้อมกัน) + แปล error ดิบเป็นข้อความไทยที่ผู้ใช้อ่านรู้เรื่อง</div>
       </div>
 
       <div class="hack-card ux" data-label="Thai TTS">
-        <span class="emoji">&#128483;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.8 20v-4.1l1.9.2a2.3 2.3 0 0 0 2.164-2.1V8.3A5.37 5.37 0 0 0 2 8.25c0 2.8.656 3.054 1 4.55a5.77 5.77 0 0 1 .029 2.758L2 20"/><path d="M19.8 17.8a7.5 7.5 0 0 0 .003-10.603"/><path d="M17 15a3.5 3.5 0 0 0-.025-4.975"/></svg>
         <h3>โมเดลอ่านคำไทยบางคำเพี้ยน</h3>
         <p>ชื่อแบรนด์อังกฤษ/คำที่ลากเสียง TTS ออกเสียงผิด — ฟังแล้วไม่เป็นธรรมชาติ ทำลายความน่าเชื่อของคลิป</p>
         <div class="highlight">แก้: <code>fixThaiPron()</code> แก้คำอ่านในบทพูดก่อนพากย์ (timing คำนวณจากข้อความที่แก้แล้ว ตัวอักษรจึงตรงกับ alignment เสมอ) + เลือก <code>eleven_v3</code> ซึ่งเป็นโมเดลที่รองรับไทยได้ดีสุด</div>
       </div>
 
       <div class="hack-card devops" data-label="Scope Cut">
-        <span class="emoji">&#9986;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
         <h3>lip-sync คือส่วนที่ยากและเสี่ยงสุด</h3>
         <p>ให้ปากพรีเซนเตอร์ขยับตรงเสียงเป๊ะทั้งคลิปคือเดิมพันที่พังง่ายและกิน budget generation มาก</p>
         <div class="highlight">แก้: v1 จงใจ "เลี่ยง" — ตัดสลับช็อตสินค้า/มือถือสินค้า (ตอนโชว์สินค้าไม่เห็นปาก lip-sync ไม่สำคัญ) พึ่งเสียงพากย์ + keyword เป็นหลัก แล้วเก็บ "ดู reference จริง" ไว้ v2 — บทเรียน: ตัดส่วนเสี่ยงสุดออกก่อน พิสูจน์ทั้ง chain ให้ทำงานจริงให้ได้</div>

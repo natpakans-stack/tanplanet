@@ -758,14 +758,214 @@
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">🐥</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         LINE Chatbot &middot; LIFF Forms &middot; Group Chat
@@ -807,27 +1007,27 @@
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#9200;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/><path d="M6.38 18.7 4 21"/><path d="M17.64 18.67 20 21"/></svg>
         <h3>เวลาให้อาหารต้องตรงเป๊ะ — แต่ลืมง่าย</h3>
         <p>ไก่สาวต้องกินตรงเวลา 06:00 / 10:00 / 16:00 ทุกวัน — ถ้าเลื่อนเป็นชั่วโมง production lay ตก ไก่เครียด คนงานจำเองยาก โดยเฉพาะวันหยุดหรือเพิ่งจ้างใหม่</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128221;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg>
         <h3>รายงานกระจาย จดมือ-แชต-กระดาษ</h3>
         <p>"วันนี้ใช้กี่กระสอบ" "ไก่ตายโรงไหนกี่ตัว" — บางคนพิมพ์ในแชต บางคนจดสมุด พอจะรวมรายเดือนหาไม่เจอ เปรียบเทียบมื้อต่อมื้อไม่ได้</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128202;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
         <h3>เจ้าของไม่รู้ realtime ว่าเกิดอะไรขึ้น</h3>
         <p>คนงานอาจยังไม่ได้ให้อาหารแต่บอกว่าให้แล้ว — หรือมื้อนี้กินไม่หมดแต่ไม่ได้แจ้ง เจ้าของรู้ตอนเข้าฟาร์มหรือพรุ่งนี้ ซึ่งสายแล้ว</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#129488;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
         <h3>คนงานไม่อยากใช้แอปใหม่</h3>
         <p>คนงานฟาร์มคุ้น LINE มาก แต่ไม่อยากโหลดแอปเฉพาะทาง โหลดเสร็จลืม password ลืมว่าใช้ยังไง — UX ต้องอยู่ในที่ที่เขาใช้อยู่แล้ว</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128203;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
         <h3>เจ้าของอยากดูข้อมูลแบบสเปรดชีต ไม่ใช่ dashboard ลึกๆ</h3>
         <p>เจ้าของฟาร์มต้องการดูข้อมูลดิบ แก้เองได้ ส่งให้บัญชี/สัตวแพทย์ได้ทันที — ไม่ต้องการ admin panel ที่ซับซ้อน</p>
       </div>
@@ -843,27 +1043,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#128276;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
         <h3>บอทเตือนเข้ากลุ่ม LINE ทุกมื้อ</h3>
         <p>เพิ่มบอท "ลูกเจี๊ยบ" เข้ากลุ่มฟาร์มที่คนงานอยู่อยู่แล้ว — 05:45 ส่ง bubble พร้อมจำนวนกระสอบที่เจ้าของวางแผน 08:00 ส่ง bubble ให้กรอกรายงาน ครบ 3 มื้อ/วัน</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128241;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
         <h3>กรอกฟอร์มใน LINE ตรงๆ — ไม่ต้องโหลดแอป</h3>
         <p>ใช้ LIFF (LINE Front-end Framework) — กดปุ่มใน bubble แล้วเปิดฟอร์มในแอป LINE เลย ไม่ต้องสมัคร ไม่ต้อง login ไม่ต้องโหลดอะไรเพิ่ม</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128202;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
         <h3>Google Sheet เป็น source of truth</h3>
         <p>ทุกแผน ทุกรายงาน ทุก log ถูก append ลง Google Sheet — เจ้าของเปิดดูเองได้ แก้ filter sort export เป็น Excel ก็ได้ ไม่ต้องเรียนรู้ระบบใหม่</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#9989;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
         <h3>Confirmation dialog กันกรอกผิด</h3>
         <p>ก่อน submit ทุกฟอร์ม → modal สรุปข้อมูลทั้งหมด (6 ค่า + วันที่ + รวม) ให้กดยืนยันอีกครั้ง — เพราะคนงานกรอกบนมือถือพลาดง่าย แก้ทีหลังใน Sheet ก็ลำบาก</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#127919;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         <h3>เมนูเรียกเฉพาะคำว่า "เมนูหลัก"</h3>
         <p>บอทอยู่ในกลุ่มที่คนงานคุยกันปกติ — ถ้าตอบทุกข้อความจะรบกวน ใช้ keyword "เมนูหลัก" เป็น trigger เดียว ทำให้บอทเงียบเป็นธรรมชาติเหมือนสมาชิกในกลุ่ม</p>
       </div>
@@ -880,25 +1080,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#127769;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
         <h4>Owner วางแผน</h4>
         <p>กลางคืน Owner กรอก 3 มื้อ × 2 โรง สำหรับวันรุ่งขึ้น</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#128276;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
         <h4>Bot เตือนคนงาน</h4>
         <p>05:45 ส่ง bubble จำนวนกระสอบ พร้อมปุ่ม "เริ่มให้อาหาร"</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#128221;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg>
         <h4>คนงานกรอกรายงาน</h4>
         <p>08:00 bot ส่ง bubble กรอก → คนงานกด → กรอก 6 ช่อง</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#128202;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
         <h4>เก็บใน Sheet</h4>
         <p>ข้อมูลเข้า Sheet ทันที + คำนวณ duration/delay อัตโนมัติ</p>
       </div>
@@ -959,7 +1159,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมเลือก stack นี้?</strong>
       <p><strong>LINE LIFF</strong> ทำให้ฟอร์มเปิดในแอป LINE เลย — ไม่ต้องโหลดแอป ไม่ต้อง login เพิ่ม &middot; <strong>Google Sheets API</strong> เป็น database ที่ Owner เปิดดูเองได้แบบ native — ไม่ต้องสร้าง admin UI แยก &middot; <strong>Vercel Hobby</strong> ฟรี + auto deploy จาก git push &middot; <strong>cron-job.org</strong> ฟรี ยิงทุก 1 นาที (Vercel Hobby cron จำกัด 2 jobs/day ไม่พอ) — endpoint ตรวจเวลาเอง ครบ 6 trigger times/day</p>
     </div>
@@ -974,42 +1174,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#127834;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8"/><path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7"/><path d="m2.1 21.8 6.4-6.3"/><path d="m19 5-7 7"/></svg>
         <h3>กำหนดอาหาร 3 มื้อ (Owner)</h3>
         <p>Grid table 3 มื้อ × 2 โรง — เห็นพร้อมกันใน 1 viewport พร้อมรวมยอด + confirm dialog ก่อน save 6 rows</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128221;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg>
         <h3>กรอกรายงาน (คนงาน)</h3>
         <p>6 ช่อง (กระสอบ/ตาย/ป่วย × 2 โรง) + note — คำนวณ duration/delay เทียบกับเวลา target อัตโนมัติ</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#129514;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></svg>
         <h3>บันทึกการผสมอาหาร</h3>
         <p>สูตร + จำนวนที่ผสมได้ + หมายเหตุ — เก็บ log แยก tab เพื่อ track stock</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128202;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
         <h3>ดูรายงาน (Owner)</h3>
         <p>การ์ดเปิด Google Sheet ตรงๆ — Owner ดูข้อมูลดิบ filter sort export ได้ทันที</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128238;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9.5C2 7 4 5 6.5 5H18c2.2 0 4 1.8 4 4v8Z"/><polyline points="15,9 18,9 18,11"/><path d="M6.5 5C9 5 11 7 11 9.5V17a2 2 0 0 1-2 2"/><line x1="6" x2="7" y1="10" y2="10"/></svg>
         <h3>Carousel Menu</h3>
         <p>Flex carousel 4 cards เรียงตามมุมมอง Owner-first (กำหนด → ผสม → ดูรายงาน → กรอก) — trigger ด้วยคำว่า "เมนูหลัก"</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128276;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
         <h3>Instruction &amp; Report Bubble</h3>
         <p>Flex bubble 2 ชนิด — instruction (พร้อมจำนวนกระสอบ + ปุ่มเริ่ม) และ report reminder (ปุ่มเปิด LIFF กรอก)</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128340;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         <h3>Scheduler + Dedup</h3>
         <p>endpoint ตรวจเวลา Bangkok ทุกนาที ยิง bubble ตาม schedule + ใช้ reminder_log กัน double-send</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128101;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
         <h3>Group Chat Support</h3>
         <p>บอทเข้ากลุ่ม LINE ได้ — register groupId อัตโนมัติตอน join + push ไป group แทน loop users</p>
       </div>
@@ -1089,42 +1289,42 @@
 
     <div class="hack-grid">
       <div class="hack-card ux" data-label="UX">
-        <span class="emoji">&#128317;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
         <h3>LIFF Tall size — 6 fields ใน 1 viewport</h3>
         <p>เลือก LIFF size = Tall (~675px ใช้งานได้) แต่ Owner ต้องกรอก 3 มื้อ × 2 โรง = 6 ช่อง พร้อมกัน ถ้า scroll เยอะ keyboard ขึ้นบัง row ล่าง</p>
         <div class="highlight">แก้: Grid table layout (3 rows × 2 cols) แทน 6 input field แยก — ใช้ vertical space น้อยกว่าครึ่ง + เห็น overview ทั้งวันในที่เดียว + total cell คำนวณ realtime ที่ด้านล่าง</div>
       </div>
 
       <div class="hack-card platform" data-label="LINE Platform">
-        <span class="emoji">&#127919;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         <h3>Bot ในกลุ่ม — ตอบทุกข้อความ = รบกวน</h3>
         <p>บอทอยู่ในกลุ่มที่คนงานคุยกันปกติ — ถ้าตอบทุก text message (คำสั่ง "สวัสดี" "เมื่อไหร่" ฯลฯ) จะกลายเป็น spam ทันที</p>
         <div class="highlight">แก้: ใน webhook handler — เช็ค <code>event.message.text.trim() === "เมนูหลัก"</code> เป็น trigger เดียว ข้อความอื่น bot เงียบ 100% ผลคือบอทเงียบเป็นธรรมชาติเหมือนสมาชิกในกลุ่ม แค่เรียกตอนจะใช้</div>
       </div>
 
       <div class="hack-card arch" data-label="LINE Limit">
-        <span class="emoji">&#128101;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
         <h3>Push ไป group ไม่ใช่ loop users</h3>
         <p>คนงานในกลุ่มไม่ได้ add bot 1-on-1 → LINE block การ <code>pushMessage</code> หา <code>userId</code> ตรงๆ → scheduler ส่ง bubble ให้ทุกคนไม่ได้</p>
         <div class="highlight">แก้: เปลี่ยน design — webhook handle <code>join</code> event บันทึก <code>groupId</code> ลง sheet tab <code>groups</code> → scheduler push ไป <code>groupId</code> (ส่งครั้งเดียว ทุกคนในกลุ่มเห็น) ใน postback ยังจับ <code>userId</code> ของคนกดได้ปกติ — ได้ทั้ง broadcast efficiency + member identification</div>
       </div>
 
       <div class="hack-card precision" data-label="Data Quality">
-        <span class="emoji">&#128197;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
         <h3>Timestamp อ่านยาก ใน Sheet</h3>
         <p>ครั้งแรกเก็บเป็น ISO UTC (<code>2026-05-24T06:55:38.824Z</code>) — Owner เปิด Sheet อ่านไม่รู้เรื่อง ต้องคำนวณ +7 ทุกครั้ง</p>
         <div class="highlight">แก้: <code>formatBangkokTimestamp()</code> ใช้ <code>Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Bangkok" })</code> ให้ format <code>YYYY-MM-DD HH:mm:ss</code> ตรงตามเวลาไทยที่ Owner เข้าใจทันที + <code>parseBangkokTimestamp()</code> สำหรับคำนวณ duration/delay กลับเป็น Date + migration script update ข้อมูลเก่าให้เป็น format ใหม่ (idempotent)</div>
       </div>
 
       <div class="hack-card devops" data-label="Scheduler">
-        <span class="emoji">&#9201;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
         <h3>Vercel Hobby cron จำกัด 2 jobs/day</h3>
         <p>ต้องการ trigger 6 ครั้ง/วัน (5:45 / 8:00 / 9:45 / 11:00 / 15:45 / 18:00) — Vercel Hobby plan ให้แค่ 2 cron jobs/day ไม่พอ</p>
         <div class="highlight">แก้: ออกแบบ scheduler endpoint ให้ตรวจเวลาเองภายใน (<code>bangkokNow().time</code>) → ใช้ <code>cron-job.org</code> (ฟรี ยิงทุก 1 นาทีได้) ยิง 1,440 ครั้ง/วัน → endpoint ตอบ <code>due=0</code> เฉพาะตอนไม่ตรงเวลา (95% ของเวลา) — ไม่เปลือง LINE quota เลย รองรับการเพิ่ม schedule ในอนาคตได้โดยไม่ต้องแก้ cron config</div>
       </div>
 
       <div class="hack-card perf" data-label="DX">
-        <span class="emoji">&#129327;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
         <h3>Next.js 16 Turbopack + bun ทำเครื่องค้าง</h3>
         <p>ตอน dev — <code>bun dev</code> (Turbopack default) + ngrok + traffic เข้า → MacBook ค้าง kernel panic ต้อง force reboot 2 ครั้งติด</p>
         <div class="highlight">แก้: สลับเป็น <code>next dev --webpack</code> (Next.js 16 ยัง support) — RSS 2.3GB ใช้งานได้ stable + เก็บ Turbopack ไว้ใน script สำรอง <code>dev:turbo</code> สำหรับลองใหม่ตอน upgrade Next.js version ภายหลัง บทเรียน: tech stack ใหม่ๆ ต้องมี fallback path เสมอ</div>

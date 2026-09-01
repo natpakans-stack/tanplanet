@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TAKRA Landing Page — เว็บการตลาด AI ไลฟ์ขายของ (Vue 3 + Vite SSG)</title>
+  <title>เว็บการตลาดไลฟ์คอมเมิร์ซ — Vue 3 + Vite SSG ที่ crawler อ่านออก</title>
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="TAKRA Landing Page — เว็บการตลาด AI ไลฟ์ขายของ (Vue 3 + Vite SSG)">
-  <meta name="twitter:description" content="Portfolio: เว็บการตลาดของ TAKRA — migrate template HTML/jQuery → Vue 3 + Vite SSG ที่ prerender ทุกหน้าเป็น static, ใส่ SEO + JSON-LD ต่อ route, และแทนภาพนิ่งด้วย component โต้ตอบจริง">
-  <meta property="og:url" content="https://projects.tanplanet.info/takra-landing-portfolio/">
+  <meta name="twitter:title" content="เว็บการตลาดไลฟ์คอมเมิร์ซ — Vue 3 + Vite SSG ที่ crawler อ่านออก">
+  <meta name="twitter:description" content="Portfolio: เว็บการตลาดของ แพลตฟอร์มไลฟ์ AI Avatar — migrate template HTML/jQuery → Vue 3 + Vite SSG ที่ prerender ทุกหน้าเป็น static, ใส่ SEO + JSON-LD ต่อ route, และแทนภาพนิ่งด้วย component โต้ตอบจริง">
+  <meta property="og:url" content="https://projects.tanplanet.info/live-commerce-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/takra-landing-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.info/live-commerce-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:description" content="Portfolio: เว็บการตลาดของ TAKRA — migrate template HTML/jQuery → Vue 3 + Vite SSG ที่ prerender ทุกหน้าเป็น static, ใส่ SEO + JSON-LD ต่อ route, และแทนภาพนิ่งด้วย component โต้ตอบจริง">
-  <meta property="og:title" content="TAKRA Landing Page — เว็บการตลาด AI ไลฟ์ขายของ (Vue 3 + Vite SSG)">
-  <meta name="description" content="Portfolio: เว็บการตลาดของ TAKRA — migrate template HTML/jQuery → Vue 3 + Vite SSG ที่ prerender ทุกหน้าเป็น static, ใส่ SEO + JSON-LD ต่อ route, และแทนภาพนิ่งด้วย component โต้ตอบจริง">
+  <meta property="og:description" content="Portfolio: เว็บการตลาดของ แพลตฟอร์มไลฟ์ AI Avatar — migrate template HTML/jQuery → Vue 3 + Vite SSG ที่ prerender ทุกหน้าเป็น static, ใส่ SEO + JSON-LD ต่อ route, และแทนภาพนิ่งด้วย component โต้ตอบจริง">
+  <meta property="og:title" content="เว็บการตลาดไลฟ์คอมเมิร์ซ — Vue 3 + Vite SSG ที่ crawler อ่านออก">
+  <meta name="description" content="Portfolio: เว็บการตลาดของ แพลตฟอร์มไลฟ์ AI Avatar — migrate template HTML/jQuery → Vue 3 + Vite SSG ที่ prerender ทุกหน้าเป็น static, ใส่ SEO + JSON-LD ต่อ route, และแทนภาพนิ่งด้วย component โต้ตอบจริง">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23db2777'/><text x='50' y='62' text-anchor='middle' font-size='54'>🚀</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -673,20 +673,220 @@
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">🚀</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         Marketing Site &middot; Vue 3 &middot; Vite SSG
       </div>
-      <h1>TAKRA Landing Page<br><span class="accent">เว็บการตลาด AI ไลฟ์ขายของ — Vue 3 + Vite SSG ที่ crawler อ่านออก คนก็ลื่น</span></h1>
-      <p>เว็บการตลาดของ TAKRA (ระบบ AI คุมไลฟ์ขายของ) — ยก template <code>HTML/jQuery</code> ที่ซื้อมา ขึ้น Vue 3 SPA แล้ว <code>prerender</code> ทุกหน้าเป็น static, ใส่ SEO + structured data ต่อ route, และแทนภาพนิ่งด้วย component โต้ตอบจริง</p>
+      <h1>เว็บการตลาดไลฟ์คอมเมิร์ซ<br><span class="accent">Vue 3 + Vite SSG ที่ crawler อ่านออก</span></h1>
+      <p>เว็บการตลาดของ แพลตฟอร์มไลฟ์ AI Avatar (ระบบ AI คุมไลฟ์ขายของ) — ยก template <code>HTML/jQuery</code> ที่ซื้อมา ขึ้น Vue 3 SPA แล้ว <code>prerender</code> ทุกหน้าเป็น static, ใส่ SEO + structured data ต่อ route, และแทนภาพนิ่งด้วย component โต้ตอบจริง</p>
       <div class="hero-tags">
         <span class="hero-tag">Vue 3</span>
         <span class="hero-tag">Vite SSG</span>
@@ -716,32 +916,32 @@
 
     <div class="quote-block">
       <p>Template ที่ซื้อมาเป็น static <code>HTML</code> + jQuery + GSAP — สวยแต่เป็นหน้าเดียว ไม่มี route, ไม่มี SEO ต่อหน้า, ทุก section เป็นรูป <code>.jpg</code> ภาพนิ่ง พอจะทำเว็บจริงหลายหน้า + ให้ Google index ครบ + มี element โต้ตอบ ก็ต้องรื้อทั้งงาน</p>
-      <div class="author">— โจทย์ตั้งต้น ก่อน migrate TAKRA Landing Page</div>
+      <div class="author">— โจทย์ตั้งต้น ก่อน migrate เว็บการตลาด</div>
     </div>
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#129513;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
         <h3>Template เป็น static HTML หน้าเดียว</h3>
         <p>หลาย service page (AI / Insight / Rerun) ต้อง copy โครง HTML ซ้ำ — แก้ header/footer ทีต้องไล่แก้ทุกไฟล์ ดูแลไม่ไหว</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128269;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
         <h3>SPA ปกติ crawler เห็นหน้าว่าง</h3>
         <p>ถ้าเปลี่ยนเป็น Vue เฉย ๆ Google เปิดมาเจอแค่ <code>&lt;div id="app"&gt;</code> เปล่า — content ถูก render ด้วย JS ทีหลัง SEO พังทันที</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128444;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
         <h3>ทุก section เป็นรูปภาพนิ่ง</h3>
         <p>dashboard สินค้าเป็น <code>.jpg</code> โหลดช้า ดูไม่มีชีวิต และแก้ตัวเลขทีต้อง export รูปใหม่ทุกครั้ง</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#127760;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
         <h3>โดเมนซ้ำ apex กับ www</h3>
         <p><code>yourdomain.com</code> กับ <code>www.yourdomain.com</code> ตอบ 200 ทั้งคู่ — Google เห็นเป็น 2 เว็บ (duplicate content) คะแนน SEO ถูกหารแยกกัน</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#127850;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/></svg>
         <h3>ต้องมี cookie consent (PDPA)</h3>
         <p>โหลด 3rd-party (แผนที่ฝัง) ก่อนผู้ใช้กดยินยอมไม่ได้ — ผิด พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคลของไทย</p>
       </div>
@@ -758,27 +958,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#128196;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
         <h3>Vue 3 + vue-router หลาย route</h3>
         <p>component เดียว reuse ทุกหน้า (header/footer/section) — แก้ที่เดียวมีผลทุกที่ เพิ่ม service page ใหม่ได้ไวโดยไม่ copy โครงซ้ำ</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#9889;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
         <h3>vite-ssg prerender ทุก route</h3>
         <p>build ออกมาเป็น HTML static เต็มหน้า — crawler เปิดมาเจอ content ครบ ส่วนผู้ใช้ได้ SPA ที่ <code>hydrate</code> ต่อลื่น ๆ</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#127899;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5H3"/><path d="M12 19H3"/><path d="M14 3v4"/><path d="M16 17v4"/><path d="M21 12h-9"/><path d="M21 19h-5"/><path d="M21 5h-7"/><path d="M8 10v4"/><path d="M8 12H3"/></svg>
         <h3>แทนรูปนิ่งด้วย component โต้ตอบ</h3>
         <p><code>InsightShowcase</code> เป็น dashboard จริง (motion-v + SVG) — แก้ตัวเลขในโค้ด ไม่ต้อง export รูป โหลดเบา คมทุกจอ</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#129517;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg>
         <h3>useHead ต่อ route + JSON-LD</h3>
         <p>title / description / canonical / OG + structured data (Organization / WebSite / Breadcrumb) ครบทุกหน้าแบบ declarative</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#127850;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/></svg>
         <h3>Cookie consent เองไม่พึ่ง lib</h3>
         <p>gate การโหลดแผนที่ไว้หลังผู้ใช้กด "ยอมรับ" เก็บสถานะใน <code>localStorage</code> รีเซ็ตได้ ตามหลัก PDPA</p>
       </div>
@@ -796,25 +996,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#129521;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect x="14" y="2" width="8" height="8" rx="1"/></svg>
         <h4>เขียน view + useHead</h4>
         <p>แต่ละหน้าเป็น Vue component ผูก meta (title/desc/canonical/OG) ของตัวเอง</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#127899;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5H3"/><path d="M12 19H3"/><path d="M14 3v4"/><path d="M16 17v4"/><path d="M21 12h-9"/><path d="M21 19h-5"/><path d="M21 5h-7"/><path d="M8 10v4"/><path d="M8 12H3"/></svg>
         <h4>ประกอบ component โต้ตอบ</h4>
         <p>dashboard / mockup / ticker เป็น HTML + motion-v ไม่ใช่รูปภาพ</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#9881;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
         <h4>vite-ssg build</h4>
         <p>render ทุก route เป็น static HTML + inject JSON-LD + gen-sitemap</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#128640;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg>
         <h4>deploy static</h4>
         <p>เสิร์ฟผ่าน CDN / nginx — ไม่มี server render ตอน request</p>
       </div>
@@ -873,7 +1073,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมเลือก stack นี้?</strong>
       <p><strong>Vue 3 + vite-ssg</strong> ให้ DX ของ SPA แต่ output เป็น static HTML ที่ crawler อ่านออก &middot; <strong>useHead (@unhead/vue)</strong> จัดการ meta ต่อ route แบบ declarative — ไม่ต้องแก้ <code>index.html</code> เอง &middot; <strong>motion-v</strong> ให้ animation สไตล์ Framer Motion บน Vue &middot; แยกเป็น <strong>monorepo</strong> (web / admin / api) ให้เว็บการตลาด (static) ไม่ปนกับหลังบ้าน (Vue TS + Express + Prisma) &middot; เว็บการตลาด <strong>ไม่มี backend runtime</strong> — เสิร์ฟไฟล์ static ล้วน โหลดไว แคชง่าย</p>
     </div>
@@ -889,42 +1089,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#128202;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
         <h3>Interactive Insight Dashboard</h3>
         <p>dashboard รายงานไลฟ์ (KPI + กราฟคนดู + คะแนนคุณภาพ) ทำด้วย <code>motion-v</code> + SVG reveal ด้วย IntersectionObserver</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#129517;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg>
         <h3>Per-Route SEO (useHead)</h3>
         <p>ทุกหน้ามี title / description / canonical / OG / Twitter ของตัวเอง inject ตอน SSG build</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#129516;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 16 1.5 1.5"/><path d="m14 8-1.5-1.5"/><path d="M15 2c-1.798 1.998-2.518 3.995-2.807 5.993"/><path d="m16.5 10.5 1 1"/><path d="m17 6-2.891-2.891"/><path d="M2 15c6.667-6 13.333 0 20-6"/><path d="m20 9 .891.891"/><path d="M3.109 14.109 4 15"/><path d="m6.5 12.5 1 1"/><path d="m7 18 2.891 2.891"/><path d="M9 22c1.798-1.998 2.518-3.995 2.807-5.993"/></svg>
         <h3>JSON-LD @graph</h3>
         <p>structured data Organization + WebSite + Breadcrumb ต่อหน้า — ปูทางให้ rich result บน Google</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128506;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></svg>
         <h3>Sitemap Generator</h3>
         <p><code>gen-sitemap.mjs</code> สร้าง <code>sitemap.xml</code> จาก seoRoutes อัตโนมัติหลัง build ทุกครั้ง</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127902;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></svg>
         <h3>Animated Components</h3>
         <p><code>StackTicker</code> (โลโก้วิ่งวน), <code>StepMockup</code> และ reveal animation จาก IntersectionObserver</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127850;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/></svg>
         <h3>PDPA Cookie Consent</h3>
         <p>state เอง (<code>localStorage</code>) gate การโหลด 3rd-party (แผนที่) ไว้หลัง consent — ไม่ใช้ lib ภายนอก</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128256;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></svg>
         <h3>Legacy .html → Clean Route</h3>
         <p>redirect ทุก <code>*.html</code> ของ template เดิมไป clean URL — refresh /contact.html ได้ + active-nav ยังทำงาน</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128241;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
         <h3>Mobile-First Responsive</h3>
         <p>chart / mockup ปรับจำนวน bar ตามจอด้วย <code>matchMedia</code> — layout ตอบสนองทุก breakpoint</p>
       </div>
@@ -941,7 +1141,7 @@
 
     <div class="ins-mockup">
       <div class="ins-head">
-        <div class="ins-brand"><span>&#129530;</span> Takra <b>Insight</b></div>
+        <div class="ins-brand"><span>&#129530;</span> แอป re-broadcast <b>Insight</b></div>
         <span class="ins-live"><i></i> รายงานไลฟ์ &middot; @your_shop</span>
       </div>
       <div class="ins-kpis">
@@ -991,42 +1191,42 @@
 
     <div class="hack-grid">
       <div class="hack-card arch" data-label="SSG">
-        <span class="emoji">&#128269;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
         <h3>SPA ทำให้ crawler เห็นหน้าว่าง</h3>
         <p>Vue SPA render content ด้วย JS ทีหลัง — bot ที่ไม่รัน JS เต็มที่จะเห็นแค่ <code>&lt;div id="app"&gt;</code> เปล่า SEO ตาย</p>
         <div class="highlight">แก้: ใช้ <code>vite-ssg</code> prerender ทุก route เป็น static HTML ตอน build (memory history ฝั่ง server, web history ฝั่ง client) แล้ว hydrate ต่อ — crawler เห็น content เต็ม ผู้ใช้ได้ SPA</div>
       </div>
 
       <div class="hack-card precision" data-label="Asset Paths">
-        <span class="emoji">&#127919;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         <h3>Vite rewrite path รูป/JS ของ template พัง</h3>
         <p>template ผูก asset กับ <code>/public</code> + <code>&lt;base href="/"&gt;</code> — Vite ปกติจะ bundle/hash asset ในเทมเพลต ทำให้ path เดิมพังหมด</p>
         <div class="highlight">แก้: ตั้ง <code>transformAssetUrls: { tags: {} }</code> ใน vue plugin — บอก Vite ให้ปล่อย src/href/url() เป็น literal runtime path ไม่แตะ ทำให้ assets ชุดเดิมของ template resolve ได้ตรง</div>
       </div>
 
       <div class="hack-card platform" data-label="Hydration">
-        <span class="emoji">&#128421;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
         <h3>component โต้ตอบรันบน SSR ไม่ได้</h3>
         <p>ตอน prerender ไม่มี <code>window</code> / DOM จริง — IntersectionObserver, matchMedia, motion เรียกตอน render จะ crash หรือ hydrate mismatch</p>
         <div class="highlight">แก้: ยิง observer / matchMedia ใน <code>onMounted</code> เท่านั้น + cleanup ใน onBeforeUnmount ให้ prerender ออก markup ตั้งต้น แล้วค่อย animate ตอน hydrate ฝั่ง client — SSR ผ่าน ไม่ mismatch</div>
       </div>
 
       <div class="hack-card ux" data-label="Duplicate Domain">
-        <span class="emoji">&#127760;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
         <h3>apex กับ www ตอบ 200 ทั้งคู่</h3>
         <p><code>yourdomain.com</code> และ <code>www.yourdomain.com</code> เสิร์ฟเหมือนกัน = duplicate content — Google หารคะแนน SEO / ลิงก์ / ผลแอด แยกกัน</p>
         <div class="highlight">แก้: ตั้ง <code>canonical</code>/<code>og:url</code> ใน useHead ชี้ apex เสมอ (คุมจาก <code>SITE_URL</code> ที่เดียว) + www→apex redirect ที่ชั้น ingress (301/308) — รวมสัญญาณ SEO เป็นก้อนเดียว</div>
       </div>
 
       <div class="hack-card devops" data-label="Legacy Links">
-        <span class="emoji">&#128256;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></svg>
         <h3>ลิงก์ในเนื้อหายังชี้ *.html</h3>
         <p>เนื้อหา/เมนูจาก template ยังลิงก์ <code>contact.html</code> — refresh หรือเปิดตรง /contact.html บน SPA แล้ว 404</p>
         <div class="highlight">แก้: gen redirect map จาก routes ทุกตัว — <code>/x.html → /x</code> — ให้ direct-load / refresh resolve ได้ แล้ว normalize URL เป็น clean path เพื่อให้ active-nav (match บน <code>$route.path</code>) ยังทำงาน</div>
       </div>
 
       <div class="hack-card perf" data-label="No-Image Data">
-        <span class="emoji">&#9889;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
         <h3>dashboard เดิมเป็นรูป .jpg โหลดช้า</h3>
         <p>โชว์ผลเป็นภาพ export — โหลดหนัก เบลอบนจอ retina และแก้ตัวเลขทีต้องออกรูปใหม่ทั้งใบ</p>
         <div class="highlight">แก้: วาด chart ด้วย SVG + data array ในโค้ด (เส้น trend ทำ Catmull-Rom → cubic bezier ให้โค้งลื่น), bar ปรับจำนวนตามจอด้วย matchMedia — บทเรียน: ข้อมูลที่ render เป็น HTML/SVG เบากว่า คมกว่า และแก้ในโค้ดจบ ไม่ต้อง export ภาพ</div>
@@ -1126,8 +1326,8 @@
     <div class="mascot-half">
       <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
     </div>
-    <h2>TAKRA Landing Page</h2>
-    <p>เว็บการตลาดของ TAKRA (ระบบ AI คุมไลฟ์ขายของ) — migrate จาก template HTML/jQuery ขึ้น Vue 3 + Vite SSG ที่ prerender ทุกหน้าเป็น static, ใส่ SEO + structured data ต่อ route และแทนภาพนิ่งด้วย component โต้ตอบจริง เร็ว ปลอดภัย ดูแลง่าย</p>
+    <h2>เว็บการตลาด</h2>
+    <p>เว็บการตลาดของ แพลตฟอร์มไลฟ์ AI Avatar (ระบบ AI คุมไลฟ์ขายของ) — migrate จาก template HTML/jQuery ขึ้น Vue 3 + Vite SSG ที่ prerender ทุกหน้าเป็น static, ใส่ SEO + structured data ต่อ route และแทนภาพนิ่งด้วย component โต้ตอบจริง เร็ว ปลอดภัย ดูแลง่าย</p>
     <div class="stack-icons">
       <span class="stack-icon">Vue 3</span>
       <span class="stack-icon">Vite SSG</span>
@@ -1172,8 +1372,8 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Takra Landing Page Portfolio",
-      "item": "https://projects.tanplanet.info/takra-landing-portfolio/"
+      "name": "Live Commerce Site Page Portfolio",
+      "item": "https://projects.tanplanet.info/live-commerce-portfolio/"
     }
   ]
 }

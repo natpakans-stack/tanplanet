@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Takra AI Monitoring — วิเคราะห์โฮสต์ไลฟ์คอมเมิร์ซ real-time (Computer Vision Research)</title>
+  <title>วิเคราะห์โฮสต์ไลฟ์คอมเมิร์ซ real-time — อ่านตัวตน–อารมณ์–engagement แบบ real-time</title>
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Takra AI Monitoring — วิเคราะห์โฮสต์ไลฟ์คอมเมิร์ซ real-time">
+  <meta name="twitter:title" content="วิเคราะห์โฮสต์ไลฟ์คอมเมิร์ซ real-time — อ่านตัวตน–อารมณ์–engagement แบบ real-time">
   <meta name="twitter:description" content="งานวิจัย Computer Vision: จับใบหน้า → ตัวตน → อารมณ์ → engagement ของโฮสต์ไลฟ์คอมเมิร์ซ แบบ real-time — Electron + React desktop + Python ML backend (MTCNN · FaceNet · ViT/FER+ · MediaPipe FaceMesh)">
-  <meta property="og:url" content="https://projects.tanplanet.info/takra-monitoring-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.info/host-monitor-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/takra-monitoring-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.info/host-monitor-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="งานวิจัย Computer Vision: จับใบหน้า → ตัวตน → อารมณ์ → engagement ของโฮสต์ไลฟ์คอมเมิร์ซ แบบ real-time — Electron + React desktop + Python ML backend (MTCNN · FaceNet · ViT/FER+ · MediaPipe FaceMesh)">
-  <meta property="og:title" content="Takra AI Monitoring — วิเคราะห์โฮสต์ไลฟ์คอมเมิร์ซ real-time">
+  <meta property="og:title" content="วิเคราะห์โฮสต์ไลฟ์คอมเมิร์ซ real-time — อ่านตัวตน–อารมณ์–engagement แบบ real-time">
   <meta name="description" content="งานวิจัย Computer Vision: จับใบหน้า → ตัวตน → อารมณ์ → engagement ของโฮสต์ไลฟ์คอมเมิร์ซ แบบ real-time — Electron + React desktop + Python ML backend (MTCNN · FaceNet · ViT/FER+ · MediaPipe FaceMesh)">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%230d9488'/><text x='50' y='62' text-anchor='middle' font-size='54'>📡</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -789,19 +789,219 @@
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">📡</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         AI Research &middot; Computer Vision &middot; Real-time
       </div>
-      <h1>Takra AI Monitoring<br><span class="accent">อ่านตัวตน–อารมณ์–engagement ของโฮสต์ไลฟ์คอมเมิร์ซ แบบ real-time</span></h1>
+      <h1>วิเคราะห์โฮสต์ไลฟ์คอมเมิร์ซ real-time<br><span class="accent">อ่านตัวตน–อารมณ์–engagement แบบ real-time</span></h1>
       <p>งานวิจัยภายใน (R&amp;D prototype) ที่ประกอบ 4 โมเดล Computer Vision เข้าเป็นไปป์ไลน์เดียว — จับใบหน้าจากไลฟ์ (แพลตฟอร์มไลฟ์คอมเมิร์ซ) → รู้จักตัวตน → อ่านอารมณ์ 7 คลาส → วัด engagement (ยิ้ม/พูด/มองกล้อง) → สรุปเป็น KPI สดและ session report ให้ทีมดูภาพรวมได้โดยไม่ต้องนั่งดูวิดีโอย้อนหลังเอง</p>
       <div class="hero-tags">
         <span class="hero-tag">Electron + React</span>
@@ -832,32 +1032,32 @@
 
     <div class="quote-block">
       <p>ทีม ops อยากเข้าใจว่าโฮสต์ไลฟ์แต่ละคน "อิน" กับกล้องแค่ไหน อารมณ์เป็นยังไงตลอด session แต่การให้คนมานั่งดูวิดีโอย้อนหลังหลายชั่วโมงแล้วให้คะแนนเอง มันช้า ไม่ทัน และ subjective — โจทย์คือทำให้ metric พวกนี้ "อ่านได้ต่อวินาที" แบบอัตโนมัติ พร้อมเคารพความเป็นส่วนตัวของคนที่ถูกวัด</p>
-      <div class="author">— โจทย์ตั้งต้นของงานวิจัย Takra AI Monitoring</div>
+      <div class="author">— โจทย์ตั้งต้นของงานวิจัย ระบบวิเคราะห์โฮสต์</div>
     </div>
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#128337;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         <h3>ไลฟ์ยาวหลายชั่วโมง ดูย้อนหลังไม่ไหว</h3>
         <p>หนึ่ง session ไลฟ์ขายของกินเวลาเป็นชั่วโมง — ไม่มีใครมานั่งดูซ้ำทั้งคลิปเพื่อประเมิน engagement ต้องการ metric ต่อวินาทีที่สรุปได้ทันที</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#127917;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 11h.01"/><path d="M14 6h.01"/><path d="M18 6h.01"/><path d="M6.5 13.1h.01"/><path d="M22 5c0 9-4 12-6 12s-6-3-6-12c0-2 2-3 6-3s6 1 6 3"/><path d="M17.4 9.9c-.8.8-2 .8-2.8 0"/><path d="M10.1 7.1C9 7.2 7.7 7.7 6 8.6c-3.5 2-4.7 3.9-3.7 5.6 4.5 7.8 9.5 8.4 11.2 7.4.9-.5 1.9-2.1 1.9-4.7"/><path d="M9.1 16.5c.3-1.1 1.4-1.7 2.4-1.4"/></svg>
         <h3>"โฮสต์เริ่มตก energy ไหม" ตาคนตัดสินไม่ทัน</h3>
         <p>อารมณ์ / ความ active ของโฮสต์เปลี่ยนตลอด — การให้คนดูแล้วให้คะแนนเองทั้ง subjective และไม่ต่อเนื่อง อยากได้สัญญาณที่วัดเป็นตัวเลขได้</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#129302;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
         <h3>โมเดล FER สำเร็จรูปมีอคติ</h3>
         <p>โมเดลอ่านอารมณ์ที่ train บนชุดข้อมูลมาตรฐาน มักอ่าน "หน้านิ่ง / หน้ากำลังพูด" เป็น sad หรือ angry — เอามาใช้ตรงๆ ตัวเลขเพี้ยนทันที</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#127380;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10h2"/><path d="M16 14h2"/><path d="M6.17 15a3 3 0 0 1 5.66 0"/><circle cx="9" cy="11" r="2"/><rect x="2" y="5" width="20" height="14" rx="2"/></svg>
         <h3>จะรู้ว่าใครอยู่หน้าจอ ต้องเตรียมรูปล่วงหน้า</h3>
         <p>ระบบ face recognition ทั่วไปต้องมีชุดรูป reference ของแต่ละคนก่อน — ยุ่งยากเวลามีโฮสต์เข้าออกหลายคน อยากลงทะเบียนสดหน้างานได้เลย</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128274;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>จับหน้า + อารมณ์คน = ข้อมูล biometric ละเอียดอ่อน</h3>
         <p>การประมวลผล face embedding และอารมณ์ของบุคคลเข้าข่าย biometric ตาม PDPA — ถ้าไม่ออกแบบเรื่อง consent / retention / การเก็บข้อมูลตั้งแต่ต้น จะกลายเป็นความเสี่ยง</p>
       </div>
@@ -874,27 +1074,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#128225;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
         <h3>ไปป์ไลน์ real-time จับหน้า → ตัวตน → อารมณ์ → engagement</h3>
         <p>ทุกเฟรมวิ่งผ่าน MTCNN (หาใบหน้า) → FaceNet (embedding ระบุตัวตน) → ViT (อารมณ์ 7 คลาส) → MediaPipe FaceMesh (ยิ้ม/พูด/มองกล้อง) แบบต่อเนื่อง</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128202;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
         <h3>แปลงเป็น KPI ที่อ่านง่าย + rolling window</h3>
         <p>สรุปออกมาเป็น Energy / Smile / Talking / Looking / Mood พร้อมค่าเฉลี่ยเลื่อน 1 นาที / 5 นาที ให้เห็นเทรนด์สดว่ากำลังขึ้นหรือตก</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#127919;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         <h3>Click-to-enroll — ลงทะเบียนตัวตนสดหน้างาน</h3>
         <p>คลิกใบหน้าในวิดีโอ พิมพ์ชื่อ กด Enter — ระบบเฉลี่ย embedding เข้าไฟล์ทันที ใช้ได้เลย ไม่ต้องเตรียมชุดรูป reference ล่วงหน้า</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#129504;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
         <h3>Multimodal calibration แก้อคติของโมเดลเดียว</h3>
         <p>เอาสัญญาณเชิงเรขาคณิตจาก FaceMesh (blendshape ยิ้ม/ขมวดคิ้ว) มา gate ผล ViT — ลดอาการอ่านหน้านิ่งเป็น sad และทำให้ยิ้มจริงชัดขึ้น</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128274;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>Local-only + PDPA-aware ตั้งแต่ออกแบบ</h3>
         <p>face embedding และ log ทั้งหมดอยู่ในเครื่อง (gitignored) ไม่ส่งออก ออกแบบเผื่อ consent / retention window / จำกัดสิทธิ์เข้าถึงตั้งแต่ต้น</p>
       </div>
@@ -912,25 +1112,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#128421;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
         <h4>ดึงเฟรมไลฟ์</h4>
         <p>Electron ฝัง browser จริงเปิดไลฟ์ แคปหน้าจอเป็นเฟรมส่งเข้า backend ผ่าน WebSocket</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#128100;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         <h4>ตรวจ + รู้จักใบหน้า</h4>
         <p>MTCNN หาใบหน้า → FaceNet ทำ 512-d embedding → cosine match กับตัวตนที่ลงทะเบียนไว้</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#129504;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
         <h4>อ่านอารมณ์ + engagement</h4>
         <p>ViT จัดอารมณ์ 7 คลาส + FaceMesh อ่าน blendshape เป็นยิ้ม/พูด/มองกล้อง แล้ว calibrate รวมกัน</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#128202;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
         <h4>สรุป KPI + log</h4>
         <p>รวมเป็น KPI สดบน sidebar + เขียน CSV ต่อเฟรม → กลายเป็น session report ภายหลัง</p>
       </div>
@@ -987,7 +1187,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมเลือก stack นี้?</strong>
       <p><strong>FastAPI + WebSocket</strong> — สตรีมเฟรมสองทาง latency ต่ำ เหมาะกับ inference ต่อเนื่อง &middot; <strong>Electron WebContentsView</strong> ฝัง browser จริงเพื่อแคปไลฟ์ + ดึง comment/gift/like ได้ในแอปเดียว &middot; <strong>Pretrained models (FaceNet / ViT / MediaPipe)</strong> — ต่อของสำเร็จที่ validated แล้วแทนการ train เอง ทำให้ prototype เสร็จเร็วและแม่นกว่า &middot; <strong>PyTorch + Apple MPS</strong> เร่งงานบน Apple Silicon โดยมี workaround ปักบางโมเดลไว้ที่ CPU เพื่อเลี่ยง bug ของ MPS</p>
     </div>
@@ -1003,42 +1203,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#128100;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         <h3>Face Detection &amp; Recognition</h3>
         <p>MTCNN หาใบหน้า + FaceNet/VGGFace2 ทำ 512-d embedding แล้ว cosine match กับตัวตนที่ลงทะเบียนไว้</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#129504;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
         <h3>Emotion Classification</h3>
         <p>Vision Transformer (fine-tune บน FER+) จัดอารมณ์ 7 คลาส — angry, disgust, fear, happy, neutral, sad, surprise</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128512;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 10V9"/><path d="M16.472 15a6 6 0 01-8.943 0"/><path d="M9 10V9"/><circle cx="12" cy="12" r="10"/></svg>
         <h3>Engagement Signals</h3>
         <p>MediaPipe FaceMesh 52 blendshapes + head-pose → smile / talking / looking / frown / blink เชิงเรขาคณิต</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127919;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         <h3>Click-to-Enroll</h3>
         <p>คลิกหน้าในวิดีโอ พิมพ์ชื่อ กด Enter → เฉลี่ย embedding เข้าไฟล์ ใช้งานได้ทันที ไม่ต้องมีรูป reference</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128202;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
         <h3>Live KPI Sidebar</h3>
         <p>Energy / Smile / Talking / Looking / Mood พร้อม rolling window 1 นาที / 5 นาที อัปเดตสดบนหน้าแอป</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128172;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg>
         <h3>Comment &amp; Gift Scraper</h3>
         <p>ดึง comment / gift / like / viewer count จากไลฟ์ (ผ่าน live-comment connector) มาแสดงคู่กับ metric อารมณ์</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128200;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>
         <h3>Session Report</h3>
         <p>รวม CSV ต่อเฟรม → aggregate ราย host รายนาที เป็นกราฟ behavior + emotion mix ด้วย Chart.js</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128301;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44"/><path d="m13.56 11.747 4.332-.924"/><path d="m16 21-3.105-6.21"/><path d="M16.485 5.94a2 2 0 0 1 1.455-2.425l1.09-.272a1 1 0 0 1 1.212.727l1.515 6.06a1 1 0 0 1-.727 1.213l-1.09.272a2 2 0 0 1-2.425-1.455z"/><path d="m6.158 8.633 1.114 4.456"/><path d="m8 21 3.105-6.21"/><circle cx="12" cy="13" r="2"/></svg>
         <h3>Two-Model Research</h3>
         <p>เทียบ custom-trained YOLOv8-cls กับ pretrained ViT บนโจทย์เดียวกัน — เพื่อตอบว่า "train เองคุ้มไหม"</p>
       </div>
@@ -1056,7 +1256,7 @@
     <div class="app-mockup">
       <div class="app-titlebar">
         <div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
-        <span class="t-title">Live Host Monitor</span>
+        <span class="t-title">Live ระบบวิเคราะห์โฮสต์</span>
         <span class="t-status"><span class="d"></span>backend online · MPS</span>
       </div>
       <div class="app-body">
@@ -1110,42 +1310,42 @@
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Model Bias">
-        <span class="emoji">&#129302;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
         <h3>โมเดลที่ train เอง อ่านหน้านิ่งเป็น "angry"</h3>
         <p>โมเดล classifier ที่ fine-tune บนชุดข้อมูล public มี class imbalance หนัก (คลาสหนึ่งมีรูปมากกว่าอีกคลาสหลายเท่า) พอเจอ webcam จริงก็ลำเอียงไปคลาสที่ข้อมูลเยอะ — หน้านิ่งโดนอ่านเป็น angry มั่นใจสูง</p>
         <div class="highlight">แก้: หลังเทียบ per-class recall + ทดสอบสดแล้วเห็น failure mode ชัด จึงเปลี่ยนไปใช้ pretrained ViT (FER+) ที่ train บนชุดใหญ่และสมดุลกว่า — บทเรียน: หัวข้อ 2 ในส่วน Knowledge Domain</div>
       </div>
 
       <div class="hack-card arch" data-label="Signal Fusion">
-        <span class="emoji">&#129504;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
         <h3>ViT ยังติดอ่าน "sad" บนหน้าปกติที่กำลังพูด</h3>
         <p>แม้ pretrained ViT ดีกว่า แต่ก็ยัง sticky กับอารมณ์ลบบนหน้านิ่ง/หน้าพูด ทำให้ mood score เพี้ยนลบเกินจริง</p>
         <div class="highlight">แก้: เอาสัญญาณเชิงเรขาคณิตจาก FaceMesh (blendshape ขมวดคิ้ว/ยิ้ม) มา "gate" ผลของ ViT — ถ้าไม่มีหลักฐานขมวดคิ้วก็หน่วงความน่าจะเป็นของอารมณ์ลบลง, ถ้ายิ้มจริงก็ดัน happy ขึ้น รวมเป็น multimodal calibration ที่ชนะอคติของโมเดลเดียว</div>
       </div>
 
       <div class="hack-card platform" data-label="Tracking">
-        <span class="emoji">&#127916;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
         <h3>ป้ายอารมณ์กระพริบไปมาระหว่างเฟรม</h3>
         <p>อ่านอารมณ์ทีละเฟรมอิสระ ทำให้ label เด้งสลับ happy/neutral/sad ตลอด ดูไม่นิ่ง และตัวตนของแต่ละหน้าก็สลับกันเวลาคนขยับ</p>
         <div class="highlight">แก้: จับคู่ใบหน้าข้ามเฟรมด้วย IoU tracking ให้แต่ละหน้ามี track id คงที่ แล้ว smooth เวกเตอร์ความน่าจะเป็นด้วย EMA ต่อ track — ป้ายจึงนิ่ง และ metric สะสมต่อคนได้ถูกตัว</div>
       </div>
 
       <div class="hack-card ux" data-label="Enrollment">
-        <span class="emoji">&#127919;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         <h3>Face recognition ต้องมีชุดรูปก่อนถึงใช้ได้</h3>
         <p>ระบบระบุตัวตนปกติต้องเตรียมรูป reference ของแต่ละคนล่วงหน้า — ไม่เวิร์กเวลาโฮสต์เปลี่ยนหน้างานบ่อย</p>
         <div class="highlight">แก้: ทำ click-to-enroll — operator คลิกใบหน้าในวิดีโอสด พิมพ์ชื่อ กด Enter ระบบดึง embedding ของเฟรมนั้นมาเฉลี่ยเข้าไฟล์ทันที เปิดใช้ recognition ได้เลยโดยไม่ต้องมีชุดรูปมาก่อน</div>
       </div>
 
       <div class="hack-card devops" data-label="Integration">
-        <span class="emoji">&#128421;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
         <h3>จะแคปไลฟ์ + ดึง comment พร้อมกันยาก</h3>
         <p>อยากได้ทั้งภาพวิดีโอไลฟ์ (เพื่ออ่านหน้า) และ metadata ไลฟ์ (comment/gift/viewer) ในแอปเดียว โดยไม่พึ่ง API ที่เข้าถึงยาก</p>
         <div class="highlight">แก้: ใช้ Electron WebContentsView ฝัง browser จริงเปิดไลฟ์ → แคปเฟรมส่งเข้าโมเดล + ต่อ live-comment connector อ่าน event comment/gift/like/join แบบสด แล้ว position view ให้ทับ placeholder ของ React ตลอดเวลา</div>
       </div>
 
       <div class="hack-card perf" data-label="Latency">
-        <span class="emoji">&#9889;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
         <h3>Face detector คือคอขวด + เจอ bug ของ MPS</h3>
         <p>ขั้นตอน detect หน้าช้าสุดในไปป์ไลน์ และตัว detector ก็ชน bug ของ Apple MPS (pooling ต้องการขนาดหารลงตัว) ทำให้ค้าง</p>
         <div class="highlight">แก้: ปัก detector ไว้ที่ CPU เพื่อเลี่ยง bug แล้วให้ embedding + emotion วิ่งบน MPS, ทำ detect เว้นเฟรม + ประมวลผลแบบ async ต่อ WebSocket — จบที่ราว 8–12 FPS บน Apple M4 Pro พอสำหรับ monitoring สด</div>
@@ -1245,7 +1445,7 @@
     <div class="mascot-half">
       <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
     </div>
-    <h2>Takra AI Monitoring</h2>
+    <h2>ระบบวิเคราะห์โฮสต์</h2>
     <p>งานวิจัย Computer Vision ภายใน ที่เปลี่ยนการนั่งดูไลฟ์ย้อนหลังหลายชั่วโมง ให้เป็น KPI สดที่อ่านได้ต่อวินาที — ประกอบจากโมเดล pretrained ที่ validated แล้ว, ปรับ calibration แก้อคติด้วย multimodal fusion, และออกแบบโดยยึดความเป็นส่วนตัวของคนที่ถูกวัดเป็นหลัก</p>
     <div class="stack-icons">
       <span class="stack-icon">Electron + React</span>
@@ -1291,8 +1491,8 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Takra AI Monitoring Portfolio",
-      "item": "https://projects.tanplanet.info/takra-monitoring-portfolio/"
+      "name": "ระบบวิเคราะห์โฮสต์ Portfolio",
+      "item": "https://projects.tanplanet.info/host-monitor-portfolio/"
     }
   ]
 }

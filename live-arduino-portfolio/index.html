@@ -578,14 +578,214 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">&#128421;&#65039;</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         ESP32-035 &middot; ST7796 320&times;480 &middot; LVGL 9
@@ -626,27 +826,27 @@
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#128241;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
         <h3>ข้อมูลกระจาย 6 แอป แต่ละอันดูแค่ 3 วินาที</h3>
         <p>อากาศ / วันพระ / ราคาหุ้นที่เฝ้า / โควตา AI — ข้อมูลที่ใช้เวลาดูรวมกันไม่ถึงนาที แต่ต้องปลดล็อกมือถือ เปิดแอป สลับแท็บ ทุกวัน</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128454;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
         <h3>Dashboard บนจอคอม = ไม่มีอยู่จริง</h3>
         <p>เปิด dashboard ไว้อีกแท็บ สุดท้ายก็โดนหน้าต่างงานทับ ข้อมูลที่ต้อง "ชำเลืองเห็น" ต้องมีพื้นที่ของตัวเองที่ไม่แย่งกับงาน</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#127991;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
         <h3>โมดูลจอสำเร็จรูปพูดไทยไม่ได้</h3>
         <p>เฟิร์มแวร์สำเร็จรูปของจอ ESP32 แทบทั้งหมดมีแต่ฟอนต์ละติน — ภาษาไทยออกมาเป็นกล่องสี่เหลี่ยม และวรรณยุกต์ซ้อนผิดตำแหน่ง</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#129504;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
         <h3>ESP32 คิดเองไม่ไหว</h3>
         <p>คำนวณดวงสุริยยาตร์ เรียก AI สรุป อ่านโควตา OAuth — งานพวกนี้กิน RAM และต้องใช้ secret ซึ่งไม่ควรฝังในบอร์ดที่วางอยู่บนโต๊ะ</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128268;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M15 8V2"/><path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"/><path d="M9 8V2"/></svg>
         <h3>เปลี่ยนวง Wi-Fi ทีต้อง flash ใหม่ที</h3>
         <p>เฟิร์มแวร์ที่ hardcode IP ของ backend ไว้ พอ Mac ย้าย IP หรือเปลี่ยนเราเตอร์ จอก็ตายเงียบ ต้องต่อสาย USB มา flash ใหม่ทุกครั้ง</p>
       </div>
@@ -663,27 +863,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#128225;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
         <h3>ESP32 เป็น thin client ไม่ใช่สมอง</h3>
         <p>Backend บน Mac รวมข้อมูลทุกแหล่ง คำนวณให้เสร็จ แล้วส่ง JSON การ์ดสั้น ๆ ให้จอวาด — เฟิร์มแวร์ไม่ต้องรู้จัก API ไหนเลย และไม่มี key อยู่ในบอร์ด</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#127183;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="12" height="12" x="2" y="10" rx="2" ry="2"/><path d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6"/><path d="M6 18h.01"/><path d="M10 14h.01"/><path d="M15 6h.01"/><path d="M18 9h.01"/></svg>
         <h3>ทุกอย่างคือ "การ์ด" หน้าตาเดียวกัน</h3>
         <p>ไม่ว่าจะอากาศ หุ้น ดวง หรือโควตา AI ทุกใบใช้สัญญาเดียวกัน <code>id / type / title / value / detail / tone / priority</code> — เพิ่มการ์ดใหม่ = เพิ่ม 1 ฟังก์ชันใน backend ไม่ต้องแตะจอ</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128241;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
         <h3>ตั้งค่าจากมือถือ ไม่ต้อง flash</h3>
         <p>หน้า <code>/manage</code> จัดลำดับการ์ด ซ่อน/แสดง เลือกหุ้นที่เฝ้า ตั้งเวลาโพโมโดโร ความสว่างกลางวัน-กลางคืน — จอดึง config รอบถัดไปแล้วเปลี่ยนตามทันที</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128292;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg>
         <h3>ฟอนต์ไทยเจนเอง พร้อมวรรณยุกต์ยกสูง</h3>
         <p>สร้าง bitmap font จาก Anuphan 5 ขนาดเข้าเฟิร์มแวร์ แล้วทำ glyph วรรณยุกต์ตำแหน่งสูงเก็บใน Private Use Area เอง เพราะ LVGL ไม่อ่านตาราง GPOS ของ OpenType</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128246;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg>
         <h3>หา backend ด้วยชื่อ ไม่ใช่ IP</h3>
         <p>จอ resolve <code>Workspace-3.local</code> ผ่าน mDNS แล้วแคช IP ไว้ — ย้ายเราเตอร์ เปลี่ยนวง Wi-Fi หรือ Mac ได้ IP ใหม่ ก็ยังหากันเจอโดยไม่ต้องต่อสาย</p>
       </div>
@@ -701,25 +901,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#128229;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
         <h4>รวมของ</h4>
         <p>Backend ดึงอากาศ ปฏิทิน .ics ราคาหุ้น ดวง โควตา Claude และหางไฟล์ session ของ agent</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#129521;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect x="14" y="2" width="8" height="8" rx="1"/></svg>
         <h4>ย่อยเป็นการ์ด</h4>
         <p>คำนวณให้จบบน Mac แล้วเหลือแต่ข้อความสั้น + ตัวเลขที่จอเอาไปวาดได้ทันที</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#128260;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
         <h4>จอดึงแล้ววาด</h4>
         <p>ESP32 ยิง HTTP ทุก 60 วิ (การ์ด Claude แยกท่อ 10 วิ) แล้ว render ด้วย LVGL</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#128070;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 14a8 8 0 0 1-8 8"/><path d="M18 11v-1a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1"/><path d="M10 9.5V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10"/><path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
         <h4>แตะเพื่อเจาะ</h4>
         <p>แตะการ์ด → หน้า detail กราฟราคา กราฟฝนรายชั่วโมง ปฏิทินเดือน หรือ price ladder</p>
       </div>
@@ -784,7 +984,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมเลือก stack นี้?</strong>
       <p><strong>ESP32-035</strong> มีจอ ทัช LDR RGB และ audio amp มาในบอร์ดเดียว ฿640 — ไม่ต้องต่อ sensor เพิ่มเลยสักตัว &middot; <strong>LVGL 9</strong> ให้ scroll/touch/animation ระดับใช้งานจริงบน MCU &middot; <strong>Backend เป็น Node ล้วน ไม่มี dependency</strong> รันด้วย <code>launchd</code> สตาร์ตเองตอนเปิดเครื่อง &middot; <strong>วางไว้ใน LAN</strong> ทำให้เข้าถึงไฟล์ในเครื่อง (session ของ agent, ข้อมูลพอร์ต) ได้โดยไม่ต้องอัปอะไรขึ้นคลาวด์</p>
     </div>
@@ -800,62 +1000,62 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#128336;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         <h3>นาฬิกา + วันที่ไทย</h3>
         <p>NTP sync แล้ววาดด้วยฟอนต์ตัวเลข 48px แยกต่างหาก + วันที่ พ.ศ. เต็มรูปแบบบนแถบหัวจอ</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128197;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
         <h3>ปฏิทินรายเดือน</h3>
         <p>เลื่อนดูเดือนอื่นได้ · จุดน้ำเงินใต้วันพระ · เลขแดงวันหยุดราชการ · ดึงปฏิทินภายนอกผ่าน .ics ได้</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127765;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
         <h3>จันทรคติ / วันพระ</h3>
         <p>คำนวณข้างขึ้นข้างแรมด้วยสูตรสุริยยาตร์ในฝั่ง backend เอง ไม่พึ่ง API ภายนอก</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127782;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
         <h3>Weather แบบ Google Weather</h3>
         <p>Open-Meteo + กราฟโอกาสฝนรายชั่วโมงที่วาดเอง + ไอคอนสไตล์ Google ฝังเป็น C array RGB565A8</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128302;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 3 8 9l4 13 4-13-2.5-6"/><path d="M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z"/><path d="M2 9h20"/></svg>
         <h3>ดวงลงทุนวันนี้</h3>
         <p>ต่อกับ Thai Astrology engine ของโปรเจกต์ MegaCoach — ให้คะแนน 0-100 พร้อมคำอธิบายสั้น</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#9775;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.341 6.484A10 10 0 0 1 10.266 21.85"/><path d="M3.659 17.516A10 10 0 0 1 13.74 2.152"/><circle cx="12" cy="12" r="3"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/></svg>
         <h3>พลังวันนี้ (สาจู)</h3>
         <p>เขียน engine เองใน <code>saju.mjs</code> ตรวจตรงกับแอปอ้างอิงทุกช่วงยาม — กราฟพลังรายยามเป็นเส้นต่อจุด</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128200;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>
         <h3>Market Focus</h3>
         <p>ราคาหุ้นที่เฝ้าพร้อมกราฟ 1 เดือน กด &#9668; &#9658; เลื่อนดูได้ทุกตัว เลือกรายชื่อจากหน้า manage</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127914;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 21 14 3"/><path d="M20.5 21 10 3"/><path d="M15.5 21 12 15l-3.5 6"/><path d="M2 21h20"/></svg>
         <h3>Monthly Plan &amp; Price Ladder</h3>
         <p>แสดงโซนเข้า / stop / target เทียบกับราคาปัจจุบันเป็นบันได เห็นทันทีว่าอยู่ตรงไหนของแผน</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#11088;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
         <h3>North Star</h3>
         <p>เป้าหมายระยะยาวและหลักการคุมความเสี่ยง <code>Fear of Ruin &gt; FOMO</code> ที่ต้องเห็นทุกวัน</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128202;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
         <h3>AI Status</h3>
         <p>โควตา Claude รอบ 5 ชม. และ 7 วัน เป็นแถบเส้น + ขีด pace — สีเปลี่ยนเมื่อ % ใช้ไปแซงเวลาที่ผ่านไป</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#129302;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
         <h3>Claude Code + มาสคอต</h3>
         <p>อ่านหางไฟล์ session ว่า agent กำลังใช้เครื่องมืออะไร แล้วให้มาสคอตทำท่าตามนั้น รีเฟรชทุก 10 วินาที</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127813;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
         <h3>โพโมโดโร + เตือนกิจวัตร</h3>
         <p>จับเวลาทำงาน/พัก และเตือนกินน้ำ ข้าวเที่ยง เลิกงาน — แตะตอนกระพริบเพื่อปิดจบในจังหวะเดียว</p>
       </div>
@@ -942,49 +1142,49 @@
 
     <div class="hack-grid">
       <div class="hack-card perf" data-label="Memory">
-        <span class="emoji">&#128165;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="13" r="9"/><path d="M14.35 4.65 16.3 2.7a2.41 2.41 0 0 1 3.4 0l1.6 1.6a2.4 2.4 0 0 1 0 3.4l-1.95 1.95"/><path d="m22 2-1.5 1.5"/></svg>
         <h3>กดแล้วค้าง ทั้งที่ heap ว่าง 165KB</h3>
         <p>แตะการ์ดแล้วจอค้างเป็นระยะ ตอนแรกนึกว่า RAM หมด แต่ ESP รายงาน heap ว่างตั้ง 165KB</p>
         <div class="highlight">แก้: LVGL ไม่ได้ใช้ heap ของระบบ มันใช้ pool ของตัวเองที่ <code>LV_MEM_SIZE</code> = 32KB และเต็มไปแล้ว 89% → เปลี่ยนไปใช้ <code>LV_STDLIB_CLIB</code> ให้ LVGL ขอ memory จาก heap จริงแทน &mdash; บทเรียน: บน MCU ต้องถามว่า "หน่วยความจำก้อนไหนเต็ม" ไม่ใช่แค่ "ว่างเท่าไร"</div>
       </div>
 
       <div class="hack-card perf" data-label="Stack">
-        <span class="emoji">&#128260;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
         <h3>บอร์ดรีบูตตอนกดเข้าหน้า detail</h3>
         <p>เปิดหน้า detail ของการ์ดมาสคอตทีไรบอร์ดรีบูตทันที ทั้งที่ heap เหลือเฟือ 163KB</p>
         <div class="highlight">แก้: struct ของรูปมาสคอตขนาด 1.7KB ถูกประกาศเป็นตัวแปร local ใน draw callback ซึ่งอยู่บน <strong>stack</strong> ของ task ไม่ใช่ heap → ย้ายไปเป็น static &mdash; บทเรียน: stack overflow บน ESP32 หน้าตาเหมือน "รีบูตเฉย ๆ" ไม่มี error ให้อ่าน</div>
       </div>
 
       <div class="hack-card precision" data-label="Fonts">
-        <span class="emoji">&#128499;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 12 2 2 4-4"/><path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"/><path d="M22 19H2"/></svg>
         <h3>วรรณยุกต์ไทยซ้อนผิดตำแหน่ง</h3>
         <p>คำที่มีสระบนซ้อนวรรณยุกต์ เช่น "ที่" ออกมาชนกันเป็นก้อน เพราะ LVGL ไม่อ่านตาราง GPOS ของ OpenType</p>
         <div class="highlight">แก้: เขียน <code>make_thai_font.py</code> เจน bitmap font 5 ขนาดจาก Anuphan เอง แล้ว<strong>สร้าง glyph วรรณยุกต์ตำแหน่งยกสูงเก็บใน Private Use Area</strong> ตอน render ก็ map อักขระเป็นตัว PUA เมื่อเจอบริบทที่ต้องยก &mdash; ได้ตำแหน่งถูกโดยไม่ต้องมี shaping engine</div>
       </div>
 
       <div class="hack-card precision" data-label="Debug">
-        <span class="emoji">&#11036;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
         <h3>กล่องสี่เหลี่ยมบนจอ ไม่ใช่ loading</h3>
         <p>ตัวเลขนาฬิกาบางสถานะขึ้นเป็นกล่องสี่เหลี่ยม — ไล่หา race condition ของการโหลดข้อมูลอยู่นาน</p>
         <div class="highlight">แก้: มันคือ glyph ที่ไม่มีในฟอนต์ ฟอนต์นาฬิกา 48px มีแค่ <code>0-9 : &deg;</code> พอส่ง <code>--:--</code> เข้าไป ขีดจึงกลายเป็นกล่อง → เปลี่ยนเป็นส่งสตริงว่างตอนยังไม่มีเวลา &mdash; บทเรียน: กล่องสี่เหลี่ยม = ฟอนต์ ไม่ใช่ state</div>
       </div>
 
       <div class="hack-card devops" data-label="Network">
-        <span class="emoji">&#128246;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg>
         <h3>จอไม่มีข้อมูล แต่ backend ไม่ได้ล่ม</h3>
         <p>จอขึ้น error ทั้งที่ <code>curl</code> จาก Mac ได้ 200 ปกติ — เสียเวลาไล่หาสาเหตุที่ฝั่ง backend อยู่นาน</p>
         <div class="highlight">แก้: เฟิร์มแวร์ไม่เคยเรียก <code>MDNS.begin()</code> เลย lwip จึง resolve ชื่อ <code>.local</code> ไม่ได้ → ใช้ <code>MDNS.queryHost()</code> เอา IP มาเสียบแล้วแคชไว้ &mdash; <strong>หลุมที่ทำให้หลงทาง: curl ชื่อ .local จาก Mac เองมันวิ่งเข้า 127.0.0.1 ต้อง curl ด้วย LAN IP ถึงจะรู้ความจริง</strong></div>
       </div>
 
       <div class="hack-card ux" data-label="Text">
-        <span class="emoji">&#9986;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
         <h3>ชื่อสภาพอากาศยาวเกินไปทับนาฬิกา</h3>
         <p>ใส่ <code>LV_LABEL_LONG_DOT</code> แล้วยังทับอยู่ เพราะ LVGL จะ wrap ขึ้นบรรทัดสองก่อน แล้วค่อยใส่จุดไข่ปลา</p>
         <div class="highlight">แก้: เขียน <code>setThaiTextFit()</code> วัดความกว้างจริงด้วย <code>lv_text_get_size</code> แล้วถอยข้อความทีละ<strong>ตัวอักษร UTF-8</strong> จนพอดีกรอบ &mdash; ห้ามถอยทีละไบต์ เพราะจะตัดกลางอักขระไทยแล้วได้ขยะ</div>
       </div>
 
       <div class="hack-card arch" data-label="Refresh">
-        <span class="emoji">&#9889;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
         <h3>การ์ด Claude ช้าไป 5 นาที</h3>
         <p>การ์ดที่บอกว่า agent กำลังทำอะไร ต้องสด แต่มันรออัปเดตพร้อมรอบใหญ่ 60 วินาที/5 นาที ทำให้ข้อมูลตกยุคตลอด</p>
         <div class="highlight">แก้: แยกท่อ <code>/api/claude</code> ที่ส่งเฉพาะการ์ดใบเดียว (~300 bytes) ทุก 10 วิ แล้ว<strong>เขียนทับ label เดิมในที่</strong> โดยจำ pointer ไว้ ไม่ <code>lv_obj_clean</code> ทั้งจอ &mdash; ถ้าล้างทั้งจอ scroll จะเด้งกลับหัวทุก 10 วินาที</div>

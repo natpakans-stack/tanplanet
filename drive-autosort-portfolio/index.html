@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drive Auto-Sort — ไม่ซื้อ iCloud แล้วสอน HDD ให้จัดรูปเอง</title>
+  <meta name="description" content="Portfolio: เครื่องมือ macOS ที่โยนรูปลง Inbox แล้วแยกเข้าโฟลเดอร์ให้เอง — สลิป สกรีนช็อต หมา แมว ต้นไม้ ท้องฟ้า ด้วย Vision framework แบบ on-device รูปไม่ออกจากเครื่อง">
+  <meta property="og:title" content="Drive Auto-Sort — ไม่ซื้อ iCloud แล้วสอน HDD ให้จัดรูปเอง">
+  <meta property="og:description" content="Portfolio: เครื่องมือ macOS ที่โยนรูปลง Inbox แล้วแยกเข้าโฟลเดอร์ให้เอง — สลิป สกรีนช็อต หมา แมว ต้นไม้ ท้องฟ้า ด้วย Vision framework แบบ on-device รูปไม่ออกจากเครื่อง">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://projects.tanplanet.info/drive-autosort-portfolio/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Drive Auto-Sort — ไม่ซื้อ iCloud แล้วสอน HDD ให้จัดรูปเอง">
+  <meta name="twitter:description" content="Portfolio: เครื่องมือ macOS ที่โยนรูปลง Inbox แล้วแยกเข้าโฟลเดอร์ให้เอง — สลิป สกรีนช็อต หมา แมว ต้นไม้ ท้องฟ้า ด้วย Vision framework แบบ on-device รูปไม่ออกจากเครื่อง">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0f1f'/><path d='M26 40h16l6 8h26v24a4 4 0 0 1-4 4H30a4 4 0 0 1-4-4V44a4 4 0 0 1 0-4z' fill='none' stroke='%23f59e0b' stroke-width='6' stroke-linejoin='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #b45309;
+      --accent-light: #fef3c7;
+      --accent-dark: #78350f;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #0a0f1f 0%, #121b36 40%, #3f2d12 78%, #78350f 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(251,191,36,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #78350f, #f59e0b, #fde68a);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent { color: #fcd34d; }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro { padding: 56px 0 32px; }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .section-intro p { color: var(--text-secondary); font-size: 1rem; }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0a0f1f, #223056);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block code { background: rgba(255,255,255,0.14); color: #fcd34d; }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p { font-size: 1.05rem; line-height: 1.7; position: relative; z-index: 1; }
+    .quote-block .author { margin-top: 12px; font-size: 0.82rem; opacity: 0.78; }
+
+    /* ===== Pain / Solution Cards ===== */
+    .pain-grid, .solution-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .pain-card, .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .pain-card { border-left: 4px solid var(--red); }
+    .solution-card { border-left: 4px solid var(--accent); }
+    .pain-card .emoji, .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3, .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p, .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(180,83,9,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers { display: flex; flex-direction: column; gap: 12px; max-width: 560px; margin: 0 auto; }
+    .arch-layer { padding: 14px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(180,83,9,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: var(--navy); color: #cbd5e1; border: 1px solid #223056; }
+    .arch-arrow { text-align: center; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+    .arch-sub { display: flex; justify-content: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .arch-layer.infra .arch-sub span { background: rgba(255,255,255,0.10); }
+
+    /* ===== Device Mockup (320x480 @ scale) ===== */
+    .dev-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .dev-frame {
+      width: 348px;
+      max-width: 100%;
+      background: #1a1a1c;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 14px 40px rgba(10,15,31,0.35);
+    }
+    .dev-screen {
+      background: var(--navy);
+      border-radius: 6px;
+      overflow: hidden;
+      color: #f2f5ff;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+    .dev-hero {
+      background: #121b36;
+      padding: 12px 14px 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .dev-clock { font-size: 2.4rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+    .dev-date { color: #8492bc; font-size: 0.72rem; margin-top: 4px; }
+    .dev-hero-right { text-align: right; font-size: 0.72rem; color: #8492bc; }
+    .dev-hero-right .t { color: #f2f5ff; font-size: 1.05rem; font-weight: 600; }
+    .dev-list { padding: 8px; display: flex; flex-direction: column; gap: 7px; }
+    .dev-card {
+      background: #161f3c;
+      border-radius: 8px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dev-card .body { flex: 1; min-width: 0; }
+    .dev-card .ttl { color: #8492bc; font-size: 0.68rem; letter-spacing: 0.02em; }
+    .dev-card .val { font-size: 0.95rem; font-weight: 600; }
+    .dev-card .sub { color: #8492bc; font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dev-card .up { color: #4ade80; }
+    .dev-card .warn { color: #fbbf24; }
+    .dev-card .down { color: #f87171; }
+    .dev-blob {
+      width: 42px;
+      height: 34px;
+      border-radius: 6px;
+      background: #223056;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .dev-bar { height: 5px; border-radius: 3px; background: #223056; margin-top: 6px; overflow: hidden; }
+    .dev-bar i { display: block; height: 100%; background: #fbbf24; }
+    .dev-caption { font-size: 0.8rem; color: var(--text-secondary); text-align: center; max-width: 420px; }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img { width: 100%; height: auto; display: block; }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons { margin-top: 24px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+    .closing .links { margin-top: 24px; display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .closing .links a { color: var(--accent); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2.5a1 1 0 0 1-.8-.4l-.9-1.2A1 1 0 0 0 15 3h-2a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M20 21a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-2.9a1 1 0 0 1-.88-.55l-.42-.85a1 1 0 0 0-.92-.6H13a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M3 5a2 2 0 0 0 2 2h3"/><path d="M3 3v13a2 2 0 0 0 2 2h3"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        macOS &middot; Bash + Swift &middot; Vision.framework
+      </div>
+      <h1>Drive Auto-Sort<br><span class="accent">ไม่อยากจ่าย iCloud เลยสอน HDD ให้รู้ว่าอะไรคืออะไร</span></h1>
+      <p>โยนรูปลงโฟลเดอร์ <code>Inbox</code> โฟลเดอร์เดียว แล้วเครื่องแยกให้เองว่าอันไหนคือสลิปโอนเงิน อันไหนคือสกรีนช็อต อันไหนคือแมว — ด้วย Vision framework ที่ติดมากับ macOS อยู่แล้ว — และรูปเดินทางจาก iPhone มาถึงฮาร์ดดิสก์ที่บ้านเองผ่าน Tailscale โดยไม่ต้องเสียบสาย ไม่ต้องเปิดพอร์ตออกอินเทอร์เน็ต และไม่มีค่าบริการรายเดือน</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Bash</span>
+        <span class="hero-tag">Swift</span>
+        <span class="hero-tag">C</span>
+        <span class="hero-tag">Vision.framework</span>
+        <span class="hero-tag">OCR ภาษาไทย</span>
+        <span class="hero-tag">Tailscale</span>
+        <span class="hero-tag">SMB</span>
+        <span class="hero-tag">launchd</span>
+        <span class="hero-tag">on-device</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#path">เส้นทางจากมือถือ</a>
+      </div>
+    </div>
+  </header>
+
+  <article>
+
+    <!-- ===== Problem ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>Pain point ที่แท้จริงไม่ใช่ค่าเช่าพื้นที่</h2>
+      <p>โจทย์ตั้งต้นคือ &ldquo;ไม่อยากจ่าย iCloud&rdquo; แต่พอถามต่ออีกชั้นว่าจ่ายไปเพื่ออะไร คำตอบมันเปลี่ยนรูปปัญหาทั้งหมด</p>
+    </section>
+
+    <div class="quote-block">
+      <p>ผมมีฮาร์ดดิสก์ที่ใหญ่พอและจ่ายจบไปแล้วเสียบอยู่กับ Mac แต่มันเป็นแค่ <strong>ที่ทิ้งไฟล์</strong> ไม่ใช่ <strong>คลังที่หาของเจอ</strong> — สิ่งที่ iCloud ขายจริง ๆ ไม่ใช่กิกะไบต์ แต่คือการที่ของเข้าที่ของมันเองโดยผมไม่ต้องทำอะไร</p>
+      <div class="author">— Point of view ที่ทำให้เปลี่ยนโจทย์ทั้งหมด</div>
+    </div>
+
+    <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.8; margin-bottom: 4px;">พอนิยามปัญหาใหม่แบบนี้ ทางแก้ที่ดูสมเหตุสมผลที่สุดตอนแรก — คือ &ldquo;ก็ลากไฟล์มาลง HDD สิ&rdquo; — กลายเป็นทางที่แย่กว่าเดิม เพราะมันย้ายต้นทุนจากค่าเช่ารายเดือน ไปเป็นแรงคนที่ต้องจ่ายทุกครั้งที่มีไฟล์เข้า</p>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+        <h3>ค่าที่แท้จริงคือค่าแรงจัดไฟล์ ไม่ใช่ค่าพื้นที่</h3>
+        <p>ค่าบริการรายเดือนจ่ายครั้งเดียวจบต่อรอบ แต่การจัดไฟล์เองต้องจ่ายด้วยความตั้งใจทุกครั้งที่มีของเข้า และเป็นต้นทุนที่ไม่มีใครจ่ายต่อเนื่องได้จริง</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.97 12.92A2 2 0 0 0 2 14.63v3.24a2 2 0 0 0 .97 1.71l3 1.8a2 2 0 0 0 2.06 0L12 19v-5.5l-5-3-4.03 2.42Z"/><path d="m7 16.5-4.74-2.85"/><path d="m7 16.5 5-3"/><path d="M7 16.5v5.17"/><path d="M12 13.5V19l3.97 2.38a2 2 0 0 0 2.06 0l3-1.8a2 2 0 0 0 .97-1.71v-3.24a2 2 0 0 0-.97-1.71L17 10.5l-5 3Z"/><path d="m17 16.5-5-3"/><path d="m17 16.5 4.74-2.85"/><path d="M17 16.5v5.17"/><path d="M7.97 4.42A2 2 0 0 0 7 6.13v4.37l5 3 5-3V6.13a2 2 0 0 0-.97-1.71l-3-1.8a2 2 0 0 0-2.06 0l-3 1.8Z"/><path d="M12 8 7.26 5.15"/><path d="m12 8 4.74-2.85"/><path d="M12 13.5V8"/></svg>
+        <h3>โฟลเดอร์ที่ไม่มีคนจัด จะกลายเป็นที่ที่ไม่มีใครเปิด</h3>
+        <p>ย้ายของขึ้น HDD เฉย ๆ โดยไม่มีตัวจัด ผลลัพธ์คือกองไฟล์ก้อนเดียวหลายพันชิ้นที่ค้นไม่เจอ สุดท้ายไม่กล้าลบและไม่เคยเปิด แย่กว่าตอนอยู่ในมือถือด้วยซ้ำ</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M12 17h.01"/><path d="M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3"/></svg>
+        <h3>นามสกุลไฟล์บอกได้แค่ว่ามันเป็นรูป ไม่ได้บอกว่ารูปอะไร</h3>
+        <p>ตัวจัดไฟล์เดิมแยกได้แค่ <code>.jpg</code> เข้า Photos และ <code>.pdf</code> เข้า Documents ซึ่งพอสำหรับเอกสาร แต่ไม่พอสำหรับรูป เพราะรูปหลายพันใบในโฟลเดอร์เดียวก็ยังหาสลิปเดือนที่แล้วไม่เจออยู่ดี</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>ทางแก้ที่มีอยู่ทุกเจ้า แลกด้วยการอัปรูปส่วนตัวขึ้นคลาวด์</h3>
+        <p>บริการที่ค้นรูปเก่งจริงทำงานบนเซิร์ฟเวอร์ของเจ้าของบริการทั้งหมด แปลว่าสลิปการเงินและรูปในบ้านต้องออกจากเครื่องไปก่อน จึงจะได้ความสะดวกกลับมา</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Ideate ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>สี่ทางที่ชั่งจริง ก่อนตัดสินใจเขียนเอง</h2>
+      <p>เกณฑ์มี 3 ข้อ — ต้องแยกรูปตามเนื้อในรูปได้ · ไม่มีค่าใช้จ่ายต่อเนื่อง · รูปไม่ออกจากเครื่อง</p>
+    </section>
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead>
+          <tr><th>ทางเลือก</th><th>แยกตามเนื้อในรูป</th><th class="num">ค่าใช้จ่าย</th><th>เหตุที่ตก / รับ</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>iCloud+</td>
+            <td>ค้นได้ แต่ไม่จัดโฟลเดอร์ให้</td>
+            <td class="num">รายเดือน ตลอดไป</td>
+            <td>รูปอยู่บนเซิร์ฟเวอร์ Apple · จ่ายแล้วก็ยังไม่ได้โครงโฟลเดอร์ที่เอาไปใช้ต่อได้ และเป็นโจทย์ตั้งต้นที่อยากเลี่ยง</td>
+          </tr>
+          <tr>
+            <td>Google Photos</td>
+            <td>ค้นเก่งที่สุดในกลุ่ม</td>
+            <td class="num">รายเดือนเมื่อเกินโควตา</td>
+            <td>ต้องอัปสลิปการเงินและรูปส่วนตัวทั้งหมดขึ้นเซิร์ฟเวอร์ Google — ราคาที่ไม่อยากจ่ายในความหมายอื่น</td>
+          </tr>
+          <tr>
+            <td>NAS + แอปจัดรูป</td>
+            <td>ได้ ถ้าลงปลั๊กอินเพิ่ม</td>
+            <td class="num">ค่าเครื่อง + ค่าดูแล</td>
+            <td>อยู่ในบ้านก็จริง แต่ต้องซื้อฮาร์ดแวร์ใหม่ทั้งชุด เพื่อแก้ปัญหาที่ HDD เดิมกับ Mac เดิมทำได้อยู่แล้ว</td>
+          </tr>
+          <tr data-picked>
+            <td>ต่อยอดตัวจัดไฟล์เดิม<span class="pick"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> เลือก</span></td>
+            <td>ได้ ด้วย Vision ที่ติดมากับ macOS</td>
+            <td class="num">ไม่มี</td>
+            <td>รูปอยู่บน HDD ที่มีอยู่ · มีตัวจัดตามนามสกุลทำงานอยู่แล้ว เหลือแค่ต่ออีกชั้นให้ดูเนื้อในรูป</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="learning-card note">
+      <strong>ตัวชี้ขาด</strong>
+      <p>Vision framework ติดมากับ macOS อยู่แล้ว — จำแนกภาพได้ <strong>1,303 ชนิด</strong> และอ่านตัวอักษรได้ <strong>30 ภาษารวมภาษาไทย</strong> ทำงานบนเครื่อง ไม่ต้องต่อเน็ต ไม่ต้องมี API key ไม่มีค่าเรียกต่อครั้ง ของที่จำเป็นทั้งหมดจึงมีอยู่ในเครื่องตั้งแต่ต้น เหลือแค่ต่อสายให้ถูก</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== เส้นทางจากมือถือถึงฮาร์ดดิสก์ ===== -->
+    <section class="section-intro" id="path">
+      <span class="eyebrow">Ideate &middot; Prototype</span>
+      <h2>จะแทน iCloud ได้จริง รูปต้องเดินทางจากมือถือมาถึงฮาร์ดดิสก์เองได้</h2>
+      <p>ตัวจัดไฟล์จะฉลาดแค่ไหนก็ไม่มีความหมาย ถ้าคนต้องเสียบสาย iPhone เข้าคอมก่อนทุกครั้ง — ชิ้นส่วนที่ทำให้ทั้งระบบใช้แทนคลาวด์ได้จริง อยู่ตรงเส้นทางนี้</p>
+    </section>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l-6-6-2.3 2.3a2.4 2.4 0 0 0 0 3.4Z"/><path d="m2 22 3-3"/><path d="M7.5 13.5 10 11"/><path d="M10.5 16.5 13 14"/><path d="m18 3-4 4h6l-4 4"/></svg>
+        <h3>เสียบสายโอนเองทุกครั้ง</h3>
+        <p>เป็น workflow เดิมที่ทำให้ไม่มีใครทำจริงตั้งแต่แรก ถ้าต้องรอกลับถึงบ้านแล้วหาสาย รูปก็จะกองอยู่ในมือถือต่อไปเหมือนเดิม</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6.01 18H6"/><path d="M10.01 18H10"/><path d="M15 10v4"/><path d="M17.84 7.17a4 4 0 0 0-5.66 0"/><path d="M20.66 4.34a8 8 0 0 0-11.31 0"/></svg>
+        <h3>Forward พอร์ต 445 ออกอินเทอร์เน็ตที่เราเตอร์</h3>
+        <p>SMB เป็นหนึ่งในพอร์ตที่ถูกสแกนหนักที่สุดบนอินเทอร์เน็ต การเปิดมันตรง ๆ เพื่อความสะดวกส่วนตัว คือการแลกที่ไม่คุ้มเลย และยังต้องมี dynamic DNS คอยตามเมื่อ IP บ้านเปลี่ยน</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+        <h3>ตั้ง VPN เข้าบ้านเอง</h3>
+        <p>ได้ผลลัพธ์ถูกทาง แต่ต้องแตะตั้งค่าเราเตอร์ เปิดพอร์ต และดูแลกุญแจ/ใบรับรองเอง เป็นงานดูแลระบบที่ต้องจ่ายต่อเนื่อง เพื่อแก้ปัญหาโอนรูป</p>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>ทางที่เลือก &mdash; Tailscale</strong>
+      <p>mesh VPN บน WireGuard ที่ทำให้ iPhone กับ Mac คุยกันตรง ๆ ผ่าน IP ส่วนตัวของ tailnet ซึ่ง<strong>คงที่ตลอด ไม่ว่าเครื่องจะอยู่เครือข่ายไหน</strong> — ไม่ต้อง forward พอร์ต ไม่ต้องมี dynamic DNS ไม่ต้องแตะเราเตอร์สักบรรทัด และไม่มีอะไรถูกเปิดออกสู่อินเทอร์เน็ตสาธารณะ</p>
+    </div>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          iPhone &mdash; อยู่ที่ไหนก็ได้
+          <div class="arch-sub"><span>แอป Files</span><span>Connect to Server</span><span>เลือกรูปแล้ววาง</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Tailscale &mdash; WireGuard mesh
+          <div class="arch-sub"><span>IP ส่วนตัวคงที่</span><span>ไม่ผ่านเซิร์ฟเวอร์กลาง</span><span>ไม่ต้อง forward พอร์ต</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          macOS File Sharing &mdash; share ชื่อ Drive
+          <div class="arch-sub"><span>SMB พอร์ต 445</span><span>ฟังเฉพาะบน tailnet</span><span>guest access ปิด</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          HDD ที่บ้าน &mdash; Drive/Inbox
+          <div class="arch-sub"><span>launchd หยิบไปจัดใน 5 นาที</span><span>Vision แยกหมวด</span><span>ลง Photos/&lt;หมวด&gt;</span></div>
+        </div>
+      </div>
+    </div>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><span><b>พอร์ต 445 ไม่เคยโผล่บนอินเทอร์เน็ตสาธารณะ</b> — มันฟังอยู่บน tailnet เท่านั้น ต่างจากการ forward พอร์ตที่เราเตอร์โดยสิ้นเชิง</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span><b>ปิด guest access</b> — ต้องล็อกอินด้วยบัญชีของเครื่อง การอยู่ใน tailnet อย่างเดียวยังเข้าไม่ได้</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span><b>ไม่ได้ตั้ง <code>tailscale serve</code> หรือ funnel ไว้เลย</b> — ไม่มีบริการไหนถูกเปิดออกนอก tailnet แม้แต่ตัวเดียว</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 16h.01"/><path d="M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><path d="M21.946 12.013H2.054"/><path d="M6 16h.01"/></svg><span><b>HDD ไม่ได้เสียบ = share หายไปเฉย ๆ</b> — ตัวจัดไฟล์ก็จบเงียบตามหลักเดิม ไม่มี error ให้ต้องมาไล่ดู</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>สามไฟล์ แต่ละไฟล์มีเหตุผลที่ต้องแยกออกมา</h2>
+      <p>ไม่ได้แยกเพราะอยากให้ดูเป็นระบบ แต่เพราะข้อจำกัดของ macOS บังคับให้แยก</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19h8"/><path d="m4 17 6-6-6-6"/></svg>
+        <h3>drive &mdash; bash</h3>
+        <p>ตรรกะทั้งหมดอยู่ที่นี่ · <code>sort</code> จัดไฟล์ · <code>offload</code> ย้ายของขึ้น HDD แล้วทิ้ง symlink ไว้ที่เดิม · <code>selftest</code> ตรวจตัวเองก่อนแก้</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>drivesort &mdash; C, 8 บรรทัด</h3>
+        <p>macOS ไม่ยอมผูก Full Disk Access กับ shell script จึงต้องมี binary จริงไว้รับสิทธิ์ ให้เฉพาะตัวนี้เข้าถึงดิสก์ได้ แทนการเปิดสิทธิ์ให้ <code>/bin/bash</code> ทั้งระบบ</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3>imgclass &mdash; Swift</h3>
+        <p>bash เรียก framework ของระบบเองไม่ได้ ตัวนี้ทำหน้าที่เดียวคือเปิด Vision แล้วพิมพ์ผลดิบออกมา — label ของสิ่งที่อยู่ในรูป หรือตัวอักษรที่อ่านได้</p>
+      </div>
+    </div>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          launchd &mdash; ปลุกทุก 5 นาที
+          <div class="arch-sub"><span>ไม่เฝ้าโฟลเดอร์แบบ real-time</span><span>HDD ไม่เสียบ = จบเงียบ ไม่ใช่ error</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          drive sort &mdash; แยกชั้นแรกตามนามสกุล
+          <div class="arch-sub"><span>Photos</span><span>Videos</span><span>Documents</span><span>Design</span><span>ไม่รู้จัก = ค้างใน Inbox</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          imgclass &mdash; Vision บนเครื่อง
+          <div class="arch-sub"><span>VNClassifyImageRequest</span><span>VNRecognizeTextRequest</span><span>th-TH + en-US</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Photos/ &mdash; 6 โฟลเดอร์ย่อย
+          <div class="arch-sub"><span>slip</span><span>screenshot</span><span>dog</span><span>cat</span><span>plant</span><span>sky</span></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Flow ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน &mdash; 5 จังหวะ</h2>
+      <p>จากไฟล์ที่เพิ่งตกลง Inbox ถึงโฟลเดอร์ปลายทาง โดยไม่มีใครกดอะไรเลย</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <h4>ปลุกทุก 5 นาที</h4>
+        <p>ไม่เฝ้าโฟลเดอร์แบบ real-time เพราะงานนี้ไม่ต้องการความเร็วระดับวินาที และการปลุกเป็นรอบถูกกว่าการค้าง process ไว้ตลอดเวลา</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        <h4>หยิบเฉพาะไฟล์ที่นิ่งเกิน 1 นาที</h4>
+        <p>ข้ามไฟล์ที่เพิ่งถูกแตะ กันย้ายไฟล์ที่มือถือกำลังอัปยังไม่เสร็จ แล้วได้ไฟล์ครึ่ง ๆ กลาง ๆ ไปอยู่ผิดที่</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2.5a1 1 0 0 1-.8-.4l-.9-1.2A1 1 0 0 0 15 3h-2a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M20 21a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-2.9a1 1 0 0 1-.88-.55l-.42-.85a1 1 0 0 0-.92-.6H13a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M3 5a2 2 0 0 0 2 2h3"/><path d="M3 3v13a2 2 0 0 0 2 2h3"/></svg>
+        <h4>แยกชั้นแรกตามนามสกุล</h4>
+        <p>Photos · Videos · Documents · Design — นามสกุลที่ไม่รู้จักไม่เดา ปล่อยค้างไว้ใน Inbox ให้คนตัดสิน</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+        <h4>เฉพาะรูป ส่งเข้า Vision</h4>
+        <p>ได้ label ของสิ่งที่อยู่ในรูปเรียงตามความมั่นใจ · ถ้าดูแล้วเป็นภาพหน้าจอ จึงค่อยเรียก OCR อ่านตัวอักษรต่อ เพราะ OCR ช้ากว่าหลายเท่า</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"/><path d="m15 9 6-6"/></svg>
+        <h4>ลงโฟลเดอร์ย่อย หรือไม่ลงเลย</h4>
+        <p>ไม่มั่นใจ = ไม่เดา ค้างไว้ที่ <code>Photos/</code> ให้คนตัดสิน หลักเดียวกับนามสกุลที่ไม่รู้จัก</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Decision order ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>ลำดับการเช็คคือตัวตัดสินผลลัพธ์ ไม่ใช่ความแม่นของโมเดล</h2>
+      <p>รูปหนึ่งใบติดหลาย label พร้อมกันเสมอ สิ่งที่กำหนดว่ามันจะไปโฟลเดอร์ไหน คือใครถูกถามก่อน</p>
+    </section>
+
+    <div class="ladder">
+      <div class="rung">
+        <div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 8h8"/><path d="M7 12h10"/><path d="M7 16h6"/></svg> ภาพหน้าจอ + อ่านเจอคำการเงิน</div>
+        <div class="out">&rarr; slip</div>
+        <div class="note">สลิปแคปจากแอปติดทั้ง slip และ screenshot — slip ต้องถูกถามก่อน</div>
+      </div>
+      <div class="rung">
+        <div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg> ภาพหน้าจอ</div>
+        <div class="out">&rarr; screenshot</div>
+        <div class="note">เหลือจากด่านบนแล้วคือสกรีนช็อตธรรมดา</div>
+      </div>
+      <div class="rung">
+        <div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.25 16.25h1.5L12 17z"/><path d="M16 14v.5"/><path d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309"/><path d="M8 14v.5"/><path d="M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5"/></svg> มี label หมา</div>
+        <div class="out">&rarr; dog</div>
+        <div class="note">สัตว์ถูกถามก่อนต้นไม้เสมอ</div>
+      </div>
+      <div class="rung">
+        <div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/></svg> มี label แมว</div>
+        <div class="out">&rarr; cat</div>
+        <div class="note">รูปแมวยืนหน้าพุ่มไม้ติดทั้ง cat และ plant — ถ้าถามต้นไม้ก่อน รูปแมวจะหายไปอยู่ในโฟลเดอร์ต้นไม้ทั้งหมด</div>
+      </div>
+      <div class="rung">
+        <div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg> มี label พืช</div>
+        <div class="out">&rarr; plant</div>
+        <div class="note">&mdash;</div>
+      </div>
+      <div class="rung">
+        <div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg> ท้องฟ้า และต้องติด 2 อันดับแรก</div>
+        <div class="out">&rarr; sky</div>
+        <div class="note">รูปกลางแจ้งเกือบทุกรูปมี sky ติดมาด้วย ถ้าไม่บังคับว่าต้องเด่นจริง ทุกอย่างจะกลายเป็นรูปท้องฟ้า</div>
+      </div>
+      <div class="rung none">
+        <div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="9" x2="15" y1="15" y2="9"/></svg> ไม่เข้าเงื่อนไขไหนเลย</div>
+        <div class="out">&rarr; ไม่ย้าย</div>
+        <div class="note">ค้างที่ <code>Photos/</code> ให้คนตัดสิน</div>
+      </div>
+    </div>
+
+    <div class="learning-card note ok">
+      <strong>พิสูจน์กับรูปจริง</strong>
+      <p>รูปแมวดำยืนหน้ากอต้นไม้ Vision คืน <code>animal</code> <code>mammal</code> <code>cat</code> <code>feline</code> พร้อมกัน และเพราะแมวถูกถามก่อนพืช ไฟล์จึงลง <code>Photos/cat</code> ไม่ใช่ <code>Photos/plant</code></p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hacks ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>สามเรื่องที่รู้ก็ต่อเมื่อเอาไปวัดกับไฟล์จริง</h2>
+      <p>ทุกข้อคือสมมติฐานที่ฟังดูสมเหตุสมผลตอนคิด แล้วผิดตอนวัด</p>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card" data-label="สมมติฐานผิด">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>คิดว่า Vision จะรู้จักสลิป เพราะในรายการมี label ชื่อ receipt อยู่</span></h3>
+        <p>เอาสลิปจริง 60 ใบไปทดสอบ ปรากฏว่า label <code>receipt</code> ไม่เคยถูกคืนมาเลยสักครั้ง — 59 ใบได้ <code>document</code> กับ <code>screenshot</code> เหมือนกันหมด เพราะสลิปของจริงไม่ใช่ใบเสร็จกระดาษที่ถ่ายด้วยกล้อง แต่เป็นภาพแคปหน้าจอจากแอปธนาคาร ซึ่งหน้าตาเหมือนสกรีนช็อตทุกประการ</p>
+        <div class="highlight"><strong>แก้:</strong> ถ้าดูจากภาพแยกไม่ออก ก็ต้องอ่านตัวอักษรบนภาพแทน Vision รองรับ OCR ภาษาไทย จึงให้มันอ่านแล้วมองหาคำอย่าง <code>รหัสอ้างอิง</code> <code>พร้อมเพย์</code> <code>ยอดชำระ</code> และเพราะ OCR ช้ากว่าการจำแนกภาพมาก จึงเรียกเฉพาะรูปที่ถูกตีว่าเป็นภาพหน้าจอเท่านั้น</div>
+      </div>
+
+      <div class="hack-card" data-label="คำกว้างเกินไป">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>คำว่า &ldquo;ค่าธรรมเนียม&rdquo; ดูดใบยืนยันซื้อหุ้นเข้ามาเป็นสลิป</span></h3>
+        <p>ตอนตั้งรายการคำที่บ่งบอกว่าเป็นสลิป ใส่ <code>ค่าธรรมเนียม</code> ไปด้วยเพราะสลิปโอนเงินมักมีคำนี้ พอเอาไปวัดกับสกรีนช็อตทั่วไป 25 รูป มีใบยืนยันการซื้อหุ้น 3 ใบถูกดึงมาเป็นสลิป เพราะมันมีคำว่าค่าธรรมเนียมเหมือนกัน</p>
+        <div class="highlight"><strong>แก้:</strong> ตัดคำนั้นทิ้ง เก็บเฉพาะคำที่เจาะจงพอจะไม่ไปโผล่ในเอกสารการเงินประเภทอื่น หลังตัดแล้ววัดซ้ำ สกรีนช็อตทั่วไปไม่มีใบไหนหลุดมาเป็นสลิปเลย &mdash; บทเรียน: คำที่ &ldquo;มักจะมี&rdquo; ไม่เท่ากับคำที่ &ldquo;มีเฉพาะที่นี่&rdquo;</div>
+      </div>
+
+      <div class="hack-card" data-label="กับดักใน taxonomy">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>ใน 1,303 label มีคำที่หน้าตาเหมือนกันแต่คนละเรื่อง</span></h3>
+        <p>รายการของ Vision มีทั้ง <code>hotdog</code> <code>prairie_dog</code> <code>eggplant</code> <code>cauliflower</code> <code>sunflower_seeds</code> <code>bobcat</code> ถ้าจับคู่แบบหาคำย่อย รูปฮอทดอกจะกลายเป็นรูปหมา และมะเขือม่วงจะกลายเป็นต้นไม้</p>
+        <div class="highlight"><strong>แก้:</strong> เทียบทั้งบรรทัดเท่านั้น ไม่เทียบแบบคำย่อย ใช้เวลาแก้ไม่ถึงนาที แต่ถ้าไม่ได้ไล่อ่านรายการ label ทั้งหมดก่อน ก็จะไม่มีทางรู้ว่าต้องแก้</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Result ===== -->
+    <section class="section-intro" id="result">
+      <span class="eyebrow">Test</span>
+      <h2>วัดกับไฟล์ของตัวเอง ไม่ใช่กับชุดข้อมูลตัวอย่าง</h2>
+      <p>โฟลเดอร์ที่เคยจัดด้วยมือไว้แล้ว กลายเป็นชุดเฉลยที่ใช้ตรวจคำตอบได้ฟรี</p>
+    </section>
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th>ชุดทดสอบ</th><th class="num">จำนวน</th><th>ผล</th></tr></thead>
+        <tbody>
+          <tr><td>โฟลเดอร์ slip ที่จัดด้วยมือไว้</td><td class="num">67 รูป</td><td>ตีเป็น slip 53 · screenshot 8 · ไม่แยก 1 — เปิดดู 8 ใบที่หลุดแล้วพบว่าเป็นแชท คลิป TikTok และลายเซ็นที่ปนอยู่ในโฟลเดอร์จริง ๆ ไม่ใช่สลิป</td></tr>
+          <tr><td>โฟลเดอร์ screenshot ที่จัดด้วยมือไว้</td><td class="num">5 รูป</td><td>ถูกทั้งหมด 5 จาก 5</td></tr>
+          <tr><td>สกรีนช็อตทั่วไปนอกไดรฟ์</td><td class="num">25 รูป</td><td>ไม่มีใบไหนถูกตีเป็นสลิปผิด</td></tr>
+          <tr data-picked><td>Inbox จริง ตอนรันของจริง</td><td class="num">18 ไฟล์</td><td>ตรงกับที่ทดลองไว้ก่อนย้ายทั้ง 18 ไฟล์ — cat 8 · slip 8 · plant 1 · screenshot 1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">18/18</div><div class="label">ไฟล์ที่ลงถูกโฟลเดอร์ตอนรันกับ Inbox จริง</div></div>
+      <div class="metric-card"><div class="num">0</div><div class="label">สกรีนช็อตธรรมดาที่หลุดไปเป็นสลิป</div></div>
+      <div class="metric-card"><div class="num">5/5</div><div class="label">ชุดเฉลย screenshot ที่จัดด้วยมือไว้ก่อน</div></div>
+      <div class="metric-card"><div class="num">1</div><div class="label">หมวดที่ยังไม่มีรูปจริงมาทดสอบ คือหมา</div></div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>ตัวเลขที่มีค่าที่สุดในตารางนี้คือเลขศูนย์</strong>
+      <p>เครื่องมือจัดไฟล์ที่แยกผิดบ้างยังพอรับได้ เพราะเปิดโฟลเดอร์ก็เจอ แต่เครื่องมือที่ <strong>เอาของไปซ่อนผิดที่</strong> แย่กว่าไม่มีเครื่องมือเลย หลักที่ยึดตลอดทั้งงานจึงเหลือข้อเดียว คือไม่แน่ใจแล้วไม่ต้องเดา</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Scope ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>ขอบเขตที่ตั้งใจไม่ทำ</h2>
+      <p>สิ่งที่ตัดออกมีผลกับความน่าเชื่อถือของเครื่องมือ มากกว่าสิ่งที่ใส่เข้าไป</p>
+    </section>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg><span><b>ไม่เดาเมื่อไม่มั่นใจ</b> — ไฟล์ค้างอยู่ที่เดิม ดีกว่าถูกย้ายไปที่ที่เจ้าของไม่รู้ว่าอยู่ไหน</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h.01"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></svg><span><b>ไม่เรียกบริการภายนอกสักตัว</b> — สลิปการเงินและรูปส่วนตัวไม่ควรถูกอัปไปที่ไหน เพื่อแลกกับการจัดโฟลเดอร์</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg><span><b>ไม่เขียนตรรกะการแยกลงใน Swift</b> — ตัวจำแนกพิมพ์ผลดิบออกมาเฉย ๆ ส่วนการแมปเป็นชื่อโฟลเดอร์อยู่ในสคริปต์ เพิ่มหมวดใหม่จึงไม่ต้องคอมไพล์ใหม่</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 16h.01"/><path d="M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><path d="M21.946 12.013H2.054"/><path d="M6 16h.01"/></svg><span><b>ไม่ถือว่า HDD ไม่ได้เสียบเป็นความผิดพลาด</b> — งานจบเงียบ ๆ แล้วรอบหน้าค่อยมาใหม่ ไม่ต้องมีข้อความเตือนทุก 5 นาที</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/></svg><span><b>ไม่แตะไฟล์เก่าที่จัดไว้แล้ว</b> — ทำงานเฉพาะของใหม่ที่เข้า Inbox การไล่จัดย้อนหลังเป็นการตัดสินใจแยกที่เจ้าของควรสั่งเอง</span></li>
+    </ul>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <h2>เครื่องมือที่ดีที่สุดคือเครื่องมือที่ไม่ต้องเปิดใช้</h2>
+    <p>ทุกวันนี้มันทำงานเงียบ ๆ ทุก 5 นาทีโดยไม่มีหน้าจอ ไม่มีการแจ้งเตือน และไม่มีอะไรให้กด — โยนรูปลง Inbox แล้วเดินไปทำอย่างอื่น กลับมาอีกทีของก็อยู่ในโฟลเดอร์ของมันแล้ว</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Bash</span>
+      <span class="stack-icon">Swift</span>
+      <span class="stack-icon">C</span>
+      <span class="stack-icon">Vision.framework</span>
+      <span class="stack-icon">VNClassifyImageRequest</span>
+      <span class="stack-icon">VNRecognizeTextRequest</span>
+      <span class="stack-icon">launchd</span>
+      <span class="stack-icon">on-device</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio","item":"https://projects.tanplanet.info/"},
+    {"@type":"ListItem","position":2,"name":"Drive Auto-Sort — จัดรูปเข้าโฟลเดอร์อัตโนมัติด้วย Vision","item":"https://projects.tanplanet.info/drive-autosort-portfolio/"}
+  ]
+}
+</script>
+
+</body>
+</html>

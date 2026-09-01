@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tan's Tasks — จากรายการงานใน Jira เป็นตารางวันนี้ที่ลงปฏิทินแล้ว</title>
+  <meta name="description" content="Portfolio: เครื่องมือส่วนตัวไฟล์เดียว ดับเบิลคลิกแล้วรัน — ดึงงาน Jira มาเลือกงานวันนี้ ตั้งเวลา แล้วลง Google Calendar พร้อมโน้ตแบบ Notion ผู้ช่วย AI และร่าง standup ที่มีที่มาเดียว">
+  <meta property="og:title" content="Tan's Tasks — จากรายการงานใน Jira เป็นตารางวันนี้ที่ลงปฏิทินแล้ว">
+  <meta property="og:description" content="Portfolio: เครื่องมือส่วนตัวไฟล์เดียว ดับเบิลคลิกแล้วรัน — ดึงงาน Jira มาเลือกงานวันนี้ ตั้งเวลา แล้วลง Google Calendar พร้อมโน้ตแบบ Notion ผู้ช่วย AI และร่าง standup ที่มีที่มาเดียว">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://projects.tanplanet.info/jira-tasks-portfolio/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tan's Tasks — จากรายการงานใน Jira เป็นตารางวันนี้ที่ลงปฏิทินแล้ว">
+  <meta name="twitter:description" content="Portfolio: เครื่องมือส่วนตัวไฟล์เดียว ดับเบิลคลิกแล้วรัน — ดึงงาน Jira มาเลือกงานวันนี้ ตั้งเวลา แล้วลง Google Calendar พร้อมโน้ตแบบ Notion ผู้ช่วย AI และร่าง standup ที่มีที่มาเดียว">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0f1f'/><path d='M28 30h44M28 50h44M28 70h30' stroke='%2310b981' stroke-width='7' stroke-linecap='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #b45309;
+      --accent-light: #fef3c7;
+      --accent-dark: #78350f;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #0a0f1f 0%, #121b36 40%, #3f2d12 78%, #78350f 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(251,191,36,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #78350f, #f59e0b, #fde68a);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent { color: #fcd34d; }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro { padding: 56px 0 32px; }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .section-intro p { color: var(--text-secondary); font-size: 1rem; }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0a0f1f, #223056);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block code { background: rgba(255,255,255,0.14); color: #fcd34d; }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p { font-size: 1.05rem; line-height: 1.7; position: relative; z-index: 1; }
+    .quote-block .author { margin-top: 12px; font-size: 0.82rem; opacity: 0.78; }
+
+    /* ===== Pain / Solution Cards ===== */
+    .pain-grid, .solution-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .pain-card, .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .pain-card { border-left: 4px solid var(--red); }
+    .solution-card { border-left: 4px solid var(--accent); }
+    .pain-card .emoji, .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3, .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p, .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(180,83,9,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers { display: flex; flex-direction: column; gap: 12px; max-width: 560px; margin: 0 auto; }
+    .arch-layer { padding: 14px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(180,83,9,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: var(--navy); color: #cbd5e1; border: 1px solid #223056; }
+    .arch-arrow { text-align: center; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+    .arch-sub { display: flex; justify-content: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .arch-layer.infra .arch-sub span { background: rgba(255,255,255,0.10); }
+
+    /* ===== Device Mockup (320x480 @ scale) ===== */
+    .dev-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .dev-frame {
+      width: 348px;
+      max-width: 100%;
+      background: #1a1a1c;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 14px 40px rgba(10,15,31,0.35);
+    }
+    .dev-screen {
+      background: var(--navy);
+      border-radius: 6px;
+      overflow: hidden;
+      color: #f2f5ff;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+    .dev-hero {
+      background: #121b36;
+      padding: 12px 14px 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .dev-clock { font-size: 2.4rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+    .dev-date { color: #8492bc; font-size: 0.72rem; margin-top: 4px; }
+    .dev-hero-right { text-align: right; font-size: 0.72rem; color: #8492bc; }
+    .dev-hero-right .t { color: #f2f5ff; font-size: 1.05rem; font-weight: 600; }
+    .dev-list { padding: 8px; display: flex; flex-direction: column; gap: 7px; }
+    .dev-card {
+      background: #161f3c;
+      border-radius: 8px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dev-card .body { flex: 1; min-width: 0; }
+    .dev-card .ttl { color: #8492bc; font-size: 0.68rem; letter-spacing: 0.02em; }
+    .dev-card .val { font-size: 0.95rem; font-weight: 600; }
+    .dev-card .sub { color: #8492bc; font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dev-card .up { color: #4ade80; }
+    .dev-card .warn { color: #fbbf24; }
+    .dev-card .down { color: #f87171; }
+    .dev-blob {
+      width: 42px;
+      height: 34px;
+      border-radius: 6px;
+      background: #223056;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .dev-bar { height: 5px; border-radius: 3px; background: #223056; margin-top: 6px; overflow: hidden; }
+    .dev-bar i { display: block; height: 100%; background: #fbbf24; }
+    .dev-caption { font-size: 0.8rem; color: var(--text-secondary); text-align: center; max-width: 420px; }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img { width: 100%; height: auto; display: block; }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons { margin-top: 24px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+    .closing .links { margin-top: 24px; display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .closing .links a { color: var(--accent); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        ไฟล์เดียว &middot; Bash + Python stdlib &middot; localhost:8765
+      </div>
+      <h1>Tan's Tasks<br><span class="accent">จากรายการงานใน Jira เป็นตารางวันนี้ที่ลงปฏิทินไปแล้ว</span></h1>
+      <p>ดับเบิลคลิกไฟล์เดียวแล้วเบราว์เซอร์เปิดขึ้นมาเอง — ติ๊กงานที่จะทำวันนี้ ลากเวลา แล้วกดลง Google Calendar ทีเดียว จากจุดนั้นมันโตขึ้นเป็นที่ทำงานประจำวันทั้งชุด ทั้งโน้ต ผู้ช่วย AI และร่าง standup ที่เขียนจากงานที่ทำจริง</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Bash</span>
+        <span class="hero-tag">Python stdlib</span>
+        <span class="hero-tag">Jira REST</span>
+        <span class="hero-tag">Google Calendar</span>
+        <span class="hero-tag">Gmail API</span>
+        <span class="hero-tag">Vanilla JS</span>
+        <span class="hero-tag">No build step</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#hacks">ปัญหาที่เจอจริง</a>
+      </div>
+    </div>
+  </header>
+
+  <article>
+
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>เครื่องมือสองตัวที่รู้คนละครึ่งของเรื่องเดียวกัน</h2>
+      <p>Jira รู้ว่ามีงานอะไรค้างอยู่ · ปฏิทินรู้ว่าเวลาว่างตรงไหน · ไม่มีตัวไหนรู้ทั้งสองอย่าง คนเลยต้องเป็นสะพานเองทุกเช้า</p>
+    </section>
+
+    <div class="quote-block">
+      <p>ทุกเช้าเปิด Jira ไล่อ่านว่ามีงานอะไร ตัดสินใจในหัวว่าวันนี้จะทำอันไหน แล้วพิมพ์ชื่องานเดิมซ้ำอีกรอบลงปฏิทิน — งานคิดใช้เวลาสองนาที งานพิมพ์ซ้ำใช้เวลานานกว่า และตอนเย็นก็จำไม่ได้อยู่ดีว่าวันนี้แตะอะไรไปบ้าง</p>
+      <div class="author">— โจทย์ตั้งต้น ก่อนเขียนบรรทัดแรก</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"/><path d="m15 9 6-6"/></svg>
+        <h3>ต้องพิมพ์ชื่องานเดิมซ้ำสองที่</h3>
+        <p>ข้อมูลชุดเดียวกันถูกกรอกสองรอบ รอบแรกอ่านจาก Jira รอบสองพิมพ์ลงปฏิทิน ทุกครั้งที่พิมพ์ซ้ำคือโอกาสพิมพ์ผิด และเป็นงานที่ไม่ได้สร้างอะไรใหม่เลย</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+        <h3>ลงงานทับช่วงที่มีประชุมอยู่แล้ว</h3>
+        <p>ตอนจัดตารางในหัว มองไม่เห็นว่าบ่ายนี้มีประชุมจองไว้ กว่าจะรู้ก็ตอนปฏิทินเด้งชนกัน แล้วต้องมานั่งเลื่อนใหม่ทั้งวัน</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg>
+        <h3>ตอนเย็นเขียน standup ไม่ออก</h3>
+        <p>จำไม่ได้ว่าวันนี้ทำอะไรไปบ้าง ต้องไล่เปิด Jira ย้อนดูทีละใบ ซึ่งบอกได้แค่ว่าสถานะเปลี่ยนตอนไหน ไม่ได้บอกว่าจริง ๆ แล้วลงแรงไปกับอะไร</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+        <h3>เครื่องมือสำเร็จรูปต้องเอา token ของบริษัทไปฝากไว้</h3>
+        <p>บริการเชื่อม Jira กับปฏิทินมีให้เลือกเยอะ แต่ทุกเจ้าขอ API token ของที่ทำงานไปเก็บไว้บนเซิร์ฟเวอร์ของเขา ซึ่งเป็นการตัดสินใจที่ไม่ควรทำคนเดียวเพื่อความสะดวกส่วนตัว</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>ตัดสินใจว่า &ldquo;ที่เก็บ token&rdquo; คือข้อจำกัดข้อแรก ไม่ใช่ฟีเจอร์</h2>
+      <p>พอเอาข้อนี้ขึ้นมาเป็นเกณฑ์ตั้งต้น ทางเลือกก็เหลือน้อยลงมากและตัดสินใจง่ายขึ้น</p>
+    </section>
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th>ทางเลือก</th><th>token อยู่ที่ไหน</th><th class="num">ต้นทุน</th><th>เหตุที่ตก / รับ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>บริการเชื่อมอัตโนมัติ</td>
+            <td>เซิร์ฟเวอร์ผู้ให้บริการ</td>
+            <td class="num">รายเดือน</td>
+            <td>ต่อได้เร็วที่สุด แต่ต้องยก API token ของที่ทำงานให้บุคคลที่สามเก็บไว้ถาวร</td>
+          </tr>
+          <tr>
+            <td>ปลั๊กอินใน Jira</td>
+            <td>บนระบบของบริษัท</td>
+            <td class="num">ต้องขออนุมัติ</td>
+            <td>ปลอดภัยเรื่อง token แต่เป็นการแก้เครื่องมือกลางของทีม เพื่อแก้ปัญหาส่วนตัวของคนคนเดียว</td>
+          </tr>
+          <tr>
+            <td>เว็บแอปที่ต้อง deploy</td>
+            <td>เซิร์ฟเวอร์ตัวเอง</td>
+            <td class="num">ค่าโฮสต์ + ค่าดูแล</td>
+            <td>ได้อิสระเต็มที่ แต่ต้องดูแลเซิร์ฟเวอร์กับ CI ตลอดไป เพื่อเครื่องมือที่เปิดวันละครั้ง</td>
+          </tr>
+          <tr data-picked>
+            <td>ไฟล์เดียวบนเครื่อง<span class="pick"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> เลือก</span></td>
+            <td>ในเครื่องตัวเอง</td>
+            <td class="num">ไม่มี</td>
+            <td>ดับเบิลคลิกแล้วรัน ไม่มี deploy ไม่มีบัญชี ไม่มีอะไรออกจากเครื่อง และแก้โค้ดได้ทันทีระหว่างใช้งาน</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="learning-card note">
+      <strong>ผลของการตัดสินใจข้อนี้</strong>
+      <p>ทั้งโปรเจกต์เลยมี <strong>ไฟล์ที่ต้องรันแค่ไฟล์เดียว</strong> — bash ข้างในมี Python http.server ฝังอยู่ และมี HTML ทั้งแอปฝังอยู่ในนั้นอีกที ไม่มี build step ไม่มี framework ไม่มี <code>node_modules</code> ไฟล์ความลับทั้งสามตัวถูก gitignore ไว้ตั้งแต่ commit แรก</p>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>สถาปัตยกรรมทั้งหมดอยู่ในไฟล์ที่ดับเบิลคลิกได้</h2>
+      <p>ไฟล์ <code>.command</code> ทำให้ Finder รันมันได้เหมือนแอป โดยที่ข้างในยังเป็นเชลล์สคริปต์ที่อ่านออกและแก้ได้</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          ดับเบิลคลิก tans-tasks.command
+          <div class="arch-sub"><span>ตามลิงก์ symlink ไปหาไฟล์จริง</span><span>ลงไลบรารี Google ครั้งแรกครั้งเดียว</span><span>ฆ่า process เก่าที่ค้างพอร์ต</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Python http.server &mdash; localhost:8765
+          <div class="arch-sub"><span>42 endpoint</span><span>ไม่มี framework</span><span>เปิดเบราว์เซอร์ให้เอง</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          แหล่งข้อมูลภายนอก
+          <div class="arch-sub"><span>Jira REST</span><span>Google Calendar</span><span>Gmail</span><span>day-log ในเครื่อง</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          ความลับที่ไม่เคยขึ้น git
+          <div class="arch-sub"><span>config.json</span><span>credentials.json</span><span>token.json</span><span>token-gmail.json</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card note ok">
+      <strong>แยก token คนละใบตามขอบเขตสิทธิ์</strong>
+      <p>ตอนเพิ่มอีเมลเช้าเข้ามา ไม่ได้เอา scope ของ Gmail ไปยัดรวมกับ token ของปฏิทินที่มีอยู่ แต่<strong>แยกเป็น token คนละใบ</strong> — ถอนสิทธิ์อ่านเมลได้โดยไม่กระทบการลงปฏิทิน และถ้าใบไหนหลุด ความเสียหายจำกัดอยู่แค่ขอบเขตของใบนั้น</p>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงานตอนเช้า &mdash; 5 จังหวะ</h2>
+      <p>จากเปิดเครื่องถึงตารางวันนี้ที่อยู่ในปฏิทินแล้ว</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        <h4>ดึงงานของเรามาแสดง</h4>
+        <p>เรียก Jira ด้วย token ในเครื่อง จัดกลุ่มตาม Epic ย่อ-ขยายได้ พร้อมบอกจำนวนงานย่อยในแต่ละกลุ่ม</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/></svg>
+        <h4>ติ๊กงานที่จะทำวันนี้</h4>
+        <p>เลือกจากรายการจริง ไม่ต้องพิมพ์ชื่องานซ้ำ ระบบจำโปรเจกต์ที่เลือกล่าสุดไว้ให้ รอบหน้าเปิดมาอยู่ที่เดิม</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <h4>ตั้งเวลาโดยเห็นของที่จองไว้แล้ว</h4>
+        <p>ช่วงเวลาที่ปฏิทินมีนัดอยู่แล้วจะถูกกันไว้ตั้งแต่ตอนเลือก ไม่ใช่ไปรู้ตอนลงทับไปแล้ว</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+        <h4>ลงปฏิทินทีเดียวทั้งชุด</h4>
+        <p>สร้าง event ครบทุกงานที่ติ๊ก แล้วติดป้าย &ldquo;ลงปฏิทินแล้ว&rdquo; พร้อมเวลาไว้บนการ์ด กันลงซ้ำรอบสอง</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 21h8"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
+        <h4>ตอนเย็นกดสร้างร่าง standup</h4>
+        <p>อ่านจาก day-log ของวันนั้น แล้วร่างให้เป็นข้อความพร้อมส่ง ย้อนวันได้ด้วยการระบุวันที่</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="hacks">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>ห้าเรื่องที่แก้เพราะใช้เองทุกวันแล้วทน ไม่ ไหว</h2>
+      <p>ทุกข้อมาจากการเป็นผู้ใช้คนเดียวของเครื่องมือตัวเอง ซึ่งทำให้เห็นปัญหาที่ผู้ใช้ทั่วไปไม่บ่นแต่เลิกใช้เงียบ ๆ</p>
+    </section>
+
+    <div class="hack-grid">
+
+      <div class="hack-card" data-label="Data source">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>ร่าง standup ที่เดาจากสถานะใน Jira ออกมาผิดแทบทุกวัน</span></h3>
+        <p>เวอร์ชันแรกประกอบร่างจาก issue ที่สถานะเปลี่ยนวันนั้น ปัญหาคือสถานะไม่ได้บอกว่าลงแรงไปกับอะไร — งานที่นั่งทำทั้งวันแต่ยังไม่เสร็จจะไม่โผล่เลย ส่วนงานที่แค่กดปิดตอนเช้ากลับขึ้นเป็นพระเอก</p>
+        <div class="highlight"><strong>แก้:</strong> เปลี่ยนให้อ่านจาก <strong>day-log ที่บันทึกงานจริงระหว่างวัน</strong> แล้ว<strong>ตัด Jira ออกจากเส้นทางนี้ทั้งหมด</strong> ไม่เหลือแม้แต่ทางสำรอง เพราะทางสำรองที่เดาผิดได้ แปลว่าวันไหนมันทำงานเราจะไม่รู้ตัว &mdash; ที่มาเดียวที่ถูก ดีกว่าสองที่มาที่ต้องมาเดาว่าอันไหนใช้ได้</div>
+      </div>
+
+      <div class="hack-card" data-label="Design system">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>dropdown ของระบบสั่งหน้าตาไม่ได้ ทำให้ทั้งแอปดูไม่เหมือนกัน</span></h3>
+        <p>ใช้ dropdown มาตรฐานของเบราว์เซอร์ แล้วเจอว่าคุมความสูง ฟอนต์ และสถานะที่เลือกอยู่ไม่ได้จริงบน macOS หน้าที่ใช้มันเลยดูหลุดจากหน้าที่เหลือทุกที</p>
+        <div class="highlight"><strong>แก้:</strong> เขียนตัวเลือกของตัวเองขึ้นมาตัวเดียว แล้ว<strong>ไล่เปลี่ยนทุกหน้าให้ใช้ตัวเดียวกันหมด</strong> รวมถึงหน้าเดี่ยว ๆ ที่แยกออกไป &mdash; กติกาที่ตามมาคือในโปรเจกต์นี้ไม่ใช้ dropdown ของระบบอีกเลย เพราะข้อยกเว้นหนึ่งจุดคือจุดเริ่มของความไม่สม่ำเสมอทั้งแอป</div>
+      </div>
+
+      <div class="hack-card" data-label="CSS">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>ตั้งฟอนต์ให้ทั้งหน้าแล้ว แต่ปุ่มกับช่องกรอกไม่เปลี่ยนตาม</span></h3>
+        <p>ประกาศฟอนต์ไทยไว้ที่ <code>body</code> เรียบร้อย ตัวหนังสือทั้งหน้าถูกหมด ยกเว้นข้อความในปุ่มและ input ที่ยังเป็นฟอนต์ระบบ ทำให้ดูเหมือนแอปประกอบจากสองที่</p>
+        <div class="highlight"><strong>แก้:</strong> ตัวควบคุมฟอร์ม<strong>ไม่สืบทอด <code>font-family</code> จากพ่อแม่</strong> ตามค่าเริ่มต้นของเบราว์เซอร์ ต้องสั่ง <code>font: inherit</code> ให้มันตรง ๆ &mdash; เป็นบั๊กที่มองไม่เห็นถ้าไม่ได้เอาสองตัวมาวางข้างกัน</div>
+      </div>
+
+      <div class="hack-card" data-label="State">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>ตั้งระยะเวลางานแล้วค่าไม่ถูกบันทึก</span></h3>
+        <p>เลือกระยะเวลาไว้ พอกดลงปฏิทินกลับได้ค่าเริ่มต้นเสมอ ไล่หาที่ตัวจัดการ state อยู่นาน ทั้งที่ต้นเหตุอยู่ที่ตัว component เอง</p>
+        <div class="highlight"><strong>แก้:</strong> เปลี่ยนจาก dropdown ที่มีบั๊กเป็น<strong>ปุ่มตัวเลือกแบบกดเลือกได้เลย</strong> ซึ่งนอกจากจะหายบั๊กแล้วยังกดง่ายกว่าเดิมบนตัวเลือกที่มีไม่กี่อัน &mdash; บางทีทางแก้ที่ถูกคือเปลี่ยน control ไม่ใช่ซ่อมของเดิม</div>
+      </div>
+
+      <div class="hack-card" data-label="Perceived speed">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>วงกลมหมุนทำให้รู้สึกช้ากว่าที่มันช้าจริง</span></h3>
+        <p>ตอนโหลดงานจาก Jira ขึ้นวงกลมหมุนกลางจอ ระหว่างนั้นหน้าจอว่างเปล่า ทำให้ทุกวินาทีรู้สึกนานกว่าความจริง และไม่รู้ว่ากำลังจะได้อะไรกลับมา</p>
+        <div class="highlight"><strong>แก้:</strong> เปลี่ยนเป็น <strong>skeleton ที่มีรูปร่างเหมือนการ์ดจริง</strong> + แบ่งหน้า + จำโปรเจกต์ที่เลือกล่าสุด &mdash; เวลาที่ใช้จริงเท่าเดิม แต่ความรู้สึกต่างกันมาก เพราะคนเห็นโครงของสิ่งที่กำลังจะมาแล้ว</div>
+      </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Level Up</span>
+      <h2>25 commit จาก &ldquo;ลงปฏิทิน&rdquo; กลายเป็นที่ทำงานประจำวัน</h2>
+      <p>ไม่ได้วางแผนไว้ตั้งแต่ต้น แต่ละอย่างถูกเพิ่มตอนที่เจอปัญหาจริงระหว่างใช้</p>
+    </section>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg><span><b>โน้ตแบบ Notion</b> — 13 ชนิดบล็อก, เมนู slash, bullet ซ้อนชั้น, คอมเมนต์, คีย์ลัด และตารางที่พิมพ์ลงไปได้จริง</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg><span><b>ผู้ช่วย AI ข้างโน้ต</b> — ลากคลุมข้อความแล้วกดแก้เฉพาะส่วนที่เลือก หรือเล่าเรื่องจากโน้ตว่างแล้วให้มันแตกเป็น task ให้</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg><span><b>อีเมลสรุปตอนเช้า</b> — ดึงเมลจริงจาก Gmail มาย่อ และส่งฉบับย่อชุดเดียวกันเข้า Telegram ไม่ย่อซ้ำสองรอบให้ได้คนละความ</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span><b>เครื่องมือ PDF 5 ตัว</b> — เขียนเพิ่มบนเอกสาร, ใส่เลขหน้าเลขไทย, แปลงเป็นรูป, ใส่ลายน้ำ, บีบอัดรูป</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg><span><b>ตัวแปลภาษา</b> ในหน้าเดียวกัน ไม่ต้องสลับไปเปิดแท็บอื่นระหว่างเขียนงาน</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg><span><b>หน้าจัดการพอร์ต</b> — เห็นว่าอะไรจับพอร์ตไหนอยู่ แยกเป็นแท็บตามกลุ่ม และปิดตัวที่ค้างได้จากหน้าเว็บ</span></li>
+    </ul>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">1</div><div class="label">ไฟล์ที่ต้องรัน ไม่มี build step</div></div>
+      <div class="metric-card"><div class="num">42</div><div class="label">endpoint ใน server ที่เขียนด้วย stdlib ล้วน</div></div>
+      <div class="metric-card"><div class="num">6,256</div><div class="label">บรรทัด รวม bash + Python + HTML ทั้งแอป</div></div>
+      <div class="metric-card"><div class="num">0</div><div class="label">ความลับที่เคยขึ้น git</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>ขอบเขตที่ตั้งใจไม่ทำ</h2>
+      <p>เครื่องมือส่วนตัวมีข้อได้เปรียบอย่างเดียวคือรู้ว่าผู้ใช้เป็นใคร ถ้าเผลอออกแบบเผื่อคนอื่น ข้อได้เปรียบนั้นจะหายไปทันที</p>
+    </section>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span><b>ไม่มีระบบผู้ใช้หลายคน</b> — ไม่มีล็อกอิน ไม่มีสิทธิ์ ไม่มีฐานข้อมูล เพราะมันรันบนเครื่องของคนที่ใช้มันอยู่แล้ว</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span><b>ไม่ deploy ขึ้นที่ไหน</b> — ผูกกับ <code>localhost</code> เท่านั้น การที่มันเข้าจากข้างนอกไม่ได้ คือฟีเจอร์ด้านความปลอดภัย ไม่ใช่ข้อจำกัด</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.97 12.92A2 2 0 0 0 2 14.63v3.24a2 2 0 0 0 .97 1.71l3 1.8a2 2 0 0 0 2.06 0L12 19v-5.5l-5-3-4.03 2.42Z"/><path d="m7 16.5-4.74-2.85"/><path d="m7 16.5 5-3"/><path d="M7 16.5v5.17"/><path d="M12 13.5V19l3.97 2.38a2 2 0 0 0 2.06 0l3-1.8a2 2 0 0 0 .97-1.71v-3.24a2 2 0 0 0-.97-1.71L17 10.5l-5 3Z"/><path d="m17 16.5-5-3"/><path d="m17 16.5 4.74-2.85"/><path d="M17 16.5v5.17"/><path d="M7.97 4.42A2 2 0 0 0 7 6.13v4.37l5 3 5-3V6.13a2 2 0 0 0-.97-1.71l-3-1.8a2 2 0 0 0-2.06 0l-3 1.8Z"/><path d="M12 8 7.26 5.15"/><path d="m12 8 4.74-2.85"/><path d="M12 13.5V8"/></svg><span><b>ไม่ใช้ framework และไม่มี dependency ตอนรัน</b> นอกจากไลบรารีของ Google ที่ลงครั้งเดียว &mdash; เครื่องมือที่พังเพราะ dependency อัปเดต คือเครื่องมือที่พังตอนเช้าวันที่ยุ่งที่สุด</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6a9 9 0 0 0-9 9V3"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/></svg><span><b>ไม่เขียนเทสต์ครอบทุกอย่าง</b> — แต่เส้นทางที่แตะข้อมูลจริงอย่างการสร้าง event และร่าง standup ถูกลองด้วยมือทุกครั้งก่อน commit</span></li>
+    </ul>
+
+  </article>
+
+  <div class="closing">
+    <h2>Tan's Tasks</h2>
+    <p>เครื่องมือที่เริ่มจากงานพิมพ์ซ้ำวันละสิบนาที แล้วโตขึ้นเป็นที่ที่เปิดเป็นอย่างแรกของวัน — ไฟล์เดียว ดับเบิลคลิก ไม่มีบัญชี ไม่มีเซิร์ฟเวอร์ และไม่มีความลับก้อนไหนออกจากเครื่อง</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Bash</span>
+      <span class="stack-icon">Python http.server</span>
+      <span class="stack-icon">Vanilla JS</span>
+      <span class="stack-icon">Jira REST</span>
+      <span class="stack-icon">Google Calendar API</span>
+      <span class="stack-icon">Gmail API</span>
+      <span class="stack-icon">OAuth</span>
+      <span class="stack-icon">localhost only</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio","item":"https://projects.tanplanet.info/"},
+    {"@type":"ListItem","position":2,"name":"Tan's Tasks — Jira สู่ปฏิทินในคลิกเดียว","item":"https://projects.tanplanet.info/jira-tasks-portfolio/"}
+  ]
+}
+</script>
+
+</body>
+</html>

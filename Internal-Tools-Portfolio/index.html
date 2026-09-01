@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal Realfact — Digital OS สำหรับกลุ่มบริษัท</title>
+  <title>Digital OS สำหรับกลุ่มบริษัท — รวมเครื่องมือภายในของหลายบริษัทไว้ที่เดียว</title>
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Portal Realfact — Digital OS สำหรับกลุ่มบริษัท">
-  <meta name="twitter:description" content="Portfolio: Portal Realfact — Internal Portal รวม 8 แผนกในระบบเดียว สำหรับกลุ่มบริษัท Real Factory">
+  <meta name="twitter:title" content="Digital OS สำหรับกลุ่มบริษัท — รวมเครื่องมือภายในของหลายบริษัทไว้ที่เดียว">
+  <meta name="twitter:description" content="Portfolio: Digital OS — Internal Portal รวม 8 แผนกในระบบเดียว สำหรับกลุ่มบริษัท Real Factory">
   <meta property="og:url" content="https://projects.tanplanet.info/Internal-Tools-Portfolio/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://projects.tanplanet.info/Internal-Tools-Portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:description" content="Portfolio: Portal Realfact — Internal Portal รวม 8 แผนกในระบบเดียว สำหรับกลุ่มบริษัท Real Factory">
-  <meta property="og:title" content="Portal Realfact — Digital OS สำหรับกลุ่มบริษัท">
-  <meta name="description" content="Portfolio: Portal Realfact — Internal Portal รวม 8 แผนกในระบบเดียว สำหรับกลุ่มบริษัท Real Factory">
+  <meta property="og:description" content="Portfolio: Digital OS — Internal Portal รวม 8 แผนกในระบบเดียว สำหรับกลุ่มบริษัท Real Factory">
+  <meta property="og:title" content="Digital OS สำหรับกลุ่มบริษัท — รวมเครื่องมือภายในของหลายบริษัทไว้ที่เดียว">
+  <meta name="description" content="Portfolio: Digital OS — Internal Portal รวม 8 แผนกในระบบเดียว สำหรับกลุ่มบริษัท Real Factory">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -563,7 +563,207 @@
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
@@ -574,7 +774,7 @@
         <span class="dot"></span>
         Internal Portal · Digital OS · 8 Modules
       </div>
-      <h1>Portal Realfact<br><span class="gold">Digital OS สำหรับกลุ่มบริษัท</span></h1>
+      <h1>Digital OS สำหรับกลุ่มบริษัท<br><span class="accent">รวมเครื่องมือภายในของหลายบริษัทไว้ที่เดียว</span></h1>
       <p>Internal Portal ที่รวม 8 แผนกของ Real Factory ไว้ในระบบเดียว — จากเอกสารกระจายใน Excel/LINE/Email สู่ Source of Truth เดียว</p>
       <div class="hero-tags">
         <span class="hero-tag">Internal Portal</span>
@@ -604,27 +804,27 @@
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">🧩</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
         <h3>8 แผนกใช้ระบบแยก ไม่มีใครเห็นภาพรวม</h3>
         <p>ขอซื้อใน Excel, เบิกเงินใน LINE, จองที่พักใน Google Form, ตั๋วเครื่องบินใน Email — ไม่มี Source of Truth เดียว ตามไม่ได้ว่าเอกสารอยู่ที่ขั้นไหน</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">⏳</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
         <h3>Approval Cycle 3-5 วันต่อเอกสาร</h3>
         <p>เอกสารต้อง print → เซ็น → สแกน → ส่งต่อ ผู้บริหารไม่รู้ว่างานค้างที่ใคร เกินวันยังไม่ได้แก้ — กระทบแผนงานทั้งบริษัท</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">🕵️</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
         <h3>ไม่มี Audit Trail — ตามย้อนไม่ได้</h3>
         <p>ใคร approve ใคร reject เพราะอะไร ใช้งบเกินวงเงินหรือไม่ — ไม่มีบันทึก พอ Auditor มาตรวจหาเอกสารกันยกใหญ่</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">📄</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
         <h3>ทำเอกสาร PDF ด้วยมือทุกครั้ง</h3>
         <p>เปิด Word เติมตัวเลข → export PDF → print → เซ็นปากกา → สแกนกลับ — เปลืองเวลา ผิดพลาดเยอะ ไม่มี standard layout</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">🔐</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>15+ User Roles สิทธิ์ต่างกัน</h3>
         <p>Hardcode role check ทั่ว codebase — แค่เพิ่ม role ใหม่ก็ต้องไล่แก้ทุกหน้า maintain ไม่ไหวเมื่อบริษัทขยาย</p>
       </div>
@@ -640,32 +840,32 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">🎯</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         <h3>1 Portal เดียวรวมทุก Request Type</h3>
         <p>PR/PO, Expense, Booking, HR Request — เข้าใน Portal เดียว 1 source of truth ผู้ใช้ login ครั้งเดียว เห็นทุก task ของตัวเอง</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">⚙️</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
         <h3>Approval Engine แบบ Configurable</h3>
         <p>State machine กลาง 1 ตัว รองรับ chain แบบ M3→E1→E2→E3→CEO ตามวงเงิน — แต่ละ doc type / department config เองได้ ไม่ต้องเขียน code ใหม่</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">⚡</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
         <h3>Real-time Status ผ่าน Socket.io</h3>
         <p>ผู้ขอเห็นทันทีว่างานค้างที่ใคร ผู้บริหารเห็น dashboard "เกินวันค้าง" แบบ real-time — ลด follow-up ใน LINE ไปได้กว่า 80%</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">📑</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"/><path d="M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"/><path d="M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1"/></svg>
         <h3>Document PDF Component ที่ Reuse ได้</h3>
         <p>Voucher + Signature Block + Attachment Index = component กลาง ใช้ได้ทุก doc type ไม่ต้อง duplicate layout</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">🛡️</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
         <h3>RBAC 18 Roles แยก Approval Level</h3>
         <p>M3/E1/E2/E3, Finance Lv1/Head, Acc Lv1/Head, Procurement Manager + Reviewer ฯลฯ — ตรงกับ org chart จริง config ผ่าน Permissions Matrix</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">🌏</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
         <h3>i18n Bilingual TH/EN ตั้งแต่วันแรก</h3>
         <p>ทุก string ผ่าน <code>useLocale</code> composable + type-safe LocaleKey รองรับขยายตลาดต่างประเทศโดยไม่ต้อง refactor</p>
       </div>
@@ -736,42 +936,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">📋</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
         <h3>PR / Procurement</h3>
         <p>Purchase Request + PO with approval chain (M3→E1→E2→E3→CEO ตามวงเงิน) + supplier comparison</p>
       </div>
       <div class="module-card">
-        <span class="emoji">💰</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
         <h3>Expense Suite</h3>
         <p>Petty Cash, Reimbursement, Advance + Clear, Credit Card OCR, Travel — 5 sub-flows + WHT 1/2/3/5%</p>
       </div>
       <div class="module-card">
-        <span class="emoji">🏨</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 22v-6.57"/><path d="M12 11h.01"/><path d="M12 7h.01"/><path d="M14 15.43V22"/><path d="M15 16a5 5 0 0 0-6 0"/><path d="M16 11h.01"/><path d="M16 7h.01"/><path d="M8 11h.01"/><path d="M8 7h.01"/><rect x="4" y="2" width="16" height="20" rx="2"/></svg>
         <h3>Booking</h3>
         <p>ที่พัก (HR confirm จาก voucher pool ของบริษัท) + ตั๋วเครื่องบิน (HR แนบ e-ticket)</p>
       </div>
       <div class="module-card">
-        <span class="emoji">👥</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
         <h3>HR</h3>
         <p>Employee Directory, Vehicle Registry, Course Library, Form Templates, Announcements</p>
       </div>
       <div class="module-card">
-        <span class="emoji">⚡</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
         <h3>Think Tank</h3>
         <p>กิจกรรม engagement + leaderboard + scoring โดย C-Level พร้อมรายงานผล</p>
       </div>
       <div class="module-card">
-        <span class="emoji">📚</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg>
         <h3>Legal</h3>
         <p>Knowledge Base + AI Chat (Phase 1: Legal Admin only) — รวบรวมสัญญา + ข้อกฎหมายภายใน</p>
       </div>
       <div class="module-card">
-        <span class="emoji">📊</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
         <h3>C-Level Dashboard</h3>
         <p>Pending approvals, Budget vs Actual, Approval Bottleneck, Department Ranking, Spending Trend</p>
       </div>
       <div class="module-card">
-        <span class="emoji">⚙️</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
         <h3>Admin</h3>
         <p>Permissions Matrix (18 roles × all routes), Workflow config, System settings — เปลี่ยนสิทธิ์โดยไม่ต้อง deploy</p>
       </div>
@@ -787,42 +987,42 @@
 
     <div class="hack-grid">
       <div class="hack-card scale" data-label="Scale">
-        <span class="emoji">🎯</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         <h3>RBAC 18 Roles แตกจาก 11</h3>
         <p>PRD ระบุ 15 roles แต่ codebase รวบยอดเป็น 11 → approval threshold ทำงานไม่ตรงกับ org chart จริง คนที่ควรเห็นเอกสารเห็นไม่ครบ คนที่ไม่ควรเห็นกลับเข้าได้</p>
         <div class="highlight">แก้: split manager → m3/e1/e2/e3, Finance → Lv1/Head, Acc → Lv1/Head, Procurement Manager + เพิ่ม Reviewer + tab filter per role + backward-compat normalize legacy roles ด้วย mapping function</div>
       </div>
 
       <div class="hack-card perf" data-label="Performance">
-        <span class="emoji">📄</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
         <h3>Document PDF ที่ Scale ได้ 8 Doc Types</h3>
         <p>8 doc types × signature block × attachment index × ต้องการ real PDF merge (text-selectable) — ถ้า duplicate layout ต่อ doc คือฝันร้าย maintainability</p>
         <div class="highlight">แก้: สร้าง component กลาง <code>components/document/*</code> (SignatureBlock, AttachmentIndex, AttachmentPage) + ใช้ pdf-lib merge real PDF bytes ติดท้าย + html2canvas สำหรับ image-only attachments — 1 abstraction รองรับทุก doc</div>
       </div>
 
       <div class="hack-card process" data-label="Process">
-        <span class="emoji">🌐</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
         <h3>i18n Project-wide ใน 1 Sprint</h3>
         <p>~50 views, 1000+ strings, ต้องบังคับ TH/EN parity แบบ strict (ขาด key ฝั่งใดฝั่งหนึ่ง = build แตก) — ทำมือคนเดียวไม่ทันแน่</p>
         <div class="highlight">แก้: handwritten composable <code>useLocale</code> (zero-dep, type-safe via LocaleKey union) + delegate batch ไป subagents 10 ตัว + auto type-check ทุก batch ก่อน commit → TH/EN parity บังคับด้วย TypeScript ไม่ใช่ discipline</div>
       </div>
 
       <div class="hack-card brand" data-label="Brand">
-        <span class="emoji">🌙</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
         <h3>Login Dark Mode ที่ขัดกับ App</h3>
         <p>App รองรับ dark mode ทั้งระบบ แต่หน้า Login เป็น brand experience ที่ต้องคงสีขาว + brand panel สีเข้มตลอด — token cascade เผลอ flip สีตอนเปิด dark mode</p>
         <div class="highlight">แก้: pattern <code>.login-light-scope</code> lock token values ใน CSS scope; brand panel hardcoded <code>#231F20</code> + <code>!important</code> rule กัน cascade override; SplashScreen ใช้ pattern เดียวกัน reuse ได้</div>
       </div>
 
       <div class="hack-card visibility" data-label="Visibility">
-        <span class="emoji">🔍</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
         <h3>Approval Bottleneck Real-time</h3>
         <p>C-Level อยากเห็นว่างานค้างอยู่ที่ใคร, chain ขั้นไหน, ค้างมานานเท่าไหร่ — แต่ refresh เอามันก็ไม่ทันใจ</p>
         <div class="highlight">แก้: Socket.io broadcast ทุก approve/reject event ไป channel ของ company; Dashboard chart "ค้าง >24 ชม." เรียงตามเวลา + drill-down เห็นชื่อผู้อนุมัติ + click ส่ง LINE notify ตรงได้</div>
       </div>
 
       <div class="hack-card consistency" data-label="Consistency">
-        <span class="emoji">📐</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg>
         <h3>Design Tokens 100% — กัน Drift ก่อนเกิด</h3>
         <p>Tailwind v4 + PrimeVue Aura theme + custom tokens — 3 layers ที่ override กันได้ ถ้าไม่มีระเบียบ hex hardcode จะแอบหลุดเข้ามาเรื่อยๆ</p>
         <div class="highlight">แก้: audit hex hardcodes → swap เป็น CSS variables; token definitions ใน <code>design-tokens.css</code> เป็น single source of truth; dark mode flip ผ่าน <code>:root.dark-mode</code> overrides — ไม่ต้องเขียน Tailwind dark: variant</div>
@@ -838,12 +1038,12 @@
     </section>
 
     <div class="quote-block" style="margin-bottom: 24px;">
-      <p>Portal Realfact ไม่ใช่ product ที่ออกแบบจาก ivory tower — ทุก flow ผ่าน workshop กับ HR, Finance, Accounting, Procurement, Legal, C-Level จริง ทุก approval threshold มาจาก policy ของ Real Factory จริง</p>
+      <p>Digital OS ไม่ใช่ product ที่ออกแบบจาก ivory tower — ทุก flow ผ่าน workshop กับ HR, Finance, Accounting, Procurement, Legal, C-Level จริง ทุก approval threshold มาจาก policy ของ Real Factory จริง</p>
     </div>
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">🏢</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg> </strong><br>
         <strong>Real Factory Group</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ลูกค้า + Production team — 8 departments stakeholder</p>
       </div>
@@ -853,18 +1053,18 @@
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">6 weeks — Phase 1 MVP (Core + 7 modules)</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">👥</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg> </strong><br>
         <strong>Team Composition</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">TechLead, PM×2, BA, UX/UI — cross-functional small team</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">🤖</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg> </strong><br>
         <strong>AI-Augmented Workflow</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">BMAD framework + Claude subagents ช่วยทำ i18n + create-story</p>
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent);">
+    <div class="learning-card note">
       <strong>ทำไม co-design ถึงสำคัญกับ Internal Tools?</strong>
       <p>Internal user คือ user ที่หนีไม่ได้ — บังคับใช้ก็ต้องใช้ แต่ถ้าออกแบบไม่ตรง pain point จริง พวกเขาจะหา workaround กลับไป Excel เหมือนเดิม co-design ทำให้ทุก approval rule, ทุก field, ทุก label มาจาก domain expert จริง ไม่ใช่ assumption</p>
     </div>
@@ -874,7 +1074,7 @@
     <!-- ===== Key Takeaways ===== -->
     <section class="section-intro">
       <h2>Key Takeaways</h2>
-      <p>4 บทเรียน Design Thinking จาก Portal Realfact</p>
+      <p>4 บทเรียน Design Thinking จาก Digital OS</p>
     </section>
 
     <div class="learning-card">
@@ -883,7 +1083,7 @@
     </div>
     <div class="learning-card">
       <strong>Single Source of Truth — design tokens + Zod schemas + DEPARTMENT_LABELS:</strong>
-      <p>ถ้ามี constant 1 ตัวอยู่ 3 ที่ มันจะ drift แน่นอน — ไม่ใช่ "ถ้า" แต่เป็น "เมื่อไหร่" Portal Realfact บังคับให้ทุก type, ทุก validation, ทุก label ดึงมาจากแหล่งเดียว → frontend กับ backend mismatch กันไม่ได้ tokens กับ component ขัดกันไม่ได้</p>
+      <p>ถ้ามี constant 1 ตัวอยู่ 3 ที่ มันจะ drift แน่นอน — ไม่ใช่ "ถ้า" แต่เป็น "เมื่อไหร่" Digital OS บังคับให้ทุก type, ทุก validation, ทุก label ดึงมาจากแหล่งเดียว → frontend กับ backend mismatch กันไม่ได้ tokens กับ component ขัดกันไม่ได้</p>
     </div>
     <div class="learning-card">
       <strong>Scale by Composition — 4 component กลางรองรับ 8 doc types:</strong>
@@ -921,7 +1121,7 @@
     <div class="mascot-half">
       <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
     </div>
-    <h2>Portal Realfact</h2>
+    <h2>Digital OS</h2>
     <p>Digital OS รวม 8 แผนกในระบบเดียว — ออกแบบให้ scale ทั้ง user count, role hierarchy และตลาดต่างประเทศ ด้วย Design System + RBAC + i18n bilingual ตั้งแต่วันแรก</p>
     <div class="stack-icons">
       <span class="stack-icon">Vue 3</span>
@@ -968,7 +1168,7 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Portal Realfact Portfolio",
+      "name": "Digital OS Portfolio",
       "item": "https://projects.tanplanet.info/Internal-Tools-Portfolio/"
     }
   ]

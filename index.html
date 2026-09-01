@@ -625,8 +625,9 @@
     }
 
     /* ===== NEW Badge ===== */
-    /* Single source of truth: only show .badge-new when the card is flagged data-new="true" */
-    .card:not([data-new="true"]) .badge-new { display: none; }
+    /* ที่มาเดียว = data-added บนการ์ด · JS ติดคลาส is-new ให้เฉพาะที่ยังไม่เกิน NEW_DAYS */
+    .badge-new { display: none; }
+    .card.is-new .badge-new { display: block; }
     .badge-new {
       position: absolute;
       top: 12px;
@@ -680,7 +681,10 @@
     .card-visual .icon {
       font-size: 3rem;
       opacity: 0.9;
+      display: inline-flex;
     }
+    .card-visual .icon svg { width: 46px; height: 46px; stroke-width: 1.4; }
+    .empty-icon svg { width: 40px; height: 40px; stroke-width: 1.4; }
 
     .card-body {
       padding: 20px 24px 24px;
@@ -1067,18 +1071,161 @@
       </div>
     </div>
     <div class="no-results" id="noResults">
-      <div class="empty-icon">🔍</div>
+      <div class="empty-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg></div>
       <h3>ไม่พบ project ที่ตรงกับคำค้นหา</h3>
       <p id="noResultsHint">ลองค้นด้วยคำอื่น หรือเปลี่ยน filter ดู</p>
       <button class="clear-search-btn" id="clearSearchBtn">ล้างคำค้นหา</button>
     </div>
     <div class="projects" id="projectsGrid">
-
-      <!-- 38. Book Screenshot — Chrome Extension -->
-      <a class="card card--purple" data-category="tooling" data-new="true" data-keywords="book screenshot แคปหนังสือ capture pdf chrome extension manifest v3 offscreen document captureVisibleTab epub.js hibrary google docs adb android ebook viewer เก็บหน้า รวม pdf crop ตัดภาพ DCTDecode" href="book-screenshot-portfolio/" target="_blank" rel="noopener">
+      <!-- Drive Auto-Sort — ไม่จ่าย iCloud แล้วสอน HDD ให้จัดรูปเอง -->
+      <a class="card card--green" data-category="automation" data-added="2026-09-01" data-keywords="drive auto sort จัดไฟล์ อัตโนมัติ vision framework macos swift ocr ภาษาไทย สลิป screenshot tailscale smb launchd hdd icloud แทน on-device แมว หมา ต้นไม้ ท้องฟ้า classify รูป" href="drive-autosort-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#128218;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2.5a1 1 0 0 1-.8-.4l-.9-1.2A1 1 0 0 0 15 3h-2a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M20 21a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-2.9a1 1 0 0 1-.88-.55l-.42-.85a1 1 0 0 0-.92-.6H13a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M3 5a2 2 0 0 0 2 2h3"/><path d="M3 3v13a2 2 0 0 0 2 2h3"/></svg></span>
+        </div>
+        <div class="card-body">
+          <div class="card-type">macOS Tool &middot; Automation</div>
+          <h3>Drive Auto-Sort — ไม่จ่าย iCloud แล้วสอน HDD ให้จัดรูปเอง</h3>
+          <p>โยนรูปลง Inbox แล้วเครื่องแยกเองว่าเป็นสลิป สกรีนช็อต หมา แมว ต้นไม้ หรือท้องฟ้า ด้วย Vision framework บนเครื่อง + Tailscale ให้ iPhone ส่งเข้า HDD ที่บ้านได้จากทุกที่</p>
+          <div class="card-tags">
+            <span class="tag">Swift</span>
+            <span class="tag">Vision.framework</span>
+            <span class="tag">OCR ไทย</span>
+            <span class="tag">Tailscale</span>
+            <span class="tag">launchd</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v7A2.5 2.5 0 0 0 4.5 14h7a2.5 2.5 0 0 0 2.5-2.5v-7A2.5 2.5 0 0 0 11.5 2h-7ZM5 5.75A.75.75 0 0 1 5.75 5h4.5a.75.75 0 0 1 0 1.5h-4.5A.75.75 0 0 1 5 5.75Zm.75 2.25a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5h-4.5Z" clip-rule="evenodd"/></svg>
+          <span>Case Study — macOS Automation</span>
+        </div>
+      </a>
+
+      <!-- Tan's Tasks — จาก Jira เป็นตารางวันนี้ในคลิกเดียว -->
+      <a class="card card--cyan" data-category="tooling" data-added="2026-09-01" data-keywords="jira tasks google calendar standup โน้ต notion editor ai side panel bash python http server localhost 8765 oauth gmail briefing pdf tools แปลภาษา port manager เครื่องมือส่วนตัว" href="jira-tasks-portfolio/" target="_blank" rel="noopener">
+        <div class="card-visual">
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/></svg></span>
+        </div>
+        <div class="card-body">
+          <div class="card-type">Personal Tool &middot; Productivity</div>
+          <h3>Tan's Tasks — จาก Jira เป็นตารางวันนี้ในคลิกเดียว</h3>
+          <p>ไฟล์เดียว ดับเบิลคลิกแล้วรัน — ดึงงาน Jira มาติ๊กงานวันนี้ ตั้งเวลา ลง Google Calendar พร้อมโน้ตแบบ Notion ผู้ช่วย AI และร่าง standup ที่มีที่มาเดียว</p>
+          <div class="card-tags">
+            <span class="tag">Bash</span>
+            <span class="tag">Python stdlib</span>
+            <span class="tag">Jira REST</span>
+            <span class="tag">Google Calendar</span>
+            <span class="tag">Vanilla JS</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v7A2.5 2.5 0 0 0 4.5 14h7a2.5 2.5 0 0 0 2.5-2.5v-7A2.5 2.5 0 0 0 11.5 2h-7ZM5 5.75A.75.75 0 0 1 5.75 5h4.5a.75.75 0 0 1 0 1.5h-4.5A.75.75 0 0 1 5 5.75Zm.75 2.25a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5h-4.5Z" clip-rule="evenodd"/></svg>
+          <span>Case Study — Personal Tool</span>
+        </div>
+      </a>
+
+      <!-- น้องกริ่ง — บอทออกบิลค่าไฟให้ที่บ้านเองทุกเดือน -->
+      <a class="card card--orange" data-category="automation" data-added="2026-09-01" data-keywords="น้องกริ่ง ring bot line messaging api apps script บิล ค่าไฟ promptpay qr พร้อมเพย์ emvco crc16 google sheets flex message rich menu trigger ทวงเงิน อัตโนมัติ mea" href="ring-bot-billing-portfolio/" target="_blank" rel="noopener">
+        <div class="card-visual">
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></span>
+        </div>
+        <div class="card-body">
+          <div class="card-type">LINE Bot &middot; Automation</div>
+          <h3>น้องกริ่ง — บอทออกบิลค่าไฟให้ที่บ้านเองทุกเดือน</h3>
+          <p>ใบแจ้งค่าไฟเข้าเมล ยอดลงชีตเป็นสูตรที่ตรวจย้อนได้ แล้วบิลพร้อม QR พร้อมเพย์เด้งเข้า LINE ตามเวลา โดยมีด่านตรวจ 6 ข้อก่อนส่งทุกครั้ง</p>
+          <div class="card-tags">
+            <span class="tag">Apps Script</span>
+            <span class="tag">LINE Messaging API</span>
+            <span class="tag">PromptPay</span>
+            <span class="tag">CRC-16</span>
+            <span class="tag">Google Sheets</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v7A2.5 2.5 0 0 0 4.5 14h7a2.5 2.5 0 0 0 2.5-2.5v-7A2.5 2.5 0 0 0 11.5 2h-7ZM5 5.75A.75.75 0 0 1 5.75 5h4.5a.75.75 0 0 1 0 1.5h-4.5A.75.75 0 0 1 5 5.75Zm.75 2.25a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5h-4.5Z" clip-rule="evenodd"/></svg>
+          <span>Case Study — LINE Automation</span>
+        </div>
+      </a>
+
+      <!-- ทริปเชียงใหม่ — หน้าแผนเที่ยวที่ออกแบบให้พ่อแม่วัย 60 อ่านออก -->
+      <a class="card card--green" data-category="design-thinking" data-added="2026-09-01" data-keywords="trip cnx เชียงใหม่ ทริป ครอบครัว แผนเที่ยว timeline accessibility ผู้สูงอายุ วัย 60 oklch design token next.js vercel wcag คอนทราสต์ เช็กลิสต์ localstorage แม่กำปอง" href="trip-cnx-portfolio/" target="_blank" rel="noopener">
+        <div class="card-visual">
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></svg></span>
+        </div>
+        <div class="card-body">
+          <div class="card-type">UX/UI &middot; Accessibility</div>
+          <h3>ทริปเชียงใหม่ — หน้าแผนเที่ยวที่ออกแบบให้พ่อแม่วัย 60 อ่านออก</h3>
+          <p>ตั้งสายตาผู้อ่านอายุ 60 เป็นข้อจำกัดตั้งต้น — ไทม์ไลน์แนวตั้ง ตัวใหญ่ คอนทราสต์สูง เขียวสน-ดินเผาแทนฟ้าเทอร์ควอยซ์ และเช็กลิสต์ที่ติ๊กแล้วจำค่าไว้</p>
+          <div class="card-tags">
+            <span class="tag">Next.js</span>
+            <span class="tag">OKLCH</span>
+            <span class="tag">WCAG AA</span>
+            <span class="tag">Mobile First</span>
+            <span class="tag">Vercel</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v7A2.5 2.5 0 0 0 4.5 14h7a2.5 2.5 0 0 0 2.5-2.5v-7A2.5 2.5 0 0 0 11.5 2h-7ZM5 5.75A.75.75 0 0 1 5.75 5h4.5a.75.75 0 0 1 0 1.5h-4.5A.75.75 0 0 1 5 5.75Zm.75 2.25a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5h-4.5Z" clip-rule="evenodd"/></svg>
+          <span>Case Study — UX for Aging Eyes</span>
+        </div>
+      </a>
+
+      <!-- Premium Club Revamp — เขียนกฎว่าห้ามทำอะไร ก่อนลงมือออกแบบ -->
+      <a class="card card--red" data-category="design-thinking" data-added="2026-09-01" data-keywords="design system revamp premium club anti template ai slop oklch design token contrast checker wcag editorial layout asymmetric typography demo first pitch deck next.js tailwind" href="club-revamp-portfolio/" target="_blank" rel="noopener">
+        <div class="card-visual">
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z"/><path d="m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18"/><path d="m2.3 2.3 7.286 7.286"/><circle cx="11" cy="11" r="2"/></svg></span>
+        </div>
+        <div class="card-body">
+          <div class="card-type">UX/UI &middot; Design System</div>
+          <h3>Premium Club Revamp — เขียนกฎว่าห้ามทำอะไร ก่อนลงมือออกแบบ</h3>
+          <p>งาน revamp เว็บคลับระดับพรีเมียมที่ความเสี่ยงอันดับหนึ่งคืองานดูเหมือนเทมเพลต — รายการสิ่งต้องห้าม, token OKLCH ไฟล์เดียว, ตัวตรวจคอนทราสต์ และ demo-first</p>
+          <div class="card-tags">
+            <span class="tag">Design System</span>
+            <span class="tag">OKLCH</span>
+            <span class="tag">Next.js</span>
+            <span class="tag">Tailwind</span>
+            <span class="tag">WCAG AA</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v7A2.5 2.5 0 0 0 4.5 14h7a2.5 2.5 0 0 0 2.5-2.5v-7A2.5 2.5 0 0 0 11.5 2h-7ZM5 5.75A.75.75 0 0 1 5.75 5h4.5a.75.75 0 0 1 0 1.5h-4.5A.75.75 0 0 1 5 5.75Zm.75 2.25a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5h-4.5Z" clip-rule="evenodd"/></svg>
+          <span>Case Study — Design System</span>
+        </div>
+      </a>
+
+      <!-- Shotdeck — ออกแบบช่องคลิปสั้น AI ให้ไม่หน้าตาเหมือน AI -->
+      <a class="card card--purple" data-category="content" data-added="2026-09-01" data-keywords="shotdeck ช่อง คลิปสั้น ai content strategy art direction style bible remotion evergreen retention unit economics tiktok youtube shorts faceless pipeline วางกลยุทธ์" href="shotdeck-portfolio/" target="_blank" rel="noopener">
+        <div class="card-visual">
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg></span>
+        </div>
+        <div class="card-body">
+          <div class="card-type">Product Strategy &middot; Content</div>
+          <h3>Shotdeck — ออกแบบช่องคลิปสั้น AI ให้ไม่หน้าตาเหมือน AI</h3>
+          <p>วางกลยุทธ์ product ของช่องคลิปความรู้ที่ผลิตด้วย AI — วิเคราะห์ว่าอะไรทำให้คอนเทนต์ AI ถูกเลื่อนผ่าน แล้วล็อก format, กติกาภาพ และวัดต้นทุนต่อคลิปจากการทดลองจริง</p>
+          <div class="card-tags">
+            <span class="tag">Product Strategy</span>
+            <span class="tag">Art Direction</span>
+            <span class="tag">Remotion</span>
+            <span class="tag">Unit Economics</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v7A2.5 2.5 0 0 0 4.5 14h7a2.5 2.5 0 0 0 2.5-2.5v-7A2.5 2.5 0 0 0 11.5 2h-7ZM5 5.75A.75.75 0 0 1 5.75 5h4.5a.75.75 0 0 1 0 1.5h-4.5A.75.75 0 0 1 5 5.75Zm.75 2.25a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5h-4.5Z" clip-rule="evenodd"/></svg>
+          <span>Case Study — Product Strategy</span>
+        </div>
+      </a>
+
+
+      <!-- 38. Book Screenshot — Chrome Extension -->
+      <a class="card card--purple" data-category="tooling" data-added="2026-08-05" data-keywords="book screenshot แคปหนังสือ capture pdf chrome extension manifest v3 offscreen document captureVisibleTab epub.js hibrary google docs adb android ebook viewer เก็บหน้า รวม pdf crop ตัดภาพ DCTDecode" href="book-screenshot-portfolio/" target="_blank" rel="noopener">
+        <div class="card-visual">
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Chrome Extension &middot; Tooling</div>
@@ -1098,10 +1245,10 @@
       </a>
 
       <!-- 37. TanPlanet Live — จอตั้งโต๊ะ ESP32 -->
-      <a class="card card--gold" data-category="tooling" data-new="true" data-keywords="tanplanet live arduino esp32 จอตั้งโต๊ะ smart display lvgl st7796 xpt2046 touch firmware platformio ปฏิทินไทย จันทรคติ วันพระ อากาศ weather ดวงลงทุน สาจู หุ้น โควตา claude code มาสคอต mdns launchd ฟอนต์ไทย embedded hardware iot" href="live-arduino-portfolio/" target="_blank" rel="noopener">
+      <a class="card card--gold" data-category="tooling" data-added="2026-08-05" data-keywords="tanplanet live arduino esp32 จอตั้งโต๊ะ smart display lvgl st7796 xpt2046 touch firmware platformio ปฏิทินไทย จันทรคติ วันพระ อากาศ weather ดวงลงทุน สาจู หุ้น โควตา claude code มาสคอต mdns launchd ฟอนต์ไทย embedded hardware iot" href="live-arduino-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#128421;&#65039;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Embedded &middot; Hardware</div>
@@ -1121,10 +1268,10 @@
       </a>
 
       <!-- 36. MP4/M3U8 Sniffer — Chrome Extension -->
-      <a class="card card--cyan" data-category="tooling" data-new="true" data-keywords="mp4 m3u8 sniffer media downloader chrome extension manifest v3 service worker webrequest hls dash yt-dlp video สตรีม ดักลิงก์ วิดีโอ โหลด referer cookie header vanilla js idm" href="media-sniffer-portfolio/" target="_blank" rel="noopener">
+      <a class="card card--cyan" data-category="tooling" data-added="2026-07-11" data-keywords="mp4 m3u8 sniffer media downloader chrome extension manifest v3 service worker webrequest hls dash yt-dlp video สตรีม ดักลิงก์ วิดีโอ โหลด referer cookie header vanilla js idm" href="media-sniffer-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#127916;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Chrome Extension &middot; Tooling</div>
@@ -1144,10 +1291,10 @@
       </a>
 
       <!-- 35. MegaCoach — AI Stock Coach -->
-      <a class="card card--green" data-category="web-app" data-new="true" data-keywords="megacoach ai coach หุ้น stock portfolio dime dca rmf line liff dashboard zero-knowledge เข้ารหัส aes bun launchd serverless การเงิน ลงทุน แจ้งเตือน stop" href="megacoach-portfolio/" target="_blank" rel="noopener">
+      <a class="card card--green" data-category="web-app" data-added="2026-07-11" data-keywords="megacoach ai coach หุ้น stock portfolio dime dca rmf line liff dashboard zero-knowledge เข้ารหัส aes bun launchd serverless การเงิน ลงทุน แจ้งเตือน stop" href="megacoach-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#128200;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">AI Coach &middot; Fintech</div>
@@ -1166,15 +1313,15 @@
         </div>
       </a>
 
-      <!-- 34. Plikplan Internal — Team Platform -->
-      <a class="card card--blue" data-category="web-app" data-new="true" data-keywords="plikplan internal team platform kanban ปฏิทิน crm ใบเสนอราคา เบิกจ่าย โน้ตประชุม ai supabase rls multi-tenant serverless cron next.js เครื่องมือภายใน บริหารงาน" href="plikplan-internal-portfolio/" target="_blank" rel="noopener">
+      <!-- 34. แพลตฟอร์มภายในทีม — Team Platform -->
+      <a class="card card--blue" data-category="web-app" data-added="2026-07-11" data-keywords="แพลตฟอร์มภายในทีม team platform kanban ปฏิทิน crm ใบเสนอราคา เบิกจ่าย โน้ตประชุม ai supabase rls multi-tenant serverless cron next.js เครื่องมือภายใน บริหารงาน" href="team-platform-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#128451;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Internal Platform &middot; Web App</div>
-          <h3>Plikplan Internal — แพลตฟอร์มบริหารงานทีม</h3>
+          <h3>แพลตฟอร์มบริหารงานภายในทีม — บอร์ด ปฏิทิน ลูกค้า เอกสาร</h3>
           <p>รวม Kanban, ปฏิทิน, CRM, ใบเสนอราคา/เบิกจ่าย และโน้ตประชุม AI ไว้ที่เดียว — automation ขับด้วย serverless cron, ออกแบบ multi-tenant (org_id + RLS) ตั้งแต่ migration แรก</p>
           <div class="card-tags">
             <span class="tag">Next.js 16</span>
@@ -1190,10 +1337,10 @@
       </a>
 
       <!-- 33. Saju Kaaju — AI Fortune Web App -->
-      <a class="card card--purple" data-category="web-app" data-new="true" data-keywords="saju kaaju แปะก่าจู้ ดูดวง สาจู เกาหลี 사주 four pillars โหราศาสตร์ ai อาแปะ next.js supabase stripe python korean-saju kasi astronomy pwa มือถือ" href="saju-kaaju-portfolio/" target="_blank" rel="noopener">
+      <a class="card card--purple" data-category="web-app" data-added="2026-07-11" data-keywords="saju kaaju แปะก่าจู้ ดูดวง สาจู เกาหลี 사주 four pillars โหราศาสตร์ ai อาแปะ next.js supabase stripe python korean-saju kasi astronomy pwa มือถือ" href="saju-kaaju-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#128302;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 3 8 9l4 13 4-13-2.5-6"/><path d="M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z"/><path d="M2 9h20"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">AI Web App &middot; Fortune</div>
@@ -1212,15 +1359,15 @@
         </div>
       </a>
 
-      <!-- 32. Linne — Brand Catalog -->
-      <a class="card card--magenta" data-category="web-app" data-new="true" data-keywords="linne li-ne แบรนด์ เสื้อผ้า ลินิน linen fashion catalog lookbook payload cms next.js line deep-link ไม่มีตะกร้า womenswear webflow rewire ร้านค้า" href="linne-portfolio/" target="_blank" rel="noopener">
+      <!-- 32. เว็บ Lookbook — Brand Catalog -->
+      <a class="card card--magenta" data-category="web-app" data-added="2026-07-11" data-keywords="lookbook ลินิน li-ne แบรนด์ เสื้อผ้า ลินิน linen fashion catalog lookbook payload cms next.js line deep-link ไม่มีตะกร้า womenswear webflow rewire ร้านค้า" href="linen-lookbook-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#127800;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 16.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 1 1 4.5 4.5 4.5 4.5 0 1 1-4.5 4.5"/><path d="M12 7.5V9"/><path d="M7.5 12H9"/><path d="M16.5 12H15"/><path d="M12 16.5V15"/><path d="m8 8 1.88 1.88"/><path d="M14.12 9.88 16 8"/><path d="m8 16 1.88-1.88"/><path d="M14.12 14.12 16 16"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Brand Catalog &middot; Web App</div>
-          <h3>Linne — เว็บ catalog แบรนด์เสื้อผ้าลินิน</h3>
+          <h3>เว็บ Lookbook แบรนด์เสื้อผ้าลินิน — แชทเพื่อสั่ง ไม่มีตะกร้า</h3>
           <p>เว็บ catalog + lookbook แบบไม่มีตะกร้า/ไม่มี checkout — ลูกค้าเลือกสี-ไซซ์แล้ว deep-link เข้า LINE พร้อมข้อความ pre-filled จัดการสินค้าเองด้วย Payload CMS</p>
           <div class="card-tags">
             <span class="tag">Next.js 16</span>
@@ -1235,15 +1382,15 @@
         </div>
       </a>
 
-      <!-- 31. VINTA Hospital — Bilingual Hospital Site -->
-      <a class="card card--blue" data-category="web-app" data-new="true" data-keywords="vinta hospital โรงพยาบาล เฉพาะทาง มะเร็ง pre-opening สองภาษา next.js sanity cms ats สมัครงาน careers pdf headless chrome resend recruitment เว็บองค์กร" href="vinta-hospital-portfolio/" target="_blank" rel="noopener">
+      <!-- 31. เว็บโรงพยาบาล — Bilingual Hospital Site -->
+      <a class="card card--blue" data-category="web-app" data-added="2026-07-11" data-keywords="เว็บโรงพยาบาล โรงพยาบาล เฉพาะทาง มะเร็ง pre-opening สองภาษา next.js sanity cms ats สมัครงาน careers pdf headless chrome resend recruitment เว็บองค์กร" href="hospital-site-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#127973;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M14 9h-4"/><path d="M18 11h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2"/><path d="M18 21V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Hospital Site &middot; Web App</div>
-          <h3>VINTA Hospital — เว็บโรงพยาบาล 2 ภาษา</h3>
+          <h3>เว็บโรงพยาบาลเฉพาะทาง 2 ภาษา — pre-opening + ระบบรับสมัครงาน</h3>
           <p>เว็บ full-stack 2 ภาษา (Next.js + Sanity CMS) สำหรับโรงพยาบาลเฉพาะทางช่วง pre-opening พร้อมระบบรับสมัครงาน (ATS) ที่สร้าง PDF ใบสมัครภาษาไทยด้วย headless Chrome ส่งเข้าเมล HR</p>
           <div class="card-tags">
             <span class="tag">Next.js 16</span>
@@ -1259,10 +1406,10 @@
       </a>
 
       <!-- 30. UGC Extension — AI Video-Prompt Studio -->
-      <a class="card card--orange" data-category="tooling" data-new="true" data-keywords="ugc extension chrome side panel manifest v3 cdp chrome.debugger scrape สินค้า byok llm nestjs prisma postgres s3 next.js cms วิดีโอ automation ai video prompt" href="ugc-extension-portfolio/" target="_blank" rel="noopener">
+      <a class="card card--orange" data-category="tooling" data-added="2026-07-11" data-keywords="ugc extension chrome side panel manifest v3 cdp chrome.debugger scrape สินค้า byok llm nestjs prisma postgres s3 next.js cms วิดีโอ automation ai video prompt" href="ugc-extension-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#127909;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Chrome Extension &middot; AI</div>
@@ -1282,10 +1429,10 @@
       </a>
 
       <!-- 29. Model Shift — VS Code Model Switcher -->
-      <a class="card card--magenta" data-category="tooling" data-new="true" data-keywords="model shift switcher vs code cursor extension claude code gear คันเกียร์ h-pattern สลับโมเดล terminal tts เสียง vanilla js bun zero dependency panel opus sonnet" href="model-switcher-portfolio/" target="_blank" rel="noopener">
+      <a class="card card--magenta" data-category="tooling" data-added="2026-07-11" data-keywords="model shift switcher vs code cursor extension claude code gear คันเกียร์ h-pattern สลับโมเดล terminal tts เสียง vanilla js bun zero dependency panel opus sonnet" href="model-switcher-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#128256;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">VS Code Extension &middot; Tooling</div>
@@ -1305,10 +1452,10 @@
       </a>
 
       <!-- 28. UGC Studio — AI Video Pipeline -->
-      <a class="card card--red" data-category="automation" data-new="true" data-keywords="ugc studio ai video pipeline วิดีโอ ขายของ แนวตั้ง shot plan gpt-4o higgsfield seedance elevenlabs พากย์ไทย remotion react bun ตัดต่อ อัตโนมัติ" href="ugc-studio-portfolio/" target="_blank" rel="noopener">
+      <a class="card card--red" data-category="automation" data-added="2026-07-11" data-keywords="ugc studio ai video pipeline วิดีโอ ขายของ แนวตั้ง shot plan gpt-4o higgsfield seedance elevenlabs พากย์ไทย remotion react bun ตัดต่อ อัตโนมัติ" href="ugc-studio-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#127902;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">AI Video Pipeline &middot; Automation</div>
@@ -1327,15 +1474,15 @@
         </div>
       </a>
 
-      <!-- 27. TAKRA AI — AI Avatar Live Commerce -->
-      <a class="card card--purple" data-category="web-app" data-new="true" data-keywords="takra ai avatar ไลฟ์ ขายของ live commerce sme ไทย host แทน orchestration nestjs fastify next.js drizzle postgres rls zitadel oidc webrtc sse multi-tenant" href="takka-ai-portfolio/" target="_blank" rel="noopener">
+      <!-- 27. แพลตฟอร์มไลฟ์ AI Avatar — AI แพลตฟอร์มไลฟ์ AI Avatar Commerce -->
+      <a class="card card--purple" data-category="web-app" data-added="2026-03-11" data-keywords="ไลฟ์ AI avatar ไลฟ์ ขายของ live commerce sme ไทย host แทน orchestration nestjs fastify next.js drizzle postgres rls zitadel oidc webrtc sse multi-tenant" href="avatar-commerce-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#129302;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>
         </div>
         <div class="card-body">
-          <div class="card-type">AI Avatar Live &middot; Web App</div>
-          <h3>TAKRA AI — AI Avatar ไลฟ์ขายของ</h3>
+          <div class="card-type">AI แพลตฟอร์มไลฟ์ AI Avatar &middot; Web App</div>
+          <h3>แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar</h3>
           <p>แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar สำหรับ SME ไทย — integration/orchestration layer เหนือ Avatar Engine (TTS/lip-sync/render/RAG) ออกแบบ multi-tenant + OIDC</p>
           <div class="card-tags">
             <span class="tag">NestJS + Fastify</span>
@@ -1350,15 +1497,15 @@
         </div>
       </a>
 
-      <!-- 26. Takra Insights — Live Commerce Analytics -->
-      <a class="card card--blue" data-category="web-app" data-new="true" data-keywords="takra insights วิเคราะห์ โค้ช ผู้ขาย ไลฟ์ live commerce electron react python ml mediapipe facemesh facenet vit fer อารมณ์ emotion pdpa privacy nestjs monorepo desktop" href="takra-insights-portfolio/" target="_blank" rel="noopener">
+      <!-- 26. เครื่องมือโค้ชผู้ขาย — Live Commerce Analytics -->
+      <a class="card card--blue" data-category="web-app" data-added="2026-03-11" data-keywords="โค้ชผู้ขายไลฟ์ วิเคราะห์ โค้ช ผู้ขาย ไลฟ์ live commerce electron react python ml mediapipe facemesh facenet vit fer อารมณ์ emotion pdpa privacy nestjs monorepo desktop" href="live-insights-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#128202;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Live Analytics &middot; Desktop</div>
-          <h3>Takra Insights — วิเคราะห์/โค้ชผู้ขายไลฟ์</h3>
+          <h3>เครื่องมือโค้ชผู้ขายไลฟ์ — วิเคราะห์อารมณ์โฮสต์บนเครื่อง</h3>
           <p>Desktop app (Electron) ฝัง browser ดูไลฟ์ + อ่านอารมณ์/ความสนใจของโฮสต์ด้วย Python ML บนเครื่อง ส่งเฉพาะ derived signal ขึ้น cloud ที่เข้ารหัส + ทำ PDPA compliance ครบ</p>
           <div class="card-tags">
             <span class="tag">Electron + React</span>
@@ -1373,16 +1520,16 @@
         </div>
       </a>
 
-      <!-- 25. Takra Landing — Marketing Site -->
-      <a class="card card--magenta" data-category="web-app" data-new="true" data-keywords="takra landing page marketing เว็บ การตลาด vue 3 vite ssg vue-router motion-v static site docker nginx monorepo migrate jquery template ไลฟ์คอมเมิร์ซ" href="takra-landing-portfolio/" target="_blank" rel="noopener">
+      <!-- 25. Live Commerce Site — Marketing Site -->
+      <a class="card card--magenta" data-category="web-app" data-added="2026-03-11" data-keywords="live commerce page marketing เว็บ การตลาด vue 3 vite ssg vue-router motion-v static site docker nginx monorepo migrate jquery template ไลฟ์คอมเมิร์ซ" href="live-commerce-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#128640;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Marketing Site &middot; Web App</div>
-          <h3>Takra Landing — เว็บการตลาด live commerce</h3>
-          <p>เว็บ marketing ของ TAKRA (3 ผลิตภัณฑ์) migrate จาก template HTML/jQuery มาเป็น Vue 3 + Vite SSG — prerender static, interactive component, รันด้วย Docker + nginx</p>
+          <h3>เว็บการตลาดไลฟ์คอมเมิร์ซ — Vue 3 + Vite SSG</h3>
+          <p>เว็บ marketing ของ แพลตฟอร์มไลฟ์ AI Avatar (3 ผลิตภัณฑ์) migrate จาก template HTML/jQuery มาเป็น Vue 3 + Vite SSG — prerender static, interactive component, รันด้วย Docker + nginx</p>
           <div class="card-tags">
             <span class="tag">Vue 3</span>
             <span class="tag">Vite SSG</span>
@@ -1396,15 +1543,15 @@
         </div>
       </a>
 
-      <!-- 24. Takra Rerun — Live Streaming Desktop App -->
-      <a class="card card--orange" data-category="web-app" data-new="true" data-keywords="takra rerun electron go golang ffmpeg rtmp streaming live commerce วนคลิป re-air overlay chat ตะกร้า desktop app seller เครื่อง single binary" href="takra-rerun-portfolio/" target="_blank" rel="noopener">
+      <!-- 24. แอป re-broadcast — Live Streaming Desktop App -->
+      <a class="card card--orange" data-category="web-app" data-added="2026-03-11" data-keywords="re-broadcast electron go golang ffmpeg rtmp streaming live commerce วนคลิป re-air overlay chat ตะกร้า desktop app seller เครื่อง single binary" href="live-rebroadcast-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#128257;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Live Streaming &middot; Desktop</div>
-          <h3>Takra Rerun — เดสก์ท็อปแอปสตรีมไลฟ์</h3>
+          <h3>Desktop Control Room สำหรับ Re-broadcast คลิปออกไลฟ์</h3>
           <p>เดสก์ท็อปแอป (Electron) ที่แพ็ก Go backend + ffmpeg streaming engine + React SPA เป็นแอปเดียว — สตรีมออก RTMP พร้อม overlay, chat สด, ปักตะกร้า รันบนเครื่อง seller ทั้งหมด</p>
           <div class="card-tags">
             <span class="tag">Electron</span>
@@ -1419,15 +1566,15 @@
         </div>
       </a>
 
-      <!-- 23. Takra AI Monitoring — Computer Vision Research -->
-      <a class="card card--cyan" data-category="web-app" data-new="true" data-keywords="takra monitoring computer vision research มอนิเตอร์ โฮสต์ ไลฟ์ mtcnn facenet vit fer mediapipe facemesh อารมณ์ emotion engagement electron python fastapi websocket real-time ml prototype" href="takra-monitoring-portfolio/" target="_blank" rel="noopener">
+      <!-- 23. ระบบวิเคราะห์โฮสต์ — Computer Vision Research -->
+      <a class="card card--cyan" data-category="web-app" data-added="2026-03-11" data-keywords="วิเคราะห์โฮสต์ computer vision research มอนิเตอร์ โฮสต์ ไลฟ์ mtcnn facenet vit fer mediapipe facemesh อารมณ์ emotion engagement electron python fastapi websocket real-time ml prototype" href="host-monitor-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#128225;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">CV Research &middot; AI</div>
-          <h3>Takra AI Monitoring — วิเคราะห์โฮสต์ไลฟ์ real-time</h3>
+          <h3>วิเคราะห์โฮสต์ไลฟ์ real-time — งานวิจัย Computer Vision</h3>
           <p>งานวิจัย Computer Vision (R&amp;D prototype) ประกอบ 4 โมเดล (MTCNN → FaceNet → ViT/FER → MediaPipe) เป็นไปป์ไลน์ real-time อ่านอารมณ์ + engagement ของโฮสต์ไลฟ์ รันในเครื่องล้วน</p>
           <div class="card-tags">
             <span class="tag">Electron + Python</span>
@@ -1443,10 +1590,10 @@
       </a>
 
       <!-- 22. ลูกเจี๊ยบ (Chicken Farm Bot) — LINE Bot for Chicken Farm -->
-      <a class="card card--gold" data-category="automation" data-new="true" data-keywords="ลูกเจี๊ยบ chicken farm bot ฟาร์มไก่ ไก่สาว ให้อาหาร บันทึก เตือน คนงาน owner เจ้าของ line liff messaging api flex message carousel bubble webhook group chat กลุ่ม google sheets next.js react vercel cron-job scheduler tomorrow prefill confirm dialog grid layout แผน รายงาน automation chatbot บอท" href="chatbot-farm-portfolio/" target="_blank" rel="noopener">
+      <a class="card card--gold" data-category="automation" data-added="2026-05-24" data-keywords="ลูกเจี๊ยบ chicken farm bot ฟาร์มไก่ ไก่สาว ให้อาหาร บันทึก เตือน คนงาน owner เจ้าของ line liff messaging api flex message carousel bubble webhook group chat กลุ่ม google sheets next.js react vercel cron-job scheduler tomorrow prefill confirm dialog grid layout แผน รายงาน automation chatbot บอท" href="chatbot-farm-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#128037;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">LINE Bot &middot; Automation</div>
@@ -1466,10 +1613,10 @@
       </a>
 
       <!-- 21. หารกัน (HanGun) — Bill Splitting App -->
-      <a class="card card--purple" data-category="web-app" data-new="true" data-keywords="hangun หารกัน หารบิล หารเงิน แชร์บิล split bill trip ทริป เที่ยว คำนวณเงิน โอนเงิน transfer matrix นับเงิน เคลียร์เงิน next.js react supabase server actions full-stack web app no-login qr code พร้อมเพย์ promptpay สลิป jsqr เพื่อน บิล" href="hangun-portfolio/" target="_blank" rel="noopener">
+      <a class="card card--purple" data-category="web-app" data-added="2026-05-17" data-keywords="hangun หารกัน หารบิล หารเงิน แชร์บิล split bill trip ทริป เที่ยว คำนวณเงิน โอนเงิน transfer matrix นับเงิน เคลียร์เงิน next.js react supabase server actions full-stack web app no-login qr code พร้อมเพย์ promptpay สลิป jsqr เพื่อน บิล" href="hangun-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#129518;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Full-Stack Web App</div>
@@ -1488,15 +1635,15 @@
         </div>
       </a>
 
-      <!-- 20. Portal Realfact — Internal Tools -->
-      <a class="card card--cyan" data-category="web-app" data-new="true" data-keywords="portal realfact real factory internal tools digital os enterprise intranet hr finance sales operation portfolio case study กลุ่มบริษัท พอร์ทัล ภายใน องค์กร" href="Internal-Tools-Portfolio/" target="_blank" rel="noopener">
+      <!-- 20. Digital OS — Internal Tools -->
+      <a class="card card--cyan" data-category="web-app" data-added="2026-04-14" data-keywords="digital os internal tools digital os enterprise intranet hr finance sales operation portfolio case study กลุ่มบริษัท พอร์ทัล ภายใน องค์กร" href="Internal-Tools-Portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#127970;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Enterprise Case Study</div>
-          <h3>Portal Realfact — Digital OS สำหรับกลุ่มบริษัท</h3>
+          <h3>Digital OS สำหรับกลุ่มบริษัท</h3>
           <p>Internal Portal รวม 8 แผนกในระบบเดียว สำหรับกลุ่มบริษัท Real Factory — ออกแบบ UX/UI ให้ทุกทีมใช้งานได้จริง</p>
           <div class="card-tags">
             <span class="tag">Enterprise</span>
@@ -1513,10 +1660,10 @@
 
       <!-- 18. Legal AI -->
       <!-- 18. Legal AI -->
-      <a class="card card--blue" data-category="web-app" data-keywords="legal ai กฎหมาย ทนายความ law lawyer rag retrieval augmented generation gpt-4o supabase pgvector citation ค้นคว้า มาตรา พ.ร.บ. chat ai search ค้นหากฎหมาย legal tech" href="Legal-AI/" target="_blank" rel="noopener">
+      <a data-added="2026-04-13" class="card card--blue" data-category="web-app" data-keywords="legal ai กฎหมาย ทนายความ law lawyer rag retrieval augmented generation gpt-4o supabase pgvector citation ค้นคว้า มาตรา พ.ร.บ. chat ai search ค้นหากฎหมาย legal tech" href="Legal-AI/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">&#9878;</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">AI Web App — POC</div>
@@ -1537,10 +1684,10 @@
       </a>
 
       <!-- 17. Design Inspector for Claude -->
-      <a class="card card--blue" data-category="tooling" data-keywords="design inspector chrome extension inspect element copy markdown claude ai ux designer clipboard devtools css computed styles box model shadow dom offscreen เครื่องมือ ตรวจ element คัดลอก" href="design-inspector-for-claude-portfolio/" target="_blank" rel="noopener">
+      <a data-added="2026-04-13" class="card card--blue" data-category="tooling" data-keywords="design inspector chrome extension inspect element copy markdown claude ai ux designer clipboard devtools css computed styles box model shadow dom offscreen เครื่องมือ ตรวจ element คัดลอก" href="design-inspector-for-claude-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">🔍</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Chrome Extension</div>
@@ -1560,10 +1707,10 @@
       </a>
 
       <!-- 16. Claude Code Skills Registry -->
-      <a class="card card--orange" data-category="tooling" data-keywords="claude code skills registry source of truth plugin mcp server bmad lsp skill สกิล เครื่องมือ ปลั๊กอิน รวมสกิล ai agent" href="claude-skills-registry/" target="_blank" rel="noopener">
+      <a data-added="2026-04-13" class="card card--orange" data-category="tooling" data-keywords="claude code skills registry source of truth plugin mcp server bmad lsp skill สกิล เครื่องมือ ปลั๊กอิน รวมสกิล ai agent" href="claude-skills-registry/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">🧠</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Developer Tool</div>
@@ -1583,15 +1730,15 @@
         </div>
       </a>
 
-      <!-- 15. Voraya's Bloom — Online Flower Shop -->
-      <a class="card card--green" data-category="design-thinking" data-keywords="voraya bloom flower shop ร้านดอกไม้ ช่อดอกไม้ e-commerce buyer seller portal figma ui ux design customize ส่งดอกไม้ ออนไลน์ teal" href="vorayas-bloom-portfolio/" target="_blank" rel="noopener">
+      <!-- 15. ร้านดอกไม้ออนไลน์ — Online Flower Shop -->
+      <a data-added="2026-04-13" class="card card--green" data-category="design-thinking" data-keywords="ร้านดอกไม้ออนไลน์ flower shop ร้านดอกไม้ ช่อดอกไม้ e-commerce buyer seller portal figma ui ux design customize ส่งดอกไม้ ออนไลน์ teal" href="flower-shop-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">💐</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1"/><circle cx="12" cy="8" r="2"/><path d="M12 10v12"/><path d="M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z"/><path d="M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">UI/UX Design</div>
-          <h3>Voraya's Bloom</h3>
+          <h3>ร้านดอกไม้ออนไลน์</h3>
           <p>ออกแบบ UI/UX ร้านดอกไม้ออนไลน์ — Buyer Portal สั่งช่อ customize เอง + Seller Portal dashboard จัดการร้าน ออเดอร์ สต๊อก</p>
           <div class="card-tags">
             <span class="tag">Figma</span>
@@ -1607,15 +1754,15 @@
         </div>
       </a>
 
-      <!-- 14. PeepzTeam — Digital Marketing Agency -->
-      <a class="card card--red" data-category="web-app" data-keywords="peepzteam digital marketing agency live commerce influencer event webflow เอเจนซี่ การตลาด ไลฟ์ขาย อินฟลูเอนเซอร์ อีเวนต์" href="peepzteam-portfolio/" target="_blank" rel="noopener">
+      <!-- 14. เว็บเอเจนซี — Digital Marketing Agency -->
+      <a data-added="2026-04-13" class="card card--red" data-category="web-app" data-keywords="squadteam digital marketing agency live commerce influencer event webflow เอเจนซี่ การตลาด ไลฟ์ขาย อินฟลูเอนเซอร์ อีเวนต์" href="agency-site-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">🎯</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Web Design — Webflow</div>
-          <h3>PeepzTeam</h3>
+          <h3>เว็บเอเจนซี Digital Marketing</h3>
           <p>เว็บไซต์ Digital Marketing Agency — Live Commerce, Influencer Marketing, Event Organization สร้างด้วย Webflow พร้อม pricing packages</p>
           <div class="card-tags">
             <span class="tag">Webflow</span>
@@ -1626,14 +1773,15 @@
         </div>
         <div class="card-footer">
           <svg viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v7A2.5 2.5 0 0 0 4.5 14h7a2.5 2.5 0 0 0 2.5-2.5v-7A2.5 2.5 0 0 0 11.5 2h-7ZM5 5.75A.75.75 0 0 1 5.75 5h4.5a.75.75 0 0 1 0 1.5h-4.5A.75.75 0 0 1 5 5.75Zm.75 2.25a.75.75 0 0 0 0 1.5h4.5a.75.75 0 0 0 0-1.5h-4.5Z" clip-rule="evenodd"/></svg>
-          <span>peepzteam.com</span>
+          <span>squadteam.com</span>
         </div>
       </a>
 
       <!-- 12. Thai Typo Fixer -->
-      <a class="card card--purple" data-category="tooling" data-keywords="thai typo fixer keyboard layout macOS python swift accessibility mapping kedmanee ลืมเปลี่ยนภาษา แก้คำผิด คีย์บอร์ด self-learning dictionary" href="thai-typo-fixer/" target="_blank" rel="noopener">
+      <a data-added="2026-04-13" class="card card--purple" data-category="tooling" data-keywords="thai typo fixer keyboard layout macOS python swift accessibility mapping kedmanee ลืมเปลี่ยนภาษา แก้คำผิด คีย์บอร์ด self-learning dictionary" href="thai-typo-fixer/" target="_blank" rel="noopener">
         <div class="card-visual">
-          <span class="icon">⌨️</span>
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Concept / macOS Utility</div>
@@ -1652,14 +1800,15 @@
         </div>
       </a>
 
-      <!-- 11. Daily MU — ปฏิทินดูแลใจ -->
-      <a class="card card--purple" data-category="design-thinking" data-keywords="daily mu mucalendar fortune horoscope tarot siam si dream ai ดูดวง ไพ่ทาโรต์ เซียมซี ทำนายฝัน ปฏิทิน ราศี figma design system team collaboration" href="mucalendar-portfolio/" target="_blank" rel="noopener">
+      <!-- 11. แอปปฏิทินดูแลใจ — ปฏิทินดูแลใจ -->
+      <a data-added="2026-04-13" class="card card--purple" data-category="design-thinking" data-keywords="ปฏิทินดูแลใจ mucalendar fortune horoscope tarot siam si dream ai ดูดวง ไพ่ทาโรต์ เซียมซี ทำนายฝัน ปฏิทิน ราศี figma design system team collaboration" href="mood-calendar-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
-          <span class="icon">🔮</span>
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 3 8 9l4 13 4-13-2.5-6"/><path d="M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z"/><path d="M2 9h20"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">UX/UI Design / Team Collab</div>
-          <h3>Daily MU — ปฏิทินดูแลใจ ที่เข้าใจคุณ</h3>
+          <h3>ปฏิทินดูแลใจ ที่เข้าใจคุณ</h3>
           <p>แอปดูดวงรายวันที่ผสานศาสตร์โบราณกับ AI — ออกแบบเป็นทีม 3 คน สร้าง Design System จาก 0 พร้อม 40+ หน้าจอใน 4 สัปดาห์</p>
           <div class="card-tags">
             <span class="tag">Figma</span>
@@ -1674,14 +1823,15 @@
         </div>
       </a>
 
-      <!-- 13. BuyDi — E-Commerce เพื่อเกษตรกรไทย -->
-      <a class="card card--green" data-category="web-app" data-keywords="buydi ecommerce agriculture farmer marketplace buyer seller affiliate admin เกษตร เกษตรกร ผัก ผลไม้ otop ตลาด ขายของ สินค้าเกษตร multi-role figma" href="buydi-portfolio/" target="_blank" rel="noopener">
+      <!-- 13. แพลตฟอร์มเกษตรกร — E-Commerce เพื่อเกษตรกรไทย -->
+      <a data-added="2026-03-11" class="card card--green" data-category="web-app" data-keywords="เกษตรกร ecommerce agriculture farmer marketplace buyer seller affiliate admin เกษตร เกษตรกร ผัก ผลไม้ otop ตลาด ขายของ สินค้าเกษตร multi-role figma" href="agri-ecommerce-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
-          <span class="icon">🌾</span>
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 22 16 8"/><path d="M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M7.47 8.53 9 7l1.53 1.53a3.5 3.5 0 0 1 0 4.94L9 15l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M11.47 4.53 13 3l1.53 1.53a3.5 3.5 0 0 1 0 4.94L13 11l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4Z"/><path d="M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/><path d="M15.47 13.47 17 15l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/><path d="M19.47 9.47 21 11l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L13 11l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">UX/UI Design / E-Commerce</div>
-          <h3>BuyDi — E-Commerce เพื่อเกษตรกรไทย</h3>
+          <h3>E-Commerce เพื่อเกษตรกรไทย</h3>
           <p>แพลตฟอร์มที่เชื่อมเกษตรกรกับผู้บริโภคโดยตรง — ออกแบบ 4 User Roles (Buyer/Seller/Affiliate/Admin) ครบทั้ง Ecosystem ใน 3 เดือน</p>
           <div class="card-tags">
             <span class="tag">E-Commerce</span>
@@ -1692,15 +1842,15 @@
         </div>
         <div class="card-footer">
           <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
-          <span>buydi.app</span>
+          <span>เกษตรกร.app</span>
         </div>
       </a>
 
       <!-- 10. FoodLab — Template to Fine Dining -->
-      <a class="card card--gold" data-category="web-app" data-keywords="foodlab fine dining restaurant template themeforest ai customization poc experiment ร้านอาหาร template to production" href="foodlab/" target="_blank" rel="noopener">
+      <a data-added="2026-04-13" class="card card--gold" data-category="web-app" data-keywords="foodlab fine dining restaurant template themeforest ai customization poc experiment ร้านอาหาร template to production" href="foodlab/" target="_blank" rel="noopener">
         <div class="card-visual">
           <span class="badge-new">New</span>
-          <span class="icon">🍽️</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8"/><path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7"/><path d="m2.1 21.8 6.4-6.3"/><path d="m19 5-7 7"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Experiment / POC</div>
@@ -1720,9 +1870,10 @@
       </a>
 
       <!-- 1. Taiwan V1.0 -->
-      <a class="card card--magenta" data-category="web-app" data-keywords="taiwan travel guide interactive bilingual html css javascript vercel คู่มือเที่ยวไต้หวัน" href="https://natpakans-stack.github.io/taiwan-guidebook/" target="_blank" rel="noopener">
+      <a data-added="2026-03-11" class="card card--magenta" data-category="web-app" data-keywords="taiwan travel guide interactive bilingual html css javascript vercel คู่มือเที่ยวไต้หวัน" href="https://natpakans-stack.github.io/taiwan-guidebook/" target="_blank" rel="noopener">
         <div class="card-visual">
-          <span class="icon">🇹🇼</span>
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Interactive Travel Guide</div>
@@ -1743,9 +1894,10 @@
       </a>
 
       <!-- 2. LINE Messaging (น้องกริ่ง + Daily Blessing) -->
-      <a class="card card--green" data-category="automation" data-keywords="line bot automation น้องกริ่ง epl football soccer daily blessing gpt openai google apps script ส่งผลบอล" href="https://natpakans-stack.github.io/line-messaging-portfolio/" target="_blank" rel="noopener">
+      <a data-added="2026-03-11" class="card card--green" data-category="automation" data-keywords="line bot automation น้องกริ่ง epl football soccer daily blessing gpt openai google apps script ส่งผลบอล" href="https://natpakans-stack.github.io/line-messaging-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
-          <span class="icon">⚽</span>
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14.66V17a1 1 0 0 1-1 1 2 2 0 0 0-2 2v2"/><path d="M14 14.66V17a1 1 0 0 0 1 1 2 2 0 0 1 2 2v2"/><path d="M17.916 10H19.5A2.5 2.5 0 0 0 22 7.5V5a1 1 0 0 0-1-1h-3"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6.084 10H4.5A2.5 2.5 0 0 1 2 7.5V5a1 1 0 0 1 1-1h3"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">LINE Bot Automation</div>
@@ -1765,9 +1917,10 @@
       </a>
 
       <!-- 3. Carpark Dashboard -->
-      <a class="card card--blue" data-category="web-app" data-keywords="carpark parking dashboard data visualization react recharts vite google sheets real-time สถิติจอดรถ" href="https://natpakans-stack.github.io/carpark-live-dashboard/" target="_blank" rel="noopener">
+      <a data-added="2026-03-11" class="card card--blue" data-category="web-app" data-keywords="carpark parking dashboard data visualization react recharts vite google sheets real-time สถิติจอดรถ" href="https://natpakans-stack.github.io/carpark-live-dashboard/" target="_blank" rel="noopener">
         <div class="card-visual">
-          <span class="icon">🅿️</span>
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Web App — Data Visualization</div>
@@ -1787,9 +1940,10 @@
       </a>
 
       <!-- 4. Cody Bot -->
-      <a class="card card--orange" data-category="design-thinking" data-keywords="cody bot line football fans liverpool epl design thinking case study ux research" href="https://natpakans-stack.github.io/cody-bot-portfolio/" target="_blank" rel="noopener">
+      <a data-added="2026-03-11" class="card card--orange" data-category="design-thinking" data-keywords="cody bot line football fans liverpool epl design thinking case study ux research" href="https://natpakans-stack.github.io/cody-bot-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
-          <span class="icon">🤖</span>
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Design Thinking Case Study</div>
@@ -1809,9 +1963,10 @@
       </a>
 
       <!-- 5. Parking Reminder -->
-      <a class="card card--purple" data-category="design-thinking" data-keywords="parking reminder จอดรถ design thinking case study ux research prototype pain points" href="https://natpakans-stack.github.io/parking-reminder-portfolio/" target="_blank" rel="noopener">
+      <a data-added="2026-03-11" class="card card--purple" data-category="design-thinking" data-keywords="parking reminder จอดรถ design thinking case study ux research prototype pain points" href="https://natpakans-stack.github.io/parking-reminder-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
-          <span class="icon">📍</span>
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Design Thinking Case Study</div>
@@ -1831,9 +1986,10 @@
       </a>
 
       <!-- 6. Taiwan Guidebook Portfolio -->
-      <a class="card card--cyan" data-category="design-thinking" data-keywords="taiwan guidebook design thinking case study ux research travel persona pain points ออกแบบ" href="https://natpakans-stack.github.io/taiwan-guidebook-portfolio/" target="_blank" rel="noopener">
+      <a data-added="2026-03-11" class="card card--cyan" data-category="design-thinking" data-keywords="taiwan guidebook design thinking case study ux research travel persona pain points ออกแบบ" href="https://natpakans-stack.github.io/taiwan-guidebook-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
-          <span class="icon">✈️</span>
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Design Thinking Case Study</div>
@@ -1853,9 +2009,10 @@
       </a>
 
       <!-- 7. Talk to Figma MCP -->
-      <a class="card card--yellow" data-category="tooling" data-keywords="talk to figma mcp claude code ai design skills open source ux review design system" href="https://natpakans-stack.github.io/talk-to-figma-mcp/" target="_blank" rel="noopener">
+      <a data-added="2026-03-11" class="card card--yellow" data-category="tooling" data-keywords="talk to figma mcp claude code ai design skills open source ux review design system" href="https://natpakans-stack.github.io/talk-to-figma-mcp/" target="_blank" rel="noopener">
         <div class="card-visual">
-          <span class="icon">🎨</span>
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">AI + Design Tooling</div>
@@ -1875,9 +2032,10 @@
       </a>
 
       <!-- 8. Mandala Capture -->
-      <a class="card card--green" data-category="automation" data-keywords="mandala capture playwright node.js web scraping automation screenshot แคปโพส cosmostrend" href="https://natpakans-stack.github.io/mandala-capture-portfolio/" target="_blank" rel="noopener">
+      <a data-added="2026-03-11" class="card card--green" data-category="automation" data-keywords="mandala capture playwright node.js web scraping automation screenshot แคปโพส cosmostrend" href="https://natpakans-stack.github.io/mandala-capture-portfolio/" target="_blank" rel="noopener">
         <div class="card-visual">
-          <span class="icon">📸</span>
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Automation Script</div>
@@ -1897,9 +2055,10 @@
       </a>
 
       <!-- 9. A Little Archive -->
-      <a class="card card--red" data-category="content" data-keywords="a little archive webflow content branding writing เพจ คอนเทนต์ บทความ" href="https://a-little-archive.webflow.io/" target="_blank" rel="noopener">
+      <a data-added="2026-03-11" class="card card--red" data-category="content" data-keywords="a little archive webflow content branding writing เพจ คอนเทนต์ บทความ" href="https://a-little-archive.webflow.io/" target="_blank" rel="noopener">
         <div class="card-visual">
-          <span class="icon">📚</span>
+          <span class="badge-new">New</span>
+          <span class="icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg></span>
         </div>
         <div class="card-body">
           <div class="card-type">Content & Branding</div>
@@ -2311,22 +2470,53 @@
       "name": "ณัฐปคัลภ์ ศิริรัตน์",
       "givenName": "ณัฐปคัลภ์",
       "familyName": "ศิริรัตน์",
-      "alternateName": ["Natpakan Sirirat", "Nattapakan Sirirat", "Natthapakan Sirirat", "Natpakarn Sirirat", "Tan Sirirat", "Tan", "แทน", "tanθ", "tanplanet", "natpakans"],
+      "alternateName": [
+        "Natpakan Sirirat",
+        "Nattapakan Sirirat",
+        "Natthapakan Sirirat",
+        "Natpakarn Sirirat",
+        "Tan Sirirat",
+        "Tan",
+        "แทน",
+        "tanθ",
+        "tanplanet",
+        "natpakans"
+      ],
       "url": "https://projects.tanplanet.info/",
       "image": "https://projects.tanplanet.info/avatar.webp",
       "jobTitle": "UX/UI Designer & Frontend Developer",
       "description": "UX/UI Designer & Developer ที่สนใจ Design System, LINE Bot Automation, React Dashboard และ AI-Assisted Design — สร้าง Side Projects ที่ผสม Design Thinking กับ Code",
       "knowsAbout": [
-        "UX Design", "UI Design", "Design System", "Design Thinking",
-        "Figma", "Webflow",
-        "LINE Bot", "LINE Messaging API", "LINE LIFF",
-        "React", "Next.js", "Tailwind CSS", "HTML/CSS",
-        "Google Apps Script", "JavaScript", "TypeScript",
-        "Claude Code", "AI-Assisted Design", "MCP (Model Context Protocol)",
-        "Data Visualization", "Dashboard Design",
-        "Chrome Extension", "Manifest V3", "VS Code Extension",
-        "Embedded Systems", "ESP32", "LVGL", "Thai Typography",
-        "UX Writing (Thai)", "Accessibility (WCAG)"
+        "UX Design",
+        "UI Design",
+        "Design System",
+        "Design Thinking",
+        "Figma",
+        "Webflow",
+        "LINE Bot",
+        "LINE Messaging API",
+        "LINE LIFF",
+        "React",
+        "Next.js",
+        "Tailwind CSS",
+        "HTML/CSS",
+        "Google Apps Script",
+        "JavaScript",
+        "TypeScript",
+        "Claude Code",
+        "AI-Assisted Design",
+        "MCP (Model Context Protocol)",
+        "Data Visualization",
+        "Dashboard Design",
+        "Chrome Extension",
+        "Manifest V3",
+        "VS Code Extension",
+        "Embedded Systems",
+        "ESP32",
+        "LVGL",
+        "Thai Typography",
+        "UX Writing (Thai)",
+        "Accessibility (WCAG)"
       ],
       "sameAs": [
         "https://tanplanet.info",
@@ -2347,8 +2537,13 @@
       "url": "https://projects.tanplanet.info/",
       "name": "TanPlanet Projects",
       "description": "Portfolio ผลงาน Side Projects ของ ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat)",
-      "author": { "@id": "https://projects.tanplanet.info/#person" },
-      "inLanguage": ["th", "en"],
+      "author": {
+        "@id": "https://projects.tanplanet.info/#person"
+      },
+      "inLanguage": [
+        "th",
+        "en"
+      ],
       "potentialAction": {
         "@type": "SearchAction",
         "target": {
@@ -2363,43 +2558,230 @@
       "@id": "https://projects.tanplanet.info/#projects",
       "name": "Side Projects โดย ณัฐปคัลภ์ ศิริรัตน์",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Claude Skills Registry", "url": "https://projects.tanplanet.info/claude-skills-registry/" },
-        { "@type": "ListItem", "position": 2, "name": "LINE Messaging Portfolio", "url": "https://projects.tanplanet.info/line-messaging-portfolio/" },
-        { "@type": "ListItem", "position": 3, "name": "Taiwan Travel Guidebook", "url": "https://projects.tanplanet.info/taiwan-guidebook-portfolio/" },
-        { "@type": "ListItem", "position": 4, "name": "Carpark Live Dashboard", "url": "https://projects.tanplanet.info/carpark_live_dashboard/" },
-        { "@type": "ListItem", "position": 5, "name": "Mandala Capture", "url": "https://projects.tanplanet.info/mandala-capture-portfolio/" },
-        { "@type": "ListItem", "position": 6, "name": "Cody Bot", "url": "https://projects.tanplanet.info/cody-bot-portfolio/" },
-        { "@type": "ListItem", "position": 7, "name": "Parking Reminder", "url": "https://projects.tanplanet.info/parking-reminder-portfolio/" },
-        { "@type": "ListItem", "position": 8, "name": "MU Calendar", "url": "https://projects.tanplanet.info/mucalendar-portfolio/" },
-        { "@type": "ListItem", "position": 9, "name": "Foodlab", "url": "https://projects.tanplanet.info/foodlab/" },
-        { "@type": "ListItem", "position": 10, "name": "Voraya's Bloom", "url": "https://projects.tanplanet.info/vorayas-bloom-portfolio/" },
-        { "@type": "ListItem", "position": 11, "name": "Peepz Team", "url": "https://projects.tanplanet.info/peepzteam-portfolio/" },
-        { "@type": "ListItem", "position": 12, "name": "Buydi Portfolio", "url": "https://projects.tanplanet.info/buydi-portfolio/" },
-        { "@type": "ListItem", "position": 13, "name": "Design Inspector for Claude", "url": "https://projects.tanplanet.info/design-inspector-for-claude-portfolio/" },
-        { "@type": "ListItem", "position": 14, "name": "Thai Typo Fixer", "url": "https://projects.tanplanet.info/thai-typo-fixer/" },
-        { "@type": "ListItem", "position": 15, "name": "Legal AI", "url": "https://projects.tanplanet.info/Legal-AI/" },
-        { "@type": "ListItem", "position": 16, "name": "Talk to Figma MCP", "url": "https://projects.tanplanet.info/talk-to-figma-mcp/" },
-        { "@type": "ListItem", "position": 17, "name": "MP4/M3U8 Sniffer", "url": "https://projects.tanplanet.info/media-sniffer-portfolio/" },
-        { "@type": "ListItem", "position": 18, "name": "MegaCoach", "url": "https://projects.tanplanet.info/megacoach-portfolio/" },
-        { "@type": "ListItem", "position": 19, "name": "Plikplan Internal", "url": "https://projects.tanplanet.info/plikplan-internal-portfolio/" },
-        { "@type": "ListItem", "position": 20, "name": "Saju Kaaju", "url": "https://projects.tanplanet.info/saju-kaaju-portfolio/" },
-        { "@type": "ListItem", "position": 21, "name": "Linne", "url": "https://projects.tanplanet.info/linne-portfolio/" },
-        { "@type": "ListItem", "position": 22, "name": "VINTA Hospital", "url": "https://projects.tanplanet.info/vinta-hospital-portfolio/" },
-        { "@type": "ListItem", "position": 23, "name": "UGC Extension", "url": "https://projects.tanplanet.info/ugc-extension-portfolio/" },
-        { "@type": "ListItem", "position": 24, "name": "Model Shift", "url": "https://projects.tanplanet.info/model-switcher-portfolio/" },
-        { "@type": "ListItem", "position": 25, "name": "UGC Studio", "url": "https://projects.tanplanet.info/ugc-studio-portfolio/" },
-        { "@type": "ListItem", "position": 26, "name": "TAKRA AI", "url": "https://projects.tanplanet.info/takka-ai-portfolio/" },
-        { "@type": "ListItem", "position": 27, "name": "Takra Insights", "url": "https://projects.tanplanet.info/takra-insights-portfolio/" },
-        { "@type": "ListItem", "position": 28, "name": "Takra Landing Page", "url": "https://projects.tanplanet.info/takra-landing-portfolio/" },
-        { "@type": "ListItem", "position": 29, "name": "Takra Rerun", "url": "https://projects.tanplanet.info/takra-rerun-portfolio/" },
-        { "@type": "ListItem", "position": 30, "name": "Takra AI Monitoring", "url": "https://projects.tanplanet.info/takra-monitoring-portfolio/" },
-        { "@type": "ListItem", "position": 31, "name": "TanPlanet Live", "url": "https://projects.tanplanet.info/live-arduino-portfolio/" },
-        { "@type": "ListItem", "position": 32, "name": "Book Screenshot", "url": "https://projects.tanplanet.info/book-screenshot-portfolio/" }
-      ]
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Claude Skills Registry",
+          "url": "https://projects.tanplanet.info/claude-skills-registry/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Carpark Live Dashboard",
+          "url": "https://projects.tanplanet.info/carpark_live_dashboard/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ปฏิทินดูแลใจ ที่เข้าใจคุณ",
+          "url": "https://projects.tanplanet.info/mood-calendar-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Foodlab",
+          "url": "https://projects.tanplanet.info/foodlab/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "ร้านดอกไม้ออนไลน์",
+          "url": "https://projects.tanplanet.info/flower-shop-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "เว็บเอเจนซี Digital Marketing",
+          "url": "https://projects.tanplanet.info/agency-site-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "name": "E-Commerce เพื่อเกษตรกรไทย",
+          "url": "https://projects.tanplanet.info/agri-ecommerce-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "name": "Design Inspector for Claude",
+          "url": "https://projects.tanplanet.info/design-inspector-for-claude-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "name": "Thai Typo Fixer",
+          "url": "https://projects.tanplanet.info/thai-typo-fixer/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "name": "Legal AI",
+          "url": "https://projects.tanplanet.info/Legal-AI/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "name": "Talk to Figma MCP",
+          "url": "https://projects.tanplanet.info/talk-to-figma-mcp/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "name": "MP4/M3U8 Sniffer",
+          "url": "https://projects.tanplanet.info/media-sniffer-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "name": "MegaCoach",
+          "url": "https://projects.tanplanet.info/megacoach-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 14,
+          "name": "แพลตฟอร์มบริหารงานภายในทีม",
+          "url": "https://projects.tanplanet.info/team-platform-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 15,
+          "name": "Saju Kaaju",
+          "url": "https://projects.tanplanet.info/saju-kaaju-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 16,
+          "name": "เว็บ Lookbook แบรนด์เสื้อผ้าลินิน",
+          "url": "https://projects.tanplanet.info/linen-lookbook-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 17,
+          "name": "เว็บโรงพยาบาลเฉพาะทาง 2 ภาษา",
+          "url": "https://projects.tanplanet.info/hospital-site-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 18,
+          "name": "UGC Extension",
+          "url": "https://projects.tanplanet.info/ugc-extension-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 19,
+          "name": "Model Shift",
+          "url": "https://projects.tanplanet.info/model-switcher-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 20,
+          "name": "UGC Studio",
+          "url": "https://projects.tanplanet.info/ugc-studio-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 21,
+          "name": "แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar",
+          "url": "https://projects.tanplanet.info/avatar-commerce-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 22,
+          "name": "เครื่องมือโค้ชผู้ขายไลฟ์",
+          "url": "https://projects.tanplanet.info/live-insights-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 23,
+          "name": "เว็บการตลาดไลฟ์คอมเมิร์ซ",
+          "url": "https://projects.tanplanet.info/live-commerce-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 24,
+          "name": "Desktop Control Room สำหรับ Re-broadcast คลิปออกไลฟ์",
+          "url": "https://projects.tanplanet.info/live-rebroadcast-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 25,
+          "name": "วิเคราะห์โฮสต์ไลฟ์ real-time",
+          "url": "https://projects.tanplanet.info/host-monitor-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 26,
+          "name": "TanPlanet Live",
+          "url": "https://projects.tanplanet.info/live-arduino-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 27,
+          "name": "Book Screenshot",
+          "url": "https://projects.tanplanet.info/book-screenshot-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 28,
+          "name": "Drive Auto-Sort",
+          "url": "https://projects.tanplanet.info/drive-autosort-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 29,
+          "name": "Tan's Tasks",
+          "url": "https://projects.tanplanet.info/jira-tasks-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 30,
+          "name": "น้องกริ่ง",
+          "url": "https://projects.tanplanet.info/ring-bot-billing-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 31,
+          "name": "ทริปเชียงใหม่",
+          "url": "https://projects.tanplanet.info/trip-cnx-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 32,
+          "name": "Premium Club Revamp",
+          "url": "https://projects.tanplanet.info/club-revamp-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 33,
+          "name": "Shotdeck",
+          "url": "https://projects.tanplanet.info/shotdeck-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 34,
+          "name": "ลูกเจี๊ยบ",
+          "url": "https://projects.tanplanet.info/chatbot-farm-portfolio/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 35,
+          "name": "หารกัน (HanGun)",
+          "url": "https://projects.tanplanet.info/hangun-portfolio/"
+        }
+      ],
+      "numberOfItems": 35
     },
     {
       "@type": "SiteNavigationElement",
-      "name": ["Claude Skills Registry", "LINE Messaging", "Taiwan Guidebook", "Carpark Dashboard", "Mandala Capture", "Cody Bot", "Talk to Figma MCP"],
+      "name": [
+        "Claude Skills Registry",
+        "LINE Messaging",
+        "Taiwan Guidebook",
+        "Carpark Dashboard",
+        "Mandala Capture",
+        "Cody Bot",
+        "Talk to Figma MCP"
+      ],
       "url": [
         "https://projects.tanplanet.info/claude-skills-registry/",
         "https://projects.tanplanet.info/line-messaging-portfolio/",
@@ -2416,12 +2798,32 @@
       "url": "https://projects.tanplanet.info/",
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — UX/UI Designer & Developer Portfolio",
       "description": "รวม Side Projects ของ ณัฐปคัลภ์ ศิริรัตน์ — LINE Bot, Travel Guide, Dashboard, Design Case Study",
-      "isPartOf": { "@id": "https://projects.tanplanet.info/#website" },
-      "about": { "@id": "https://projects.tanplanet.info/#person" },
-      "inLanguage": ["th", "en"]
+      "isPartOf": {
+        "@id": "https://projects.tanplanet.info/#website"
+      },
+      "about": {
+        "@id": "https://projects.tanplanet.info/#person"
+      },
+      "inLanguage": [
+        "th",
+        "en"
+      ]
     }
   ]
 }
+</script>
+
+<script>
+  // ป้าย New มีที่มาเดียวคือ data-added บนการ์ด และหมดอายุเองเมื่อเกิน NEW_DAYS
+  // ไม่ต้องกลับมาไล่ลบด้วยมือ และไม่มีทางที่ป้ายจะค้างอยู่เป็นเดือน
+  (function () {
+    var NEW_DAYS = 30;
+    var now = Date.now();
+    document.querySelectorAll('.card[data-added]').forEach(function (el) {
+      var t = Date.parse(el.getAttribute('data-added'));
+      if (!isNaN(t) && (now - t) / 86400000 <= NEW_DAYS) el.classList.add('is-new');
+    });
+  })();
 </script>
 
 </body>

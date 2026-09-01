@@ -701,14 +701,214 @@
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">🎬</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         Chrome Extension &middot; Manifest V3 &middot; HLS / DASH
@@ -749,27 +949,27 @@
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#128269;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
         <h3>หา media URL ใน DevTools เหนื่อย</h3>
         <p>Network tab มี request เป็นร้อย — ต้อง filter หา <code>.m3u8</code>/<code>.mp4</code> เอง แล้วยังแยกไม่ออกว่าอันไหนคือ master playlist (ตัวเลือกความชัด) อันไหนคือ variant จริงที่ต้องโหลด</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128272;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>โหลดตรงๆ แล้ว 403 เพราะขาด header</h3>
         <p>ก๊อป URL ไปวางใน yt-dlp เฉยๆ มักโดน 403 — เพราะ server เช็ค <code>Referer</code> / <code>Origin</code> / <code>Cookie</code> ที่เบราว์เซอร์ส่งตอนเล่นจริง header พวกนี้ปกติถูกซ่อนใน DevTools</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128220;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
         <h3>ไม่รู้ว่าสตรีมมีกี่ความชัด / เข้ารหัสไหม</h3>
         <p>เปิด m3u8 มาอ่านเองต้องรู้จัก tag <code>#EXT-X-STREAM-INF</code>, <code>#EXT-X-KEY</code> — คนทั่วไปดูไม่ออกว่ามี 1080p/720p ให้เลือกไหม หรือ segment ถูกเข้ารหัส AES-128 อยู่</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#127909;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
         <h3>YouTube sniff ตรงๆ ไม่เสถียร</h3>
         <p>YouTube ส่ง stream ผ่าน <code>googlevideo.com</code> ที่มี token หมดอายุเร็ว + แยก video/audio track — ดักมาแล้วมักโหลดไม่ได้ ต้องใช้วิธีอื่น</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128465;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
         <h3>ของหน้าเก่าปนหน้าใหม่</h3>
         <p>เปิดหลายเว็บใน tab ต่างๆ แล้ว media ปนกันมั่ว — ไม่รู้ว่าลิงก์ไหนมาจากหน้าที่กำลังดูอยู่ ต้องมานั่งเดา</p>
       </div>
@@ -786,27 +986,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#128225;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
         <h3>ดัก media อัตโนมัติจาก network layer</h3>
         <p>Service worker ฟัง <code>webRequest</code> — เจอ request ที่เข้าเงื่อน <code>.m3u8/.mpd/.mp4/.ts/.m4s</code> หรือ type = media ก็เก็บทันที ไม่ต้องเปิด DevTools ไม่ต้อง filter เอง</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#129504;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
         <h3>แกะ m3u8 จริง แล้วบอกว่าโหลดตัวไหน</h3>
         <p>Fetch ตัว playlist มา parse — master ไหน มีความชัดอะไรบ้าง (1080p/720p), variant ไหนกี่ segment ยาวกี่นาที เข้ารหัส AES-128 หรือเปล่า สรุปเป็นตารางอ่านง่าย</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128203;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
         <h3>ประกอบคำสั่ง yt-dlp พร้อม header จริง</h3>
         <p>เก็บ <code>Referer/Origin/Cookie/User-Agent</code> ที่เบราว์เซอร์ส่งจริง แล้วประกอบเป็น <code>yt-dlp --referer ... --add-header ...</code> ที่ shell-quote ปลอดภัย กดปุ่มเดียวก๊อปได้เลย</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#9654;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
         <h3>YouTube = โหลดจากลิงก์หน้าเว็บ</h3>
         <p>ตรวจว่าอยู่หน้า YouTube watch/shorts/live → เสนอคำสั่ง yt-dlp จาก URL หน้าเว็บโดยตรง (เสถียรกว่า sniff googlevideo มาก) + ตัด <code>&amp;list=</code> กันโหลดทั้ง playlist</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128194;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
         <h3>แยก media ตาม tab เด็ดขาด</h3>
         <p>ทุก item ผูกกับ <code>tabId</code> — popup โชว์เฉพาะของหน้าที่ดูอยู่ เปลี่ยนหน้า/ปิด tab = ล้างของเก่าทิ้งอัตโนมัติ badge นับจำนวนต่อ tab</p>
       </div>
@@ -824,25 +1024,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#127760;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
         <h4>เปิดหน้าเว็บ</h4>
         <p>วิดีโอเริ่มเล่น เบราว์เซอร์ยิง request m3u8 / segment ออกไป</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#128225;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
         <h4>Service worker ดัก</h4>
         <p>จับ URL + เก็บ header จริง ผูกกับ tabId ขึ้น badge นับจำนวน</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#129504;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
         <h4>เปิด popup → แกะ</h4>
         <p>fetch m3u8 มา parse แยก master/variant + ความชัด + การเข้ารหัส</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#128203;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
         <h4>ก๊อปคำสั่ง</h4>
         <p>กดปุ่ม yt-dlp → ก๊อปคำสั่งพร้อม header ไปวางใน terminal</p>
       </div>
@@ -900,7 +1100,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมเลือก stack นี้?</strong>
       <p><strong>Manifest V3 + Service Worker</strong> เป็นมาตรฐานใหม่ที่ Chrome บังคับ — event-driven ไม่มี background page ค้าง RAM &middot; <strong>chrome.storage.session</strong> เก็บใน memory หายเมื่อปิดเบราว์เซอร์ — เหมาะกับข้อมูลชั่วคราวที่ไม่ควรค้างในดิสก์ &middot; <strong>host_permissions <code>&lt;all_urls&gt;</code></strong> ให้ popup fetch ตัว m3u8 มาแกะได้โดยข้าม CORS &middot; <strong>Vanilla JS ล้วน</strong> — ไม่มี build step, โหลด unpacked ได้เลย, ทั้ง extension ~4 ไฟล์</p>
     </div>
@@ -916,42 +1116,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#128225;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
         <h3>Media Sniffer</h3>
         <p>ดัก <code>.m3u8/.mpd/.mp4/.ts/.m4s</code> + request type = media จาก webRequest — ครอบคลุมทั้ง HLS, DASH และไฟล์ตรง</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128272;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>Real Header Capture</h3>
         <p>ใช้ <code>extraHeaders</code> ดึง Referer/Origin/Cookie/User-Agent ที่ปกติถูกซ่อน — กุญแจที่ทำให้โหลดผ่าน 403</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#129504;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
         <h3>HLS Classifier</h3>
         <p>fetch m3u8 มา parse จริง — แยก master (มี variants + audio/subs) vs variant (segment count + duration + AES)</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127916;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
         <h3>Quality Resolver</h3>
         <p>อ่าน <code>RESOLUTION</code>/<code>BANDWIDTH</code> จาก master แล้ว map ให้ variant แต่ละตัวว่าเป็น 1080p/720p</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128203;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
         <h3>yt-dlp Command Builder</h3>
         <p>ประกอบคำสั่งพร้อม header + shell-quote ปลอดภัย (จัดการ single-quote/space/semicolon ใน cookie)</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#9654;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
         <h3>YouTube Smart Card</h3>
         <p>ตรวจหน้า watch/shorts/live → เสนอคำสั่งโหลดจาก URL หน้าเว็บ 2 แบบ (best / 1080p) ตัด playlist param ทิ้ง</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128290;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg>
         <h3>Per-Tab Badge &amp; Cleanup</h3>
         <p>นับจำนวน media ต่อ tab บน icon + ล้างเมื่อ navigate (main_frame) หรือปิด tab — ไม่ให้ของเก่าค้าง</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128203;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
         <h3>Copy All / Rescan / Clear</h3>
         <p>ก๊อปทุก URL ทีเดียว, reload tab เพื่อจับรอบสด, ล้างเฉพาะ tab ปัจจุบัน — คุมง่ายจาก header เดียว</p>
       </div>
@@ -1018,42 +1218,42 @@
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Browser API">
-        <span class="emoji">&#128272;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>Cookie / Referer ถูกซ่อนจาก webRequest</h3>
         <p>โดย default <code>onSendHeaders</code> ไม่คืน header ที่ browser จัดการเอง (Cookie, Referer, Origin) — ได้แต่ URL เปล่า โหลดต่อไม่ผ่าน 403</p>
         <div class="highlight">แก้: ใส่ <code>"extraHeaders"</code> ใน extraInfoSpec ของ listener — Chrome จึงเปิดเผย header ที่ถูกซ่อน แล้ว whitelist เก็บเฉพาะ 4 ตัวที่ yt-dlp ต้องใช้ (referer/origin/cookie/user-agent) ไม่เก็บเกินจำเป็น</div>
       </div>
 
       <div class="hack-card arch" data-label="CORS">
-        <span class="emoji">&#129504;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
         <h3>จะแกะ m3u8 ต้อง fetch ข้าม origin</h3>
         <p>เพื่อรู้ว่า master มีความชัดอะไรบ้าง ต้อง fetch ตัว playlist มาอ่าน — แต่ปกติ fetch ข้าม origin โดน CORS block</p>
         <div class="highlight">แก้: ประกาศ <code>host_permissions: &lt;all_urls&gt;</code> ใน manifest — popup context จึง fetch ข้าม origin ได้โดยไม่ติด CORS แล้ว cache ผลลัพธ์ต่อ URL กัน fetch ซ้ำทุกครั้งที่ re-render</div>
       </div>
 
       <div class="hack-card platform" data-label="MV3 State">
-        <span class="emoji">&#128290;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg>
         <h3>Master ต้องแกะก่อน Variant ถึงรู้ความชัด</h3>
         <p>ความชัด (1080p) อยู่ในไฟล์ master แต่ตอนดัก network เราเห็น variant URL ลอยๆ ไม่มี label ว่ากี่ p</p>
         <div class="highlight">แก้: parse master → เก็บ map <code>variantUrl → "1080p"</code> ไว้ใน <code>variantRes</code> ก่อน แล้วค่อยวาดตาราง — ใช้ <code>Promise.all(analyze)</code> แกะทุกตัวให้เสร็จก่อน render รอบเดียว variant จึงหยิบ label จาก master ที่แกะแล้วได้</div>
       </div>
 
       <div class="hack-card ux" data-label="Tab Isolation">
-        <span class="emoji">&#128194;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
         <h3>media ของหน้าเก่า carry มาปนหน้าใหม่</h3>
         <p>SPA / เปลี่ยนหน้าไม่ได้ reload — media เก่ายังค้างใน storage ปนกับหน้าใหม่ ทำให้ popup โชว์ลิงก์ที่ไม่เกี่ยว</p>
         <div class="highlight">แก้: ฟัง <code>onBeforeRequest</code> เฉพาะ <code>main_frame</code> = สัญญาณว่าหน้าเปลี่ยนจริง → ล้าง items ของ tabId นั้นทิ้ง + reset badge บวกกับ cleanup ตอน <code>tabs.onRemoved</code> — storage สะอาดตลอด</div>
       </div>
 
       <div class="hack-card devops" data-label="Shell Safety">
-        <span class="emoji">&#128737;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
         <h3>Cookie มี space / semicolon พังคำสั่ง shell</h3>
         <p>ค่า Cookie จริงมี <code>;</code> และ space เต็มไปหมด — เอาไปต่อเป็นคำสั่ง shell ตรงๆ มันแตกคำสั่ง หรือถูกตีความผิด</p>
         <div class="highlight">แก้: ฟังก์ชัน <code>q()</code> ห่อทุกค่าด้วย single-quote แล้ว escape single-quote ข้างในเป็น <code>'\''</code> — pattern มาตรฐานของ POSIX shell ทำให้ Cookie/Referer ที่มีอักขระพิเศษปลอดภัย 100%</div>
       </div>
 
       <div class="hack-card perf" data-label="Stability">
-        <span class="emoji">&#9654;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
         <h3>YouTube sniff แล้วโหลดไม่ได้</h3>
         <p>ดัก googlevideo มาได้ URL จริง แต่มี token หมดอายุเร็ว + track เสียงแยกจากภาพ — โหลดจริงแทบไม่เคยสำเร็จ</p>
         <div class="highlight">แก้: เปลี่ยนกลยุทธ์ — ไม่ sniff googlevideo เลย แต่ตรวจว่าอยู่หน้า YouTube แล้วให้ yt-dlp จัดการจาก URL หน้าเว็บเอง (มัน resolve track + merge ให้) พร้อม <code>cleanYt()</code> ตัด <code>&amp;list=</code> กันเผลอโหลดทั้ง playlist — บทเรียน: บางปัญหาแก้ด้วยการ "ไม่ทำ" ดีกว่าฝืนทำให้ได้</div>

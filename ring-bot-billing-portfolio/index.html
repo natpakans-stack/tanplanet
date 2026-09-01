@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>น้องกริ่ง + Budget — บอท LINE ที่ออกบิลค่าไฟให้ที่บ้านเองทุกเดือน</title>
+  <meta name="description" content="Portfolio: Apps Script สองตัวต่อกัน — อ่านใบแจ้งค่าไฟจาก Gmail ลงยอดในชีตเป็นสูตรที่ตรวจย้อนได้ แล้วออกบิลพร้อม QR พร้อมเพย์ส่งเข้า LINE ตามวันเวลาที่ตั้งไว้ โดยมีด่านตรวจ 6 ข้อก่อนส่งทุกครั้ง">
+  <meta property="og:title" content="น้องกริ่ง + Budget — บอท LINE ที่ออกบิลค่าไฟให้ที่บ้านเองทุกเดือน">
+  <meta property="og:description" content="Portfolio: Apps Script สองตัวต่อกัน — อ่านใบแจ้งค่าไฟจาก Gmail ลงยอดในชีตเป็นสูตรที่ตรวจย้อนได้ แล้วออกบิลพร้อม QR พร้อมเพย์ส่งเข้า LINE ตามวันเวลาที่ตั้งไว้ โดยมีด่านตรวจ 6 ข้อก่อนส่งทุกครั้ง">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://projects.tanplanet.info/ring-bot-billing-portfolio/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="น้องกริ่ง + Budget — บอท LINE ที่ออกบิลค่าไฟให้ที่บ้านเองทุกเดือน">
+  <meta name="twitter:description" content="Portfolio: Apps Script สองตัวต่อกัน — อ่านใบแจ้งค่าไฟจาก Gmail ลงยอดในชีตเป็นสูตรที่ตรวจย้อนได้ แล้วออกบิลพร้อม QR พร้อมเพย์ส่งเข้า LINE ตามวันเวลาที่ตั้งไว้ โดยมีด่านตรวจ 6 ข้อก่อนส่งทุกครั้ง">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0f1f'/><path d='M50 22a18 18 0 0 0-18 18v12l-6 10h48l-6-10V40a18 18 0 0 0-18-18z' fill='none' stroke='%2334d399' stroke-width='6' stroke-linejoin='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #b45309;
+      --accent-light: #fef3c7;
+      --accent-dark: #78350f;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #0a0f1f 0%, #121b36 40%, #3f2d12 78%, #78350f 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(251,191,36,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #78350f, #f59e0b, #fde68a);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent { color: #fcd34d; }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro { padding: 56px 0 32px; }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .section-intro p { color: var(--text-secondary); font-size: 1rem; }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0a0f1f, #223056);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block code { background: rgba(255,255,255,0.14); color: #fcd34d; }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p { font-size: 1.05rem; line-height: 1.7; position: relative; z-index: 1; }
+    .quote-block .author { margin-top: 12px; font-size: 0.82rem; opacity: 0.78; }
+
+    /* ===== Pain / Solution Cards ===== */
+    .pain-grid, .solution-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .pain-card, .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .pain-card { border-left: 4px solid var(--red); }
+    .solution-card { border-left: 4px solid var(--accent); }
+    .pain-card .emoji, .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3, .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p, .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(180,83,9,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers { display: flex; flex-direction: column; gap: 12px; max-width: 560px; margin: 0 auto; }
+    .arch-layer { padding: 14px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(180,83,9,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: var(--navy); color: #cbd5e1; border: 1px solid #223056; }
+    .arch-arrow { text-align: center; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+    .arch-sub { display: flex; justify-content: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .arch-layer.infra .arch-sub span { background: rgba(255,255,255,0.10); }
+
+    /* ===== Device Mockup (320x480 @ scale) ===== */
+    .dev-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .dev-frame {
+      width: 348px;
+      max-width: 100%;
+      background: #1a1a1c;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 14px 40px rgba(10,15,31,0.35);
+    }
+    .dev-screen {
+      background: var(--navy);
+      border-radius: 6px;
+      overflow: hidden;
+      color: #f2f5ff;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+    .dev-hero {
+      background: #121b36;
+      padding: 12px 14px 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .dev-clock { font-size: 2.4rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+    .dev-date { color: #8492bc; font-size: 0.72rem; margin-top: 4px; }
+    .dev-hero-right { text-align: right; font-size: 0.72rem; color: #8492bc; }
+    .dev-hero-right .t { color: #f2f5ff; font-size: 1.05rem; font-weight: 600; }
+    .dev-list { padding: 8px; display: flex; flex-direction: column; gap: 7px; }
+    .dev-card {
+      background: #161f3c;
+      border-radius: 8px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dev-card .body { flex: 1; min-width: 0; }
+    .dev-card .ttl { color: #8492bc; font-size: 0.68rem; letter-spacing: 0.02em; }
+    .dev-card .val { font-size: 0.95rem; font-weight: 600; }
+    .dev-card .sub { color: #8492bc; font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dev-card .up { color: #4ade80; }
+    .dev-card .warn { color: #fbbf24; }
+    .dev-card .down { color: #f87171; }
+    .dev-blob {
+      width: 42px;
+      height: 34px;
+      border-radius: 6px;
+      background: #223056;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .dev-bar { height: 5px; border-radius: 3px; background: #223056; margin-top: 6px; overflow: hidden; }
+    .dev-bar i { display: block; height: 100%; background: #fbbf24; }
+    .dev-caption { font-size: 0.8rem; color: var(--text-secondary); text-align: center; max-width: 420px; }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img { width: 100%; height: auto; display: block; }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons { margin-top: 24px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+    .closing .links { margin-top: 24px; display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .closing .links a { color: var(--accent); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Google Apps Script &middot; LINE Messaging API &middot; PromptPay QR
+      </div>
+      <h1>น้องกริ่ง<br><span class="accent">บอทที่ออกบิลค่าไฟให้ที่บ้านเองทุกเดือน แล้วทวงแทนเรา</span></h1>
+      <p>ใบแจ้งค่าไฟเข้าเมล &rarr; ยอดถูกลงชีตเป็นสูตรที่ตรวจย้อนได้ &rarr; วันที่กำหนด บิลพร้อม QR พร้อมเพย์ก็เด้งเข้า LINE ของคนที่ต้องจ่าย โดยไม่มีใครต้องเปิด PDF อ่านตัวเลขเองอีก และมีด่านตรวจ 6 ข้อกันไม่ให้บิลผิดหลุดออกไป</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Apps Script</span>
+        <span class="hero-tag">LINE Messaging API</span>
+        <span class="hero-tag">Flex Message</span>
+        <span class="hero-tag">PromptPay EMVCo</span>
+        <span class="hero-tag">CRC-16/CCITT</span>
+        <span class="hero-tag">Google Sheets</span>
+        <span class="hero-tag">Gmail</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#hacks">ข้อควรระวังที่เจอ</a>
+      </div>
+    </div>
+  </header>
+
+  <article>
+
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>งานเดิมเป๊ะทุกเดือน แต่ต้องมีคนจำและมีคนกล้าทวง</h2>
+      <p>ค่าไฟบ้านที่หารกันในครอบครัว มีขั้นตอนตายตัวทุกเดือน — และพังได้ทุกเดือนเหมือนกัน</p>
+    </section>
+
+    <div class="quote-block">
+      <p>ทุกเดือนต้องเปิดเมลหาใบแจ้งค่าไฟ อ่านยอดจากไฟล์ PDF คิดส่วนแบ่งในเครื่องคิดเลข พิมพ์ลงชีต แล้วไปพิมพ์ทวงในไลน์พร้อมแนบเลขบัญชี — ขั้นตอนไม่ยากเลยสักข้อ แต่มันต้องเกิดขึ้นครบทุกข้อ ทุกเดือน โดยมีคนคนหนึ่งเป็นคนจำ</p>
+      <div class="author">— โจทย์ตั้งต้น</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        <h3>ยอดอยู่ใน PDF ที่ต้องเปิดอ่านเอง</h3>
+        <p>ใบแจ้งหนี้มาเป็นไฟล์แนบ ต้องเปิด อ่านตัวเลข แล้วพิมพ์ต่อด้วยมือ ซึ่งเป็นจุดที่ตัวเลขเพี้ยนได้ง่ายที่สุดในกระบวนการทั้งหมด</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+        <h3>ส่วนแบ่งที่คิดในเครื่องคิดเลข ตรวจย้อนหลังไม่ได้</h3>
+        <p>พิมพ์ผลลัพธ์ลงชีตไปเลย เดือนถัดไปกลับมาดูก็ไม่รู้แล้วว่าเลขนี้มาจากยอดเต็มเท่าไร คูณด้วยอะไร และปัดตอนไหน</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg>
+        <h3>การทวงเงินคนในบ้านมีต้นทุนทางความรู้สึก</h3>
+        <p>ต่อให้ยอดถูกต้องและถึงกำหนดแล้ว การพิมพ์ทวงเองก็ยังเป็นเรื่องที่คนเลื่อนออกไปเรื่อย ๆ จนสุดท้ายกลายเป็นออกเงินแทนไปก่อนทุกเดือน</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
+        <h3>ส่งเลขบัญชีไปเฉย ๆ ผู้จ่ายต้องพิมพ์เองอีกต่อ</h3>
+        <p>คนรับต้องคัดลอกเลขบัญชี สลับไปเปิดแอปธนาคาร วางเลข แล้วพิมพ์ยอดเอง ทุกขั้นคือโอกาสพิมพ์ผิดและโอกาสที่จะเลื่อนไปทำทีหลัง</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>ต่อยอดบอทที่บ้านใช้อยู่แล้ว แทนที่จะพาทุกคนไปลงแอปใหม่</h2>
+      <p>ข้อจำกัดที่แท้จริงไม่ใช่เทคโนโลยี แต่คือ &ldquo;คนในบ้านจะยอมเปิดอะไร&rdquo;</p>
+    </section>
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th>ทางเลือก</th><th>ผู้จ่ายต้องทำอะไร</th><th class="num">ต้นทุน</th><th>เหตุที่ตก / รับ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>แอปหารบิลสำเร็จรูป</td>
+            <td>โหลดแอป สมัคร เรียนรู้</td>
+            <td class="num">ฟรี/รายเดือน</td>
+            <td>ฟีเจอร์ครบเกินความจำเป็น แต่ต้องพาคนทั้งบ้านย้ายไปอยู่ในแอปที่ไม่มีใครเปิดอยู่แล้ว</td>
+          </tr>
+          <tr>
+            <td>พิมพ์ทวงเองเหมือนเดิม</td>
+            <td>ไม่ต้องทำอะไรใหม่</td>
+            <td class="num">แรงคนทุกเดือน</td>
+            <td>ได้ผลจริงเวลาที่ทำ ปัญหาคือมันขึ้นกับว่าเดือนนั้นคนคนหนึ่งจำได้และพร้อมจะทวงไหม</td>
+          </tr>
+          <tr data-picked>
+            <td>ต่อยอดบอท LINE เดิม<span class="pick"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> เลือก</span></td>
+            <td>เปิด LINE แล้วสแกน QR</td>
+            <td class="num">ไม่มี</td>
+            <td>บอทตัวนี้อยู่ในไลน์ที่บ้านอยู่แล้ว ผู้จ่ายไม่ต้องลงอะไรเพิ่ม และเส้นทางจ่ายสั้นที่สุดคือสแกน QR ที่มียอดล็อกมาให้แล้ว</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>สองโปรเจกต์ที่คุยกันผ่านชีต ไม่ใช่ผ่าน API ของกันและกัน</h2>
+      <p>ฝั่งหนึ่งรับผิดชอบ &ldquo;ยอดถูกไหม&rdquo; อีกฝั่งรับผิดชอบ &ldquo;ส่งถึงไหม&rdquo; และทั้งคู่แก้แยกกันได้โดยไม่พังข้ามฝั่ง</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Gmail &mdash; ใบแจ้งค่าไฟอิเล็กทรอนิกส์
+          <div class="arch-sub"><span>อ่านจากผู้ส่งที่กำหนด</span><span>กันประมวลผลใบเดิมซ้ำ</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Apps Script ฝั่งงบ &mdash; ลงยอดในชีต
+          <div class="arch-sub"><span>เขียนเป็นสูตร ไม่ใช่ผลลัพธ์</span><span>ค้นเซลล์จากข้อความ ไม่ยึดเลขแถว</span><span>ทิ้ง Note บอกที่มา</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Apps Script ฝั่งบอท &mdash; ออกบิล
+          <div class="arch-sub"><span>ด่านตรวจ 6 ข้อ</span><span>สร้าง record ในชีตก่อนเสมอ</span><span>สร้าง QR พร้อมเพย์แยกใบตามยอด</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          LINE &mdash; การ์ดบิลพร้อม QR
+          <div class="arch-sub"><span>ปุ่มหลักคือเปิด QR เต็มจอ</span><span>บันทึกผลการส่งทุกครั้ง</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>กติกาข้อเดียวที่คุมทั้งระบบ</strong>
+      <p><strong>ห้ามส่ง LINE ลัดหลังบ้าน</strong> — งานอัตโนมัติทุกตัวต้องสร้าง record ในชีตบิลก่อนเสมอ แล้วปล่อยให้ตัวส่งเดิมที่ตื่นทุก 5 นาทีเป็นคนส่ง อัปเดตสถานะ และบันทึกผล ถ้ายอมให้มีทางลัดแม้แต่ทางเดียว ก็จะมีข้อความที่ส่งออกไปแล้วโดยไม่มีร่องรอยว่าใครส่งและส่งอะไร</p>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน &mdash; 5 จังหวะ ตั้งแต่เมลเข้าถึงเงินเข้า</h2>
+      <p>ทั้งหมดเกิดเองโดยไม่มีใครกดอะไร ความแม่นเวลาอยู่ที่ประมาณ 5 นาทีตามคาบของตัวจับเวลา</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+        <h4>อ่านใบแจ้งจากเมล</h4>
+        <p>ดึงยอดเต็มกับรอบบิลออกมาจากใบแจ้งอิเล็กทรอนิกส์ และจำเลขที่ใบแจ้งไว้กันประมวลผลใบเดิมซ้ำ</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+        <h4>ลงชีตเป็นสูตร ไม่ใช่ตัวเลขสำเร็จ</h4>
+        <p>เขียนลงไปในรูป <code>=ยอดเต็ม*สัดส่วน</code> โดยไม่ปัดยอดเต็มก่อนคูณ เดือนหน้าเปิดมาก็ยังเห็นที่มาของเลขทุกตัว</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        <h4>ผ่านด่านตรวจ 6 ข้อก่อนถึงจะออกบิล</h4>
+        <p>ยังไม่พร้อมก็ไม่สร้างอะไรทั้งนั้น แล้วกลับมาลองใหม่รอบหน้า ดีกว่าออกบิลผิดไปหาคนในบ้าน</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
+        <h4>สร้าง QR พร้อมเพย์แยกใบตามยอดของแต่ละคน</h4>
+        <p>ประกอบ payload ฝั่งเซิร์ฟเวอร์ที่เดียว หน้าเว็บมีหน้าที่แค่วาดออกมา ใส่ยอดแล้วยอดจะถูกล็อกมากับ QR เลย</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
+        <h4>ส่งการ์ดบิลเข้า LINE แล้วบันทึกผล</h4>
+        <p>ปุ่มหลักคือเปิด QR เต็มจอ ไม่ต้องคัดลอกเลขบัญชี · บิลที่ไม่มี QR เท่านั้นจึงจะแสดงปุ่มคัดลอกเลขบัญชีให้</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="hacks">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>เจ็ดข้อควรระวังที่เจอตอนของจริงเดินอยู่</h2>
+      <p>ส่วนใหญ่ไม่ได้อยู่ในเอกสารของแพลตฟอร์ม ต้องเจอเองแล้วออกแบบให้รอด</p>
+    </section>
+
+    <div class="hack-grid">
+
+      <div class="hack-card" data-label="Quota">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>โควตาข้อความฟรีมีจำกัด และปุ่มในเมนูก็กินโควตาได้ถ้าเขียนผิดแบบ</span></h3>
+        <p>บัญชีฟรีส่งข้อความเชิงรุกได้จำนวนจำกัดต่อเดือน ถ้าออกแบบให้ทุกการกดปุ่มตอบกลับด้วยการส่งเชิงรุก โควตาจะหมดตั้งแต่กลางเดือนโดยที่ยังไม่ได้ส่งบิลจริงสักใบ</p>
+        <div class="highlight"><strong>แก้:</strong> แยกให้ชัดว่า <strong>ข้อความเชิงรุกกินโควตา ส่วนการตอบกลับไม่กิน</strong> แล้วออกแบบให้<strong>ปุ่มทุกปุ่มในเมนูใช้การตอบกลับทั้งหมด</strong> เหลือโควตาไว้ให้บิลที่ต้องส่งเองตามเวลาเท่านั้น &mdash; บิลรายเดือนแบบไม่มีวันจบก็คือหนึ่งข้อความต่อรอบตลอดไป ต้องคิดเผื่อก่อนตั้ง</div>
+      </div>
+
+      <div class="hack-card" data-label="Idempotency">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>ส่งพลาดหนึ่งรอบ ยอมรับได้ · ส่งซ้ำสองรอบ ยอมรับไม่ได้</span></h3>
+        <p>ตัวจับเวลาตื่นทุก 5 นาที ถ้าเขียนสถานะหลังส่งสำเร็จ แล้วการส่งดันค้างหรือพังกลางทาง รอบถัดไปมันจะส่งใหม่ทันที ผู้รับจะได้บิลใบเดิมซ้ำ ๆ</p>
+        <div class="highlight"><strong>แก้:</strong> <strong>เขียนสถานะลงชีตก่อนแล้วค่อยส่ง</strong> พร้อมกุญแจกันซ้ำรายเดือน &mdash; แลกกันตรง ๆ คือถ้าพังกลางทางจะพลาดรอบนั้นไปเลย ซึ่งเป็นความเสียหายที่เล็กกว่าการยิงบิลซ้ำใส่คนในบ้านมาก</div>
+      </div>
+
+      <div class="hack-card" data-label="Safety gate">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>บิลผิดที่ส่งออกไปแล้ว เรียกคืนไม่ได้</span></h3>
+        <p>ถ้าเดือนไหนชีตยังกรอกไม่เสร็จ หรือสูตรถูกแก้มือจนผิดรูป ระบบที่ไม่ตรวจอะไรเลยจะออกบิลยอดผิดส่งไปหาคนในบ้านทันที</p>
+        <div class="highlight"><strong>แก้:</strong> <strong>ด่านตรวจ 6 ข้อก่อนสร้างบิล</strong> — เจอป้ายรายการค่าไฟไหม · ช่องยอดเป็นสูตรส่วนแบ่งจริงไหม · ยอดมากกว่าศูนย์ไหม · มี Note ยืนยันว่ามาจากใบแจ้งอัตโนมัติไหม · รอบบิลใน Note เป็นเดือนก่อนหน้าแท็บเป้าหมายไหม · ยอดของผู้จ่ายครบทุกคนไหม &mdash; ไม่ผ่านข้อใดข้อหนึ่ง = ไม่สร้าง record ไม่สร้าง QR ไม่ส่ง แล้วเงียบไปลองใหม่รอบหน้า</div>
+      </div>
+
+      <div class="hack-card" data-label="Spreadsheet">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>ยึดเลขแถวในชีตแล้วพังทันทีที่มีคนแทรกแถว</span></h3>
+        <p>ตำแหน่งของรายการค่าไฟเคยขยับระหว่างเดือน เพราะมีคนแก้ชีตด้วยมือ โค้ดที่จำไว้ว่า &ldquo;ยอดอยู่แถวที่เท่านี้&rdquo; จะไปหยิบเลขของรายการอื่นมาแทนโดยไม่มีอาการผิดพลาดให้เห็น</p>
+        <div class="highlight"><strong>แก้:</strong> <strong>ค้นหาเซลล์จากข้อความป้ายกำกับ</strong> แล้วค่อยอ่านช่องที่อยู่ถัดไป และรองรับชื่อเดือนหลายแบบทั้งตัวย่อ ตัวเต็ม ช่องว่างเกิน และตัวพิมพ์ใหญ่เล็ก &mdash; ชีตที่คนแก้ได้ ต้องอ่านแบบที่ทนคนแก้</div>
+      </div>
+
+      <div class="hack-card" data-label="Recurring">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>บิลรายเดือนที่คิดวันถัดไปจากรอบก่อน จะเลื่อนไปเรื่อย ๆ</span></h3>
+        <p>เดือนที่ไม่มีวันที่ 31 ถ้าเลื่อนไปวันที่ 1 ของเดือนถัดไปแล้วนับต่อจากตรงนั้น รอบต่อ ๆ ไปจะค่อย ๆ ไหลออกจากวันที่ตั้งใจไว้จนผิดเดือน</p>
+        <div class="highlight"><strong>แก้:</strong> คำนวณทุกครั้งจาก<strong>วันตั้งต้นวันเดียว</strong> ไม่ใช่จากรอบก่อนหน้า เดือนที่ไม่มีวันนั้นให้ตกที่วันสิ้นเดือน แล้ว<strong>เดือนถัดไปกลับมาวันเดิม</strong> &mdash; แก้วันตั้งต้นที่เดียวก็เลื่อนทั้งชุดโดยไม่มีอาการไหล</div>
+      </div>
+
+      <div class="hack-card" data-label="Platform limit">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>ดึงรายชื่อสมาชิกกลุ่มอัตโนมัติไม่ได้ ต่อให้มีสิทธิ์ในกลุ่ม</span></h3>
+        <p>ตั้งใจจะให้บอทรู้เองว่าใครอยู่ในกลุ่มบ้าง แล้วพบว่าปลายทางที่ให้ข้อมูลนี้เปิดเฉพาะบัญชีระดับที่ยืนยันตัวตนแล้วเท่านั้น ลองเรียกจริงได้สถานะปฏิเสธกลับมา</p>
+        <div class="highlight"><strong>แก้:</strong> เปลี่ยนไปใช้ <strong>รายชื่อที่อนุญาตในชีต</strong> — คนที่จะใช้เมนูได้ต้องทักบอทหนึ่งครั้งให้ชื่อโผล่ก่อน แล้วติ๊กอนุญาตในชีต ผลพลอยได้คือ<strong>ไม่มีเมนูเริ่มต้น</strong> ใครแอดบอทเฉย ๆ จะไม่เห็นเมนู และเปิดฟอร์มออกบิลไม่ได้เลย</div>
+      </div>
+
+      <div class="hack-card" data-label="Payment">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>QR ที่ตัวเลขท้ายผิดไปหนึ่งหลัก คือ QR ที่สแกนไม่ขึ้น</span></h3>
+        <p>รหัสจ่ายเงินมีค่าตรวจสอบต่อท้าย ถ้าคำนวณผิดแม้แต่นิดเดียว แอปธนาคารจะไม่ยอมอ่านเลย และอาการที่เห็นคือ &ldquo;สแกนไม่ได้&rdquo; เฉย ๆ ซึ่งไล่หาสาเหตุยากมาก</p>
+        <div class="highlight"><strong>แก้:</strong> ประกอบรหัสจ่ายเงิน<strong>ฝั่งเซิร์ฟเวอร์ที่เดียว</strong> หน้าเว็บมีหน้าที่แค่วาด แล้วเขียน<strong>ตัวทดสอบตัวเองที่ตรวจค่าตรวจสอบด้วยชุดตัวเลขมาตรฐาน</strong> ที่มีคำตอบตายตัวอยู่แล้ว รันก่อนแก้อะไรที่แตะเรื่องเงินทุกครั้ง</div>
+      </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Test</span>
+      <h2>ทุกอย่างที่ระบบทำ ต้องตามรอยย้อนหลังได้</h2>
+      <p>ระบบที่จับเงินของคนอื่น ความน่าเชื่อถืออยู่ที่ &ldquo;ตรวจสอบได้&rdquo; มากกว่า &ldquo;ทำงานเนียน&rdquo;</p>
+    </section>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg><span><b>ยอดในชีตเป็นสูตร ไม่ใช่ผลลัพธ์</b> — เปิดดูเดือนไหนก็ยังเห็นว่ายอดเต็มเท่าไร คูณด้วยสัดส่วนอะไร และไม่ได้ปัดก่อนคูณ</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg><span><b>บันทึกแยกสามชุด</b> — รายการบิลก่อนส่ง · ผลการเรียกส่งจริง · และบันทึกของงานอัตโนมัติที่บอกสถานะรายเดือนพร้อมเหตุผลเมื่อไม่ผ่านด่านตรวจ</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg><span><b>ข้อความผิดพลาดเดิมบันทึกครั้งเดียว</b> จนกว่าสาเหตุจะเปลี่ยน — บันทึกที่เต็มไปด้วยบรรทัดซ้ำทุก 5 นาที คือบันทึกที่ไม่มีใครอ่าน</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg><span><b>มีคำสั่งพรีวิวไว้ดูก่อนเปิดใช้จริง</b> — อ่านแท็บ หมวด และยอดออกมาให้ตรวจด้วยตา ก่อนจะปล่อยให้มันส่งจริงสักครั้ง</span></li>
+    </ul>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">6</div><div class="label">ด่านตรวจก่อนออกบิลแต่ละใบ</div></div>
+      <div class="metric-card"><div class="num">5</div><div class="label">นาที คือคาบของตัวจับเวลาและความคลาดเคลื่อนของเวลาส่ง</div></div>
+      <div class="metric-card"><div class="num">3</div><div class="label">ชุดบันทึกที่ตามรอยย้อนหลังได้</div></div>
+      <div class="metric-card"><div class="num">0</div><div class="label">เส้นทางที่ส่ง LINE ได้โดยไม่ผ่านชีต</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>ขอบเขตที่ตั้งใจไม่ทำ</h2>
+      <p>ระบบนี้แตะทั้งเรื่องเงินและเรื่องคนในบ้าน ขอบเขตจึงสำคัญกว่าความสามารถ</p>
+    </section>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg><span><b>ไม่มีเมนูเริ่มต้นสำหรับทุกคน</b> — คนที่แค่แอดบอทจะไม่เห็นเมนู และไม่มีทางเปิดฟอร์มออกบิลได้ สิทธิ์ให้ทีละคนแล้วถอนคืนได้</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span><b>ค่าจริงทั้งหมดอยู่นอกโค้ด</b> — เลขผู้รับเงิน ปลายทาง และรหัสเชื่อมต่อ อยู่ในที่เก็บค่าตั้งค่าที่ไม่ขึ้น git แม้ repo จะเปิดสาธารณะ</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg><span><b>ไม่แก้ฝั่งงบโดยไม่จำเป็น</b> — ฝั่งนั้นเป็นเจ้าของที่มาของยอดและสูตร การแก้สองฝั่งพร้อมกันคือวิธีที่เร็วที่สุดที่จะทำให้ไม่รู้ว่าตัวเลขผิดเพราะใคร</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span><b>รู้ตัวว่าการสร้างภาพ QR ผ่านบริการภายนอก แปลว่ายอดกับเลขผู้รับเดินทางออกไปหนึ่งจุด</b> — เป็นข้อแลกเปลี่ยนที่บันทึกไว้ตรง ๆ ไม่ใช่ข้อที่ปล่อยผ่านเงียบ ๆ</span></li>
+    </ul>
+
+  </article>
+
+  <div class="closing">
+    <h2>น้องกริ่ง</h2>
+    <p>บอทที่เริ่มจากส่งรูปทักทายตอนเช้า แล้วถูกต่อยอดเป็นระบบออกบิลที่ทำงานเองทุกเดือน — ยอดตรวจย้อนได้ ผู้จ่ายแค่สแกน และไม่มีใครต้องเป็นคนจำหรือคนทวงอีกต่อไป</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Google Apps Script</span>
+      <span class="stack-icon">LINE Messaging API</span>
+      <span class="stack-icon">Flex Message</span>
+      <span class="stack-icon">Rich Menu</span>
+      <span class="stack-icon">PromptPay EMVCo</span>
+      <span class="stack-icon">CRC-16/CCITT</span>
+      <span class="stack-icon">Google Sheets</span>
+      <span class="stack-icon">Gmail</span>
+      <span class="stack-icon">Time-driven trigger</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio","item":"https://projects.tanplanet.info/"},
+    {"@type":"ListItem","position":2,"name":"น้องกริ่ง — บอทออกบิลค่าไฟอัตโนมัติบน LINE","item":"https://projects.tanplanet.info/ring-bot-billing-portfolio/"}
+  ]
+}
+</script>
+
+</body>
+</html>

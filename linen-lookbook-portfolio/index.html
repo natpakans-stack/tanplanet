@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Linne — เว็บ Lookbook เสื้อผ้าลินิน "แชทเพื่อสั่ง" (Next.js + Payload CMS)</title>
+  <title>เว็บ Lookbook แบรนด์เสื้อผ้าลินิน — “แชทเพื่อสั่ง” ไม่มีตะกร้า ไม่มี checkout</title>
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Linne — เว็บ Lookbook เสื้อผ้าลินิน 'แชทเพื่อสั่ง' (Next.js + Payload CMS)">
+  <meta name="twitter:title" content="เว็บ Lookbook แบรนด์เสื้อผ้าลินิน — “แชทเพื่อสั่ง” ไม่มีตะกร้า ไม่มี checkout">
   <meta name="twitter:description" content="Portfolio: เว็บ catalog + lookbook แบรนด์เสื้อผ้าลินิน — ไม่มีตะกร้า/ไม่มี checkout เลือกสี-ไซซ์แล้วกดสั่งเพื่อเด้งเข้า LINE พร้อมข้อความอัตโนมัติ จัดการสินค้าเองด้วย headless CMS">
-  <meta property="og:url" content="https://projects.tanplanet.info/linne-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.info/linen-lookbook-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/linne-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.info/linen-lookbook-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: เว็บ catalog + lookbook แบรนด์เสื้อผ้าลินิน — ไม่มีตะกร้า/ไม่มี checkout เลือกสี-ไซซ์แล้วกดสั่งเพื่อเด้งเข้า LINE พร้อมข้อความอัตโนมัติ จัดการสินค้าเองด้วย headless CMS">
-  <meta property="og:title" content="Linne — เว็บ Lookbook เสื้อผ้าลินิน 'แชทเพื่อสั่ง' (Next.js + Payload CMS)">
+  <meta property="og:title" content="เว็บ Lookbook แบรนด์เสื้อผ้าลินิน — “แชทเพื่อสั่ง” ไม่มีตะกร้า ไม่มี checkout">
   <meta name="description" content="Portfolio: เว็บ catalog + lookbook แบรนด์เสื้อผ้าลินิน — ไม่มีตะกร้า/ไม่มี checkout เลือกสี-ไซซ์แล้วกดสั่งเพื่อเด้งเข้า LINE พร้อมข้อความอัตโนมัติ จัดการสินค้าเองด้วย headless CMS">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23831843'/><text x='50' y='62' text-anchor='middle' font-size='54'>🌸</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -818,19 +818,219 @@
       .ui-decision-grid { grid-template-columns: 1fr; }
       .ui-swatches { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">🌸</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 16.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 1 1 4.5 4.5 4.5 4.5 0 1 1-4.5 4.5"/><path d="M12 7.5V9"/><path d="M7.5 12H9"/><path d="M16.5 12H15"/><path d="M12 16.5V15"/><path d="m8 8 1.88 1.88"/><path d="M14.12 9.88 16 8"/><path d="m8 16 1.88-1.88"/><path d="M14.12 14.12 16 16"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         Fashion Catalog &middot; Chat-to-Order &middot; Headless CMS
       </div>
-      <h1>Linne<br><span class="accent">เว็บ Lookbook เสื้อผ้าลินิน ที่ "แชทเพื่อสั่ง" — ไม่มีตะกร้า ไม่มี checkout</span></h1>
+      <h1>เว็บ Lookbook แบรนด์เสื้อผ้าลินิน<br><span class="accent">“แชทเพื่อสั่ง” ไม่มีตะกร้า ไม่มี checkout</span></h1>
       <p>เว็บ catalog + lookbook สำหรับแบรนด์เสื้อผ้าลินินพรีเมียม — ยกระดับจากขายผ่าน Instagram feed มาเป็นหน้าร้านที่ค้นหาง่าย ลูกค้าเลือกสี/ไซซ์แล้วกด "สั่งซื้อ" เพื่อเด้งเข้า <code>LINE</code> พร้อมข้อความสั่งซื้อที่กรอกให้อัตโนมัติ ทีมแบรนด์แก้สินค้า/ราคา/สถานะเองได้จาก headless CMS หลังบ้าน</p>
       <div class="hero-tags">
         <span class="hero-tag">Next.js 16</span>
@@ -866,27 +1066,27 @@
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#128241;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
         <h3>ขายผ่าน IG feed อย่างเดียว — หาสินค้าไม่เป็นระบบ</h3>
         <p>ลูกค้าต้องเลื่อน feed หาลุคที่เห็น ไม่มีหมวดหมู่ ไม่มีหน้าสินค้าเป็นเรื่องเป็นราว collection เก่าจมหายไปกับโพสต์ใหม่</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128172;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg>
         <h3>ทักแชทถามซ้ำ ๆ ทุกวัน</h3>
         <p>ไซซ์ไหน สีอะไร เนื้อผ้าเป็นยังไง ราคาเท่าไหร่ ของหมดยัง — คำถามเดิมวนซ้ำ เพราะข้อมูลไม่ได้อยู่รวมที่เดียว แอดมินตอบมือจนล้า</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128722;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
         <h3>ระบบตะกร้า/ตัดบัตร หนักและเกินจำเป็น</h3>
         <p>การขายจริงจบที่การคุยใน LINE อยู่แล้ว — checkout, payment gateway, ระบบสมาชิก กลายเป็นภาระที่ไม่ได้ใช้ และเพิ่มจุดที่ลูกค้าหลุด</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128295;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg>
         <h3>อัปเดตสินค้าเองไม่ได้ ต้องรอ dev</h3>
         <p>เพิ่มสินค้าใหม่ แก้ราคา ปรับสถานะ "ของหมด" ทุกครั้งต้องจ้างคนแก้โค้ด — ทีมแบรนด์อยากคุมเนื้อหาเองแบบไม่ต้องแตะโค้ด</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#127912;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg>
         <h3>เทมเพลตสำเร็จรูปสวย แต่ผูกกับ commerce engine ของมันเอง</h3>
         <p>ดีไซน์ fashion template ที่ถูกใจ มากับระบบตะกร้า/สินค้าแบบตายตัว — เอามาต่อกับข้อมูลจริงและช่องทาง LINE ตรง ๆ ไม่ได้</p>
       </div>
@@ -903,27 +1103,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#128717;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
         <h3>Catalog เป็นระบบ ค้นง่ายกว่า feed</h3>
         <p>สินค้าแยกหมวดหมู่ มีหน้า collection กรองตามหมวด มีสถานะ (พร้อมขาย/พรีออเดอร์/ของหมด) และป้าย badge — ลูกค้าหาลุคที่เห็นเจอใน 2-3 คลิก</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128241;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
         <h3>Chat-to-Order: กดสั่ง → เด้ง LINE พร้อมข้อความ</h3>
         <p>เลือกสี+ไซซ์ ระบบประกอบเป็นข้อความสั่งซื้อ (ชื่อสินค้า + ตัวเลือกที่เลือก + ลิงก์) แล้ว deep-link เข้า LINE OA ของแบรนด์แบบ pre-filled — ลูกค้าแค่กดส่ง</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#9989;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
         <h3>ไม่มี checkout — เหลือแค่ "สอบถาม"</h3>
         <p>ตัด cart / payment / ระบบสมาชิกทิ้งทั้งหมด เหลือ inquiry flow อย่างเดียว — เบา เร็ว และตรงกับพฤติกรรมจริงที่ปิดการขายในแชท</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#129525;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
         <h3>Headless CMS — แบรนด์คุมเนื้อหาเอง</h3>
         <p>Payload CMS ในตัว ที่ <code>/admin</code> — เพิ่ม/แก้สินค้า ราคา สถานะ หมวดหมู่ รูป และแม้แต่ช่องทาง LINE/ข้อความตั้งต้น ได้เองแบบไม่ต้องแตะโค้ด</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128260;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
         <h3>Rewire เทมเพลตสวย ให้ data-driven</h3>
         <p>เอา fashion template มาแยก HTML/CSS/JS ออก แล้ว "ฉีด" การ์ดสินค้าจริงจาก CMS เข้าไปแทน — เก็บดีไซน์และแอนิเมชันไว้ ทิ้ง commerce engine เดิม</p>
       </div>
@@ -941,25 +1141,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#128717;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
         <h4>Explore</h4>
         <p>เปิดเว็บดูคอลเลกชัน กรองตามหมวดหมู่ เห็นสถานะสินค้าแต่ละชิ้น</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#128064;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
         <h4>Consider</h4>
         <p>เข้าหน้าสินค้า ดูรูปหลายมุม ราคา เนื้อผ้า และรายละเอียด</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#127799;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1"/><circle cx="12" cy="8" r="2"/><path d="M12 10v12"/><path d="M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z"/><path d="M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z"/></svg>
         <h4>เลือกสี / ไซซ์</h4>
         <p>กดเลือก variant ระบบประกอบข้อความสั่งซื้ออัตโนมัติ real-time</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#128241;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
         <h4>Inquire ผ่าน LINE</h4>
         <p>กดสั่งซื้อ → เด้งเข้า LINE พร้อมข้อความ pre-filled แค่กดส่ง</p>
       </div>
@@ -1016,7 +1216,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมเลือก stack นี้?</strong>
       <p>โจทย์ตั้งต้นคือ CMS แบบ WordPress — แต่เลือก <strong>Next.js 16 + Payload CMS 3</strong> แทน เพราะ Payload ให้ admin UI ในตัว (ปรับ label เป็นภาษาไทยได้) พร้อม REST/GraphQL อัตโนมัติ และรันบน serverless เดียวกับหน้าร้าน &middot; <strong>React Server Components</strong> ดึงข้อมูลตรงจาก DB ไม่ต้องมี API กลาง &middot; <strong>PostgreSQL</strong> ให้ schema เป็นระเบียบ (auto-push ตอน dev) &middot; ที่สำคัญ — <strong>ไม่มี payment layer เลย</strong> จุดปิดการขายคือ deep-link ออก LINE ทำให้ทั้งระบบเบาและ maintain ง่าย</p>
     </div>
@@ -1032,42 +1232,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#128241;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
         <h3>Chat-to-Order Deep Link</h3>
         <p>ประกอบข้อความจาก template (<code>{product}</code>/<code>{url}</code>) แล้วสร้างลิงก์ <code>line.me/R/oaMessage</code> + Telegram พร้อม encode ปลอดภัย</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127799;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1"/><circle cx="12" cy="8" r="2"/><path d="M12 10v12"/><path d="M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z"/><path d="M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z"/></svg>
         <h3>Variant Picker → Message</h3>
         <p>เลือกสี/ไซซ์ (client component) → ต่อเป็น "ชื่อสินค้า (สี: …, ไซซ์: …)" เข้าข้อความสั่งซื้อทันทีแบบ real-time</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128260;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
         <h3>Template Rewire Engine</h3>
         <p>อ่านหน้า fashion template มาแยก inline styles / body / scripts ตามลำดับ แล้ว cache ไว้ parse ครั้งเดียวใช้ซ้ำทุก request</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#129513;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
         <h3>Balanced-Tag DOM Transforms</h3>
         <p>ชุดฟังก์ชันแทนที่ inner HTML ของ element ตาม class/tab แบบนับ depth ของ tag คู่เปิด-ปิด — ฉีดข้อมูลจริงลง markup ที่ nest ลึกได้แม่น</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#9986;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
         <h3>Commerce Stripper</h3>
         <p>ตัด node ตะกร้า/add-to-cart (<code>data-node-type</code>) ออกจากเทมเพลตทั้งก้อน แล้วเสียบจุด mount ปุ่ม LINE/Telegram เข้าแทน</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#129525;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
         <h3>CMS Catalog</h3>
         <p>Products/Categories/Media — สถานะ, badge, สินค้าแนะนำ, ราคาก่อนลด, รูปหลายภาพ, slug auto จากชื่อ (hook beforeValidate)</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#9881;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
         <h3>Brand Settings Global</h3>
         <p>LINE OA / Telegram / Instagram / ข้อความสั่งซื้อตั้งต้น / รูป banner — แก้จากหลังบ้านทั้งหมด ไม่มีอะไร hardcode</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#10024;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>
         <h3>Runtime Re-init</h3>
         <p>โหลด lib ของเทมเพลตครั้งเดียวต่อ session แล้ว re-fire reveal animation ทุกครั้งที่เปลี่ยนหน้า + safety net กัน element ค้างซ่อน</p>
       </div>
@@ -1084,11 +1284,11 @@
 
     <div class="ext-mockup">
       <div class="ext-bar">
-        <span style="font-weight:700; letter-spacing:1px; color:var(--accent-dark)">Linne</span>
+        <span style="font-weight:700; letter-spacing:1px; color:var(--accent-dark)">เว็บ Lookbook</span>
         <span class="ext-btn">Lookbook</span>
         <span class="ext-badge">New</span>
       </div>
-      <div style="aspect-ratio:5/4; background:linear-gradient(135deg,var(--accent-light),#fbcfe8); display:flex; align-items:center; justify-content:center; font-size:3.4rem;">👗</div>
+      <div style="aspect-ratio:5/4; background:linear-gradient(135deg,var(--accent-light),#fbcfe8); display:flex; align-items:center; justify-content:center; font-size:3.4rem;"><svg class="ico" style="width:2.79rem;height:2.79rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg></div>
       <div style="padding:14px 16px 4px;">
         <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted);">Dresses</div>
         <div style="font-size:1.05rem; font-weight:700; margin:2px 0 4px;">Audrey Linen Midi Dress</div>
@@ -1357,42 +1557,42 @@
 
     <div class="hack-grid">
       <div class="hack-card arch" data-label="HTML Parsing">
-        <span class="emoji">&#129513;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
         <h3>เทมเพลตผูกกับ commerce — เอามาใช้กับข้อมูลจริงไม่ได้</h3>
         <p>markup ของเทมเพลตซ้อนกันลึกและมี node ตะกร้าฝังอยู่ — จะแทนที่การ์ดสินค้าด้วย regex ธรรมดามันจับ tag ปิดผิดตัวทันทีเมื่อมี <code>&lt;div&gt;</code> ซ้อน</p>
         <div class="highlight">แก้: เขียน DOM transform เอง โดยนับ depth ของ tag เปิด-ปิดให้ balance (เจอ <code>&lt;div&gt;</code> +1, <code>&lt;/div&gt;</code> −1) หา inner ที่ถูกต้องแล้วค่อยแทน — ฉีดการ์ดจริง, ตัด commerce node, สลับ hero banner ได้แม่นแม้ markup nest ลึก</div>
       </div>
 
       <div class="hack-card platform" data-label="Runtime">
-        <span class="emoji">&#10024;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>
         <h3>แอนิเมชันของเทมเพลตไม่เล่นหลัง hydration</h3>
         <p>reveal animation ตั้ง element เป็น <code>opacity:0</code> แล้วรอ event <code>load</code> — แต่เราฉีด script หลัง React hydrate (เลย <code>load</code> ไปแล้ว) พอเปลี่ยนหน้าแบบ SPA element เลยค้างซ่อนทั้งหน้า</p>
         <div class="highlight">แก้: โหลด lib ครั้งเดียวต่อ session แล้ว re-init เอนจิน animation ใหม่ทุกครั้งที่ mount หน้า + ยิง event <code>load</code>/<code>readystatechange</code> เอง — บวก safety net ที่กวาด reveal ทุก element ที่ยังซ่อนภายใน 1 วินาที กันพลาด</div>
       </div>
 
       <div class="hack-card devops" data-label="Deep Link">
-        <span class="emoji">&#128279;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         <h3>ข้อความมี emoji / ช่องว่าง / ขึ้นบรรทัดใหม่ → deep-link พัง</h3>
         <p>ข้อความสั่งซื้อมี emoji 🛍️ เว้นวรรค และ <code>\n</code> — เอาต่อท้าย URL ตรง ๆ ลิงก์ LINE/Telegram แตกทันที</p>
         <div class="highlight">แก้: ห่อทั้งข้อความและ OA id ด้วย <code>encodeURIComponent()</code> ก่อนประกอบเป็น deep-link + normalize prefix (<code>@</code> ของ LINE, ตัด <code>@</code> ของ Telegram) ให้แบรนด์กรอกแบบไหนก็ทำงาน</div>
       </div>
 
       <div class="hack-card precision" data-label="API Collision">
-        <span class="emoji">&#128680;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18v-6a5 5 0 1 1 10 0v6"/><path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z"/><path d="M21 12h1"/><path d="M18.5 4.5 18 5"/><path d="M2 12h1"/><path d="M12 2v1"/><path d="m4.929 4.929.707.707"/><path d="M12 12v6"/></svg>
         <h3>commerce ของเทมเพลตยิง <code>/api/cart</code> ชนกับ CMS</h3>
         <p>runtime เดิมของเทมเพลตพยายาม fetch <code>/api/...</code> (ตะกร้า) ซึ่งชน endpoint <code>/api</code> ของ CMS → เด้ง error CSRF + alert "site unsecured" โผล่หน้าลูกค้า</p>
         <div class="highlight">แก้: intercept <code>window.alert</code> กรองข้อความ cart/checkout/unsecured ทิ้ง + ดัก <code>unhandledrejection</code>/<code>error</code> ที่เป็น noise ของ commerce (CSRF, Failed to fetch) ให้เงียบ — เหลือแต่ flow จริงที่เราคุม</div>
       </div>
 
       <div class="hack-card perf" data-label="Caching">
-        <span class="emoji">&#9889;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
         <h3>หน้า dynamic re-parse ไฟล์ใหญ่ทุกครั้งที่เปิด</h3>
         <p>หน้าเป็น <code>force-dynamic</code> (ข้อมูลสด) แต่ต้องอ่าน + regex แกะไฟล์เทมเพลตหลักร้อย KB ทุก navigation — เปลืองและช้า</p>
         <div class="highlight">แก้: cache ผล parse ต่อ slug ไว้ใน <code>Map</code> (in-memory) — ไฟล์เทมเพลตเป็น static design ที่ไม่เปลี่ยน parse ครั้งเดียวใช้ซ้ำ ส่วนข้อมูลสินค้ายังดึงสดจาก CMS ทุก request แยกกันชัดเจน</div>
       </div>
 
       <div class="hack-card ux" data-label="Scoping">
-        <span class="emoji">&#127919;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         <h3>โจทย์ขอ WordPress + คิดว่าต้องมี e-commerce</h3>
         <p>ความคาดหวังตั้งต้นคือ CMS แบบ WordPress พร้อมระบบตะกร้า — แต่การขายจริงจบในแชท ระบบ checkout จะกลายเป็น dead weight</p>
         <div class="highlight">แก้: เสนอ scope ใหม่ — Next.js + Payload (admin ในตัว แก้เนื้อหาเองได้เหมือนกัน) และ "ไม่ทำ" checkout/payment เลย เหลือ chat-to-order — บทเรียน: การตัด requirement ที่ไม่จำเป็นออก คือคุณค่าที่ให้ลูกค้าได้มากกว่าการทำทุกอย่างตามคำขอ</div>
@@ -1492,7 +1692,7 @@
     <div class="mascot-half">
       <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
     </div>
-    <h2>Linne</h2>
+    <h2>เว็บ Lookbook</h2>
     <p>เว็บ catalog + lookbook สำหรับแบรนด์เสื้อผ้าลินินพรีเมียม ที่เปลี่ยนการขายผ่าน IG feed — ให้กลายเป็นหน้าร้านค้นหาง่าย เลือกสี/ไซซ์แล้วกดเดียวเด้งเข้า LINE พร้อมข้อความสั่งซื้อ ไม่มีตะกร้า ไม่มี checkout จัดการทุกอย่างเองด้วย headless CMS สร้างด้วย Next.js 16 + Payload CMS 3</p>
     <div class="stack-icons">
       <span class="stack-icon">Next.js 16</span>
@@ -1538,8 +1738,8 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Linne Portfolio",
-      "item": "https://projects.tanplanet.info/linne-portfolio/"
+      "name": "เว็บ Lookbook Portfolio",
+      "item": "https://projects.tanplanet.info/linen-lookbook-portfolio/"
     }
   ]
 }

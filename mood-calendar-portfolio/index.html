@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daily MU — ปฏิทินดูแลใจ ที่เข้าใจคุณ</title>
+  <title>ปฏิทินดูแลใจ ที่เข้าใจคุณ — แอปบันทึกอารมณ์ที่ผสมโหราศาสตร์กับ AI</title>
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Daily MU — ปฏิทินดูแลใจ ที่เข้าใจคุณ">
-  <meta name="twitter:description" content="Portfolio: Daily MU — แอปดูดวงรายวันที่ผสานศาสตร์โบราณกับ AI วิเคราะห์ดวงชะตา ไพ่ทาโรต์ เซียมซี ทำนายฝัน">
-  <meta property="og:url" content="https://projects.tanplanet.info/mucalendar-portfolio/">
+  <meta name="twitter:title" content="ปฏิทินดูแลใจ ที่เข้าใจคุณ — แอปบันทึกอารมณ์ที่ผสมโหราศาสตร์กับ AI">
+  <meta name="twitter:description" content="Portfolio: แอปปฏิทินดูแลใจ — แอปดูดวงรายวันที่ผสานศาสตร์โบราณกับ AI วิเคราะห์ดวงชะตา ไพ่ทาโรต์ เซียมซี ทำนายฝัน">
+  <meta property="og:url" content="https://projects.tanplanet.info/mood-calendar-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/mucalendar-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.info/mood-calendar-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:description" content="Portfolio: Daily MU — แอปดูดวงรายวันที่ผสานศาสตร์โบราณกับ AI วิเคราะห์ดวงชะตา ไพ่ทาโรต์ เซียมซี ทำนายฝัน">
-  <meta property="og:title" content="Daily MU — ปฏิทินดูแลใจ ที่เข้าใจคุณ">
-  <meta name="description" content="Portfolio: Daily MU — แอปดูดวงรายวันที่ผสานศาสตร์โบราณกับ AI วิเคราะห์ดวงชะตา ไพ่ทาโรต์ เซียมซี ทำนายฝัน">
+  <meta property="og:description" content="Portfolio: แอปปฏิทินดูแลใจ — แอปดูดวงรายวันที่ผสานศาสตร์โบราณกับ AI วิเคราะห์ดวงชะตา ไพ่ทาโรต์ เซียมซี ทำนายฝัน">
+  <meta property="og:title" content="ปฏิทินดูแลใจ ที่เข้าใจคุณ — แอปบันทึกอารมณ์ที่ผสมโหราศาสตร์กับ AI">
+  <meta name="description" content="Portfolio: แอปปฏิทินดูแลใจ — แอปดูดวงรายวันที่ผสานศาสตร์โบราณกับ AI วิเคราะห์ดวงชะตา ไพ่ทาโรต์ เซียมซี ทำนายฝัน">
   <link rel="icon" type="image/png" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=64&height=64">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -761,7 +761,207 @@
       .tarot-card { width: 110px; height: 165px; }
       .tarot-card-back .card-desc { font-size: 0.65rem; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
@@ -773,7 +973,7 @@
         <span class="dot"></span>
         Phase 1 Complete — Coming Soon
       </div>
-      <h1>Daily MU<br><span class="glow">ปฏิทินดูแลใจ ที่เข้าใจคุณ</span></h1>
+      <h1>ปฏิทินดูแลใจ ที่เข้าใจคุณ<br><span class="accent">แอปบันทึกอารมณ์ที่ผสมโหราศาสตร์กับ AI</span></h1>
       <p>แอปดูดวงรายวันที่ผสาน "ศาสตร์โบราณ" กับ "AI วิเคราะห์" — ไพ่ทาโรต์ เซียมซี ทำนายฝัน ทุกอย่างในที่เดียว</p>
       <div class="hero-tags">
         <span class="hero-tag">Figma</span>
@@ -797,27 +997,27 @@
     <!-- ===== Empathize ===== -->
     <section class="section-intro">
       <h2>ปัญหาที่เจอ</h2>
-      <p>ทำไมต้องมี Daily MU?</p>
+      <p>ทำไมต้องมี แอปปฏิทินดูแลใจ?</p>
     </section>
 
     <div class="quote-block">
       <p>เคยไหม? อยากรู้ดวงวันนี้ แต่ต้องเปิดหลายแอป — ดวงรายวันที่หนึ่ง ไพ่ทาโรต์อีกที่ ทำนายฝันอีกที่ แถมแต่ละแอปก็ไม่ได้ Personalize ตามวันเกิดเรา</p>
-      <div class="author">— ทีม Daily MU, จากการคุยกับกลุ่มเป้าหมาย</div>
+      <div class="author">— ทีม แอปปฏิทินดูแลใจ, จากการคุยกับกลุ่มเป้าหมาย</div>
     </div>
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">🔮</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 3 8 9l4 13 4-13-2.5-6"/><path d="M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z"/><path d="M2 9h20"/></svg>
         <h3>ศาสตร์โบราณถูกจำกัดอยู่กับหมอดู</h3>
         <p>การดูดวงแบบเดิมต้องไปหาหมอดู ซึ่งหลายคนเข้าไม่ถึง ทั้งค่าใช้จ่าย เวลา และความกล้าที่จะไป — ทำให้คนรุ่นใหม่ที่สนใจ "เรื่องจิตวิญญาณ" ไม่มีทางเลือกที่สะดวก</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">📱</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
         <h3>แอปดูดวงกระจัดกระจาย</h3>
         <p>ดูดวงรายวันแอปหนึ่ง ไพ่ทาโรต์อีกแอป เซียมซีก็เว็บ ทำนายฝันก็ต้อง search Google — ไม่มีที่ไหนรวมทุกอย่างไว้ในที่เดียวที่ "เข้าใจ" ตัวเรา</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">🎯</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         <h3>ไม่ Personalize — ได้ดวงเหมือนกันทุกคน</h3>
         <p>แอปดวงส่วนใหญ่ให้ดวงตามราศีกว้างๆ ไม่สนวันเกิด เวลาเกิด หรือสถานที่เกิด — ทำให้รู้สึกว่า "ดวงนี้ไม่ใช่ของเรา"</p>
       </div>
@@ -833,17 +1033,17 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">🌟</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
         <h3>Birth Profile — รู้จักคุณตั้งแต่ Onboarding</h3>
         <p>เก็บ วันเกิด เวลาเกิด สถานที่เกิด ราศี ตั้งแต่ครั้งแรก เพื่อสร้าง "ดวงที่เป็นของคุณจริงๆ" ทุกวัน</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">🎴</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
         <h3>ทุกศาสตร์ในที่เดียว</h3>
         <p>ดวงรายวัน ไพ่ทาโรต์ 22 ใบ (Major Arcana) เซียมซีดิจิทัล ทำนายฝันด้วย AI — จบในแอปเดียว</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">🤖</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
         <h3>AI สรุปดวงให้เข้าใจง่าย</h3>
         <p>ไม่ต้องอ่านตำราเอง — AI วิเคราะห์และสรุปเป็นคำแนะนำรายวันที่อ่านง่าย พร้อมสีมงคลประจำวัน</p>
       </div>
@@ -854,7 +1054,7 @@
     <!-- ===== Interactive: Tarot Card Flip ===== -->
     <section class="section-intro">
       <h2>สิ่งที่สร้าง</h2>
-      <p>ลองเปิดไพ่ดู — ทุกใบเป็น Feature จริงใน Daily MU</p>
+      <p>ลองเปิดไพ่ดู — ทุกใบเป็น Feature จริงใน แอปปฏิทินดูแลใจ</p>
     </section>
 
     <div class="tarot-section">
@@ -864,7 +1064,7 @@
           <div class="tarot-card-inner">
             <div class="tarot-card-front">
               <span class="card-symbol">I</span>
-              <span class="card-label">Daily MU</span>
+              <span class="card-label">แอปปฏิทินดูแลใจ</span>
             </div>
             <div class="tarot-card-back">
               <span class="card-icon">☀️</span>
@@ -877,7 +1077,7 @@
           <div class="tarot-card-inner">
             <div class="tarot-card-front">
               <span class="card-symbol">II</span>
-              <span class="card-label">Daily MU</span>
+              <span class="card-label">แอปปฏิทินดูแลใจ</span>
             </div>
             <div class="tarot-card-back">
               <span class="card-icon">🎴</span>
@@ -890,7 +1090,7 @@
           <div class="tarot-card-inner">
             <div class="tarot-card-front">
               <span class="card-symbol">III</span>
-              <span class="card-label">Daily MU</span>
+              <span class="card-label">แอปปฏิทินดูแลใจ</span>
             </div>
             <div class="tarot-card-back">
               <span class="card-icon">🏮</span>
@@ -903,7 +1103,7 @@
           <div class="tarot-card-inner">
             <div class="tarot-card-front">
               <span class="card-symbol">IV</span>
-              <span class="card-label">Daily MU</span>
+              <span class="card-label">แอปปฏิทินดูแลใจ</span>
             </div>
             <div class="tarot-card-back">
               <span class="card-icon">💭</span>
@@ -919,22 +1119,22 @@
     <!-- Feature Grid -->
     <div class="feature-grid">
       <div class="feature-card">
-        <span class="emoji">🔐</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>Authentication</h3>
         <p>Social Login, Email/Password, OTP Recovery + Account Management</p>
       </div>
       <div class="feature-card">
-        <span class="emoji">🏠</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
         <h3>Home Dashboard</h3>
         <p>AI Summary Cards + Daily Fortune + Time-based Greetings + สีมงคล</p>
       </div>
       <div class="feature-card">
-        <span class="emoji">👤</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         <h3>Birth Profile</h3>
         <p>เก็บข้อมูล วันเกิด เวลาเกิด สถานที่ ราศี เพื่อ Personalize ดวง</p>
       </div>
       <div class="feature-card">
-        <span class="emoji">🔔</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
         <h3>Push Notifications</h3>
         <p>แจ้งเตือนดวงรายวัน วันมงคล กิจกรรมพิเศษ</p>
       </div>
@@ -950,25 +1150,25 @@
 
     <div class="hack-grid">
       <div class="hack-card workaround" data-label="Workaround">
-        <span class="emoji">🎨</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg>
         <h3>Design System ที่ต้องสร้างจาก 0</h3>
         <p>ทีมไม่มี Design System มาก่อน ต้องกำหนด Tokens ตั้งแต่ สี Typography Spacing Radius ทุกอย่าง — ใช้เวลา Week แรกทั้ง Week แค่วาง Foundation</p>
         <div class="highlight">สร้าง Design Tokens เป็นระบบ ทำให้ Week 2-3 ทำงานเร็วขึ้น 3 เท่า</div>
       </div>
       <div class="hack-card creative" data-label="Creative">
-        <span class="emoji">✨</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>
         <h3>Animation ไพ่ทาโรต์ที่ต้อง "รู้สึก" ได้</h3>
         <p>ไพ่ทาโรต์ไม่ใช่แค่เปิดปิด — ต้องมี 3D flip, shimmer, glow effect ให้รู้สึกถึง "ความศักดิ์สิทธิ์" ทดลอง CSS transform 3D หลายรอบจนได้ feel ที่ใช่</p>
         <div class="highlight">ใช้ CSS perspective + preserve-3d + cubic-bezier ทำ 3D flip ที่ smooth โดยไม่พึ่ง JS library</div>
       </div>
       <div class="hack-card teamwork" data-label="Teamwork">
-        <span class="emoji">🤝</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
         <h3>3 คน 3 สไตล์ — จะ Merge ยังไง?</h3>
         <p>แต่ละคนออกแบบคนละ flow — สไตล์ Spacing Color ต่างกันหมด ถ้าไม่มีกติกา output จะไม่เป็นเนื้อเดียวกัน</p>
         <div class="highlight">แก้ด้วย Design Token Sheet + Component Library ที่ทุกคนใช้ร่วมกัน — Review กันทุก Week</div>
       </div>
       <div class="hack-card workaround" data-label="Workaround">
-        <span class="emoji">📐</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg>
         <h3>Responsive ที่ต้องดูดีทุก Breakpoint</h3>
         <p>แอปดูดวงมี Content เยอะมาก — Card Fortune, ไพ่ 22 ใบ, Dashboard ต้อง Layout ให้ดีทั้ง Mobile/Tablet/Desktop โดยไม่หาย</p>
         <div class="highlight">ใช้ CSS Grid + clamp() + Container Query คิดแบบ Mobile First แล้วขยายขึ้น</div>
@@ -1048,7 +1248,7 @@
     <!-- ===== Key Takeaways ===== -->
     <section class="section-intro">
       <h2>Key Takeaways</h2>
-      <p>สิ่งที่ทีมได้เรียนรู้จากการทำ Daily MU</p>
+      <p>สิ่งที่ทีมได้เรียนรู้จากการทำ แอปปฏิทินดูแลใจ</p>
     </section>
 
     <div class="learning-card">
@@ -1096,7 +1296,7 @@
       <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
     </div>
     <h2>ดวงดี ออกแบบได้</h2>
-    <p>Daily MU ยังไม่ได้ Launch — แต่กระบวนการคิด ทำ แก้ปัญหาร่วมกันเป็นทีม คือสิ่งที่มีค่าที่สุดจาก Phase 1 นี้</p>
+    <p>แอปปฏิทินดูแลใจ ยังไม่ได้ Launch — แต่กระบวนการคิด ทำ แก้ปัญหาร่วมกันเป็นทีม คือสิ่งที่มีค่าที่สุดจาก Phase 1 นี้</p>
     <div class="stack-icons">
       <span class="stack-icon">Figma</span>
       <span class="stack-icon">Design System</span>
@@ -1149,7 +1349,7 @@
       "@type": "ListItem",
       "position": 2,
       "name": "MU Calendar",
-      "item": "https://projects.tanplanet.info/mucalendar-portfolio/"
+      "item": "https://projects.tanplanet.info/mood-calendar-portfolio/"
     }
   ]
 }

@@ -617,14 +617,214 @@
       .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
       .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">&#247;</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="6" r="1"/><line x1="5" x2="19" y1="12" y2="12"/><circle cx="12" cy="18" r="1"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         Full-Stack Web App &middot; No-login &middot; Mobile-first
@@ -665,27 +865,27 @@
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#128184;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/><path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 16 6 6"/><circle cx="16" cy="9" r="2.9"/><circle cx="6" cy="5" r="3"/></svg>
         <h3>จบทริปแล้วงง — ใครออกบิลไหนไปบ้าง</h3>
         <p>ค่าใช้จ่ายกระจายอยู่ในหัวของแต่ละคน ไม่มีที่จดรวม พอจะเคลียร์เงินก็จำกันไม่ได้ว่าใครจ่ายอะไรไปเท่าไหร่</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#129518;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
         <h3>หารไม่เท่ากัน คิดมือพลาดบ่อย</h3>
         <p>บางมื้อมาไม่ครบ บางคนไม่กินเหล้า บางบิลเป็นหนี้ส่วนตัวคนเดียว — หารเท่ากันทื่อ ๆ ไม่ได้ ต้องคิดแยกทีละรายการ</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128260;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
         <h3>คิดเสร็จแล้ว แต่โอนกันวุ่น</h3>
         <p>A ติด B, B ติด C, C ติด A — ทั้งที่จริงหักลบกันแล้วโอนแค่ไม่กี่ครั้งก็จบ แต่ไม่มีใครคำนวณตรงนั้นให้</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128226;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14"/><path d="M8 6v8"/></svg>
         <h3>ทวงเงินในแชต ไม่มีหลักฐาน</h3>
         <p>ใครโอนแล้ว ใครยังค้าง ต้องไล่เลื่อนหาสลิปในแชตกลุ่ม ยอดที่ค้างก็ไม่เคยอัปเดตให้เห็นชัด ๆ</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128241;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
         <h3>แอปหารบิลส่วนใหญ่ต้องสมัครสมาชิก</h3>
         <p>กว่าจะชวนเพื่อนครบทุกคน ต้องให้ทุกคนโหลดแอป สมัคร ยืนยันอีเมล — เพื่อนหลายคนถอดใจตั้งแต่ขั้นนี้</p>
       </div>
@@ -701,27 +901,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#127919;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         <h3>Project เดียว แชร์ QR — เข้าร่วมใน 10 วินาที</h3>
         <p>เจ้าของสร้าง Project แล้วได้ QR/ลิงก์ เพื่อนสแกนเข้ามา กรอกชื่อ ก็เป็นสมาชิกแล้ว — ไม่มีหน้า Login ไม่มีอีเมลให้ยืนยัน</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#9878;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg>
         <h3>หาร 3 โหมดในที่เดียว</h3>
         <p>หารเท่ากัน / กำหนดเองรายคน / หนี้ส่วนตัว — ครอบคลุมทุกแบบบิลในทริปจริง ระบบกระจายเศษสตางค์ให้ครบบาท ไม่มีตกหล่น</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128256;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></svg>
         <h3>Transfer Matrix หักลบหนี้อัตโนมัติ</h3>
         <p>สลับดูได้ทั้ง "ยอดดิบ" และ "หักลบแล้ว" — ระบบลดทอนหนี้ให้เหลือจำนวนการโอนน้อยที่สุดที่ทุกคนเคลียร์กันจบ</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128179;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
         <h3>ทุกคนมี QR รับเงินในโปรไฟล์</h3>
         <p>ตอนเข้าร่วมต้องอัปรูป QR พร้อมเพย์ของตัวเอง — พอจะโอนคืนใคร กดเข้าไปก็เจอ QR ของคนนั้นให้สแกนได้เลย</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#9989;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
         <h3>ปุ่ม "จ่ายแล้ว" + อ่านสลิปอัตโนมัติ</h3>
         <p>โอนเสร็จกดยืนยัน แนบสลิปได้ ระบบอ่าน QR ในสลิปเป็นหลักฐานให้ ยอดที่ค้างหายไปจากหน้าจอทันที</p>
       </div>
@@ -738,25 +938,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#10133;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
         <h4>สร้าง Project</h4>
         <p>ตั้งชื่อทริป ทำโปรไฟล์ + อัป QR รับเงิน</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#128241;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
         <h4>ชวนเพื่อน</h4>
         <p>แชร์ QR/ลิงก์ เพื่อนสแกนเข้าร่วมเอง</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#129534;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 16H8"/><path d="M14 8H8"/><path d="M16 12H8"/><path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"/></svg>
         <h4>ลงบิล</h4>
         <p>ใครก็เพิ่มค่าใช้จ่ายได้ เลือกโหมดหาร</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#9989;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
         <h4>โอน + เคลียร์</h4>
         <p>ดูว่าต้องโอนใคร สแกนจ่าย กด "จ่ายแล้ว"</p>
       </div>
@@ -816,7 +1016,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมเลือก stack นี้?</strong>
       <p><strong>Next.js Server Actions</strong> ตัดชั้น REST API ทิ้งทั้งชั้น — เขียน mutation เป็นฟังก์ชัน TypeScript ธรรมดาที่เรียกจาก client ได้ตรง ๆ &middot; <strong>Supabase</strong> รวม Postgres + Storage สำหรับเก็บรูปโปรไฟล์/QR ไว้ที่เดียว ไม่ต้องตั้ง backend เอง &middot; <strong>Vercel</strong> deploy จาก git push — ผลคือ full-stack app ที่คนเดียวสร้างและดูแลได้ตั้งแต่ DB ถึง production</p>
     </div>
@@ -831,42 +1031,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#127881;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/><path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"/><path d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"/><path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"/></svg>
         <h3>สร้าง &amp; เข้าร่วม Project</h3>
         <p>เปิดทริปแล้วได้ QR/ลิงก์ เพื่อนสแกนเข้าร่วมได้เอง — no-login ทั้งหมด</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128100;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         <h3>โปรไฟล์ + QR รับเงิน</h3>
         <p>ทุกคนตั้งชื่อ ใส่รูป และอัป QR พร้อมเพย์ (บังคับ) เพื่อนจะได้สแกนโอนคืนได้</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#129534;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 16H8"/><path d="M14 8H8"/><path d="M16 12H8"/><path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"/></svg>
         <h3>บันทึกค่าใช้จ่าย 3 โหมด</h3>
         <p>หารเท่ากัน / กำหนดเองรายคน / หนี้ส่วนตัว — มีหมวดหมู่ + รูปสลิปประกอบ</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128202;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
         <h3>สรุปยอดต่อคน</h3>
         <p>แต่ละคนเห็นชัดว่าจ่ายไปเท่าไหร่ ต้องจ่ายเท่าไหร่ และยอดสุทธิติดลบ/บวก</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128256;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></svg>
         <h3>Transfer Matrix</h3>
         <p>ตารางใครโอนใคร สลับดูยอดดิบ/หักลบ พร้อมปุ่มลัดไปจ่ายเงิน</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#9989;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
         <h3>จ่ายแล้ว (Settle)</h3>
         <p>กดยืนยันการโอน แนบสลิปได้ ยอดที่ค้างถูกหักออกจากการคำนวณทันที</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128269;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
         <h3>อ่าน QR ในสลิป</h3>
         <p>อัปสลิปปุ๊บ ระบบสแกน QR ในรูปด้วย jsQR ดึงเลขอ้างอิงการโอนมาเก็บเป็นหลักฐาน</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128737;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
         <h3>สิทธิ์เจ้าของ Project</h3>
         <p>เจ้าของลบสมาชิกหรือลบทั้ง Project ได้ ยืนยันตัวด้วย owner token ลับในเครื่อง</p>
       </div>
@@ -882,42 +1082,42 @@
 
     <div class="hack-grid">
       <div class="hack-card algo" data-label="Algorithm">
-        <span class="emoji">&#128256;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></svg>
         <h3>ลดทอนหนี้ให้โอนน้อยครั้งที่สุด</h3>
         <p>ถ้าแสดงหนี้ดิบ ทุกคู่ที่ติดกันต้องโอนหากันหมด — A→B, B→C, C→A วุ่นวายและเสียค่าธรรมเนียมโอนเกินจำเป็น</p>
         <div class="highlight">แก้: <code>simplifyDebts()</code> ใช้ greedy min-cash-flow — จับคนยอดบวกสูงสุดไปเจอคนยอดลบสูงสุดทีละคู่ จนหนี้หมด เหลือจำนวนการโอนน้อยที่สุดที่ทุกคนยังเคลียร์กันครบ</div>
       </div>
 
       <div class="hack-card precision" data-label="Precision">
-        <span class="emoji">&#129689;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.744 17.736a6 6 0 1 1-7.48-7.48"/><path d="M15 6h1v4"/><path d="m6.134 14.768.866-.5 2 3.464"/><circle cx="16" cy="8" r="6"/></svg>
         <h3>หารแล้วเศษสตางค์ต้องไม่หาย</h3>
         <p>หาร 100 บาท / 3 คน = 33.33 × 3 = 99.99 — หายไป 1 สตางค์ ยอดรวมไม่ตรงบิล พอสะสมหลายรายการก็เพี้ยน</p>
         <div class="highlight">แก้: <code>splitEqual()</code> แบบ satang-exact — คำนวณเป็นจำนวนสตางค์เต็ม แล้วกระจายเศษที่เหลือทีละสตางค์ให้คนแรก ๆ ผลรวมของส่วนแบ่งเท่ากับยอดบิลเป๊ะทุกครั้ง</div>
       </div>
 
       <div class="hack-card arch" data-label="Architecture">
-        <span class="emoji">&#128273;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
         <h3>No-login แต่ยังต้องรู้ว่าใครเป็นใคร</h3>
         <p>ไม่มีระบบสมาชิก แล้วจะแยกเจ้าของออกจากสมาชิกทั่วไป และจำได้ว่าเครื่องนี้คือใคร ได้ยังไง?</p>
         <div class="highlight">แก้: 2 token — <code>join_code</code> เป็น public token ใน QR/ลิงก์ให้ใครก็เข้าร่วมได้ ส่วน <code>owner_token</code> เป็น secret เก็บใน localStorage ของเจ้าของเท่านั้น ตัวตนสมาชิกผูกกับเครื่องผ่าน localStorage — เปิดเว็บมาก็เข้าทริปเดิมได้เลย</div>
       </div>
 
       <div class="hack-card perf" data-label="Performance">
-        <span class="emoji">&#128247;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg>
         <h3>รูปจากมือถือชน Server Action 1MB limit</h3>
         <p>ตอนชวนเพื่อนเข้าร่วม รูปโปรไฟล์/QR จากกล้องมือถือมักโต 3–8MB — ทะลุลิมิต body ของ Server Action เด้ง error ทันที</p>
         <div class="highlight">แก้: <code>compressImage()</code> ย่อรูปฝั่ง client ด้วย canvas ก่อนส่ง (3.1MB &rarr; ~98KB) สลับไฟล์ใน input ผ่าน <code>DataTransfer</code> + ดัน <code>bodySizeLimit</code> เป็น 8MB เป็น headroom</div>
       </div>
 
       <div class="hack-card automation" data-label="Automation">
-        <span class="emoji">&#129516;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 16 1.5 1.5"/><path d="m14 8-1.5-1.5"/><path d="M15 2c-1.798 1.998-2.518 3.995-2.807 5.993"/><path d="m16.5 10.5 1 1"/><path d="m17 6-2.891-2.891"/><path d="M2 15c6.667-6 13.333 0 20-6"/><path d="m20 9 .891.891"/><path d="M3.109 14.109 4 15"/><path d="m6.5 12.5 1 1"/><path d="m7 18 2.891 2.891"/><path d="M9 22c1.798-1.998 2.518-3.995 2.807-5.993"/></svg>
         <h3>อ่าน QR ในสลิปโอนเงินอัตโนมัติ</h3>
         <p>อยากให้สลิปเป็นหลักฐานที่ตรวจสอบได้ ไม่ใช่แค่รูปภาพเฉย ๆ ที่ใครจะแนบรูปอะไรก็ได้</p>
         <div class="highlight">แก้: ตอนผู้ใช้เลือกสลิป decode QR ในรูปด้วย <code>jsQR</code> บน canvas (อ่านจากไฟล์ต้นฉบับที่คมที่สุดก่อนค่อยบีบอัด) ดึงเลขอ้างอิงการโอนเก็บคู่กับ settlement</div>
       </div>
 
       <div class="hack-card responsive" data-label="Responsive">
-        <span class="emoji">&#128241;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
         <h3>Mobile-first ที่ทำพลาดแล้วแก้</h3>
         <p>เขียน layout หลักไว้ใน <code>min-width</code> media query — desktop ดูดี แต่บนมือถือ content ชนขอบจอ tab bar ไม่ติดล่าง</p>
         <div class="highlight">แก้: ย้าย layout/padding หลักมาเป็น base rule (ออกแบบที่ 390px ก่อน) แล้วใช้ media query ขยายขึ้น 768 / 1440 — บทเรียนคือ mobile-first ต้องเริ่มที่ base จริง ๆ ไม่ใช่แค่พูด</div>

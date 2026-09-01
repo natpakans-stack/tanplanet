@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VINTA Hospital — เว็บ pre-opening + ระบบรับสมัครงาน สำหรับโรงพยาบาลเฉพาะทาง</title>
+  <title>เว็บโรงพยาบาลเฉพาะทาง — หน้า pre-opening + ระบบรับสมัครงาน 2 ภาษา</title>
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="VINTA Hospital — เว็บ pre-opening + ระบบรับสมัครงาน สำหรับโรงพยาบาลเฉพาะทาง">
+  <meta name="twitter:title" content="เว็บโรงพยาบาลเฉพาะทาง — หน้า pre-opening + ระบบรับสมัครงาน 2 ภาษา">
   <meta name="twitter:description" content="Portfolio: เว็บไซต์ pre-opening 2 ภาษา + ระบบรับสมัครงาน (ATS) ของโรงพยาบาลเฉพาะทาง — Next.js 16, Sanity CMS, สร้าง PDF ใบสมัครด้วย headless Chrome, ออกแบบเพื่อความสงบและศักดิ์ศรีของผู้ป่วย">
-  <meta property="og:url" content="https://projects.tanplanet.info/vinta-hospital-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.info/hospital-site-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/vinta-hospital-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.info/hospital-site-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: เว็บไซต์ pre-opening 2 ภาษา + ระบบรับสมัครงาน (ATS) ของโรงพยาบาลเฉพาะทาง — Next.js 16, Sanity CMS, สร้าง PDF ใบสมัครด้วย headless Chrome, ออกแบบเพื่อความสงบและศักดิ์ศรีของผู้ป่วย">
-  <meta property="og:title" content="VINTA Hospital — เว็บ pre-opening + ระบบรับสมัครงาน สำหรับโรงพยาบาลเฉพาะทาง">
+  <meta property="og:title" content="เว็บโรงพยาบาลเฉพาะทาง — หน้า pre-opening + ระบบรับสมัครงาน 2 ภาษา">
   <meta name="description" content="Portfolio: เว็บไซต์ pre-opening 2 ภาษา + ระบบรับสมัครงาน (ATS) ของโรงพยาบาลเฉพาะทาง — Next.js 16, Sanity CMS, สร้าง PDF ใบสมัครด้วย headless Chrome, ออกแบบเพื่อความสงบและศักดิ์ศรีของผู้ป่วย">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%230369a1'/><text x='50' y='62' text-anchor='middle' font-size='54'>🏥</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -872,9 +872,9 @@
       font-family: 'SF Mono', ui-monospace, Menlo, monospace;
     }
 
-    /* VINTA real palette (screen content only) */
-    .ui-vinta-forest { background: #4A342D; color: #F3ECE5; }
-    .ui-vinta-ivory  { background: #FAF6F1; color: #35231F; }
+    /* เว็บโรงพยาบาล real palette (screen content only) */
+    .ui-เว็บโรงพยาบาล-forest { background: #4A342D; color: #F3ECE5; }
+    .ui-เว็บโรงพยาบาล-ivory  { background: #FAF6F1; color: #35231F; }
 
     /* Screen 1 — homepage */
     .ui-home { padding: 26px 22px 30px; }
@@ -957,19 +957,219 @@
       .ui-swatch-grid { grid-template-columns: repeat(3, 1fr); }
       .ui-type-sample.display { font-size: 1.45rem; }
     }
-  </style>
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+</style>
 </head>
 <body>
 
   <!-- ===== Hero ===== -->
   <header class="hero">
     <div class="hero-inner">
-      <div class="hero-mark">🏥</div>
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M14 9h-4"/><path d="M18 11h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2"/><path d="M18 21V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16"/></svg></div>
       <div class="hero-badge">
         <span class="dot"></span>
         Next.js 16 &middot; Sanity CMS &middot; i18n TH / EN
       </div>
-      <h1>VINTA Hospital<br><span class="accent">เว็บ pre-opening + ระบบรับสมัครงาน ของโรงพยาบาลเฉพาะทาง</span></h1>
+      <h1>เว็บโรงพยาบาลเฉพาะทาง<br><span class="accent">หน้า pre-opening + ระบบรับสมัครงาน 2 ภาษา</span></h1>
       <p>เว็บไซต์ full-stack 2 ภาษา สำหรับโรงพยาบาลเฉพาะทางที่กำลังก่อสร้าง — สื่อสารเรื่องราว pre-opening อย่างสงบและมีศักดิ์ศรี พร้อมระบบรับสมัครงาน (ATS) ในตัว ที่รับใบสมัคร เก็บเข้า CMS แล้ว<code>สร้าง PDF</code>ใบสมัครภาษาไทยส่งเข้าเมล HR อัตโนมัติ</p>
       <div class="hero-tags">
         <span class="hero-tag">Next.js 16 (App Router)</span>
@@ -1000,32 +1200,32 @@
 
     <div class="quote-block">
       <p>โรงพยาบาลเฉพาะทางด้านมะเร็งกำลังอยู่ระหว่างก่อสร้าง — เว็บต้องไม่ทำเหมือนเปิดเต็มระบบแล้ว แต่ต้องสื่อสารว่า "ที่นี่กำลังจะเป็นที่ที่เข้าใจคุณ" อย่างอบอุ่นและน่าเชื่อถือ ขณะเดียวกันก็ต้องเริ่ม<strong>รับสมัครทีมแพทย์ พยาบาล และเจ้าหน้าที่</strong>ตั้งแต่ก่อนเปิด ทั้งหมดนี้ต้อง deploy ได้เร็ว งบก่อนเปิดจำกัด และดูแลข้อมูลผู้สมัครซึ่งอ่อนไหวให้ปลอดภัย</p>
-      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำเว็บ VINTA Hospital</div>
+      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำเว็บ เว็บโรงพยาบาล</div>
     </div>
 
     <div class="pain-grid">
       <div class="pain-card">
-        <span class="emoji">&#127959;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="8" rx="1"/><path d="M17 14v7"/><path d="M7 14v7"/><path d="M17 3v3"/><path d="M7 3v3"/><path d="M10 14 2.3 6.3"/><path d="m14 6 7.7 7.7"/><path d="m8 6 8 8"/></svg>
         <h3>โรงพยาบาลยังไม่เปิด — สื่อสารยาก</h3>
         <p>ถ้าทำเหมือนเปิดแล้วจะเสียความน่าเชื่อถือ แต่ถ้าโชว์แค่ "กำลังก่อสร้าง" ก็ดูเย็นชา ต้องบอกความจริงว่ากำลังสร้าง โดยยังทำให้คนรู้สึกว่ามีที่พึ่งกำลังจะมา</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128203;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
         <h3>ต้องรับสมัครทีมก่อนเปิด แต่ไม่มีระบบ</h3>
         <p>โรงพยาบาลต้องหาแพทย์/พยาบาล/เภสัชกรตั้งแต่ก่อนเปิด — ถ้าไม่มีระบบ ใบสมัครจะกระจัดกระจายตามอีเมล/แชต ไม่มีที่เก็บกลาง ไม่มีรูปแบบมาตรฐานให้ HR อ่าน</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#128274;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>ข้อมูลผู้สมัคร = ข้อมูลอ่อนไหว (PII)</h3>
         <p>ใบสมัครมีเลขบัตร เบอร์โทร เลขใบประกอบวิชาชีพ ผู้ติดต่อฉุกเฉิน — ถ้าเก็บผิดที่หรือหลุดออก public API มีความเสี่ยงทั้งด้าน PDPA และความไว้วางใจ</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#127760;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
         <h3>2 กลุ่มผู้ชม + แบรนด์เฉพาะตัว</h3>
         <p>ต้องรองรับทั้งคนไทยและผู้ชมต่างชาติ (แพทย์/พาร์ทเนอร์) และต้องคุมโทนแบรนด์เข้ม — ฟอนต์ไทยแบบไม่มีหัวให้เข้ากับโลโก้ ห้ามใช้กากบาทแดง/ภาษาสู้รบเรื่องมะเร็ง</p>
       </div>
       <div class="pain-card">
-        <span class="emoji">&#9889;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
         <h3>ต้อง deploy ได้เร็ว งบก่อนเปิดจำกัด</h3>
         <p>ยังไม่พร้อมตั้ง backend แยก, ยังไม่มีคีย์ CMS/เมลตอนเริ่ม — แต่ต้อง publish เว็บให้ทันเพื่อเริ่มประชาสัมพันธ์และเปิดรับสมัคร ต้องไม่ผูกกับ vendor เยอะจนขยับตัวไม่ได้</p>
       </div>
@@ -1042,27 +1242,27 @@
 
     <div class="solution-grid">
       <div class="solution-card">
-        <span class="emoji">&#127749;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
         <h3>เว็บ pre-opening ที่บอกความจริงอย่างอบอุ่น</h3>
         <p>Mood แสง–น้ำ–ร่มเงา, motion แบบ "ลมหายใจ" (fade + reveal ช้า ๆ), CTA แบบไม่กดดัน ("คุยกับทีมดูแล" / "ติดต่อรับคำแนะนำ") — สร้างความเชื่อใจโดยไม่ทำเหมือนเปิดแล้ว</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128188;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
         <h3>ระบบ Careers + ATS ในตัวเว็บเดียว</h3>
         <p>หน้าประกาศงาน + ฟอร์มสมัครหลายส่วน + เก็บใบสมัครเข้า CMS อัตโนมัติ — HR เปิดดูใน Studio ได้ที่เดียว ไม่ต้องไล่เก็บจากอีเมล/แชตอีก</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128272;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>เก็บใบสมัครเป็น "draft" กัน PII รั่ว</h3>
         <p>บันทึกเอกสารเป็น draft (<code>drafts.&lt;uuid&gt;</code>) ที่ public API อ่านไม่ได้ แต่ HR เห็นใน Studio + write token เป็น server-only + เก็บเฉพาะฟิลด์ที่จำเป็น</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#128196;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
         <h3>สร้าง PDF ใบสมัครไทยให้ HR อัตโนมัติ</h3>
         <p>เมื่อมีคนสมัคร ระบบ render หน้าปกใบสมัคร (ภาษาไทยเป๊ะ) ด้วย headless Chrome แล้ว merge กับไฟล์เรซูเม่เป็น PDF เดียว ส่งแนบเข้าเมล HR — พร้อมอ่านทันที</p>
       </div>
       <div class="solution-card">
-        <span class="emoji">&#129513;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
         <h3>Serverless ล้วน + fallback ทุกจุด</h3>
         <p>Next.js + Sanity + Resend (เรียกผ่าน fetch ไม่เพิ่ม dependency) — ยังไม่เชื่อม CMS ก็ใช้ seed data, ยังไม่ตั้งเมลก็ตอบสำเร็จแบบ stub เว็บทำงานได้ตั้งแต่ deploy แรก</p>
       </div>
@@ -1080,25 +1280,25 @@
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
-        <span class="emoji">&#9997;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 21h8"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
         <h4>ผู้สมัครกรอกฟอร์ม</h4>
         <p>ฟอร์มหลายส่วน มือถือเป็น bottom-sheet, มี date-wheel + ครอปรูปในตัว</p>
       </div>
       <div class="flow-step">
         <div class="step-num">2</div>
-        <span class="emoji">&#128272;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h4>Validate + เก็บ draft</h4>
         <p>ตรวจฝั่ง server แล้วบันทึกเป็น draft ใน CMS ที่ public อ่านไม่ได้</p>
       </div>
       <div class="flow-step">
         <div class="step-num">3</div>
-        <span class="emoji">&#128196;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
         <h4>สร้าง PDF เบื้องหลัง</h4>
         <p>headless Chrome render หน้าปก + merge เรซูเม่ (ไม่หน่วงผู้สมัคร)</p>
       </div>
       <div class="flow-step">
         <div class="step-num">4</div>
-        <span class="emoji">&#128231;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
         <h4>แจ้ง HR พร้อม PDF</h4>
         <p>ส่งเมลแนบ PDF + ลิงก์เปิดใน Studio ให้ทีมงานอ่านต่อ</p>
       </div>
@@ -1156,7 +1356,7 @@
       </div>
     </div>
 
-    <div class="learning-card" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <div class="learning-card note">
       <strong>ทำไมเลือก stack นี้?</strong>
       <p><strong>Next.js 16 + RSC</strong> — render เนื้อหา 2 ภาษาฝั่ง server ได้เร็วและ SEO ดี, route handlers ทำหน้าที่ API ในตัวเดียวกัน ไม่ต้องมี backend แยก &middot; <strong>Sanity CMS</strong> — ให้ HR แก้ประกาศงาน/อ่านใบสมัครเองผ่าน Studio ภาษาไทย โดย dev ไม่ต้องแตะโค้ด &middot; <strong>next-intl</strong> — แยก "ข้อความ" (dictionary) ออกจาก "โครงหน้า" (โค้ด) เพิ่ม/แก้ภาษาไม่กระทบ layout &middot; <strong>Puppeteer + pdf-lib</strong> — render หน้าปกไทยด้วยเบราว์เซอร์จริงแล้ว merge เรซูเม่ ได้ PDF ที่ตัวอักษรไทยเป๊ะ &middot; <strong>Resend ผ่าน fetch</strong> — ส่งเมลได้โดยไม่เพิ่ม dependency &middot; ทุก service มี <strong>fallback</strong> เว็บจึง deploy ได้ตั้งแต่ยังไม่ครบคีย์</p>
     </div>
@@ -1172,42 +1372,42 @@
 
     <div class="module-grid">
       <div class="module-card">
-        <span class="emoji">&#127760;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
         <h3>Bilingual i18n (TH / EN)</h3>
         <p>next-intl + App Router, URL prefix <code>/th</code> · <code>/en</code>, ไทยเป็นดีฟอลต์ — ข้อความอยู่ใน dictionary แยกจาก layout</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#127749;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
         <h3>Pre-opening Homepage</h3>
         <p>Hero วิดีโอ + reveal ช้า ๆ, section เล่าเรื่อง who/why/healing/services/process/FAQ ในโทนสงบและมีศักดิ์ศรี</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128188;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
         <h3>Careers Listing</h3>
         <p>หน้าประกาศงานพร้อม badge ระดับความต้องการ (เร่งด่วน/สูง) — ดึงจาก CMS ถ้าเชื่อมแล้ว ไม่งั้นใช้ seed data</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#9997;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 21h8"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
         <h3>Multi-section Application Form</h3>
         <p>ฟอร์มสมัครหลายส่วน 30+ ฟิลด์ — มือถือใช้ bottom-sheet, มี date-wheel เลือกวันเกิด, ครอปรูปถ่ายในเบราว์เซอร์, ค้นหาสัญชาติ</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128451;&#65039;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
         <h3>Sanity CMS (Thai Studio)</h3>
         <p>8 content models (งาน/หมวด/แผนก/ทำเล/ใบสมัคร/ข้อความติดต่อ ฯลฯ), รองรับ i18n ระดับเอกสาร, custom input + ปุ่ม export PDF</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128196;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
         <h3>Auto PDF Generation</h3>
         <p>render หน้าปกใบสมัครด้วย headless Chrome (ไทยเป๊ะ) แล้ว merge เรซูเม่ (PDF/รูป) เป็นไฟล์เดียวด้วย pdf-lib + ปั๊ม footer/เลขหน้า</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128231;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
         <h3>Email Notify</h3>
         <p>แจ้งเตือน HR ทุกใบสมัคร/ข้อความติดต่อ ผ่าน Resend (เรียก REST ด้วย fetch) พร้อมแนบ PDF และ header แบรนด์</p>
       </div>
       <div class="module-card">
-        <span class="emoji">&#128172;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg>
         <h3>Contact Form + Chat Widget</h3>
         <p>ฟอร์มติดต่อ (เก็บ draft + แจ้งเมล) และปุ่มแชตลอย "คุยกับทีมดูแล" ที่เชื่อมช่องทางแชตของโรงพยาบาล</p>
       </div>
@@ -1227,7 +1427,7 @@
         <span class="mk-dot" style="background:#f87171"></span>
         <span class="mk-dot" style="background:#fbbf24"></span>
         <span class="mk-dot" style="background:#34d399"></span>
-        <span class="mk-url">vinta &middot; ร่วมงานกับเรา</span>
+        <span class="mk-url">เว็บโรงพยาบาล &middot; ร่วมงานกับเรา</span>
       </div>
       <div class="mk-body">
         <div class="mk-lead">Careers &middot; ร่วมสร้างทีมดูแล</div>
@@ -1282,7 +1482,7 @@
     <div class="ui-panel">
       <div class="ui-panel-head">
         <span class="ui-kicker">Design Tokens</span>
-        <span class="ui-note">แกะจากโลโก้จริง · VINTA Brand Book v1.0</span>
+        <span class="ui-note">แกะจากโลโก้จริง · เว็บโรงพยาบาล Brand Book v1.0</span>
       </div>
       <div class="ui-swatch-grid">
         <div class="ui-swatch">
@@ -1307,7 +1507,7 @@
         </div>
         <div class="ui-swatch">
           <div class="chip" style="background:#604036"></div>
-          <div class="name">Vinta Brown</div>
+          <div class="name">เว็บโรงพยาบาล Brown</div>
           <div class="hex">#604036</div>
         </div>
         <div class="ui-swatch">
@@ -1366,12 +1566,12 @@
             <span class="d" style="background:#f87171"></span>
             <span class="d" style="background:#fbbf24"></span>
             <span class="d" style="background:#34d399"></span>
-            <span class="ui-win-url">vinta &middot; หน้าแรก</span>
+            <span class="ui-win-url">เว็บโรงพยาบาล &middot; หน้าแรก</span>
           </div>
-          <div class="ui-home ui-vinta-forest">
+          <div class="ui-home ui-เว็บโรงพยาบาล-forest">
             <span class="eb">Pre-opening &middot; เปิดเร็ว ๆ นี้</span>
             <h4>เป็นมะเร็ง ไม่ได้แปลว่า<br>ต้องเผชิญเรื่องนี้คนเดียว</h4>
-            <p>ตั้งแต่วันแรกที่รู้ผล จนถึงวันที่มีแผนการดูแลที่ชัดเจน VINTA อยู่ในทุกขั้นตอนกับคุณ</p>
+            <p>ตั้งแต่วันแรกที่รู้ผล จนถึงวันที่มีแผนการดูแลที่ชัดเจน เว็บโรงพยาบาล อยู่ในทุกขั้นตอนกับคุณ</p>
             <div class="btns">
               <span class="ui-btn line">คุยกับทีมดูแล</span>
               <span class="ui-btn fill">ส่งข้อมูลผู้ป่วย</span>
@@ -1393,7 +1593,7 @@
           <div class="ui-pdf">
             <div class="pbrand">
               <span class="pmark">V</span>
-              <span class="pn">VINTA<small>Specialized Cancer Hospital</small></span>
+              <span class="pn">เว็บโรงพยาบาล<small>Specialized Cancer Hospital</small></span>
             </div>
             <h4>ใบสมัครงาน — อายุรแพทย์มะเร็งวิทยา</h4>
             <div class="prow"><span class="k">ชื่อ–สกุล</span><span class="v">นพ. ศิริพร ใจดี (ตัวอย่าง)</span></div>
@@ -1454,19 +1654,19 @@
 
     <!-- Block C: UI Decision Cards -->
     <div class="ui-decisions" style="margin-top:24px;">
-      <div class="learning-card" style="border-left:3px solid var(--accent);">
+      <div class="learning-card note">
         <strong>Mobile-first: ฟอร์ม 30+ ฟิลด์ ไม่ให้ล้นจอ (393 → 768 → 1440)</strong>
         <p>บนมือถือ ฟอร์มยาว = คนเลิกกรอกกลางคัน จึงแตกเป็น section stepper + ใช้ <strong>bottom-sheet</strong> สำหรับตัวเลือก, <strong>date-wheel</strong> เลือกวันเกิด (พ.ศ.) และครอปรูปในเบราว์เซอร์ — ผู้สมัครเห็นทีละส่วน ไม่เจอกำแพงช่องกรอก ส่วนบน ≥768 ค่อยขยายเป็น popover/2 คอลัมน์</p>
       </div>
-      <div class="learning-card" style="border-left:3px solid var(--accent);">
+      <div class="learning-card note">
         <strong>Component states: บอก error ตอนที่ควรบอก ไม่ใช่ระหว่างพิมพ์</strong>
         <p>ทุกฟิลด์มี state ครบ — default / focus (ring ทอง <code>#AF9C84</code>) / invalid (แดง <code>#b4452f</code>) แต่ใช้ <code>:not(:placeholder-shown):invalid</code> ให้ error โผล่<strong>หลังผู้ใช้กรอกแล้วออกจากช่อง</strong> ไม่ใช่ทันทีที่เริ่มพิมพ์ — ลดความรู้สึกโดนตำหนิ พร้อมข้อความบอกวิธีแก้เป็นภาษาไทย</p>
       </div>
-      <div class="learning-card" style="border-left:3px solid var(--accent);">
+      <div class="learning-card note">
         <strong>Accessibility &amp; แบรนด์: ลดความกลัว ไม่ใช่เพิ่ม</strong>
         <p>จงใจ<strong>ไม่ใช้กากบาทแดง/ภาษาสู้รบ</strong> — ใช้ Healing Green เป็น accent เงียบ ๆ ไม่ใช่สีเตือนภัย, คุม contrast ให้ผ่าน AA บนพื้นเบจ, touch target ≥44px, <code>:focus-visible</code> เส้นเขียว, และ motion แบบ "ลมหายใจ" ที่เคารพ <code>prefers-reduced-motion</code></p>
       </div>
-      <div class="learning-card" style="border-left:3px solid var(--accent);">
+      <div class="learning-card note">
         <strong>Typography 2 ภาษา: เลือกฟอนต์ตามหน้าที่</strong>
         <p>ไทยใช้ 2 ฟอนต์คนละงาน — <strong>Anuphan</strong> (ไม่มีหัว เข้ากับโลโก้) สำหรับ heading/display, <strong>Garuda</strong> (มีหัว) สำหรับ body ให้อ่านต่อเนื่อง; อังกฤษใช้ Marcellus (serif) คู่กัน · เผื่อ <code>line-height 1.28</code> ให้สระ/วรรณยุกต์ไทย · แยกข้อความออกจาก layout ให้ทั้ง 2 ภาษาไม่หลุดจากกัน</p>
       </div>
@@ -1483,42 +1683,42 @@
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Rendering">
-        <span class="emoji">&#128196;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
         <h3>สร้าง PDF ภาษาไทยให้ตัวอักษรเป๊ะ</h3>
         <p>ฟอนต์มาตรฐานของ pdf-lib วาดภาษาไทยไม่ได้ (สระ/วรรณยุกต์เพี้ยน) แต่ HR ต้องอ่านใบสมัครไทยที่ถูกต้อง 100%</p>
         <div class="highlight">แก้: render หน้าปกด้วย <strong>headless Chrome (puppeteer)</strong> ที่โหลดฟอนต์ Anuphan จริง → ได้ PDF หน้าปก แล้วค่อยใช้ <code>pdf-lib</code> merge กับเรซูเม่ &middot; ส่วน footer ที่ต้องปั๊มทุกหน้า ใช้วิธี <strong>screenshot เป็นรูป</strong> แล้ว embed กัน glyph ไทยเพี้ยนตอน stamp</div>
       </div>
 
       <div class="hack-card devops" data-label="Serverless">
-        <span class="emoji">&#127760;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
         <h3>เปิดเบราว์เซอร์บน serverless ไม่ได้ตรง ๆ</h3>
         <p>Puppeteer ต้องมี Chrome binary — บนเครื่อง dev มี Chrome อยู่แล้ว แต่บน serverless ไม่มี และ Chrome เต็มตัวใหญ่เกิน limit</p>
         <div class="highlight">แก้: ตรวจ env (<code>VERCEL</code> / <code>AWS_REGION</code>) → บน serverless โหลด <code>@sparticuz/chromium</code> (binary ที่ตัดให้เล็กพอ), บนเครื่อง dev ชี้ไป Chrome ที่ติดตั้งไว้ — โค้ดชุดเดียวรันได้ทั้งสอง environment</div>
       </div>
 
       <div class="hack-card platform" data-label="PII Safety">
-        <span class="emoji">&#128272;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <h3>ใบสมัครมี PII ห้ามหลุด public API</h3>
         <p>Sanity เอกสารที่ published อ่านได้ผ่าน public API — ถ้าเก็บใบสมัครแบบปกติ ใครก็ query เลขบัตร/เบอร์โทรผู้สมัครได้</p>
         <div class="highlight">แก้: บันทึกเป็น <strong>draft</strong> (<code>_id = drafts.&lt;uuid&gt;</code>) ซึ่ง public API มองไม่เห็น แต่ HR เห็นใน Studio &middot; write token เป็น <strong>server-only</strong> (ไม่ขึ้นต้น <code>NEXT_PUBLIC_</code>) &middot; ตรวจ input ฝั่ง server ทุกฟิลด์ก่อนบันทึก</div>
       </div>
 
       <div class="hack-card perf" data-label="Non-blocking">
-        <span class="emoji">&#9889;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
         <h3>Gen PDF + ส่งเมล ช้า → ผู้สมัครรอนาน</h3>
         <p>ถ้ารอ render PDF และส่งเมลให้เสร็จก่อนตอบ ผู้สมัครจะเห็น loading ค้างหลายวินาที — ประสบการณ์แย่</p>
         <div class="highlight">แก้: ใช้ <code>after()</code> ของ Next.js — <strong>ตอบผู้สมัครว่า "สำเร็จ" ทันที</strong> หลังบันทึก แล้วค่อย generate PDF + ส่งเมลแจ้ง HR เป็นงานเบื้องหลัง (ตั้ง <code>maxDuration = 60</code> เผื่องานหนัก) ผู้สมัครไม่ต้องรอ</div>
       </div>
 
       <div class="hack-card arch" data-label="Graceful Fallback">
-        <span class="emoji">&#129513;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
         <h3>เว็บต้อง live ก่อนคีย์ครบ</h3>
         <p>ตอนเริ่มยังไม่มี Sanity project / Resend key / write token — แต่ต้อง publish เว็บให้ทันเพื่อเริ่มประชาสัมพันธ์</p>
         <div class="highlight">แก้: ทุกจุดที่ต่อ service มี fallback — CMS ยังไม่ตั้งก็ใช้ <strong>seed data</strong> (ตำแหน่งงานตัวอย่าง), เมลยังไม่ตั้งก็ตอบ <strong>stub</strong> แล้ว log, ฟอร์มยังทำงานได้ครบ — พอใส่ env ทีหลัง ระบบ "สลับไปของจริง" อัตโนมัติโดยไม่ต้องแก้โค้ด</div>
       </div>
 
       <div class="hack-card ux" data-label="i18n Content">
-        <span class="emoji">&#127912;</span>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg>
         <h3>แยกไอคอน/ภาพ ออกจากข้อความ 2 ภาษา</h3>
         <p>section ในหน้าแรกมีทั้งไอคอน รูป และข้อความ — ถ้าเก็บทุกอย่างปนกันใน dictionary จะแก้ภาษายากและ layout พังง่าย</p>
         <div class="highlight">แก้: เก็บ <strong>ข้อความ</strong>ไว้ใน dictionary (แปลได้), แต่ <strong>ไอคอน/ลำดับรูป</strong>ผูกไว้ในโค้ดเป็น metadata แล้ว map เข้ากันด้วย index ตอน render — นักแปลแก้เฉพาะข้อความ ส่วนโครงหน้าคงเดิมทั้ง 2 ภาษา</div>
@@ -1618,7 +1818,7 @@
     <div class="mascot-half">
       <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
     </div>
-    <h2>VINTA Hospital</h2>
+    <h2>เว็บโรงพยาบาล</h2>
     <p>เว็บไซต์ full-stack 2 ภาษาสำหรับโรงพยาบาลเฉพาะทางที่กำลังก่อสร้าง — เล่าเรื่อง pre-opening อย่างสงบและมีศักดิ์ศรี พร้อมระบบรับสมัครงานในตัวที่รับใบสมัคร เก็บเข้า CMS อย่างปลอดภัย และสร้าง PDF ใบสมัครภาษาไทยส่งให้ HR อัตโนมัติ สร้างด้วย Next.js 16, Sanity และ serverless ล้วน</p>
     <div class="stack-icons">
       <span class="stack-icon">Next.js 16</span>
@@ -1664,8 +1864,8 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Vinta Hospital Portfolio",
-      "item": "https://projects.tanplanet.info/vinta-hospital-portfolio/"
+      "name": "เว็บโรงพยาบาล Portfolio",
+      "item": "https://projects.tanplanet.info/hospital-site-portfolio/"
     }
   ]
 }
