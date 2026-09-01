@@ -268,11 +268,12 @@ function ringDoPost(e) {
     if (ev.type === 'postback') onPostback_(ev);
     else if (ev.type === 'message' && ev.message.type === 'text') {
       var t = ev.message.text.trim();
-      // ตรวจหวยเปิดให้ทุกที่รวมกลุ่ม — แต่ตอบเฉพาะข้อความที่เป็นเลข 6 หลักล้วนหรือคำสั่งหวยตรง ๆ
-      var nums = lottoNumbers_(t);
-      if (nums.length) return reply_(ev.replyToken, lottoReply_(nums));
-      if (t === 'หวย' || t === 'ตรวจหวย' || t === 'สลาก' || t === 'ผลสลาก') return reply_(ev.replyToken, lottoReply_([]));
-      if (ev.source.type === 'user' && (t === 'เมนู' || t === 'menu' || t === 'ช่วยเหลือ')) reply_(ev.replyToken, helpCard_());
+
+      var ask = lottoCommand_(t, ev.source.type !== 'user');
+      if (ask) return reply_(ev.replyToken, lottoReply_(ask.nums));
+      if (ev.source.type === 'user' && (t === 'เมนู' || t === 'menu' || t === 'ช่วยเหลือ')) {
+        reply_(ev.replyToken, helpCard_());
+      }
     }
   });
 }
@@ -808,6 +809,26 @@ function lottoThaiDate_(iso) {
   return Number(p[2]) + ' ' + m[Number(p[1]) - 1] + ' ' + (Number(p[0]) + 543);
 }
 
+/**
+ * ข้อความนี้เป็นคำสั่งหวยไหม — คืน null = ไม่ใช่ ให้บอทเงียบ
+ * ในกลุ่ม "ต้อง" มีคีย์เวิร์ดนำเสมอ เพราะเลข 6 หลักโดด ๆ ในกลุ่มมักเป็นยอดเงิน (100000)
+ * หรือวันที่ (010969) ไม่ใช่เลขหวย — รับมาก็จะเด้งการ์ดผิดจังหวะกลางวงคุย
+ * ในแชท 1:1 พิมพ์เลขเปล่า ๆ ได้ ไม่มีใครให้กวน
+ */
+function lottoCommand_(text, inGroup) {
+  var t = String(text).trim();
+  var cmd = t.match(/^(?:ตรวจหวย|ตรวจสลาก|ผลสลาก|หวย|สลาก)[\s:]*(.*)$/);
+  if (cmd) {
+    var rest = cmd[1].trim();
+    if (!rest) return { nums: [] };                       // "หวย" เปล่า ๆ = ขอการ์ดงวดล่าสุด
+    var byCmd = lottoNumbers_(rest);
+    return byCmd.length ? { nums: byCmd } : null;         // "สลากออกวันไหน" ไม่ใช่คำสั่ง
+  }
+  if (inGroup) return null;
+  var nums = lottoNumbers_(t);
+  return nums.length ? { nums: nums } : null;
+}
+
 /** ข้อความเป็นเลข 6 หลักล้วน (คั่นด้วย , หรือเว้นวรรค) เท่านั้นจึงนับ — กันไปตอบทุกบรรทัดในกลุ่ม */
 function lottoNumbers_(text) {
   var t = String(text).trim();
@@ -1072,6 +1093,18 @@ function ringSelfTest() {
     if (dataKeys.indexOf(LOTTO_TIER[name]) === -1) throw new Error('LOTTO_TIER ชี้ key ที่ไม่มีจริง: ' + name);
   });
   if (Object.keys(LOTTO_TIER).length !== dataKeys.length) throw new Error('LOTTO_TIER ต้องครบ 9 รางวัล');
+
+  // ยามเฝ้ากลุ่ม: เลขโดด ๆ ในกลุ่มห้ามทริกเกอร์ ไม่งั้นบอทเด้งการ์ดใส่วงคุยเรื่องเงิน/วันที่
+  ['100000', '250000', '010969', '120969', '555555', '417212', '417212, 111111'].forEach(function (t) {
+    if (lottoCommand_(t, true)) throw new Error('ในกลุ่มต้องเงียบ แต่ตอบ: ' + t);
+    if (!lottoCommand_(t, false)) throw new Error('ใน 1:1 ต้องตรวจให้ แต่เงียบ: ' + t);
+  });
+  ['สวัสดีครับ', 'โอน 123456 บาท', 'สลากออกวันไหน', 'ตรวจสอบเอกสารหน่อย', 'หวยงวดนี้ออกอะไร', 'เมนู'].forEach(function (t) {
+    if (lottoCommand_(t, true) || lottoCommand_(t, false)) throw new Error('ไม่ใช่คำสั่งหวย แต่ตอบ: ' + t);
+  });
+  if (lottoCommand_('หวย', true).nums.length !== 0) throw new Error('"หวย" ต้องขอการ์ดงวดล่าสุด');
+  if (lottoCommand_('ตรวจหวย 417212, 111111', true).nums.join('|') !== '417212|111111')
+    throw new Error('คำสั่งพร้อมเลขในกลุ่มต้องใช้ได้');
 
   if (lottoNumbers_('458145, 123456').join('|') !== '458145|123456') throw new Error('แยกเลขคั่น , ผิด');
   if (lottoNumbers_('458145 123456').length !== 2) throw new Error('แยกเลขคั่นเว้นวรรคผิด');
