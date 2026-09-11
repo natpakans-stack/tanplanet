@@ -32,7 +32,9 @@ def send(obj):
 def build_argv(job, ytdlp):
     outdir = os.path.expanduser(job.get("outdir") or "~/Downloads")
     argv = [ytdlp, "--no-playlist", "-P", outdir, "-o", "%(title)s.%(ext)s"]
-    if job.get("format"):
+    if job.get("audio"):
+        argv += ["-x", "--audio-format", "mp3"]   # เสียงอย่างเดียว (ต้องมี ffmpeg)
+    elif job.get("format"):
         argv += ["-f", job["format"], "--merge-output-format", "mp4"]
     for k, v in (job.get("headers") or {}).items():
         if not v:

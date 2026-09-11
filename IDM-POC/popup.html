@@ -104,6 +104,45 @@
   }
   header .spacer { flex: 1; }
 
+  /* ---- target: โปรเจกต์/ซีนใน ShotDeck ---- */
+  .target { display: flex; gap: 6px; padding: 8px 10px; background: var(--surface); border-bottom: 1px solid var(--border); }
+  /* custom dropdown — <select> บน macOS เป็น popup ของระบบ แต่งไม่ได้ (แพตเทิร์นเดียวกับแผงข้าง ShotDeck) */
+  .dd { position: relative; flex: 1; min-width: 0; }
+  .dd > button {
+    width: 100%; height: 28px; display: flex; align-items: center; gap: 6px; padding: 0 6px 0 8px;
+    font: inherit; font-size: 12px; color: var(--text); text-align: left;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 6px; cursor: pointer;
+  }
+  .dd > button:hover { border-color: color-mix(in srgb, var(--accent) 35%, var(--border)); }
+  .dd > button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .dd > button .val { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dd > button .i { color: var(--muted); transition: transform .15s; }
+  .dd[data-open] > button .i { transform: rotate(180deg); }
+  .dd ul {
+    display: none; position: absolute; z-index: 3; inset-inline: 0; top: calc(100% + 4px);
+    margin: 0; padding: 4px; list-style: none; max-height: 260px; overflow: auto;
+    background: var(--bg); border: 1px solid var(--border); border-radius: var(--r);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .18);
+  }
+  #shot ul { inset-inline: auto 0; width: 380px; } /* ซีนยาว — ให้แผ่กว้างกว่าปุ่ม ชิดขวา */
+  .dd[data-open] ul { display: block; }
+  .dd li button {
+    width: 100%; display: flex; align-items: center; gap: 6px; padding: 7px 8px; min-height: 32px;
+    font: inherit; font-size: 12px; color: var(--text); text-align: left;
+    background: none; border: 0; border-radius: 5px; cursor: pointer;
+  }
+  .dd li button:hover, .dd li button:focus-visible { background: var(--surface); outline: none; }
+  .dd li button span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dd li button .i { color: var(--chip-master); visibility: hidden; }
+  .dd li button[aria-selected="true"] .i { visibility: visible; }
+  .dd li button small { color: var(--muted); }
+  @media (prefers-reduced-motion: reduce) { .dd > button .i { transition: none; } }
+  /* ป๊อปอัปสูงเท่าเนื้อหา — รายการที่แผ่ลงมาจะโดนตัดถ้าไม่ดันพื้นให้สูงพอ */
+  body:has(.dd[data-open]) { min-height: 340px; }
+  .target .mp3 { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; white-space: nowrap; cursor: pointer; }
+  .target .mp3 input { accent-color: var(--accent); margin: 0; }
+  .thumb { width: 64px; height: 36px; flex-shrink: 0; object-fit: cover; border-radius: 4px; background: #000; }
+
   /* ---- youtube card ---- */
   .yt {
     margin: 10px;
@@ -185,6 +224,11 @@
   <span class="spacer"></span>
   <button class="btn" id="clear" title="ล้างรายการของแท็บนี้">Clear</button>
 </header>
+<div class="target">
+  <div class="dd" id="proj" data-label="โปรเจกต์ ShotDeck"></div>
+  <div class="dd" id="shot" data-label="ซีนที่จะใส่ฟุตเทจ" hidden></div>
+  <label class="mp3" title="เอาเสียงอย่างเดียว (mp3) — ใน ShotDeck เข้าช่อง sfx ของซีน"><input type="checkbox" id="mp3"> MP3</label>
+</div>
 <div id="wrap"></div>
 <div class="status" id="status" role="status" aria-live="polite"></div>
 <script src="icons.js"></script>

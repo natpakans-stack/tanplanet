@@ -3,12 +3,13 @@ const wrap = document.getElementById("wrap");
 // สร้างคำสั่ง yt-dlp พร้อม header จริง — referer ใช้ flag, ที่เหลือ --add-header
 function buildCmd({ url, headers = {} }) {
   const parts = ["yt-dlp"];
+  if (mp3.checked) parts.push("-x --audio-format mp3");
   for (const [k, v] of Object.entries(headers)) {
     if (!v) continue;
     if (k.toLowerCase() === "referer") parts.push(`--referer ${q(v)}`);
     else parts.push(`--add-header ${q(k + ":" + v)}`);
   }
-  parts.push(q(url), "-o video.mp4");
+  parts.push(q(url), mp3.checked ? "-o audio.mp3" : "-o video.mp4");
   return parts.join(" ");
 }
 const q = (s) => `'${String(s).replace(/'/g, `'\\''`)}'`; // single-quote ปลอดภัยกับ ; space ใน cookie
@@ -29,22 +30,98 @@ function dlBtn(job, label = "Download", cls = "btn primary") {
   const b = document.createElement("button");
   b.className = cls;
   b.append(icon("download"), label);
-  b.onclick = () => {
-    setStatus("กำลังสั่งโหลด…");
-    chrome.runtime.sendNativeMessage(HOST, job, (res) => {
-      const err = chrome.runtime.lastError;
-      // โชว์ข้อความจริงจาก Chrome — "not found" = ยังไม่ install, "forbidden/undefined" = ยังไม่ reload
-      if (err)
-        return setStatus(
-          `เรียก helper ไม่ได้: ${err.message}\nถ้าเพิ่งติดตั้ง ให้กด Reload ที่ chrome://extensions ก่อน`,
-          "err"
-        );
-      if (!res?.ok) return setStatus(res?.error || "ล้มเหลว", "err");
-      setStatus("เริ่มโหลดแล้ว → ~/Downloads (pid " + res.pid + ")", "ok");
-    });
-  };
+  // audio = เอาเสียงอย่างเดียวเป็น mp3 — ใน ShotDeck จะเข้าช่อง sfx ของซีนแทน footage
+  b.onclick = () => { job = { ...job, audio: mp3.checked }; target.pid ? toShotDeck(job, b) : toHost(job); };
   return b;
 }
+
+function toHost(job) {
+  setStatus("กำลังสั่งโหลด…");
+  chrome.runtime.sendNativeMessage(HOST, job, (res) => {
+    const err = chrome.runtime.lastError;
+    // โชว์ข้อความจริงจาก Chrome — "not found" = ยังไม่ install, "forbidden/undefined" = ยังไม่ reload
+    if (err)
+      return setStatus(
+        `เรียก helper ไม่ได้: ${err.message}\nถ้าเพิ่งติดตั้ง ให้กด Reload ที่ chrome://extensions ก่อน`,
+        "err"
+      );
+    if (!res?.ok) return setStatus(res?.error || "ล้มเหลว", "err");
+    setStatus("เริ่มโหลดแล้ว → ~/Downloads (pid " + res.pid + ")", "ok");
+  });
+}
+
+// ---- เป้าหมาย = โปรเจกต์/ซีนใน ShotDeck (localhost:4400) — เลือกไว้แล้วปุ่มโหลดทุกปุ่มยิงเข้าซีนนั้น ----
+const SD = "http://localhost:4400";
+const projSel = document.getElementById("proj"), shotSel = document.getElementById("shot");
+let target = { pid: "", shot: 0 };
+const mp3 = document.getElementById("mp3");
+mp3.onchange = () => chrome.storage.local.set({ mp3: mp3.checked });
+chrome.storage.local.get("mp3").then((r) => (mp3.checked = !!r.mp3));
+
+function toShotDeck(job, b) {
+  const { pid, shot } = target;
+  b.disabled = true;
+  setStatus(`กำลังโหลดเข้าซีน ${shot + 1}… ปิดป๊อปอัปได้ งานไม่ตาย`);
+  chrome.runtime.sendMessage({ type: "shotdeck", pid, body: { ...job, shot } }, (res) => {
+    b.disabled = false;
+    if (!res?.ok) return setStatus(res?.error || "ShotDeck ไม่ตอบ", "err");
+    setStatus(`ซีน ${shot + 1} ${job.audio ? "🔊" : "←"} ${res.file}`, "ok");
+    loadShots(pid, shot + 1); // เลื่อนไปซีนถัดไปที่ยังว่างให้เอง — โหลดต่อได้เลยไม่ต้องเลือกใหม่
+  });
+}
+
+// custom dropdown: ปุ่ม + listbox — Esc/คลิกนอกปิด · Enter/Space บนรายการเลือก (เป็น <button> อยู่แล้ว)
+function setDD(el, items, value, onChange) {
+  const cur = items.find((it) => it.value === value) || items[0];
+  el.value = cur?.value ?? "";
+  const btn = document.createElement("button");
+  btn.type = "button"; btn.setAttribute("aria-haspopup", "listbox"); btn.setAttribute("aria-label", el.dataset.label);
+  const val = document.createElement("span"); val.className = "val"; val.textContent = cur?.label ?? "";
+  btn.append(val, icon("chevron"));
+  const ul = document.createElement("ul"); ul.setAttribute("role", "listbox");
+  for (const it of items) {
+    const li = document.createElement("li"), b = document.createElement("button");
+    b.type = "button"; b.setAttribute("role", "option"); b.setAttribute("aria-selected", String(it.value === el.value));
+    const lb = document.createElement("span"); lb.textContent = it.label;
+    b.append(lb);
+    if (it.note) { const sm = document.createElement("small"); sm.textContent = it.note; b.append(sm); }
+    b.append(icon("check"));
+    b.onclick = () => { delete el.dataset.open; if (it.value !== el.value) onChange(it.value); else btn.focus(); };
+    li.append(b); ul.append(li);
+  }
+  btn.onclick = () => { if (el.dataset.open) delete el.dataset.open; else { el.dataset.open = 1; ul.querySelector('[aria-selected="true"]')?.focus(); } };
+  el.replaceChildren(btn, ul);
+}
+document.addEventListener("click", (e) => { for (const d of document.querySelectorAll(".dd[data-open]")) if (!d.contains(e.target)) delete d.dataset.open; });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") for (const d of document.querySelectorAll(".dd[data-open]")) { delete d.dataset.open; d.querySelector("button").focus(); } });
+
+// ซีน = "ซีน N ✓ · ภาพที่ต้องใช้" — ✓ คือมีฟุตแล้ว · ค่าเริ่มต้นเลือกซีนว่างตัวแรกตั้งแต่ from ขึ้นไป
+async function loadShots(pid, from = 0) {
+  shotSel.hidden = !pid;
+  if (!pid) return shotSel.replaceChildren();
+  const doc = await fetch(`${SD}/api/projects/${pid}`).then((r) => r.json()).catch(() => null);
+  const shots = doc?.shots || [];
+  const empty = shots.findIndex((s, i) => i >= from && !s.footage);
+  target.shot = Math.max(0, empty >= 0 ? empty : Math.min(from, shots.length - 1));
+  const items = shots.map((s, i) => ({ value: i, label: `ซีน ${i + 1}${s.footage ? " ✓" : ""} · ${s.visual || s.line || ""}` }));
+  const pick = (v) => { target.shot = v; chrome.storage.local.set({ target }); setDD(shotSel, items, v, pick); };
+  setDD(shotSel, items, target.shot, pick);
+  chrome.storage.local.set({ target });
+}
+
+async function loadTargets() {
+  const saved = (await chrome.storage.local.get("target")).target || {};
+  const list = await fetch(`${SD}/api/projects`).then((r) => r.json()).catch(() => null);
+  const items = [{ value: "", label: list ? "ไม่ส่ง ShotDeck → ~/Downloads" : "ShotDeck ไม่ได้เปิด (bun server.ts)" }];
+  // ponytail: เรียงตาม id ถอยหลัง (id มีวันที่) — ไม่ได้เรียงข้ามรูปแบบ พอไว้ก่อน
+  for (const p of (list || []).filter((p) => p.shots).sort((a, b) => b.id.localeCompare(a.id)))
+    items.push({ value: p.id, label: p.title || p.id, note: `${p.shots} ซีน` });
+  target.pid = (list || []).some((p) => p.id === saved.pid) ? saved.pid : "";
+  const pick = (v) => { target.pid = v; setDD(projSel, items, v, pick); loadShots(v, 0); };
+  setDD(projSel, items, target.pid, pick);
+  await loadShots(target.pid, saved.shot || 0);
+}
+loadTargets();
 
 // ico=null สำหรับปุ่มที่อยู่ติดกันหลายตัว — ไอคอน copy ซ้ำๆ ในแถวเดียวคืออาการรก ไม่ใช่ข้อมูล
 function copyBtn(label, text, cls = "btn", ico = "copy") {
@@ -172,17 +249,29 @@ function cleanYt(u) {
   return null;
 }
 
+// ไซต์ที่ yt-dlp โหลดจาก URL หน้าเว็บได้ตรง ๆ (สตรีมเข้ารหัส/แยกท่อน sniff แล้วก็โหลดไม่ได้อยู่ดี)
+const SITES = { "youtube.com": "YouTube", "youtu.be": "YouTube", "tiktok.com": "TikTok", "instagram.com": "Instagram", "facebook.com": "Facebook", "x.com": "X", "vimeo.com": "Vimeo" };
+function pageTarget(u) {
+  const h = u.hostname.replace(/^(www|m|mobile)\./, "");
+  // Pinterest: ทุก subdomain/ประเทศ (in./th./pinterest.co.uk) แต่ต้องเป็นหน้าพินเดี่ยว — ฟีดไม่มี URL ต่อคลิป
+  // ponytail: ฟีด/related pins ไม่แกะ DOM หา link ต่อวิดีโอ (Pinterest ซ่อนลิงก์จนกว่าจะ hover) — คลิกเปิดพินก่อนแล้วค่อยกดโหลด
+  if (/(^|\.)pinterest\.[a-z.]+$/.test(h)) { const m = u.pathname.match(/^\/pin\/\d+\//); return m && { url: u.origin + m[0], site: "Pinterest" }; }
+  const site = SITES[h];
+  if (!site || u.pathname.length < 2) return null;
+  if (site === "YouTube") { const c = cleanYt(u); return c && { url: c, site }; }
+  return { url: u.origin + u.pathname, site }; // ตัด query ทิ้ง — tracking param ยาวเป็นกิโลและทำให้ dedupe พัง
+}
+
 async function ytCard() {
   let tab;
   try { [tab] = await chrome.tabs.query({ active: true, currentWindow: true }); } catch { return null; }
   if (!tab?.url) return null;
   let u; try { u = new URL(tab.url); } catch { return null; }
-  if (!/(^|\.)youtube\.com$|(^|\.)youtu\.be$/.test(u.hostname)) return null;
-  const clean = cleanYt(u);
-  if (!clean) return null;
+  const pt = pageTarget(u);
+  if (!pt) return null;
+  const clean = pt.url;
 
   const best = `yt-dlp -f 'bv*+ba/b' --merge-output-format mp4 ${q(clean)} -o '%(title)s.%(ext)s'`;
-  const p1080 = `yt-dlp -f 'bv*[height<=1080]+ba/b' --merge-output-format mp4 ${q(clean)} -o '%(title)s.%(ext)s'`;
 
   const div = document.createElement("div");
   div.className = "yt";
@@ -193,10 +282,11 @@ async function ytCard() {
   const sub = document.createElement("span");
   sub.className = "yt-sub";
   sub.textContent = "โหลดจากหน้าเว็บ";
-  head.append(mark, "YouTube", sub);
+  head.append(mark, pt.site, sub);
+  // ชื่อคลิปคือคำตอบว่า "นี่คลิปอะไร" — URL ดูเอาที่ tooltip
   const urlDiv = document.createElement("div");
   urlDiv.className = "u";
-  urlDiv.textContent = clean;
+  urlDiv.textContent = (tab.title || "").replace(/\s*[-|·]\s*(YouTube|TikTok|Instagram|Facebook|X|Vimeo|Pinterest)\s*$/, "") || clean;
   urlDiv.title = clean;
   const acts = document.createElement("div");
   acts.className = "acts";
@@ -275,6 +365,15 @@ async function render() {
       dlBtn({ url: item.url, headers: item.headers }, "โหลด", "btn dl")
     );
 
+    // ไฟล์ mp4 ตรง ๆ: ให้เบราว์เซอร์โชว์เฟรมที่วินาที 1 + ความยาว/ขนาดจริง — นี่คือวิธีเดียวที่รู้ว่าแถวไหนคือคลิปไหน
+    // ponytail: HLS/DASH ไม่มีรูปย่อ (ต้อง hls.js) — สตรีมพวกนี้มักมีไฟล์เดียวต่อหน้าอยู่แล้ว
+    if (analyzed[idx].kind === "file") {
+      const v = document.createElement("video");
+      v.className = "thumb"; v.muted = true; v.preload = "metadata"; v.src = item.url + "#t=1";
+      v.onloadedmetadata = () => info.prepend(document.createTextNode(`${fmt(v.duration)} · ${v.videoWidth}×${v.videoHeight} · `));
+      v.onerror = () => v.remove();
+      row.prepend(v);
+    }
     row.append(main, acts);
     wrap.append(row);
   });

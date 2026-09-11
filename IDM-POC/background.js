@@ -1,6 +1,7 @@
 // จับ media + เก็บ header จริงที่ browser ส่ง (referer/origin/cookie/user-agent) เพื่อเอาไปทำคำสั่ง yt-dlp
 // ผูกทุก item กับ tabId + ล้างเมื่อ tab นั้นเริ่มโหลดหน้าใหม่ (main_frame) — กัน asset ของหน้าเก่า carry มา
-const RE = /\.(m3u8|mpd|mp4|ts|m4s)([?#/]|$)/i;
+// ไม่เก็บ .ts/.m4s — segment ของ HLS ทีละร้อยแถวคือเหตุที่ป๊อปอัปรกจนเลือกอะไรไม่ได้ (ตัว .m3u8 พอแล้ว yt-dlp ต่อเอง)
+const RE = /\.(m3u8|mpd|mp4)([?#/]|$)/i;
 const KEEP = ["referer", "origin", "cookie", "user-agent"];
 
 const setBadge = (tabId, n) =>
@@ -31,6 +32,8 @@ const pageOf = async (tabId) => {
 chrome.webRequest.onSendHeaders.addListener(
   async (d) => {
     if (d.tabId < 0) return; // ทิ้ง request ที่ไม่ผูกกับ tab (prefetch/service worker)
+    // request ของตัวเอง (รูปย่อ <video> ในป๊อปอัป) ห้ามนับ — ไม่งั้นวนลูป: sniff เจอ → วาดรูปย่อ → sniff เจอ …
+    if (d.initiator?.startsWith("chrome-extension://")) return;
     if (!(RE.test(d.url) || d.type === "media")) return;
     // ผูกกับ URL หน้าด้วย เพราะ SPA (YouTube/Netflix) เปลี่ยนคลิปโดยไม่ยิง main_frame
     // = ของเก่าไม่ถูกล้าง ป๊อปอัปจะโชว์ลิงก์คลิปก่อนหน้าให้โหลดผิดตัว
@@ -61,4 +64,16 @@ chrome.tabs.onRemoved.addListener(async (tabId) => {
   const { items = [] } = await chrome.storage.session.get("items");
   const kept = items.filter((i) => i.tabId !== tabId);
   if (kept.length !== items.length) await chrome.storage.session.set({ items: kept });
+});
+
+// ยิงเข้า ShotDeck จากที่นี่ ไม่ใช่ใน popup — ปิดป๊อปอัปแล้ว fetch ไม่ตาย server จับคู่ซีนให้เสร็จเอง
+// ponytail: service worker ตายได้ราว 5 นาทีถ้าคลิปยาวมาก แต่ server โหลดต่อจนจบ แค่ป๊อปอัปไม่ได้คำตอบ
+chrome.runtime.onMessage.addListener((m, _s, reply) => {
+  if (m?.type !== "shotdeck") return;
+  fetch(`http://localhost:4400/api/projects/${m.pid}/footage/url`, {
+    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(m.body),
+  })
+    .then(async (r) => reply({ ok: r.ok, ...(await r.json().catch(() => ({ error: "ShotDeck ตอบไม่เป็น JSON" }))) }))
+    .catch((e) => reply({ ok: false, error: e.message }));
+  return true;
 });
