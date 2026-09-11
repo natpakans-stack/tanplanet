@@ -381,7 +381,8 @@ async function render() {
     if (analyzed[idx].kind === "file") {
       const v = document.createElement("video");
       v.className = "thumb"; v.muted = true; v.preload = "metadata"; v.src = item.url + "#t=1";
-      v.onloadedmetadata = () => info.prepend(document.createTextNode(`${fmt(v.duration)} · ${v.videoWidth}×${v.videoHeight} · `));
+      // คลิปสั้นกว่า 1 วิ = เศษ UI ของเว็บ (success.mp4 ของ YouTube ฯลฯ) ซ่อนทิ้ง ไม่ให้เผลอกดโหลดขยะ
+      v.onloadedmetadata = () => v.duration < 1 ? row.remove() : info.prepend(document.createTextNode(`${fmt(v.duration)} · ${v.videoWidth}×${v.videoHeight} · `));
       v.onerror = () => v.remove();
       row.prepend(v);
     }
