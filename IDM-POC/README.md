@@ -28,7 +28,9 @@ brew install yt-dlp          # ถ้ายังไม่มี
 - อยู่หน้า YouTube / TikTok / Instagram / Facebook / X / Vimeo / **Pinterest (หน้าพิน `/pin/<id>/`)** → มีการ์ด "โหลดจากหน้าเว็บ" โชว์ชื่อคลิป ไม่ต้อง sniff
   - Pinterest: ฟีด/related pins ไม่มี URL ต่อคลิป → คลิกเปิดพินก่อนแล้วค่อยกดโหลด (เหมือนเอาลิงก์พินไปวาง klickpin)
 - ติ๊ก **MP3** = เอาเสียงอย่างเดียว (มีมเสียง/เพลง) → ใน ShotDeck เข้าช่อง `sfx` ของซีนแทน footage
-- เลือก "ไม่ส่ง ShotDeck" = กลับไปโหลดลง `~/Downloads` ผ่าน host ตามเดิม
+- เลือก "ไม่ส่ง ShotDeck" = ลง `~/Downloads` (ผ่าน server ถ้าเปิดอยู่ · ไม่งั้นผ่าน host)
+- **ระหว่างโหลด:** ไอคอนขึ้น badge `↓N` + ป๊อปอัปโชว์ "กำลังโหลด N วิ · ซีน…" (เปิดทีหลังก็เห็น) · **เสร็จ/ล้ม = notification ของ macOS** บอกซีน/ชื่อไฟล์
+- YouTube บีบความเร็วต่อสาย ~200 KB/s → ใช้ `aria2c` 8 สายอัตโนมัติถ้ามี (`brew install aria2`) เร็วขึ้นราว 8 เท่า · โหลดไม่ได้/403 = `brew upgrade yt-dlp` ก่อน
 
 ## ทำไมต้องมี host
 

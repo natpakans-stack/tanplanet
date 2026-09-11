@@ -66,14 +66,36 @@ chrome.tabs.onRemoved.addListener(async (tabId) => {
   if (kept.length !== items.length) await chrome.storage.session.set({ items: kept });
 });
 
-// ยิงเข้า ShotDeck จากที่นี่ ไม่ใช่ใน popup — ปิดป๊อปอัปแล้ว fetch ไม่ตาย server จับคู่ซีนให้เสร็จเอง
-// ponytail: service worker ตายได้ราว 5 นาทีถ้าคลิปยาวมาก แต่ server โหลดต่อจนจบ แค่ป๊อปอัปไม่ได้คำตอบ
+// ยิงเข้า server ShotDeck จากที่นี่ ไม่ใช่ใน popup — ปิดป๊อปอัปแล้ว fetch ไม่ตาย
+// งานที่กำลังโหลด: badge ↓N บนไอคอน + notification ของ macOS ตอนเสร็จ/ล้ม (ปิดป๊อปอัปไปแล้วก็รู้) · ป๊อปอัปเปิดมาทีหลังถาม {type:"jobs"} ได้
+// ponytail: badge นี้เป็นค่ากลาง แท็บที่ sniff เจอ media จะโชว์เลขของแท็บทับแทน · service worker ตายได้ราว 5 นาทีถ้าคลิปยาวมาก server ยังโหลดต่อจนจบ แค่ไม่มีแจ้งเตือน
+const SD = "http://localhost:4400";
+const jobs = new Map();
+let seq = 0;
+const jobBadge = () => {
+  chrome.action.setBadgeBackgroundColor({ color: "#c0102a" });
+  chrome.action.setBadgeText({ text: jobs.size ? `↓${jobs.size}` : "" });
+};
+const notify = (title, message) =>
+  chrome.notifications.create({ type: "basic", iconUrl: "icons/icon128.png", title, message: String(message).slice(0, 200) });
 chrome.runtime.onMessage.addListener((m, _s, reply) => {
+  if (m?.type === "jobs") return void reply([...jobs.values()]);
   if (m?.type !== "shotdeck") return;
-  fetch(`http://localhost:4400/api/projects/${m.pid}/footage/url`, {
+  const id = ++seq, label = m.label || m.body.url;
+  jobs.set(id, { id, label, at: Date.now(), pid: m.pid, shot: m.body.shot });
+  jobBadge();
+  fetch(m.pid ? `${SD}/api/projects/${m.pid}/footage/url` : `${SD}/api/download`, {
     method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(m.body),
   })
-    .then(async (r) => reply({ ok: r.ok, ...(await r.json().catch(() => ({ error: "ShotDeck ตอบไม่เป็น JSON" }))) }))
-    .catch((e) => reply({ ok: false, error: e.message }));
+    .then(async (r) => ({ ok: r.ok, ...(await r.json().catch(() => ({ error: "ShotDeck ตอบไม่เป็น JSON" }))) }))
+    .catch((e) => ({ ok: false, error: e.message }))
+    .then((res) => {
+      jobs.delete(id); jobBadge();
+      res.where = !res.ok ? res.error || "ShotDeck ไม่ตอบ"
+        : res.shot != null ? `ซีน ${res.shot + 1} ${m.body.audio ? "🔊" : "←"} ${res.file}` : `~/Downloads ← ${res.file}`;
+      notify(res.ok ? "โหลดเสร็จแล้ว" : "โหลดไม่สำเร็จ", res.where);
+      chrome.runtime.sendMessage({ type: "job-done", id, res }).catch(() => {}); // ป๊อปอัปถ้ายังเปิดอยู่
+      try { reply(res); } catch {}
+    });
   return true;
 });

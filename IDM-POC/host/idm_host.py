@@ -32,6 +32,8 @@ def send(obj):
 def build_argv(job, ytdlp):
     outdir = os.path.expanduser(job.get("outdir") or "~/Downloads")
     argv = [ytdlp, "--no-playlist", "-P", outdir, "-o", "%(title)s.%(ext)s"]
+    if shutil.which("aria2c", path=PATH):   # 8 สาย เร็วกว่า YouTube ที่บีบต่อสายราว 8 เท่า (brew install aria2)
+        argv += ["--downloader", "aria2c", "--downloader-args", "aria2c:-x 8 -s 8 -k 1M"]
     if job.get("audio"):
         argv += ["-x", "--audio-format", "mp3"]   # เสียงอย่างเดียว (ต้องมี ffmpeg)
     elif job.get("format"):

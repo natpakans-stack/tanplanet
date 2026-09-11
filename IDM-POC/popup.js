@@ -19,19 +19,38 @@ const HOST = "com.tanplanet.idm";
 const statusEl = document.getElementById("status");
 let statusTimer;
 
-function setStatus(msg, kind = "") {
+function setStatus(msg, kind = "", sticky = false) {
   statusEl.textContent = msg;
   statusEl.className = "status show " + kind;
   clearTimeout(statusTimer);
-  statusTimer = setTimeout(() => (statusEl.className = "status"), 6000);
+  if (!sticky) statusTimer = setTimeout(() => (statusEl.className = "status"), 6000);
 }
+// สถานะกำลังโหลด: นับวินาทีจากเวลาเริ่ม (งานที่เริ่มก่อนเปิดป๊อปอัปก็นับถูก) · หยุดเมื่อ background บอกว่าเสร็จ
+let tick;
+function showLoading(list) {
+  clearInterval(tick);
+  if (!list.length) return;
+  const f = () => setStatus(list.map((j) => `กำลังโหลด ${Math.round((Date.now() - j.at) / 1000)} วิ · ${j.shot != null ? `ซีน ${j.shot + 1} ← ` : ""}${j.label}`).join("\n")
+    + "\nปิดป๊อปอัปได้ เสร็จแล้วเด้งแจ้งเตือน", "", true);
+  f(); tick = setInterval(f, 1000);
+}
+const refreshJobs = () => chrome.runtime.sendMessage({ type: "jobs" }, (list) => showLoading(list || []));
+chrome.runtime.onMessage.addListener((m) => {
+  if (m?.type !== "job-done") return;
+  clearInterval(tick);
+  setStatus(m.res.where, m.res.ok ? "ok" : "err");
+  if (m.res.ok && m.res.shot != null && target.pid) loadShots(target.pid, m.res.shot + 1); // เลื่อนไปซีนถัดไปที่ยังว่าง
+  setTimeout(refreshJobs, 6500); // ยังมีงานอื่นค้างอยู่ก็โชว์ต่อ
+});
+refreshJobs();
 
 function dlBtn(job, label = "Download", cls = "btn primary") {
   const b = document.createElement("button");
   b.className = cls;
   b.append(icon("download"), label);
   // audio = เอาเสียงอย่างเดียวเป็น mp3 — ใน ShotDeck จะเข้าช่อง sfx ของซีนแทน footage
-  b.onclick = () => { job = { ...job, audio: mp3.checked }; target.pid ? toShotDeck(job, b) : toHost(job); };
+  // server ShotDeck เปิดอยู่ = ยิงผ่าน server เสมอ (รู้ตอนเสร็จ) แม้ไม่เลือกโปรเจกต์ (ลง ~/Downloads) · server ปิด = native host เดิม
+  b.onclick = () => { job = { ...job, audio: mp3.checked }; serverUp ? toShotDeck(job, b) : toHost(job); };
   return b;
 }
 
@@ -58,16 +77,11 @@ const mp3 = document.getElementById("mp3");
 mp3.onchange = () => chrome.storage.local.set({ mp3: mp3.checked });
 chrome.storage.local.get("mp3").then((r) => (mp3.checked = !!r.mp3));
 
+let serverUp = false;
 function toShotDeck(job, b) {
   const { pid, shot } = target;
-  b.disabled = true;
-  setStatus(`กำลังโหลดเข้าซีน ${shot + 1}… ปิดป๊อปอัปได้ งานไม่ตาย`);
-  chrome.runtime.sendMessage({ type: "shotdeck", pid, body: { ...job, shot } }, (res) => {
-    b.disabled = false;
-    if (!res?.ok) return setStatus(res?.error || "ShotDeck ไม่ตอบ", "err");
-    setStatus(`ซีน ${shot + 1} ${job.audio ? "🔊" : "←"} ${res.file}`, "ok");
-    loadShots(pid, shot + 1); // เลื่อนไปซีนถัดไปที่ยังว่างให้เอง — โหลดต่อได้เลยไม่ต้องเลือกใหม่
-  });
+  chrome.runtime.sendMessage({ type: "shotdeck", pid: pid || null, label: job.label || job.url, body: { ...job, shot: pid ? shot : undefined } }, () => {});
+  setTimeout(refreshJobs, 150); // background ลงทะเบียนงานแล้วค่อยถาม — ได้เวลาเริ่มจริงมานับวินาที
 }
 
 // custom dropdown: ปุ่ม + listbox — Esc/คลิกนอกปิด · Enter/Space บนรายการเลือก (เป็น <button> อยู่แล้ว)
@@ -116,6 +130,7 @@ async function loadTargets() {
   // ponytail: เรียงตาม id ถอยหลัง (id มีวันที่) — ไม่ได้เรียงข้ามรูปแบบ พอไว้ก่อน
   for (const p of (list || []).filter((p) => p.shots).sort((a, b) => b.id.localeCompare(a.id)))
     items.push({ value: p.id, label: p.title || p.id, note: `${p.shots} ซีน` });
+  serverUp = !!list;
   target.pid = (list || []).some((p) => p.id === saved.pid) ? saved.pid : "";
   const pick = (v) => { target.pid = v; setDD(projSel, items, v, pick); loadShots(v, 0); };
   setDD(projSel, items, target.pid, pick);
@@ -130,8 +145,9 @@ document.getElementById("paste").onsubmit = (e) => {
   e.preventDefault();
   const url = document.getElementById("pasteUrl").value.trim();
   if (!/^https?:\/\//.test(url)) return setStatus("ลิงก์ต้องขึ้นต้นด้วย http(s)://", "err");
-  const job = { url, format: "bv*+ba/b", audio: mp3.checked };
-  target.pid ? toShotDeck(job, pasteGo) : toHost(job);
+  const job = { url, format: "bv*+ba/b", audio: mp3.checked, label: url };
+  serverUp ? toShotDeck(job, pasteGo) : toHost(job);
+  document.getElementById("pasteUrl").value = "";
 };
 
 // ico=null สำหรับปุ่มที่อยู่ติดกันหลายตัว — ไอคอน copy ซ้ำๆ ในแถวเดียวคืออาการรก ไม่ใช่ข้อมูล
@@ -302,8 +318,8 @@ async function ytCard() {
   const acts = document.createElement("div");
   acts.className = "acts";
   acts.append(
-    dlBtn({ url: clean, format: "bv*+ba/b" }),
-    dlBtn({ url: clean, format: "bv*[height<=1080]+ba/b" }, "1080p", "btn dl"),
+    dlBtn({ url: clean, format: "bv*+ba/b", label: urlDiv.textContent }),
+    dlBtn({ url: clean, format: "bv*[height<=1080]+ba/b", label: urlDiv.textContent }, "1080p", "btn dl"),
     copyBtn("คัดลอกคำสั่ง", best)
   );
   div.append(head, urlDiv, acts);
@@ -373,7 +389,7 @@ async function render() {
     acts.append(
       copyBtn("URL", item.url, "btn", null),
       copyBtn("cmd", buildCmd(item), "btn", null),
-      dlBtn({ url: item.url, headers: item.headers }, "โหลด", "btn dl")
+      dlBtn({ url: item.url, headers: item.headers, label: d.info[0]?.text || item.url }, "โหลด", "btn dl")
     );
 
     // ไฟล์ mp4 ตรง ๆ: ให้เบราว์เซอร์โชว์เฟรมที่วินาที 1 + ความยาว/ขนาดจริง — นี่คือวิธีเดียวที่รู้ว่าแถวไหนคือคลิปไหน
