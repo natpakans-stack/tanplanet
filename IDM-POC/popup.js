@@ -128,8 +128,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") for (const
 
 // ซีน = "ซีน N ✓ · ภาพที่ต้องใช้" — ✓ คือมีฟุตแล้ว · ค่าเริ่มต้นเลือกซีนว่างตัวแรกตั้งแต่ from ขึ้นไป
 async function loadShots(pid, from = 0) {
-  shotSel.hidden = !pid;
-  if (!pid) return shotSel.replaceChildren();
+  shotSel.hidden = !pid || pid === "lib";   // คลังกลางไม่มีซีน
+  if (!pid || pid === "lib") return shotSel.replaceChildren();
   const doc = await fetch(`${SD}/api/projects/${pid}`).then((r) => r.json()).catch(() => null);
   const shots = doc?.shots || [];
   const empty = shots.findIndex((s, i) => i >= from && !s.footage);
@@ -143,14 +143,18 @@ async function loadShots(pid, from = 0) {
 async function loadTargets() {
   const saved = (await chrome.storage.local.get("target")).target || {};
   const list = await fetch(`${SD}/api/projects`).then((r) => r.json()).catch(() => null);
-  const items = [{ value: "", label: list ? "ไม่ส่ง ShotDeck → ~/Downloads" : "ShotDeck ไม่ได้เปิด (bun server.ts)" }];
+  // ค่าเริ่มต้น = คลังกลางของ ShotDeck (เสียง → sounds/sfx|bgm · วิดีโอ → footage/ ตั้งชื่อให้) — ของที่โหลดคือวัตถุดิบใช้ซ้ำ ไม่ควรค้าง Downloads
+  const items = list
+    ? [{ value: "lib", label: "คลังกลาง ShotDeck", note: "เสียง → sounds · วิดีโอ → footage" }, { value: "", label: "ไม่ส่ง ShotDeck → ~/Downloads" }]
+    : [{ value: "", label: "ShotDeck ไม่ได้เปิด (bun server.ts)" }];
   // ponytail: เรียงตาม id ถอยหลัง (id มีวันที่) — ไม่ได้เรียงข้ามรูปแบบ พอไว้ก่อน
   for (const p of (list || []).filter((p) => p.shots).sort((a, b) => b.id.localeCompare(a.id)))
     items.push({ value: p.id, label: p.title || p.id, note: `${p.shots} ซีน` });
   serverUp = !!list;
   if (serverUp) { renderJobs(); chrome.runtime.sendMessage({ type: "watch" }).catch?.(() => {}); }
-  target.pid = (list || []).some((p) => p.id === saved.pid) ? saved.pid : "";
-  const pick = (v) => { target.pid = v; setDD(projSel, items, v, pick); loadShots(v, 0); };
+  target.pid = saved.pid === "lib" || (list || []).some((p) => p.id === saved.pid) ? saved.pid : (list ? "lib" : "");
+  if (saved.pid === "" && list && saved.chosen) target.pid = "";   // ผู้ใช้เคยเลือก Downloads เองก็เคารพ
+  const pick = (v) => { target.pid = v; target.chosen = true; setDD(projSel, items, v, pick); loadShots(v, 0); };
   setDD(projSel, items, target.pid, pick);
   await loadShots(target.pid, saved.shot || 0);
 }
