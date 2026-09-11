@@ -208,6 +208,23 @@
   .empty { padding: 28px 16px; color: var(--muted); text-align: center; }
   .empty b { display: block; color: var(--text); margin-bottom: 3px; }
 
+  /* ---- jobs: คิวโหลดจาก server (progress + pause/stop) ---- */
+  #jobs:not(:empty) { border-top: 1px solid var(--border); background: var(--surface); }
+  .job { display: flex; align-items: center; gap: 8px; padding: 7px 12px; }
+  .job + .job { border-top: 1px solid var(--border); }
+  .job-main { flex: 1; min-width: 0; }
+  .job-top { display: flex; gap: 8px; font-size: 12px; }
+  .job-top b { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+  .job-top small { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .bar { height: 4px; margin-top: 5px; border-radius: 2px; background: var(--border); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .4s; }
+  .job.done .bar i { background: var(--chip-master); }
+  .job.error .bar i, .job.stopped .bar i { background: var(--muted); }
+  .job.paused .bar i { background: var(--chip-variant); }
+  .job-err { color: var(--accent); font-size: 11px; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .job .btn { padding: 0 6px; }
+  @media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+
   /* ---- status bar ---- */
   .status {
     position: sticky;
@@ -244,6 +261,7 @@
   <button type="submit" class="btn dl" id="pasteGo"></button>
 </form>
 <div id="wrap"></div>
+<div id="jobs"></div>
 <div class="status" id="status" role="status" aria-live="polite"></div>
 <script src="icons.js"></script>
 <script src="popup.js"></script>

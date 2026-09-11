@@ -25,24 +25,39 @@ function setStatus(msg, kind = "", sticky = false) {
   clearTimeout(statusTimer);
   if (!sticky) statusTimer = setTimeout(() => (statusEl.className = "status"), 6000);
 }
-// สถานะกำลังโหลด: นับวินาทีจากเวลาเริ่ม (งานที่เริ่มก่อนเปิดป๊อปอัปก็นับถูก) · หยุดเมื่อ background บอกว่าเสร็จ
-let tick;
-function showLoading(list) {
-  clearInterval(tick);
-  if (!list.length) return;
-  const f = () => setStatus(list.map((j) => `กำลังโหลด ${Math.round((Date.now() - j.at) / 1000)} วิ · ${j.shot != null ? `ซีน ${j.shot + 1} ← ` : ""}${j.label}`).join("\n")
-    + "\nปิดป๊อปอัปได้ เสร็จแล้วเด้งแจ้งเตือน", "", true);
-  f(); tick = setInterval(f, 1000);
+// แผงงาน: ดึง GET /api/jobs ทุกวินาทีตอนป๊อปอัปเปิด (server เป็นเจ้าของคิว ปิดป๊อปอัปงานไม่หาย)
+const jobsEl = document.getElementById("jobs");
+const STATE = { running: "กำลังโหลด", paused: "หยุดชั่วคราว", done: "เสร็จแล้ว", error: "ล้มเหลว", stopped: "ยกเลิกแล้ว" };
+const jobBtn = (ico, title, act, id) => { const b = document.createElement("button"); b.className = "btn"; b.title = title; b.append(icon(ico));
+  b.onclick = () => fetch(`${SD}/api/jobs/${id}/${act}`, { method: "POST" }).then(renderJobs).catch(() => {}); return b; };
+let lastJobs = new Map();
+async function renderJobs() {
+  const list = await fetch(`${SD}/api/jobs`).then((r) => r.json()).catch(() => null);
+  if (!list) return;
+  jobsEl.replaceChildren(...list.map((j) => {
+    const row = document.createElement("div"); row.className = "job " + j.state;
+    const main = document.createElement("div"); main.className = "job-main";
+    const top = document.createElement("div"); top.className = "job-top";
+    const name = document.createElement("b"); name.textContent = (j.shot != null ? `ซีน ${j.shot + 1} ${j.audio ? "🔊" : "←"} ` : "↓ ") + (j.file || j.label); name.title = j.url;
+    const meta = document.createElement("small");
+    // ช่วงแรก yt-dlp แกะลิงก์ราว 5–10 วิ ยังไม่มี % — บอกว่ากำลังเตรียม ไม่ใช่ค้าง
+    meta.textContent = j.state !== "running" ? STATE[j.state] : !j.speed ? "กำลังแกะลิงก์…"
+      : `${j.part > 1 ? `ส่วน ${j.part} · ` : ""}${j.pct}%${j.speed ? ` · ${j.speed}` : ""}${j.eta ? ` · ${j.eta}` : ""}`;
+    top.append(name, meta);
+    const bar = document.createElement("div"); bar.className = "bar"; const fill = document.createElement("i"); fill.style.width = `${j.state === "done" ? 100 : j.pct}%`; bar.append(fill);
+    main.append(top, bar);
+    if (j.error) { const e = document.createElement("div"); e.className = "job-err"; e.textContent = j.error; e.title = j.error; main.append(e); }
+    row.append(main);
+    if (j.state === "running") row.append(jobBtn("pause", "หยุดชั่วคราว (เก็บที่โหลดไว้)", "pause", j.id), jobBtn("x", "ยกเลิก ลบไฟล์ที่โหลดค้าง", "stop", j.id));
+    else if (j.state === "paused" || j.state === "error") row.append(jobBtn("play", "โหลดต่อ", "resume", j.id), jobBtn("x", "เอาออกจากรายการ", "dismiss", j.id));
+    else row.append(jobBtn("x", "เอาออกจากรายการ", "dismiss", j.id));
+    return row;
+  }));
+  // งานที่เพิ่งเสร็จของโปรเจกต์ที่เลือกอยู่ → เลื่อนไปซีนถัดไปที่ยังว่าง
+  for (const j of list) if (j.state === "done" && lastJobs.get(j.id) === "running" && j.pid === target.pid && target.pid) loadShots(target.pid, (j.shot ?? -1) + 1);
+  lastJobs = new Map(list.map((j) => [j.id, j.state]));
 }
-const refreshJobs = () => chrome.runtime.sendMessage({ type: "jobs" }, (list) => showLoading(list || []));
-chrome.runtime.onMessage.addListener((m) => {
-  if (m?.type !== "job-done") return;
-  clearInterval(tick);
-  setStatus(m.res.where, m.res.ok ? "ok" : "err");
-  if (m.res.ok && m.res.shot != null && target.pid) loadShots(target.pid, m.res.shot + 1); // เลื่อนไปซีนถัดไปที่ยังว่าง
-  setTimeout(refreshJobs, 6500); // ยังมีงานอื่นค้างอยู่ก็โชว์ต่อ
-});
-refreshJobs();
+setInterval(() => { if (serverUp) renderJobs(); }, 1000);
 
 function dlBtn(job, label = "Download", cls = "btn primary") {
   const b = document.createElement("button");
@@ -80,8 +95,10 @@ chrome.storage.local.get("mp3").then((r) => (mp3.checked = !!r.mp3));
 let serverUp = false;
 function toShotDeck(job, b) {
   const { pid, shot } = target;
-  chrome.runtime.sendMessage({ type: "shotdeck", pid: pid || null, label: job.label || job.url, body: { ...job, shot: pid ? shot : undefined } }, () => {});
-  setTimeout(refreshJobs, 150); // background ลงทะเบียนงานแล้วค่อยถาม — ได้เวลาเริ่มจริงมานับวินาที
+  chrome.runtime.sendMessage({ type: "shotdeck", pid: pid || null, label: job.label || job.url, body: { ...job, shot: pid ? shot : undefined } }, (res) => {
+    if (!res?.ok) return setStatus(res?.error || "ShotDeck ไม่ตอบ", "err");
+    renderJobs();
+  });
 }
 
 // custom dropdown: ปุ่ม + listbox — Esc/คลิกนอกปิด · Enter/Space บนรายการเลือก (เป็น <button> อยู่แล้ว)
@@ -131,6 +148,7 @@ async function loadTargets() {
   for (const p of (list || []).filter((p) => p.shots).sort((a, b) => b.id.localeCompare(a.id)))
     items.push({ value: p.id, label: p.title || p.id, note: `${p.shots} ซีน` });
   serverUp = !!list;
+  if (serverUp) { renderJobs(); chrome.runtime.sendMessage({ type: "watch" }).catch?.(() => {}); }
   target.pid = (list || []).some((p) => p.id === saved.pid) ? saved.pid : "";
   const pick = (v) => { target.pid = v; setDD(projSel, items, v, pick); loadShots(v, 0); };
   setDD(projSel, items, target.pid, pick);
