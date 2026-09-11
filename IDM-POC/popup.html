@@ -141,6 +141,16 @@
   body:has(.dd[data-open]) { min-height: 340px; }
   .target .mp3 { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; white-space: nowrap; cursor: pointer; }
   .target .mp3 input { accent-color: var(--accent); margin: 0; }
+  /* วางลิงก์เอง — ไม่ต้องรอ sniff ทุกหน้า */
+  .paste { display: flex; gap: 6px; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+  .paste input {
+    flex: 1; min-width: 0; height: 28px; padding: 0 8px;
+    font: inherit; font-size: 12px; color: var(--text);
+    background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+  }
+  .paste input::placeholder { color: var(--muted); }
+  .paste input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .paste .btn { height: 28px; }
   .thumb { width: 64px; height: 36px; flex-shrink: 0; object-fit: cover; border-radius: 4px; background: #000; }
 
   /* ---- youtube card ---- */
@@ -229,6 +239,10 @@
   <div class="dd" id="shot" data-label="ซีนที่จะใส่ฟุตเทจ" hidden></div>
   <label class="mp3" title="เอาเสียงอย่างเดียว (mp3) — ใน ShotDeck เข้าช่อง sfx ของซีน"><input type="checkbox" id="mp3"> MP3</label>
 </div>
+<form class="paste" id="paste">
+  <input type="url" id="pasteUrl" placeholder="วางลิงก์คลิป (YouTube / TikTok / Pinterest / IG …) แล้ว Enter" aria-label="ลิงก์คลิป" required>
+  <button type="submit" class="btn dl" id="pasteGo"></button>
+</form>
 <div id="wrap"></div>
 <div class="status" id="status" role="status" aria-live="polite"></div>
 <script src="icons.js"></script>

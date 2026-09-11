@@ -123,6 +123,17 @@ async function loadTargets() {
 }
 loadTargets();
 
+// วางลิงก์เอง (ก๊อปจาก Pinterest/TikTok/YouTube) → ใช้ทางเดียวกับปุ่มโหลดทุกปุ่ม ไม่ต้องเปิดหน้าให้ sniff
+const pasteGo = document.getElementById("pasteGo");
+pasteGo.append(icon("download"), "โหลด");
+document.getElementById("paste").onsubmit = (e) => {
+  e.preventDefault();
+  const url = document.getElementById("pasteUrl").value.trim();
+  if (!/^https?:\/\//.test(url)) return setStatus("ลิงก์ต้องขึ้นต้นด้วย http(s)://", "err");
+  const job = { url, format: "bv*+ba/b", audio: mp3.checked };
+  target.pid ? toShotDeck(job, pasteGo) : toHost(job);
+};
+
 // ico=null สำหรับปุ่มที่อยู่ติดกันหลายตัว — ไอคอน copy ซ้ำๆ ในแถวเดียวคืออาการรก ไม่ใช่ข้อมูล
 function copyBtn(label, text, cls = "btn", ico = "copy") {
   const b = document.createElement("button");
