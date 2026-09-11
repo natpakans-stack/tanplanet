@@ -84,6 +84,8 @@ chrome.runtime.onMessage.addListener((m, _s, reply) => {
   const id = ++seq, label = m.label || m.body.url;
   jobs.set(id, { id, label, at: Date.now(), pid: m.pid, shot: m.body.shot });
   jobBadge();
+  // บอกตั้งแต่เริ่มว่าต้องรอ — คลิป YouTube ยาว ๆ ใช้เวลาเป็นนาที คนกดแล้วไม่เห็นอะไรจะนึกว่าพัง
+  notify("เริ่มโหลดแล้ว รอสักครู่", `${m.body.shot != null ? `ซีน ${m.body.shot + 1} ← ` : "~/Downloads ← "}${label}\nคลิปสั้นไม่กี่วิ · YouTube ยาว ๆ ราว 1–4 นาที · เสร็จแล้วเด้งบอกอีกที`);
   fetch(m.pid ? `${SD}/api/projects/${m.pid}/footage/url` : `${SD}/api/download`, {
     method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(m.body),
   })
