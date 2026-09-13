@@ -1,0 +1,11 @@
+# Vercel CLI อ่าน .gitignore เฉพาะไฟล์ราก ไม่อ่านของโฟลเดอร์ย่อย
+# shotdeck/assets (7.6G) ถูก ignore ไว้ใน shotdeck/.gitignore แต่ Vercel มองไม่เห็น
+# มันเลยพยายามอัปโหลดทั้ง 11G ทุกเช้าแล้ว Upload aborted (พังตั้งแต่ 7 ก.ย. 2026)
+# ตรงนี้ตัดเฉพาะของหนักที่ไม่มีโปรเจกต์ Vercel ไหนใช้ — ห้ามตัดโฟลเดอร์ของเว็บตัวอื่นในรีโปนี้
+node_modules
+**/node_modules
+shotdeck/assets
+shotdeck/remotion
+**/.next
+**/dist
+**/.turbo
