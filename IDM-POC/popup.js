@@ -46,11 +46,12 @@ async function renderJobs() {
     top.append(name, meta);
     const bar = document.createElement("div"); bar.className = "bar"; const fill = document.createElement("i"); fill.style.width = `${j.state === "done" ? 100 : j.pct}%`; bar.append(fill);
     main.append(top, bar);
-    if (j.error) { const e = document.createElement("div"); e.className = "job-err"; e.textContent = j.error; e.title = j.error; main.append(e); }
+    if (j.error) { const e = document.createElement("div"); e.className = "job-err"; e.textContent = j.error; e.title = j.raw ? `ข้อความจากระบบ: ${j.raw}` : j.error; main.append(e); }
     row.append(main);
     if (j.state === "running") row.append(jobBtn("pause", "หยุดชั่วคราว (เก็บที่โหลดไว้)", "pause", j.id), jobBtn("x", "ยกเลิก ลบไฟล์ที่โหลดค้าง", "stop", j.id));
     else if (j.state === "paused" || j.state === "error") row.append(jobBtn("play", "โหลดต่อ", "resume", j.id), jobBtn("x", "เอาออกจากรายการ", "dismiss", j.id));
-    else row.append(jobBtn("x", "เอาออกจากรายการ", "dismiss", j.id));
+    // โหลดเสร็จ → ปุ่มเปิด Finder ชี้ไฟล์ที่ได้ (ผู้ใช้ 27 ก.ย.)
+    else row.append(...(j.state === "done" ? [jobBtn("folder", "เปิดโฟลเดอร์ที่เก็บไฟล์", "reveal", j.id)] : []), jobBtn("x", "เอาออกจากรายการ", "dismiss", j.id));
     return row;
   }));
   // งานที่เพิ่งเสร็จของโปรเจกต์ที่เลือกอยู่ → เลื่อนไปซีนถัดไปที่ยังว่าง
