@@ -145,7 +145,7 @@ async function loadTargets() {
   const list = await fetch(`${SD}/api/projects`).then((r) => r.json()).catch(() => null);
   // ค่าเริ่มต้น = ~/Downloads (ผู้ใช้ 27 ก.ย.: อยากให้ลง Downloads เป็นหลัก) — คลังกลาง/โปรเจกต์ต้องเลือกเอง
   const items = list
-    ? [{ value: "", label: "~/Downloads", note: "ไม่ส่ง ShotDeck" }, { value: "lib", label: "คลังกลาง ShotDeck", note: "เสียง → sounds · วิดีโอ → footage" }]
+    ? [{ value: "", label: "~/Downloads", note: "ไม่ส่ง ShotDeck" }, { value: "lib", label: "คลังกลาง ShotDeck", note: "เสียง → sounds · วิดีโอ → footage · รูป/มีม → memes" }]
     : [{ value: "", label: "ShotDeck ไม่ได้เปิด (bun server.ts)" }];
   // ponytail: เรียงตาม id ถอยหลัง (id มีวันที่) — ไม่ได้เรียงข้ามรูปแบบ พอไว้ก่อน
   for (const p of (list || []).filter((p) => p.shots).sort((a, b) => b.id.localeCompare(a.id)))
@@ -301,7 +301,9 @@ function cleanYt(u) {
 }
 
 // ไซต์ที่ yt-dlp โหลดจาก URL หน้าเว็บได้ตรง ๆ (สตรีมเข้ารหัส/แยกท่อน sniff แล้วก็โหลดไม่ได้อยู่ดี)
-const SITES = { "youtube.com": "YouTube", "youtu.be": "YouTube", "tiktok.com": "TikTok", "instagram.com": "Instagram", "facebook.com": "Facebook", "x.com": "X", "vimeo.com": "Vimeo" };
+// โพสต์รูป (มีม) ไม่มีวิดีโอ → server ส่งต่อให้ gallery-dl โหลดรูปให้เอง (27 ก.ย.)
+const SITES = { "youtube.com": "YouTube", "youtu.be": "YouTube", "tiktok.com": "TikTok", "instagram.com": "Instagram", "facebook.com": "Facebook", "x.com": "X", "twitter.com": "X", "vimeo.com": "Vimeo",
+  "reddit.com": "Reddit", "old.reddit.com": "Reddit", "9gag.com": "9GAG", "threads.net": "Threads", "threads.com": "Threads", "bsky.app": "Bluesky", "imgur.com": "Imgur", "tumblr.com": "Tumblr" };
 function pageTarget(u) {
   const h = u.hostname.replace(/^(www|m|mobile)\./, "");
   // Pinterest: ทุก subdomain/ประเทศ (in./th./pinterest.co.uk) แต่ต้องเป็นหน้าพินเดี่ยว — ฟีดไม่มี URL ต่อคลิป
@@ -338,7 +340,7 @@ async function ytCard() {
   // ชื่อคลิปคือคำตอบว่า "นี่คลิปอะไร" — URL ดูเอาที่ tooltip
   const urlDiv = document.createElement("div");
   urlDiv.className = "u";
-  urlDiv.textContent = (tab.title || "").replace(/\s*[-|·]\s*(YouTube|TikTok|Instagram|Facebook|X|Vimeo|Pinterest)\s*$/, "") || clean;
+  urlDiv.textContent = (tab.title || "").replace(/\s*[-|·]\s*(YouTube|TikTok|Instagram|Facebook|X|Vimeo|Pinterest|Reddit|9GAG|Threads|Bluesky|Imgur|Tumblr)\s*$/, "") || clean;
   urlDiv.title = clean;
   const acts = document.createElement("div");
   acts.className = "acts";
