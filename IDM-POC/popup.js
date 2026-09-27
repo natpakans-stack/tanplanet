@@ -93,8 +93,16 @@ mp3.onchange = () => chrome.storage.local.set({ mp3: mp3.checked });
 chrome.storage.local.get("mp3").then((r) => (mp3.checked = !!r.mp3));
 
 let serverUp = false;
+// ช่วงเวลา (cobalt-style: 27 ก.ย.) — โหลดเฉพาะท่อนที่ใช้ แทนสารคดีทั้งเรื่อง · ว่าง = ทั้งคลิป
+const rangeEl = document.getElementById("range");
+const RANGE = /^\d{1,2}(:\d{2}){0,2}\s*-\s*\d{1,2}(:\d{2}){0,2}$/;
+const readRange = () => { const v = rangeEl.value.trim(); rangeEl.setAttribute("aria-invalid", String(!!v && !RANGE.test(v))); return v && RANGE.test(v) ? v.replace(/\s+/g, "") : ""; };
+rangeEl.oninput = readRange;
 function toShotDeck(job, b) {
   const { pid, shot } = target;
+  const section = readRange();
+  if (rangeEl.value.trim() && !section) return setStatus("ช่วงเวลาไม่ถูกรูปแบบ — ใช้ 14:00-14:10", "err");
+  if (section && !job.audio) job = { ...job, section };
   chrome.runtime.sendMessage({ type: "shotdeck", pid: pid || null, label: job.label || job.url, body: { ...job, shot: pid ? shot : undefined } }, (res) => {
     if (!res?.ok) return setStatus(res?.error || "ShotDeck ไม่ตอบ", "err");
     renderJobs();
@@ -325,7 +333,7 @@ async function ytCard() {
   const clean = pt.url;
 
   // -P ~/Downloads — คำสั่งที่ก๊อปไปวางใน Terminal เคยไม่มีปลายทาง ไฟล์เลยตกที่โฟลเดอร์ที่ Terminal เปิดอยู่ (~) ทุกครั้ง (27 ก.ย.)
-  const best = `yt-dlp -f 'bv*+ba/b' --merge-output-format mp4 -P ~/Downloads ${q(clean)} -o '%(title)s.%(ext)s'`;
+  const best = `yt-dlp -f 'bv*+ba/b' -S 'vcodec:h264,acodec:m4a' --merge-output-format mp4 -P ~/Downloads ${q(clean)} -o '%(title)s.%(ext)s'`;   // H.264 ก่อน — AV1 ตัดต่อช้า/บางตัวเปิดไม่ได้
 
   const div = document.createElement("div");
   div.className = "yt";

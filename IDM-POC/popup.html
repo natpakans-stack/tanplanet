@@ -151,6 +151,8 @@
   .paste input::placeholder { color: var(--muted); }
   .paste input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .paste .btn { height: 28px; }
+  .paste .range { flex: 0 0 104px; }
+  .paste .range[aria-invalid="true"] { border-color: #e5484d; }
   .thumb { width: 64px; height: 36px; flex-shrink: 0; object-fit: cover; border-radius: 4px; background: #000; }
 
   /* ---- youtube card ---- */
@@ -258,6 +260,7 @@
 </div>
 <form class="paste" id="paste">
   <input type="url" id="pasteUrl" placeholder="วางลิงก์คลิป (YouTube / TikTok / Pinterest / IG …) แล้ว Enter" aria-label="ลิงก์คลิป" required>
+  <input type="text" id="range" class="range" placeholder="ช่วง 14:00-14:10" aria-label="โหลดเฉพาะช่วงเวลา (ว่าง = ทั้งคลิป)" title="โหลดเฉพาะช่วงเวลา เช่น 14:00-14:10 หรือ 1:02:30-1:03:00 · ว่าง = ทั้งคลิป · ใช้กับปุ่มโหลดทุกปุ่ม" inputmode="numeric" autocomplete="off">
   <button type="submit" class="btn dl" id="pasteGo"></button>
 </form>
 <div id="wrap"></div>
