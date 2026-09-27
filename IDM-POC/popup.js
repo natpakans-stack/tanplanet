@@ -143,18 +143,20 @@ async function loadShots(pid, from = 0) {
 async function loadTargets() {
   const saved = (await chrome.storage.local.get("target")).target || {};
   const list = await fetch(`${SD}/api/projects`).then((r) => r.json()).catch(() => null);
-  // ค่าเริ่มต้น = คลังกลางของ ShotDeck (เสียง → sounds/sfx|bgm · วิดีโอ → footage/ ตั้งชื่อให้) — ของที่โหลดคือวัตถุดิบใช้ซ้ำ ไม่ควรค้าง Downloads
+  // ค่าเริ่มต้น = ~/Downloads (ผู้ใช้ 27 ก.ย.: อยากให้ลง Downloads เป็นหลัก) — คลังกลาง/โปรเจกต์ต้องเลือกเอง
   const items = list
-    ? [{ value: "lib", label: "คลังกลาง ShotDeck", note: "เสียง → sounds · วิดีโอ → footage" }, { value: "", label: "ไม่ส่ง ShotDeck → ~/Downloads" }]
+    ? [{ value: "", label: "~/Downloads", note: "ไม่ส่ง ShotDeck" }, { value: "lib", label: "คลังกลาง ShotDeck", note: "เสียง → sounds · วิดีโอ → footage" }]
     : [{ value: "", label: "ShotDeck ไม่ได้เปิด (bun server.ts)" }];
   // ponytail: เรียงตาม id ถอยหลัง (id มีวันที่) — ไม่ได้เรียงข้ามรูปแบบ พอไว้ก่อน
   for (const p of (list || []).filter((p) => p.shots).sort((a, b) => b.id.localeCompare(a.id)))
     items.push({ value: p.id, label: p.title || p.id, note: `${p.shots} ซีน` });
   serverUp = !!list;
   if (serverUp) { renderJobs(); chrome.runtime.sendMessage({ type: "watch" }).catch?.(() => {}); }
-  target.pid = saved.pid === "lib" || (list || []).some((p) => p.id === saved.pid) ? saved.pid : (list ? "lib" : "");
-  if (saved.pid === "" && list && saved.chosen) target.pid = "";   // ผู้ใช้เคยเลือก Downloads เองก็เคารพ
-  const pick = (v) => { target.pid = v; target.chosen = true; setDD(projSel, items, v, pick); loadShots(v, 0); };
+  // เปิดป๊อปอัปใหม่ทุกครั้งกลับไป Downloads — เคยจำโปรเจกต์ค้างไว้ แล้วม้วนสารคดีเขื่อนไปจ่อเข้าซีน 1 ของคลิปเมสซี่ (27 ก.ย.)
+  // จำโปรเจกต์ไว้แค่ 30 นาทีหลังเลือก พอให้โหลดต่อเนื่องหลายซีนได้โดยไม่ต้องเลือกใหม่
+  const fresh = saved.at && Date.now() - saved.at < 30 * 60e3;
+  target.pid = fresh && (saved.pid === "lib" || (list || []).some((p) => p.id === saved.pid)) ? saved.pid : "";
+  const pick = (v) => { target.pid = v; target.at = Date.now(); setDD(projSel, items, v, pick); loadShots(v, 0); };
   setDD(projSel, items, target.pid, pick);
   await loadShots(target.pid, saved.shot || 0);
 }
@@ -320,7 +322,8 @@ async function ytCard() {
   if (!pt) return null;
   const clean = pt.url;
 
-  const best = `yt-dlp -f 'bv*+ba/b' --merge-output-format mp4 ${q(clean)} -o '%(title)s.%(ext)s'`;
+  // -P ~/Downloads — คำสั่งที่ก๊อปไปวางใน Terminal เคยไม่มีปลายทาง ไฟล์เลยตกที่โฟลเดอร์ที่ Terminal เปิดอยู่ (~) ทุกครั้ง (27 ก.ย.)
+  const best = `yt-dlp -f 'bv*+ba/b' --merge-output-format mp4 -P ~/Downloads ${q(clean)} -o '%(title)s.%(ext)s'`;
 
   const div = document.createElement("div");
   div.className = "yt";
