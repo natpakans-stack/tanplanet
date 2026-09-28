@@ -474,7 +474,11 @@ function ringTick() {
     var alt = b['ชื่อบิล'] + (Number(b['ยอด']) > 0 ? ' ฿' + baht_(b['ยอด']) : '');
     try {
       ringPush(b['ปลายทาง'], { type: 'flex', altText: alt, contents: card }, 'บิล');
-      if (String(b.id).indexOf('budget-') === 0) budgetLogBill_(b, 'ส่งสำเร็จ', 'LINE รับข้อความแล้ว');
+      if (String(b.id).indexOf('budget-') === 0) {
+        budgetLogBill_(b, 'ส่งสำเร็จ', 'LINE รับข้อความแล้ว');
+        // ponytail: ติ๊กพลาดไม่ควรทำให้บิลอื่นในรอบเดียวกันค้าง — ติ๊กมือเองได้
+        try { budgetTickSheet_(b); } catch (e) { budgetLogBill_(b, 'ติ๊กชีตไม่สำเร็จ', String(e)); }
+      }
     } catch (err) {
       if (String(b.id).indexOf('budget-') === 0) budgetLogBill_(b, 'ส่งไม่สำเร็จ', String(err));
       throw err;
@@ -524,6 +528,7 @@ function budgetConfig_() {
 
   return {
     when: when,
+    tab: new Date(year, month + 1, 1),   // ส่งวันที่ 28 ของเดือนนี้ = บิลของแท็บเดือนหน้า (ส่ง 28 ก.ย. → Oct 69)
     period: Utilities.formatDate(when, TZ, 'yyyy-MM'),
     to: to,
     promptpays: {
@@ -692,11 +697,12 @@ function budgetTick_() {
     return;
   }
   var key = budgetRunKey_(cfg);
-  if (props.getProperty(key) || new Date() < cfg.when) return;
+  if (new Date() < cfg.when) return;
+  if (props.getProperty(key)) return budgetExtraTick_(cfg);
 
   var summary;
   try {
-    summary = budgetSummary_(budgetSheetFor_(SpreadsheetApp.openById(cfg.sheetId), cfg.when), cfg.when);
+    summary = budgetSummary_(budgetSheetFor_(SpreadsheetApp.openById(cfg.sheetId), cfg.tab), cfg.tab);
   } catch (readError) {
     budgetLogWaiting_(cfg, readError);
     return;
@@ -727,12 +733,72 @@ function budgetTick_() {
   props.setProperty(key, JSON.stringify({ importedAt: now.toISOString(), sheet: summary.sheet, items: summary.items }));
   props.deleteProperty('BUDGET_LAST_ERROR_' + cfg.period);
   budgetLog_(cfg, summary.sheet, 'สร้างบิลแล้ว', summary.items, 'เพิ่ม ' + rows.length + ' records ลงแท็บ bills; รอ ringTick ส่ง LINE');
+  budgetExtraTick_(cfg);
+}
+
+/** ยอดคงที่ทุกเดือนนอกชีต — โอนเข้า e-Wallet ของแทน (เลขจาก QR ที่แทนให้มา) · เพิ่มใบใหม่ = ต่อท้าย array */
+var BUDGET_EXTRAS = [
+  // label = ชื่อแถวในชีต Budget-Bajjo ใช้ติ๊ก "เหลือจากรายจ่าย" หลังส่ง
+  { payee: 'แทน', amount: 1000, promptpay: '004600000282668', label: 'กระปุก Make (ไปเที่ยว)' },
+  { payee: 'แทน', amount: 500, promptpay: '004600000040371', label: 'หยอดกระปุก Make' }
+];
+
+/** แต่ละใบมี key ของตัวเอง จึงตามส่งได้แม้บิลใบอื่นของเดือนนั้นออกไปก่อนแล้ว */
+function budgetExtraTick_(cfg) {
+  var props = PropertiesService.getScriptProperties();
+  BUDGET_EXTRAS.forEach(function (x, i) {
+    var key = 'BUDGET_EXTRA_' + cfg.period + (i ? '_' + (i + 1) : '');   // ใบแรกใช้ key เดิมที่ส่งไปแล้ว
+    if (props.getProperty(key)) return;
+    var now = new Date(), qrUrl;
+    try { qrUrl = budgetQr_(x.promptpay, x.amount, Utilities.formatDate(cfg.when, TZ, 'yyyyMMdd-HHmm') + '-extra' + (i + 1)); }
+    catch (qrError) { budgetLogWaiting_(cfg, qrError); return; }
+    sheet_('bills').appendRow([
+      'budget-' + cfg.period.replace('-', '') + '-' + (i + 3), now, 'จ่าย', cfg.to, x.label + ' — โอนให้' + x.payee,
+      x.payee, x.amount, 'พร้อมเพย์', x.payee, x.promptpay, cfg.when, cfg.when, '', 1, 0, '', '',
+      'ยอดคงที่ทุกเดือน (' + x.label + ')', qrUrl
+    ]);
+    SpreadsheetApp.flush();
+    props.setProperty(key, now.toISOString());
+    budgetLog_(cfg, '', 'สร้างบิลแล้ว', [x], 'ยอดคงที่ ' + x.label + '; รอ ringTick ส่ง LINE');
+  });
+}
+
+/**
+ * ส่งบิลแล้วติ๊ก "เหลือจากรายจ่าย" ในแท็บ Budget-Bajjo ที่บิลนั้นอ่านมา
+ * budget-YYYYMM-1/2 = ทุกแถวของแม่/แทนที่มียอด · -3 ขึ้นไป = แถวชื่อตรงกับ BUDGET_EXTRAS[n-3].label
+ */
+function budgetTickSheet_(bill) {
+  var m = String(bill.id).match(/^budget-(\d{4})(\d{2})-(\d+)$/);
+  if (!m) return;
+  var n = Number(m[3]);
+  var tab = new Date(Number(m[1]), Number(m[2]), 1);   // เดือนถัดจากรอบส่ง (0-based month + 1)
+  var p = PropertiesService.getScriptProperties();
+  var sheet = budgetSheetFor_(SpreadsheetApp.openById(String(p.getProperty('BUDGET_SHEET_ID') || BUDGET_SHEET_ID).trim()), tab);
+  var head = sheet.createTextFinder('โอนให้ใคร').matchEntireCell(true).findNext();
+  if (!head) throw new Error('ไม่พบหัว "โอนให้ใคร" ใน ' + sheet.getName());
+  var col = head.getColumn(), top = head.getRow() + 1;
+  var rows = sheet.getRange(top, col - 2, 30, 4).getValues();   // รายการ | รายจ่าย | โอนให้ใคร | ติ๊ก
+  var extra = n >= 3 ? BUDGET_EXTRAS[n - 3] : null;
+  var payee = String(bill['คู่กรณี'] || '').trim();
+  for (var i = 0; i < rows.length && String(rows[i][0]).trim() !== 'รวม'; i++) {
+    var hit = extra ? String(rows[i][0]).trim() === extra.label
+      : String(rows[i][2]).trim() === payee && Number(rows[i][1]) > 0;
+    if (hit) sheet.getRange(top + i, col + 1).setValue(true);
+  }
+}
+
+/** รันมือครั้งเดียว: ติ๊กชีตให้บิล budget ของเดือนนี้ที่ส่งไปแล้วก่อนมีฟีเจอร์ติ๊ก */
+function budgetTickSentThisMonth() {
+  var prefix = 'budget-' + Utilities.formatDate(new Date(), TZ, 'yyyyMM') + '-';
+  rows_('bills').forEach(function (b) {
+    if (String(b.id).indexOf(prefix) === 0 && Number(b['ส่งไปแล้ว']) > 0) budgetTickSheet_(b);
+  });
 }
 
 /** Preview แบบไม่ส่ง LINEและไม่สร้าง QR ใช้ตรวจยอดก่อนเปิดงานจริง */
 function previewBudgetPayment() {
   var cfg = budgetConfig_();
-  var result = budgetSummary_(budgetSheetFor_(SpreadsheetApp.openById(cfg.sheetId), cfg.when), cfg.when);
+  var result = budgetSummary_(budgetSheetFor_(SpreadsheetApp.openById(cfg.sheetId), cfg.tab), cfg.tab);
   Logger.log(JSON.stringify(result));
   return result;
 }
