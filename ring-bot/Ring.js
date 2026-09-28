@@ -539,18 +539,28 @@ function budgetConfig_() {
   };
 }
 
+/**
+ * บัญชี default ของแม่/แทน = บิลที่แทนกรอกเองล่าสุด (ไม่นับ budget-* ไม่งั้นเลข e-Wallet ของบิลคงที่จะมาแทนที่)
+ * คืน { pp: เลขล้วนสำหรับ QR, bank, name, acc: ข้อความเดียวกับที่กรอกในฟอร์ม เช่น 062-345-2474 }
+ */
 function budgetPromptpayFor_(payee, fallbackProperty) {
   var hit = rows_('bills').filter(function (b) {
-    return String(b['คู่กรณี'] || '').trim() === payee &&
+    return String(b.id).indexOf('budget-') !== 0 &&
+      String(b['คู่กรณี'] || '').trim() === payee &&
       String(b['ธนาคาร'] || '').indexOf('พร้อมเพย์') === 0 &&
       String(b['เลขบัญชี'] || '').replace(/[^0-9]/g, '').length >= 10;
   }).sort(function (a, b) { return new Date(b['สร้างเมื่อ']) - new Date(a['สร้างเมื่อ']); })[0];
-  var value = hit
-    ? String(hit['เลขบัญชี']).replace(/[^0-9]/g, '')
-    : String(PropertiesService.getScriptProperties().getProperty(fallbackProperty) || '').replace(/[^0-9]/g, '');
+  if (hit) return {
+    pp: String(hit['เลขบัญชี']).replace(/[^0-9]/g, ''), bank: String(hit['ธนาคาร']),
+    name: String(hit['ชื่อบัญชี'] || payee), acc: String(hit['เลขบัญชี']).trim()
+  };
+  var value = String(PropertiesService.getScriptProperties().getProperty(fallbackProperty) || '').replace(/[^0-9]/g, '');
   if (value.length < 10) throw new Error('ไม่พบพร้อมเพย์ของ' + payee + 'ในแผงควบคุม และยังไม่ได้ตั้ง ' + fallbackProperty);
-  return value;
+  return { pp: value, bank: 'พร้อมเพย์', name: payee, acc: value };
 }
+
+/** ใส่ ' นำหน้าให้ชีตเก็บเป็นข้อความ — ไม่งั้น 0 นำหน้าหาย (0623452474 → 623452474) */
+function budgetText_(v) { return "'" + String(v); }
 
 function budgetMonthAliases_(month) {
   return [
@@ -711,12 +721,13 @@ function budgetTick_() {
   var rows;
   try {
     rows = summary.items.map(function (item, index) {
-      var qrUrl = budgetQr_(cfg.promptpays[item.payee], item.amount,
+      var acct = cfg.promptpays[item.payee];
+      var qrUrl = budgetQr_(acct.pp, item.amount,
         Utilities.formatDate(cfg.when, TZ, 'yyyyMMdd-HHmm') + '-' + item.payee);
       var id = 'budget-' + cfg.period.replace('-', '') + '-' + (index + 1);
       return [
         id, now, 'จ่าย', cfg.to, 'ค่าใช้จ่าย ' + summary.sheet + ' — โอนให้' + item.payee,
-        item.payee, item.amount, 'พร้อมเพย์', item.payee, cfg.promptpays[item.payee],
+        item.payee, item.amount, acct.bank, acct.name, budgetText_(acct.acc),
         cfg.when, cfg.when, '', 1, 0, '', '',
         'สร้างอัตโนมัติจาก Budget-Bajjo แท็บ ' + summary.sheet, qrUrl
       ];
@@ -754,7 +765,8 @@ function budgetExtraTick_(cfg) {
     catch (qrError) { budgetLogWaiting_(cfg, qrError); return; }
     sheet_('bills').appendRow([
       'budget-' + cfg.period.replace('-', '') + '-' + (i + 3), now, 'จ่าย', cfg.to, x.label + ' — โอนให้' + x.payee,
-      x.payee, x.amount, 'พร้อมเพย์', x.payee, x.promptpay, cfg.when, cfg.when, '', 1, 0, '', '',
+      x.payee, x.amount, 'พร้อมเพย์ (e-Wallet)', cfg.promptpays[x.payee].name, budgetText_(x.promptpay),
+      cfg.when, cfg.when, '', 1, 0, '', '',
       'ยอดคงที่ทุกเดือน (' + x.label + ')', qrUrl
     ]);
     SpreadsheetApp.flush();
@@ -792,6 +804,21 @@ function budgetTickSentThisMonth() {
   var prefix = 'budget-' + Utilities.formatDate(new Date(), TZ, 'yyyyMM') + '-';
   rows_('bills').forEach(function (b) {
     if (String(b.id).indexOf(prefix) === 0 && Number(b['ส่งไปแล้ว']) > 0) budgetTickSheet_(b);
+  });
+}
+
+/** รันมือครั้งเดียว: เติมธนาคาร/ชื่อบัญชี/เลขบัญชีของบิล budget-* เก่าให้เป็นแบบเดียวกับบิลที่กรอกเอง */
+function budgetFixAccountCells() {
+  var cfg = budgetConfig_(), sh = sheet_('bills');
+  rows_('bills').forEach(function (b) {
+    var m = String(b.id).match(/^budget-\d{6}-(\d+)$/);
+    if (!m) return;
+    var n = Number(m[1]), x = n >= 3 ? BUDGET_EXTRAS[n - 3] : null;
+    var acct = cfg.promptpays[String(b['คู่กรณี']).trim()];
+    if (!acct || (n >= 3 && !x)) return;
+    sh.getRange(b._row, HEADERS.bills.indexOf('ธนาคาร') + 1, 1, 3).setValues([x
+      ? ['พร้อมเพย์ (e-Wallet)', acct.name, budgetText_(x.promptpay)]
+      : [acct.bank, acct.name, budgetText_(acct.acc)]]);
   });
 }
 
