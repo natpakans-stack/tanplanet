@@ -559,6 +559,13 @@ function budgetPromptpayFor_(payee, fallbackProperty) {
   return { pp: value, bank: 'พร้อมเพย์', name: payee, acc: value };
 }
 
+/** setValues ลงแถวใหม่ได้ format วันที่อย่างเดียว (9/28/2026) — บังคับให้มีเวลาเหมือนแถวจาก appendRow */
+function budgetDateFormat_(sh, row, count) {
+  ['สร้างเมื่อ', 'เริ่มเมื่อ', 'เตือนเมื่อ', 'ส่งล่าสุด'].forEach(function (h) {
+    sh.getRange(row, HEADERS.bills.indexOf(h) + 1, count, 1).setNumberFormat('M/d/yyyy H:mm:ss');
+  });
+}
+
 /** ใส่ ' นำหน้าให้ชีตเก็บเป็นข้อความ — ไม่งั้น 0 นำหน้าหาย (0623452474 → 623452474) */
 function budgetText_(v) { return "'" + String(v); }
 
@@ -739,7 +746,9 @@ function budgetTick_() {
 
   // เขียนสองบิลพร้อมกัน เพื่อไม่ให้มี record แม่แต่ขาดแทนหากการเขียนสะดุดกลางทาง
   var sh = sheet_('bills');
-  sh.getRange(sh.getLastRow() + 1, 1, rows.length, HEADERS.bills.length).setValues(rows);
+  var first = sh.getLastRow() + 1;
+  sh.getRange(first, 1, rows.length, HEADERS.bills.length).setValues(rows);
+  budgetDateFormat_(sh, first, rows.length);
   SpreadsheetApp.flush();
   props.setProperty(key, JSON.stringify({ importedAt: now.toISOString(), sheet: summary.sheet, items: summary.items }));
   props.deleteProperty('BUDGET_LAST_ERROR_' + cfg.period);
@@ -819,6 +828,7 @@ function budgetFixAccountCells() {
     sh.getRange(b._row, HEADERS.bills.indexOf('ธนาคาร') + 1, 1, 3).setValues([x
       ? ['พร้อมเพย์ (e-Wallet)', acct.name, budgetText_(x.promptpay)]
       : [acct.bank, acct.name, budgetText_(acct.acc)]]);
+    budgetDateFormat_(sh, b._row, 1);
   });
 }
 
