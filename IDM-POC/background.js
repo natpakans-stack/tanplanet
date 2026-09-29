@@ -101,4 +101,74 @@ chrome.runtime.onMessage.addListener((m, _s, reply) => {
     .catch((e) => reply({ ok: false, error: e.message }));
   return true;
 });
+// ── เสียงที่ฝังในโค้ดหน้า (MyInstants ฯลฯ: <button onclick="play('/media/sounds/x.mp3')">) ──
+// webRequest เห็นเฉพาะไฟล์ที่เล่นแล้ว → อ่าน DOM หา .mp3/.wav/.ogg/.m4a จาก attribute + <script> แทน (ผู้ใช้ 29 ก.ย.)
+// ponytail: regex ทั้งหน้า ไม่ parse JS · หน้าที่ต่อ URL เสียงด้วยโค้ด runtime จะไม่เจอ ต้องกดเล่นให้ webRequest จับแทน
+function scanAudioInPage() {
+  const re = /[^\s'"()<>,]+\.(?:mp3|wav|ogg|m4a)(?:\?[^\s'"()<>,]*)?/gi, out = new Map();
+  const add = (u, el) => { try { const abs = new URL(u, location.href).href; if (!/^https?:/.test(abs) || out.has(abs)) return;
+    const box = el?.closest?.("[class*=instant],li,article,.item,.card") || el?.parentElement;
+    const t = el?.getAttribute?.("title") || el?.getAttribute?.("aria-label") || box?.textContent || "";
+    out.set(abs, t.replace(/\s+/g, " ").replace(/^Play\s+|\s+sound$/gi, "").trim().slice(0, 70)); } catch {} };
+  for (const el of document.querySelectorAll("*")) for (const a of el.attributes) if (/\.(mp3|wav|ogg|m4a)/i.test(a.value)) for (const u of a.value.match(re) || []) add(u, el);
+  for (const s of document.scripts) for (const u of s.textContent.match(re) || []) add(u, null);
+  return [...out].map(([url, title]) => ({ url, title }));
+}
+async function scanAudio(tabId) {
+  const res = await chrome.scripting.executeScript({ target: { tabId }, func: scanAudioInPage }).catch(() => null);
+  const found = res?.[0]?.result || []; if (!found.length) return 0;
+  const page = await pageOf(tabId);
+  const { items = [] } = await chrome.storage.session.get("items");
+  let n = 0;
+  for (const f of found) if (!items.some((i) => i.url === f.url && i.tabId === tabId)) { items.push({ url: f.url, type: "audio", title: f.title, headers: { Referer: page }, tabId, page }); n++; }
+  if (n) { await chrome.storage.session.set({ items }); setBadge(tabId, items.filter((i) => i.tabId === tabId && i.page === page).length); }
+  return n;
+}
+chrome.tabs.onUpdated.addListener((tabId, info) => { if (info.status === "complete") scanAudio(tabId); });
+chrome.runtime.onMessage.addListener((m, _s, reply) => { if (m?.type !== "scanAudio") return; scanAudio(m.tabId).then((n) => reply({ n })); return true; });
+
+// ── โหลดเสียงหลายไฟล์: วนใน service worker ไม่ใช่ในป๊อปอัป — ป๊อปอัปปิดแล้ว JS ของมันตาย งานหยุดที่ 6/72 (ผู้ใช้ 29 ก.ย.)
+// ไฟล์อยู่หลัง Cloudflare → ให้หน้าเว็บ fetch เอง (ตัวตนเบราว์เซอร์จริง) แล้วส่ง base64 ให้ ShotDeck เขียนลงปลายทางที่เลือก
+async function fetchInPage(tabId, url) {
+  const [r] = await chrome.scripting.executeScript({ target: { tabId }, args: [url], func: async (u) => {
+    try { const res = await fetch(u); if (!res.ok) return { err: "HTTP " + res.status };
+      const b = new Uint8Array(await res.arrayBuffer()); let s = "";
+      for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000));
+      return { b64: btoa(s) }; } catch (e) { return { err: String(e) }; } } }).catch((e) => [{ result: { err: e.message } }]);
+  const got = r?.result || {}; if (!got.b64) throw new Error(got.err || "ดึงไฟล์ไม่ได้");
+  return got.b64;
+}
+async function saveAudio(tabId, item, pid, page) {
+  const b64 = await fetchInPage(tabId, item.url);
+  const name = decodeURIComponent(item.url.split("?")[0].split("/").pop() || "sound.mp3");
+  const res = await fetch(`${SD}/api/sfx/upload`, { method: "POST", headers: { "content-type": "application/json" },
+    body: JSON.stringify({ pid: pid || null, name, title: item.title || "", source: item.url, page, b64 }) });
+  const j = await res.json().catch(() => ({})); if (!res.ok) throw new Error(j.error || "ShotDeck ไม่ตอบ");
+  return j.file;
+}
+let audioBusy = false;
+async function runAudio({ tabId, items, pid, page }) {
+  audioBusy = true;
+  const st = { total: items.length, done: 0, bad: 0, running: true, last: "", err: "" };
+  const put = () => chrome.storage.session.set({ audioJob: { ...st } });
+  await put();
+  for (const it of items) {
+    try { st.last = await saveAudio(tabId, it, pid, page); st.done++; } catch (e) { st.bad++; st.err = e.message; }
+    await put();
+    chrome.action.setBadgeBackgroundColor({ color: "#c0102a" }); chrome.action.setBadgeText({ text: `♪${st.done + st.bad}` });
+    if (items.length > 1) await new Promise((r) => setTimeout(r, 700));   // ไม่ยิงรัว — เว็บต้นทางเป็นของคนอื่น
+  }
+  st.running = false; await put(); audioBusy = false;
+  chrome.action.setBadgeText({ text: "" });
+  if (items.length > 1) notify("โหลดเสียงเสร็จแล้ว", `${st.done} ไฟล์` + (st.bad ? ` · พลาด ${st.bad} (${st.err})` : ""));
+  return st;
+}
+chrome.runtime.onMessage.addListener((m, _s, reply) => {
+  if (m?.type !== "grabAudio") return;
+  if (audioBusy) return void reply({ ok: false, error: "กำลังโหลดเสียงชุดก่อนอยู่" });
+  const p = runAudio(m);
+  if (m.items.length === 1) { p.then((st) => reply(st.done ? { ok: true, file: st.last } : { ok: false, error: st.err })); return true; }
+  reply({ ok: true });   // ชุดใหญ่ตอบทันที ป๊อปอัปอ่านความคืบหน้าจาก storage.session.audioJob
+});
+
 watchJobs(); // SW ตื่นมา (เช่น Chrome เปิดใหม่) มีงานค้างที่ server ก็ตามต่อ

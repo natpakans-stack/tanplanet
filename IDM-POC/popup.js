@@ -374,6 +374,47 @@ async function activeTab() {
 const forPage = (items, t) =>
   items.filter((i) => i.tabId === t.id && (!i.page || i.page === t.page));
 
+
+// ── เสียงจากหน้าเว็บ (ผู้ใช้ 29 ก.ย. MyInstants) — ไฟล์อยู่หลัง Cloudflare: server/yt-dlp โดน 403
+// เลยให้ "หน้าเว็บเอง" fetch ไฟล์ (ผ่านด่านด้วยคุกกี้/ตัวตนของเบราว์เซอร์จริง) แล้วส่ง base64 ให้ ShotDeck เขียนลงปลายทางที่เลือก
+const isAudio = (i) => i.type === "audio" || /\.(mp3|wav|ogg|m4a)([?#]|$)/i.test(i.url);
+async function grabAudio(item) {   // ทางเดียวกับชุดใหญ่ — ให้ service worker ทำ
+  const tab = await activeTab();
+  const res = await chrome.runtime.sendMessage({ type: "grabAudio", tabId: tab.id, page: tab.page, pid: target.pid || null, items: [item] });
+  if (!res?.ok) throw new Error(res?.error || "ล้มเหลว");
+  return res.file;
+}
+function audioRow(item) {
+  const row = document.createElement("div"); row.className = "row";
+  const main = document.createElement("div"); main.className = "row-main";
+  const top = document.createElement("div"); top.className = "row-top";
+  const chip = document.createElement("span"); chip.className = "chip file"; chip.textContent = "เสียง"; top.append(chip);
+  const info = document.createElement("div"); info.className = "info"; info.title = item.url;
+  info.textContent = (item.title ? item.title + " · " : "") + decodeURIComponent(item.url.split("?")[0].split("/").pop());
+  main.append(top, info);
+  const acts = document.createElement("div"); acts.className = "acts";
+  const au = new Audio(); au.preload = "none";
+  const play = document.createElement("button"); play.className = "btn"; play.textContent = "▶"; play.setAttribute("aria-label", "ฟังตัวอย่าง");
+  play.onclick = () => { if (au.paused) { au.src ||= item.url; au.currentTime = 0; au.play().catch(() => setStatus("เล่นในป๊อปอัปไม่ได้ (เว็บกันไว้) — โหลดแล้วฟังในเครื่องแทน", "err")); play.textContent = "■"; } else { au.pause(); play.textContent = "▶"; } };
+  au.onended = () => (play.textContent = "▶");
+  const dl = document.createElement("button"); dl.className = "btn dl"; dl.append(icon("download"), "โหลด");
+  dl.onclick = async () => { if (!serverUp) return setStatus("เปิด ShotDeck (localhost:4400) ก่อน — ไฟล์เสียงเขียนลงเครื่องผ่าน ShotDeck", "err");
+    dl.disabled = true; try { setStatus("เก็บแล้ว → " + (await grabAudio(item)), "ok"); dl.replaceChildren("✓ แล้ว"); } catch (e) { setStatus("โหลดเสียงไม่ได้: " + e.message, "err"); dl.disabled = false; } };
+  acts.append(play, dl);
+  row.append(main, acts);
+  return row;
+}
+async function grabAllAudio(list, btn) {
+  if (!serverUp) return setStatus("เปิด ShotDeck (localhost:4400) ก่อน", "err");
+  const tab = await activeTab();
+  const res = await chrome.runtime.sendMessage({ type: "grabAudio", tabId: tab.id, page: tab.page, pid: target.pid || null, items: list });
+  if (!res?.ok) return setStatus(res?.error || "สั่งโหลดไม่ได้", "err");
+  setStatus("เริ่มโหลดแล้ว — ปิดป๊อปอัปได้ งานวิ่งต่อเบื้องหลัง เสร็จแล้วเด้งแจ้ง", "ok");
+  btn.disabled = true;
+}
+// ความคืบหน้าชุดใหญ่ (มาจาก service worker)
+const audioLabel = (j) => j.running ? `กำลังโหลด ${j.done + j.bad}/${j.total}…` : `เสร็จ ${j.done} ไฟล์` + (j.bad ? ` · พลาด ${j.bad}` : "");
+
 async function render() {
   const tab = await activeTab();
   const { items: all = [] } = await chrome.storage.session.get("items");
@@ -384,13 +425,26 @@ async function render() {
   if (!items.length) {
     if (!yt)
       wrap.innerHTML =
-        '<div class="empty"><b>ยังไม่เจอวิดีโอในหน้านี้</b>กด Rescan แล้วเล่นวิดีโอสักครู่</div>';
+        '<div class="empty"><b>ยังไม่เจอวิดีโอ/เสียงในหน้านี้</b>กด Rescan แล้วเล่นวิดีโอสักครู่</div>';
     return;
   }
+  // เสียงแยกกลุ่มไว้บนสุด + ปุ่มโหลดทั้งหมด (หน้าแบบ MyInstants มีเป็นร้อยปุ่ม)
+  const auds = items.filter(isAudio);
+  if (auds.length) {
+    const head = document.createElement("div"); head.className = "row";
+    const t = document.createElement("div"); t.className = "row-main"; t.textContent = `เจอเสียง ${auds.length} ไฟล์ในหน้านี้`;
+    const all = document.createElement("button"); all.className = "btn dl"; all.append(icon("download"), `โหลดเสียงทั้งหมด (${auds.length})`);
+    all.onclick = () => grabAllAudio(auds, all);
+    const { audioJob } = await chrome.storage.session.get("audioJob");
+    if (audioJob?.running) { all.disabled = true; all.textContent = audioLabel(audioJob); }
+    head.append(t, all); wrap.append(head);
+    for (const a of auds) wrap.append(audioRow(a));
+  }
+  const vids = items.filter((i) => !isAudio(i));
   // แกะทุกตัวก่อน (master เติม variantRes ให้ variant ก่อนวาดตาราง)
-  const analyzed = await Promise.all(items.map((i) => analyze(i.url)));
+  const analyzed = await Promise.all(vids.map((i) => analyze(i.url)));
 
-  items.forEach((item, idx) => {
+  vids.forEach((item, idx) => {
     const d = describe(item.url, analyzed[idx]);
     const row = document.createElement("div");
     row.className = "row";
@@ -466,3 +520,5 @@ document.getElementById("clear").onclick = async () => {
 
 chrome.storage.session.onChanged.addListener(render);
 render();
+// เปิดป๊อปอัป = สแกนหาเสียงในหน้าอีกรอบ (หน้าที่เลื่อนโหลดเพิ่มจะได้ของใหม่ ไม่ต้อง reload)
+activeTab().then((t) => t.id >= 0 && chrome.runtime.sendMessage({ type: "scanAudio", tabId: t.id }).catch?.(() => {}));
