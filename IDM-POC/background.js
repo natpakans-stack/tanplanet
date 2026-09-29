@@ -68,7 +68,7 @@ chrome.tabs.onRemoved.addListener(async (tabId) => {
 
 // คิวโหลดอยู่ที่ server ShotDeck (POST /api/jobs คืนทันที) — ที่นี่แค่ poll สถานะทุก 2 วิ ระหว่างมีงานวิ่ง เพื่อ badge ↓N + notification ของ macOS ตอนเสร็จ/ล้ม
 // ponytail: poll ทำให้ service worker ตื่นตลอดที่มีงาน · ถ้า Chrome ฆ่า SW ไปจริง ๆ notification หาย แต่ป๊อปอัปเปิดมาก็ยังเห็นสถานะจาก server
-const SD = "http://localhost:4400";
+const SD = "http://shotdeck-box:4400";   // 29 ก.ย. ShotDeck ย้ายไปเครื่อง Box (ผ่าน Tailscale) — เดิม localhost:4400
 const notify = (title, message) =>
   chrome.notifications.create({ type: "basic", iconUrl: "icons/icon128.png", title, message: String(message).slice(0, 200) });
 const where = (j) => (j.shot != null ? `ซีน ${j.shot + 1} ${j.audio ? "🔊" : "←"} ` : "~/Downloads ← ") + (j.file || j.label);

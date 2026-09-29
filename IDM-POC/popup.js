@@ -85,8 +85,8 @@ function toHost(job) {
   });
 }
 
-// ---- เป้าหมาย = โปรเจกต์/ซีนใน ShotDeck (localhost:4400) — เลือกไว้แล้วปุ่มโหลดทุกปุ่มยิงเข้าซีนนั้น ----
-const SD = "http://localhost:4400";
+// ---- เป้าหมาย = โปรเจกต์/ซีนใน ShotDeck บน Box (shotdeck-box:4400) — เลือกไว้แล้วปุ่มโหลดทุกปุ่มยิงเข้าซีนนั้น ----
+const SD = "http://shotdeck-box:4400";   // 29 ก.ย. ShotDeck ย้ายไปเครื่อง Box (ผ่าน Tailscale) — เดิม localhost:4400
 const projSel = document.getElementById("proj"), shotSel = document.getElementById("shot");
 let target = { pid: "", shot: 0 };
 const mp3 = document.getElementById("mp3");
@@ -398,14 +398,14 @@ function audioRow(item) {
   play.onclick = () => { if (au.paused) { au.src ||= item.url; au.currentTime = 0; au.play().catch(() => setStatus("เล่นในป๊อปอัปไม่ได้ (เว็บกันไว้) — โหลดแล้วฟังในเครื่องแทน", "err")); play.textContent = "■"; } else { au.pause(); play.textContent = "▶"; } };
   au.onended = () => (play.textContent = "▶");
   const dl = document.createElement("button"); dl.className = "btn dl"; dl.append(icon("download"), "โหลด");
-  dl.onclick = async () => { if (!serverUp) return setStatus("เปิด ShotDeck (localhost:4400) ก่อน — ไฟล์เสียงเขียนลงเครื่องผ่าน ShotDeck", "err");
+  dl.onclick = async () => { if (!serverUp) return setStatus("ต่อ ShotDeck-Box ไม่ได้ — เปิด Tailscale บน Mac ก่อน (ไฟล์เขียนลง Box ผ่าน ShotDeck)", "err");
     dl.disabled = true; try { setStatus("เก็บแล้ว → " + (await grabAudio(item)), "ok"); dl.replaceChildren("✓ แล้ว"); } catch (e) { setStatus("โหลดเสียงไม่ได้: " + e.message, "err"); dl.disabled = false; } };
   acts.append(play, dl);
   row.append(main, acts);
   return row;
 }
 async function grabAllAudio(list, btn) {
-  if (!serverUp) return setStatus("เปิด ShotDeck (localhost:4400) ก่อน", "err");
+  if (!serverUp) return setStatus("ต่อ ShotDeck-Box ไม่ได้ — เปิด Tailscale บน Mac ก่อน", "err");
   const tab = await activeTab();
   const res = await chrome.runtime.sendMessage({ type: "grabAudio", tabId: tab.id, page: tab.page, pid: target.pid || null, items: list });
   if (!res?.ok) return setStatus(res?.error || "สั่งโหลดไม่ได้", "err");
