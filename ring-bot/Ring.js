@@ -53,7 +53,7 @@ var HEADERS = {
   pushlog: ['เวลา', 'ปลายทาง', 'ชื่อ', 'ประเภท', 'ผล', 'error'],
   budgetlog: ['เวลา', 'เดือน', 'แท็บ Budget-Bajjo', 'สถานะ', 'รายการ', 'รายละเอียด'],
   targets: ['id', 'ชนิด', 'ชื่อ', 'เห็นล่าสุด', 'ให้ใช้เมนู'],
-  payees:  ['ชื่อ', 'ชื่อบัญชี', 'พร้อมเพย์']   // คนในบ้าน: เลข 10 หลัก = เบอร์ · 13 หลัก = บัตรประชาชน
+  payees:  ['ชื่อ', 'ชื่อบัญชี', 'พร้อมเพย์']   // 10 หลัก = เบอร์ · 13 = บัตรประชาชน · 15 = e-Wallet
 };
 
 function ss_() {
@@ -207,7 +207,8 @@ function recentPayees_() {
     var who = String(r['ชื่อ'] || '').trim(), pp = String(r['พร้อมเพย์'] || '').replace(/[^0-9]/g, '');
     if (!who || seen[who]) return;
     seen[who] = true;
-    out.push({ who: who, bank: 'พร้อมเพย์ (' + (pp.length === 13 ? 'เลขบัตรประชาชน' : 'เบอร์โทร') + ')',
+    var kind = pp.length === 13 ? 'เลขบัตรประชาชน' : pp.length === 15 ? 'e-Wallet' : 'เบอร์โทร';
+    out.push({ who: who, bank: 'พร้อมเพย์ (' + kind + ')',
                name: String(r['ชื่อบัญชี'] || who).trim(), acc: pp });
   });
   rows_('bills').filter(function (b) {

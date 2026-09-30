@@ -154,6 +154,7 @@
         <select id="ppType">
           <option value="phone">เบอร์โทรศัพท์</option>
           <option value="id">เลขบัตรประชาชน</option>
+          <option value="ewallet">e-Wallet (15 หลัก)</option>
         </select>
       </div>
 
@@ -267,7 +268,8 @@
   var LENS = { gsb: 12, baac: 12 };
   var PP = {
     phone: { mask: '###-###-####', len: 10, label: 'เบอร์พร้อมเพย์', hint: 'เบอร์โทร 10 หลัก' },
-    id:    { mask: '#-####-#####-##-#', len: 13, label: 'เลขบัตรประชาชน', hint: 'เลขบัตร 13 หลัก' }
+    id:    { mask: '#-####-#####-##-#', len: 13, label: 'เลขบัตรประชาชน', hint: 'เลขบัตร 13 หลัก' },
+    ewallet: { mask: '', len: 15, label: 'เลข e-Wallet', hint: 'เลข 15 หลัก (กระปุก Make ฯลฯ)', tag: 'e-Wallet' }
   };
 
   /** ยอดเงิน: โชว์เป็น 1,234.56 ระหว่างพิมพ์ แต่ค่าที่ส่งออกเป็นตัวเลขล้วน */
@@ -416,7 +418,8 @@
 
   function bankValue() {
     if (payMode === 'pp') {
-      return 'พร้อมเพย์ (' + ($('ppType').value === 'phone' ? 'เบอร์โทร' : 'เลขบัตรประชาชน') + ')';
+      var t = $('ppType').value;
+      return 'พร้อมเพย์ (' + (t === 'phone' ? 'เบอร์โทร' : t === 'ewallet' ? 'e-Wallet' : 'เลขบัตรประชาชน') + ')';
     }
     if (!bankPick) return '';
     return bankPick.other ? $('bankOther').value.trim() : bankPick.name;
@@ -461,7 +464,7 @@
   function fillAccount(r) {
     var pp = r.bank.indexOf('พร้อมเพย์') === 0;
     setPay(pp ? 'pp' : 'bank');
-    if (pp) $('ppType').value = r.bank.indexOf('เบอร์') >= 0 ? 'phone' : 'id';
+    if (pp) $('ppType').value = r.bank.indexOf('เบอร์') >= 0 ? 'phone' : r.bank.indexOf('e-Wallet') >= 0 ? 'ewallet' : 'id';
     else if (r.bank) {
       var i = BANKS.findIndex(function (b) { return b.name === r.bank; });
       if (i < 0) { i = BANKS.length - 1; $('bankOther').value = r.bank; }
