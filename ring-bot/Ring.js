@@ -52,7 +52,8 @@ var HEADERS = {
             'จำนวนครั้ง', 'ส่งไปแล้ว', 'สถานะ', 'ส่งล่าสุด', 'โน้ต', 'รูป QR'],
   pushlog: ['เวลา', 'ปลายทาง', 'ชื่อ', 'ประเภท', 'ผล', 'error'],
   budgetlog: ['เวลา', 'เดือน', 'แท็บ Budget-Bajjo', 'สถานะ', 'รายการ', 'รายละเอียด'],
-  targets: ['id', 'ชนิด', 'ชื่อ', 'เห็นล่าสุด', 'ให้ใช้เมนู']
+  targets: ['id', 'ชนิด', 'ชื่อ', 'เห็นล่าสุด', 'ให้ใช้เมนู'],
+  payees:  ['ชื่อ', 'ชื่อบัญชี', 'พร้อมเพย์']   // คนในบ้าน: เลข 10 หลัก = เบอร์ · 13 หลัก = บัตรประชาชน
 };
 
 function ss_() {
@@ -202,6 +203,13 @@ function doGet() {
 /** คู่กรณีที่เคยกรอกเอง (ไม่นับ budget-*) พร้อมบัญชีล่าสุดของแต่ละคน — ให้ฟอร์ม prefill */
 function recentPayees_() {
   var seen = {}, out = [];
+  rows_('payees').forEach(function (r) {
+    var who = String(r['ชื่อ'] || '').trim(), pp = String(r['พร้อมเพย์'] || '').replace(/[^0-9]/g, '');
+    if (!who || seen[who]) return;
+    seen[who] = true;
+    out.push({ who: who, bank: 'พร้อมเพย์ (' + (pp.length === 13 ? 'เลขบัตรประชาชน' : 'เบอร์โทร') + ')',
+               name: String(r['ชื่อบัญชี'] || who).trim(), acc: pp });
+  });
   rows_('bills').filter(function (b) {
     return String(b.id).indexOf('budget-') !== 0 && String(b['คู่กรณี'] || '').trim();
   }).sort(function (a, b) { return new Date(b['สร้างเมื่อ']) - new Date(a['สร้างเมื่อ']); })
@@ -212,7 +220,7 @@ function recentPayees_() {
     out.push({ who: who, bank: String(b['ธนาคาร'] || '').trim(),
                name: String(b['ชื่อบัญชี'] || '').trim(), acc: String(b['เลขบัญชี'] || '').trim() });
   });
-  return out.slice(0, 8);   // ponytail: 8 ชิปพอสำหรับครอบครัว ถ้าเกินค่อยทำช่องค้นหา
+  return out.slice(0, 8);   // ponytail: แท็บ payees ขึ้นก่อน แล้วค่อยคนจากประวัติบิล · เกิน 8 ค่อยทำช่องค้นหา
 }
 
 /** เรียกจากฟอร์มผ่าน google.script.run — ไม่เชื่อค่าที่ส่งมาเลย ตรวจทุกช่อง */
