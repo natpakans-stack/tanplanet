@@ -33,6 +33,8 @@
   .row{display:flex;gap:10px}
   .row > *{flex:1;min-width:0}
   .seg{display:flex;gap:8px}
+  .seg.wrap{flex-wrap:wrap;margin-bottom:8px}
+  .seg.wrap button{flex:0 0 auto;min-height:44px;padding:0 16px}
   .seg button{flex:1;min-height:48px;font:inherit;font-weight:500;cursor:pointer;
     background:#fff;color:var(--muted);border:1px solid var(--line);border-radius:12px}
   .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);
@@ -105,7 +107,9 @@
       </div>
       <div class="field">
         <label for="who">คู่กรณี <span class="hint">ไม่ใส่ก็ได้</span></label>
-        <input id="who" placeholder="เก็บจากใคร / จ่ายให้ใคร">
+        <div class="seg wrap" id="whoChips" role="group" aria-label="คู่กรณีที่เคยใช้" hidden></div>
+        <input id="who" placeholder="เก็บจากใคร / จ่ายให้ใคร" autocomplete="off">
+        <p class="hint" id="whoHint" style="margin-top:6px" hidden></p>
       </div>
     </div>
 
@@ -226,6 +230,7 @@
 
 <script>
   var TARGETS = <?!= targets ?>;
+  var RECENTS = <?!= recents ?>;
   var $ = function (id) { return document.getElementById(id); };
   var mode = 'ทวง';
 
@@ -249,6 +254,7 @@
   ];
   var bankPick = null;
   var payMode = 'bank';
+  var chooseBank = null;   // ผูกจาก initBank
 
   /* รูปแบบเลขบัญชี: ส่วนใหญ่ 10 หลัก xxx-x-xxxxx-x
      ออมสิน/ธ.ก.ส. 12 หลัก รูปแบบไม่มาตรฐานพอจะ mask — ปล่อยเป็นตัวเลขล้วน */
@@ -386,12 +392,11 @@
       cur = i;
       open(false);
       btn.focus();
-      paintChip($('bankChip'), null);
-  setWhen(true);
-  syncAcc();
+      syncAcc();
       if (b.other) $('bankOther').focus();
     }
 
+    chooseBank = choose;
     btn.onclick = function () { open(list.hidden); };
     btn.onkeydown = function (e) {
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
@@ -437,6 +442,51 @@
       sel.appendChild(o);
     });
   })();
+
+  // คู่กรณีที่เคยใช้: แตะชิป = ใส่ชื่อ + เติมบัญชีล่าสุดของคนนั้นให้
+  (function () {
+    var wrap = $('whoChips');
+    if (!RECENTS.length) return;
+    wrap.hidden = false;
+    RECENTS.forEach(function (r) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.textContent = r.who;
+      b.setAttribute('aria-pressed', 'false');
+      b.onclick = function () { $('who').value = r.who; syncWho(); };
+      wrap.appendChild(b);
+    });
+    $('who').addEventListener('input', syncWho);
+  })();
+
+  function fillAccount(r) {
+    var pp = r.bank.indexOf('พร้อมเพย์') === 0;
+    setPay(pp ? 'pp' : 'bank');
+    if (pp) $('ppType').value = r.bank.indexOf('เบอร์') >= 0 ? 'phone' : 'id';
+    else if (r.bank) {
+      var i = BANKS.findIndex(function (b) { return b.name === r.bank; });
+      if (i < 0) { i = BANKS.length - 1; $('bankOther').value = r.bank; }
+      chooseBank(i);
+    }
+    $('accName').value = r.name;
+    syncAcc();
+    $('acc').value = applyMask(r.acc, accRule().mask, accRule().len);
+    queueQr();
+  }
+
+  function syncWho() {
+    var who = $('who').value.trim();
+    var hit = RECENTS.filter(function (r) { return r.who === who; })[0];
+    Array.prototype.forEach.call($('whoChips').children, function (b) {
+      b.setAttribute('aria-pressed', String(b.textContent === who));
+    });
+    var hint = $('whoHint');
+    hint.hidden = !(hit && (hit.acc || hit.name));
+    if (!hit) return;
+    if (hit.acc || hit.name) {
+      fillAccount(hit);
+      hint.textContent = 'เติมบัญชีล่าสุดของ' + who + 'ให้แล้ว แก้ได้ถ้าไม่ใช่';
+    }
+  }
 
   // ค่าเริ่มต้น: พรุ่งนี้ 09:00
   (function () {
@@ -546,9 +596,7 @@
     // พร้อมเพย์ไม่ผูกกับธนาคารใดธนาคารหนึ่ง — ซ่อนตัวเลือกธนาคารไปเลย
     $('bankWrap').hidden = m === 'pp';
     $('ppTypeWrap').hidden = m !== 'pp';
-    paintChip($('bankChip'), null);
-  setWhen(true);
-  syncAcc();
+    syncAcc();
     queueQr();
   }
   $('pBank').onclick = function () { setPay('bank'); };

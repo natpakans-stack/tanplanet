@@ -192,10 +192,27 @@ function doGet() {
   t.targets = JSON.stringify(rows_('targets').map(function (x) {
     return { id: x.id, name: x['ชื่อ'] || x.id, type: x['ชนิด'] };
   }));
+  t.recents = JSON.stringify(recentPayees_());
   return t.evaluate()
     .setTitle('สร้างบิล — น้องกริ่ง')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+/** คู่กรณีที่เคยกรอกเอง (ไม่นับ budget-*) พร้อมบัญชีล่าสุดของแต่ละคน — ให้ฟอร์ม prefill */
+function recentPayees_() {
+  var seen = {}, out = [];
+  rows_('bills').filter(function (b) {
+    return String(b.id).indexOf('budget-') !== 0 && String(b['คู่กรณี'] || '').trim();
+  }).sort(function (a, b) { return new Date(b['สร้างเมื่อ']) - new Date(a['สร้างเมื่อ']); })
+  .forEach(function (b) {
+    var who = String(b['คู่กรณี']).trim();
+    if (seen[who]) return;
+    seen[who] = true;
+    out.push({ who: who, bank: String(b['ธนาคาร'] || '').trim(),
+               name: String(b['ชื่อบัญชี'] || '').trim(), acc: String(b['เลขบัญชี'] || '').trim() });
+  });
+  return out.slice(0, 8);   // ponytail: 8 ชิปพอสำหรับครอบครัว ถ้าเกินค่อยทำช่องค้นหา
 }
 
 /** เรียกจากฟอร์มผ่าน google.script.run — ไม่เชื่อค่าที่ส่งมาเลย ตรวจทุกช่อง */
