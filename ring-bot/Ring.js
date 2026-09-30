@@ -200,28 +200,14 @@ function doGet() {
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
-/** คู่กรณีที่เคยกรอกเอง (ไม่นับ budget-*) พร้อมบัญชีล่าสุดของแต่ละคน — ให้ฟอร์ม prefill */
+/** คู่กรณีจากแท็บ payees (คนในบ้าน + กระปุก) — ให้ฟอร์มขึ้นชิปแล้ว prefill บัญชี */
 function recentPayees_() {
-  var seen = {}, out = [];
-  rows_('payees').forEach(function (r) {
+  return rows_('payees').map(function (r) {
     var who = String(r['ชื่อ'] || '').trim(), pp = String(r['พร้อมเพย์'] || '').replace(/[^0-9]/g, '');
-    if (!who || seen[who]) return;
-    seen[who] = true;
+    if (!who) return null;
     var kind = pp.length === 13 ? 'เลขบัตรประชาชน' : pp.length === 15 ? 'e-Wallet' : 'เบอร์โทร';
-    out.push({ who: who, bank: 'พร้อมเพย์ (' + kind + ')',
-               name: String(r['ชื่อบัญชี'] || who).trim(), acc: pp });
-  });
-  rows_('bills').filter(function (b) {
-    return String(b.id).indexOf('budget-') !== 0 && String(b['คู่กรณี'] || '').trim();
-  }).sort(function (a, b) { return new Date(b['สร้างเมื่อ']) - new Date(a['สร้างเมื่อ']); })
-  .forEach(function (b) {
-    var who = String(b['คู่กรณี']).trim();
-    if (seen[who]) return;
-    seen[who] = true;
-    out.push({ who: who, bank: String(b['ธนาคาร'] || '').trim(),
-               name: String(b['ชื่อบัญชี'] || '').trim(), acc: String(b['เลขบัญชี'] || '').trim() });
-  });
-  return out.slice(0, 8);   // ponytail: แท็บ payees ขึ้นก่อน แล้วค่อยคนจากประวัติบิล · เกิน 8 ค่อยทำช่องค้นหา
+    return { who: who, bank: 'พร้อมเพย์ (' + kind + ')', name: String(r['ชื่อบัญชี'] || who).trim(), acc: pp };
+  }).filter(Boolean);
 }
 
 /** เรียกจากฟอร์มผ่าน google.script.run — ไม่เชื่อค่าที่ส่งมาเลย ตรวจทุกช่อง */
