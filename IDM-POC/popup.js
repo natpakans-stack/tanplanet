@@ -92,6 +92,9 @@ let target = { pid: "", shot: 0 };
 const mp3 = document.getElementById("mp3");
 mp3.onchange = () => chrome.storage.local.set({ mp3: mp3.checked });
 chrome.storage.local.get("mp3").then((r) => (mp3.checked = !!r.mp3));
+const autoScan = document.getElementById("autoScan");
+autoScan.onchange = () => chrome.storage.local.set({ autoScan: autoScan.checked });
+chrome.storage.local.get("autoScan").then((r) => (autoScan.checked = !!r.autoScan));
 
 let serverUp = false;
 // ช่วงเวลา (cobalt-style: 27 ก.ย.) — โหลดเฉพาะท่อนที่ใช้ แทนสารคดีทั้งเรื่อง · ว่าง = ทั้งคลิป

@@ -110,8 +110,11 @@ function scanAudioInPage() {
     const box = el?.closest?.("[class*=instant],li,article,.item,.card") || el?.parentElement;
     const t = el?.getAttribute?.("title") || el?.getAttribute?.("aria-label") || box?.textContent || "";
     out.set(abs, t.replace(/\s+/g, " ").replace(/^Play\s+|\s+sound$/gi, "").trim().slice(0, 70)); } catch {} };
-  for (const el of document.querySelectorAll("*")) for (const a of el.attributes) if (/\.(mp3|wav|ogg|m4a)/i.test(a.value)) for (const u of a.value.match(re) || []) add(u, el);
-  for (const s of document.scripts) for (const u of s.textContent.match(re) || []) add(u, null);
+  // กันหน้าค้าง (ผู้ใช้ 1 ต.ค.: YouTube เด้ง Page Unresponsive) — regex นี้ช้ามากกับข้อความยาวที่ไม่มีช่องว่าง (ytInitialData หลาย MB)
+  // → เช็กนามสกุลแบบเส้นตรงก่อน · ข้ามสคริปต์ใหญ่เกิน 200KB · ข้ามค่า attribute ยาวเกิน 2KB
+  const has = /\.(mp3|wav|ogg|m4a)/i;
+  for (const el of document.querySelectorAll("*")) for (const a of el.attributes) if (a.value.length < 2000 && has.test(a.value)) for (const u of a.value.match(re) || []) add(u, el);
+  for (const s of document.scripts) { const t = s.textContent; if (t.length < 200000 && has.test(t)) for (const u of t.match(re) || []) add(u, null); }
   return [...out].map(([url, title]) => ({ url, title }));
 }
 async function scanAudio(tabId) {
@@ -124,7 +127,11 @@ async function scanAudio(tabId) {
   if (n) { await chrome.storage.session.set({ items }); setBadge(tabId, items.filter((i) => i.tabId === tabId && i.page === page).length); }
   return n;
 }
-chrome.tabs.onUpdated.addListener((tabId, info) => { if (info.status === "complete") scanAudio(tabId); });
+// สแกนเองทุกครั้งที่หน้าโหลดเสร็จ = เปิด/ปิดได้ในป๊อปอัป (ค่าเริ่มต้นปิด) · เปิดป๊อปอัปยังสแกนให้เสมอ
+chrome.tabs.onUpdated.addListener(async (tabId, info) => {
+  if (info.status !== "complete") return;
+  if ((await chrome.storage.local.get("autoScan")).autoScan) scanAudio(tabId);
+});
 chrome.runtime.onMessage.addListener((m, _s, reply) => { if (m?.type !== "scanAudio") return; scanAudio(m.tabId).then((n) => reply({ n })); return true; });
 
 // ── โหลดเสียงหลายไฟล์: วนใน service worker ไม่ใช่ในป๊อปอัป — ป๊อปอัปปิดแล้ว JS ของมันตาย งานหยุดที่ 6/72 (ผู้ใช้ 29 ก.ย.)
@@ -135,8 +142,14 @@ async function fetchInPage(tabId, url) {
       const b = new Uint8Array(await res.arrayBuffer()); let s = "";
       for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000));
       return { b64: btoa(s) }; } catch (e) { return { err: String(e) }; } } }).catch((e) => [{ result: { err: e.message } }]);
-  const got = r?.result || {}; if (!got.b64) throw new Error(got.err || "ดึงไฟล์ไม่ได้");
-  return got.b64;
+  const got = r?.result || {}; if (got.b64) return got.b64;
+  // แท็บเปลี่ยนหน้า/ปิดไปแล้ว ไฟล์ชุดใหญ่จะหยุดกลางทาง (ผู้ใช้ 1 ต.ค.) → ดึงจาก service worker เองแทน (ส่วนขยายมีสิทธิ์ทุกโดเมน)
+  // ponytail: ไฟล์ที่อยู่หลัง Cloudflare อาจโดนบล็อกในทางนี้ ทางในหน้ายังเป็นทางหลัก
+  const res = await fetch(url, { credentials: "include" }).catch(() => null);
+  if (!res?.ok) throw new Error(got.err || (res ? "HTTP " + res.status : "ดึงไฟล์ไม่ได้"));
+  const b = new Uint8Array(await res.arrayBuffer()); let s = "";
+  for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode(...b.subarray(i, i + 0x8000));
+  return btoa(s);
 }
 async function saveAudio(tabId, item, pid, page) {
   const b64 = await fetchInPage(tabId, item.url);
