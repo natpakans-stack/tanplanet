@@ -81,6 +81,7 @@ async function tickJobs() {
     const prev = seen.get(j.id);
     if (prev && prev !== j.state && (j.state === "done" || j.state === "error"))
       notify(j.state === "done" ? "โหลดเสร็จแล้ว" : "โหลดไม่สำเร็จ", j.state === "done" ? where(j) : `${j.label}\n${j.error || ""}`);
+    if (prev && prev !== "done" && j.state === "done" && !j.pid && j.path) pull(j.id, j.file || j.label, false).catch(() => {});
     seen.set(j.id, j.state);
   }
   const running = list.filter((j) => j.state === "running").length;
@@ -99,6 +100,25 @@ chrome.runtime.onMessage.addListener((m, _s, reply) => {
       notify("เริ่มโหลดแล้ว รอสักครู่", `${where(j)}\nดู % ในป๊อปอัป · เสร็จแล้วเด้งบอกอีกที`);
       reply({ ok: true, id: j.id }); })
     .catch((e) => reply({ ok: false, error: e.message }));
+  return true;
+});
+// งานที่ไม่ได้เลือกโปรเจกต์ = ของที่ผู้ใช้โหลดบน Mac → ไฟล์ต้องมาอยู่ ~/Downloads ของ Mac (1 ต.ค.: "ควรจะค้างอยู่ในเครื่อง Mac")
+// เซิร์ฟเวอร์อยู่บน Box → พอโหลดเสร็จดึงลง Mac เองทันที · ปุ่มโฟลเดอร์ = ชี้ไฟล์ใน Finder (ยังไม่ได้ดึง = ดึงก่อนแล้วชี้)
+// ponytail: ไฟล์ต้นทางยังอยู่ใน ~/Downloads ของ Box ไม่ลบ (ที่ว่างเหลือเยอะ) · จำ downloadId ใน storage.session ปิด Chrome แล้วต้องดึงใหม่
+async function pull(jobId, name, show) {
+  const { pulled = {} } = await chrome.storage.session.get("pulled");
+  if (pulled[jobId]) { if (show) chrome.downloads.show(pulled[jobId]); return; }
+  const id = await chrome.downloads.download({ url: `${SD}/api/jobs/${jobId}/file`, conflictAction: "uniquify" });
+  pulled[jobId] = id; await chrome.storage.session.set({ pulled });
+  const done = (d) => { if (d.id !== id || !d.state) return;
+    if (d.state.current === "complete") { chrome.downloads.onChanged.removeListener(done); if (show) chrome.downloads.show(id); }
+    if (d.state.current === "interrupted") { chrome.downloads.onChanged.removeListener(done); delete pulled[jobId]; chrome.storage.session.set({ pulled });
+      notify("ดึงไฟล์ลง Mac ไม่สำเร็จ", `${name}\nงานเกิน 30 นาทีจะหายจากคิว — ไฟล์ยังอยู่ ~/Downloads ของ Box`); } };
+  chrome.downloads.onChanged.addListener(done);
+}
+chrome.runtime.onMessage.addListener((m, _s, reply) => {
+  if (m?.type !== "pullJob") return;
+  pull(m.id, m.name, true).then(() => reply({ ok: true }), (e) => reply({ ok: false, error: e.message }));
   return true;
 });
 // ── เสียงที่ฝังในโค้ดหน้า (MyInstants ฯลฯ: <button onclick="play('/media/sounds/x.mp3')">) ──

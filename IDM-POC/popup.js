@@ -30,6 +30,11 @@ const jobsEl = document.getElementById("jobs");
 const STATE = { running: "กำลังโหลด", paused: "หยุดชั่วคราว", done: "เสร็จแล้ว", error: "ล้มเหลว", stopped: "ยกเลิกแล้ว" };
 const jobBtn = (ico, title, act, id) => { const b = document.createElement("button"); b.className = "btn"; b.title = title; b.append(icon(ico));
   b.onclick = () => fetch(`${SD}/api/jobs/${id}/${act}`, { method: "POST" }).then(renderJobs).catch(() => {}); return b; };
+const revealBtn = (j) => { const b = document.createElement("button"); b.className = "btn"; b.append(icon("folder"));
+  b.title = j.pid ? "เปิดโปรเจกต์ใน ShotDeck" : "ดึงไฟล์ลง Downloads ของ Mac แล้วเปิดใน Finder";
+  b.onclick = () => j.pid ? chrome.tabs.create({ url: `${SD}/#p=${j.pid}` })
+    : chrome.runtime.sendMessage({ type: "pullJob", id: j.id, name: j.file || "" }, (r) => r?.ok === false && setStatus(r.error, "err"));
+  return b; };
 let lastJobs = new Map();
 async function renderJobs() {
   const list = await fetch(`${SD}/api/jobs`).then((r) => r.json()).catch(() => null);
@@ -51,7 +56,8 @@ async function renderJobs() {
     if (j.state === "running") row.append(jobBtn("pause", "หยุดชั่วคราว (เก็บที่โหลดไว้)", "pause", j.id), jobBtn("x", "ยกเลิก ลบไฟล์ที่โหลดค้าง", "stop", j.id));
     else if (j.state === "paused" || j.state === "error") row.append(jobBtn("play", "โหลดต่อ", "resume", j.id), jobBtn("x", "เอาออกจากรายการ", "dismiss", j.id));
     // โหลดเสร็จ → ปุ่มเปิด Finder ชี้ไฟล์ที่ได้ (ผู้ใช้ 27 ก.ย.)
-    else row.append(...(j.state === "done" ? [jobBtn("folder", "เปิดโฟลเดอร์ที่เก็บไฟล์", "reveal", j.id)] : []), jobBtn("x", "เอาออกจากรายการ", "dismiss", j.id));
+    // 1 ต.ค.: เซิร์ฟเวอร์อยู่บน Box สั่ง Finder บน Mac ไม่ได้ → เข้าซีน = เปิดหน้าโปรเจกต์ · ลง Downloads = ดึงไฟล์มา Mac แล้วชี้ใน Finder (ทำใน background ป๊อปอัปปิดก็ไม่หยุด)
+    else row.append(...(j.state === "done" ? [revealBtn(j)] : []), jobBtn("x", "เอาออกจากรายการ", "dismiss", j.id));
     return row;
   }));
   // งานที่เพิ่งเสร็จของโปรเจกต์ที่เลือกอยู่ → เลื่อนไปซีนถัดไปที่ยังว่าง
