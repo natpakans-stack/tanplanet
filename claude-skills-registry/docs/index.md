@@ -13,7 +13,7 @@ hero:
       link: /plugin/design-frontend
     - theme: alt
       text: All Projects
-      link: https://projects.tanplanet.info/
+      link: https://projects.tanplanet.work/
 
 features:
   - icon: 🔌

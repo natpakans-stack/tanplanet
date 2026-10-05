@@ -25,7 +25,7 @@
       <a href="/tool/">Tools</a>
     </div>
     <div class="mascot-external">
-      <a href="https://projects.tanplanet.info/" target="_blank">All Projects</a>
+      <a href="https://projects.tanplanet.work/" target="_blank">All Projects</a>
     </div>
     <p class="mascot-version">v1.2.0 — มี.ค. 2569</p>
     <p class="mascot-credit">Made with ❤️ by <a href="https://github.com/natpakans-stack" target="_blank">Natpakan Sirirat (tanθ)</a></p>

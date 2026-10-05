@@ -11,7 +11,7 @@ from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-BASE = "https://projects.tanplanet.info/"
+BASE = "https://projects.tanplanet.work/"
 
 CARD_RE = re.compile(r'<a class="card[^"]*"[^>]*href="([^"]+)"[^>]*>(.*?)</a>', re.S)
 

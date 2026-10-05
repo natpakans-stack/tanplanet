@@ -28,7 +28,7 @@ export default defineConfig({
     },
     nav: [
       { text: 'หน้าแรก', link: '/' },
-      { text: 'All Projects', link: 'https://projects.tanplanet.info/' }
+      { text: 'All Projects', link: 'https://projects.tanplanet.work/' }
     ],
     sidebar: [
       {
