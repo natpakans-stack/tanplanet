@@ -11,7 +11,7 @@ export function ShareModal({ code, onClose }: { code: string; onClose: () => voi
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const link = `${window.location.origin}/join/${code}`;
+    const link = `${window.location.origin}${process.env.NEXT_PUBLIC_BASE_PATH}/join/${code}`;
     setUrl(link);
     QRCode.toDataURL(link, {
       width: 520,
