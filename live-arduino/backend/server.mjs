@@ -11,11 +11,13 @@ const MEGACOACH_ROOT = process.env.MEGACOACH_ROOT || path.resolve(PROJECT_ROOT, 
 const ASTRO_API_BASE = process.env.ASTRO_API_BASE || "https://thai-astrology-flame.vercel.app";
 // ── จอยังใช้อยู่ไหม (6 ต.ค.: backend ย้ายไป Box ให้ Mac หลับได้ · เครื่องลืมไว้ต่างจังหวัด) ──
 // ทุกครั้งที่ตัวจอ (ESP32HTTPClient) มาดึงข้อมูล จดเวลาล่าสุดลง data/device-seen.json
-// หายไป ≥ 6 ชม. แล้วกลับมา = แจ้ง Telegram "จอกลับมาออนไลน์" · ไม่มาเลย ≥ 14 วัน = แจ้งครั้งเดียวว่าน่าจะไม่ได้ใช้ ปิด backend ได้
+// ผู้ใช้ 6 ต.ค. "ไม่ต้องส่งย้ำ ๆ ถอดปุ๊บแล้วส่ง spam ไม่เอา" → แจ้งแค่สองกรณี:
+//   1) จอกลับมาหลังหายไป ≥ 3 วัน (หรือครั้งแรกบน Box) · เสียบ-ถอดรายวันเงียบ · แจ้งได้ไม่เกินสัปดาห์ละครั้ง
+//   2) ไม่มาเลย ≥ 14 วัน = แจ้งครั้งเดียว จนกว่าจอจะกลับมา
 // แจ้งผ่าน /api/notify ของ ShotDeck บน Box (ถือ token Telegram อยู่แล้ว) · ไม่มีก็แค่ไม่แจ้ง
 const SEEN_FILE = path.join(PROJECT_ROOT, "data", "device-seen.json");
 const NOTIFY_URL = process.env.NOTIFY_URL || "http://localhost:4400/api/notify";
-const BACK_AFTER_MS = 6 * 3600e3, IDLE_WARN_MS = 14 * 864e5;
+const BACK_AFTER_MS = 3 * 864e5, NOTIFY_GAP_MS = 7 * 864e5, IDLE_WARN_MS = 14 * 864e5;
 const notify = (text) => fetch(NOTIFY_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text }) }).catch(() => {});
 const loadSeen = () => readFile(SEEN_FILE, "utf8").then(JSON.parse).catch(() => ({}));
 let seenWriteAt = 0;
@@ -24,9 +26,11 @@ async function markDeviceSeen(req) {
   const seen = await loadSeen(), now = Date.now(), last = seen.lastSeen ? Date.parse(seen.lastSeen) : 0;   // Date.parse(0) = ปี 2000 ไม่ใช่ 0
   if (now - seenWriteAt < 60e3 && now - last < BACK_AFTER_MS) return;   // จอดึงทุก 10 วิ — เขียนไฟล์นาทีละครั้งพอ
   seenWriteAt = now;
-  if (!last || now - last >= BACK_AFTER_MS)
-    notify(`🗓 จอ Astro Calendar กลับมาออนไลน์${last ? ` (หายไป ${Math.round((now - last) / 3600e3)} ชม.)` : " ครั้งแรกบน Box"} · IP ${req.socket.remoteAddress}`);
-  await writeFile(SEEN_FILE, JSON.stringify({ ...seen, lastSeen: new Date(now).toISOString(), ip: req.socket.remoteAddress, ua: req.headers["user-agent"], idleWarned: false }, null, 2));
+  const notifiedAt = seen.notifiedAt ? Date.parse(seen.notifiedAt) : 0;
+  const tell = (!last || now - last >= BACK_AFTER_MS) && now - notifiedAt >= NOTIFY_GAP_MS;
+  if (tell)
+    notify(`🗓 จอ Astro Calendar กลับมาออนไลน์${last ? ` (หายไป ${Math.round((now - last) / 864e5)} วัน)` : " ครั้งแรกบน Box"} · IP ${req.socket.remoteAddress}`);
+  await writeFile(SEEN_FILE, JSON.stringify({ ...seen, lastSeen: new Date(now).toISOString(), ip: req.socket.remoteAddress, ua: req.headers["user-agent"], idleWarned: false, ...(tell ? { notifiedAt: new Date(now).toISOString() } : {}) }, null, 2));
 }
 async function checkIdle() {
   const seen = await loadSeen(), ref = seen.lastSeen || seen.watchSince, since = ref ? Date.parse(ref) : 0;
