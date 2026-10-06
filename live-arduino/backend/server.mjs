@@ -9,6 +9,33 @@ const PROJECT_ROOT = path.resolve(__dirname, "..");
 const DEFAULT_PORT = Number(process.env.PORT || 8787);
 const MEGACOACH_ROOT = process.env.MEGACOACH_ROOT || path.resolve(PROJECT_ROOT, "..", "megacoach");
 const ASTRO_API_BASE = process.env.ASTRO_API_BASE || "https://thai-astrology-flame.vercel.app";
+// ── จอยังใช้อยู่ไหม (6 ต.ค.: backend ย้ายไป Box ให้ Mac หลับได้ · เครื่องลืมไว้ต่างจังหวัด) ──
+// ทุกครั้งที่ตัวจอ (ESP32HTTPClient) มาดึงข้อมูล จดเวลาล่าสุดลง data/device-seen.json
+// หายไป ≥ 6 ชม. แล้วกลับมา = แจ้ง Telegram "จอกลับมาออนไลน์" · ไม่มาเลย ≥ 14 วัน = แจ้งครั้งเดียวว่าน่าจะไม่ได้ใช้ ปิด backend ได้
+// แจ้งผ่าน /api/notify ของ ShotDeck บน Box (ถือ token Telegram อยู่แล้ว) · ไม่มีก็แค่ไม่แจ้ง
+const SEEN_FILE = path.join(PROJECT_ROOT, "data", "device-seen.json");
+const NOTIFY_URL = process.env.NOTIFY_URL || "http://localhost:4400/api/notify";
+const BACK_AFTER_MS = 6 * 3600e3, IDLE_WARN_MS = 14 * 864e5;
+const notify = (text) => fetch(NOTIFY_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text }) }).catch(() => {});
+const loadSeen = () => readFile(SEEN_FILE, "utf8").then(JSON.parse).catch(() => ({}));
+let seenWriteAt = 0;
+async function markDeviceSeen(req) {
+  if (!/ESP32|arduino/i.test(String(req.headers["user-agent"] || ""))) return;   // เบราว์เซอร์/หน้า /ui ไม่นับ
+  const seen = await loadSeen(), now = Date.now(), last = Date.parse(seen.lastSeen || 0) || 0;
+  if (now - seenWriteAt < 60e3 && now - last < BACK_AFTER_MS) return;   // จอดึงทุก 10 วิ — เขียนไฟล์นาทีละครั้งพอ
+  seenWriteAt = now;
+  if (!last || now - last >= BACK_AFTER_MS)
+    notify(`🗓 จอ Astro Calendar กลับมาออนไลน์${last ? ` (หายไป ${Math.round((now - last) / 3600e3)} ชม.)` : " ครั้งแรกบน Box"} · IP ${req.socket.remoteAddress}`);
+  await writeFile(SEEN_FILE, JSON.stringify({ ...seen, lastSeen: new Date(now).toISOString(), ip: req.socket.remoteAddress, ua: req.headers["user-agent"], idleWarned: false }, null, 2));
+}
+async function checkIdle() {
+  const seen = await loadSeen(), since = Date.parse(seen.lastSeen || seen.watchSince || 0) || 0;
+  if (!since) return writeFile(SEEN_FILE, JSON.stringify({ ...seen, watchSince: new Date().toISOString() }, null, 2));
+  if (!seen.idleWarned && Date.now() - since >= IDLE_WARN_MS) {
+    await notify(`🗓 จอ Astro Calendar ไม่ได้มาดึงข้อมูล ${Math.round((Date.now() - since) / 864e5)} วัน${seen.lastSeen ? "" : " (ตั้งแต่เปิด backend บน Box)"} — น่าจะไม่ได้ใช้แล้ว ปิดได้: systemctl --user disable --now com.tanplanet.astro-backend`);
+    await writeFile(SEEN_FILE, JSON.stringify({ ...seen, idleWarned: true }, null, 2));
+  }
+}
 
 const TONE_BY_SIGNAL = {
   go: "ok",
@@ -801,10 +828,12 @@ async function handleRequest(req, res) {
     }
   }
   if (url.pathname === "/api/device-summary") {
+    await markDeviceSeen(req);
     return sendJson(res, 200, await buildDeviceSummary());
   }
   // การ์ดเดียวก้อนเล็ก — จอดึงถี่ ๆ ได้โดยไม่ต้องลาก device-summary ทั้งก้อนมาทุก 10 วิ
   if (url.pathname === "/api/claude") {
+    await markDeviceSeen(req);
     const c = await buildClaudeCard();
     return sendJson(res, 200, { value: c.value, detail: c.detail, tone: c.tone, extra: c.extra });
   }
@@ -885,6 +914,7 @@ async function handleRequest(req, res) {
       megacoachRoot: MEGACOACH_ROOT,
       astroApiBase: ASTRO_API_BASE,
       now: new Date().toISOString(),
+      device: await loadSeen().then((x) => ({ ...x, idleDays: x.lastSeen ? +((Date.now() - Date.parse(x.lastSeen)) / 864e5).toFixed(1) : null })),
     });
   }
   if (url.pathname === "/api/mock") {
@@ -921,4 +951,5 @@ if (process.argv.includes("--print-summary")) {
       console.log(`TanPlanet backend mock listening on http://localhost:${DEFAULT_PORT}`);
       console.log(`MegaCoach root: ${MEGACOACH_ROOT}`);
     });
+  checkIdle(); setInterval(checkIdle, 6 * 3600e3);
 }
