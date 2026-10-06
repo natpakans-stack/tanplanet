@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>รถจอดชั้นไหน</title>
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ที่จอดรถ">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f4f1ea" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14130f" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/carpark/icon.svg" type="image/svg+xml">
+<link rel="icon" href="/carpark/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/carpark/apple-touch-icon.png">
+<link rel="manifest" href="/carpark/manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f1ea; --surface: #fffdf8; --surface-2: #ebe6db;
+  --tx: #1b1a17; --tx-2: #5c574d; --line: #ddd6c8;
+  --accent: #c2410c; --accent-tx: #fff; --ok: #15803d; --err: #b91c1c;
+  --radius: 20px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14130f; --surface: #1e1c18; --surface-2: #2a2721;
+    --tx: #f4f1ea; --tx-2: #b3ab9c; --line: #34302a;
+    --accent: #fb923c; --accent-tx: #1b1a17; --ok: #4ade80; --err: #f87171;
+  }
+}
+* { box-sizing: border-box; margin: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: "IBM Plex Sans Thai", system-ui, sans-serif;
+  background: var(--bg); color: var(--tx);
+  line-height: 1.55; -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+}
+main { max-width: 440px; margin: 0 auto; display: grid; gap: 16px; }
+.num { font-family: "Space Grotesk", "IBM Plex Sans Thai", sans-serif; font-variant-numeric: tabular-nums; }
+i[data-lucide] { display: inline-flex; }
+svg.lucide { width: 20px; height: 20px; stroke-width: 2; flex: none; }
+
+/* ── header ── */
+header { display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 0; }
+header h1 { font-size: 15px; font-weight: 500; color: var(--tx-2); }
+.icon-btn {
+  width: 44px; height: 44px; border-radius: 50%; border: 0;
+  background: var(--surface); color: var(--tx); display: grid; place-items: center; cursor: pointer;
+}
+.icon-btn.spin svg { animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── status card ── */
+.card { background: var(--surface); border-radius: var(--radius); padding: 24px; }
+.status { padding: 28px 24px 24px; }
+.where { display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 600; }
+.where svg { color: var(--accent); }
+.floor-label { margin-top: 20px; font-size: 14px; color: var(--tx-2); }
+.floor { font-size: clamp(96px, 34vw, 148px); font-weight: 700; line-height: .9; letter-spacing: -0.04em; margin-top: 4px; }
+.floor.none { font-family: inherit; font-size: 28px; font-weight: 600; letter-spacing: 0; line-height: 1.3; margin-top: 8px; }
+.meta { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 14px; color: var(--tx-2); }
+.meta span { display: inline-flex; align-items: center; gap: 6px; }
+.meta svg { width: 16px; height: 16px; }
+.note { margin-top: 12px; font-size: 15px; background: var(--surface-2); border-radius: 12px; padding: 10px 14px; }
+.stale { margin-top: 16px; font-size: 14px; color: var(--err); display: flex; gap: 8px; align-items: flex-start; }
+.stale svg { width: 18px; height: 18px; margin-top: 2px; }
+.condo { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 15px; color: var(--tx-2); }
+.condo b { color: var(--tx); font-size: 20px; }
+.actions { margin-top: 24px; display: grid; grid-template-columns: 1fr; gap: 8px; }
+.btn {
+  min-height: 52px; border-radius: 14px; border: 0; font: inherit; font-size: 16px; font-weight: 600;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  text-decoration: none; cursor: pointer;
+}
+.btn-primary { background: var(--accent); color: var(--accent-tx); }
+.btn-ghost { background: var(--surface-2); color: var(--tx); }
+.btn:disabled { opacity: .5; cursor: progress; }
+.skeleton { color: transparent !important; background: var(--surface-2); border-radius: 12px; }
+
+/* ── form ── */
+h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+.field { display: grid; gap: 8px; margin-top: 20px; }
+.field:first-of-type { margin-top: 0; }
+.field > label, .field > .label { font-size: 14px; color: var(--tx-2); font-weight: 500; }
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; background: var(--surface-2); border-radius: 14px; padding: 4px; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg label {
+  min-height: 44px; display: grid; place-items: center; border-radius: 10px;
+  font-size: 15px; font-weight: 500; cursor: pointer; color: var(--tx-2);
+}
+.seg input:checked + label { background: var(--surface); color: var(--tx); font-weight: 600; box-shadow: 0 1px 2px rgb(0 0 0 / .08); }
+.seg input:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; }
+.chips { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.chips button {
+  min-height: 44px; border-radius: 12px; border: 1px solid var(--line); background: transparent;
+  color: var(--tx); font-family: "Space Grotesk", sans-serif; font-size: 18px; font-weight: 500; cursor: pointer;
+}
+.chips button[aria-pressed="true"] { background: var(--tx); color: var(--bg); border-color: var(--tx); }
+input[type=text], input[type=date], input[type=time] {
+  width: 100%; min-height: 52px; border-radius: 14px; border: 1px solid var(--line);
+  background: var(--bg); color: var(--tx); font: inherit; font-size: 17px; padding: 0 16px;
+  -webkit-appearance: none; appearance: none;
+}
+input:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.row { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(0,1fr); gap: 10px; }
+input { min-width: 0; }
+.hint { font-size: 13px; color: var(--tx-2); }
+.msg { margin-top: 12px; font-size: 15px; min-height: 1.5em; }
+.msg.ok { color: var(--ok); } .msg.err { color: var(--err); }
+form .btn { width: 100%; margin-top: 24px; }
+[hidden] { display: none !important; }
+footer { text-align: center; font-size: 13px; color: var(--tx-2); padding: 8px 0 0; }
+footer a { color: inherit; }
+@media (prefers-reduced-motion: reduce) { .icon-btn.spin svg { animation: none; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>ที่จอดรถล่าสุด</h1>
+    <button class="icon-btn" id="refresh" type="button" aria-label="โหลดใหม่"><i data-lucide="refresh-cw"></i></button>
+  </header>
+
+  <section class="card status" aria-live="polite" aria-busy="true" id="status">
+    <div class="where"><i data-lucide="map-pin"></i><span id="loc" class="skeleton">กำลังโหลด</span></div>
+    <p class="floor-label">ชั้น</p>
+    <p class="floor num skeleton" id="floor">0</p>
+    <div class="meta">
+      <span><i data-lucide="clock"></i><span id="when">—</span></span>
+    </div>
+    <p class="note" id="note" hidden></p>
+    <p class="stale" id="stale" hidden><i data-lucide="alert-triangle"></i><span></span></p>
+    <p class="condo" id="condo" hidden></p>
+    <div class="actions">
+      <a class="btn btn-ghost" id="map" href="#" target="_blank" rel="noopener" hidden><i data-lucide="navigation"></i>เปิดแผนที่</a>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>จดที่จอดใหม่</h2>
+    <form id="form" novalidate>
+      <div class="field">
+        <span class="label" id="lbl-loc">สถานที่</span>
+        <div class="seg" role="radiogroup" aria-labelledby="lbl-loc">
+          <input type="radio" name="location" id="l1" value="คอนโด" checked><label for="l1">คอนโด</label>
+          <input type="radio" name="location" id="l2" value="ที่ทำงาน"><label for="l2">ที่ทำงาน</label>
+          <input type="radio" name="location" id="l3" value="ห้าง"><label for="l3">ห้าง</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="floorIn">ชั้น</label>
+        <div class="chips" id="chips">
+          <button type="button" aria-pressed="false">1</button><button type="button" aria-pressed="false">2</button>
+          <button type="button" aria-pressed="false">3</button><button type="button" aria-pressed="false">4</button>
+          <button type="button" aria-pressed="false">5</button><button type="button" aria-pressed="false">6</button>
+        </div>
+        <input type="text" id="floorIn" name="floor" placeholder="หรือพิมพ์ เช่น 4A, 1M" autocomplete="off" autocapitalize="characters" maxlength="6">
+      </div>
+
+      <div class="field">
+        <span class="label" id="lbl-mode">บันทึกแบบไหน</span>
+        <div class="seg" role="radiogroup" aria-labelledby="lbl-mode">
+          <input type="radio" name="mode" id="m1" value="normal" checked><label for="m1">จอดตอนนี้</label>
+          <input type="radio" name="mode" id="m2" value="late"><label for="m2">กรอกย้อนหลัง</label>
+        </div>
+      </div>
+
+      <div class="field" id="remindField">
+        <span class="label">เตือนให้ไปเอารถ</span>
+        <div class="row">
+          <input type="date" id="exitDate" aria-label="วันที่เตือน">
+          <input type="time" id="remindTime" aria-label="เวลาเตือน">
+        </div>
+        <p class="hint">ระบบจะลงปฏิทินและส่ง LINE ให้ที่บ้านอัตโนมัติ</p>
+      </div>
+
+      <div class="field" id="lateField" hidden>
+        <label for="lateTime">จอดไว้ตอนกี่โมง</label>
+        <input type="time" id="lateTime">
+        <p class="hint">กรอกย้อนหลัง ไม่ตั้งเตือนและไม่ส่ง LINE</p>
+      </div>
+
+      <div class="field">
+        <label for="noteIn">โน้ต (ไม่ใส่ก็ได้)</label>
+        <input type="text" id="noteIn" maxlength="200" placeholder="เช่น ใกล้ลิฟต์ฝั่งซ้าย">
+      </div>
+
+      <button class="btn btn-primary" type="submit" id="submit"><i data-lucide="check"></i>บันทึกที่จอด</button>
+      <p class="msg" id="msg" role="status"></p>
+    </form>
+  </section>
+
+  <footer><a href="https://natpakans-stack.github.io/carpark-live-dashboard/">ดูสถิติทั้งหมด</a></footer>
+</main>
+
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script>
+// ponytail: Apps Script ตอบสด (ไม่มี cache) — ถ้าล่มค่อยตกไปใช้ไฟล์ mirror บน GitHub Pages (หน่วง ~10 นาที)
+const API = "https://script.google.com/macros/s/AKfycbxwsvLCO475XlC0IJpScoUkorSibLBJ72-E7WSMkqhW7JNsoyLiEAcF4Q5I6xCG8h6pHw/exec";
+const MIRROR = "https://natpakans-stack.github.io/carpark-live-dashboard/status.json";
+const $ = id => document.getElementById(id);
+const icons = () => window.lucide && lucide.createIcons();
+
+function ago(iso) {
+  const m = Math.round((Date.now() - new Date(iso)) / 60000);
+  if (m < 1) return "เมื่อกี้";
+  if (m < 60) return m + " นาทีที่แล้ว";
+  const h = Math.round(m / 60);
+  if (h < 24) return h + " ชั่วโมงที่แล้ว";
+  return Math.round(h / 24) + " วันที่แล้ว";
+}
+const fmt = iso => new Date(iso).toLocaleString("th-TH", { timeZone: "Asia/Bangkok", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+
+function render(s) {
+  const c = s.current, box = $("status");
+  box.setAttribute("aria-busy", "false");
+  $("loc").className = ""; $("loc").textContent = c.location;
+  const fl = $("floor");
+  fl.classList.remove("skeleton");
+  fl.classList.toggle("none", !c.floor);
+  fl.textContent = c.floor || "ไม่ได้จดชั้น";
+  $("when").textContent = fmt(c.recordedAt) + " · " + ago(c.recordedAt);
+  $("note").hidden = !c.note; $("note").textContent = c.note;
+  const days = (Date.now() - new Date(c.recordedAt)) / 864e5;
+  $("stale").hidden = days < 3;
+  $("stale").querySelector("span").textContent = "ข้อมูลนี้เก่าแล้ว ถ้าย้ายรถไปแล้วอย่าลืมจดใหม่ด้านล่าง";
+  const lc = s.latestCondo;
+  const showCondo = lc && c.location !== "คอนโด";
+  $("condo").hidden = !showCondo;
+  if (showCondo) $("condo").innerHTML = `ที่คอนโดครั้งล่าสุด <b class="num">ชั้น ${lc.floor}</b> · ${fmt(lc.recordedAt)}`;
+  $("map").hidden = !c.mapUrl; $("map").href = c.mapUrl || "#";
+  document.title = c.floor ? `ชั้น ${c.floor} · ${c.location}` : "รถจอดชั้นไหน";
+}
+
+async function load() {
+  const btn = $("refresh");
+  btn.classList.add("spin");
+  // mirror มาเร็ว (<1 วิ) โชว์ก่อน · Apps Script สดแต่ช้า (~3-9 วิ) มาทีหลังแล้วเขียนทับ
+  const get = async url => { const s = await (await fetch(url, { cache: "no-store" })).json(); if (!s.current) throw 0; return s; };
+  let shown = 0;
+  const show = s => { if (new Date(s.current.recordedAt) >= shown) { shown = new Date(s.current.recordedAt); render(s); } };
+  await Promise.allSettled([
+    get(MIRROR + "?t=" + Date.now()).then(show),
+    get(API).then(show),
+  ]);
+  if (!shown) {
+    $("loc").className = ""; $("loc").textContent = "โหลดไม่สำเร็จ ลองกดโหลดใหม่";
+    $("status").setAttribute("aria-busy", "false");
+  }
+  btn.classList.remove("spin");
+}
+
+// ── ฟอร์ม ──
+const pad = n => String(n).padStart(2, "0");
+const bkk = (addDays = 0) => {
+  const d = new Date(Date.now() + 7 * 3600e3 + addDays * 864e5);   // เวลาไทยใน field UTC
+  return { date: d.toISOString().slice(0, 10), time: pad(d.getUTCHours()) + ":" + pad(d.getUTCMinutes()) };
+};
+// ค่าเริ่มต้นตามที่เคยกรอกบ่อยในชีต: คอนโด = เช้าวันรุ่งขึ้น 07:30, ที่ทำงาน = เย็นนี้ 18:30
+function presets() {
+  const loc = document.querySelector("[name=location]:checked").value;
+  if (loc === "คอนโด") { $("exitDate").value = bkk(1).date; $("remindTime").value = "07:30"; }
+  else if (loc === "ที่ทำงาน") { $("exitDate").value = bkk().date; $("remindTime").value = "18:30"; }
+  else { const t = bkk(0); $("exitDate").value = t.date; $("remindTime").value = pad((+t.time.slice(0, 2) + 2) % 24) + ":00"; }
+}
+document.querySelectorAll("[name=location]").forEach(r => r.addEventListener("change", presets));
+document.querySelectorAll("[name=mode]").forEach(r => r.addEventListener("change", () => {
+  const late = $("m2").checked;
+  $("remindField").hidden = late; $("lateField").hidden = !late;
+  if (late && !$("lateTime").value) $("lateTime").value = bkk().time;
+}));
+
+const chips = [...$("chips").children];
+chips.forEach(b => b.addEventListener("click", () => {
+  $("floorIn").value = b.textContent; syncChips();
+}));
+const syncChips = () => chips.forEach(b => b.setAttribute("aria-pressed", String(b.textContent === $("floorIn").value.trim())));
+$("floorIn").addEventListener("input", syncChips);
+
+$("form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const late = $("m2").checked, msg = $("msg"), btn = $("submit");
+  const body = {
+    mode: late ? "late" : "normal",
+    location: document.querySelector("[name=location]:checked").value,
+    floor: $("floorIn").value.trim().toUpperCase(),
+    note: $("noteIn").value.trim(),
+    exitDate: $("exitDate").value,
+    time: late ? $("lateTime").value : $("remindTime").value,
+  };
+  msg.className = "msg";
+  if (body.location === "คอนโด" && !body.floor) { msg.className = "msg err"; msg.textContent = "ใส่ชั้นก่อนนะ"; $("floorIn").focus(); return; }
+  if (!body.time || (!late && !body.exitDate)) { msg.className = "msg err"; msg.textContent = "ใส่วันและเวลาให้ครบ"; return; }
+  btn.disabled = true; msg.textContent = "กำลังบันทึก…";
+  try {
+    // text/plain = simple request ไม่มี preflight (Apps Script ไม่ตอบ OPTIONS)
+    const r = await (await fetch(API, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) })).json();
+    if (!r.ok) throw new Error(r.error || "บันทึกไม่สำเร็จ");
+    if (r.status && r.status.current) render(r.status);
+    msg.className = "msg ok";
+    msg.textContent = late ? "บันทึกแล้ว" : "บันทึกแล้ว ปฏิทินกับ LINE จะตามไปภายใน 1-2 นาที";
+    $("floorIn").value = ""; $("noteIn").value = ""; syncChips();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (err) {
+    msg.className = "msg err"; msg.textContent = "บันทึกไม่สำเร็จ: " + err.message;
+  } finally { btn.disabled = false; }
+});
+
+$("refresh").addEventListener("click", load);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) load(); });
+presets(); icons(); load();
+</script>
+</body>
+</html>
