@@ -67,6 +67,11 @@ header h1 { font-size: 15px; font-weight: 500; color: var(--tx-2); }
 .meta span { display: inline-flex; align-items: center; gap: 6px; }
 .meta svg { width: 16px; height: 16px; }
 .note { margin-top: 12px; font-size: 15px; background: var(--surface-2); border-radius: 12px; padding: 10px 14px; }
+.sync { margin-top: 12px; font-size: 13px; color: var(--tx-2); display: flex; gap: 6px; align-items: center; }
+.sync svg { width: 14px; height: 14px; }
+.sync:not(.warn) svg { animation: spin 1s linear infinite; }
+.sync.warn { color: var(--err); }
+.sync.warn svg { display: none; }
 .stale { margin-top: 16px; font-size: 14px; color: var(--err); display: flex; gap: 8px; align-items: flex-start; }
 .stale svg { width: 18px; height: 18px; margin-top: 2px; }
 .condo { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 15px; color: var(--tx-2); }
@@ -80,7 +85,17 @@ header h1 { font-size: 15px; font-weight: 500; color: var(--tx-2); }
 .btn-primary { background: var(--accent); color: var(--accent-tx); }
 .btn-ghost { background: var(--surface-2); color: var(--tx); }
 .btn:disabled { opacity: .5; cursor: progress; }
-.skeleton { color: transparent !important; background: var(--surface-2); border-radius: 12px; }
+.status .sk { display: none; }
+.status.loading .sk { display: grid; justify-items: start; }
+.status.loading .real { display: none; }
+.sk-bar {
+  display: block; border-radius: 8px;
+  background: linear-gradient(90deg, var(--surface-2) 25%, color-mix(in srgb, var(--surface-2) 55%, var(--surface)) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%; animation: shimmer 1.3s ease-in-out infinite;
+}
+@keyframes shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.status:not(.loading) #loadingText { display: none; }
 
 /* ── form ── */
 h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
@@ -116,7 +131,7 @@ form .btn { width: 100%; margin-top: 24px; }
 [hidden] { display: none !important; }
 footer { text-align: center; font-size: 13px; color: var(--tx-2); padding: 8px 0 0; }
 footer a { color: inherit; }
-@media (prefers-reduced-motion: reduce) { .icon-btn.spin svg { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .icon-btn.spin svg, .sync svg, .sk-bar { animation: none; } }
 </style>
 </head>
 <body>
@@ -126,18 +141,29 @@ footer a { color: inherit; }
     <button class="icon-btn" id="refresh" type="button" aria-label="โหลดใหม่"><i data-lucide="refresh-cw"></i></button>
   </header>
 
-  <section class="card status" aria-live="polite" aria-busy="true" id="status">
-    <div class="where"><i data-lucide="map-pin"></i><span id="loc" class="skeleton">กำลังโหลด</span></div>
-    <p class="floor-label">ชั้น</p>
-    <p class="floor num skeleton" id="floor">0</p>
-    <div class="meta">
-      <span><i data-lucide="clock"></i><span id="when">—</span></span>
+  <section class="card status loading" aria-live="polite" aria-busy="true" id="status" >
+    <div class="sk" aria-hidden="true">
+      <span class="sk-bar" style="width:40%;height:22px"></span>
+      <span class="sk-bar" style="width:12%;height:14px;margin-top:22px"></span>
+      <span class="sk-bar" style="width:46%;height:120px;margin-top:10px;border-radius:16px"></span>
+      <span class="sk-bar" style="width:62%;height:14px;margin-top:22px"></span>
+      <span class="sk-bar" style="width:100%;height:52px;margin-top:24px;border-radius:14px"></span>
     </div>
-    <p class="note" id="note" hidden></p>
-    <p class="stale" id="stale" hidden><i data-lucide="alert-triangle"></i><span></span></p>
-    <p class="condo" id="condo" hidden></p>
-    <div class="actions">
-      <a class="btn btn-ghost" id="map" href="#" target="_blank" rel="noopener" hidden><i data-lucide="navigation"></i>เปิดแผนที่</a>
+    <span class="sr-only" id="loadingText">กำลังโหลดที่จอดล่าสุด</span>
+    <div class="real">
+      <div class="where"><i data-lucide="map-pin"></i><span id="loc"></span></div>
+      <p class="floor-label">ชั้น</p>
+      <p class="floor num" id="floor"></p>
+      <div class="meta">
+        <span><i data-lucide="clock"></i><span id="when">—</span></span>
+      </div>
+      <p class="note" id="note" hidden></p>
+      <p class="sync" id="sync" hidden><i data-lucide="loader"></i><span></span></p>
+      <p class="stale" id="stale" hidden><i data-lucide="alert-triangle"></i><span></span></p>
+      <p class="condo" id="condo" hidden></p>
+      <div class="actions">
+        <a class="btn btn-ghost" id="map" href="#" target="_blank" rel="noopener" hidden><i data-lucide="navigation"></i>เปิดแผนที่</a>
+      </div>
     </div>
   </section>
 
@@ -220,10 +246,9 @@ const fmt = iso => new Date(iso).toLocaleString("th-TH", { timeZone: "Asia/Bangk
 
 function render(s) {
   const c = s.current, box = $("status");
-  box.setAttribute("aria-busy", "false");
-  $("loc").className = ""; $("loc").textContent = c.location;
+  box.setAttribute("aria-busy", "false"); box.classList.remove("loading");
+  $("loc").textContent = c.location;
   const fl = $("floor");
-  fl.classList.remove("skeleton");
   fl.classList.toggle("none", !c.floor);
   fl.textContent = c.floor || "ไม่ได้จดชั้น";
   $("when").textContent = fmt(c.recordedAt) + " · " + ago(c.recordedAt);
@@ -239,22 +264,48 @@ function render(s) {
   document.title = c.floor ? `ชั้น ${c.floor} · ${c.location}` : "รถจอดชั้นไหน";
 }
 
+const CACHE = "carpark:last";
+const cacheGet = () => { try { return JSON.parse(localStorage.getItem(CACHE)); } catch { return null; } };
+const cacheSet = st => { try { localStorage.setItem(CACHE, JSON.stringify(st)); } catch {} };
+function sync(text, warn) {
+  const el = $("sync");
+  el.hidden = !text; el.classList.toggle("warn", !!warn);
+  el.querySelector("span").textContent = text || "";
+}
+
+let loadSeq = 0;
 async function load() {
-  const btn = $("refresh");
+  const seq = ++loadSeq, btn = $("refresh"), box = $("status");
   btn.classList.add("spin");
-  // mirror มาเร็ว (<1 วิ) โชว์ก่อน · Apps Script สดแต่ช้า (~3-9 วิ) มาทีหลังแล้วเขียนทับ
+  box.classList.add("loading"); box.setAttribute("aria-busy", "true"); sync("");
+  // แหล่งจริงคือ Apps Script แต่ช้าได้ 3-25 วิ และคาย error เป็นครั้งคราว
+  // → skeleton สูงสุด 6 วิ แล้วค่อยโชว์ของสำรอง (ที่เครื่องจำไว้ / mirror GitHub ที่ cron หน่วงได้หลายชม.) พร้อมป้ายกำกับ
   const get = async url => { const s = await (await fetch(url, { cache: "no-store" })).json(); if (!s.current) throw 0; return s; };
-  let shown = 0;
-  const show = s => { if (new Date(s.current.recordedAt) >= shown) { shown = new Date(s.current.recordedAt); render(s); } };
-  await Promise.allSettled([
-    get(MIRROR + "?t=" + Date.now()).then(show),
-    get(API).then(show),
-  ]);
-  if (!shown) {
-    $("loc").className = ""; $("loc").textContent = "โหลดไม่สำเร็จ ลองกดโหลดใหม่";
-    $("status").setAttribute("aria-busy", "false");
-  }
+  const liveP = (async () => {
+    for (let i = 0; i < 2; i++) { const s = await get(API).catch(() => null); if (s) return s; }
+    return null;
+  })();
+  const live = await Promise.race([liveP, new Promise(r => setTimeout(() => r("slow"), 6000))]);
+  if (seq !== loadSeq) return;
+  if (live && live !== "slow") return done(live);
+
+  const mirror = await get(MIRROR + "?t=" + Date.now()).catch(() => null);
+  const best = [cacheGet(), mirror].filter(x => x && x.current)
+    .sort((a, b) => new Date(b.current.recordedAt) - new Date(a.current.recordedAt))[0];
+  if (seq !== loadSeq) return;
+  if (best) { render(best); sync("กำลังเช็กข้อมูลล่าสุด… ที่เห็นอาจยังไม่อัปเดต"); }
+  const late = live === "slow" ? await liveP : null;
+  if (seq !== loadSeq) return;
+  if (late) return done(late);
   btn.classList.remove("spin");
+  if (best) sync("เช็กข้อมูลล่าสุดไม่ได้ ที่เห็นอาจไม่ใช่ล่าสุด กดโหลดใหม่", true);
+  else {
+    box.classList.remove("loading"); box.setAttribute("aria-busy", "false");
+    $("loc").textContent = "—"; $("floor").textContent = "";
+    sync("โหลดไม่สำเร็จ กดปุ่มโหลดใหม่มุมขวาบน", true);
+  }
+
+  function done(st) { render(st); cacheSet(st); sync(""); btn.classList.remove("spin"); }
 }
 
 // ── ฟอร์ม ──
@@ -303,7 +354,7 @@ $("form").addEventListener("submit", async e => {
     // text/plain = simple request ไม่มี preflight (Apps Script ไม่ตอบ OPTIONS)
     const r = await (await fetch(API, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) })).json();
     if (!r.ok) throw new Error(r.error || "บันทึกไม่สำเร็จ");
-    if (r.status && r.status.current) render(r.status);
+    if (r.status && r.status.current) { render(r.status); cacheSet(r.status); }
     msg.className = "msg ok";
     msg.textContent = late ? "บันทึกแล้ว" : "บันทึกแล้ว ปฏิทินกับ LINE จะตามไปภายใน 1-2 นาที";
     $("floorIn").value = ""; $("noteIn").value = ""; syncChips();
