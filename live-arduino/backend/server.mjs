@@ -21,7 +21,7 @@ const loadSeen = () => readFile(SEEN_FILE, "utf8").then(JSON.parse).catch(() => 
 let seenWriteAt = 0;
 async function markDeviceSeen(req) {
   if (!/ESP32|arduino/i.test(String(req.headers["user-agent"] || ""))) return;   // เบราว์เซอร์/หน้า /ui ไม่นับ
-  const seen = await loadSeen(), now = Date.now(), last = Date.parse(seen.lastSeen || 0) || 0;
+  const seen = await loadSeen(), now = Date.now(), last = seen.lastSeen ? Date.parse(seen.lastSeen) : 0;   // Date.parse(0) = ปี 2000 ไม่ใช่ 0
   if (now - seenWriteAt < 60e3 && now - last < BACK_AFTER_MS) return;   // จอดึงทุก 10 วิ — เขียนไฟล์นาทีละครั้งพอ
   seenWriteAt = now;
   if (!last || now - last >= BACK_AFTER_MS)
@@ -29,7 +29,7 @@ async function markDeviceSeen(req) {
   await writeFile(SEEN_FILE, JSON.stringify({ ...seen, lastSeen: new Date(now).toISOString(), ip: req.socket.remoteAddress, ua: req.headers["user-agent"], idleWarned: false }, null, 2));
 }
 async function checkIdle() {
-  const seen = await loadSeen(), since = Date.parse(seen.lastSeen || seen.watchSince || 0) || 0;
+  const seen = await loadSeen(), ref = seen.lastSeen || seen.watchSince, since = ref ? Date.parse(ref) : 0;
   if (!since) return writeFile(SEEN_FILE, JSON.stringify({ ...seen, watchSince: new Date().toISOString() }, null, 2));
   if (!seen.idleWarned && Date.now() - since >= IDLE_WARN_MS) {
     await notify(`🗓 จอ Astro Calendar ไม่ได้มาดึงข้อมูล ${Math.round((Date.now() - since) / 864e5)} วัน${seen.lastSeen ? "" : " (ตั้งแต่เปิด backend บน Box)"} — น่าจะไม่ได้ใช้แล้ว ปิดได้: systemctl --user disable --now com.tanplanet.astro-backend`);
