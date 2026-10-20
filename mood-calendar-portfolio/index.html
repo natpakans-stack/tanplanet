@@ -7,9 +7,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ปฏิทินดูแลใจ ที่เข้าใจคุณ — แอปบันทึกอารมณ์ที่ผสมโหราศาสตร์กับ AI">
   <meta name="twitter:description" content="Portfolio: แอปปฏิทินดูแลใจ — แอปดูดวงรายวันที่ผสานศาสตร์โบราณกับ AI วิเคราะห์ดวงชะตา ไพ่ทาโรต์ เซียมซี ทำนายฝัน">
-  <meta property="og:url" content="https://projects.tanplanet.info/mood-calendar-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/mood-calendar-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/mood-calendar-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/mood-calendar-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: แอปปฏิทินดูแลใจ — แอปดูดวงรายวันที่ผสานศาสตร์โบราณกับ AI วิเคราะห์ดวงชะตา ไพ่ทาโรต์ เซียมซี ทำนายฝัน">
@@ -517,7 +517,10 @@
     .tarot-card-back .card-icon {
       font-size: 2rem;
       margin-bottom: 8px;
+      color: var(--accent);
+      display: inline-flex;
     }
+    .tarot-card-back .card-icon svg { width: 32px; height: 32px; }
     .tarot-card-back .card-title {
       font-size: 0.85rem;
       font-weight: 700;
@@ -920,6 +923,18 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
     .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* shot figures (รูปประกอบ) */
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:16px;align-items:start}
+    .shot-pair.even{grid-template-columns:1fr 1fr}
+    .shot-pair figcaption{grid-column:1/-1}
+    .shot.phone img{max-width:360px;margin:0 auto}
+    @media (max-width:639px){.shot-pair,.shot-pair.even{grid-template-columns:1fr}.shot-pair img+img{max-width:300px;margin:0 auto}}
+    .shot-pair{margin:20px 0 8px}.shot-pair .shot{margin:0}.shot-cap{grid-column:1/-1;margin:-6px 0 0;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair.phones{max-width:620px;margin-left:auto;margin-right:auto}
+    .section-intro .shot{margin-top:20px;margin-bottom:8px}
+    @media (max-width:639px){.shot-pair .shot+.shot img{max-width:300px;margin:0 auto}.shot-pair.phones{grid-template-columns:1fr 1fr}.shot-pair.phones .shot+.shot img{max-width:none}}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -959,6 +974,7 @@
     <section class="section-intro">
       <h2>ปัญหาที่เจอ</h2>
       <p>ทำไมต้องมี แอปปฏิทินดูแลใจ?</p>
+      <figure class="shot"><img src="img/app-overview.jpg" width="1440" height="966" loading="lazy" alt="หน้าจอแอป 3 หน้าเรียงกัน หน้าโปรไฟล์ดวง หน้าดวงวันนี้พร้อมสีมงคล และหน้าเปิดไพ่ทาโรต์"><figcaption>คำตอบของ "แอปดูดวงกระจัดกระจาย" — โปรไฟล์ดวง ดวงวันนี้ และไพ่ทาโรต์ อยู่ในแอปเดียว (ข้อมูลตัวอย่าง)</figcaption></figure>
     </section>
 
     <div class="quote-block">
@@ -990,6 +1006,11 @@
     <section class="section-intro">
       <h2>วิธีแก้ปัญหา</h2>
       <p>ผสานทุกศาสตร์ไว้ในแอปเดียว — Personalize ด้วย Birth Profile + AI</p>
+      <div class="shot-pair even phones">
+        <figure class="shot"><img src="img/birth-profile.jpg" width="560" height="1196" loading="lazy" alt="หน้าสร้างดวงกำเนิด ฟอร์ม 3 ขั้น วันเดือนปีเกิด เวลาเกิด และจังหวัดที่เกิด"></figure>
+        <figure class="shot"><img src="img/today-home.jpg" width="560" height="1072" loading="lazy" alt="หน้าแรก ดวงวันนี้ สรุปโดย AI พร้อมสีมงคล สิ่งที่ควรทำและควรเลี่ยง"></figure>
+        <div class="shot-cap">ซ้าย: สร้างดวงกำเนิดตอน onboarding · ขวา: หน้าแรกที่ AI สรุปดวงวันนี้ + สีมงคล</div>
+      </div>
     </section>
 
     <div class="solution-grid">
@@ -1016,6 +1037,11 @@
     <section class="section-intro">
       <h2>สิ่งที่สร้าง</h2>
       <p>ลองเปิดไพ่ดู — ทุกใบเป็น Feature จริงใน แอปปฏิทินดูแลใจ</p>
+      <div class="shot-pair">
+        <figure class="shot"><img src="img/feature-grid.jpg" width="1440" height="1060" loading="lazy" alt="กริดสรุปฟีเจอร์ Phase 1 หกการ์ด Authentication Onboarding Home Dashboard ดูดวงรายวัน ไพ่ทาโรต์ และเซียมซี"></figure>
+        <figure class="shot"><img src="img/siam-si.jpg" width="560" height="1181" loading="lazy" alt="หน้าเซียมซีออนไลน์ ภาพกระบอกเซียมซีและปุ่มเริ่มเสี่ยงเซียมซี"></figure>
+        <div class="shot-cap">ฟีเจอร์ทั้งหมดใน Phase 1 พร้อมคนรับผิดชอบแต่ละ flow · ขวา: หน้าเซียมซีออนไลน์</div>
+      </div>
     </section>
 
     <div class="tarot-section">
@@ -1028,7 +1054,7 @@
               <span class="card-label">แอปปฏิทินดูแลใจ</span>
             </div>
             <div class="tarot-card-back">
-              <span class="card-icon">☀️</span>
+              <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></span>
               <span class="card-title">Daily Horoscope</span>
               <span class="card-desc">ดวงรายวันตามราศี พร้อม AI สรุป + สีมงคลประจำวัน</span>
             </div>
@@ -1041,7 +1067,7 @@
               <span class="card-label">แอปปฏิทินดูแลใจ</span>
             </div>
             <div class="tarot-card-back">
-              <span class="card-icon">🎴</span>
+              <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg></span>
               <span class="card-title">Tarot Cards</span>
               <span class="card-desc">Major Arcana 22 ใบ พร้อมความหมาย + คำทำนายเฉพาะตัว</span>
             </div>
@@ -1054,7 +1080,7 @@
               <span class="card-label">แอปปฏิทินดูแลใจ</span>
             </div>
             <div class="tarot-card-back">
-              <span class="card-icon">🏮</span>
+              <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg></span>
               <span class="card-title">Siam Si</span>
               <span class="card-desc">เซียมซีดิจิทัลแบบโต้ตอบ พร้อม Animation เขย่ากระบอก</span>
             </div>
@@ -1067,7 +1093,7 @@
               <span class="card-label">แอปปฏิทินดูแลใจ</span>
             </div>
             <div class="tarot-card-back">
-              <span class="card-icon">💭</span>
+              <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 16a3 3 0 0 1 0 6H7a5 5 0 1 1 4.9-6Z"/><path d="M10.1 9A6 6 0 0 1 16 4a4 4 0 0 0 6 6 6 6 0 0 1-3 5.197"/></svg></span>
               <span class="card-title">Dream Reading</span>
               <span class="card-desc">พิมพ์ความฝัน แล้ว AI วิเคราะห์ + แนะนำเลขมงคล</span>
             </div>
@@ -1107,6 +1133,7 @@
     <section class="section-intro">
       <h2>Hack กับปัญหา</h2>
       <p>เบื้องหลังที่ไม่ได้สวยเสมอไป — แต่ทุกปัญหาทำให้เราเก่งขึ้น</p>
+      <figure class="shot"><img src="img/design-specs.jpg" width="1600" height="1000" loading="lazy" alt="หน้า preview สำหรับส่ง dev มีเมนูหน้าจอด้านซ้าย หน้าเข้าสู่ระบบตรงกลาง และ design specs ด้านขวา ทั้ง typography สี และ spacing"><figcaption>Design System จาก 0 — ทุกหน้าส่ง dev พร้อม spec: typography, สีที่ผ่าน WCAG, spacing และ states</figcaption></figure>
     </section>
 
     <div class="hack-grid">
@@ -1138,6 +1165,7 @@
     <section class="section-intro">
       <h2>ทีมของเรา</h2>
       <p>3 คน 3 จุดแข็ง — แบ่งงานตาม Flow แล้วรวมเป็นหนึ่งเดียว</p>
+      <figure class="shot"><img src="img/figma-flows.jpg" width="1600" height="1031" loading="lazy" alt="ไฟล์ Figma ที่ทีมทำงานร่วมกัน แบ่งเป็น flow สมัครสมาชิก เข้าสู่ระบบ ตั้งรหัสผ่าน ลืมรหัสผ่าน และ T&C"><figcaption>ไฟล์ Figma ที่ 3 คนทำงานพร้อมกัน — แบ่งตาม flow (Register, Login, Set/Forgot Password, T&C) · เบลอรูปโปรไฟล์คนในทีม</figcaption></figure>
     </section>
 
     <div class="team-grid">
@@ -1175,6 +1203,7 @@
     <section class="section-intro">
       <h2>Timeline</h2>
       <p>จากแผนสู่ความจริง — 4 สัปดาห์ที่เข้มข้น</p>
+      <figure class="shot"><img src="img/timeline.jpg" width="1440" height="740" loading="lazy" alt="หน้า Phase 1 Journey ไทม์ไลน์ 4 ช่วง จาก Planning และ Design System ถึง Phase 1 Complete"><figcaption>หน้า "Phase 1 Journey" ในหน้า showcase ที่ทีมใช้อัปเดตความคืบหน้าทุกสัปดาห์</figcaption></figure>
     </section>
 
     <div class="timeline">
@@ -1206,6 +1235,7 @@
     <section class="section-intro">
       <h2>Key Takeaways</h2>
       <p>สิ่งที่ทีมได้เรียนรู้จากการทำ แอปปฏิทินดูแลใจ</p>
+      <figure class="shot"><img src="img/figma-states.jpg" width="1400" height="1201" loading="lazy" alt="เฟรม Figma หน้าสมัครสมาชิก 2 สถานะ แสดงรหัสผ่าน และ error เมื่อไม่กรอกข้อมูล"><figcaption>ออกแบบทุก state ใน Figma ก่อนส่ง dev — แสดงรหัสผ่าน และ error เมื่อช่องว่าง (ข้อมูลตัวอย่าง)</figcaption></figure>
     </section>
 
     <div class="learning-card">
@@ -1261,7 +1291,7 @@
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1297,13 +1327,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "MU Calendar",
-      "item": "https://projects.tanplanet.info/mood-calendar-portfolio/"
+      "item": "https://projects.tanplanet.work/mood-calendar-portfolio/"
     }
   ]
 }

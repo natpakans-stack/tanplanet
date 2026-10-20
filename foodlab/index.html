@@ -616,6 +616,16 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
     .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* shot figures (รูปประกอบ) */
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:16px;align-items:start}
+    .shot-pair.even{grid-template-columns:1fr 1fr}
+    .shot-pair figcaption{grid-column:1/-1}
+    .shot-pair{margin:8px 0 32px}.shot-pair .shot{margin:0}.shot-cap{grid-column:1/-1;margin:-6px 0 0;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot.phone img{max-width:360px;margin:0 auto}
+    .section-intro .shot,.section-intro .shot-pair{margin-top:20px;margin-bottom:8px}
+    @media (max-width:639px){.shot-pair,.shot-pair.even{grid-template-columns:1fr}.shot-pair img+img,.shot-pair .shot+.shot img{max-width:300px;margin:0 auto}}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -650,6 +660,7 @@
     <section class="section-intro">
         <h2>The Challenge</h2>
         <p>คำถามเดียวที่อยากรู้คำตอบ</p>
+    <figure class="shot"><img src="img/hero-desktop.jpg" width="1440" height="900" loading="lazy" alt="หน้าแรกเว็บ FoodLab บนเดสก์ท็อป ภาพจานอาหาร fine dining พร้อมหัวข้อและกล่องจองโต๊ะ"><figcaption>หน้าแรกของเว็บ FoodLab ที่ได้จากการแปลง template — hero, เวลาเปิด และฟอร์มจองโต๊ะ</figcaption></figure>
     </section>
 
     <div class="quote-block">
@@ -672,6 +683,7 @@
     <section class="section-intro">
         <h2>Before → After</h2>
         <p>จาก template การศึกษา กลายเป็นร้านอาหาร fine dining</p>
+    <figure class="shot"><img src="img/menu-desktop.jpg" width="1440" height="840" loading="lazy" alt="ส่วนเมนูแนะนำของ FoodLab การ์ดอาหาร 3 ใบแบบ carousel พร้อมตัวเลขสรุป"><figcaption>ส่วน "เมนูแนะนำ" — โครง carousel การ์ดที่เดิมไว้โชว์คอร์สเรียน ถูกเปลี่ยนเป็นการ์ดอาหาร</figcaption></figure>
     </section>
 
     <div class="compare">
@@ -686,7 +698,7 @@
             </ul>
         </div>
         <div class="compare-box after">
-            <div class="label">✨ After — FoodLab</div>
+            <div class="label"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg> After — FoodLab</div>
             <ul>
                 <li>Fine Dining Restaurant</li>
                 <li>Hero + Story + Menu + Chef</li>
@@ -718,6 +730,11 @@
     <section class="section-intro">
         <h2>Key Insights</h2>
         <p>สิ่งที่ค้นพบจากการทดลองนี้</p>
+    <div class="shot-pair">
+    <figure class="shot"><img src="img/gallery-desktop.jpg" width="1440" height="700" loading="lazy" alt="ส่วนแกลเลอรีบนเดสก์ท็อป ภาพห้องอาหารและจานอาหารเรียงเป็นกริด"></figure>
+    <figure class="shot"><img src="img/gallery-mobile.jpg" width="600" height="1301" loading="lazy" alt="ส่วนแกลเลอรีเดียวกันบนมือถือ ภาพเรียงเป็นคอลัมน์เดียว"></figure>
+      <div class="shot-cap">แกลเลอรีเดสก์ท็อป vs มือถือ — grid และ responsive ได้มาจาก template แทบไม่ต้องแตะ</div>
+    </div>
     </section>
 
     <div class="insight-grid">
@@ -749,10 +766,11 @@
     <section class="section-intro">
         <h2>The Honest Truth</h2>
         <p>สิ่งที่ได้เรียนรู้จริงๆ</p>
+    <figure class="shot"><img src="img/chef-story-desktop.jpg" width="1440" height="660" loading="lazy" alt="ส่วนแนะนำเชฟ หัวข้อ เมื่อนวัตกรรมบรรจบกับจิตวิญญาณดั้งเดิม พร้อมภาพเชฟในครัว"><figcaption>ส่วน "Our Chefs" — layout มาจาก template แต่ copy, ภาพ และโทนทอง-ครีมต้องคิดเองทั้งหมด</figcaption></figure>
     </section>
 
     <div class="card" data-label="FASTER">
-        <h3>⚡ เร็วขึ้นในแง่ Layout</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg> เร็วขึ้นในแง่ Layout</h3>
         <p>Grid, responsive breakpoints, scroll animation — ของพวกนี้ template ให้มาหมด จากที่ต้องเขียน CSS เองทั้งหมด กลายเป็นแค่ปรับค่า</p>
         <div class="highlight">Layout ที่ปกติใช้เวลา 2-3 วัน เหลือไม่กี่ชั่วโมง</div>
     </div>
@@ -778,6 +796,7 @@
     <section class="section-intro">
         <h2>Takeaways</h2>
         <p>ข้อสรุปหลังจบการทดลอง</p>
+    <figure class="shot"><img src="img/reserve-desktop.jpg" width="1440" height="680" loading="lazy" alt="ส่วนจองโต๊ะ ยกระดับทุกมื้อพิเศษ พร้อมภาพห้องอาหารโทนมืด"><figcaption>ส่วนจองโต๊ะ — ปุ่ม CTA และข้อความต้องตัดสินใจเองว่าอยากให้คนรู้สึกอะไร</figcaption></figure>
     </section>
 
     <div class="learning-card">
@@ -802,6 +821,7 @@
     <section class="section-intro">
         <h2>Stack</h2>
         <p>เครื่องมือที่ใช้ในการทดลองนี้</p>
+    <figure class="shot"><img src="img/blog-desktop.jpg" width="1440" height="780" loading="lazy" alt="ส่วนบทความ เรื่องเล่าจากครัว การ์ดบทความและการ์ดสีทองแบบ masonry"><figcaption>ส่วน "เรื่องเล่าจากครัว" ที่ deploy จริงบน GitHub Pages — การ์ดบล็อกจาก template เดิม</figcaption></figure>
     </section>
 
     <div class="stack-row">

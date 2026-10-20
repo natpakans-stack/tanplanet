@@ -7,9 +7,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar — ให้ AI Avatar ไลฟ์ขายของแทน — ต่อได้ทุกชั่วโมง">
   <meta name="twitter:description" content="Portfolio: integration/orchestration layer สำหรับไลฟ์ขายของด้วย AI Avatar — monorepo (Next.js 16 + NestJS/Fastify + Drizzle/Postgres RLS), multi-tenant, real-time Live Console (SSE), auto-reply pipeline">
-  <meta property="og:url" content="https://projects.tanplanet.info/avatar-commerce-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/avatar-commerce-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/avatar-commerce-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/avatar-commerce-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: integration/orchestration layer สำหรับไลฟ์ขายของด้วย AI Avatar — monorepo (Next.js 16 + NestJS/Fastify + Drizzle/Postgres RLS), multi-tenant, real-time Live Console (SSE), auto-reply pipeline">
@@ -850,6 +850,15 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
     .hero-badge .ico { width: 14px; height: 14px; }
+
+    .dd-ico{width:24px;height:24px;color:var(--accent);margin:0 auto 6px;display:block}
+    /* shot figures (รูปประกอบ) */
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:16px;align-items:start}
+    .shot-pair.even{grid-template-columns:1fr 1fr}
+    .shot-pair figcaption{grid-column:1/-1}
+    .shot.phone img{max-width:360px;margin:0 auto}
+    @media (max-width:639px){.shot-pair,.shot-pair.even{grid-template-columns:1fr}.shot-pair img+img{max-width:300px;margin:0 auto}}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -893,6 +902,7 @@
       <span class="eyebrow">Empathize &middot; Define</span>
       <h2>ปัญหาที่เจอ</h2>
       <p>ทำไมร้านค้า SME ถึงไลฟ์ขายของ "ต่อเนื่อง" ไม่ได้ ทั้งที่ทุกชั่วโมงที่ไลฟ์ = โอกาสขาย?</p>
+          <figure class="shot"><img src="img/live-dashboard.jpg" width="1440" height="831" loading="lazy" alt="แดชบอร์ดไลฟ์ แสดง 3 ไลฟ์ที่ AI Avatar กำลังออกอากาศพร้อมกัน พร้อมยอดผู้ชม คอมเมนต์ และจำนวนที่ AI ตอบ"><figcaption>แดชบอร์ดไลฟ์จริง — avatar ออกอากาศได้หลายห้องพร้อมกัน ชั่วโมงที่ Host มนุษย์ไม่อยู่ก็ยังขายได้ (ข้อมูลทดสอบ UAT)</figcaption></figure>
     </section>
 
     <div class="quote-block">
@@ -935,6 +945,7 @@
       <span class="eyebrow">Ideate</span>
       <h2>วิธีแก้ปัญหา</h2>
       <p>ไม่สร้าง core AI ใหม่ — ต่อยอด Avatar Engine เดิม แล้วทำส่วนที่ขาดให้ครบ loop ไลฟ์คอมเมิร์ซ</p>
+          <figure class="shot"><img src="img/risk-words.jpg" width="1440" height="831" loading="lazy" alt="หน้าคำเสี่ยง แบ่งชุดคำต้องห้ามตามประเภทธุรกิจ พร้อมสถิติคอมเมนต์ที่ถูกบล็อกและคำที่ถูก trigger บ่อย"><figcaption>Risk Filter ในหลังบ้าน — ชุดคำเสี่ยงตามประเภทธุรกิจ บล็อกก่อน avatar พูดคำเกินจริง</figcaption></figure>
     </section>
 
     <div class="solution-grid">
@@ -972,6 +983,7 @@
       <span class="eyebrow">Prototype</span>
       <h2>วิธีทำงาน — 4 จังหวะ</h2>
       <p>ตั้งแต่เตรียม avatar/สินค้า จนถึงปิดการขายและสรุปผล</p>
+          <figure class="shot"><img src="img/avatar-library.jpg" width="1440" height="831" loading="lazy" alt="คลังอวาตาร์ ให้เลือก avatar ผู้นำเสนอที่จะใช้ในห้องไลฟ์"><figcaption>จังหวะที่ 1 ตั้งค่า — เลือก avatar จากคลังที่ engine เตรียมไว้</figcaption></figure>
     </section>
 
     <div class="flow-grid">
@@ -1008,6 +1020,7 @@
       <span class="eyebrow">Prototype</span>
       <h2>Tech Stack &amp; Architecture</h2>
       <p>Monorepo (pnpm workspaces) — Next.js PWA + NestJS/Fastify API + Drizzle/Postgres พร้อม external integrations</p>
+          <figure class="shot"><img src="img/workspace-home.jpg" width="1440" height="831" loading="lazy" alt="หน้าภาพรวม workspace แสดงทีมงาน คลังข้อมูล และตารางไลฟ์ของ workspace เดียว"><figcaption>Back office ของ 1 workspace — ทุกข้อมูลผูก workspace_id และกั้นด้วย RLS</figcaption></figure>
     </section>
 
     <div class="arch-diagram">
@@ -1066,6 +1079,7 @@
       <span class="eyebrow">Prototype</span>
       <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
       <p>ครบ loop ตั้งแต่ back office ถึงไลฟ์สดและสรุปผลหลังไลฟ์</p>
+          <figure class="shot"><img src="img/live-studio.jpg" width="1440" height="831" loading="lazy" alt="Live Studio จัดฉากแนวตั้ง 9:16 มี avatar การ์ดสินค้า รายการฉาก เลเยอร์ และสคริปต์ที่ผ่านการตรวจคำเสี่ยง"><figcaption>Live Studio — จัดฉาก/เลเยอร์/สินค้า ผูกสคริปต์ และเตือนคำเสี่ยงก่อนอนุมัติ</figcaption></figure>
     </section>
 
     <div class="module-grid">
@@ -1118,6 +1132,7 @@
       <span class="eyebrow">Prototype</span>
       <h2>หน้าตา Live Console</h2>
       <p>Manager เปิด Console → เห็นสถานะ avatar, ฟีดคอมเมนต์, และ risk panel สดในหน้าจอเดียว</p>
+          <figure class="shot"><img src="img/live-control-room.jpg" width="1440" height="831" loading="lazy" alt="ห้องคุมไลฟ์ แสดงสถานะ คอมเมนต์ สัดส่วน AI ตอบ คิว burst และคำเสี่ยงที่ถูกบล็อก"><figcaption>ห้องคุมไลฟ์ของจริง (ภาพตอน UAT ขณะกำลังต่อสตรีม) — ด้านล่างคือภาพจำลองตอนมีคอมเมนต์ไหลเข้า</figcaption></figure>
     </section>
 
     <div class="ext-mockup">
@@ -1128,7 +1143,7 @@
         <span class="ext-badge">auto-reply 42</span>
       </div>
       <div class="ext-yt">
-        <div><b>&#9888; Risk Word</b> — ตรวจพบก่อนตอบ จึงบล็อกไม่ให้ avatar พูด</div>
+        <div><b><svg class="ico" style="width:14px;height:14px;vertical-align:-2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Risk Word</b> — ตรวจพบก่อนตอบ จึงบล็อกไม่ให้ avatar พูด</div>
         <div class="u">คอมเมนต์: "กินแล้วหายขาดจริงไหมคะ" &middot; แมตช์คำกลุ่ม claim เกินจริง</div>
         <span class="chip">blocked</span>
         <span class="chip">logged &rarr; audit</span>
@@ -1168,6 +1183,7 @@
       <span class="eyebrow">Test &amp; Iterate</span>
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์วิศวกรรมที่ต้องออกแบบทางแก้เอง — multi-tenant, real-time, integration lifecycle</p>
+          <figure class="shot"><img src="img/script-library.jpg" width="1440" height="831" loading="lazy" alt="คลังสคริปต์ แยกสถานะรออนุมัติ ใช้งานในระบบ พร้อมตัวกรองประเภทสคริปต์"><figcaption>คลังสคริปต์ — lifecycle รออนุมัติ → ใช้งาน คุมด้วย role และ risk check ต่อ content</figcaption></figure>
     </section>
 
     <div class="hack-grid">
@@ -1215,6 +1231,7 @@
       <span class="eyebrow">Define</span>
       <h2>Design Decision ที่ตั้งใจเลือก</h2>
       <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอๆ กับสิ่งที่ทำ</p>
+          <figure class="shot"><img src="img/studio-avatar-picker.jpg" width="1440" height="831" loading="lazy" alt="หน้าต่างเลือกอวาตาร์ใน Live Studio กรองตามเพศ ภาษา และประเภท"><figcaption>เลือก avatar จาก engine เดิมได้ตรงใน Studio — integrate ไม่ rebuild engine</figcaption></figure>
     </section>
 
     <div class="quote-block" style="margin-bottom: 24px;">
@@ -1223,22 +1240,22 @@
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#129513;</strong><br>
+        <svg class="ico dd-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
         <strong>Integration ไม่ rebuild engine</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ต่อยอด engine เดิม ไม่สร้าง avatar core ซ้ำ</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128274;</strong><br>
+        <svg class="ico dd-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         <strong>Isolation = non-negotiable</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">RLS + workspace scoping + negative test คุมทุก PR</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#129514;</strong><br>
+        <svg class="ico dd-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></svg>
         <strong>TDD + contract-first</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">red &rarr; green &rarr; refactor · test ฝังใน DoD</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#129309;</strong><br>
+        <svg class="ico dd-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
         <strong>เสริม Host ไม่ใช่แทน</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ปลดล็อกชั่วโมงที่คนทำไม่ได้ — positioning ชัด</p>
       </div>
@@ -1251,6 +1268,7 @@
       <span class="eyebrow">Level Up &middot; Reflect</span>
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
+          <figure class="shot"><img src="img/live-history.jpg" width="1440" height="831" loading="lazy" alt="หน้าไลฟ์ล่าสุดทั้งหมด แสดงผู้ชมสูงสุด คอมเมนต์ และจำนวน AI ตอบต่อไลฟ์ พร้อมแนวโน้ม"><figcaption>ประวัติไลฟ์ — ตัวเลขผู้ชม/คอมเมนต์/AI ตอบ ต่อ session สำหรับ Post-Live Recap (ข้อมูลทดสอบ)</figcaption></figure>
     </section>
 
     <div class="learning-card">
@@ -1313,12 +1331,12 @@
       <span class="stack-icon">pnpm monorepo</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1341,13 +1359,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "แพลตฟอร์มไลฟ์ AI Avatar Portfolio",
-      "item": "https://projects.tanplanet.info/avatar-commerce-portfolio/"
+      "item": "https://projects.tanplanet.work/avatar-commerce-portfolio/"
     }
   ]
 }

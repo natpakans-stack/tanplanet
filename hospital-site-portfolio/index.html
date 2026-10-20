@@ -7,9 +7,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="เว็บโรงพยาบาลเฉพาะทาง — หน้า pre-opening + ระบบรับสมัครงาน 2 ภาษา">
   <meta name="twitter:description" content="Portfolio: เว็บไซต์ pre-opening 2 ภาษา + ระบบรับสมัครงาน (ATS) ของโรงพยาบาลเฉพาะทาง — Next.js 16, Sanity CMS, สร้าง PDF ใบสมัครด้วย headless Chrome, ออกแบบเพื่อความสงบและศักดิ์ศรีของผู้ป่วย">
-  <meta property="og:url" content="https://projects.tanplanet.info/hospital-site-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/hospital-site-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/hospital-site-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/hospital-site-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: เว็บไซต์ pre-opening 2 ภาษา + ระบบรับสมัครงาน (ATS) ของโรงพยาบาลเฉพาะทาง — Next.js 16, Sanity CMS, สร้าง PDF ใบสมัครด้วย headless Chrome, ออกแบบเพื่อความสงบและศักดิ์ศรีของผู้ป่วย">
@@ -1093,6 +1093,16 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
     .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* shot figures (รูปประกอบ) */
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:16px;align-items:start}
+    .shot-pair.even{grid-template-columns:1fr 1fr}
+    .shot-pair figcaption{grid-column:1/-1}
+    .shot.phone img{max-width:360px;margin:0 auto}
+    .shot.doc img{max-width:520px;margin:0 auto}
+    .dd-ico{display:inline-flex;color:var(--accent);margin-bottom:6px}.dd-ico .ico{width:24px;height:24px}
+    @media (max-width:639px){.shot-pair,.shot-pair.even{grid-template-columns:1fr}.shot-pair img+img{max-width:300px;margin:0 auto}}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -1135,6 +1145,8 @@
       <h2>ปัญหาที่เจอ</h2>
       <p>ทำเว็บให้โรงพยาบาลที่ "ยังไม่เปิด" — ต้องสร้างความเชื่อใจโดยไม่ขายฝัน และต้องพร้อมรับทีมงานก่อนวันเปิดจริง</p>
     </section>
+    <figure class="shot shot-pair"><img src="img/home-hero-desktop.jpg" width="1440" height="900" loading="lazy" alt="หน้าแรกเว็บโรงพยาบาลบนเดสก์ท็อป วิดีโออาคารพร้อมหัวข้อ Hope with dignity และปุ่มคุยกับทีมดูแล"><img src="img/home-hero-mobile.jpg" width="600" height="1301" loading="lazy" alt="หน้าแรกเว็บโรงพยาบาลบนมือถือ"><figcaption>หน้าแรกจริง (เดสก์ท็อป + มือถือ) — เล่าว่าเป็นโรงพยาบาลเฉพาะทางที่กำลังมา โดยไม่ทำเหมือนเปิดเต็มระบบ · เบลอชื่อ/โลโก้แบรนด์</figcaption></figure>
+
 
     <div class="quote-block">
       <p>โรงพยาบาลเฉพาะทางด้านมะเร็งกำลังอยู่ระหว่างก่อสร้าง — เว็บต้องไม่ทำเหมือนเปิดเต็มระบบแล้ว แต่ต้องสื่อสารว่า "ที่นี่กำลังจะเป็นที่ที่เข้าใจคุณ" อย่างอบอุ่นและน่าเชื่อถือ ขณะเดียวกันก็ต้องเริ่ม<strong>รับสมัครทีมแพทย์ พยาบาล และเจ้าหน้าที่</strong>ตั้งแต่ก่อนเปิด ทั้งหมดนี้ต้อง deploy ได้เร็ว งบก่อนเปิดจำกัด และดูแลข้อมูลผู้สมัครซึ่งอ่อนไหวให้ปลอดภัย</p>
@@ -1177,6 +1189,8 @@
       <h2>วิธีแก้ปัญหา</h2>
       <p>เว็บ pre-opening ที่ซื่อสัตย์ + ระบบ ATS ในตัว — serverless ล้วน เชื่อม CMS/เมลทีหลังได้โดยเว็บไม่ล้ม</p>
     </section>
+    <figure class="shot"><img src="img/home-why.jpg" width="1440" height="790" loading="lazy" alt="ส่วน You don't need all the answers to begin บนพื้นน้ำตาลเข้ม มีการ์ด 3 ใบ"><figcaption>ส่วน "ยังไม่ต้องมีคำตอบทั้งหมดก็เริ่มคุยกับเราได้" — copy ปลอบประคอง ไม่กดดันให้ตัดสินใจ</figcaption></figure>
+
 
     <div class="solution-grid">
       <div class="solution-card">
@@ -1214,6 +1228,8 @@
       <h2>วิธีทำงาน — 4 จังหวะ (เส้นทางใบสมัคร)</h2>
       <p>ตั้งแต่ผู้สมัครกดส่ง จนใบสมัคร PDF ถึงมือ HR</p>
     </section>
+    <figure class="shot shot-pair"><img src="img/apply-form-desktop.jpg" width="1260" height="800" loading="lazy" alt="ฟอร์มสมัครงานบนเดสก์ท็อป มีเมนูหัวข้อ 8 ส่วนด้านซ้าย และช่องอีเมลขึ้นกรอบแดงเมื่อรูปแบบผิด"><img src="img/apply-datewheel-mobile.jpg" width="600" height="1301" loading="lazy" alt="ฟอร์มสมัครบนมือถือ เปิด bottom-sheet เลือกปี พ.ศ. เดือน วัน"><figcaption>จังหวะที่ 1 ของจริง — ฟอร์ม 8 ส่วน (error ขึ้นหลังออกจากช่อง) และ date-wheel แบบ bottom-sheet บนมือถือ · กรอกด้วยข้อมูลตัวอย่าง</figcaption></figure>
+
 
     <div class="flow-grid">
       <div class="flow-step">
@@ -1250,6 +1266,8 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>Serverless ล้วน — ไม่มี backend แยก, ไม่มี DB ที่ต้องดูแลเอง, เชื่อม service ทีหลังได้โดยเว็บไม่ล้ม</p>
     </section>
+    <figure class="shot shot-pair even"><img src="img/careers-th.jpg" width="1000" height="625" loading="lazy" alt="หน้าร่วมงานกับเรา ภาษาไทย ที่ /th/careers"><img src="img/careers-en.jpg" width="1000" height="625" loading="lazy" alt="หน้าเดียวกันภาษาอังกฤษ ที่ /en/careers"><figcaption>next-intl: /th ↔ /en ใช้โครงหน้าเดียวกัน สลับแค่ dictionary ข้อความ</figcaption></figure>
+
 
     <div class="arch-diagram">
       <div class="arch-layers">
@@ -1307,6 +1325,8 @@
       <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
       <p>ครบตั้งแต่หน้าเว็บสื่อสารแบรนด์ ถึงระบบหลังบ้านรับสมัครงาน</p>
     </section>
+    <figure class="shot"><img src="img/contact-chat.jpg" width="1440" height="1333" loading="lazy" alt="หน้าติดต่อเรา มีฟอร์มติดต่อบนการ์ดขาว ภาพบรรยากาศล็อบบี้ และปุ่มแชตลอย"><figcaption>หน้า Contact จริง — ฟอร์มติดต่อ (เก็บ draft + แจ้งเมล) และปุ่มแชต "คุยกับทีมดูแล" · เบลออีเมลโรงพยาบาล</figcaption></figure>
+
 
     <div class="module-grid">
       <div class="module-card">
@@ -1360,52 +1380,7 @@
       <p>หน้าประกาศงานที่ผู้สมัครเห็น — การ์ดตำแหน่งพร้อมป้ายความต้องการ กดสมัครแล้วเข้าสู่ฟอร์มหลายส่วน</p>
     </section>
 
-    <div class="ext-mockup">
-      <div class="ext-bar mk-tabs">
-        <span class="mk-dot" style="background:#f87171"></span>
-        <span class="mk-dot" style="background:#fbbf24"></span>
-        <span class="mk-dot" style="background:#34d399"></span>
-        <span class="mk-url">เว็บโรงพยาบาล &middot; ร่วมงานกับเรา</span>
-      </div>
-      <div class="mk-body">
-        <div class="mk-lead">Careers &middot; ร่วมสร้างทีมดูแล</div>
-        <div class="mk-h">ตำแหน่งที่เปิดรับ</div>
-
-        <div class="mk-job">
-          <span class="mk-ic">&#129658;</span>
-          <div class="mk-info">
-            <div class="mk-role">อายุรแพทย์มะเร็งวิทยา</div>
-            <div class="mk-meta">ฝ่ายการแพทย์ &middot; เต็มเวลา &middot; ศาลายา นครปฐม</div>
-          </div>
-          <span class="mk-tag urgent">เร่งด่วน</span>
-          <span class="mk-apply">สมัคร</span>
-        </div>
-
-        <div class="mk-job">
-          <span class="mk-ic">&#129657;</span>
-          <div class="mk-info">
-            <div class="mk-role">พยาบาลวิชาชีพ – หน่วยเคมีบำบัด</div>
-            <div class="mk-meta">ฝ่ายการพยาบาล &middot; เต็มเวลา &middot; ศาลายา นครปฐม</div>
-          </div>
-          <span class="mk-tag high">ต้องการสูง</span>
-          <span class="mk-apply">สมัคร</span>
-        </div>
-
-        <div class="mk-job">
-          <span class="mk-ic">&#128138;</span>
-          <div class="mk-info">
-            <div class="mk-role">เภสัชกรเฉพาะทางยาเคมีบำบัด</div>
-            <div class="mk-meta">ฝ่ายเภสัชกรรม &middot; เต็มเวลา &middot; ศาลายา นครปฐม</div>
-          </div>
-          <span class="mk-tag brand">เปิดรับ</span>
-          <span class="mk-apply">สมัคร</span>
-        </div>
-
-        <div class="mk-foot">
-          <span class="mk-pill">ส่งใบสมัคร →</span> กรอกฟอร์มหลายส่วน → ระบบสร้าง PDF ใบสมัคร ส่งเข้าเมลทีม HR อัตโนมัติ
-        </div>
-      </div>
-    </div>
+    <figure class="shot"><img src="img/careers-listing.jpg" width="1440" height="1150" loading="lazy" alt="หน้าตำแหน่งที่เปิดรับ มีช่องค้นหา ตัวกรองด้านซ้าย และการ์ดตำแหน่งพร้อมป้ายเร่งด่วน/ต้องการสูง"><figcaption>หน้าตำแหน่งที่เปิดรับของจริง — ค้นหา + กรองตามสายงาน/ฝ่าย การ์ดมีป้ายระดับความต้องการ</figcaption></figure>
 
     <hr class="divider">
 
@@ -1494,101 +1469,10 @@
       </div>
     </div>
 
-    <!-- Block B: Screen Showcase -->
-    <div class="ui-subhead">เว็บไซต์ &middot; Web (Desktop)</div>
-    <div class="ui-screens">
-      <!-- Screen 1: Pre-opening homepage -->
-      <div class="ui-frame">
-        <div class="ui-win">
-          <div class="ui-win-bar">
-            <span class="d" style="background:#f87171"></span>
-            <span class="d" style="background:#fbbf24"></span>
-            <span class="d" style="background:#34d399"></span>
-            <span class="ui-win-url">เว็บโรงพยาบาล &middot; หน้าแรก</span>
-          </div>
-          <div class="ui-home ui-เว็บโรงพยาบาล-forest">
-            <span class="eb">Pre-opening &middot; เปิดเร็ว ๆ นี้</span>
-            <h4>เป็นมะเร็ง ไม่ได้แปลว่า<br>ต้องเผชิญเรื่องนี้คนเดียว</h4>
-            <p>ตั้งแต่วันแรกที่รู้ผล จนถึงวันที่มีแผนการดูแลที่ชัดเจน เว็บโรงพยาบาล อยู่ในทุกขั้นตอนกับคุณ</p>
-            <div class="btns">
-              <span class="ui-btn line">คุยกับทีมดูแล</span>
-              <span class="ui-btn fill">ส่งข้อมูลผู้ป่วย</span>
-            </div>
-          </div>
-        </div>
-        <p class="ui-cap"><b>Pre-opening Homepage</b><br>โทนสงบ พื้นเข้ม heading serif น้ำหนักเบา CTA ไม่กดดัน</p>
-      </div>
+    <!-- Block B: Real screens -->
+    <figure class="shot"><img src="img/brandbook-board.jpg" width="1440" height="900" loading="lazy" alt="บอร์ด Brand Guidelines 9 ช่อง: โลโก้ เครื่องหมายรัศมี ดิจิทัล สี ตัวอักษร และตัวอย่างการใช้งาน"><figcaption>บอร์ด Identity System ในโปรเจกต์ (public/brandbook) — ที่มาของ token สี/ฟอนต์ด้านบน · เบลอโลโก้และโดเมน</figcaption></figure>
 
-      <!-- Screen 3: Auto-generated PDF -->
-      <div class="ui-frame">
-        <div class="ui-win">
-          <div class="ui-win-bar">
-            <span class="d" style="background:#f87171"></span>
-            <span class="d" style="background:#fbbf24"></span>
-            <span class="d" style="background:#34d399"></span>
-            <span class="ui-win-url">application-cover.pdf</span>
-          </div>
-          <div class="ui-pdf">
-            <div class="pbrand">
-              <span class="pmark">V</span>
-              <span class="pn">เว็บโรงพยาบาล<small>Specialized Cancer Hospital</small></span>
-            </div>
-            <h4>ใบสมัครงาน — อายุรแพทย์มะเร็งวิทยา</h4>
-            <div class="prow"><span class="k">ชื่อ–สกุล</span><span class="v">นพ. ศิริพร ใจดี (ตัวอย่าง)</span></div>
-            <div class="prow"><span class="k">ฝ่าย</span><span class="v">ฝ่ายการแพทย์ · เต็มเวลา</span></div>
-            <div class="prow"><span class="k">ประสบการณ์</span><span class="v">8 ปี · เงินเดือนที่คาดหวัง —</span></div>
-            <div class="prow"><span class="k">ใบประกอบฯ</span><span class="v">ว. XXXXX (ตัวอย่าง)</span></div>
-            <div class="prow"><span class="k">แนบ</span><span class="v">เรซูเม่ + รูปถ่าย (merge แล้ว)</span></div>
-            <div class="pfoot">สร้างอัตโนมัติด้วย headless Chrome · ฟอนต์ไทยเป๊ะ · ส่งเข้าเมล HR</div>
-          </div>
-        </div>
-        <p class="ui-cap"><b>Auto-generated PDF</b><br>หน้าปกไทยจาก Chrome จริง → merge เรซูเม่เป็นไฟล์เดียว</p>
-      </div>
-    </div>
-
-    <div class="ui-subhead">แอปมือถือ &middot; Mobile</div>
-    <div class="ui-screens">
-      <!-- Screen: Mobile application form -->
-      <div class="ui-frame">
-        <div class="ui-phone">
-          <div class="notch"></div>
-          <div class="ui-form">
-            <div class="fhead">
-              <span class="ic">&#128100;</span>
-              <span class="t">ข้อมูลส่วนตัว</span>
-            </div>
-            <div class="ui-steps">
-              <i class="done"></i><i class="done"></i><i class="on"></i><i></i><i></i><i></i><i></i>
-            </div>
-            <div class="ui-fld">
-              <label>ชื่อ *</label>
-              <div class="box">ศิริพร</div>
-            </div>
-            <div class="ui-fld">
-              <label>อีเมล * <span class="ui-state-tag">error</span></label>
-              <div class="box err">siriporn.mail</div>
-              <div class="msg">รูปแบบอีเมลไม่ถูกต้อง</div>
-            </div>
-            <div class="ui-fld">
-              <label>วันเกิด <span class="ui-state-tag">focus</span></label>
-              <div class="box focus">14 มีนาคม 2535</div>
-              <div class="ui-wheel">
-                <div class="wt"><span>ปี (พ.ศ.)</span><span class="on">เดือน</span><span>วัน</span></div>
-                <div class="wv">
-                  <div class="a">กุมภาพันธ์</div><div class="b">มีนาคม</div><div class="a">เมษายน</div>
-                </div>
-              </div>
-            </div>
-            <div class="ui-fld">
-              <label>สัญชาติ</label>
-              <div class="box ph">ค้นหาสัญชาติ…</div>
-            </div>
-            <div class="ui-fsubmit">ส่งใบสมัคร</div>
-          </div>
-        </div>
-        <p class="ui-cap"><b>Application Form (มือถือ)</b><br>bottom-sheet + date-wheel · states: focus / error / empty</p>
-      </div>
-    </div>
+    <figure class="shot"><img src="img/home-services.jpg" width="1440" height="1168" loading="lazy" alt="ส่วนบริการบนหน้าแรก แท็บการรักษามะเร็ง ดูแลอาการ ดูแลแบบประคับประคอง พร้อมภาพแพทย์คุยกับผู้ป่วย"><figcaption>token ถูกใช้จริงบนหน้าบริการ — heading serif น้ำหนักเบา พื้นเบจ แท็บสลับ 3 บริการ</figcaption></figure>
 
     <!-- Block C: UI Decision Cards -->
     <div class="ui-decisions" style="margin-top:24px;">
@@ -1618,6 +1502,8 @@
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์ที่ต้องคิดทางแก้เอง — ภาษาไทยบน PDF, browser บน serverless, ความปลอดภัยของ PII</p>
     </section>
+    <figure class="shot doc"><img src="img/application-pdf-cover.jpg" width="900" height="1362" loading="lazy" alt="หน้าปกใบสมัครงาน PDF ภาษาไทย แถบหัวสีน้ำตาล ชื่อผู้สมัคร ป้ายตำแหน่งสีเขียว และข้อมูล 5 หมวด"><figcaption>หน้าปก PDF ใบสมัคร render จาก template จริงด้วย Chrome — สระ/วรรณยุกต์ไทยไม่เพี้ยน · ข้อมูลทั้งหมดเป็นตัวอย่าง</figcaption></figure>
+
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Rendering">
@@ -1665,6 +1551,8 @@
       <h2>Design Decision ที่ตั้งใจเลือก</h2>
       <p>สำหรับเว็บโรงพยาบาลมะเร็ง สิ่งที่จงใจ "ไม่ทำ" สำคัญพอ ๆ กับสิ่งที่ทำ</p>
     </section>
+    <figure class="shot"><img src="img/home-room-to-breathe.jpg" width="1440" height="505" loading="lazy" alt="ส่วน Room to breathe มีภาพพื้นที่ภายในโทนไม้ แสงธรรมชาติ และข้อความพื้นที่ที่เยียวยา"><figcaption>"Room to breathe" — ใช้ภาพพื้นที่ แสง และร่มเงา แทนสัญลักษณ์การแพทย์ ไม่มีกากบาทแดง</figcaption></figure>
+
 
     <div class="quote-block" style="margin-bottom: 24px;">
       <p>เว็บนี้ต้องลดความกลัว ไม่ใช่เพิ่ม — จึง<strong>ไม่ใช้กากบาทแดง</strong> ไม่ใช้ภาษาสู้รบเรื่องมะเร็ง ไม่ทำเหมือนโรงพยาบาลเปิดเต็มระบบทั้งที่ยังก่อสร้าง และ<strong>ไม่เก็บข้อมูลผู้สมัครไว้ที่ที่ public เข้าถึงได้</strong> ทุกการตัดสินใจยึดความสงบ ศักดิ์ศรี และความปลอดภัยของข้อมูลเป็นหลัก มากกว่าลูกเล่นทางการตลาด</p>
@@ -1672,22 +1560,22 @@
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#129466;</strong><br>
+        <span class="dd-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></span><br>
         <strong>บอกความจริง ไม่ขายฝัน</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">สื่อสารว่า "กำลังสร้าง" อย่างอบอุ่น ไม่ทำเหมือนเปิดแล้ว</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#10060;</strong><br>
+        <span class="dd-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg></span><br>
         <strong>ไม่ใช้กากบาทแดง/ภาษาสู้รบ</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ความน่าเชื่อถือมาจาก typography &amp; layout ไม่ใช่สัญลักษณ์เร่งด่วน</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128272;</strong><br>
+        <span class="dd-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><br>
         <strong>PII เก็บเป็น draft เท่านั้น</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">public API อ่านไม่ได้ · token อยู่ฝั่ง server</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128207;</strong><br>
+        <span class="dd-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.8 19.6A2 2 0 1 0 14 16H2"/><path d="M17.5 8a2.5 2.5 0 1 1 2 4H2"/><path d="M9.8 4.4A2 2 0 1 1 11 8H2"/></svg></span><br>
         <strong>Motion แบบลมหายใจ</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">reveal ช้า นุ่ม เคารพ reduced-motion ไม่ flashy</p>
       </div>
@@ -1701,6 +1589,8 @@
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
     </section>
+    <figure class="shot"><img src="img/home-care-process.jpg" width="1440" height="811" loading="lazy" alt="ส่วน How we care, every step of the way การ์ด 5 ขั้นตอนตั้งแต่เล่าให้เราฟังถึงดูแลต่อเนื่อง"><figcaption>Healthcare UX ที่ได้เรียนรู้ — อธิบายเส้นทางการดูแล 5 ขั้นด้วยภาษาปลอบประคอง ให้ผู้ป่วยเห็นว่าจะเกิดอะไรขึ้นต่อ</figcaption></figure>
+
 
     <div class="learning-card">
       <strong>1. i18n Architecture — ทำเว็บ 2 ภาษาให้ maintain ได้จริง:</strong>
@@ -1760,12 +1650,12 @@
       <span class="stack-icon">Resend</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1788,13 +1678,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "เว็บโรงพยาบาล Portfolio",
-      "item": "https://projects.tanplanet.info/hospital-site-portfolio/"
+      "item": "https://projects.tanplanet.work/hospital-site-portfolio/"
     }
   ]
 }
