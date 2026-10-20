@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>shotdeck-box — โน้ตบุ๊กมือสองที่ตัดคลิปและโพสต์เองทั้งคืน</title>
+  <meta name="description" content="Portfolio: โน้ตบุ๊กปี 2017 ที่กลายเป็นเซิร์ฟเวอร์ Ubuntu เปิดทิ้งไว้ที่บ้าน ทำคลิปสั้น เรนเดอร์ และโพสต์ลง 5 แพลตฟอร์มเองตามตาราง ซ่อมตัวเองได้ 3 ชั้น และสั่งงานจากมือถือได้จากทุกที่">
+  <link rel="canonical" href="https://projects.tanplanet.work/shotdeck-box-portfolio/">
+  <meta property="og:title" content="shotdeck-box — โน้ตบุ๊กมือสองที่ตัดคลิปและโพสต์เองทั้งคืน">
+  <meta property="og:description" content="Portfolio: โน้ตบุ๊กปี 2017 ที่กลายเป็นเซิร์ฟเวอร์ Ubuntu เปิดทิ้งไว้ที่บ้าน ทำคลิปสั้น เรนเดอร์ และโพสต์ลง 5 แพลตฟอร์มเองตามตาราง ซ่อมตัวเองได้ 3 ชั้น และสั่งงานจากมือถือได้จากทุกที่">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://projects.tanplanet.work/shotdeck-box-portfolio/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="shotdeck-box — โน้ตบุ๊กมือสองที่ตัดคลิปและโพสต์เองทั้งคืน">
+  <meta name="twitter:description" content="Portfolio: โน้ตบุ๊กปี 2017 ที่กลายเป็นเซิร์ฟเวอร์ Ubuntu เปิดทิ้งไว้ที่บ้าน ทำคลิปสั้น เรนเดอร์ และโพสต์ลง 5 แพลตฟอร์มเองตามตาราง ซ่อมตัวเองได้ 3 ชั้น และสั่งงานจากมือถือได้จากทุกที่">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0f1f'/><rect x='20' y='24' width='60' height='22' rx='6' fill='none' stroke='%2334d399' stroke-width='6'/><rect x='20' y='54' width='60' height='22' rx='6' fill='none' stroke='%2334d399' stroke-width='6'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #047857;
+      --accent-light: #dcfce7;
+      --accent-dark: #14532d;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #0a0f1f 0%, #0f1d33 42%, #0b3b35 78%, #065f46 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(52,211,153,0.18) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #065f46, #10b981, #a7f3d0);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent { color: #86efac; }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro { padding: 56px 0 32px; }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .section-intro p { color: var(--text-secondary); font-size: 1rem; }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0a0f1f, #223056);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block code { background: rgba(255,255,255,0.14); color: #86efac; }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p { font-size: 1.05rem; line-height: 1.7; position: relative; z-index: 1; }
+    .quote-block .author { margin-top: 12px; font-size: 0.82rem; opacity: 0.78; }
+
+    /* ===== Pain / Solution Cards ===== */
+    .pain-grid, .solution-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .pain-card, .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .pain-card { border-left: 4px solid var(--red); }
+    .solution-card { border-left: 4px solid var(--accent); }
+    .pain-card .emoji, .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3, .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p, .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(4,120,87,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #10b981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers { display: flex; flex-direction: column; gap: 12px; max-width: 560px; margin: 0 auto; }
+    .arch-layer { padding: 14px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(4,120,87,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: var(--navy); color: #cbd5e1; border: 1px solid #223056; }
+    .arch-arrow { text-align: center; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+    .arch-sub { display: flex; justify-content: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .arch-layer.infra .arch-sub span { background: rgba(255,255,255,0.10); }
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+  </style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Ubuntu 24.04 &middot; systemd &middot; Tailscale &middot; Remotion
+      </div>
+      <h1>shotdeck-box<br><span class="accent">โน้ตบุ๊กมือสองที่ตัดคลิปและโพสต์เองทั้งคืน</span></h1>
+      <p>โน้ตบุ๊กปี 2017 วางอยู่ที่บ้านในกรุงเทพฯ เปิดทิ้งไว้ตลอด ทำคลิปสั้น เรนเดอร์ ตรวจ แล้วโพสต์ลง 5 แพลตฟอร์มตามตารางเอง ผมสั่งงานจากมือถือได้จากทุกที่ และไปเที่ยวได้โดยที่งานไม่หยุด</p>
+      <p><strong>3 สัปดาห์แรก ลงตารางและโพสต์ไปแล้ว 115 คลิป</strong> และมีอีก 289 คลิปอยู่ในคิวถึงสิ้นปี</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Ubuntu Server</span>
+        <span class="hero-tag">systemd timers</span>
+        <span class="hero-tag">Tailscale</span>
+        <span class="hero-tag">Remotion</span>
+        <span class="hero-tag">faster-whisper</span>
+        <span class="hero-tag">Claude Code</span>
+        <span class="hero-tag">Bun</span>
+        <span class="hero-tag">adb</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#hacks">ปัญหาที่เจอจริง</a>
+      </div>
+    </div>
+  </header>
+
+  <article>
+
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>งานคลิปส่วนใหญ่ไม่ใช่การตัดคลิป</h2>
+      <p>ทำคลิปสั้นขายของได้หนึ่งชิ้น มีงานรอบตัวอีกเป็นสิบอย่าง และหลายอย่างต้องเกิดตอนตีสาม</p>
+    </section>
+
+    <div class="quote-block">
+      <p>ผมจะเอาตัวเองไปวางในการตัดคลิปเท่านั้น ที่เหลือให้ระบบทำ ทั้งพากย์ เรนเดอร์ ตรวจ ตั้งเวลา โพสต์ ตอบคอมเมนต์ และสรุปผลให้อ่านตอนเช้า</p>
+      <div class="author">— โจทย์ตั้งต้น</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z"/><path d="M20.054 15.987H3.946"/></svg>
+        <h3>งานทั้งหมดผูกอยู่กับ Mac เครื่องที่ใช้ทำงาน</h3>
+        <p>ก่อนย้าย มีงานตั้งเวลา 12 ตัวรันอยู่บน Mac ถ้าพับจอหรือหยิบเครื่องออกจากบ้าน งานตอนกลางคืนก็ไม่เกิด</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <h3>งานที่ต้องเกิดตอนไม่มีใครตื่น</h3>
+        <p>คลิปสินค้าตอนตีสาม สำรองไฟล์ตอนตีสี่ ตอบคอมเมนต์ตอนห้าทุ่มครึ่ง ถ้าพังกลางทางก็ไม่มีใครเห็นจนเช้า</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+        <h3>ออกนอกบ้านแล้วสั่งงานไม่ได้</h3>
+        <p>อยากเดินทางได้โดยที่ช่องไม่เงียบ แต่ทุกอย่างอยู่ในเครื่องที่บ้าน และเปิดพอร์ตออกอินเทอร์เน็ตตรง ๆ ก็ไม่ปลอดภัย</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
+        <h3>โพสต์ 5 แพลตฟอร์มด้วยมือ ทุกวัน</h3>
+        <p>แต่ละที่อัปโหลดคนละวิธี บางที่ต้องโพสต์จากมือถือเท่านั้น ลิงก์ต้องไปอยู่ในคอมเมนต์ปักหมุด ทำเองทุกวันคือทั้งช้าและพลาดง่าย</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>เครื่องเฉพาะที่บ้าน ดีกว่าเช่าคลาวด์และดีกว่าบังคับ Mac ไม่ให้หลับ</h2>
+      <p>ข้อจำกัดจริงคือ ต้องมี GPU ต้องมีเบราว์เซอร์ที่ล็อกอินค้างไว้ และต้องเสียบมือถือ Android ตัวจริงได้</p>
+    </section>
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th>ทางเลือก</th><th>ได้อะไร</th><th class="num">ต้นทุน</th><th>เหตุที่ตก / รับ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>เช่า VPS บนคลาวด์</td>
+            <td>เปิดตลอด ไม่ต้องดูแลฮาร์ดแวร์</td>
+            <td class="num">รายเดือน</td>
+            <td>เครื่องที่มี GPU แพงเกินงานนี้ และเสียบมือถือ Android ตัวจริงเพื่อโพสต์ผ่าน USB ไม่ได้</td>
+          </tr>
+          <tr>
+            <td>บังคับ Mac ไม่ให้หลับ</td>
+            <td>ไม่ต้องตั้งอะไรใหม่</td>
+            <td class="num">ไม่มี</td>
+            <td>Mac คือเครื่องทำงาน ต้องพกออกไปข้างนอก งานกลางคืนจึงขึ้นกับว่าวันนั้นเครื่องอยู่บ้านไหม</td>
+          </tr>
+          <tr data-picked>
+            <td>โน้ตบุ๊กมือสองเป็นเซิร์ฟเวอร์ที่บ้าน<span class="pick"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> เลือก</span></td>
+            <td>GPU, ดิสก์หลายลูก, เสียบมือถือได้</td>
+            <td class="num">ซื้อครั้งเดียว</td>
+            <td>i7-7700HQ, RAM 16GB, GTX 1050 Ti พอสำหรับเรนเดอร์และถอดเสียง เปิดทิ้งไว้ที่บ้านได้ทั้งวัน Mac ได้กลับไปเป็นเครื่องทำงานอย่างเดียว</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="learning-card note">
+      <strong>กติกาข้อเดียวตั้งแต่ 30 ก.ย.</strong>
+      <p><strong>งานทุกอย่างทำบนเครื่องนี้ผ่าน ssh</strong> ไม่แก้สำเนาบน Mac แล้วค่อยก็อปขึ้นไป ถ้ามีโค้ดสองชุด ไม่ช้าก็เร็วจะไม่รู้ว่าชุดไหนคือของจริง วันที่ 29 ก.ย. ย้ายงาน 12 ตัวออกจาก Mac และวันที่ 6 ต.ค. ย้ายงานเปิดตลอดอื่น ๆ ตามมา เช่น backend ของจอ ESP32 บนโต๊ะ เพื่อให้ Mac หลับได้จริง</p>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>เครื่องเดียว แบ่งเป็นสี่ชั้น</h2>
+      <p>ชั้นบนคือที่ผมสั่งงาน ชั้นล่างคือที่ไฟล์อยู่ ทุกชั้นคุยกันผ่านเครือข่ายส่วนตัว ไม่มีพอร์ตเปิดออกอินเทอร์เน็ตตรง ๆ</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          iPhone และ Mac &mdash; ที่ไหนก็ได้
+          <div class="arch-sub"><span>เว็บแอปบนมือถือ</span><span>เทอร์มินัลบนเว็บ</span><span>พิมพ์ box บน Mac</span><span>Telegram</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          shotdeck-box &mdash; Ubuntu 24.04
+          <div class="arch-sub"><span>systemd user timers</span><span>Bun server + SSE</span><span>Claude Code ใน tmux</span><span>Remotion</span><span>faster-whisper บน GPU</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          ช่องทางโพสต์
+          <div class="arch-sub"><span>Chrome ที่ล็อกอินไว้ บนจอเสมือน</span><span>API เฉพาะที่ปลอดภัย</span><span>มือถือ Android ผ่าน adb</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          ดิสก์สามลูก
+          <div class="arch-sub"><span>SSD งานที่กำลังทำ</span><span>HDD สำรองทุกคืน</span><span>1 TB เก็บคลิปที่โพสต์แล้ว</span></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="remote">
+      <span class="eyebrow">Prototype</span>
+      <h2>สั่งงานจากที่ไหนก็ได้ โดยไม่เปิดเครื่องให้คนอื่นเห็น</h2>
+      <p>Tailscale เป็นแกนกลาง เข้า SSH ได้ด้วยกุญแจเท่านั้น ที่เหลือคือหน้าจอที่ออกแบบมาให้ใช้บนมือถือได้จริง</p>
+    </section>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg><span><b>พิมพ์ <code>box</code> บน Mac</b> ได้ ssh เข้า tmux session ที่มี Claude Code รออยู่ ปิดหน้าต่างไปแล้วกลับมาต่อได้ งานไม่หลุด</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span><b>เว็บแอปสำหรับ iPhone</b> Bun server อัปเดตสถานะสดผ่าน SSE ใช้ bottom sheet แทนหน้าต่างซ้อน กดได้ด้วยนิ้วโป้งข้างเดียว เปิดได้เฉพาะในเครือข่ายส่วนตัว</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><span><b>เทอร์มินัลบนเว็บ</b> ttyd ต่อเข้า tmux ที่ Claude รันอยู่ อยู่ข้างนอกก็พิมพ์สั่งเป็นประโยคธรรมดาจากมือถือได้</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span><b>จอเสมือนที่ซ่อนไว้</b> Chrome ของบอทรันบน Xvfb แบบล็อกอินค้างไว้ เพราะโหมด headless ถูกแพลตฟอร์มจับได้ ส่วนเวลาอยากดูว่ามันกำลังทำอะไร ก็เปิดผ่าน VNC</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg><span><b>ดูจอมือถือ Android แบบดูอย่างเดียว</b> สะท้อนจอด้วย scrcpy ไว้ตรวจว่าการโพสต์ผ่านมือถือเดินถึงไหน โดยไม่เผลอไปกดอะไรแทรก</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span><b>เปิดออกนอกเครือข่ายแค่จุดเดียว</b> ใช้ Tailscale Funnel เปิด endpoint เดียวเป็น HTTPS พร้อมกุญแจกำกับ เพราะอุปกรณ์บางตัว เช่น จอ ESP32 ไม่ได้อยู่ในเครือข่ายส่วนตัว</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>คลิปพากย์ &mdash; ผมตัดคลิป เครื่องทำที่เหลือ</h2>
+      <p>คลิปที่มีเสียงพากย์ยังต้องมีคนตัดสินใจเรื่องภาพ ส่วนนั้นผมทำเอง หลังจากนั้นทุกขั้นเดินต่อเองจนโพสต์</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></svg>
+        <h4>วางบท แล้ววางฟุตเทจลง Mac</h4>
+        <p>ไฟล์ซิงก์ขึ้นเครื่องด้วย rsync ไม่ต้องอัปโหลดผ่านหน้าเว็บ</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+        <h4>พากย์ไทยทีละบรรทัด แล้วถอดเสียงกลับมาตรวจ</h4>
+        <p>ถอดเสียงด้วย faster-whisper large-v3 บน GPU เทียบกับบท ใช้พจนานุกรมคำอ่าน และปรับความดังทุกบรรทัดให้อยู่ที่ −16 LUFS</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        <h4>จัดวางใน Remotion Studio</h4>
+        <p>ดูพรีวิวอย่างเดียว ยังไม่เรนเดอร์ จนกว่าผมจะบอกว่าใช้ได้</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        <h4>เรนเดอร์</h4>
+        <p>คลิปยาวราว 73 วินาทีใช้ประมาณ 8 นาที หลังอัปเกรด Remotion เรนเดอร์เร็วขึ้น 15–21%</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        <h4>ตรวจก่อนปล่อย</h4>
+        <p>preflight เช็กไฟล์ เสียง และขนาด ก่อนเข้าคิว</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">06</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
+        <h4>ตั้งเวลาและโพสต์เอง</h4>
+        <p>ลงช่วงเวลาคงที่ วันธรรมดา 18:30 เสาร์อาทิตย์ 12:30</p>
+      </div>
+    </div>
+
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>คลิปสินค้า &mdash; ไม่มีคนแตะเลยตั้งแต่ต้นจนโพสต์</h2>
+      <p>คลิปแบบนี้ไม่มีเสียงพากย์ จึงตัดคนออกได้ทั้งหมด แล้วใช้ด่านตรวจอัตโนมัติแทนสายตา</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg>
+        <h4>เลือกสินค้า</h4>
+        <p>จัดอันดับจากแคตตาล็อก affiliate ราว 2,450 รายการ</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
+        <h4>ตัดพื้นหลังรูปสินค้า</h4>
+        <p>ใช้ rembg ตัดเอาเฉพาะตัวสินค้า</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        <h4>ให้ AI วาดฉาก</h4>
+        <p>ใช้โควตารายสัปดาห์ของแพ็กเกจที่จ่ายอยู่แล้ว ไม่จ่ายค่า API เพิ่ม</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h4>หมุนสูตรคลิป</h4>
+        <p>สลับระหว่าง 5 สูตร ให้ฟีดไม่ซ้ำหน้าตาเดิมทุกวัน แล้วประกอบด้วยแม่แบบ Remotion</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+        <h4>ตรวจ motion อัตโนมัติ</h4>
+        <p>หาภาพกะพริบ และเช็กว่าตัวหนังสือไม่ล้นออกนอกพื้นที่ปลอดภัยของแต่ละแพลตฟอร์ม</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">06</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
+        <h4>โพสต์โดยไม่ต้องรออนุมัติ</h4>
+        <p>ผ่านด่านตรวจก็โพสต์เลย ไม่ผ่านก็ไม่โพสต์</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="schedule">
+      <span class="eyebrow">Prototype</span>
+      <h2>หนึ่งวันของเครื่อง</h2>
+      <p>ทุกงานเป็น systemd user timer แยกตัว พังตัวเดียวไม่ลากตัวอื่นพังตาม</p>
+    </section>
+
+    <div class="ladder">
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg><span>ทำคลิปสินค้าอัตโนมัติ</span></div><div class="out">03:00</div><div class="note">ตั้งแต่เลือกสินค้าจนเข้าคิวโพสต์</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg><span>สำรองไฟล์ลง HDD</span></div><div class="out">04:00</div><div class="note">rsync ทุกคืน ไฟล์ที่ถูกลบยังเก็บไว้อีก 14 วัน</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></svg><span>วิเคราะห์คลิปอ้างอิงและเก็บเข้าคลัง</span></div><div class="out">04:40</div><div class="note">ดูว่าคลิปตัวอย่างทำอะไร แล้วย้ายเข้าดิสก์เก็บ</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>รายงานยอดเข้าถึง</span></div><div class="out">08:00</div><div class="note">สรุปให้อ่านตอนเช้า</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><span>ตอบคอมเมนต์</span></div><div class="out">12:00 · 22:00 · 23:30</div><div class="note">Claude ร่างคำตอบตามบริบทของคลิปนั้น</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg><span>เรียนจากสถิติ</span></div><div class="out">19:30</div><div class="note">ดึงสิ่งที่ได้ผลและไม่ได้ผล เขียนเป็นบทเรียนให้รอบถัดไปใช้</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>วางแผนพรุ่งนี้ แล้วขออนุมัติ</span></div><div class="out">20:00</div><div class="note">ส่งหัวข้อเข้า Telegram พร้อมปุ่ม เงียบ 15 นาทีถือว่าอนุมัติ</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg><span>เข้าคิวโพสต์</span></div><div class="out">21:00</div><div class="note">จองช่วงเวลาโพสต์ของวันถัดไป</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><span>ตรวจทั้งระบบ</span></div><div class="out">22:30</div><div class="note">เช็กว่าที่บอกว่าโพสต์แล้ว โพสต์จริงไหม</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg><span>รายงานประจำวัน</span></div><div class="out">23:45</div><div class="note">สรุปเข้า Telegram</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>สถิติรายสัปดาห์ และสรุปเวอร์ชันใหม่ของ Remotion</span></div><div class="out">อาทิตย์ · จันทร์</div><div class="note">แจ้งว่ามีอะไรใหม่ แต่ไม่อัปเกรดเอง</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="posting">
+      <span class="eyebrow">Prototype</span>
+      <h2>โพสต์ 5 แพลตฟอร์ม ด้วยวิธีที่ต่างกัน</h2>
+      <p>ไม่ได้เลือกวิธีที่เท่ที่สุด แต่เลือกวิธีที่แต่ละแพลตฟอร์มไม่ลงโทษ</p>
+    </section>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg><span><b>Facebook Reels</b> ผ่าน API หรือหน้าสร้างโพสต์ในเบราว์เซอร์ ส่วน Instagram ใช้หน้าสร้างโพสต์อย่างเดียว</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span><b>YouTube Shorts ผ่านเบราว์เซอร์</b> ไม่ใช้ API เพราะคลิปที่อัปผ่านแอปที่ยังไม่ผ่านการ audit จะถูกล็อกเป็นส่วนตัว</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span><b>TikTok และ Shopee Video ผ่านมือถือ Android ตัวจริง</b> สั่งผ่าน adb บน USB hub ที่มีไฟเลี้ยงของตัวเอง มือถือไม่แบตหมดกลางคืน</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span><b>ลิงก์ affiliate อยู่ในคอมเมนต์แรกที่ปักหมุด</b> ไม่ใส่ในตัวโพสต์เลย</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><span><b>กันโพสต์ซ้ำหลายชั้น</b> ก่อนจะลองวิธีสำรอง ระบบเปิดหน้าเพจจริงดูก่อนว่าคลิปขึ้นไปแล้วหรือยัง ไม่เชื่อแค่สถานะที่ตัวเองจำไว้</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="heal">
+      <span class="eyebrow">Test</span>
+      <h2>ซ่อมตัวเองสามชั้น ก่อนจะมาปลุกผม</h2>
+      <p>ตอนอยู่ข้างนอก ข้อความแจ้งเตือนทุกข้อความคือเวลาที่ต้องหยุดเที่ยว จึงตั้งให้มันไปถึงผมช้าที่สุดเท่าที่จะทำได้</p>
+    </section>
+
+    <div class="ladder">
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>ชั้น 1 &middot; สคริปต์ซ่อมอาการที่รู้จักอยู่แล้ว</span></div><div class="out">ทุก 5 นาที</div><div class="note">อ่านรหัสข้อผิดพลาดแล้วแก้ตามที่เคยแก้ เช่น รีสตาร์ต Xvfb รันงานซ้ำ หรือเรนเดอร์ใหม่</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg><span>ชั้น 2 &middot; ส่งอาการให้ Claude บนเครื่อง</span></div><div class="out">ไม่เกิน 6 ครั้ง/วัน</div><div class="note">วางข้อความ error ลงใน tmux ที่ Claude รันอยู่ ให้ไล่หาสาเหตุเอง ตั้งเพดานไว้กันมันวนแก้ไม่จบ</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><span>ชั้น 3 &middot; ส่ง Telegram หาผม</span></div><div class="out">เมื่อสองชั้นแรกไม่รอด</div><div class="note">ถึงตรงนี้แปลว่าเป็นเรื่องใหม่จริง ๆ และควรมีคนดู</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="hacks">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>ปัญหาที่เจอตอนของจริงเดินอยู่</h2>
+      <p>เกือบทุกข้อเป็นเรื่องที่ไม่เกิดบน Mac และไม่มีใครเตือนไว้ก่อน</p>
+    </section>
+
+    <div class="hack-grid">
+
+      <div class="hack-card" data-label="Install">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>BIOS ไม่ยอมบูตจาก USB เกือบทุกอัน และติดตั้งเสร็จแล้วขึ้น No Bootable Device</span></h3>
+        <p>แฟลชไดรฟ์ที่เขียนอิมเมจแบบปกติไม่ขึ้นในเมนูบูต พอติดตั้งผ่าน เปิดเครื่องใหม่ก็ไม่เจอระบบที่เพิ่งลงไป</p>
+        <div class="highlight"><strong>แก้:</strong> ใช้แฟลชไดรฟ์ <strong>FAT32 แบบ MBR แล้วแตกไฟล์ ISO ลงไปตรง ๆ</strong> และเข้า BIOS ไป<strong>เพิ่ม shimx64.efi เป็นไฟล์ที่เชื่อถือ</strong> เครื่องถึงยอมบูตเข้า Ubuntu</div>
+      </div>
+
+      <div class="hack-card" data-label="Power">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>พับจอแล้วเครื่องวนหลับ-ตื่น จน log มี "Suspending…" 300,000 บรรทัด</span></h3>
+        <p>โน้ตบุ๊กถูกตั้งมาให้พับจอแล้วหลับ เครื่องที่ต้องเปิดตลอดจึงพยายามหลับซ้ำไปเรื่อย ๆ ทั้งคืน</p>
+        <div class="highlight"><strong>แก้:</strong> ตั้งค่า <strong>logind ให้ไม่สนใจการพับจอ</strong> เครื่องพับวางไว้ได้โดยไม่หลับ</div>
+      </div>
+
+      <div class="hack-card" data-label="Linux">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>คืนแรกโพสต์พลาด 5 จาก 6 คลิป เพราะคีย์ลัดเลือกทั้งหมดผิดระบบ</span></h3>
+        <p>สคริปต์เขียนบน Mac ใช้ <code>Meta+A</code> ล้างช่องข้อความ บน Linux ปุ่มนี้ไม่ได้เลือกทั้งหมด ข้อความเก่าจึงค้างอยู่ในช่อง</p>
+        <div class="highlight"><strong>แก้:</strong> เปลี่ยนเป็น <code>ControlOrMeta+A</code> ให้ใช้ปุ่มที่ถูกตามระบบที่รัน <strong>สคริปต์เดียวกันรันได้ทั้งสองเครื่อง</strong></div>
+      </div>
+
+      <div class="hack-card" data-label="Memory">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>rembg กินหน่วยความจำ 8.9 GB จนงานตอนเช้ามืดล่ม</span></h3>
+        <p>โหลดโมเดลใหม่ทุกครั้งที่ตัดพื้นหลังหนึ่งรูป เครื่องมี RAM 16GB งานอื่นที่รันพร้อมกันจึงไม่เหลือที่</p>
+        <div class="highlight"><strong>แก้:</strong> เปลี่ยนเป็น <strong>session เดียวที่เปิดค้างไว้ใช้ซ้ำ</strong> หน่วยความจำสูงสุดลดเหลือ <strong>0.82 GB</strong></div>
+      </div>
+
+      <div class="hack-card" data-label="Browser">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Chrome แบบ headless ถูกแพลตฟอร์มจับได้</span></h3>
+        <p>เบราว์เซอร์ที่ไม่มีหน้าจอจริงมีร่องรอยต่างจากคนใช้งานปกติ การโพสต์ผ่านหน้าเว็บจึงไม่ผ่าน</p>
+        <div class="highlight"><strong>แก้:</strong> รัน <strong>Chrome ตัวเต็มบนจอเสมือน Xvfb</strong> แบบล็อกอินค้างไว้ แล้วเปิดดูผ่าน VNC ได้เวลาต้องการ</div>
+      </div>
+
+      <div class="hack-card" data-label="Network">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Tailscale Funnel ไม่ส่ง header ที่ใช้เช็กว่ามาจาก Funnel</span></h3>
+        <p>ตั้งใจให้ endpoint ที่เปิดออกนอกตรวจว่าคำขอมาทาง Funnel แต่ header นั้นไม่เคยมาถึงเซิร์ฟเวอร์เลย</p>
+        <div class="highlight"><strong>แก้:</strong> เปลี่ยนไป<strong>ตรวจจาก Host ที่เป็นโดเมน .ts.net</strong> ร่วมกับกุญแจ คำขอที่มาทางอื่นจึงไม่ผ่าน</div>
+      </div>
+
+      <div class="hack-card" data-label="GPU">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>GPU นั่งว่างอยู่หลายวันหลังย้ายเครื่อง</span></h3>
+        <p>เลือกเครื่องที่มีการ์ดจอ แต่งานช่วงแรกใช้แค่ CPU การ์ดจอจึงเป็นของที่ซื้อมาแล้วไม่ได้ใช้</p>
+        <div class="highlight"><strong>แก้:</strong> ย้าย<strong>การถอดเสียงตรวจคำพากย์</strong>มาใช้ faster-whisper large-v3 บน GPU ได้ด่านตรวจเสียงที่แม่นขึ้นโดยไม่ต้องรอนาน</div>
+      </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Test</span>
+      <h2>ตัวเลขที่ใช้วัดว่าเครื่องนี้คุ้ม</h2>
+      <p>115 คลิปใน 3 สัปดาห์แรก แบ่งเป็นคลิปสินค้าอัตโนมัติ 38 คลิปพากย์ 21 การ์ดภาพนิ่ง/ข้อมูล 42 และคลิปเปรียบเทียบ 14</p>
+    </section>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">115</div><div class="label">คลิปใน 3 สัปดาห์แรก (29 ก.ย. – 20 ต.ค.)</div></div>
+      <div class="metric-card"><div class="num">289</div><div class="label">คลิปในคิวถึงสิ้นปี</div></div>
+      <div class="metric-card"><div class="num">38</div><div class="label">คลิปสินค้าอัตโนมัติใน 3 สัปดาห์แรก</div></div>
+      <div class="metric-card"><div class="num">21</div><div class="label">คลิปพากย์ใน 3 สัปดาห์แรก</div></div>
+      <div class="metric-card"><div class="num">12</div><div class="label">งานตั้งเวลาที่ย้ายออกจาก Mac</div></div>
+      <div class="metric-card"><div class="num">5</div><div class="label">แพลตฟอร์มที่โพสต์เองตามตาราง</div></div>
+      <div class="metric-card"><div class="num">0.82</div><div class="label">GB หน่วยความจำสูงสุดของ rembg จากเดิม 8.9</div></div>
+      <div class="metric-card"><div class="num">0</div><div class="label">บาทที่จ่ายค่า API สร้างภาพเพิ่ม</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>ขอบเขตที่ตั้งใจไม่ทำ</h2>
+      <p>ระบบที่ทำเองทั้งคืนโดยไม่มีคนดู ต้องมีเส้นที่มันไม่ข้ามเอง</p>
+    </section>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg><span><b>ไม่อัปเกรด Remotion เอง</b> ทุกวันจันทร์สรุปมาให้อ่านว่าเวอร์ชันใหม่มีอะไร ผมเป็นคนตัดสินว่าจะอัปเมื่อไร เพราะแม่แบบทุกตัวพึ่งมันอยู่</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg><span><b>คลิปพากย์ไม่เรนเดอร์จนกว่าผมจะบอก</b> Remotion Studio มีไว้ดูพรีวิว การเรนเดอร์ใช้เครื่องเกือบ 10 นาที ไม่ควรเสียไปกับคลิปที่ยังไม่ผ่าน</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span><b>ไม่ใส่ลิงก์ในตัวโพสต์</b> ลิงก์อยู่ในคอมเมนต์แรกที่ปักหมุดเท่านั้น</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span><b>ไม่ใช้ API ที่ทำให้คลิปถูกล็อก</b> YouTube โพสต์ผ่านเบราว์เซอร์แทน แม้จะต้องดูแลมากกว่า</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg><span><b>Claude ช่วยซ่อมได้ไม่เกิน 6 ครั้งต่อวัน</b> มีเพดานไว้กันการวนแก้ปัญหาเดิมทั้งคืน เกินนั้นต้องเป็นคนตัดสิน</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg><span><b>ไม่แก้งานบนสำเนาที่ Mac</b> ทุกอย่างแก้บนเครื่องจริงผ่าน ssh ของจริงมีที่เดียว</span></li>
+    </ul>
+
+  </article>
+
+  <div class="closing">
+    <h2>shotdeck-box</h2>
+    <p>โน้ตบุ๊กเก่าเครื่องเดียวที่ทำให้ผมเหลืองานแค่ตัดคลิป ส่วนพากย์ เรนเดอร์ ตรวจ โพสต์ ตอบคอมเมนต์ และซ่อมตัวเอง มันทำต่อเองระหว่างที่ผมหลับหรือไปเที่ยว</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Ubuntu 24.04</span>
+      <span class="stack-icon">systemd timers</span>
+      <span class="stack-icon">Tailscale</span>
+      <span class="stack-icon">Bun + SSE</span>
+      <span class="stack-icon">Claude Code</span>
+      <span class="stack-icon">tmux · ttyd</span>
+      <span class="stack-icon">Remotion</span>
+      <span class="stack-icon">faster-whisper</span>
+      <span class="stack-icon">rembg</span>
+      <span class="stack-icon">Xvfb · VNC</span>
+      <span class="stack-icon">adb · scrcpy</span>
+      <span class="stack-icon">Telegram Bot</span>
+      <span class="stack-icon">rsync</span>
+    </div>
+  </div>
+
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"shotdeck-box — เซิร์ฟเวอร์ที่บ้านที่ทำคลิปและโพสต์เอง","item":"https://projects.tanplanet.work/shotdeck-box-portfolio/"}
+  ]
+}
+</script>
+
+</body>
+</html>
