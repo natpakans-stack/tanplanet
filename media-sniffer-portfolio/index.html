@@ -7,9 +7,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="MP4/M3U8 Sniffer — Chrome Extension ดักลิงก์วิดีโอ → yt-dlp">
   <meta name="twitter:description" content="Portfolio: Chrome extension (Manifest V3) ดัก media stream ในหน้าเว็บ — แยก HLS master/variant, เก็บ header จริง, สร้างคำสั่ง yt-dlp ให้ก๊อปวางโหลดได้ทันที">
-  <meta property="og:url" content="https://projects.tanplanet.info/media-sniffer-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/media-sniffer-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/media-sniffer-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/media-sniffer-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: Chrome extension (Manifest V3) ดัก media stream ในหน้าเว็บ — แยก HLS master/variant, เก็บ header จริง, สร้างคำสั่ง yt-dlp ให้ก๊อปวางโหลดได้ทันที">
@@ -837,6 +837,11 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
     .hero-badge .ico { width: 14px; height: 14px; }
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-narrow img{max-width:420px;margin:0 auto}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.shot-pair .shot{margin:0}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
+    .dd-ico{width:28px;height:28px;color:var(--accent);display:inline-block}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -879,6 +884,7 @@
       <h2>ปัญหาที่เจอ</h2>
       <p>ทำไมการโหลดวิดีโอที่ตัวเองมีสิทธิ์เข้าถึง มาเก็บดูออฟไลน์ ถึงยากขึ้นทุกปี?</p>
     </section>
+    <figure class="shot"><img src="img/m3u8-master.jpg" width="1400" height="834" loading="lazy" alt="ไฟล์ master playlist m3u8 ดิบ เต็มไปด้วยแท็ก EXT-X-STREAM-INF ค่า BANDWIDTH RESOLUTION และลิงก์ variant"><figcaption>เปิดไฟล์ .m3u8 ตรง ๆ จะเจอแบบนี้ — ต้องอ่านแท็กเองถึงรู้ว่ามี 1080p / 720p ให้เลือก (สตรีมทดสอบสาธารณะของ Mux)</figcaption></figure>
 
     <div class="quote-block">
       <p>เว็บสมัยนี้ไม่ได้ฝังไฟล์ <code>.mp4</code> ตรงๆ อีกแล้ว — มันเล่นแบบ HLS ที่หั่นวิดีโอเป็น segment เล็กๆ หลายพันชิ้น (<code>.ts</code> / <code>.m4s</code>) แล้วมี playlist <code>.m3u8</code> ควบคุม พอจะโหลดมาดูออฟไลน์ ต้องเปิด DevTools → Network ไล่หา m3u8 → ก๊อป Referer/Cookie มาใส่ yt-dlp เอง ทำทุกครั้งเสียเวลามาก และพลาดง่าย</p>
@@ -921,6 +927,7 @@
       <h2>วิธีแก้ปัญหา</h2>
       <p>ให้ extension ทำงานน่าเบื่อทั้งหมดแทน — ดัก, แกะ, ประกอบคำสั่ง เหลือแค่ "ก๊อป → วาง → Enter"</p>
     </section>
+    <figure class="shot"><img src="img/browser-popup.jpg" width="1600" height="975" loading="lazy" alt="หน้าเว็บเล่นวิดีโอ HLS พร้อมป๊อปอัป Sniffer เปิดอยู่มุมขวาบน แสดง master และ variant ที่ดักได้ ไอคอนมี badge เลข 3"><figcaption>เปิดหน้าที่เล่นวิดีโอ (hls.js demo) แล้วคลิกไอคอน — ป๊อปอัปจริงโชว์ทุกสตรีมที่ดักได้ พร้อมปุ่ม URL / cmd / โหลด</figcaption></figure>
 
     <div class="solution-grid">
       <div class="solution-card">
@@ -958,6 +965,7 @@
       <h2>วิธีทำงาน — 4 จังหวะ</h2>
       <p>ตั้งแต่เปิดหน้าเว็บ จนได้คำสั่งพร้อมโหลด</p>
     </section>
+    <figure class="shot shot-narrow"><img src="img/popup-sniff.jpg" width="840" height="912" loading="lazy" alt="ป๊อปอัปแยกประเภทสตรีม: Master พร้อมรายการความชัด, Variant บอกจำนวน segment และความยาว, Variant ที่เข้ารหัส AES-128 และไฟล์ MP4 พร้อมรูปย่อ"><figcaption>จังหวะที่ 3 ของจริง: แกะ m3u8 แล้วบอกเลยว่าตัวไหน master / variant, กี่ segment, ยาวเท่าไร, เข้ารหัส AES-128 ไหม (ลิงก์ในภาพเป็นสตรีมทดสอบสาธารณะ)</figcaption></figure>
 
     <div class="flow-grid">
       <div class="flow-step">
@@ -994,6 +1002,7 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>Manifest V3 ล้วน — ไม่มี backend, ไม่มี build step, ไม่เก็บข้อมูลออกนอกเครื่อง</p>
     </section>
+    <figure class="shot"><img src="img/code-webrequest.jpg" width="1400" height="1033" loading="lazy" alt="โค้ด background.js ส่วน webRequest.onSendHeaders ที่ดัก request ผูกกับ tabId และขอ extraHeaders"><figcaption>หัวใจของ service worker — ฟัง onSendHeaders พร้อม "extraHeaders" ผูกทุก item กับ tabId แล้วอัปเดต badge (โค้ดจริงจาก background.js)</figcaption></figure>
 
     <div class="arch-diagram">
       <div class="arch-layers">
@@ -1051,6 +1060,7 @@
       <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
       <p>ครบ loop ตั้งแต่ดัก network ถึงคำสั่งพร้อมโหลด</p>
     </section>
+    <figure class="shot shot-narrow"><img src="img/popup-youtube.jpg" width="840" height="506" loading="lazy" alt="การ์ด YouTube ในป๊อปอัป แสดงชื่อคลิป ปุ่ม Download ปุ่ม 1080p และปุ่มคัดลอกคำสั่ง"><figcaption>YouTube Smart Card — อยู่หน้า watch ก็โหลดจากลิงก์หน้าเว็บได้เลย ไม่ต้อง sniff googlevideo (ตัด &amp;list= ทิ้งให้อัตโนมัติ)</figcaption></figure>
 
     <div class="module-grid">
       <div class="module-card">
@@ -1104,45 +1114,9 @@
       <p>เปิดหน้าเว็บที่มีวิดีโอ → คลิก icon → เห็นทุกอย่างในหน้าจอเดียว</p>
     </section>
 
-    <div class="ext-mockup">
-      <div class="ext-bar">
-        <span class="ext-btn">&#8635; Rescan</span>
-        <span class="ext-btn">Copy all</span>
-        <span class="ext-btn">Clear</span>
-        <span class="ext-badge">3</span>
-      </div>
-      <div class="ext-yt">
-        <div><b>&#9654; YouTube</b> — โหลดจากหน้าเว็บ (เสถียรกว่า sniff)</div>
-        <div class="u">https://www.youtube.com/watch?v=dQw4w9WgXcQ</div>
-        <span class="chip">yt-dlp best</span>
-        <span class="chip">yt-dlp 1080p</span>
-      </div>
-      <table class="ext-table">
-        <thead>
-          <tr><th>Type</th><th>Quality</th><th>Info</th><th></th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="kind master">Master</span></td>
-            <td class="q">1080p / 720p / 480p</td>
-            <td class="info">&#128266; th, en &middot; &#128172; th</td>
-            <td><span class="chip">URL</span> <span class="chip">yt-dlp</span></td>
-          </tr>
-          <tr>
-            <td><span class="kind variant">Variant</span></td>
-            <td class="q">1080p</td>
-            <td class="info">312 segs &middot; 24:15 &middot; &#128274; AES-128</td>
-            <td><span class="chip">URL</span> <span class="chip">yt-dlp</span></td>
-          </tr>
-          <tr>
-            <td><span class="kind file">File</span></td>
-            <td class="q">&mdash;</td>
-            <td class="info">direct .mp4</td>
-            <td><span class="chip">URL</span> <span class="chip">yt-dlp</span></td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="ext-cmd"><span class="cmt"># กดปุ่ม yt-dlp → ได้คำสั่งพร้อม header จริง</span><br>yt-dlp <span class="flag">--referer</span> 'https://site.tld/' <span class="flag">--add-header</span> 'Cookie:sid=…' 'https://cdn.site.tld/1080/index.m3u8' <span class="flag">-o</span> video.mp4</div>
+    <div class="shot-pair">
+    <figure class="shot shot-narrow"><img src="img/popup-queue.jpg" width="840" height="842" loading="lazy" alt="ป๊อปอัปเลือกโปรเจกต์และซีนปลายทาง มีการ์ด YouTube และคิวโหลดสี่งานพร้อมแถบเปอร์เซ็นต์ ความเร็ว และปุ่มหยุด เล่นต่อ เปิดโฟลเดอร์"><figcaption>คิวโหลด: แถบ % · ความเร็ว · ETA · หยุดชั่วคราว / โหลดต่อ — เลือกซีนปลายทางได้จากแถบบน (ชื่อโปรเจกต์/ไฟล์เป็นตัวอย่าง)</figcaption></figure>
+    <figure class="shot shot-narrow"><img src="img/popup-sniff.jpg" width="840" height="912" loading="lazy" alt="ป๊อปอัปรายการสตรีมที่ดักได้ Master Variant AES-128 และไฟล์ MP4"><figcaption>หน้ารายการสตรีม — ทุกแถวมีปุ่ม URL / cmd / โหลด</figcaption></figure>
     </div>
 
     <hr class="divider">
@@ -1153,6 +1127,7 @@
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์ที่ต้องคิดทางแก้เอง — Chrome extension API quirk + streaming internals</p>
     </section>
+    <figure class="shot"><img src="img/terminal-cmd.jpg" width="1400" height="362" loading="lazy" alt="คำสั่ง yt-dlp ที่ป๊อปอัปประกอบให้ มี --referer และ --add-header หลายตัว ค่า Cookie ที่มี single-quote ถูก escape เป็น quote-backslash-quote"><figcaption>คำสั่งที่ปุ่ม cmd ก๊อปให้ — Cookie ที่มี ; space และ ' ถูกห่อด้วย single-quote + escape แบบ POSIX จึงวางใน terminal ได้ไม่พัง (ค่า header ในภาพเป็นตัวอย่าง)</figcaption></figure>
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Browser API">
@@ -1200,6 +1175,7 @@
       <h2>Design Decision ที่ตั้งใจเลือก</h2>
       <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอๆ กับสิ่งที่ทำ</p>
     </section>
+    <figure class="shot"><img src="img/code-host.jpg" width="1400" height="809" loading="lazy" alt="โค้ด Python ของ native messaging host ที่ตรวจ URL แล้วสั่ง yt-dlp ผ่าน subprocess.Popen แบบแยก session"><figcaption>ตัวโหลดจริงคือ yt-dlp — native host แค่ตรวจ URL แล้วส่งงานต่อ แยก process ออกจาก Chrome ปิดป๊อปอัปแล้วงานยังวิ่ง</figcaption></figure>
 
     <div class="quote-block" style="margin-bottom: 24px;">
       <p>เครื่องมือนี้ทำหน้าที่เดียว: ช่วยประกอบคำสั่งให้เร็วขึ้น — มันไม่ดาวน์โหลดเอง ไม่ถอดรหัส DRM ไม่เก็บข้อมูลออกนอกเครื่อง ตัว classifier แค่ "บอก" ว่า segment เข้ารหัส AES-128 อยู่ (เพื่อให้รู้ว่าต้องมี key) ไม่ได้แตะ key ใดๆ ขอบเขตชัดตั้งแต่ต้น = ตัดสินใจ implement ง่ายและตรงไปตรงมา</p>
@@ -1207,22 +1183,22 @@
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128203;</strong><br>
+        <svg class="dd-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg><br>
         <strong>ประกอบคำสั่ง ไม่โหลดเอง</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ให้ yt-dlp เป็นคนโหลด — extension แค่เตรียม input ให้</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128274;</strong><br>
+        <svg class="dd-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><br>
         <strong>Detect ไม่ Decrypt</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">บอกว่า AES-128 เข้ารหัสอยู่ แต่ไม่ยุ่งกับ key</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128190;</strong><br>
+        <svg class="dd-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 19v-3"/><path d="M10 19v-3"/><path d="M14 19v-3"/><path d="M18 19v-3"/><path d="M8 11V9"/><path d="M16 11V9"/><path d="M12 11V9"/><path d="M2 15h20"/><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v1.1a2 2 0 0 0 0 3.837V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5.1a2 2 0 0 0 0-3.837Z"/></svg><br>
         <strong>session storage เท่านั้น</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ข้อมูลอยู่ใน memory หายเมื่อปิด ไม่เขียนดิสก์</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#127911;</strong><br>
+        <svg class="dd-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"/></svg><br>
         <strong>Whitelist 4 header</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">เก็บเฉพาะที่ yt-dlp ต้องใช้ ไม่เก็บเกิน</p>
       </div>
@@ -1236,6 +1212,7 @@
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
     </section>
+    <figure class="shot"><img src="img/m3u8-aes.jpg" width="1400" height="795" loading="lazy" alt="variant playlist ที่มีแท็ก EXT-X-KEY METHOD=AES-128 และรายการ EXTINF ของแต่ละ segment"><figcaption>อ่าน m3u8 ออกทุกบรรทัด: #EXT-X-KEY บอกว่า segment เข้ารหัส AES-128 · #EXTINF คือความยาวต่อชิ้น — ที่มาของป้าย "AES-128" และเวลารวมในป๊อปอัป</figcaption></figure>
 
     <div class="learning-card">
       <strong>1. Chrome Extension MV3 — จาก "เคยได้ยิน" เป็น "ทำได้จริง":</strong>
@@ -1295,12 +1272,12 @@
       <span class="stack-icon">Vanilla JS</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1323,13 +1300,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "MP4/M3U8 Sniffer Portfolio",
-      "item": "https://projects.tanplanet.info/media-sniffer-portfolio/"
+      "item": "https://projects.tanplanet.work/media-sniffer-portfolio/"
     }
   ]
 }

@@ -7,9 +7,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="MegaCoach — AI Coach จัดพอร์ตหุ้น US ผ่าน Dime บน LINE + LIFF">
   <meta name="twitter:description" content="Portfolio: ระบบ AI coach ส่วนตัวจัดพอร์ตหุ้นสหรัฐฯ — LIFF dashboard + เตือนจังหวะเข้า-ออกอัตโนมัติทาง LINE + เข้ารหัส zero-knowledge (ตัวเลขเงินไม่ขึ้น cloud)">
-  <meta property="og:url" content="https://projects.tanplanet.info/megacoach-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/megacoach-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/megacoach-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/megacoach-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: ระบบ AI coach ส่วนตัวจัดพอร์ตหุ้นสหรัฐฯ — LIFF dashboard + เตือนจังหวะเข้า-ออกอัตโนมัติทาง LINE + เข้ารหัส zero-knowledge (ตัวเลขเงินไม่ขึ้น cloud)">
@@ -824,6 +824,10 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
     .hero-badge .ico { width: 14px; height: 14px; }
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-phone{max-width:360px;margin-left:auto;margin-right:auto}
+    .shot-pair{display:grid;grid-template-columns:2fr 1fr;gap:20px;align-items:start;margin:8px 0 32px}.shot-pair .shot{margin:0}.shot-pair .shot-phone{max-width:none}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}.shot-pair .shot-phone{max-width:360px;margin:0 auto}}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -867,6 +871,8 @@
       <p>จัดพอร์ตหุ้นสหรัฐฯ คนเดียว ทำไมถึงเหนื่อยและพลาดง่ายกว่าที่คิด?</p>
     </section>
 
+    <figure class="shot"><img src="img/problem-phone-unsplash.jpg" width="1600" height="1068" loading="lazy" alt="มือถือแสดงกราฟหุ้นในแอปลงทุน"><figcaption>ข้อมูลพอร์ตกระจายอยู่หลายแอป ไม่มีภาพรวมในที่เดียว · ภาพ: PiggyBank / Unsplash</figcaption></figure>
+
     <div class="quote-block">
       <p>ข้อมูลพอร์ตกระจัดกระจาย — holdings อยู่ที่หนึ่ง, watchlist อยู่อีกที่, เป้าหมายระยะยาวอยู่ในหัว พอไม่มีระบบเตือนก็ <code>ลืม DCA</code>, <code>ลืม stop</code>, และเผลอ "ไล่ของร้อน" ตามอารมณ์ อยากมีที่ปรึกษาที่รู้พอร์ตเราจริง ๆ และดูทุกอย่างบนมือถือได้ — แต่ตัวเลขเงินเป็นเรื่องส่วนตัวมาก ไม่อยากให้ cloud ไหนเห็น</p>
       <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ MegaCoach</div>
@@ -909,6 +915,8 @@
       <p>ให้ระบบทำงานน่าเบื่อทั้งหมดแทน — รวมข้อมูล, เฝ้าตลาด, เตือนจังหวะ — โดยที่ตัวเลขเงินไม่เคยออกจากเครื่องแบบอ่านได้</p>
     </section>
 
+    <div class="shot-pair"><figure class="shot"><img src="img/dashboard-desktop.jpg" width="1320" height="638" loading="lazy" alt="หน้า LIFF dashboard ของ MegaCoach บนจอใหญ่ หัวข้อจังหวะเข้าซื้อ พร้อมไฟจราจรนับหุ้นที่เข้าได้ รอจังหวะ และอย่าเพิ่ง"><figcaption>LIFF dashboard จริง — ไฟจราจรสรุปจังหวะเข้าซื้อทุกเช้า</figcaption></figure><figure class="shot shot-phone"><img src="img/dashboard-mobile.jpg" width="600" height="1300" loading="lazy" alt="dashboard เดียวกันบนมือถือ เปิดจาก LINE เห็นไฟจราจร สรุปตลาด และการ์ดวันนี้ต้องทำอะไร"><figcaption>บนมือถือ (เปิดจาก LINE) — หน้าเดียวกันครบ</figcaption></figure></div>
+
     <div class="solution-grid">
       <div class="solution-card">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
@@ -946,6 +954,8 @@
       <p>จากราคาสดในตลาด จนถึงการ์ดเตือนใน LINE — วนอัตโนมัติทุกวันด้วย launchd</p>
     </section>
 
+    <figure class="shot"><img src="img/performance-chart.jpg" width="740" height="510" loading="lazy" alt="กราฟ Performance 15 วัน เทียบราคาปิดของ VOO QQQ CACI ETN เป็นเปอร์เซ็นต์"><figcaption>ราคาปิดที่ Mac ดึงทุกเช้า → กราฟใน dashboard (เปอร์เซ็นต์ ไม่มีตัวเลขเงิน)</figcaption></figure>
+
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
@@ -981,6 +991,8 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>2 ฝั่งชัดเจน — Mac (แหล่งความจริง + คีย์) กับ Cloud (แสดงผล + เตือน) เชื่อมกันด้วย ciphertext เท่านั้น</p>
     </section>
+
+    <figure class="shot shot-phone"><img src="img/line-form-lock.jpg" width="786" height="840" loading="lazy" alt="หน้าฟอร์มกรอกพอร์ตใน LIFF ขอ passphrase ก่อนปลดล็อก ข้อความระบุว่าตัวเลขเข้ารหัสในเครื่องก่อนส่ง"><figcaption>ฟอร์มกรอกพอร์ตผ่าน LINE — ปลดล็อกด้วย passphrase แล้วเข้ารหัสในเบราว์เซอร์ก่อนส่ง relay</figcaption></figure>
 
     <div class="arch-diagram">
       <div class="arch-layers">
@@ -1037,6 +1049,8 @@
       <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
       <p>ครบ loop ตั้งแต่รวมข้อมูลพอร์ต ถึงการเตือนที่ปลอดภัย</p>
     </section>
+
+    <figure class="shot"><img src="img/idea-radar.jpg" width="1272" height="1274" loading="lazy" alt="การ์ด Idea Radar จัดอันดับธีมการลงทุนรายสัปดาห์ พร้อมคะแนนเต็ม 25 และป้าย stage"><figcaption>Idea Radar — สแกนธีมทุกอาทิตย์ ให้คะแนนและบอกว่าธีมมาเร็วหรือช้า</figcaption></figure>
 
     <div class="module-grid">
       <div class="module-card">
@@ -1134,6 +1148,8 @@
       <p>6 โจทย์วิศวกรรมที่ต้องคิดทางแก้เอง — ความปลอดภัย + platform quirk + reliability</p>
     </section>
 
+    <figure class="shot"><img src="img/publish-check.jpg" width="1600" height="850" loading="lazy" alt="เทอร์มินัลรันคำสั่ง publish-levels --check ผ่าน แสดงตัวอย่าง JSON ที่มีแค่โซนราคา ไม่มีจำนวนหุ้นหรือเงิน"><figcaption>self-check จริงก่อน publish — JSON ที่ cloud เห็นมีแค่โซนราคา ไม่มีจำนวนหุ้น/เงิน</figcaption></figure>
+
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Zero-Knowledge">
         <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>อยากดู dashboard บน cloud แต่ห้าม cloud เห็นเงิน</span></h3>
@@ -1181,28 +1197,30 @@
       <p>ขอบเขตที่จงใจ "ไม่ทำ" — เพื่อให้เครื่องมือปลอดภัยและไว้ใจได้</p>
     </section>
 
+    <figure class="shot"><img src="img/northstar-locked.jpg" width="1272" height="802" loading="lazy" alt="การ์ด North Star แสดงเกจตามช่วงอายุ ส่วนตัวเลขเต็มถูกล็อกไว้ ต้องใส่ passphrase"><figcaption>North Star — ส่วนสาธารณะเป็นแค่ช่วงอายุ/เฟส ตัวเลขเงินล็อกอยู่หลัง passphrase</figcaption></figure>
+
     <div class="quote-block" style="margin-bottom: 24px;">
       <p>เครื่องมือนี้เป็น "โค้ช" ไม่ใช่ "บอทเทรด" — มัน<strong>เตือนและวิเคราะห์ ไม่กดออเดอร์แทน</strong> ทุกการ์ดปิดท้ายว่า "ข้อมูลเชิงวิเคราะห์ ไม่ใช่คำสั่งซื้อขาย" การตัดสินใจสุดท้ายเป็นของคนเสมอ · และตัวเลขเงินทุกจุด<strong>เข้ารหัสในเครื่องก่อนออกไป</strong> ขอบเขตชัดตั้งแต่ต้น = ระบบเล็ก ตรงไปตรงมา และไว้ใจได้</p>
     </div>
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128221;</strong><br>
+        <span style="display:inline-flex;color:var(--accent,#059669);"><svg class="ico" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></span><br>
         <strong>เตือน ไม่กดออเดอร์เอง</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ให้คนเป็นคนตัดสินใจ — ระบบแค่เตรียมข้อมูลให้</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128274;</strong><br>
+        <span style="display:inline-flex;color:var(--accent,#059669);"><svg class="ico" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><br>
         <strong>ciphertext เท่านั้นขึ้น cloud</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">relay/git เห็นแต่ blob · คีย์อยู่ในเครื่องล้วน</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128737;&#65039;</strong><br>
+        <span style="display:inline-flex;color:var(--accent,#059669);"><svg class="ico" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span><br>
         <strong>Fear of Ruin &gt; FOMO</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ปรัชญาเอาตัวรอดก่อน ฝังใน system prompt ของโค้ช</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#127793;</strong><br>
+        <span style="display:inline-flex;color:var(--accent,#059669);"><svg class="ico" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/><path d="m3 3 18 18"/></svg></span><br>
         <strong>โซน sanitized เท่านั้น</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">cloud รู้แค่โซนราคา ไม่รู้จำนวนหุ้น/เงิน</p>
       </div>
@@ -1216,6 +1234,8 @@
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
     </section>
+
+    <figure class="shot"><img src="img/today-card.jpg" width="1272" height="368" loading="lazy" alt="การ์ดวันนี้ต้องทำอะไร ตัดสินจากกฎ ปิดเหนือ 2 วัน โซน pullback และ cooldown ว่าหุ้นแต่ละตัวรอย่อหรือ setup พัง"><figcaption>กติกาการเงินที่แปลงเป็นโค้ด — rule engine ตัดสินทีละตัวว่าเข้าได้ รอย่อ หรือ setup พัง</figcaption></figure>
 
     <div class="learning-card">
       <strong>1. Applied Cryptography — จาก "รู้ชื่อ" เป็น "ออกแบบระบบ zero-knowledge ได้":</strong>
@@ -1275,12 +1295,12 @@
       <span class="stack-icon">LLM + web search</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1303,13 +1323,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "MegaCoach Portfolio",
-      "item": "https://projects.tanplanet.info/megacoach-portfolio/"
+      "item": "https://projects.tanplanet.work/megacoach-portfolio/"
     }
   ]
 }

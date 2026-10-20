@@ -7,9 +7,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="แปะก่าจู้ (Saju Kaaju) — ดูดวงสาจูเกาหลี อ่านดวงเป็นกระจก คุยกับอาแปะผ่าน AI">
   <meta name="twitter:description" content="Portfolio: เว็บแอปดูดวงสาจูเกาหลี (사주팔자) — Python engine คำนวณจากฐานดาราศาสตร์ KASI จริง แล้วให้ 'อาแปะ' (AI) เล่าเป็นภาษาคน · Next.js 15 · Supabase · Stripe">
-  <meta property="og:url" content="https://projects.tanplanet.info/saju-kaaju-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/saju-kaaju-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/saju-kaaju-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/saju-kaaju-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: เว็บแอปดูดวงสาจูเกาหลี (사주팔자) — Python engine คำนวณจากฐานดาราศาสตร์ KASI จริง แล้วให้ 'อาแปะ' (AI) เล่าเป็นภาษาคน · Next.js 15 · Supabase · Stripe">
@@ -759,7 +759,7 @@
       background: var(--surface); border: 1px solid var(--border);
       border-radius: var(--radius); padding: 20px; border-top: 3px solid var(--accent);
     }
-    .ui-dcard .ic { font-size: 1.4rem; display: block; margin-bottom: 8px; }
+    .ui-dcard .ic { display: block; margin-bottom: 8px; color: var(--accent); }
     .ui-dcard h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
     .ui-dcard p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; }
     .ui-dcard .why {
@@ -971,6 +971,10 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
     .hero-badge .ico { width: 14px; height: 14px; }
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-phone{max-width:380px;margin-left:auto;margin-right:auto}
+    .shot-pair{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;align-items:start}.shot-pair.even{grid-template-columns:1fr 1fr}.shot-pair .shot{margin:0}.shot-pair-wrap{margin:8px 0 32px}.shot-pair-wrap>figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary);text-align:center}
+    @media (max-width:640px){.shot-pair,.shot-pair.even{grid-template-columns:1fr}}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -1007,12 +1011,16 @@
   <!-- ===== Content ===== -->
   <article>
 
+    <figure class="shot-pair-wrap"><div class="shot-pair"><div class="shot"><img src="img/landing-hero-desktop.jpg" width="768" height="624" loading="lazy" alt="หน้าแรกแปะก่าจู้บนเดสก์ท็อป จัดกลางกว้าง 768px ภาพอาแปะนั่งโต๊ะน้ำชา หัวข้อเห็นตัวเองชัดขึ้นก่อนตัดสินใจเรื่องสำคัญ"></div><div class="shot"><img src="img/landing-hero-mobile.jpg" width="786" height="1300" loading="lazy" alt="หน้าแรกแปะก่าจู้บนมือถือ"></div></div><figcaption>หน้าแรกของแอปจริง — เดสก์ท็อป (letterbox 768px) และมือถือ</figcaption></figure>
+
     <!-- ===== Problem (Empathize + Define) ===== -->
     <section class="section-intro">
       <span class="eyebrow">Empathize &middot; Define</span>
       <h2>ปัญหาที่เจอ</h2>
       <p>ทำไมการ "ดูดวง" ออนไลน์ให้แม่นและอบอุ่นพร้อมกัน ถึงยากกว่าที่คิด?</p>
     </section>
+
+    <figure class="shot shot-phone"><img src="img/landing-what-pae-helps.jpg" width="850" height="1338" loading="lazy" alt="หน้าแรกแปะก่าจู้ ส่วน "แปะช่วยดูอะไรได้บ้าง" การ์ดตัวตน งาน ความรัก จังหวะชีวิต และชิปคำถามอย่าง งานนี้ใช่เราจริงไหม"><figcaption>คำถามจริงที่คนพามาหาหมอดู — แอปรับมาเป็นชิปคำถามบนหน้าแรก ไม่ใช่คำทำนายฟันธง</figcaption></figure>
 
     <div class="quote-block">
       <p>สาจูเกาหลี (<code>四柱</code> — 4 เสาชะตา) คำนวณยากมาก: เสาปีขึ้นกับ <code>입춘</code>, เสาเดือนขึ้นกับ 12 <code>절기</code>, เสาชั่วโมงต้องแก้ <code>진태양시</code> ตาม longitude เพราะเวลามาตรฐานเกาหลีอิงเส้นเมอริเดียนญี่ปุ่น (คลาดได้ ~32 นาที) พลาดนาทีเดียวเสาเปลี่ยน คำทำนายเพี้ยนทั้งใบ — แล้วถ้าปล่อยให้ AI คำนวณเอง มันก็ "มโน" ตัวเลข</p>
@@ -1056,6 +1064,8 @@
       <p>แยก "เครื่องคำนวณข้อเท็จจริง" ออกจาก "คนเล่าเรื่อง" — engine แม่น ๆ ป้อน AI ที่พูดภาษาคน</p>
     </section>
 
+    <figure class="shot-pair-wrap"><div class="shot-pair even"><div class="shot"><img src="img/landing-life-language.jpg" width="850" height="1436" loading="lazy" alt="ส่วน "อ่านจากศาสตร์ แต่แปลเป็นภาษาชีวิต" การ์ดภาพรวมตัวตน งานที่ใช้พลังถูกทาง ความรักที่สมดุล จังหวะปีนี้"></div><div class="shot"><img src="img/landing-trust-points.jpg" width="850" height="760" loading="lazy" alt="แถบความเชื่อมั่น ข้อมูลจาก KASI ไม่ขู่ไม่ตัดสิน พูดตรงแต่นุ่ม"></div></div><figcaption>ทางแก้บนหน้าจริง: ศัพท์ศาสตร์ถูกแปลเป็นภาษาชีวิต + สัญญาว่า "ไม่ขู่ ไม่ตัดสิน" และอ้างข้อมูล KASI</figcaption></figure>
+
     <div class="solution-grid">
       <div class="solution-card">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
@@ -1093,6 +1103,8 @@
       <p>ตั้งแต่กรอกวันเกิด จนอาแปะเล่าดวงให้ฟัง</p>
     </section>
 
+    <figure class="shot shot-phone"><img src="img/landing-how-it-works.jpg" width="850" height="1028" loading="lazy" alt="ส่วน "แปะดูให้ยังไง" 4 ขั้น บอกวันเวลาเกิด แปะคำนวณสาจู แปลเป็นภาษาชีวิต คุยต่อกับแปะ"><figcaption>4 จังหวะเดียวกันนี้อธิบายไว้บนหน้าแรกของแอปจริง</figcaption></figure>
+
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
@@ -1128,6 +1140,8 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>Next.js เดียวจบ (web + api) บน Vercel · Python engine เป็น serverless function · Supabase คุม DB + Auth + RLS</p>
     </section>
+
+    <figure class="shot shot-phone"><img src="img/login-mobile.jpg" width="786" height="1360" loading="lazy" alt="หน้าเข้าสู่ระบบ ปุ่มดำเนินการต่อด้วย Google และฟอร์มอีเมล รหัสผ่าน"><figcaption>ชั้น Supabase Auth บนหน้าจริง — Google หรืออีเมล/รหัสผ่าน ก่อนเข้าแชตและปฏิทิน</figcaption></figure>
 
     <div class="arch-diagram">
       <div class="arch-layers">
@@ -1187,6 +1201,8 @@
       <p>ครบ loop ตั้งแต่กรอกวันเกิด ถึงคุยกับอาแปะแล้วจ่ายเงินเติมโควตา</p>
     </section>
 
+    <figure class="shot shot-phone"><img src="img/report-overview.jpg" width="786" height="1240" loading="lazy" alt="รายงานดวงฉบับเต็ม หัวข้อลื้อคือดินภูเขาที่นั่งบนลิง ชิป 12 หัวข้อ และการ์ดทิศทาง 2 ปีข้างหน้า"><figcaption>รายงานดวงฉบับเต็ม 12 หัวข้อ (หน้าตัวอย่างของแอป · เปลี่ยนชื่อเป็น "คุณตัวอย่าง")</figcaption></figure>
+
     <div class="module-grid">
       <div class="module-card">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg>
@@ -1239,6 +1255,8 @@
       <p>เปิดแอป → เห็นผังธาตุของตัวเอง → คุยกับอาแปะได้เลย บนจอเดียว (mobile-first)</p>
     </section>
 
+    <figure class="shot"><img src="img/pae-character.jpg" width="1200" height="800" loading="lazy" alt="ภาพตัวละครอาแปะ ชายสูงวัยใส่แว่นนั่งที่โต๊ะน้ำชา ถือขวดโซจู มีสมุดดวงบนโต๊ะ"><figcaption>ภาพตัวละคร "อาแปะ" ที่ใช้จริงในแอป — โต๊ะน้ำชา สมุดดวง แสงอุ่น</figcaption></figure>
+
     <div class="ext-mockup">
       <div class="ext-bar">
         <span class="ext-btn">&#128116; อาแปะ</span>
@@ -1290,6 +1308,8 @@
       <h2>งานออกแบบ UI &amp; Design System</h2>
       <p>มองแปะก่าจู้ในมุม Product Designer — ระบบ token, หน้าจอจริงจาก flow, และเหตุผลเบื้องหลังทุกการตัดสินใจด้าน UX</p>
     </section>
+
+    <figure class="shot"><img src="img/brandbook-visual-identity.jpg" width="1158" height="1010" loading="lazy" alt="หน้าแบรนด์บุ๊ก สี กลิ่น และหน้าตาของแปะ สี Dark Tea Brown Rice Paper Tea Beige Seal Red Muted Green และภาพที่ห้ามหลุดไป"><figcaption>หน้า Visual Identity ในแบรนด์บุ๊กแปะก่าจู้ — ชุดสี "โต๊ะน้ำชา" ที่กลายเป็น token ของแอป</figcaption></figure>
 
     <!-- Block A — Design Tokens -->
     <div class="ui-block">
@@ -1412,25 +1432,25 @@
       <div class="ui-block-label">UI Decisions — ทำไมถึงเลือกแบบนี้</div>
       <div class="ui-decisions">
         <div class="ui-dcard">
-          <span class="ic">📱</span>
+          <span class="ic"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></span>
           <h4>Mobile-first แล้ว letterbox ที่ 768px</h4>
           <p>คนมาหาแปะบนมือถือเกือบทั้งหมด ออกแบบ 393 ก่อน แล้วขยับ 768 → 1440</p>
           <span class="why">ทำไม: บนจอใหญ่จัดกลาง (cap 768) ไม่ยืด layout ให้โล่งเก้อ — คงบรรยากาศ "โต๊ะน้ำชา" ที่สงบ ไม่ฝืนทำ desktop grid</span>
         </div>
         <div class="ui-dcard">
-          <span class="ic">♿</span>
+          <span class="ic"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="4" r="1"/><path d="m18 19 1-7-6 1"/><path d="m5 8 3-3 5.5 3-2.36 3.5"/><path d="M4.24 14.5a5 5 0 0 0 6.88 6"/><path d="M13.76 17.5a5 5 0 0 0-6.88-6"/></svg></span>
           <h4>Accessibility floor ที่ไม่ยอมลด</h4>
           <p>Base font ≥ 16px, touch target ≥ 44px, contrast ≥ 4.5:1 ทุก text/สีปุ่ม</p>
           <span class="why">ทำไม: กลุ่มผู้ใช้กว้าง อ่านคำอ่านยาว ๆ บนมือถือ — ตัวเล็กหรือปุ่มชิดกันคือ barrier จริง ไม่ใช่แค่ nice-to-have</span>
         </div>
         <div class="ui-dcard">
-          <span class="ic">💬</span>
+          <span class="ic"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span>
           <h4>Microcopy พูดด้วยเสียง "อาแปะ"</h4>
           <p>Loading = "แปะกำลังชงคำอ่านให้ ใจเย็นก่อนนะ" · Error = "ไอ้หยา ระบบสะดุดนิดหน่อย ลองใหม่นะ"</p>
           <span class="why">ทำไม: state ที่คนหงุดหงิดที่สุด (รอ/พัง) คือจุดที่ character ต้องอยู่ — ไม่ทำให้ผู้ใช้รู้สึกผิดตอนกรอกพลาด</span>
         </div>
         <div class="ui-dcard">
-          <span class="ic">🧩</span>
+          <span class="ic"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg></span>
           <h4>ผลอ่านเป็นการ์ด ไม่ใช่กำแพงข้อความ</h4>
           <p>ศัพท์ 오행/십신/격국 map เป็นไทยก่อนโชว์ + ซอยคำอ่านยาวเป็นท่อน/การ์ด + starter prompts</p>
           <span class="why">ทำไม: ต่อให้ engine แม่นแค่ไหน ถ้าเทข้อความก้อนเดียวคนก็ไม่อ่าน — visual hierarchy ทำให้ศาสตร์ที่ลึกกลายเป็นเรื่องเข้าใจง่าย</span>
@@ -1446,6 +1466,8 @@
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์ที่ต้องคิดทางแก้เอง — ความแม่นของศาสตร์เกาหลี + การคุม AI + เงินที่พลาดไม่ได้</p>
     </section>
+
+    <figure class="shot shot-phone"><img src="img/report-element-balance.jpg" width="786" height="1848" loading="lazy" alt="ส่วนสมดุลธาตุในรายงาน แถบเปอร์เซ็นต์ไม้ ไฟ ดิน ทอง น้ำ และการ์ดเสริมดวงด้วยธาตุไม้"><figcaption>ผลจาก engine (오행 / 用神) ถูก map เป็นภาษาไทยก่อนให้อาแปะเล่า — ตัวเลขมาจากการคำนวณ ไม่ใช่ AI เดา</figcaption></figure>
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Saju Accuracy">
@@ -1494,28 +1516,30 @@
       <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอ ๆ กับสิ่งที่ทำ</p>
     </section>
 
+    <figure class="shot"><img src="img/brandbook-do-dont.jpg" width="1158" height="760" loading="lazy" alt="หน้าแบรนด์บุ๊ก อะไรที่แปะทำ อะไรที่แปะไม่ทำ เช่น ไม่ฟันธงชีวิต ไม่ขายความกลัว"><figcaption>ขอบเขต "ไม่ทำ" เขียนไว้ในแบรนด์บุ๊กตั้งแต่ต้น แล้วใช้คุมทั้ง UI และ system prompt</figcaption></figure>
+
     <div class="quote-block" style="margin-bottom: 24px;">
       <p>แปะก่าจู้จงใจ "อ่านดวงเป็นกระจก ไม่ฟันธงชะตา" — ไม่ขายของมงคล ไม่ขายความกลัว เหลือทางเลือกให้คนฟังเสมอ · engine คำนวณ AI เล่า (แยกหน้าที่กัน hallucination) · mobile-first cap 768px จัดกลางจอ ไม่ฝืนทำ desktop layout · โควตาเป็น consumable ไม่ผูกมัด subscription · มี disclaimer + 18+ ขอบเขตชัดตั้งแต่ต้น = implement ตรงและ maintain ง่าย</p>
     </div>
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#129746;</strong><br>
+        <span style="display:inline-flex;color:var(--accent);"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="1"/><path d="M18.944 12.33a1 1 0 0 0 0-.66 7.5 7.5 0 0 0-13.888 0 1 1 0 0 0 0 .66 7.5 7.5 0 0 0 13.888 0"/></svg></span><br>
         <strong>อ่านดวงเป็นกระจก</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">สะท้อนให้เห็นตัวเอง ไม่ฟันธง ไม่ขายความกลัว</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#129513;</strong><br>
+        <span style="display:inline-flex;color:var(--accent);"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg></span><br>
         <strong>Engine คำนวณ · AI เล่า</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">แยกหน้าที่เด็ดขาด กัน AI มโนตัวเลข</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128241;</strong><br>
+        <span style="display:inline-flex;color:var(--accent);"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></span><br>
         <strong>Mobile-first ≤768</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">จัดกลางจอ (letterbox) ไม่ฝืนทำ desktop</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#127861;</strong><br>
+        <span style="display:inline-flex;color:var(--accent);"><svg class="ico" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg></span><br>
         <strong>99฿ consumable</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">เติมครั้งเดียว ไม่หมดอายุ ไม่ผูกมัด sub</p>
       </div>
@@ -1529,6 +1553,8 @@
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
     </section>
+
+    <figure class="shot shot-phone"><img src="img/landing-research.jpg" width="850" height="1272" loading="lazy" alt="ส่วน Research ซาจูไม่ใช่เรื่องงมงาย การ์ดงานวิจัยจากวารสาร KCI"><figcaption>ความรู้ด้านศาสตร์ที่ได้มา ถูกเอาไปเล่าบนหน้าแรกเป็นการ์ดงานวิจัยเกาหลี (KCI)</figcaption></figure>
 
     <div class="learning-card">
       <strong>1. โหราศาสตร์เกาหลี / สาจู 사주팔자 — จาก 0 เป็นเข้าใจโครงสร้าง:</strong>
@@ -1589,12 +1615,12 @@
       <span class="stack-icon">PWA</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1617,13 +1643,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Saju Kaaju Portfolio",
-      "item": "https://projects.tanplanet.info/saju-kaaju-portfolio/"
+      "item": "https://projects.tanplanet.work/saju-kaaju-portfolio/"
     }
   ]
 }
