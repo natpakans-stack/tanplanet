@@ -7,9 +7,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="แพลตฟอร์มบริหารงานภายในทีม — บอร์ด ปฏิทิน ลูกค้า เอกสาร และโน้ตประชุม AI">
   <meta name="twitter:description" content="Portfolio: แพลตฟอร์มภายใน — Kanban board, ปฏิทิน, CRM, ใบเสนอราคา/เบิกจ่าย, โน้ตประชุม AI — Next.js 16 + Supabase (RLS) + serverless cron ไม่มี host รัน 24/7">
-  <meta property="og:url" content="https://projects.tanplanet.info/team-platform-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/team-platform-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/team-platform-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/team-platform-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: แพลตฟอร์มภายใน — Kanban board, ปฏิทิน, CRM, ใบเสนอราคา/เบิกจ่าย, โน้ตประชุม AI — Next.js 16 + Supabase (RLS) + serverless cron ไม่มี host รัน 24/7">
@@ -835,6 +835,17 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
     .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* figures (case-study images) */
+    .shot{margin:8px 0 32px}
+    .shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}
+    .shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.6}
+    .shot.narrow img{max-width:360px;margin:0 auto}
+    .shot.mid img{max-width:460px;margin:0 auto}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin:8px 0 32px}
+    .shot-pair .shot{margin:0}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
+    .ico-i{width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex:none}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -879,6 +890,9 @@
       <p>งานของทีมกระจายอยู่หลายเครื่องมือ — ทำไมการบริหารงานประจำวันถึงยังยุ่งและตกหล่นบ่อย?</p>
     </section>
 
+    <figure class="shot"><img src="img/before-after.jpg" width="1600" height="892" loading="lazy" decoding="async" alt="แผนภาพงานทีมที่กระจายในแชท ปฏิทิน สเปรดชีต ไฟล์ และไฟล์อัดประชุม รวมเป็นแพลตฟอร์มเดียว"><figcaption>ก่อน → หลัง: งานกระจาย 5 ที่ รวมเป็นข้อมูลชุดเดียว (แผนภาพประกอบ)</figcaption></figure>
+
+
     <div class="quote-block">
       <p>งานทีมกระจายอยู่คนละที่ — คิวงานคุยกันใน chat, นัดประชุมอยู่ในปฏิทินส่วนตัว, ข้อมูลลูกค้าอยู่ในสเปรดชีต, สรุปประชุมทำมือทุกครั้ง ไม่มีจุดเดียวที่เห็นภาพรวมว่าใครทำอะไรถึงไหน งานเลยตกหล่น ตามยาก และซ้ำซ้อน</p>
       <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ แพลตฟอร์มภายในทีม</div>
@@ -921,6 +935,9 @@
       <p>รวมทุกงานไว้ที่เดียว แล้วให้ automation ทำงานน่าเบื่อแทน — โดยไม่ต้องเลี้ยง server ไว้ตลอดเวลา</p>
     </section>
 
+    <figure class="shot narrow"><img src="img/login.jpg" width="920" height="1150" loading="lazy" decoding="async" alt="หน้าเข้าสู่ระบบ มีปุ่มเข้าสู่ระบบด้วย Discord และช่องอีเมล"><figcaption>หน้าเข้าสู่ระบบจริง — login ด้วย Discord ที่ทีมใช้อยู่ (ปิดโลโก้และชื่อแบรนด์)</figcaption></figure>
+
+
     <div class="solution-grid">
       <div class="solution-card">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
@@ -958,6 +975,9 @@
       <p>หัวใจสถาปัตยกรรม: ไม่มี host รัน 24/7 — ทุก automation ขับด้วย cron tick แบบ stateless</p>
     </section>
 
+    <figure class="shot"><img src="img/discord-notify.jpg" width="1600" height="1066" loading="lazy" decoding="async" alt="ข้อความแจ้งเตือนในช่อง Discord: ใกล้ถึงเวลานัด งานเลยกำหนด และสรุปรายสัปดาห์"><figcaption>ปลายทางของ cron: แจ้งเตือนเข้า Discord — ภาพจำลอง ใช้หัวข้อข้อความตามโค้ดจริง</figcaption></figure>
+
+
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
@@ -993,6 +1013,9 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>Bun monorepo &middot; Next.js 16 บน Vercel &middot; Supabase — ไม่มี backend เป็นของตัวเอง ไม่มีเครื่องรันตลอดเวลา</p>
     </section>
+
+    <figure class="shot"><img src="img/cron-workflow.jpg" width="1600" height="1489" loading="lazy" decoding="async" alt="ไฟล์ GitHub Actions cron.yml ที่รันทุก 30 นาที"><figcaption>cron.yml จริง: tick เดียวทุก 30 นาทียิง 2 route — ไม่มี host 24/7 (แทนโดเมนด้วย yourdomain.com)</figcaption></figure>
+
 
     <div class="arch-diagram">
       <div class="arch-layers">
@@ -1052,6 +1075,9 @@
       <p>ครบ loop ของการบริหารงานทีม ตั้งแต่คิวงานถึงเอกสารและบันทึกประชุม</p>
     </section>
 
+    <figure class="shot"><img src="img/quotation.jpg" width="1600" height="812" loading="lazy" decoding="async" alt="หน้าใบเสนอราคา แสดงสถานะ รายการ และตัวอย่าง PDF พร้อมลายเซ็น"><figcaption>ใบเสนอราคา: เดินสถานะ + ออก PDF ภาษาไทย + แนบลายเซ็น (ภาพจำลอง ข้อมูลตัวอย่าง)</figcaption></figure>
+
+
     <div class="module-grid">
       <div class="module-card">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
@@ -1104,9 +1130,12 @@
       <p>คิวงานทั้งทีมในหน้าจอเดียว — ลากการ์ดข้ามคอลัมน์ อัปเดตสดให้ทุกคนเห็นพร้อมกัน</p>
     </section>
 
+    <figure class="shot"><img src="img/calendar.jpg" width="1600" height="1206" loading="lazy" decoding="async" alt="ปฏิทินทีมมุมมองเดือน มีนัดประชุมและงานที่มีกำหนดส่ง"><figcaption>ปฏิทินทีม: นัด (sync Google) + การ์ดที่มีกำหนดส่ง ในมุมมองเดียว (ภาพจำลอง)</figcaption></figure>
+
+
     <div class="ext-mockup">
       <div class="ext-bar">
-        <span class="ext-btn">&#128203; บอร์ดทีม</span>
+        <span class="ext-btn"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg> บอร์ดทีม</span>
         <span class="ext-btn">&#43; การ์ด</span>
         <span class="ext-badge">12 งาน</span>
       </div>
@@ -1116,12 +1145,12 @@
           <div class="board-card">
             <div class="board-prio"><span class="pdot" style="background:var(--red);"></span><span class="plabel" style="color:var(--red);">สูง</span></div>
             <div class="ct">ทำใบเสนอราคาลูกค้าใหม่</div>
-            <div class="cm">&#128197; 5 ก.ค. &middot; &#128100; 2</div>
+            <div class="cm"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg> 5 ก.ค. &middot; <svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> 2</div>
           </div>
           <div class="board-card">
             <div class="board-prio"><span class="pdot" style="background:var(--orange);"></span><span class="plabel" style="color:var(--orange);">กลาง</span></div>
             <div class="ct">เตรียมสไลด์นำเสนอ</div>
-            <div class="cm">&#128197; 6 ก.ค.</div>
+            <div class="cm"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg> 6 ก.ค.</div>
           </div>
         </div>
         <div class="board-col">
@@ -1129,12 +1158,12 @@
           <div class="board-card">
             <div class="board-prio"><span class="pdot" style="background:var(--red);"></span><span class="plabel" style="color:var(--red);">สูง</span></div>
             <div class="ct">แก้บั๊กหน้าชำระเงิน</div>
-            <div class="cm">&#128197; วันนี้ &middot; &#128100; 1</div>
+            <div class="cm"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg> วันนี้ &middot; <svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> 1</div>
           </div>
           <div class="board-card">
             <div class="board-prio"><span class="pdot" style="background:var(--text-muted);"></span><span class="plabel" style="color:var(--text-muted);">ต่ำ</span></div>
             <div class="ct">อัปเดตเอกสาร onboarding</div>
-            <div class="cm">&#128100; 1</div>
+            <div class="cm"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> 1</div>
           </div>
         </div>
         <div class="board-col">
@@ -1142,7 +1171,7 @@
           <div class="board-card">
             <div class="board-prio"><span class="pdot" style="background:var(--orange);"></span><span class="plabel" style="color:var(--orange);">กลาง</span></div>
             <div class="ct">รีวิว PR ปฏิทิน</div>
-            <div class="cm">&#128197; 4 ก.ค. &middot; &#128100; 2</div>
+            <div class="cm"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg> 4 ก.ค. &middot; <svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> 2</div>
           </div>
         </div>
       </div>
@@ -1156,6 +1185,9 @@
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์วิศวกรรมที่ต้องคิดทางแก้เอง — serverless constraint + API ที่ไม่มีเอกสาร + multi-tenant</p>
     </section>
+
+    <figure class="shot"><img src="img/meeting-brief.jpg" width="1600" height="1174" loading="lazy" decoding="async" alt="โน้ตประชุม AI แบ่งเป็นการตัดสินใจ ความเสี่ยง และ Next Actions พร้อมคะแนนความครบ"><figcaption>โน้ตประชุม AI: brief มีโครงสร้าง + คะแนนความครบ · Next Actions ดึงจากการ์ดจริง ไม่ให้ AI แต่ง (ภาพจำลอง)</figcaption></figure>
+
 
     <div class="hack-grid">
       <div class="hack-card arch" data-label="Serverless">
@@ -1204,28 +1236,31 @@
       <p>ขอบเขตที่จงใจ "ไม่ทำ" ช่วยให้เครื่องมือเล็ก คม และดูแลง่าย</p>
     </section>
 
+    <figure class="shot"><img src="img/event-discord.jpg" width="1600" height="636" loading="lazy" decoding="async" alt="การ์ดนัดประชุมที่มีปุ่มเข้าห้อง Discord voice และรายการขอบเขตที่เลือกทำและไม่ทำ"><figcaption>ไม่ทำห้องประชุมเอง — นัดในแอปลิงก์ไปห้อง Discord voice (ภาพจำลอง)</figcaption></figure>
+
+
     <div class="quote-block" style="margin-bottom: 24px;">
       <p>แพลตฟอร์มภายในทีม จงใจไม่พยายามเป็นทุกอย่าง — ไม่ทำห้องประชุมเอง (ใช้ Discord voice แอปแค่แจ้งเตือน/ลิงก์), ไม่มี host รัน 24/7 (serverless ล้วน), ไม่สร้าง design system ใหม่ (reuse จาก แพลตฟอร์มภายในทีม Hub) ขอบเขตที่คมทำให้ implement ตรงและ maintain ง่าย</p>
     </div>
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#127911;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/></svg></strong><br>
         <strong>ไม่ทำห้องประชุมเอง</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ประชุมใช้ Discord voice — แอปแค่แจ้งเตือน/ลิงก์</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#9729;&#65039;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg></strong><br>
         <strong>ไม่มี host รัน 24/7</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">automation เป็น serverless cron ล้วน ไม่มีเครื่องเลี้ยง</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#127912;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></strong><br>
         <strong>ไม่สร้าง design system ใหม่</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">reuse tokens/ฟอนต์/คอมโพเนนต์จาก แพลตฟอร์มภายในทีม Hub</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#127970;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg></strong><br>
         <strong>v1 รัน org เดียว</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">แต่โครง multi-tenant พร้อมขยายโดยไม่ต้องรื้อ</p>
       </div>
@@ -1239,6 +1274,9 @@
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
     </section>
+
+    <figure class="shot"><img src="img/migrations.jpg" width="1600" height="667" loading="lazy" decoding="async" alt="รายชื่อไฟล์ SQL migration 30 ไฟล์แรก"><figcaption>migration 30 ไฟล์แรก (ชื่อไฟล์จริง) — RLS มาตั้งแต่ไฟล์ที่ 2</figcaption></figure>
+
 
     <div class="learning-card">
       <strong>1. Serverless scheduling — คิดแบบ stateless tick แทน long-running process:</strong>
@@ -1299,12 +1337,12 @@
       <span class="stack-icon">OpenAI</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1327,13 +1365,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "แพลตฟอร์มภายในทีม Portfolio",
-      "item": "https://projects.tanplanet.info/team-platform-portfolio/"
+      "item": "https://projects.tanplanet.work/team-platform-portfolio/"
     }
   ]
 }

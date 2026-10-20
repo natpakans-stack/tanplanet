@@ -7,9 +7,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Digital OS สำหรับกลุ่มบริษัท — รวมเครื่องมือภายในของหลายบริษัทไว้ที่เดียว">
   <meta name="twitter:description" content="Portfolio: Digital OS — Internal Portal รวม 8 แผนกในระบบเดียว สำหรับกลุ่มบริษัท Real Factory">
-  <meta property="og:url" content="https://projects.tanplanet.info/Internal-Tools-Portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/Internal-Tools-Portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/Internal-Tools-Portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/Internal-Tools-Portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: Digital OS — Internal Portal รวม 8 แผนกในระบบเดียว สำหรับกลุ่มบริษัท Real Factory">
@@ -691,6 +691,17 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
     .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* figures (case-study images) */
+    .shot{margin:8px 0 32px}
+    .shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}
+    .shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.6}
+    .shot.narrow img{max-width:360px;margin:0 auto}
+    .shot.mid img{max-width:460px;margin:0 auto}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin:8px 0 32px}
+    .shot-pair .shot{margin:0}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
+    .ico-i{width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex:none}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -726,6 +737,9 @@
       <h2>ปัญหาที่เจอ</h2>
       <p>ทำไมกลุ่มบริษัทถึงต้องมี Digital OS ของตัวเอง?</p>
     </section>
+
+    <figure class="shot"><img src="img/before-after.jpg" width="1600" height="832" loading="lazy" decoding="async" alt="แผนภาพก่อนและหลัง: เครื่องมือกระจายหลายช่องทาง รวมเป็น Portal เดียว 8 โมดูล"><figcaption>ก่อน → หลัง: จาก spreadsheet / แชท / ฟอร์ม / อีเมล / พิมพ์-เซ็น-สแกน มาอยู่ใน Portal เดียว (แผนภาพประกอบ)</figcaption></figure>
+
 
     <div class="quote-block">
       <p>8 แผนกใช้ระบบคนละชุด — ขอซื้อใน Excel, เบิกเงินใน LINE, จองที่พักใน Google Form, ตั๋วเครื่องบินใน Email Approval cycle 3-5 วันต่อ 1 เอกสาร และไม่มีใครเห็นภาพรวม ผู้บริหารไม่รู้ด้วยซ้ำว่างานค้างอยู่ที่ใคร</p>
@@ -768,6 +782,9 @@
       <p>1 Portal เดียว — Digital OS pattern ที่รองรับทุกแผนกพร้อมกัน</p>
     </section>
 
+    <figure class="shot"><img src="img/pr-approval-chain.jpg" width="880" height="580" loading="lazy" decoding="async" alt="หน้ารายละเอียดใบขอซื้อ แสดงสถานะการอนุมัติไล่ตามลำดับขั้น"><figcaption>หน้ารายละเอียด PR จริง: approval chain ไล่ตามวงเงิน เห็นทันทีว่าค้างอยู่ขั้นไหน (เบลอชื่อผู้อนุมัติ)</figcaption></figure>
+
+
     <div class="solution-grid">
       <div class="solution-card">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
@@ -808,6 +825,9 @@
       <h2>Architecture Overview</h2>
       <p>Vue 3 + Express + Prisma — Modern stack, shared types, single source of truth</p>
     </section>
+
+    <figure class="shot"><img src="img/portal-dashboard.jpg" width="1440" height="850" loading="lazy" decoding="async" alt="หน้าแดชบอร์ดของ Portal มีทางลัดสร้างเอกสาร ประกาศ และตารางติดตามเอกสาร"><figcaption>Frontend — Portal SPA (Vue 3 + PrimeVue + Tailwind): แดชบอร์ดหน้าแรก (ปิดโลโก้และเบลอชื่อบุคคล)</figcaption></figure>
+
 
     <div class="arch-diagram">
       <div class="arch-layers">
@@ -864,6 +884,9 @@
       <p>Phase 1 MVP — Core Platform + 7 Functional Modules</p>
     </section>
 
+    <div class="shot-pair"><figure class="shot"><img src="img/expense-list.jpg" width="1100" height="540" loading="lazy" decoding="async" alt="ตารางใบเบิกค่าใช้จ่ายหลายประเภท Petty Cash, Reimbursement, Advance, Credit Card, Travel"><figcaption>Expense Suite — 5 sub-flow ในตารางเดียว</figcaption></figure><figure class="shot"><img src="img/think-tank.jpg" width="1080" height="720" loading="lazy" decoding="async" alt="หน้ากิจกรรม Think Tank มีอันดับรายบุคคลและรายแผนก"><figcaption>Think Tank — leaderboard รายบุคคล/รายแผนก (เบลอชื่อ)</figcaption></figure></div>
+
+
     <div class="module-grid">
       <div class="module-card">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
@@ -915,6 +938,9 @@
       <p>6 challenges ที่ไม่มีอยู่ใน playbook — ต้องคิดทาง workaround เอง</p>
     </section>
 
+    <figure class="shot"><img src="img/expense-approval-roles.jpg" width="880" height="700" loading="lazy" decoding="async" alt="สถานะการอนุมัติใบเบิกที่ผ่าน Acc Lv1, Head Acc, การเงิน Lv1 และ Head การเงิน"><figcaption>role ที่แตกออกจริง: หัวหน้าแผนก → Acc Lv1 → Head Acc → การเงิน Lv1 → Head การเงิน (เบลอชื่อผู้อนุมัติ)</figcaption></figure>
+
+
     <div class="hack-grid">
       <div class="hack-card scale" data-label="Scale">
         <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>RBAC 18 Roles แตกจาก 11</span></h3>
@@ -961,6 +987,9 @@
       <p>Internal product — co-designed กับทีมจริงทุก department</p>
     </section>
 
+    <figure class="shot"><img src="img/announcements.jpg" width="860" height="740" loading="lazy" decoding="async" alt="หน้าประกาศที่รวมประกาศจากบริษัท HR IT การเงิน และความปลอดภัย"><figcaption>ประกาศจากหลายแผนกในฟีดเดียว — ทุกแผนกเป็นทั้งผู้ใช้และผู้ร่วมออกแบบ</figcaption></figure>
+
+
     <div class="quote-block" style="margin-bottom: 24px;">
       <p>Digital OS ไม่ใช่ product ที่ออกแบบจาก ivory tower — ทุก flow ผ่าน workshop กับ HR, Finance, Accounting, Procurement, Legal, C-Level จริง ทุก approval threshold มาจาก policy ของ Real Factory จริง</p>
     </div>
@@ -972,7 +1001,7 @@
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ลูกค้า + Production team — 8 departments stakeholder</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">⏱️</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg></strong><br>
         <strong>Build Period</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">6 weeks — Phase 1 MVP (Core + 7 modules)</p>
       </div>
@@ -1000,6 +1029,9 @@
       <h2>Key Takeaways</h2>
       <p>4 บทเรียน Design Thinking จาก Digital OS</p>
     </section>
+
+    <figure class="shot"><img src="img/requests-list.jpg" width="1100" height="560" loading="lazy" decoding="async" alt="หน้าติดตามเอกสารแสดงเลขที่ ประเภท รายละเอียด มูลค่า และสถานะ"><figcaption>หน้าติดตามเอกสาร — ทุก doc type ใช้ตาราง/ป้ายสถานะชุดเดียวกัน (composition แทน duplicate)</figcaption></figure>
+
 
     <div class="learning-card">
       <strong>Empathy First — แยกบทบาท 18 roles ทำให้ approval flow ใกล้เคียง real org chart:</strong>
@@ -1056,12 +1088,12 @@
       <span class="stack-icon">Design System</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; All Projects</a>
+      <a href="https://projects.tanplanet.work/">&#8592; All Projects</a>
     </div>
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1084,13 +1116,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Digital OS Portfolio",
-      "item": "https://projects.tanplanet.info/Internal-Tools-Portfolio/"
+      "item": "https://projects.tanplanet.work/Internal-Tools-Portfolio/"
     }
   ]
 }

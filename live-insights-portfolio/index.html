@@ -7,9 +7,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="เครื่องมือโค้ชผู้ขายไลฟ์คอมเมิร์ซ — อ่านอารมณ์โฮสต์ + คอมเมนต์สด แล้วเตือนตรงจุด">
   <meta name="twitter:description" content="Portfolio: ระบบวิเคราะห์-โค้ชผู้ขายไลฟ์ — Desktop app (Electron) อ่านอารมณ์โฮสต์ด้วย ML บนเครื่อง + ดูดคอมเมนต์สด, ส่ง derived signal ขึ้น cloud data-plane (NestJS) ที่เข้ารหัสและทำ PDPA compliance ครบ">
-  <meta property="og:url" content="https://projects.tanplanet.info/live-insights-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/live-insights-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/live-insights-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/live-insights-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: ระบบวิเคราะห์-โค้ชผู้ขายไลฟ์ — Desktop app (Electron) อ่านอารมณ์โฮสต์ด้วย ML บนเครื่อง + ดูดคอมเมนต์สด, ส่ง derived signal ขึ้น cloud data-plane (NestJS) ที่เข้ารหัสและทำ PDPA compliance ครบ">
@@ -837,6 +837,17 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
     .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* figures (case-study images) */
+    .shot{margin:8px 0 32px}
+    .shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}
+    .shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.6}
+    .shot.narrow img{max-width:360px;margin:0 auto}
+    .shot.mid img{max-width:460px;margin:0 auto}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin:8px 0 32px}
+    .shot-pair .shot{margin:0}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
+    .ico-i{width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex:none}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -880,6 +891,9 @@
       <p>คนขายไลฟ์ต้องพูด ต้องขาย ต้องอ่านคอมเมนต์ที่ไหลรัว — พร้อมกันหมด แล้วจะรู้ได้ยังไงว่า "ตอนนี้" ควรทำอะไร?</p>
     </section>
 
+    <figure class="shot narrow"><img src="img/live-rail.jpg" width="1026" height="1234" loading="lazy" decoding="async" alt="แถบ Insight ระหว่างไลฟ์ แสดงคะแนนคุณภาพไลฟ์ 22 สถานะต้องดู"><figcaption>ระหว่างไลฟ์ คะแนนคุณภาพตกถึง "ต้องดู" — สิ่งที่โฮสต์มองไม่เห็นเองตอนพูดอยู่</figcaption></figure>
+
+
     <div class="quote-block">
       <p>ระหว่างไลฟ์ โฮสต์มองไม่เห็นตัวเอง — ไม่รู้ว่าพลังงานเริ่มตก หน้าเริ่มเหนื่อย หรือมีคนถามราคาซ้ำๆ ที่ยังไม่ได้ตอบ คอมเมนต์ไหลเร็วเกินอ่านทัน พอจบไลฟ์ก็เหลือแค่ความรู้สึกลอยๆ ว่า "วันนี้เป็นไง" ไม่มีข้อมูลจริงให้ทบทวนหรือโค้ชต่อ</p>
       <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ เครื่องมือโค้ชผู้ขาย</div>
@@ -922,6 +936,9 @@
       <p>ให้แอปเป็น "โค้ชเงียบ" — เฝ้าดูไลฟ์แทน, อ่านสัญญาณที่คนมองข้าม, แล้วเตือนเฉพาะสิ่งที่ทำได้จริงใน 60 วินาที</p>
     </section>
 
+    <figure class="shot"><img src="img/dashboard.jpg" width="1492" height="980" loading="lazy" decoding="async" alt="หน้าภาพรวม วาง URL ไลฟ์เพื่อเริ่มวิเคราะห์ พร้อมแชนเนลที่ติดตามและเซสชันล่าสุด"><figcaption>หน้าภาพรวมจริง: วาง URL ไลฟ์ → เปิดในเบราว์เซอร์ในตัว (ข้อมูล demo)</figcaption></figure>
+
+
     <div class="solution-grid">
       <div class="solution-card">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
@@ -959,6 +976,9 @@
       <p>ตั้งแต่เปิดไลฟ์ จนได้สัญญาณสด + บันทึกที่เอาไปโค้ชต่อได้</p>
     </section>
 
+    <figure class="shot mid"><img src="img/start-session.jpg" width="1040" height="705" loading="lazy" decoding="async" alt="กล่องตั้งชื่อเซสชันก่อนเริ่มบันทึก"><figcaption>จังหวะแรก: ตั้งชื่อเซสชันแล้วเริ่มบันทึก</figcaption></figure>
+
+
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
@@ -994,6 +1014,9 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>Monorepo (pnpm + turbo) 3 แอป + 1 contracts package — วิดีโอประมวลผลบนเครื่อง, ขึ้น cloud เฉพาะสัญญาณที่เข้ารหัส</p>
     </section>
+
+    <figure class="shot"><img src="img/sessions-list.jpg" width="1492" height="700" loading="lazy" decoding="async" alt="ตารางเซสชันที่บันทึกไว้ พร้อมแชนเนล แพลตฟอร์ม ระยะเวลา และจำนวนคอมเมนต์"><figcaption>เซสชันที่บันทึก — ต่อยอดเป็นรายงานย้อนหลังและโค้ชข้ามวัน</figcaption></figure>
+
 
     <div class="arch-diagram">
       <div class="arch-layers">
@@ -1051,6 +1074,9 @@
       <p>ครบ loop ตั้งแต่ดักสัญญาณหน้าไลฟ์ ถึง compliance บน cloud</p>
     </section>
 
+    <figure class="shot"><img src="img/report-overview.jpg" width="1492" height="1121" loading="lazy" decoding="async" alt="รายงานหลังไลฟ์ แสดง KPI และคะแนนคุณภาพไลฟ์"><figcaption>รายงานหลังไลฟ์: KPI + คะแนนคุณภาพแยกองค์ประกอบ</figcaption></figure>
+
+
     <div class="module-grid">
       <div class="module-card">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2-5 5-5-5"/><rect width="20" height="15" x="2" y="7" rx="2"/></svg>
@@ -1103,6 +1129,10 @@
       <p>ระหว่างไลฟ์ เห็นสัญญาณโฮสต์ + คอมเมนต์ + คำเตือนที่ทำได้ ในหน้าจอเดียว</p>
     </section>
 
+    <figure class="shot mid"><img src="img/hud.jpg" width="442" height="122" loading="lazy" decoding="async" alt="HUD แสดงอารมณ์เฉยๆ 77% Energy 77 กำลังพูด และมองกล้อง"><figcaption>HUD จริง: อารมณ์ · Energy · กำลังพูด · มองกล้อง</figcaption></figure>
+    <figure class="shot"><img src="img/report-host.jpg" width="1492" height="1121" loading="lazy" decoding="async" alt="กราฟอารมณ์และพลังงานของโฮสต์ตลอดไลฟ์"><figcaption>อารมณ์และพลังงานของโฮสต์ตลอดไลฟ์ในรายงาน</figcaption></figure>
+
+
     <div class="ext-mockup">
       <div class="ext-bar">
         <span class="ext-btn">&#9654; ไลฟ์สด</span>
@@ -1111,7 +1141,7 @@
         <span class="ext-badge">214 คอมเมนต์</span>
       </div>
       <div class="ext-yt">
-        <div><b>&#9888; Silent Advisor</b> — สัญญาณที่ทำได้ใน 60 วิ</div>
+        <div><b><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Silent Advisor</b> — สัญญาณที่ทำได้ใน 60 วิ</div>
         <div class="u">พลังงานโฮสต์เริ่มตก &middot; มีคนถามราคาซ้ำ 3 ครั้งยังไม่ได้ตอบ</div>
         <span class="chip">ทวนราคาอีกรอบ</span>
         <span class="chip">ยิ้ม + ทักผู้ชม</span>
@@ -1124,7 +1154,7 @@
           <tr>
             <td><span class="kind master">Emotion</span></td>
             <td class="q">Happy 0.71</td>
-            <td class="info">&#128522; smile &middot; &#128064; looking</td>
+            <td class="info"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01"/><path d="M15 9h.01"/></svg> smile &middot; <svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg> looking</td>
             <td><span class="chip">HUD</span></td>
           </tr>
           <tr>
@@ -1152,6 +1182,9 @@
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์ที่ต้องคิดทางแก้เอง — real-time ML + privacy engineering + contracts ข้าม service</p>
     </section>
+
+    <figure class="shot"><img src="img/report-timeline.jpg" width="1492" height="1121" loading="lazy" decoding="async" alt="กราฟ engagement ตามเวลาของไลฟ์"><figcaption>กราฟ engagement ตามเวลา — ใช้หาช่วงที่คนสนใจและช่วงที่คนหลุด</figcaption></figure>
+
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="ML Signal">
@@ -1200,28 +1233,31 @@
       <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอๆ กับสิ่งที่ทำ — โดยเฉพาะเรื่องข้อมูลอ่อนไหว</p>
     </section>
 
+    <figure class="shot mid"><img src="img/consent.jpg" width="680" height="1140" loading="lazy" decoding="async" alt="หน้าขอความยินยอมก่อนใช้งาน มีตัวเลือกอ่านอารมณ์จากสีหน้า เก็บข้อมูล 90 วัน และฟังเสียงพูด"><figcaption>ขอความยินยอมก่อนเก็บ — เลือกได้ทีละอย่าง ประมวลผลบนเครื่อง (เบลอชื่อแบรนด์)</figcaption></figure>
+
+
     <div class="quote-block" style="margin-bottom: 24px;">
       <p>หลักที่ตัดสินตั้งแต่ต้น: วิดีโอและใบหน้า<strong>ประมวลผลบนเครื่องเท่านั้น</strong> — cloud รับแค่ derived signal ที่เข้ารหัสแล้ว ไม่มีเฟรม ไม่มีภาพดิบ และทุกอย่างต้องขอ consent ก่อน, เข้ารหัสระหว่างทาง, และลบได้จริง ขอบเขตที่คมเรื่อง privacy = ตัดสินใจ implement ง่ายและ defend ได้</p>
     </div>
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128421;&#65039;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></strong><br>
         <strong>On-device inference</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">อ่านหน้าบนเครื่อง ส่งขึ้น cloud แค่ตัวเลข ไม่มีเฟรม</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#9989;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></strong><br>
         <strong>Consent ก่อนเก็บ</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">capture gate กั้นไว้ก่อน ไม่มี consent = ไม่เก็บ</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128274;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></strong><br>
         <strong>เข้ารหัสตั้งแต่ buffer</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">AES-256-GCM ตั้งแต่บนเครื่องยันขึ้น cloud</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128196;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></strong><br>
         <strong>Contracts-first</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">schema เป็น source of truth ไม่ใช่โค้ดฝั่งใดฝั่งหนึ่ง</p>
       </div>
@@ -1235,6 +1271,9 @@
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
     </section>
+
+    <figure class="shot"><img src="img/report-comments.jpg" width="1492" height="1121" loading="lazy" decoding="async" alt="รายงานคอมเมนต์ แสดง sentiment และประเภทความต้องการ"><figcaption>จัดหมวดเจตนาคอมเมนต์ + sentiment ในรายงาน</figcaption></figure>
+
 
     <div class="learning-card">
       <strong>1. Real-time Computer Vision / Emotion ML — จาก demo เป็นสัญญาณที่เชื่อได้:</strong>
@@ -1294,12 +1333,12 @@
       <span class="stack-icon">pnpm + turbo</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1322,13 +1361,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "เครื่องมือโค้ชผู้ขาย Portfolio",
-      "item": "https://projects.tanplanet.info/live-insights-portfolio/"
+      "item": "https://projects.tanplanet.work/live-insights-portfolio/"
     }
   ]
 }

@@ -7,9 +7,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Desktop Control Room สำหรับ Re-broadcast — เอาคลิปออกไปเป็นไลฟ์ live commerce">
   <meta name="twitter:description" content="Portfolio: เดสก์ท็อปแอปที่แพ็ก Go backend + ffmpeg streaming engine + React SPA เข้า Electron เป็นแอปเดียว — re-air คลิปออก RTMP, overlay, chat สด, ผ่าน browser oracle">
-  <meta property="og:url" content="https://projects.tanplanet.info/live-rebroadcast-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/live-rebroadcast-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/live-rebroadcast-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/live-rebroadcast-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: เดสก์ท็อปแอปที่แพ็ก Go backend + ffmpeg streaming engine + React SPA เข้า Electron เป็นแอปเดียว — re-air คลิปออก RTMP, overlay, chat สด, ผ่าน browser oracle">
@@ -837,6 +837,17 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
     .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* figures (case-study images) */
+    .shot{margin:8px 0 32px}
+    .shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}
+    .shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.6}
+    .shot.narrow img{max-width:360px;margin:0 auto}
+    .shot.mid img{max-width:460px;margin:0 auto}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin:8px 0 32px}
+    .shot-pair .shot{margin:0}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
+    .ico-i{width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex:none}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -880,6 +891,9 @@
       <p>คนขายของไลฟ์ต้องออกอากาศเกือบตลอดเวลา — แต่ยืนพูดสดทั้งวันทั้งคืนคือทางไปสู่ burnout</p>
     </section>
 
+    <figure class="shot"><img src="img/clip-library.jpg" width="1550" height="1000" loading="lazy" decoding="async" alt="คลังวิดีโอที่มีคลิปสินค้า 3 คลิป"><figcaption>คลังคลิปที่อัดไว้ — วัตถุดิบสำหรับ re-air (ข้อมูล demo)</figcaption></figure>
+
+
     <div class="quote-block">
       <p>ร้านที่ขายผ่านไลฟ์ต้อง "ติดจอ" ให้นานที่สุดถึงจะมียอด — แต่คนพูดสดทั้งวันไม่ไหว โดยเฉพาะกะดึก เครื่องมือที่ใช้กันคือเอา OBS + สคริปต์ + เครื่อง VM หลายตัวมาต่อกันเอง เปราะและพังกลางไลฟ์บ่อย ยิ่งถ้าดูแลหลายบัญชี/หลายห้องพร้อมกัน ยิ่งคุมไม่อยู่ โจทย์คือ: ทำ control room ตัวเดียวที่เอา "คลิปที่อัดไว้" มาวนออกเป็นไลฟ์ได้อย่างเสถียร</p>
       <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ แอป re-broadcast</div>
@@ -922,6 +936,9 @@
       <p>รวมทุกชิ้นที่เคยต้องต่อเอง ให้เป็นแอปเดสก์ท็อปตัวเดียว — เปิดแล้วใช้ได้เลย ไม่ต้องตั้ง server</p>
     </section>
 
+    <figure class="shot mid"><img src="img/auto-restart.jpg" width="1040" height="700" loading="lazy" decoding="async" alt="ตั้งค่าปิดไลฟ์อัตโนมัติและเริ่มไลฟ์ใหม่อัตโนมัติ"><figcaption>ปิด/เริ่มไลฟ์ใหม่อัตโนมัติ — วนไลฟ์ได้โดยไม่ต้องเฝ้า</figcaption></figure>
+
+
     <div class="solution-grid">
       <div class="solution-card">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2-5 5-5-5"/><rect width="20" height="15" x="2" y="7" rx="2"/></svg>
@@ -959,6 +976,9 @@
       <p>ตั้งแต่เลือกคลิป จนวนออกเป็นไลฟ์พร้อม chat และยอดขายสด</p>
     </section>
 
+    <figure class="shot mid"><img src="img/setup-basket.jpg" width="1040" height="560" loading="lazy" decoding="async" alt="ขั้นที่ 4 จาก 6 ของการเพิ่มบัญชีไลฟ์ เลือกสินค้าปักตะกร้า"><figcaption>wizard 6 ขั้น — ขั้นเลือกชุดสินค้าที่จะปักตะกร้า</figcaption></figure>
+
+
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
@@ -994,6 +1014,9 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>โปรเซสตระกูลเดียวบนเครื่อง seller — ไม่มี app server บนคลาวด์, ไม่มี infra ต่อร้าน</p>
     </section>
+
+    <figure class="shot"><img src="img/system-logs.jpg" width="1520" height="760" loading="lazy" decoding="async" alt="หน้าบันทึกการทำงานของระบบ แสดงเวลา การกระทำ และรหัสอ้างอิง"><figcaption>บันทึกการทำงานของ workspace (เบลอชื่อผู้ดำเนินการ)</figcaption></figure>
+
 
     <div class="arch-diagram">
       <div class="arch-layers">
@@ -1053,6 +1076,9 @@
       <p>ยกมาจาก POC ที่พิสูจน์ใช้งานแล้ว แล้ว port ให้ได้พฤติกรรมเดิมบน stack Go / React / Electron</p>
     </section>
 
+    <figure class="shot"><img src="img/overlay-clock.jpg" width="1600" height="1300" loading="lazy" decoding="async" alt="หน้าตั้งค่าโอเวอร์เลย์ นาฬิกาดิจิทัลแบบ LED และข้อความซ้อนบนคลิป"><figcaption>Overlay Compositor: นาฬิกา LED + ข้อความ ปรับตำแหน่ง/สี/มุมได้</figcaption></figure>
+
+
     <div class="module-grid">
       <div class="module-card">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2-5 5-5-5"/><rect width="20" height="15" x="2" y="7" rx="2"/></svg>
@@ -1105,19 +1131,22 @@
       <p>เปิดคลิป → กดไลฟ์ → เห็น chat, viewer, ยอดขาย และ overlay รวมในหน้าจอเดียว</p>
     </section>
 
+    <figure class="shot"><img src="img/session-console.jpg" width="1570" height="1091" loading="lazy" decoding="async" alt="หน้า session ระหว่างไลฟ์ แสดง keep-alive สินค้าในไลฟ์ แชทสด และบันทึกเหตุการณ์"><figcaption>Session console: keep-alive · สินค้าในไลฟ์ · แชทสด · บันทึกเหตุการณ์</figcaption></figure>
+
+
     <div class="ext-mockup">
       <div class="ext-bar">
         <span class="ext-btn">&#9654; Go Live</span>
         <span class="ext-btn">Overlay</span>
         <span class="ext-btn">ตะกร้า</span>
-        <span class="ext-badge">&#128308; LIVE</span>
+        <span class="ext-badge"><svg class="ico-i" style="color:#e11d48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="currentColor" stroke="none"/></svg> LIVE</span>
       </div>
       <div class="ext-yt">
-        <div><b>&#128308; กำลังไลฟ์</b> — re-air คลิปที่อัดไว้ &middot; uptime 01:12:40</div>
+        <div><b><svg class="ico-i" style="color:#e11d48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="currentColor" stroke="none"/></svg> กำลังไลฟ์</b> — re-air คลิปที่อัดไว้ &middot; uptime 01:12:40</div>
         <div class="u">clip: promo-spring-set.mp4 &middot; -c copy &middot; native-rate</div>
-        <span class="chip">&#128101; 1,284 viewers</span>
-        <span class="chip">&#128722; ปักแล้ว 6/6</span>
-        <span class="chip">&#128266; audio ok</span>
+        <span class="chip"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> 1,284 viewers</span>
+        <span class="chip"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg> ปักแล้ว 6/6</span>
+        <span class="chip"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg> audio ok</span>
       </div>
       <table class="ext-table">
         <thead>
@@ -1127,19 +1156,19 @@
           <tr>
             <td><span class="kind master">Chat</span></td>
             <td class="q">SSE</td>
-            <td class="info">&#128172; 42 ข้อความ/นาที &middot; ตอบสด</td>
+            <td class="info"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> 42 ข้อความ/นาที &middot; ตอบสด</td>
             <td><span class="chip">reply</span></td>
           </tr>
           <tr>
             <td><span class="kind variant">GMV</span></td>
             <td class="q">poll 45s</td>
-            <td class="info">&#128176; ยอดสด &middot; top 5 SKU</td>
+            <td class="info"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg> ยอดสด &middot; top 5 SKU</td>
             <td><span class="chip">panel</span></td>
           </tr>
           <tr>
             <td><span class="kind file">Overlay</span></td>
             <td class="q">on</td>
-            <td class="info">&#128347; นาฬิกา + ข้อความ &middot; ZMQ move</td>
+            <td class="info"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> นาฬิกา + ข้อความ &middot; ZMQ move</td>
             <td><span class="chip">edit</span></td>
           </tr>
         </tbody>
@@ -1155,6 +1184,9 @@
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์วิศวกรรมที่ต้องคิดทางแก้เอง — desktop runtime + media core + browser automation</p>
     </section>
+
+    <figure class="shot"><img src="img/chat-reply.jpg" width="1600" height="690" loading="lazy" decoding="async" alt="แท็บถามตอบ ตั้งคีย์เวิร์ดตอบกลับอัตโนมัติ"><figcaption>ตอบแชทอัตโนมัติด้วยคีย์เวิร์ด — ส่งจริงผ่าน browser oracle</figcaption></figure>
+
 
     <div class="hack-grid">
       <div class="hack-card platform" data-label="Desktop Runtime">
@@ -1203,28 +1235,31 @@
       <p>ขอบเขตที่จงใจ "ทำแคบ" — เพื่อให้ implement ตรงและ maintain ง่าย</p>
     </section>
 
+    <figure class="shot mid"><img src="img/proxy-egress.jpg" width="1060" height="620" loading="lazy" decoding="async" alt="ขั้นตั้งค่าพร็อกซีของบัญชีไลฟ์"><figcaption>พร็อกซีต่อบัญชี — แยก network egress ของแต่ละ identity</figcaption></figure>
+
+
     <div class="quote-block" style="margin-bottom: 24px;">
       <p>ทั้งระบบรันบนเครื่อง seller — ไม่มี app server กลาง, credential ไม่ออกนอกเครื่อง, re-encode เฉพาะเมื่อมี overlay จริง, และเก็บลง DB เฉพาะสิ่งที่ต้องคงข้าม restart เท่านั้น ขอบเขตที่คมตั้งแต่ต้นทำให้ทุก feature ต่อยอดจากแกน re-air เดิมได้ โดยไม่ทำให้ core พองหรือช้าลง</p>
     </div>
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128421;&#65039;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></strong><br>
         <strong>Desktop-local</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">รันบนเครื่อง seller ข้อมูล/credential ไม่ออก cloud</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128250;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><path d="m17 2-5 5-5-5"/></svg></strong><br>
         <strong>-c copy invariant</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">re-encode เฉพาะ session ที่มี overlay เท่านั้น</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#9889;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></strong><br>
         <strong>Transient by default</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">chat/GMV เป็น live persist เฉพาะที่ต้องมี history</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128274;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></strong><br>
         <strong>Vault ทุก secret</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">envelope encryption + log แค่ length ไม่เคย log ค่า</p>
       </div>
@@ -1238,6 +1273,9 @@
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
     </section>
+
+    <figure class="shot"><img src="img/live-history.jpg" width="1600" height="400" loading="lazy" decoding="async" alt="ตารางสรุปไลฟ์ย้อนหลัง"><figcaption>สรุปไลฟ์ย้อนหลัง — ผู้ชม ยอดขาย แชท ต่อไลฟ์ (เบลอชื่อบัญชี)</figcaption></figure>
+
 
     <div class="learning-card">
       <strong>1. Desktop app architecture (Electron + native sidecar) — จาก web ล้วนสู่เดสก์ท็อปจริง:</strong>
@@ -1298,12 +1336,12 @@
       <span class="stack-icon">Zitadel OIDC</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1326,13 +1364,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "แอป re-broadcast Portfolio",
-      "item": "https://projects.tanplanet.info/live-rebroadcast-portfolio/"
+      "item": "https://projects.tanplanet.work/live-rebroadcast-portfolio/"
     }
   ]
 }
