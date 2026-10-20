@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tan's Tools — กล่องเครื่องมือเอกสารที่รันบนเครื่อง ไม่ต้องง้อเว็บ</title>
+  <meta name="description" content="Portfolio: กล่องเครื่องมือใน Tan's Tasks ที่รวมเครื่องมือ PDF ที่เขียนเอง เครื่องมือปลดล็อก PDF ก่อนส่งเข้า AI และแอปโอเพนซอร์ส 12 ตัวจาก ArtCraft (Apache-2.0) ไว้ในที่เดียว เปิดจากเครื่องตัวเอง ไม่ต้องสมัคร ไม่ต้องอัปไฟล์ขึ้นเว็บ">
+  <meta property="og:title" content="Tan's Tools — กล่องเครื่องมือเอกสารที่รันบนเครื่อง ไม่ต้องง้อเว็บ">
+  <meta property="og:description" content="Portfolio: กล่องเครื่องมือใน Tan's Tasks ที่รวมเครื่องมือ PDF ที่เขียนเอง เครื่องมือปลดล็อก PDF ก่อนส่งเข้า AI และแอปโอเพนซอร์ส 12 ตัวจาก ArtCraft (Apache-2.0) ไว้ในที่เดียว เปิดจากเครื่องตัวเอง ไม่ต้องสมัคร ไม่ต้องอัปไฟล์ขึ้นเว็บ">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://projects.tanplanet.work/tools-portfolio/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tan's Tools — กล่องเครื่องมือเอกสารที่รันบนเครื่อง ไม่ต้องง้อเว็บ">
+  <meta name="twitter:description" content="Portfolio: กล่องเครื่องมือใน Tan's Tasks ที่รวมเครื่องมือ PDF ที่เขียนเอง เครื่องมือปลดล็อก PDF ก่อนส่งเข้า AI และแอปโอเพนซอร์ส 12 ตัวจาก ArtCraft (Apache-2.0) ไว้ในที่เดียว เปิดจากเครื่องตัวเอง ไม่ต้องสมัคร ไม่ต้องอัปไฟล์ขึ้นเว็บ">
+  <link rel="canonical" href="https://projects.tanplanet.work/tools-portfolio/">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0f1f'/><rect x='20' y='38' width='60' height='38' rx='6' fill='none' stroke='%23f59e0b' stroke-width='6'/><path d='M38 38v-8a4 4 0 0 1 4-4h16a4 4 0 0 1 4 4v8M20 54h60' fill='none' stroke='%23f59e0b' stroke-width='6'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #b45309;
+      --accent-light: #fef3c7;
+      --accent-dark: #78350f;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #0a0f1f 0%, #121b36 40%, #3f2d12 78%, #78350f 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(251,191,36,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #78350f, #f59e0b, #fde68a);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent { color: #fcd34d; }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro { padding: 56px 0 32px; }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .section-intro p { color: var(--text-secondary); font-size: 1rem; }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0a0f1f, #223056);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block code { background: rgba(255,255,255,0.14); color: #fcd34d; }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p { font-size: 1.05rem; line-height: 1.7; position: relative; z-index: 1; }
+    .quote-block .author { margin-top: 12px; font-size: 0.82rem; opacity: 0.78; }
+
+    /* ===== Pain / Solution Cards ===== */
+    .pain-grid, .solution-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .pain-card, .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .pain-card { border-left: 4px solid var(--red); }
+    .solution-card { border-left: 4px solid var(--accent); }
+    .pain-card .emoji, .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3, .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p, .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(180,83,9,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers { display: flex; flex-direction: column; gap: 12px; max-width: 560px; margin: 0 auto; }
+    .arch-layer { padding: 14px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(180,83,9,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: var(--navy); color: #cbd5e1; border: 1px solid #223056; }
+    .arch-arrow { text-align: center; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+    .arch-sub { display: flex; justify-content: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .arch-layer.infra .arch-sub span { background: rgba(255,255,255,0.10); }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* ============================================================
+       เฉพาะหน้านี้ — แถวไอคอนแอป · หมวดงาน · การ์ดเครื่องมือ · บล็อกคำสั่ง
+       ============================================================ */
+    .app-row {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px 10px; margin-top: 8px;
+    }
+    .app-tile { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; min-width: 0; }
+    .app-ic {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--accent-dark);
+    }
+    .app-ic .ico { width: 24px; height: 24px; stroke-width: 1.8; color: var(--accent); }
+    .app-tile b { font-size: 0.82rem; font-weight: 600; line-height: 1.3; }
+    .app-tile span { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.4; }
+
+    .credit {
+      margin-top: 24px; padding: 14px 16px;
+      border-left: 2px solid var(--accent); background: var(--surface);
+      font-size: 0.86rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .credit a { color: var(--accent-dark); font-weight: 600; }
+
+    /* หมวดตามงาน — เป็นแถวคั่นเส้น ไม่ใช่การ์ด */
+    .grp-list { border-top: 1px solid var(--border); }
+    .grp {
+      display: grid; grid-template-columns: 28px minmax(0, 1fr);
+      gap: 0 12px; padding: 20px 0; border-bottom: 1px solid var(--border);
+    }
+    .grp .n { color: var(--accent); font-weight: 600; font-size: 0.88rem; line-height: 1.7; font-variant-numeric: tabular-nums; }
+    .grp h3 { font-size: 1rem; font-weight: 600; line-height: 1.6; }
+    .grp p { font-size: 0.88rem; color: var(--text-secondary); margin-top: 2px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 50px;
+      border: 1px solid var(--border); background: var(--surface);
+      font-size: 0.76rem; color: var(--text-secondary); line-height: 1.5;
+    }
+    .chip.app { border-color: rgba(180,83,9,0.28); background: var(--accent-light); color: var(--accent-dark); }
+    .chip.own { border-color: rgba(4,120,87,0.28); background: var(--emerald-light); color: var(--emerald-dark); }
+    .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 16px; font-size: 0.8rem; color: var(--text-secondary); }
+    .legend .chip { font-size: 0.72rem; }
+
+    /* การ์ดเครื่องมือด่วน — 2 คอลัมน์บนมือถือ → 3 คอลัมน์ */
+    .tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .tool-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px 16px;
+      display: flex; flex-direction: column; gap: 6px; min-width: 0;
+    }
+    .tool-card .top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+    .tool-card .num { font-size: 0.76rem; font-weight: 600; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+    .tool-card .top .ico { color: var(--accent); width: 20px; height: 20px; }
+    .tool-card h3 { font-size: 0.95rem; font-weight: 600; line-height: 1.5; }
+    .tool-card p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.65; flex: 1; }
+    .tool-card .chips { margin-top: 6px; }
+    .tool-card .chip { font-size: 0.7rem; padding: 2px 8px; }
+    .tool-card.feature { border-color: rgba(180,83,9,0.35); }
+
+    /* บล็อกคำสั่ง */
+    .cmd {
+      margin-top: 16px; background: var(--navy); color: #e2e8f0;
+      border-radius: var(--radius); padding: 16px 18px;
+      font-family: var(--mono); font-size: 0.82rem; line-height: 1.8;
+      overflow-x: auto; white-space: pre;
+    }
+    .cmd .c { color: #94a3b8; }
+    .way-list { margin-top: 8px; }
+    .src-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; font-size: 0.88rem; font-weight: 600; color: var(--accent-dark); }
+    .src-link .ico { width: 15px; height: 15px; }
+
+    @media (min-width: 560px) {
+      .app-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    @media (min-width: 760px) {
+      .app-row { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+      .tool-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+  </style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Tan's Tasks &middot; localhost &middot; ArtCraft (Apache-2.0)
+      </div>
+      <h1>Tan's Tools<br><span class="accent">กล่องเครื่องมือเอกสารที่เปิดจากเครื่องตัวเอง ไม่ต้องง้อเว็บ</span></h1>
+      <p>ใส่เลขหน้า เขียนลง PDF แปะโลโก้ ย่อรูป ปลดล็อก PDF ก่อนส่งเข้า AI และเปิดแอปแต่งรูป ทำสไลด์ ตัดต่อวิดีโอแบบเต็มตัว ทั้งหมดอยู่ในหน้าเดียวของเครื่องมือที่เปิดใช้อยู่ทุกวัน ไม่ต้องสมัคร และไม่ต้องอัปไฟล์ขึ้นเว็บที่ไม่รู้จัก</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Python http.server</span>
+        <span class="hero-tag">pdf-lib</span>
+        <span class="hero-tag">PDF.js</span>
+        <span class="hero-tag">qpdf</span>
+        <span class="hero-tag">Bun</span>
+        <span class="hero-tag">WebAssembly</span>
+        <span class="hero-tag">ArtCraft</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#toolbox">ดูกล่องเครื่องมือ &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#hacks">ปัญหาที่เจอระหว่างทาง</a>
+      </div>
+    </div>
+  </header>
+
+  <article>
+
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>งานเอกสารเล็ก ๆ มีทุกวัน แต่ทุกครั้งต้องไปพึ่งเว็บคนอื่น</h2>
+      <p>งานแต่ละอย่างใช้เวลาไม่กี่นาที แต่เส้นทางไปถึงเครื่องมือยาวกว่างานเสมอ</p>
+    </section>
+
+    <div class="quote-block">
+      <p>อยากใส่เลขหน้าในไฟล์เดียว ต้องค้นเว็บ เลือกเว็บที่ดูน่าไว้ใจที่สุด อัปไฟล์ขึ้นไป รอ แล้วโหลดกลับมา ทั้งที่ในไฟล์อาจมีเลขบัตร ลายเซ็น หรือเอกสารงาน — เครื่องมือฟรีที่ดีมีอยู่แล้วเยอะ แค่มันไม่ได้อยู่ใกล้มือ</p>
+      <div class="author">— โจทย์ตั้งต้น</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 13v8"/><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="m8 17 4-4 4 4"/></svg>
+        <h3>ไฟล์ส่วนตัวต้องเดินทางออกจากเครื่องก่อน</h3>
+        <p>เว็บแปลงไฟล์ส่วนใหญ่ทำงานบนเซิร์ฟเวอร์ของเขา แปลว่าเอกสารที่มีข้อมูลส่วนตัวต้องถูกอัปโหลดไปก่อนจึงจะได้ไฟล์ที่แก้แล้วกลับมา</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" x2="22" y1="8" y2="13"/><line x1="22" x2="17" y1="8" y2="13"/></svg>
+        <h3>ทำได้ไม่กี่ไฟล์ แล้วก็เจอหน้าให้สมัคร</h3>
+        <p>ฟรีแค่บางขนาด บางจำนวน หรือบางวัน งานเดียวกันพอทำซ้ำในวันถัดไป ก็ต้องเริ่มหาเว็บใหม่อีกรอบ</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg>
+        <h3>เลขไทยกับฟอนต์ไทย ไม่ค่อยมีใครทำให้</h3>
+        <p>เอกสารราชการและเอกสารบริษัทหลายแบบใช้เลขหน้าเป็น ๑ ๒ ๓ ซึ่งเครื่องมือทั่วไปมีให้แค่ 1 2 3 และพอใส่ตัวหนังสือไทยลงไปก็กลายเป็นกล่องสี่เหลี่ยม</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>PDF ที่ล็อกไว้ ส่งเข้า AI ไม่ได้</h3>
+        <p>ไฟล์ที่ตั้งรหัสหรือห้ามคัดลอก ทำให้ AI อ่านเนื้อหาไม่ได้ ต้องปลดล็อกก่อน ซึ่งก็วนกลับไปที่การอัปไฟล์ขึ้นเว็บอีก</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+        <h3>งานที่หนักกว่านั้นต้องลงโปรแกรมทีละตัว</h3>
+        <p>แต่งรูปแบบมีเลเยอร์ ทำสไลด์ หรือตัดต่อวิดีโอสั้น ๆ ต้องติดตั้งโปรแกรมใหญ่ หรือสมัครบริการรายเดือน ทั้งที่ใช้แค่บางครั้ง</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>เอาเครื่องมือไปวางไว้ในที่ที่เปิดอยู่แล้วทุกวัน</h2>
+      <p>Tan's Tasks เป็นเครื่องมือส่วนตัวที่เปิดทุกเช้าเพื่อดูงานวันนี้ อยู่บนเครื่องและมีเซิร์ฟเวอร์เล็ก ๆ ของมันเองอยู่แล้ว เพิ่มอีกหนึ่งหน้าจึงแทบไม่มีต้นทุน</p>
+    </section>
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th>ทางเลือก</th><th>ต้องทำอะไรทุกครั้ง</th><th>ไฟล์ไปอยู่ที่ไหน</th><th>เหตุที่ตก / รับ</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>ใช้เว็บแปลงไฟล์ต่อไป</td>
+            <td>ค้นเว็บ อัปโหลด รอ โหลดกลับ</td>
+            <td>เซิร์ฟเวอร์ของเว็บนั้น</td>
+            <td>สะดวกครั้งแรก แต่ทุกครั้งต้องเลือกใหม่ว่าจะไว้ใจเว็บไหน และติดข้อจำกัดของบัญชีฟรี</td>
+          </tr>
+          <tr>
+            <td>ลงโปรแกรมแยกทีละตัว</td>
+            <td>ติดตั้ง อัปเดต จำว่าอะไรอยู่ไหน</td>
+            <td>บนเครื่อง</td>
+            <td>ไฟล์ไม่ออกจากเครื่องก็จริง แต่ได้ไอคอนเพิ่มเต็มเครื่อง และหลายตัวเป็นของเสียเงินรายเดือน</td>
+          </tr>
+          <tr data-picked>
+            <td>รวมเป็นหน้าเดียวใน Tan's Tasks<span class="pick"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> เลือก</span></td>
+            <td>เปิดหน้าเครื่องมือ แล้วเลือกงาน</td>
+            <td>บนเครื่อง</td>
+            <td>เขียนเองเฉพาะที่ไม่มีใครทำให้ ส่วนงานหนักใช้แอปโอเพนซอร์สที่มีอยู่แล้ว โหลดมาไว้บนเครื่องครั้งเดียว อัปเดตด้วยคำสั่งเดียว</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="learning-card note">
+      <strong>กติกาที่ตั้งไว้ตั้งแต่ต้น</strong>
+      <p><strong>เขียนเองให้น้อยที่สุด</strong> — อะไรที่มีโอเพนซอร์สดี ๆ อยู่แล้ว ให้ดึงมาใช้และให้เครดิตเจ้าของ เขียนเองเฉพาะช่องว่างที่ไม่มีใครเติม เช่น เลขหน้าแบบเลขไทย หรือการปลดล็อก PDF ที่ไม่ต้องอัปไฟล์</p>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="toolbox">
+      <span class="eyebrow">Prototype</span>
+      <h2>จัดหมวดตาม &ldquo;งานที่จะทำ&rdquo; ไม่ใช่ตามว่าใครเขียน</h2>
+      <p>คนที่จะใส่ลายน้ำไม่ได้สนว่าเครื่องมือมาจากไหน จึงวางเครื่องมือด่วนกับแอปเต็มไว้ในหมวดเดียวกัน แอปเต็มมีป้ายบอก และเปิดในแท็บใหม่</p>
+    </section>
+
+    <div class="grp-list">
+      <div class="grp">
+        <span class="n">01</span>
+        <div>
+          <h3>เอกสาร PDF และลายเซ็น</h3>
+          <p>ใส่เลขหน้า เขียนเพิ่ม แปะโลโก้ ปลดล็อก — ต้องแก้ละเอียดกว่านั้นค่อยเปิด PdfCraft</p>
+          <div class="chips">
+            <span class="chip own">ใส่เลขหน้า (เลขไทยได้)</span>
+            <span class="chip own">เขียนเพิ่มบนเอกสาร</span>
+            <span class="chip own">ลายน้ำโลโก้บน PDF</span>
+            <span class="chip own">ปลดล็อก PDF</span>
+            <span class="chip app">PdfCraft</span>
+          </div>
+        </div>
+      </div>
+      <div class="grp">
+        <span class="n">02</span>
+        <div>
+          <h3>งานออฟฟิศ</h3>
+          <p>เอกสาร ตารางคำนวณ และสไลด์ แบบ Word · Excel · PowerPoint</p>
+          <div class="chips">
+            <span class="chip app">WordCraft</span>
+            <span class="chip app">GridCraft</span>
+            <span class="chip app">DeckCraft</span>
+          </div>
+        </div>
+      </div>
+      <div class="grp">
+        <span class="n">03</span>
+        <div>
+          <h3>รูปภาพ</h3>
+          <p>ย่อไฟล์ แต่งรูป และจัดการไฟล์ RAW</p>
+          <div class="chips">
+            <span class="chip own">บีบอัดรูปภาพ</span>
+            <span class="chip app">PhotoCraft</span>
+            <span class="chip app">LightCraft</span>
+          </div>
+        </div>
+      </div>
+      <div class="grp">
+        <span class="n">04</span>
+        <div>
+          <h3>กราฟิก สิ่งพิมพ์ และแบบงาน</h3>
+          <p>วาด vector จัดหน้าสิ่งพิมพ์ และเขียนแบบ 2D</p>
+          <div class="chips">
+            <span class="chip app">VectorCraft</span>
+            <span class="chip app">DesignCraft</span>
+            <span class="chip app">CadCraft</span>
+          </div>
+        </div>
+      </div>
+      <div class="grp">
+        <span class="n">05</span>
+        <div>
+          <h3>วิดีโอและเสียง</h3>
+          <p>ตัดต่อวิดีโอ ทำเอฟเฟกต์ และมิกซ์เสียง</p>
+          <div class="chips">
+            <span class="chip app">FilmCraft</span>
+            <span class="chip app">EffectCraft</span>
+            <span class="chip app">SoundCraft</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><span class="chip own">เขียว</span> เครื่องมือด่วนที่เขียนเอง</span>
+      <span><span class="chip app">ส้ม</span> แอปเต็มจาก ArtCraft</span>
+    </div>
+
+    <div class="learning-card note">
+      <strong>หน้านี้เล่าเฉพาะส่วนที่ทำเอง</strong>
+      <p>ในกล่องจริงยังมีเครื่องมือฟรีพื้นฐานจากแหล่งอื่นที่เก็บไว้ใช้บนเครื่องอีกหลายตัว เช่น รวม แยก หมุนหน้า PDF และลายเซ็น ส่วนนั้นไม่ใช่งานของแทนจึงไม่นำมาแสดงที่นี่</p>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>เครื่องมือด่วนที่เขียนเอง — เติมเฉพาะช่องที่ไม่มีใครทำ</h2>
+      <p>หน้าเดียว ประมวลผลในเบราว์เซอร์ทั้งหมด ไฟล์ไม่ได้ถูกส่งไปที่ไหน</p>
+    </section>
+
+    <div class="tool-grid">
+      <div class="tool-card">
+        <div class="top"><span class="num">01</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg></div>
+        <h3>ใส่เลขหน้า (เลขไทยได้)</h3>
+        <p>เขียนเลขหน้าลงทุกหน้า เลือก ๑ ๒ ๓ หรือ 1 2 3 และรูปแบบ &ldquo;หน้า ๕&rdquo; &ldquo;๕ / ๑๒&rdquo; &ldquo;- ๕ -&rdquo;</p>
+        <div class="chips"><span class="chip">เบราว์เซอร์บนเครื่อง</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="top"><span class="num">02</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg></div>
+        <h3>เขียนเพิ่มบนเอกสาร</h3>
+        <p>แทรกข้อความหรือรูปลงหน้า PDF แล้วลากวางตำแหน่งเอง เหมาะกับฟอร์มที่พิมพ์ลงไม่ได้</p>
+        <div class="chips"><span class="chip">เบราว์เซอร์บนเครื่อง</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="top"><span class="num">03</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M19.27 13.73A2.5 2.5 0 0 0 17.5 13h-11A2.5 2.5 0 0 0 4 15.5V17a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1.5c0-.66-.26-1.3-.73-1.77Z"/><path d="M14 13V8.5C14 7 15 7 15 5a3 3 0 0 0-6 0c0 2 1 2 1 3.5V13"/></svg></div>
+        <h3>ลายน้ำโลโก้บน PDF</h3>
+        <p>วางโลโก้จาง ๆ กลางหน้าแบบเอียง 45° หรือเรียงเต็มหน้า ทับทุกหน้าในคลิกเดียว</p>
+        <div class="chips"><span class="chip">เบราว์เซอร์บนเครื่อง</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="top"><span class="num">04</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 10 7-7"/><path d="M20 10h-6V4"/><path d="m3 21 7-7"/><path d="M4 14h6v6"/></svg></div>
+        <h3>บีบอัดรูปภาพ</h3>
+        <p>ลดขนาด JPG PNG WEBP ทีละหลายรูป ปรับคุณภาพและย่อพิกเซลได้</p>
+        <div class="chips"><span class="chip">เบราว์เซอร์บนเครื่อง</span></div>
+      </div>
+      <div class="tool-card feature">
+        <div class="top"><span class="num">05</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg></div>
+        <h3>ปลดล็อก PDF</h3>
+        <p>ถอดรหัสและข้อห้ามคัดลอกออกจาก PDF ให้ส่งเข้า AI ได้ เรียกใช้ได้ทั้งจากหน้าเว็บบนเครื่องและจากคำสั่ง</p>
+        <div class="chips"><span class="chip">macOS</span><span class="chip">CLI</span><span class="chip">เว็บบนเครื่อง</span></div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="pdf-unlocked">
+      <span class="eyebrow">Prototype</span>
+      <h2>ปลดล็อก PDF ก่อนส่งเข้า AI — ใช้ qpdf ตัวเดียว ไม่ต้องอัปไฟล์</h2>
+      <p>งานจริงของเครื่องมือนี้คือหนึ่งบรรทัด ที่เหลือคือทำให้คนไม่ต้องจำบรรทัดนั้น</p>
+    </section>
+
+    <ul class="plain way-list">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19h8"/><path d="m4 17 6-6-6-6"/></svg><span><b>สั่งจาก Terminal</b> — <code>unlock.sh</code> เรียก <code>qpdf --decrypt</code> ถ้าไฟล์ล็อกแค่ห้ามคัดลอกก็ถอดได้เลย ถ้าตั้งรหัสเปิดไฟล์ให้ใส่รหัสต่อท้าย ได้ไฟล์ใหม่ชื่อ <code>-unlocked.pdf</code> ในโฟลเดอร์เดิม</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg><span><b>ลากไฟล์วางในหน้าเว็บบนเครื่อง</b> — <code>bun server.js</code> เปิดหน้าเล็ก ๆ ที่ <code>localhost:3777</code> มีช่องใส่รหัสที่เว้นว่างได้ และบอกเป็นภาษาไทยเมื่อรหัสผิด</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4.1 12 6"/><path d="m5.1 8-2.9-.8"/><path d="m6 12-1.9 2"/><path d="M7.2 2.2 8 5.1"/><path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"/></svg><span><b>ดับเบิลคลิกไฟล์เดียว</b> — ไฟล์ <code>.command</code> บน macOS เปิดเซิร์ฟเวอร์และเปิดเบราว์เซอร์ให้เอง ไม่ต้องเปิด Terminal</span></li>
+    </ul>
+
+    <div class="cmd"><span class="c"># ปลดล็อก ได้ไฟล์ใหม่ข้างไฟล์เดิม</span>
+./unlock.sh เอกสาร.pdf [รหัสผ่าน]
+<span class="c"># → เอกสาร-unlocked.pdf</span></div>
+
+    <a class="src-link" href="https://github.com/natpakans-stack/tanplanet/tree/main/pdf-unlocked" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg> โค้ดเปิดดูได้บน GitHub</a>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="apps">
+      <span class="eyebrow">Prototype</span>
+      <h2>แอปเต็ม 12 ตัวจาก ArtCraft — สคริปต์เดียวโหลด อีกบรรทัดเดียวเสิร์ฟ</h2>
+      <p>ArtCraft เป็นชุดแอปโอเพนซอร์สที่มีเวอร์ชันรันในเบราว์เซอร์ด้วย WebAssembly ไม่ต้องเขียนแอปพวกนี้ใหม่ แค่พาไฟล์มาไว้บนเครื่องแล้วชี้ทางให้ถูก</p>
+    </section>
+
+    <div class="app-row">
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4V20.5H7z"/><path d="M14 3.5v4h4M10 13h5M10 16.5h5"/></svg></span><b>PdfCraft</b><span>แก้ PDF</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M20.5 15.5 15 10l-8 9"/></svg></span><b>PhotoCraft</b><span>แต่งรูป</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4 4.5 19.5h15z"/><circle cx="12" cy="4" r="1.6"/><circle cx="4.5" cy="19.5" r="1.6"/><circle cx="19.5" cy="19.5" r="1.6"/></svg></span><b>VectorCraft</b><span>วาด vector</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg></span><b>LightCraft</b><span>ไฟล์ RAW</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="1.5"/><path d="M4 9h16M10 9v11.5"/></svg></span><b>DesignCraft</b><span>จัดหน้า</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4" width="17" height="11.5" rx="1.5"/><path d="M12 15.5v4M8.5 20h7"/></svg></span><b>DeckCraft</b><span>สไลด์</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4" width="17" height="16" rx="1.5"/><path d="M3.5 9.5h17M3.5 14.5h17M9.5 4v16"/></svg></span><b>GridCraft</b><span>ตารางคำนวณ</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4V20.5H7z"/><path d="M14 3.5v4h4M9.5 12l1.2 5 1.3-4 1.3 4 1.2-5"/></svg></span><b>WordCraft</b><span>เอกสาร</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20 20 4M4 20h16M4 20V4"/><path d="M4 14a6 6 0 0 1 6 6"/></svg></span><b>CadCraft</b><span>เขียนแบบ 2D</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="M3.5 9h17M3.5 15h17M8 5v4M16 5v4M8 15v4M16 15v4"/></svg></span><b>FilmCraft</b><span>ตัดต่อวิดีโอ</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.2 5.3 5.8.5-4.4 3.8 1.3 5.6L12 15.8 7.1 18.7l1.3-5.6L4 9.3l5.8-.5z"/></svg></span><b>EffectCraft</b><span>โมชันกราฟิก</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2"/></svg></span><b>SoundCraft</b><span>ตัดต่อเสียง</span></div>
+    </div>
+
+    <div class="flow-grid" style="margin-top:32px">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>
+        <h4>ถาม GitHub ว่า release ล่าสุดคืออะไร</h4>
+        <p><code>craft-fetch.sh</code> ไล่ถามทีละแอปแล้วหยิบเฉพาะไฟล์ zip ที่เป็นเวอร์ชันเว็บ ถ้าแอปไหนไม่มีก็ข้ามไปแล้วบอกไว้</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+        <h4>แตกไฟล์ลงโฟลเดอร์ของแอปนั้น</h4>
+        <p>ลบของเก่าแล้ววางของใหม่ทับ รันซ้ำเมื่อไหร่ก็คือการอัปเดต ไม่ต้องจำว่าตัวไหนเวอร์ชันอะไร</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        <h4>ดึงไอคอนจริงของแอปมาด้วย</h4>
+        <p>การ์ดในกล่องเครื่องมือจะใช้ไอคอนของแอปเอง ถ้าแอปไหนหาไม่เจอก็ถอยไปใช้ไอคอนเส้นที่วาดไว้แทน</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+        <h4>เซิร์ฟเวอร์ตัวเดิมเปิดให้ที่ <code>/craft/&lt;แอป&gt;/</code></h4>
+        <p>ไม่มีเซิร์ฟเวอร์ใหม่ ไม่มี build ใช้ Python ตัวเดียวกับที่ Tan's Tasks รันอยู่แล้ว</p>
+      </div>
+    </div>
+
+    <p class="credit">แอปทั้ง 12 ตัวเป็นผลงานของทีม <a href="https://getartcraft.com/apps" target="_blank" rel="noopener">ArtCraft</a> เผยแพร่แบบโอเพนซอร์สภายใต้สัญญาอนุญาต Apache-2.0 ส่วนที่แทนทำคือสคริปต์โหลด การเสิร์ฟจากเครื่อง และการจัดวางแอปเข้าหมวดงานในกล่องเครื่องมือ</p>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="hacks">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>ห้าเรื่องที่เจอตอนเอาของคนอื่นมาวางในบ้านตัวเอง</h2>
+      <p>การดึงของที่มีอยู่แล้วมาใช้ ต้องเขียนน้อยจริง แต่สิ่งที่ต้องเขียนคือจุดต่อ และจุดต่อคือที่ที่พังเงียบที่สุด</p>
+    </section>
+
+    <div class="hack-grid">
+
+      <div class="hack-card" data-label="Routing">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>ปลดล็อก PDF ค้างที่ &ldquo;กำลังโหลดเครื่องมือ...&rdquo; ตลอดไป</span></h3>
+        <p>ตัวปลดรหัสใช้ qpdf ที่คอมไพล์เป็น WebAssembly และมันขอไฟล์ <code>/wasm/qpdf.wasm</code> กับไฟล์ย่อยใน <code>/_next/</code> จากรากของเว็บ ไม่ใช่จากโฟลเดอร์ที่เก็บไว้ เซิร์ฟเวอร์ตอบ 404 กลับไปเงียบ ๆ หน้าจอจึงหมุนรออยู่อย่างนั้น ไม่มีข้อความผิดพลาดให้เห็น</p>
+        <div class="highlight"><strong>แก้:</strong> ให้เซิร์ฟเวอร์<strong>เบนสองเส้นทางนั้นเข้าโฟลเดอร์ที่ถูกต้อง</strong>ก่อนหาไฟล์ — สองบรรทัด ไม่ต้องแตะไฟล์ของเครื่องมือเลย บทเรียนคือเวลาหน้าเว็บค้าง ให้เปิดแท็บ Network ก่อนเปิดโค้ด</div>
+      </div>
+
+      <div class="hack-card" data-label="Quality">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>รวมหรือหมุน PDF แล้วตัวหนังสือออกมาไม่คม</span></h3>
+        <p>เครื่องมือ PDF พื้นฐานที่เก็บไว้ใช้ เรนเดอร์ทุกหน้าเป็นรูปที่ยาวสุด 1600 พิกเซลและบีบ JPEG ที่คุณภาพตายตัว ไฟล์ที่ได้จึงเบลอทุกงาน และ PDF → รูปออกมาเป็น PNG ไฟล์ใหญ่เสมอ</p>
+        <div class="highlight"><strong>แก้:</strong> <strong>แก้ตอนเสิร์ฟ ไม่แก้ไฟล์ต้นทาง</strong> — เซิร์ฟเวอร์เปิดช่องให้ตั้งความละเอียด คุณภาพ และเลือก JPEG ได้ ถ้าไม่ตั้งก็ได้ค่าเดิมเป๊ะ และเมื่อโหลดเวอร์ชันใหม่มาทับ การแก้ก็ยังอยู่ ไฟล์ที่ถูกแก้ระหว่างเสิร์ฟถูกสั่งห้ามแคช ไม่งั้นเบราว์เซอร์จะใช้ตัวเก่าค้างไว้</div>
+      </div>
+
+      <div class="hack-card" data-label="Thai">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>ตัวหนังสือไทยบน PDF กลายเป็นกล่องสี่เหลี่ยม</span></h3>
+        <p>ไลบรารีเขียน PDF มีฟอนต์มาตรฐานที่ไม่มีอักษรไทย เลขหน้า ๑ ๒ ๓ หรือคำว่า &ldquo;หน้า&rdquo; จึงออกมาเป็นกล่องว่าง</p>
+        <div class="highlight"><strong>แก้:</strong> <strong>ฝังฟอนต์ Sarabun ลงในไฟล์</strong> โหลดครั้งเดียวแล้วจำไว้ใช้ต่อ และมีแหล่งสำรองอีกที่ถ้าแหล่งแรกโหลดไม่ได้ ส่วนการแปลงเลขเป็นเลขไทยเป็นแค่การแทนตัวอักษรทีละหลัก</div>
+      </div>
+
+      <div class="hack-card" data-label="Cache">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>แอป WebAssembly ใหญ่ เปิดครั้งที่สองต้องเร็ว แต่อัปเดตแล้วต้องเห็นของใหม่</span></h3>
+        <p>ถ้าแคชทุกไฟล์นาน ๆ อัปเดตแล้วจะยังเห็นแอปเก่า ถ้าไม่แคชเลย ทุกครั้งที่เปิดต้องโหลดใหม่หลายสิบเมกะไบต์ และไฟล์ <code>.wasm</code> ที่ส่งไปผิดชนิดจะทำให้เบราว์เซอร์คอมไพล์แบบเร็วไม่ได้</p>
+        <div class="highlight"><strong>แก้:</strong> ไฟล์ <code>.js</code> กับ <code>.wasm</code> มีรหัสเวอร์ชันอยู่ในชื่อแล้ว จึง<strong>แคชได้ยาวเป็นปี</strong> ส่วน <code>index.html</code> ให้<strong>เช็คใหม่ทุกครั้ง</strong> และส่ง <code>.wasm</code> เป็น <code>application/wasm</code> ให้ถูกชนิด</div>
+      </div>
+
+      <div class="hack-card" data-label="Safety">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>เซิร์ฟเวอร์ที่เปิดไฟล์ตามชื่อใน URL เปิดไฟล์อื่นในเครื่องได้ด้วย</span></h3>
+        <p>ถ้ารับชื่อไฟล์จาก URL แล้วต่อ path ตรง ๆ คนพิมพ์ <code>../</code> ก็ถอยออกไปอ่านไฟล์นอกโฟลเดอร์แอปได้ และถ้ายังไม่ได้โหลดแอป หน้าก็จะว่างเปล่าโดยไม่บอกอะไร</p>
+        <div class="highlight"><strong>แก้:</strong> <strong>แปลงเป็น path จริงก่อน แล้วยอมเปิดเฉพาะไฟล์ที่ยังอยู่ในโฟลเดอร์แอป</strong> ที่เหลือตอบ 404 ทั้งหมด และถ้าแอปยังไม่ถูกโหลดมา ให้บอกตรง ๆ ว่าต้องรัน <code>craft-fetch.sh</code> ก่อน</div>
+      </div>
+
+    </div>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">12</div><div class="label">แอปเต็มจาก ArtCraft ที่เปิดจากเครื่อง</div></div>
+      <div class="metric-card"><div class="num">5</div><div class="label">หมวด จัดตามงานที่จะทำ</div></div>
+      <div class="metric-card"><div class="num">5</div><div class="label">เครื่องมือด่วนที่เขียนเอง รวมตัวปลดล็อก PDF</div></div>
+      <div class="metric-card"><div class="num">0</div><div class="label">บัญชีที่ต้องสมัครก่อนใช้</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>หลักที่ใช้ตัดสินว่าอะไรได้เข้ากล่อง</h2>
+      <p>กล่องเครื่องมือที่ดีคือกล่องที่หยิบได้ทันที และไม่ทำให้ต้องกังวลว่าไฟล์ไปอยู่ไหน</p>
+    </section>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg><span><b>มีงานจริงที่ทำซ้ำก่อน แล้วค่อยมีเครื่องมือ</b> — ทุกตัวในกล่องเกิดจากงานเอกสารที่เจอเองซ้ำ ๆ ไม่ได้เริ่มจากอยากมีเครื่องมือครบ</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><span><b>ไฟล์อยู่บนเครื่อง</b> — เครื่องมือด่วนประมวลผลในเบราว์เซอร์ ตัวปลดล็อกใช้ qpdf บนเครื่อง และแอป ArtCraft เสิร์ฟจากโฟลเดอร์ในเครื่อง ไม่มีขั้นตอนอัปโหลดไฟล์</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" x2="22" y1="8" y2="13"/><line x1="22" x2="17" y1="8" y2="13"/></svg><span><b>ไม่ต้องสมัคร ไม่มีค่ารายเดือน</b> — เปิดหน้าแล้วใช้ได้เลย ไม่มีบัญชี ไม่มีโควตาต่อวัน</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><span><b>ใช้ของที่มีอยู่แล้ว และให้เครดิตเจ้าของ</b> — แอปเต็มเป็นของ ArtCraft ใช้ตามสัญญาอนุญาต Apache-2.0 และไม่แก้ไฟล์ต้นทางของใคร การปรับแต่งทั้งหมดทำตอนเสิร์ฟ</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg><span><b>ส่งต่อให้ AI ได้ง่าย</b> — PDF ที่ปลดล็อกแล้วเปิดอ่านและคัดลอกข้อความได้ตามปกติ ส่งเข้าแชต AI ได้ทันที</span></li>
+    </ul>
+
+    <div class="learning-card note">
+      <strong>ข้อจำกัดที่บอกไว้ตรง ๆ</strong>
+      <p>หน้าเครื่องมือด่วนโหลดไลบรารี PDF และฟอนต์ไทยจาก CDN ตอนเปิดครั้งแรก จึงต้องต่ออินเทอร์เน็ต แต่ตัวไฟล์ของผู้ใช้ไม่ได้ถูกส่งไปด้วย · แอป ArtCraft รวมกันหลายร้อยเมกะไบต์ จึงไม่เก็บเข้า git ต้องรัน <code>craft-fetch.sh</code> บนเครื่องที่จะใช้</p>
+    </div>
+
+  </article>
+
+  <div class="closing">
+    <h2>Tan's Tools</h2>
+    <p>กล่องเครื่องมือที่เขียนเองแค่ส่วนที่ขาด แล้วยืมแอปโอเพนซอร์สดี ๆ มาวางไว้ข้างกัน ผลคืองานเอกสารประจำวันจบได้จากเครื่องตัวเอง โดยไม่ต้องเปิดเว็บแปลกหน้า</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Python http.server</span>
+      <span class="stack-icon">Bash</span>
+      <span class="stack-icon">pdf-lib</span>
+      <span class="stack-icon">PDF.js</span>
+      <span class="stack-icon">qpdf</span>
+      <span class="stack-icon">Bun</span>
+      <span class="stack-icon">WebAssembly</span>
+      <span class="stack-icon">ArtCraft (Apache-2.0)</span>
+    </div>
+  </div>
+
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"Tan's Tools — กล่องเครื่องมือเอกสารที่รันบนเครื่อง","item":"https://projects.tanplanet.work/tools-portfolio/"}
+  ]
+}
+</script>
+
+</body>
+</html>
