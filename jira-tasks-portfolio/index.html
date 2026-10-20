@@ -8,7 +8,7 @@
   <meta property="og:title" content="Tan's Tasks — จากรายการงานใน Jira เป็นตารางวันนี้ที่ลงปฏิทินแล้ว">
   <meta property="og:description" content="Portfolio: เครื่องมือส่วนตัวไฟล์เดียว ดับเบิลคลิกแล้วรัน — ดึงงาน Jira มาเลือกงานวันนี้ ตั้งเวลา แล้วลง Google Calendar พร้อมโน้ตแบบ Notion ผู้ช่วย AI และร่าง standup ที่มีที่มาเดียว">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://projects.tanplanet.info/jira-tasks-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/jira-tasks-portfolio/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Tan's Tasks — จากรายการงานใน Jira เป็นตารางวันนี้ที่ลงปฏิทินแล้ว">
   <meta name="twitter:description" content="Portfolio: เครื่องมือส่วนตัวไฟล์เดียว ดับเบิลคลิกแล้วรัน — ดึงงาน Jira มาเลือกงานวันนี้ ตั้งเวลา แล้วลง Google Calendar พร้อมโน้ตแบบ Notion ผู้ช่วย AI และร่าง standup ที่มีที่มาเดียว">
@@ -734,7 +734,10 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
     .hero-badge .ico { width: 14px; height: 14px; }
-  </style>
+      .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.shot-pair figcaption{grid-column:1/-1}.shot-phone{max-width:360px;margin-left:auto;margin-right:auto}.shot-pair.shot-phone{max-width:620px}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
+</style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
 </head>
@@ -773,6 +776,11 @@
       <p>Jira รู้ว่ามีงานอะไรค้างอยู่ · ปฏิทินรู้ว่าเวลาว่างตรงไหน · ไม่มีตัวไหนรู้ทั้งสองอย่าง คนเลยต้องเป็นสะพานเองทุกเช้า</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/tasks-list.jpg" width="1440" height="900" loading="lazy" alt="หน้างานของฉันใน Tan's Tasks: การ์ดสรุปสถานะงาน และรายการงานจาก Jira จัดกลุ่มตาม Epic ยังไม่มีงานไหนถูกเลือกลงเวลา">
+      <figcaption>ฝั่ง Jira รู้ว่ามีงานอะไรค้าง แต่ไม่รู้ว่าวันนี้ว่างตรงไหน &mdash; ภาพจากแอปจริงที่รันในเครื่อง ข้อมูลงานทั้งหมดเป็นตัวอย่าง ไม่ใช่งานจริงของบริษัท</figcaption>
+    </figure>
+
     <div class="quote-block">
       <p>ทุกเช้าเปิด Jira ไล่อ่านว่ามีงานอะไร ตัดสินใจในหัวว่าวันนี้จะทำอันไหน แล้วพิมพ์ชื่องานเดิมซ้ำอีกรอบลงปฏิทิน — งานคิดใช้เวลาสองนาที งานพิมพ์ซ้ำใช้เวลานานกว่า และตอนเย็นก็จำไม่ได้อยู่ดีว่าวันนี้แตะอะไรไปบ้าง</p>
       <div class="author">— โจทย์ตั้งต้น ก่อนเขียนบรรทัดแรก</div>
@@ -808,6 +816,11 @@
       <h2>ตัดสินใจว่า &ldquo;ที่เก็บ token&rdquo; คือข้อจำกัดข้อแรก ไม่ใช่ฟีเจอร์</h2>
       <p>พอเอาข้อนี้ขึ้นมาเป็นเกณฑ์ตั้งต้น ทางเลือกก็เหลือน้อยลงมากและตัดสินใจง่ายขึ้น</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/settings-local-token.jpg" width="1440" height="900" loading="lazy" alt="หน้าตั้งค่าการเชื่อมต่อ: ช่อง Jira URL อีเมล และ API Token ที่ถูกซ่อนไว้ กับการเชื่อม Google Calendar ทั้งหมดเก็บในเครื่อง">
+      <figcaption>token ของ Jira และ Google เก็บอยู่ในไฟล์บนเครื่องตัวเอง แก้จากหน้าตั้งค่าได้ &mdash; ค่าในภาพเป็นตัวอย่าง</figcaption>
+    </figure>
 
     <div class="ledger-wrap">
       <table class="ledger">
@@ -854,6 +867,11 @@
       <p>ไฟล์ <code>.command</code> ทำให้ Finder รันมันได้เหมือนแอป โดยที่ข้างในยังเป็นเชลล์สคริปต์ที่อ่านออกและแก้ได้</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/launch-terminal.jpg" width="1200" height="705" loading="lazy" alt="หน้าต่าง Terminal หลังดับเบิลคลิก tans-tasks.command: ตรวจไลบรารี Google เปิด server ที่ localhost:8765 แล้วเปิด Dashboard ให้เอง">
+      <figcaption>สิ่งที่ขึ้นหลังดับเบิลคลิก &mdash; ข้อความชุดเดียวกับที่สคริปต์พิมพ์จริง (จำลองหน้าต่างใหม่ ย่อ path โฟลเดอร์)</figcaption>
+    </figure>
+
     <div class="arch-diagram">
       <div class="arch-layers">
         <div class="arch-layer users">
@@ -890,6 +908,16 @@
       <h2>วิธีทำงานตอนเช้า &mdash; 5 จังหวะ</h2>
       <p>จากเปิดเครื่องถึงตารางวันนี้ที่อยู่ในปฏิทินแล้ว</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/schedule-selected.jpg" width="1440" height="900" loading="lazy" alt="งานที่ติ๊กเลือกแล้วมีชิปเวลาเริ่มและระยะเวลา พร้อมเวลาสิ้นสุด และแถบล่างมีปุ่มลง Calendar วันนี้">
+      <figcaption>ติ๊กงานแล้วได้เวลาให้อัตโนมัติ (ข้อมูลตัวอย่าง)</figcaption>
+    </figure>
+
+    <figure class="shot">
+      <img src="img/time-picker.jpg" width="1440" height="900" loading="lazy" alt="แผงเลือกเวลาเริ่ม: ปุ่มระยะเวลา 15 นาทีถึง 4 ชั่วโมง ช่วงที่ทับงานอื่นถูกขีดฆ่า และพักเที่ยงถูกกันไว้">
+      <figcaption>ช่วงที่ทับงานอื่นหรือพักเที่ยงถูกขีดฆ่าตั้งแต่ตอนเลือก (ข้อมูลตัวอย่าง)</figcaption>
+    </figure>
 
     <div class="flow-grid">
       <div class="flow-step">
@@ -931,6 +959,11 @@
       <h2>ห้าเรื่องที่แก้เพราะใช้เองทุกวันแล้วทน ไม่ ไหว</h2>
       <p>ทุกข้อมาจากการเป็นผู้ใช้คนเดียวของเครื่องมือตัวเอง ซึ่งทำให้เห็นปัญหาที่ผู้ใช้ทั่วไปไม่บ่นแต่เลิกใช้เงียบ ๆ</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/skeleton-loading.jpg" width="1440" height="900" loading="lazy" alt="หน้ารายการงานระหว่างโหลดจาก Jira แสดง skeleton เป็นแถบสีเทารูปร่างเหมือนการ์ดงานจริง แทนวงกลมหมุน">
+      <figcaption>ระหว่างรอ Jira หน้าจอขึ้นโครงการ์ดก่อน แทนวงกลมหมุนกลางจอที่ว่างเปล่า (ข้อ 5 ด้านล่าง)</figcaption>
+    </figure>
 
     <div class="hack-grid">
 
@@ -974,6 +1007,16 @@
       <p>ไม่ได้วางแผนไว้ตั้งแต่ต้น แต่ละอย่างถูกเพิ่มตอนที่เจอปัญหาจริงระหว่างใช้</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/standup-note.jpg" width="1440" height="900" loading="lazy" alt="หน้าโน้ต Stand Up แบบ Notion: รายการโน้ตด้านซ้าย เนื้อหาเมื่อวาน วันนี้ ติดอะไรไหม และปุ่มผู้ช่วย AI กับแตกเป็น task">
+      <figcaption>โน้ต Stand Up พร้อมผู้ช่วย AI (ข้อมูลตัวอย่าง)</figcaption>
+    </figure>
+
+    <figure class="shot">
+      <img src="img/dashboard.jpg" width="1440" height="900" loading="lazy" alt="หน้าแดชบอร์ด: ทักทายตามช่วงเวลา การ์ดจำนวนงาน กราฟโดนัทสัดส่วนสถานะ กราฟเส้นงานที่อัปเดต 14 วัน และแถบความคืบหน้าแยกโปรเจกต์">
+      <figcaption>แดชบอร์ดภาพรวมงาน (ข้อมูลตัวอย่าง)</figcaption>
+    </figure>
+
     <ul class="plain">
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg><span><b>โน้ตแบบ Notion</b> — 13 ชนิดบล็อก, เมนู slash, bullet ซ้อนชั้น, คอมเมนต์, คีย์ลัด และตารางที่พิมพ์ลงไปได้จริง</span></li>
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg><span><b>ผู้ช่วย AI ข้างโน้ต</b> — ลากคลุมข้อความแล้วกดแก้เฉพาะส่วนที่เลือก หรือเล่าเรื่องจากโน้ตว่างแล้วให้มันแตกเป็น task ให้</span></li>
@@ -997,6 +1040,11 @@
       <h2>ขอบเขตที่ตั้งใจไม่ทำ</h2>
       <p>เครื่องมือส่วนตัวมีข้อได้เปรียบอย่างเดียวคือรู้ว่าผู้ใช้เป็นใคร ถ้าเผลอออกแบบเผื่อคนอื่น ข้อได้เปรียบนั้นจะหายไปทันที</p>
     </section>
+
+    <figure class="shot" style="max-width:560px;margin-left:auto;margin-right:auto">
+      <img src="img/desk-unsplash.jpg" width="1200" height="1049" loading="lazy" alt="โต๊ะทำงานคนเดียว มีแล็ปท็อปหนึ่งเครื่อง และปฏิทินแผ่นใหญ่บนผนัง">
+      <figcaption>เครื่องมือที่ออกแบบให้ผู้ใช้คนเดียว บนเครื่องเดียว &mdash; ภาพ: Alex Jones / Unsplash</figcaption>
+    </figure>
 
     <ul class="plain">
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span><b>ไม่มีระบบผู้ใช้หลายคน</b> — ไม่มีล็อกอิน ไม่มีสิทธิ์ ไม่มีฐานข้อมูล เพราะมันรันบนเครื่องของคนที่ใช้มันอยู่แล้ว</span></li>
@@ -1022,11 +1070,11 @@
       <span class="stack-icon">localhost only</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1045,8 +1093,8 @@
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {"@type":"ListItem","position":1,"name":"ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio","item":"https://projects.tanplanet.info/"},
-    {"@type":"ListItem","position":2,"name":"Tan's Tasks — Jira สู่ปฏิทินในคลิกเดียว","item":"https://projects.tanplanet.info/jira-tasks-portfolio/"}
+    {"@type":"ListItem","position":1,"name":"ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"Tan's Tasks — Jira สู่ปฏิทินในคลิกเดียว","item":"https://projects.tanplanet.work/jira-tasks-portfolio/"}
   ]
 }
 </script>

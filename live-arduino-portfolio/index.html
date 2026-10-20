@@ -7,12 +7,12 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="TanPlanet Live — จอตั้งโต๊ะ ESP32 ที่รู้ว่าวันนี้ต้องสนใจอะไร">
   <meta name="twitter:description" content="Portfolio: จอ ESP32 3.5&quot; ฿640 + backend บน Mac — ปฏิทินไทย จันทรคติ อากาศ ดวงลงทุน พอร์ตหุ้น โควตา AI และสถานะ Claude Code รวมเป็นการ์ดแตะดูได้ ด้วย LVGL 9 และฟอนต์ไทยที่เจนเอง">
-  <meta property="og:url" content="https://projects.tanplanet.info/live-arduino-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/live-arduino-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/live-arduino-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/live-arduino-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://projects.tanplanet.info/live-arduino-portfolio/og-image.png">
+  <meta name="twitter:image" content="https://projects.tanplanet.work/live-arduino-portfolio/og-image.png">
   <meta property="og:description" content="Portfolio: จอ ESP32 3.5&quot; ฿640 + backend บน Mac — ปฏิทินไทย จันทรคติ อากาศ ดวงลงทุน พอร์ตหุ้น โควตา AI และสถานะ Claude Code รวมเป็นการ์ดแตะดูได้ ด้วย LVGL 9 และฟอนต์ไทยที่เจนเอง">
   <meta property="og:title" content="TanPlanet Live — จอตั้งโต๊ะ ESP32 ที่รู้ว่าวันนี้ต้องสนใจอะไร">
   <meta name="description" content="Portfolio: จอ ESP32 3.5&quot; ฿640 + backend บน Mac — ปฏิทินไทย จันทรคติ อากาศ ดวงลงทุน พอร์ตหุ้น โควตา AI และสถานะ Claude Code รวมเป็นการ์ดแตะดูได้ ด้วย LVGL 9 และฟอนต์ไทยที่เจนเอง">
@@ -740,6 +740,9 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
     .hero-badge .ico { width: 14px; height: 14px; }
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.shot-pair figcaption{grid-column:1/-1}.shot-phone{max-width:360px;margin-left:auto;margin-right:auto}.shot-pair.shot-phone{max-width:620px}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -782,6 +785,12 @@
       <h2>ปัญหาที่เจอ</h2>
       <p>ข้อมูลที่ต้องดูทุกเช้ามีไม่กี่อย่าง แต่มันกระจายอยู่คนละที่ และไม่มีอันไหน "อยู่ตรงหน้า" ตลอดเวลา</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/apps-phone.jpg" width="1400" height="788" loading="lazy" alt="หน้าจอมือถือเต็มไปด้วยไอคอนแอปและตัวเลขแจ้งเตือน">
+      <figcaption>ข้อมูลที่ดูแค่ไม่กี่วินาที แต่ต้องปลดล็อกมือถือแล้วไล่เปิดทีละแอป &middot; ภาพ: Brian J. Tromp / Unsplash</figcaption>
+    </figure>
+
 
     <div class="quote-block">
       <p>ทุกเช้าต้องเปิด 6 อย่าง — ปฏิทินดูวันพระ, แอปอากาศ, พอร์ตหุ้นใน Dime, การ์ดโค้ชจาก LINE, เช็คโควตา Claude เหลือเท่าไร, แล้วดูว่า agent ที่สั่งไว้ทำอะไรอยู่ ทั้งหมดนี้คือข้อมูล "ชำเลืองดู" ไม่ใช่ข้อมูลที่ต้องเปิดแอปมานั่งอ่าน — แต่บนคอมมันโดนหน้าต่างอื่นทับตลอด</p>
@@ -853,6 +862,12 @@
       </div>
     </div>
 
+    <figure class="shot shot-pair shot-phone">
+      <img src="img/config-card-order.jpg" width="786" height="1400" loading="lazy" alt="หน้า /manage บนมือถือ: รายการลำดับการ์ดบนจอ มีปุ่มเลื่อนขึ้นลงและปุ่มซ่อนการ์ดแต่ละใบ">
+      <img src="img/config-focus.jpg" width="786" height="1400" loading="lazy" alt="หน้า /manage ส่วนโฟกัสและเตือน: ตั้งนาทีโพโมโดโร ช่วงพัก เตือนกินน้ำ และรอบดึงข้อมูลของจอ">
+      <figcaption>หน้า <code>/manage</code> ที่เปิดจากมือถือ &mdash; เรียงการ์ด ซ่อนการ์ด ตั้งโพโมโดโรและความสว่าง แล้วจอเปลี่ยนตามรอบถัดไป (ภาพจากเครื่องจริง ข้อมูลส่วนตัวเปลี่ยนเป็นค่าตัวอย่าง)</figcaption>
+    </figure>
+
     <hr class="divider">
 
     <!-- ===== Flow ===== -->
@@ -861,6 +876,12 @@
       <h2>วิธีทำงาน — 4 จังหวะ</h2>
       <p>จากแหล่งข้อมูลดิบ ถึงการ์ดที่แตะดูได้บนจอ ใช้เวลารอบละ 60 วินาที</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/device-summary-json.jpg" width="1200" height="989" loading="lazy" alt="เทอร์มินัลแสดง JSON ของการ์ดอากาศและดวงลงทุน มีฟิลด์ id type title value detail tone priority">
+      <figcaption>สิ่งที่จอได้รับคือการ์ดที่ย่อยแล้ว &mdash; ข้อความสั้น ตัวเลข และ tone สำหรับเลือกสี (ไฟล์ตัวอย่างตาม data contract ใน repo)</figcaption>
+    </figure>
+
 
     <div class="flow-grid">
       <div class="flow-step">
@@ -897,6 +918,12 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>ไม่มีคลาวด์ ไม่มีบัญชีผู้ใช้ ไม่มี key ในบอร์ด — ทุกอย่างจบใน LAN บ้าน</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/esp32-board.jpg" width="1400" height="788" loading="lazy" alt="บอร์ดพัฒนา ESP32 วางบนกระดาษกราฟ">
+      <figcaption>ESP32 ทำหน้าที่แค่ดึง JSON แล้ววาด &mdash; สมองอยู่บน Mac &middot; ภาพ: Thorium / Unsplash</figcaption>
+    </figure>
+
 
     <div class="arch-diagram">
       <div class="arch-layers">
@@ -961,6 +988,12 @@
       <h2>สิ่งที่สร้าง — การ์ด 12 ใบ</h2>
       <p>ทุกใบเป็นข้อมูลจริง ไม่มี mock เหลืออยู่บนจอ</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/mascot-states.jpg" width="1400" height="747" loading="lazy" alt="มาสคอตพิกเซลสีส้ม 6 ท่า: ถือแว่นขยายตอนอ่านไฟล์ พิมพ์แล็ปท็อปตอนแก้ไฟล์ ใส่หมวกถือค้อนตอนรันคำสั่ง ถือลูกโลกตอนค้นเว็บ มีกล่องคำพูดตอนคิด และหลับ">
+      <figcaption>มาสคอตในการ์ด Claude Code เปลี่ยนท่าตามเครื่องมือที่ agent ใช้อยู่ &mdash; เรนเดอร์จากโค้ดชุดเดียวกับเฟิร์มแวร์ (tamaclaude, MIT)</figcaption>
+    </figure>
+
 
     <div class="module-grid">
       <div class="module-card">
@@ -1050,7 +1083,7 @@
           </div>
           <div class="dev-list">
             <div class="dev-card">
-              <div class="dev-blob">&#129302;</div>
+              <div class="dev-blob"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#9fb3ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></div>
               <div class="body">
                 <div class="ttl">CLAUDE CODE</div>
                 <div class="val">กำลังแก้ไฟล์</div>
@@ -1058,7 +1091,7 @@
               </div>
             </div>
             <div class="dev-card">
-              <div class="dev-blob">&#128202;</div>
+              <div class="dev-blob"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#9fb3ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></div>
               <div class="body">
                 <div class="ttl">AI STATUS</div>
                 <div class="val warn">รอบ 5 ชม. 62%</div>
@@ -1066,7 +1099,7 @@
               </div>
             </div>
             <div class="dev-card">
-              <div class="dev-blob">&#128200;</div>
+              <div class="dev-blob"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#9fb3ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
               <div class="body">
                 <div class="ttl">MARKET FOCUS</div>
                 <div class="val">NVDA <span class="up">$206.69 &#9650; 1.2%</span></div>
@@ -1074,7 +1107,7 @@
               </div>
             </div>
             <div class="dev-card">
-              <div class="dev-blob">&#9775;&#65039;</div>
+              <div class="dev-blob"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#9fb3ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
               <div class="body">
                 <div class="ttl">พลังวันนี้</div>
                 <div class="val">ธาตุไฟ &middot; 71/100</div>
@@ -1082,7 +1115,7 @@
               </div>
             </div>
             <div class="dev-card">
-              <div class="dev-blob">&#127813;</div>
+              <div class="dev-blob"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#9fb3ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg></div>
               <div class="body">
                 <div class="ttl">โพโมโดโร</div>
                 <div class="val">18:24</div>
@@ -1103,6 +1136,12 @@
       <h2>Hack กับปัญหา</h2>
       <p>7 โจทย์ที่เจอตอนของจริงอยู่บนโต๊ะ — ส่วนใหญ่ไม่มีในเอกสาร ต้องไล่เอง</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/board-tweezers.jpg" width="1400" height="788" loading="lazy" alt="คีมคีบชิปเล็ก ๆ วางลงบนแผงวงจรสีเขียว">
+      <figcaption>ปัญหาส่วนใหญ่ไม่มีในเอกสาร ต้องไล่จากอาการบนบอร์ดจริง &middot; ภาพ: Vishnu Mohanan / Unsplash</figcaption>
+    </figure>
+
 
     <div class="hack-grid">
       <div class="hack-card perf" data-label="Memory">
@@ -1157,28 +1196,34 @@
       <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอ ๆ กับสิ่งที่ทำ</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/desk-minimal.jpg" width="1400" height="788" loading="lazy" alt="โต๊ะทำงานสีขาวโล่ง มีจอคอมเครื่องเดียวข้างหน้าต่าง">
+      <figcaption>จอมีหน้าที่เดียวคือแสดงผล ขอบเขตแคบทำให้พังยาก &middot; ภาพ: Andres Jasso / Unsplash</figcaption>
+    </figure>
+
+
     <div class="quote-block" style="margin-bottom: 24px;">
       <p>จอนี้ทำหน้าที่เดียว: <strong>แสดงผล</strong> — มันไม่คำนวณดวงเอง ไม่เรียก AI เอง ไม่เก็บ key ใด ๆ และไม่ต่อออกอินเทอร์เน็ตนอกจากไปหา backend ในบ้าน พอขอบเขตคมขนาดนี้ เฟิร์มแวร์ก็เหลือแค่ "ดึง JSON แล้ววาด" ซึ่ง debug ง่ายและพังยาก</p>
     </div>
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128421;&#65039;</strong><br>
+        <span style="display:inline-flex;color:var(--accent,#1e3a8a);margin-bottom:6px"><svg class="ico" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg></span><br>
         <strong>จอ ไม่ใช่สมอง</strong>
         <p style="font-size:0.85rem; margin-top:4px;">logic หนักอยู่บน Mac จอแค่ดึง JSON มาวาด</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128273;</strong><br>
+        <span style="display:inline-flex;color:var(--accent,#1e3a8a);margin-bottom:6px"><svg class="ico" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg></span><br>
         <strong>ไม่มี key ในเฟิร์มแวร์</strong>
         <p style="font-size:0.85rem; margin-top:4px;">บอร์ดวางอยู่บนโต๊ะ ใครหยิบไปก็ไม่ได้อะไรติดมือ</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#127968;</strong><br>
+        <span style="display:inline-flex;color:var(--accent,#1e3a8a);margin-bottom:6px"><svg class="ico" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span><br>
         <strong>อยู่ใน LAN เท่านั้น</strong>
         <p style="font-size:0.85rem; margin-top:4px;">ข้อมูลพอร์ตและ session ไม่ต้องขึ้นคลาวด์</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128241;</strong><br>
+        <span style="display:inline-flex;color:var(--accent,#1e3a8a);margin-bottom:6px"><svg class="ico" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></span><br>
         <strong>config ไม่ต้อง flash</strong>
         <p style="font-size:0.85rem; margin-top:4px;">ปรับทุกอย่างจากมือถือ สาย USB เก็บเข้าลิ้นชักได้</p>
       </div>
@@ -1192,6 +1237,12 @@
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/circuit-board.jpg" width="1400" height="788" loading="lazy" alt="ภาพระยะใกล้ของแผงวงจรสีเขียวและชิป">
+      <figcaption>ฮาร์ดแวร์ ฟอนต์ เครือข่าย และการออกแบบข้อมูล &mdash; ความรู้ที่ได้จากจอเครื่องเดียว &middot; ภาพ: Chris Ried / Unsplash</figcaption>
+    </figure>
+
 
     <div class="learning-card">
       <strong>1. Embedded UI ด้วย LVGL 9 — จาก "วาดข้อความ" เป็น "ออกแบบระบบการ์ด":</strong>
@@ -1252,12 +1303,12 @@
       <span class="stack-icon">Open-Meteo</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1280,13 +1331,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "TanPlanet Live — จอตั้งโต๊ะ ESP32",
-      "item": "https://projects.tanplanet.info/live-arduino-portfolio/"
+      "item": "https://projects.tanplanet.work/live-arduino-portfolio/"
     }
   ]
 }

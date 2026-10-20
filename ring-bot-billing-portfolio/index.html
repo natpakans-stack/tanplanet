@@ -8,7 +8,7 @@
   <meta property="og:title" content="น้องกริ่ง + Budget — บอท LINE ที่ออกบิลค่าไฟให้ที่บ้านเองทุกเดือน">
   <meta property="og:description" content="Portfolio: Apps Script สองตัวต่อกัน — อ่านใบแจ้งค่าไฟจาก Gmail ลงยอดในชีตเป็นสูตรที่ตรวจย้อนได้ แล้วออกบิลพร้อม QR พร้อมเพย์ส่งเข้า LINE ตามวันเวลาที่ตั้งไว้ โดยมีด่านตรวจ 6 ข้อก่อนส่งทุกครั้ง">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://projects.tanplanet.info/ring-bot-billing-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/ring-bot-billing-portfolio/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="น้องกริ่ง + Budget — บอท LINE ที่ออกบิลค่าไฟให้ที่บ้านเองทุกเดือน">
   <meta name="twitter:description" content="Portfolio: Apps Script สองตัวต่อกัน — อ่านใบแจ้งค่าไฟจาก Gmail ลงยอดในชีตเป็นสูตรที่ตรวจย้อนได้ แล้วออกบิลพร้อม QR พร้อมเพย์ส่งเข้า LINE ตามวันเวลาที่ตั้งไว้ โดยมีด่านตรวจ 6 ข้อก่อนส่งทุกครั้ง">
@@ -734,7 +734,10 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
     .hero-badge .ico { width: 14px; height: 14px; }
-  </style>
+      .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.shot-pair figcaption{grid-column:1/-1}.shot-phone{max-width:360px;margin-left:auto;margin-right:auto}.shot-pair.shot-phone{max-width:620px}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
+</style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
 </head>
@@ -773,6 +776,11 @@
       <p>ค่าไฟบ้านที่หารกันในครอบครัว มีขั้นตอนตายตัวทุกเดือน — และพังได้ทุกเดือนเหมือนกัน</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/electric-meters.jpg" width="1400" height="788" loading="lazy" alt="มิเตอร์ไฟฟ้าหลายตัวติดอยู่บนผนังอิฐ">
+      <figcaption>ค่าไฟมาทุกเดือนแน่นอน แต่คนที่ต้องจำและต้องทวงคือคนเดิมทุกเดือน &middot; ภาพ: ABDURREHMAN / Unsplash</figcaption>
+    </figure>
+
     <div class="quote-block">
       <p>ทุกเดือนต้องเปิดเมลหาใบแจ้งค่าไฟ อ่านยอดจากไฟล์ PDF คิดส่วนแบ่งในเครื่องคิดเลข พิมพ์ลงชีต แล้วไปพิมพ์ทวงในไลน์พร้อมแนบเลขบัญชี — ขั้นตอนไม่ยากเลยสักข้อ แต่มันต้องเกิดขึ้นครบทุกข้อ ทุกเดือน โดยมีคนคนหนึ่งเป็นคนจำ</p>
       <div class="author">— โจทย์ตั้งต้น</div>
@@ -809,6 +817,11 @@
       <p>ข้อจำกัดที่แท้จริงไม่ใช่เทคโนโลยี แต่คือ &ldquo;คนในบ้านจะยอมเปิดอะไร&rdquo;</p>
     </section>
 
+    <figure class="shot shot-phone">
+      <img src="img/line-chat-menu.jpg" width="640" height="1193" loading="lazy" alt="แชตกลุ่มบ้านใน LINE ที่น้องกริ่งทักทายตอนเช้าอยู่แล้ว ด้านล่างเป็นเมนูหกปุ่ม: สร้างบิล บิลที่รออยู่ เครดิตเดือนนี้ สถิติการส่ง เปิดชีต วิธีใช้">
+      <figcaption>บอทตัวเดิมที่อยู่ในไลน์บ้านอยู่แล้ว แค่เพิ่มเมนูหกปุ่ม (ภาพเมนูจริง ส่วนชื่อกลุ่มและข้อความเป็นตัวอย่าง)</figcaption>
+    </figure>
+
     <div class="ledger-wrap">
       <table class="ledger">
         <thead><tr><th>ทางเลือก</th><th>ผู้จ่ายต้องทำอะไร</th><th class="num">ต้นทุน</th><th>เหตุที่ตก / รับ</th></tr></thead>
@@ -842,6 +855,11 @@
       <h2>สองโปรเจกต์ที่คุยกันผ่านชีต ไม่ใช่ผ่าน API ของกันและกัน</h2>
       <p>ฝั่งหนึ่งรับผิดชอบ &ldquo;ยอดถูกไหม&rdquo; อีกฝั่งรับผิดชอบ &ldquo;ส่งถึงไหม&rdquo; และทั้งคู่แก้แยกกันได้โดยไม่พังข้ามฝั่ง</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/sheet-control-real.jpg" width="1429" height="413" loading="lazy" alt="Google Sheet ชื่อ น้องกริ่ง — แผงคุม มีคอลัมน์ โหมด ปลายทาง ชื่อบิล คู่กรณี ยอด ธนาคาร ชื่อบัญชี เลขบัญชี เริ่มเมื่อ โดยข้อมูลส่วนตัวถูกเบลอ">
+      <figcaption>ชีต &ldquo;แผงคุม&rdquo; ของจริง &mdash; บิลทุกใบเป็นแถวในชีตก่อนจะถูกส่ง (เบลอปลายทาง คู่กรณี ยอด และเลขบัญชี)</figcaption>
+    </figure>
 
     <div class="arch-diagram">
       <div class="arch-layers">
@@ -879,6 +897,12 @@
       <h2>วิธีทำงาน &mdash; 5 จังหวะ ตั้งแต่เมลเข้าถึงเงินเข้า</h2>
       <p>ทั้งหมดเกิดเองโดยไม่มีใครกดอะไร ความแม่นเวลาอยู่ที่ประมาณ 5 นาทีตามคาบของตัวจับเวลา</p>
     </section>
+
+    <figure class="shot shot-pair shot-phone">
+      <img src="img/form-create-bill.jpg" width="640" height="1205" loading="lazy" alt="ฟอร์มสร้างบิลของน้องกริ่ง ส่วนช่องทางรับเงิน: เลือกพร้อมเพย์ผูกเบอร์โทร แล้วระบบวาด QR ที่ล็อกยอด 812.50 บาทไว้ให้ทันที">
+      <img src="img/line-bill-card.jpg" width="640" height="1193" loading="lazy" alt="การ์ดบิลใน LINE: เรียกเก็บเงิน ค่าไฟเดือนกันยายน ยอด 812.50 บาท ข้อมูลพร้อมเพย์ QR และปุ่มเปิด QR เต็มจอ">
+      <figcaption>ฟอร์มสร้างบิลจริงที่รันในเครื่องด้วยข้อมูลตัวอย่าง &mdash; ใส่ยอดแล้ว QR ล็อกยอดมาให้ &middot; การ์ดบิลที่ผู้จ่ายเห็นใน LINE จำลองจากโค้ดการ์ดจริง (ชื่อ ยอด และเลขพร้อมเพย์เป็นค่าตัวอย่าง QR สแกนแล้วไม่ใช่รหัสจ่ายเงิน)</figcaption>
+    </figure>
 
     <div class="flow-grid">
       <div class="flow-step">
@@ -920,6 +944,11 @@
       <h2>เจ็ดข้อควรระวังที่เจอตอนของจริงเดินอยู่</h2>
       <p>ส่วนใหญ่ไม่ได้อยู่ในเอกสารของแพลตฟอร์ม ต้องเจอเองแล้วออกแบบให้รอด</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/scan-qr.jpg" width="1400" height="788" loading="lazy" alt="มือถือสมาร์ตโฟนที่แสดง QR code บนหน้าจอ">
+      <figcaption>ปลายทางของทั้งระบบคือจังหวะสแกน QR &mdash; ตัวเลขผิดหลักเดียว แอปธนาคารก็ไม่อ่าน &middot; ภาพ: Markus Winkler / Unsplash</figcaption>
+    </figure>
 
     <div class="hack-grid">
 
@@ -975,6 +1004,11 @@
       <p>ระบบที่จับเงินของคนอื่น ความน่าเชื่อถืออยู่ที่ &ldquo;ตรวจสอบได้&rdquo; มากกว่า &ldquo;ทำงานเนียน&rdquo;</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/sheet-formula.jpg" width="1400" height="783" loading="lazy" alt="ตารางงบบ้านตัวอย่าง ช่องส่วนแบ่งค่าไฟเป็นสูตร =C6*0.5 และมีโน้ตบอกว่าบอทเขียนยอดนี้จากใบแจ้งรอบไหน">
+      <figcaption>ยอดในชีตเป็นสูตร ไม่ใช่ตัวเลขสำเร็จ และมีโน้ตบอกที่มา &mdash; ภาพจำลองด้วยตัวเลขตัวอย่าง</figcaption>
+    </figure>
+
     <ul class="plain">
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg><span><b>ยอดในชีตเป็นสูตร ไม่ใช่ผลลัพธ์</b> — เปิดดูเดือนไหนก็ยังเห็นว่ายอดเต็มเท่าไร คูณด้วยสัดส่วนอะไร และไม่ได้ปัดก่อนคูณ</span></li>
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg><span><b>บันทึกแยกสามชุด</b> — รายการบิลก่อนส่ง · ผลการเรียกส่งจริง · และบันทึกของงานอัตโนมัติที่บอกสถานะรายเดือนพร้อมเหตุผลเมื่อไม่ผ่านด่านตรวจ</span></li>
@@ -996,6 +1030,11 @@
       <h2>ขอบเขตที่ตั้งใจไม่ทำ</h2>
       <p>ระบบนี้แตะทั้งเรื่องเงินและเรื่องคนในบ้าน ขอบเขตจึงสำคัญกว่าความสามารถ</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/code-menu-permission.jpg" width="1400" height="891" loading="lazy" alt="โค้ดฟังก์ชัน ringSyncMenu ใน Ring.js ที่ลบเมนูเริ่มต้นออก แล้วผูกเมนูให้เฉพาะคนที่ติ๊กให้ใช้เมนูในชีต">
+      <figcaption>โค้ดจริงใน <code>Ring.js</code> &mdash; ลบเมนูเริ่มต้นทิ้งทุกครั้ง แล้วผูกเมนูให้ทีละคนตามที่ติ๊กไว้ในชีต</figcaption>
+    </figure>
 
     <ul class="plain">
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg><span><b>ไม่มีเมนูเริ่มต้นสำหรับทุกคน</b> — คนที่แค่แอดบอทจะไม่เห็นเมนู และไม่มีทางเปิดฟอร์มออกบิลได้ สิทธิ์ให้ทีละคนแล้วถอนคืนได้</span></li>
@@ -1022,11 +1061,11 @@
       <span class="stack-icon">Time-driven trigger</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1045,8 +1084,8 @@
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {"@type":"ListItem","position":1,"name":"ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio","item":"https://projects.tanplanet.info/"},
-    {"@type":"ListItem","position":2,"name":"น้องกริ่ง — บอทออกบิลค่าไฟอัตโนมัติบน LINE","item":"https://projects.tanplanet.info/ring-bot-billing-portfolio/"}
+    {"@type":"ListItem","position":1,"name":"ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"น้องกริ่ง — บอทออกบิลค่าไฟอัตโนมัติบน LINE","item":"https://projects.tanplanet.work/ring-bot-billing-portfolio/"}
   ]
 }
 </script>

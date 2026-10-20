@@ -8,7 +8,7 @@
   <meta property="og:title" content="Drive Auto-Sort — ไม่ซื้อ iCloud แล้วสอน HDD ให้จัดรูปเอง">
   <meta property="og:description" content="Portfolio: เครื่องมือ macOS ที่โยนรูปลง Inbox แล้วแยกเข้าโฟลเดอร์ให้เอง — สลิป สกรีนช็อต หมา แมว ต้นไม้ ท้องฟ้า ด้วย Vision framework แบบ on-device รูปไม่ออกจากเครื่อง">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://projects.tanplanet.info/drive-autosort-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/drive-autosort-portfolio/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Drive Auto-Sort — ไม่ซื้อ iCloud แล้วสอน HDD ให้จัดรูปเอง">
   <meta name="twitter:description" content="Portfolio: เครื่องมือ macOS ที่โยนรูปลง Inbox แล้วแยกเข้าโฟลเดอร์ให้เอง — สลิป สกรีนช็อต หมา แมว ต้นไม้ ท้องฟ้า ด้วย Vision framework แบบ on-device รูปไม่ออกจากเครื่อง">
@@ -734,7 +734,10 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
     .hero-badge .ico { width: 14px; height: 14px; }
-  </style>
+      .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.shot-pair figcaption{grid-column:1/-1}.shot-phone{max-width:360px;margin-left:auto;margin-right:auto}.shot-pair.shot-phone{max-width:620px}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
+</style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
 </head>
@@ -777,6 +780,12 @@
       <p>โจทย์ตั้งต้นคือ &ldquo;ไม่อยากจ่าย iCloud&rdquo; แต่พอถามต่ออีกชั้นว่าจ่ายไปเพื่ออะไร คำตอบมันเปลี่ยนรูปปัญหาทั้งหมด</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/hdd-platter.jpg" width="1400" height="788" loading="lazy" alt="ฮาร์ดดิสก์เปิดฝาให้เห็นจานแม่เหล็กด้านใน">
+      <figcaption>ฮาร์ดดิสก์ที่จ่ายจบไปแล้ว มีที่เหลือเฟือ แต่ไม่มีใครจัดของให้ &middot; ภาพ: Nick / Unsplash</figcaption>
+    </figure>
+
+
     <div class="quote-block">
       <p>ผมมีฮาร์ดดิสก์ที่ใหญ่พอและจ่ายจบไปแล้วเสียบอยู่กับ Mac แต่มันเป็นแค่ <strong>ที่ทิ้งไฟล์</strong> ไม่ใช่ <strong>คลังที่หาของเจอ</strong> — สิ่งที่ iCloud ขายจริง ๆ ไม่ใช่กิกะไบต์ แต่คือการที่ของเข้าที่ของมันเองโดยผมไม่ต้องทำอะไร</p>
       <div class="author">— Point of view ที่ทำให้เปลี่ยนโจทย์ทั้งหมด</div>
@@ -815,6 +824,12 @@
       <h2>สี่ทางที่ชั่งจริง ก่อนตัดสินใจเขียนเอง</h2>
       <p>เกณฑ์มี 3 ข้อ — ต้องแยกรูปตามเนื้อในรูปได้ · ไม่มีค่าใช้จ่ายต่อเนื่อง · รูปไม่ออกจากเครื่อง</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/phone-photo.jpg" width="1400" height="788" loading="lazy" alt="มือถือ iPhone กำลังถ่ายรูปวิวภูเขาริมทะเลสาบ">
+      <figcaption>รูปเกิดบนมือถือทุกวัน โจทย์คือทำให้มันไปถึงฮาร์ดดิสก์เองโดยไม่ต้องแลกกับการอัปขึ้นคลาวด์ &middot; ภาพ: Josh Power / Unsplash</figcaption>
+    </figure>
+
 
     <div class="ledger-wrap">
       <table class="ledger">
@@ -863,6 +878,12 @@
       <h2>จะแทน iCloud ได้จริง รูปต้องเดินทางจากมือถือมาถึงฮาร์ดดิสก์เองได้</h2>
       <p>ตัวจัดไฟล์จะฉลาดแค่ไหนก็ไม่มีความหมาย ถ้าคนต้องเสียบสาย iPhone เข้าคอมก่อนทุกครั้ง — ชิ้นส่วนที่ทำให้ทั้งระบบใช้แทนคลาวด์ได้จริง อยู่ตรงเส้นทางนี้</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/iphone-files.jpg" width="1440" height="1047" loading="lazy" alt="ภาพจำลองแอป Files บน iPhone: เชื่อมต่อเซิร์ฟเวอร์ smb ของ Mac ที่บ้าน แล้ววางรูป 6 ใบลงโฟลเดอร์ Inbox">
+      <figcaption>ภาพจำลองขั้นตอนบน iPhone: Connect to Server ผ่าน Tailscale แล้ววางรูปลง Inbox (ชื่อเครื่องจริงเปลี่ยนเป็นชื่อตัวอย่าง)</figcaption>
+    </figure>
+
 
     <div class="pain-grid">
       <div class="pain-card">
@@ -927,6 +948,12 @@
       <p>ไม่ได้แยกเพราะอยากให้ดูเป็นระบบ แต่เพราะข้อจำกัดของ macOS บังคับให้แยก</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/selftest.jpg" width="1440" height="520" loading="lazy" alt="เทอร์มินัลแสดงจำนวนบรรทัดของสามไฟล์ drive 178 บรรทัด drivesort.c 10 บรรทัด imgclass.swift 28 บรรทัด และผล drive selftest ผ่านทั้งหมด">
+      <figcaption>สามไฟล์รวม 216 บรรทัด &mdash; ผลรันจริงของ <code>wc -l</code> และ <code>drive selftest</code></figcaption>
+    </figure>
+
+
     <div class="solution-grid">
       <div class="solution-card">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19h8"/><path d="m4 17 6-6-6-6"/></svg>
@@ -978,6 +1005,12 @@
       <p>จากไฟล์ที่เพิ่งตกลง Inbox ถึงโฟลเดอร์ปลายทาง โดยไม่มีใครกดอะไรเลย</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/vision-labels.jpg" width="1440" height="769" loading="lazy" alt="รูปแมวส้มคู่กับเทอร์มินัลที่รัน imgclass ได้ label animal cat feline mammal และรูปต้นไม้ได้ plant foliage">
+      <figcaption>ผลจริงของ <code>imgclass</code> (Vision บนเครื่อง ไม่ต่อเน็ต) &mdash; label เรียงจากมั่นใจมากไปน้อย แล้ว <code>drive</code> แมปเป็นชื่อโฟลเดอร์ &middot; รูปแมว: Amber Kipp / Unsplash</figcaption>
+    </figure>
+
+
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">01</div>
@@ -1019,6 +1052,12 @@
       <h2>ลำดับการเช็คคือตัวตัดสินผลลัพธ์ ไม่ใช่ความแม่นของโมเดล</h2>
       <p>รูปหนึ่งใบติดหลาย label พร้อมกันเสมอ สิ่งที่กำหนดว่ามันจะไปโฟลเดอร์ไหน คือใครถูกถามก่อน</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/slip-ocr.jpg" width="1440" height="590" loading="lazy" alt="สลิปตัวอย่างคู่กับเทอร์มินัล: Vision ให้ document กับ screenshot แล้ว OCR เจอคำว่าโอนเงินสำเร็จ ผู้รับเงิน เลขที่รายการ จึงลงโฟลเดอร์ slip">
+      <figcaption>Vision เห็นสลิปเป็นแค่ &ldquo;ภาพหน้าจอ&rdquo; &mdash; ต้องอ่านตัวอักษรต่อแล้วถาม slip ก่อน screenshot (ผลรันจริงกับสลิปตัวอย่างที่ทำขึ้น ไม่ใช่สลิปจริง)</figcaption>
+    </figure>
+
 
     <div class="ladder">
       <div class="rung">
@@ -1077,6 +1116,12 @@
       <p>ทุกข้อคือสมมติฐานที่ฟังดูสมเหตุสมผลตอนคิด แล้วผิดตอนวัด</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/receipt.jpg" width="1400" height="788" loading="lazy" alt="ใบเสร็จกระดาษยับวางบนพื้นขาว">
+      <figcaption>คำว่า receipt ในรายการ label ไม่ได้แปลว่า Vision จะรู้จักสลิปจากแอปธนาคาร &middot; ภาพ: Michael Walter / Unsplash</figcaption>
+    </figure>
+
+
     <div class="hack-grid">
       <div class="hack-card" data-label="สมมติฐานผิด">
         <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>คิดว่า Vision จะรู้จักสลิป เพราะในรายการมี label ชื่อ receipt อยู่</span></h3>
@@ -1105,6 +1150,12 @@
       <h2>วัดกับไฟล์ของตัวเอง ไม่ใช่กับชุดข้อมูลตัวอย่าง</h2>
       <p>โฟลเดอร์ที่เคยจัดด้วยมือไว้แล้ว กลายเป็นชุดเฉลยที่ใช้ตรวจคำตอบได้ฟรี</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/sort-result.jpg" width="1600" height="1161" loading="lazy" alt="เทอร์มินัลรัน drive sort ย้าย 8 ไฟล์จาก Inbox เข้า Photos/cat plant slip screenshot ข้างหน้าต่าง Finder ที่โชว์โฟลเดอร์ย่อยและรูปแมว 4 ใบ">
+      <figcaption>รันจริงกับรูปตัวอย่าง 8 ไฟล์: <code>drive sort</code> ย้ายเข้าโฟลเดอร์ย่อยครบ Inbox ว่าง &mdash; หน้าต่าง Finder คือผลลัพธ์บนดิสก์จริง</figcaption>
+    </figure>
+
 
     <div class="ledger-wrap">
       <table class="ledger">
@@ -1139,6 +1190,12 @@
       <p>สิ่งที่ตัดออกมีผลกับความน่าเชื่อถือของเครื่องมือ มากกว่าสิ่งที่ใส่เข้าไป</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/hdd-bw.jpg" width="1400" height="788" loading="lazy" alt="ฮาร์ดดิสก์ภาพขาวดำ">
+      <figcaption>ไม่แน่ใจแล้วไม่เดา &mdash; ไฟล์ที่ไม่เข้าเกณฑ์ค้างไว้ให้คนตัดสินเสมอ &middot; ภาพ: Frank R / Unsplash</figcaption>
+    </figure>
+
+
     <ul class="plain">
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg><span><b>ไม่เดาเมื่อไม่มั่นใจ</b> — ไฟล์ค้างอยู่ที่เดิม ดีกว่าถูกย้ายไปที่ที่เจ้าของไม่รู้ว่าอยู่ไหน</span></li>
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h.01"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></svg><span><b>ไม่เรียกบริการภายนอกสักตัว</b> — สลิปการเงินและรูปส่วนตัวไม่ควรถูกอัปไปที่ไหน เพื่อแลกกับการจัดโฟลเดอร์</span></li>
@@ -1164,11 +1221,11 @@
       <span class="stack-icon">on-device</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1187,8 +1244,8 @@
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {"@type":"ListItem","position":1,"name":"ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio","item":"https://projects.tanplanet.info/"},
-    {"@type":"ListItem","position":2,"name":"Drive Auto-Sort — จัดรูปเข้าโฟลเดอร์อัตโนมัติด้วย Vision","item":"https://projects.tanplanet.info/drive-autosort-portfolio/"}
+    {"@type":"ListItem","position":1,"name":"ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"Drive Auto-Sort — จัดรูปเข้าโฟลเดอร์อัตโนมัติด้วย Vision","item":"https://projects.tanplanet.work/drive-autosort-portfolio/"}
   ]
 }
 </script>
