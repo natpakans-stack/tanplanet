@@ -598,71 +598,7 @@
     .mk-foot .mk-pill { font-size: 0.66rem; font-weight: 700; color: #fff; background: var(--accent-dark); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
 
     /* ===== Closing ===== */
-    .closing {
-      text-align: center;
-      padding: 48px 24px 64px;
-      border-top: 1px solid var(--border);
-      margin-top: 140px;
-      position: relative;
-    }
-    .mascot-half {
-      width: 180px;
-      height: 120px;
-      overflow: hidden;
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translate(-50%, -100%);
-    }
-    .mascot-half img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
-    .closing p {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      max-width: 540px;
-      margin: 0 auto;
-      line-height: 1.7;
-    }
-    .closing .stack-icons {
-      margin-top: 24px;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .closing .links {
-      margin-top: 24px;
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .closing .links a {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-    .closing .links a:hover { text-decoration: underline; }
 
-    .stack-icons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-    }
-    .stack-icon {
-      padding: 4px 14px;
-      background: var(--accent-light);
-      color: var(--accent-dark);
-      border-radius: 50px;
-      font-size: 0.78rem;
-      font-weight: 600;
-    }
 
     /* ===== Back Nav ===== */
     .back-nav {
@@ -1158,6 +1094,8 @@
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
     .hero-badge .ico { width: 14px; height: 14px; }
 </style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
 </head>
 <body>
 
@@ -1809,9 +1747,6 @@
 
   <!-- ===== Closing ===== -->
   <div class="closing">
-    <div class="mascot-half">
-      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
-    </div>
     <h2>เว็บโรงพยาบาล</h2>
     <p>เว็บไซต์ full-stack 2 ภาษาสำหรับโรงพยาบาลเฉพาะทางที่กำลังก่อสร้าง — เล่าเรื่อง pre-opening อย่างสงบและมีศักดิ์ศรี พร้อมระบบรับสมัครงานในตัวที่รับใบสมัคร เก็บเข้า CMS อย่างปลอดภัย และสร้าง PDF ใบสมัครภาษาไทยส่งให้ HR อัตโนมัติ สร้างด้วย Next.js 16, Sanity และ serverless ล้วน</p>
     <div class="stack-icons">

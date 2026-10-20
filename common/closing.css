@@ -1,0 +1,14 @@
+/* Footer กลางของทุกหน้า case study — ใช้ token ของแต่ละหน้า (--border, --accent ...) มี fallback ให้หน้าที่ตั้งชื่อ token ต่างออกไป
+   วิธีใช้: <link rel="stylesheet" href="../common/closing.css"> + <script src="../common/closing.js" defer></script>
+   แล้วเขียนแค่ <div class="closing"><h2>ชื่อ</h2><p>สรุป</p><div class="stack-icons"><span class="stack-icon">…</span></div></div>
+   มาสคอตกับลิงก์กลับหน้ารวม closing.js ใส่ให้เอง */
+.closing { text-align: center; padding: 48px 24px 64px; border-top: 1px solid var(--border, #e7e5e4); margin-top: 140px; position: relative; }
+.closing .mascot-half { width: 180px; height: 120px; overflow: hidden; position: absolute; top: 0; left: 50%; transform: translate(-50%, -100%); }
+.closing .mascot-half img { width: 100%; height: auto; display: block; }
+.closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; color: var(--text, var(--text-primary, inherit)); }
+.closing p { color: var(--text-secondary, #57534e); font-size: 0.95rem; max-width: 540px; margin: 0 auto; line-height: 1.7; }
+.closing .stack-icons { margin-top: 24px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+.closing .stack-icon { padding: 4px 14px; background: var(--accent-light, #fef3c7); color: var(--accent-dark, #78350f); border-radius: 50px; font-size: 0.78rem; font-weight: 600; }
+.closing .links { margin-top: 24px; display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+.closing .links a { color: var(--accent, #b45309); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+.closing .links a:hover, .closing .links a:focus-visible { text-decoration: underline; }
