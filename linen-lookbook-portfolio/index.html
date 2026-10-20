@@ -7,9 +7,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="เว็บ Lookbook แบรนด์เสื้อผ้าลินิน — “แชทเพื่อสั่ง” ไม่มีตะกร้า ไม่มี checkout">
   <meta name="twitter:description" content="Portfolio: เว็บ catalog + lookbook แบรนด์เสื้อผ้าลินิน — ไม่มีตะกร้า/ไม่มี checkout เลือกสี-ไซซ์แล้วกดสั่งเพื่อเด้งเข้า LINE พร้อมข้อความอัตโนมัติ จัดการสินค้าเองด้วย headless CMS">
-  <meta property="og:url" content="https://projects.tanplanet.info/linen-lookbook-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/linen-lookbook-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/linen-lookbook-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/linen-lookbook-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: เว็บ catalog + lookbook แบรนด์เสื้อผ้าลินิน — ไม่มีตะกร้า/ไม่มี checkout เลือกสี-ไซซ์แล้วกดสั่งเพื่อเด้งเข้า LINE พร้อมข้อความอัตโนมัติ จัดการสินค้าเองด้วย headless CMS">
@@ -743,15 +743,7 @@
     .ui-screen .cap span { display: block; font-size: 0.66rem; color: var(--text-muted); font-weight: 400;
       font-family: 'SF Mono', monospace; margin-top: 2px; }
 
-    /* --- Block C: UI Decision Cards --- */
-    .ui-decision-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-    .ui-decision-grid .learning-card { margin-bottom: 0; border-left: 3px solid var(--accent); }
-    .ui-dec-emoji { font-size: 1.35rem; display: block; margin-bottom: 8px; }
-    .ui-dec-tag { display: inline-block; font-size: 0.62rem; font-weight: 700; color: var(--accent);
-      background: var(--accent-light); border-radius: 50px; padding: 2px 10px; margin-bottom: 8px; }
-
     @media (max-width: 680px) {
-      .ui-decision-grid { grid-template-columns: 1fr; }
       .ui-swatches { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); }
     }
   
@@ -952,7 +944,18 @@
       .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
     }
 
-    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--accent-dark); display: block; }
+    /* --- รูปสินค้าจริงใน mockup --- */
+    .ui-pcard .ph { background: #1b1b1a; }
+    .ui-pcard .ph img, .ui-detail-img img, .ext-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .ui-pcard .ph img { position: absolute; inset: 0; }
+    .ui-badge-sale, .ui-badge-status { z-index: 1; }
+    .ui-detail-img { overflow: hidden; background: #1b1b1a; }
+    .ext-photo { aspect-ratio: 5/4; overflow: hidden; background: var(--accent-light); }
+    .ext-photo img { object-position: center 30%; }
+    .ui-decisions li b { display: block; margin-bottom: 4px; line-height: 1.6; }
+    .photo-credit { margin-top: 6px; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.7; }
+    .photo-credit a { color: inherit; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--border); }
     .hero-badge .ico { width: 14px; height: 14px; }
 </style>
   <link rel="stylesheet" href="../common/closing.css">
@@ -1226,7 +1229,7 @@
         <span class="ext-btn">Lookbook</span>
         <span class="ext-badge">New</span>
       </div>
-      <div style="aspect-ratio:5/4; background:linear-gradient(135deg,var(--accent-light),#fbcfe8); display:flex; align-items:center; justify-content:center; font-size:3.4rem;"><svg class="ico" style="width:2.79rem;height:2.79rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg></div>
+      <div class="ext-photo"><img src="img/audrey-linen-midi-dress-wide.jpg" alt="Audrey Linen Midi Dress ชุดเดรสลินินสีทราย" width="800" height="640" loading="lazy" decoding="async"></div>
       <div style="padding:14px 16px 4px;">
         <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted);">Dresses</div>
         <div style="font-size:1.05rem; font-weight:700; margin:2px 0 4px;">Audrey Linen Midi Dress</div>
@@ -1255,6 +1258,7 @@
         <span style="flex:1; text-align:center; background:#229ED9; color:#fff; border-radius:50px; padding:11px; font-weight:700; font-size:0.85rem;">Telegram</span>
       </div>
     </div>
+    <p class="photo-credit">ภาพตัวอย่าง: <a href="https://unsplash.com/photos/a-woman-poses-in-a-simple-linen-dress-dziVRZYOFpI" target="_blank" rel="noopener">Reistor</a> / Unsplash</p>
 
     <hr class="divider">
 
@@ -1359,12 +1363,12 @@
             <div class="ui-label">สินค้าแนะนำ</div>
             <div class="ui-grid2">
               <div class="ui-pcard">
-                <div class="ph" style="background:linear-gradient(150deg,#d8cfc0,#b8a894);"><span class="ui-badge-status">พรีออเดอร์</span></div>
+                <div class="ph"><img src="img/audrey-linen-midi-dress.jpg" alt="Audrey Linen Dress ชุดเดรสลินินสีทราย" width="600" height="800" loading="lazy" decoding="async"><span class="ui-badge-status">พรีออเดอร์</span></div>
                 <div class="pt">Audrey Linen Dress</div>
                 <div class="pp">฿1,890</div>
               </div>
               <div class="ui-pcard">
-                <div class="ph" style="background:linear-gradient(150deg,#cdd6c8,#9aa890);"><span class="ui-badge-sale">SALE</span></div>
+                <div class="ph"><img src="img/sage-linen-top.jpg" alt="Sage Linen ชุดลินินสีเขียวเสจ" width="600" height="800" loading="lazy" decoding="async"><span class="ui-badge-sale">SALE</span></div>
                 <div class="pt">Sage Linen Top</div>
                 <div class="pp">฿890 <s>฿1,200</s></div>
               </div>
@@ -1388,22 +1392,22 @@
             </div>
             <div class="ui-grid2" style="margin-top:9px;">
               <div class="ui-pcard">
-                <div class="ph" style="background:linear-gradient(150deg,#e2dccf,#c3b6a0);"><span class="ui-badge-sale">SALE</span></div>
+                <div class="ph"><img src="img/audrey-linen-midi-dress.jpg" alt="Audrey Midi Dress ชุดเดรสลินินสีทราย" width="600" height="800" loading="lazy" decoding="async"><span class="ui-badge-sale">SALE</span></div>
                 <div class="pt">Audrey Midi Dress</div>
                 <div class="pp">฿1,890 <s>฿2,400</s></div>
               </div>
               <div class="ui-pcard">
-                <div class="ph" style="background:linear-gradient(150deg,#d3d8dd,#a7b0b8);"></div>
+                <div class="ph"><img src="img/peak-blazer.jpg" alt="Peak Blazer เบลเซอร์ลินินสีครีม" width="600" height="800" loading="lazy" decoding="async"></div>
                 <div class="pt">Peak Blazer</div>
                 <div class="pp">฿2,290</div>
               </div>
               <div class="ui-pcard">
-                <div class="ph" style="background:linear-gradient(150deg,#e5d7d3,#c0a49c);"><span class="ui-badge-status">ของหมด</span></div>
+                <div class="ph"><img src="img/ruffle-maxi-dress.jpg" alt="Ruffle Maxi Dress เดรสยาวระบายสีเขียว" width="600" height="800" loading="lazy" decoding="async"><span class="ui-badge-status">ของหมด</span></div>
                 <div class="pt">Ruffle Maxi Dress</div>
                 <div class="pp">฿1,690</div>
               </div>
               <div class="ui-pcard">
-                <div class="ph" style="background:linear-gradient(150deg,#dfe0d4,#b3b59f);"></div>
+                <div class="ph"><img src="img/twist-linen-top.jpg" alt="Twist Linen Top เสื้อลินินสีขาว" width="600" height="800" loading="lazy" decoding="async"></div>
                 <div class="pt">Twist Linen Top</div>
                 <div class="pp">฿790</div>
               </div>
@@ -1418,7 +1422,7 @@
         <div class="ui-phone">
           <div class="ui-scr">
             <div class="ui-nav"><span class="ui-logo">Li-ne</span><span class="dots">&#8592;</span></div>
-            <div class="ui-detail-img" style="background:linear-gradient(155deg,#e2dccf,#bfae97);"></div>
+            <div class="ui-detail-img"><img src="img/audrey-linen-midi-dress-detail.jpg" alt="Audrey Linen Midi Dress ชุดเดรสลินินสีทราย" width="600" height="750" loading="lazy" decoding="async"></div>
             <div class="ui-dcat">Dresses</div>
             <div class="ui-dtitle">Audrey Linen Midi Dress</div>
             <div class="ui-dprice">฿1,890 <s>฿2,400</s><span class="ui-status-dot"></span><span class="ui-status-txt">พร้อมขาย</span></div>
@@ -1455,34 +1459,16 @@
 
     </div>
 
+    <p class="photo-credit">ภาพสินค้าตัวอย่างจาก Unsplash — <a href="https://unsplash.com/photos/a-woman-poses-in-a-simple-linen-dress-dziVRZYOFpI" target="_blank" rel="noopener">Reistor</a> · <a href="https://unsplash.com/photos/woman-in-light-green-dress-UbrPTBBxaE8" target="_blank" rel="noopener">engin akyurt</a> · <a href="https://unsplash.com/photos/BUahOWn2nBg" target="_blank" rel="noopener">Kawê Rodrigues</a> · <a href="https://unsplash.com/photos/woman-in-green-long-sleeve-dress-standing-on-brown-field-during-daytime-_vmoFgZc8c0" target="_blank" rel="noopener">Junior REIS</a> · <a href="https://unsplash.com/photos/woman-wearing-white-blouse-TPG-lDpSxaY" target="_blank" rel="noopener">Sincerely Media</a></p>
+
     <!-- Block C — UI Decision Cards -->
     <div class="ui-block-label"><span class="idx">C</span>UI Decisions — ทำไมถึงเลือกแบบนี้</div>
-    <div class="ui-decision-grid">
-      <div class="learning-card">
-        <span class="ui-dec-emoji">&#128241;</span>
-        <span class="ui-dec-tag">Mobile-first</span><br>
-        <strong>ออกแบบจอ 393 ก่อน แล้วค่อยขยายไป 768 / 1440</strong>
-        <p>ลูกค้าแฟชั่นเลื่อนดูจากมือถือเป็นหลัก — เลย์เอาต์ตั้งต้นเป็นกริดสินค้า 2 คอลัมน์ รูป aspect 3/4 และปุ่มสั่งซื้อเต็มความกว้าง จอใหญ่ค่อยขยายเป็น 3-4 คอลัมน์ ไม่ใช่ย่อ desktop ลงมา</p>
-      </div>
-      <div class="learning-card">
-        <span class="ui-dec-emoji">&#128172;</span>
-        <span class="ui-dec-tag">UX Writing</span><br>
-        <strong>Microcopy ประกอบข้อความสั่งซื้อให้ล่วงหน้า</strong>
-        <p>แทนปุ่ม "หยิบใส่ตะกร้า" ด้วย "สั่งซื้อผ่าน LINE" ที่พาไปถึงบทสนทนาจริง พร้อมข้อความ pre-filled ("สนใจสั่งซื้อ… + ชื่อสินค้า + สี/ไซซ์ + ลิงก์") — ลูกค้าแค่กดส่ง ลด friction จาก "อยากได้" เหลือคลิกเดียว</p>
-      </div>
-      <div class="learning-card">
-        <span class="ui-dec-emoji">&#127799;</span>
-        <span class="ui-dec-tag">Component States</span><br>
-        <strong>Variant pill มี default / active / sold-out ชัดเจน</strong>
-        <p>ปุ่มเลือกสี-ไซซ์ตัวที่เลือกเป็น lime ตัวหนัง (active) ตัวอื่นเป็นเส้นขอบจาง (default) — ต่างกันด้วยสีพื้น ไม่ใช่แค่เส้นขอบ ส่วนสถานะ "ของหมด" ยังกดทักแชทถามรอบหน้าได้ ไม่ปิดตาย</p>
-      </div>
-      <div class="learning-card">
-        <span class="ui-dec-emoji">&#127919;</span>
-        <span class="ui-dec-tag">Accessibility</span><br>
-        <strong>Lime-on-dark คอนทราสต์สูง + touch target ≥ 44px</strong>
-        <p>ตัวหนังสือครีมและ accent lime บนพื้นดำ #0d0d0d ให้คอนทราสต์เกิน 4.5:1 สบาย ๆ (ผ่าน WCAG AA) ปุ่ม CTA จงใจใช้ตัวหนังสือ<em>ดำ</em>บนพื้น lime ไม่ใช่ขาว และปุ่มสั่งซื้อสูง ~44px กดง่ายด้วยนิ้วโป้ง</p>
-      </div>
-    </div>
+    <ul class="plain ui-decisions">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span><b>Mobile-first — ออกแบบจอ 393 ก่อน แล้วค่อยขยายไป 768 / 1440</b> ลูกค้าแฟชั่นเลื่อนดูจากมือถือเป็นหลัก เลย์เอาต์ตั้งต้นจึงเป็นกริดสินค้า 2 คอลัมน์ รูป aspect 3/4 และปุ่มสั่งซื้อเต็มความกว้าง จอใหญ่ค่อยขยายเป็น 3–4 คอลัมน์ ไม่ใช่ย่อ desktop ลงมา</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><span><b>UX Writing — ประกอบข้อความสั่งซื้อให้ล่วงหน้า</b> แทนปุ่ม "หยิบใส่ตะกร้า" ด้วย "สั่งซื้อผ่าน LINE" ที่พาไปถึงบทสนทนาจริง พร้อมข้อความ pre-filled (สนใจสั่งซื้อ… + ชื่อสินค้า + สี/ไซซ์ + ลิงก์) ลูกค้าแค่กดส่ง ลด friction จาก "อยากได้" เหลือคลิกเดียว</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="6" ry="6"/><circle cx="16" cy="12" r="2"/></svg><span><b>Component States — ปุ่มเลือกสี/ไซซ์มี default / active / sold-out ชัดเจน</b> ตัวที่เลือกเป็นพื้น lime ตัวหนา (active) ตัวอื่นเป็นเส้นขอบจาง (default) ต่างกันที่สีพื้น ไม่ใช่แค่เส้นขอบ ส่วนสถานะ "ของหมด" ยังกดทักแชทถามรอบหน้าได้ ไม่ปิดตาย</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></svg><span><b>Accessibility — lime-on-dark คอนทราสต์สูง + touch target ≥ 44px</b> ตัวหนังสือครีมและ accent lime บนพื้นดำ #0d0d0d คอนทราสต์เกิน 4.5:1 (ผ่าน WCAG AA) ปุ่ม CTA จงใจใช้ตัวหนังสือดำบนพื้น lime ไม่ใช่ขาว และปุ่มสั่งซื้อสูงราว 44px กดง่ายด้วยนิ้วโป้ง</span></li>
+    </ul>
 
     <hr class="divider">
 
@@ -1544,28 +1530,12 @@
       <p>เว็บนี้ทำหน้าที่เดียว: เป็น catalog ที่พาลูกค้าเข้าสู่บทสนทนาใน LINE ให้เร็วและเนียนที่สุด — มันไม่มีตะกร้า ไม่มี payment ไม่เก็บ order เอง จุดปิดการขายคือแชทของแบรนด์ ขอบเขตที่คมตั้งแต่ต้น = implement ตรง เบา และส่งมอบให้แบรนด์ดูแลต่อเองได้จริง</p>
     </div>
 
-    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
-      <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128241;</strong><br>
-        <strong>Chat-to-order ไม่มี checkout</strong>
-        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ปิดการขายในแชท — เว็บแค่พาไปให้ถึงเร็วที่สุด</p>
-      </div>
-      <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128260;</strong><br>
-        <strong>Rewire ไม่ rebuild</strong>
-        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">เก็บดีไซน์เทมเพลตไว้ ทิ้งแค่ commerce engine</p>
-      </div>
-      <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#129525;</strong><br>
-        <strong>CMS-first ไม่ hardcode</strong>
-        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">สินค้า/ช่องทาง/ข้อความ แก้จากหลังบ้านหมด</p>
-      </div>
-      <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#129309;</strong><br>
-        <strong>Deep-link ตรงถึงแบรนด์</strong>
-        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">เข้า LINE OA ของแบรนด์เอง ไม่มีตัวกลาง</p>
-      </div>
-    </div>
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg><span><b>Chat-to-order ไม่มี checkout</b> — ปิดการขายในแชท เว็บแค่พาไปให้ถึงเร็วที่สุด</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span><b>Rewire ไม่ rebuild</b> — เก็บดีไซน์เทมเพลตไว้ ทิ้งแค่ commerce engine</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg><span><b>CMS-first ไม่ hardcode</b> — สินค้า ช่องทาง และข้อความ แก้จากหลังบ้านได้หมด</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span><b>Deep-link ตรงถึงแบรนด์</b> — เข้า LINE OA ของแบรนด์เอง ไม่มีตัวกลาง</span></li>
+    </ul>
 
     <hr class="divider">
 
@@ -1634,12 +1604,12 @@
       <span class="stack-icon">Chat-to-Order</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1662,13 +1632,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "เว็บ Lookbook Portfolio",
-      "item": "https://projects.tanplanet.info/linen-lookbook-portfolio/"
+      "item": "https://projects.tanplanet.work/linen-lookbook-portfolio/"
     }
   ]
 }
