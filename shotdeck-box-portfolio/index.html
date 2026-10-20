@@ -672,7 +672,11 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
     .hero-badge .ico { width: 14px; height: 14px; }
-  </style>
+      .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.shot-pair figcaption{grid-column:1/-1}.shot-phone{max-width:360px;margin-left:auto;margin-right:auto}.shot-pair.shot-phone{max-width:620px}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
+    .shot-narrow{max-width:640px;margin-left:auto;margin-right:auto}
+</style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
 </head>
@@ -713,6 +717,11 @@
       <p>ทำคลิปสั้นขายของได้หนึ่งชิ้น มีงานรอบตัวอีกเป็นสิบอย่าง และหลายอย่างต้องเกิดตอนตีสาม</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/dashboard.jpg" width="1600" height="778" loading="lazy" alt="หน้าแรกของเว็บแอป ShotDeck บนเครื่อง box: เมนูรูปแบบคลิป การ์ดระยะเวลาที่ทำมา วันที่ไม่ได้ลง และคิวถัดไป ส่วนการ์ดสถิติของเพจถูกเบลอ">
+      <figcaption>หน้าแรกของ ShotDeck ที่ระบบเติมข้อมูลเองทุกวัน &mdash; การตัดคลิปเป็นแค่ชิ้นเดียวในหลายสิบงาน (ตัวเลขของเพจและรายรับเบลอไว้)</figcaption>
+    </figure>
+
     <div class="quote-block">
       <p>ผมจะเอาตัวเองไปวางในการตัดคลิปเท่านั้น ที่เหลือให้ระบบทำ ทั้งพากย์ เรนเดอร์ ตรวจ ตั้งเวลา โพสต์ ตอบคอมเมนต์ และสรุปผลให้อ่านตอนเช้า</p>
       <div class="author">— โจทย์ตั้งต้น</div>
@@ -748,6 +757,11 @@
       <h2>เครื่องเฉพาะที่บ้าน ดีกว่าเช่าคลาวด์และดีกว่าบังคับ Mac ไม่ให้หลับ</h2>
       <p>ข้อจำกัดจริงคือ ต้องมี GPU ต้องมีเบราว์เซอร์ที่ล็อกอินค้างไว้ และต้องเสียบมือถือ Android ตัวจริงได้</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/box-specs.jpg" width="1600" height="702" loading="lazy" alt="เทอร์มินัลแสดงสเปกเครื่อง: i7-7700HQ, GTX 1050 Ti 4GB, RAM 15Gi, ดิสก์ 3 ลูก และ uptime 2 สัปดาห์">
+      <figcaption>สเปกจริงของโน้ตบุ๊กปี 2017 ที่ใช้เป็นเซิร์ฟเวอร์ &mdash; เปิดต่อเนื่องมาแล้วกว่า 2 สัปดาห์</figcaption>
+    </figure>
 
     <div class="ledger-wrap">
       <table class="ledger">
@@ -788,6 +802,11 @@
       <p>ชั้นบนคือที่ผมสั่งงาน ชั้นล่างคือที่ไฟล์อยู่ ทุกชั้นคุยกันผ่านเครือข่ายส่วนตัว ไม่มีพอร์ตเปิดออกอินเทอร์เน็ตตรง ๆ</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/box-services.jpg" width="1600" height="510" loading="lazy" alt="เทอร์มินัลแสดงบริการที่รันค้างไว้: เว็บแอป, Claude Code ใน tmux, จอเสมือน, scrcpy และ VNC">
+      <figcaption>บริการที่รันค้างบนเครื่องจริง แต่ละชั้นในแผนภาพคือ systemd service ของตัวเอง</figcaption>
+    </figure>
+
     <div class="arch-diagram">
       <div class="arch-layers">
         <div class="arch-layer users">
@@ -820,6 +839,12 @@
       <p>Tailscale เป็นแกนกลาง เข้า SSH ได้ด้วยกุญแจเท่านั้น ที่เหลือคือหน้าจอที่ออกแบบมาให้ใช้บนมือถือได้จริง</p>
     </section>
 
+    <figure class="shot shot-pair shot-phone">
+      <img src="img/mobile-trip.jpg" width="640" height="1387" loading="lazy" alt="เว็บแอป ShotDeck บนมือถือ หน้าโหมดเดินทาง เลือกช่วงวันที่ไม่อยู่ แล้วกดตั้งคิวล่วงหน้าทั้งหมด">
+      <img src="img/mobile-home.jpg" width="640" height="1387" loading="lazy" alt="เว็บแอป ShotDeck บนมือถือ หน้าแรกแสดงการ์ดสถานะ ตัวเลขสถิติเพจถูกเบลอ">
+      <figcaption>เว็บแอปบนมือถือ &mdash; โหมดเดินทางตั้งคิวล่วงหน้าให้ทั้งทริป (ตัวเลขของเพจและรายรับเบลอไว้)</figcaption>
+    </figure>
+
     <ul class="plain">
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg><span><b>พิมพ์ <code>box</code> บน Mac</b> ได้ ssh เข้า tmux session ที่มี Claude Code รออยู่ ปิดหน้าต่างไปแล้วกลับมาต่อได้ งานไม่หลุด</span></li>
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span><b>เว็บแอปสำหรับ iPhone</b> Bun server อัปเดตสถานะสดผ่าน SSE ใช้ bottom sheet แทนหน้าต่างซ้อน กดได้ด้วยนิ้วโป้งข้างเดียว เปิดได้เฉพาะในเครือข่ายส่วนตัว</span></li>
@@ -836,6 +861,11 @@
       <h2>คลิปพากย์ &mdash; ผมตัดคลิป เครื่องทำที่เหลือ</h2>
       <p>คลิปที่มีเสียงพากย์ยังต้องมีคนตัดสินใจเรื่องภาพ ส่วนนั้นผมทำเอง หลังจากนั้นทุกขั้นเดินต่อเองจนโพสต์</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/remotion-studio-voice.jpg" width="1600" height="1000" loading="lazy" alt="Remotion Studio บนเครื่อง box เปิดคลิปพากย์แนวตั้ง 1080x1920 ยาว 56 วินาที พร้อมซับไทยบนฟุตเทจ">
+      <figcaption>จัดวางคลิปพากย์ใน Remotion Studio ที่รันบน box &mdash; ดูพรีวิวจากมือถือได้ ยังไม่เรนเดอร์จนกว่าจะบอก</figcaption>
+    </figure>
 
     <div class="flow-grid">
       <div class="flow-step">
@@ -881,6 +911,11 @@
       <h2>คลิปสินค้า &mdash; ไม่มีคนแตะเลยตั้งแต่ต้นจนโพสต์</h2>
       <p>คลิปแบบนี้ไม่มีเสียงพากย์ จึงตัดคนออกได้ทั้งหมด แล้วใช้ด่านตรวจอัตโนมัติแทนสายตา</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/product-catalog.jpg" width="1600" height="1000" loading="lazy" alt="หน้าสินค้าแอฟฟิลิเอตใน ShotDeck: คิว 7 วันข้างหน้าทางซ้าย และแคตตาล็อกสินค้า Shopee พร้อมรูปทางขวา">
+      <figcaption>หน้าสินค้าแอฟฟิลิเอต &mdash; ระบบจัดคิวคลิปสินค้า 7 วันข้างหน้าเองจากแคตตาล็อก</figcaption>
+    </figure>
 
     <div class="flow-grid">
       <div class="flow-step">
@@ -929,6 +964,11 @@
       <p>ทุกงานเป็น systemd user timer แยกตัว พังตัวเดียวไม่ลากตัวอื่นพังตาม</p>
     </section>
 
+    <figure class="shot shot-narrow">
+      <img src="img/box-timers.jpg" width="1600" height="1321" loading="lazy" alt="ผลคำสั่ง systemctl --user list-timers แสดง timer ของ shotdeck 24 ตัวพร้อมเวลารอบถัดไป">
+      <figcaption>timer จริงบนเครื่อง &mdash; งานละหนึ่งตัว พังตัวเดียวไม่ลากตัวอื่น</figcaption>
+    </figure>
+
     <div class="ladder">
       <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg><span>ทำคลิปสินค้าอัตโนมัติ</span></div><div class="out">03:00</div><div class="note">ตั้งแต่เลือกสินค้าจนเข้าคิวโพสต์</div></div>
       <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg><span>สำรองไฟล์ลง HDD</span></div><div class="out">04:00</div><div class="note">rsync ทุกคืน ไฟล์ที่ถูกลบยังเก็บไว้อีก 14 วัน</div></div>
@@ -951,6 +991,11 @@
       <p>ไม่ได้เลือกวิธีที่เท่ที่สุด แต่เลือกวิธีที่แต่ละแพลตฟอร์มไม่ลงโทษ</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/post-calendar.jpg" width="1600" height="1000" loading="lazy" alt="หน้าปฏิทินลงงานใน ShotDeck แสดงจุดคลิปที่ลงแต่ละวันของเดือนตุลาคม 2569">
+      <figcaption>ปฏิทินลงงาน &mdash; แต่ละจุดคือคลิปที่ลงหรือจองช่วงเวลาไว้แล้ว</figcaption>
+    </figure>
+
     <ul class="plain">
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg><span><b>Facebook Reels</b> ผ่าน API หรือหน้าสร้างโพสต์ในเบราว์เซอร์ ส่วน Instagram ใช้หน้าสร้างโพสต์อย่างเดียว</span></li>
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span><b>YouTube Shorts ผ่านเบราว์เซอร์</b> ไม่ใช้ API เพราะคลิปที่อัปผ่านแอปที่ยังไม่ผ่านการ audit จะถูกล็อกเป็นส่วนตัว</span></li>
@@ -967,6 +1012,11 @@
       <p>ตอนอยู่ข้างนอก ข้อความแจ้งเตือนทุกข้อความคือเวลาที่ต้องหยุดเที่ยว จึงตั้งให้มันไปถึงผมช้าที่สุดเท่าที่จะทำได้</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/activity-log.jpg" width="1600" height="1000" loading="lazy" alt="หน้าสมุดบันทึกใน ShotDeck แสดงรายการงานที่ระบบทำเองพร้อมเวลาและสถานะสำเร็จ">
+      <figcaption>สมุดบันทึกทุกอย่างที่ระบบทำเอง &mdash; ใครสั่ง ทำอะไร สำเร็จหรือพัง ย้อนดูได้ 4,000 รายการ</figcaption>
+    </figure>
+
     <div class="ladder">
       <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>ชั้น 1 &middot; สคริปต์ซ่อมอาการที่รู้จักอยู่แล้ว</span></div><div class="out">ทุก 5 นาที</div><div class="note">อ่านรหัสข้อผิดพลาดแล้วแก้ตามที่เคยแก้ เช่น รีสตาร์ต Xvfb รันงานซ้ำ หรือเรนเดอร์ใหม่</div></div>
       <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg><span>ชั้น 2 &middot; ส่งอาการให้ Claude บนเครื่อง</span></div><div class="out">ไม่เกิน 6 ครั้ง/วัน</div><div class="note">วางข้อความ error ลงใน tmux ที่ Claude รันอยู่ ให้ไล่หาสาเหตุเอง ตั้งเพดานไว้กันมันวนแก้ไม่จบ</div></div>
@@ -980,6 +1030,11 @@
       <h2>ปัญหาที่เจอตอนของจริงเดินอยู่</h2>
       <p>เกือบทุกข้อเป็นเรื่องที่ไม่เกิดบน Mac และไม่มีใครเตือนไว้ก่อน</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/box-lid-fix.jpg" width="1600" height="534" loading="lazy" alt="เทอร์มินัลแสดงบรรทัด Suspending 300,957 บรรทัดใน boot ก่อนหน้า และค่า HandleLidSwitch=ignore กับ sleep.target ที่ถูก mask">
+      <figcaption>บรรทัด &ldquo;Suspending&rdquo; 300,957 บรรทัดจากบูตก่อนหน้า กับการตั้งค่าที่แก้ให้พับจอแล้วไม่หลับอีก</figcaption>
+    </figure>
 
     <div class="hack-grid">
 
@@ -1035,6 +1090,11 @@
       <p>115 คลิปใน 3 สัปดาห์แรก แบ่งเป็นคลิปสินค้าอัตโนมัติ 38 คลิปพากย์ 21 การ์ดภาพนิ่ง/ข้อมูล 42 และคลิปเปรียบเทียบ 14</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/content-all.jpg" width="1600" height="1000" loading="lazy" alt="หน้าคอนเทนต์ทั้งหมดใน ShotDeck: 267 ชิ้นในระบบ, 47 มีบทแล้ว, 46 อัดเสียงแล้ว, 127 เรนเดอร์แล้ว พร้อมรายการคิว">
+      <figcaption>หน้าคอนเทนต์ทั้งหมด &mdash; ตัวเลขอ่านจากไฟล์จริง ไม่ใช่ตัวเลขที่กรอกเอง</figcaption>
+    </figure>
+
     <div class="metrics">
       <div class="metric-card"><div class="num">115</div><div class="label">คลิปใน 3 สัปดาห์แรก (29 ก.ย. – 20 ต.ค.)</div></div>
       <div class="metric-card"><div class="num">289</div><div class="label">คลิปในคิวถึงสิ้นปี</div></div>
@@ -1053,6 +1113,11 @@
       <h2>ขอบเขตที่ตั้งใจไม่ทำ</h2>
       <p>ระบบที่ทำเองทั้งคืนโดยไม่มีคนดู ต้องมีเส้นที่มันไม่ข้ามเอง</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/night-desk.jpg" width="1400" height="933" loading="lazy" alt="โต๊ะทำงานตอนกลางคืน โน้ตบุ๊กจอดับ โคมไฟเปิด วิวเมืองนอกหน้าต่าง">
+      <figcaption>ระบบที่ทำงานทั้งคืนโดยไม่มีคนดู ต้องมีเส้นที่ไม่ข้ามเอง &mdash; ภาพ: Avtar Singh / Unsplash</figcaption>
+    </figure>
 
     <ul class="plain">
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg><span><b>ไม่อัปเกรด Remotion เอง</b> ทุกวันจันทร์สรุปมาให้อ่านว่าเวอร์ชันใหม่มีอะไร ผมเป็นคนตัดสินว่าจะอัปเมื่อไร เพราะแม่แบบทุกตัวพึ่งมันอยู่</span></li>
