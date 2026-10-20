@@ -1269,43 +1269,37 @@
 
     <div class="hack-grid">
       <div class="hack-card arch" data-label="No API">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
-        <h3>Claude Code ไม่มี API ให้สลับโมเดลจากภายนอก</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg><span>Claude Code ไม่มี API ให้สลับโมเดลจากภายนอก</span></h3>
         <p>อยากมีปุ่มสลับโมเดล แต่ไม่มี endpoint / SDK ให้เรียก — จะสั่งจากหน้าจอแยกได้ยังไง</p>
         <div class="highlight">แก้: ปุ่มอยู่ "นอก" TUI แล้วยิง <code>/model &lt;name&gt; + Enter</code> เข้า terminal ที่ claude รันอยู่ — surface หลักใช้ <code>activeTerminal.sendText()</code> ของ VS Code (ไม่ต้อง tmux), surface สำรองใช้ <code>tmux send-keys</code> รับคนที่ใช้ terminal เปล่า</div>
       </div>
 
       <div class="hack-card precision" data-label="Injection">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
-        <h3>ชื่อโมเดลยิงเข้า shell/terminal เสี่ยง injection</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span>ชื่อโมเดลยิงเข้า shell/terminal เสี่ยง injection</span></h3>
         <p>ค่าที่เอาไปต่อเป็นคำสั่ง <code>send-keys</code> / <code>sendText</code> ถ้าไม่ตรวจก่อน อาจถูกยัดคำสั่งอื่นแฝงมา</p>
         <div class="highlight">แก้: whitelist ด้วย regex <code>^[\w\[\]-]+$</code> ก่อนส่งทุกครั้ง (ทั้ง 2 surface) — ผ่านเฉพาะ a–z 0–9 <code>[</code> <code>]</code> <code>-</code> + ฝั่ง web ใช้ <code>Bun.$</code> interpolation ที่ escape ให้อัตโนมัติ ส่งเป็น arg เดียว</div>
       </div>
 
       <div class="hack-card platform" data-label="One-way Sync">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
-        <h3>UI เป็น one-way — ไม่รู้โมเดลจริง</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>UI เป็น one-way — ไม่รู้โมเดลจริง</span></h3>
         <p>สั่งโมเดลได้ แต่ถ้าผู้ใช้พิมพ์ <code>/model</code> เองในบทสนทนา เกียร์บน panel จะหลุด sync กับของจริง</p>
         <div class="highlight">แก้: poll ท้ายไฟล์ 128KB ของ <code>*.jsonl</code> ที่ mtime ใหม่สุดทุก 5 วิ อ่าน <code>message.model</code> → เลื่อนเกียร์เงียบ ๆ (ไม่ยิง <code>/model</code> ซ้ำ ไม่มีเสียง) + หลังสับเกียร์เองพัก sync 30 วิ กัน transcript ที่ยังไม่อัปเดตดึงเกียร์กลับ</div>
       </div>
 
       <div class="hack-card ux" data-label="Feel">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
-        <h3>คันเกียร์ต้องรู้สึกเหมือนของจริง</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg><span>คันเกียร์ต้องรู้สึกเหมือนของจริง</span></h3>
         <p>ถ้าเป็นแค่ปุ่มธรรมดา ก็ไม่ต่างจาก <code>/model</code> picker เดิม — ต้องมี "feel" ของการโยกเกียร์</p>
         <div class="highlight">แก้: knob ลากด้วยเมาส์แล้ว snap ไปเกียร์ที่ระยะใกล้สุด (<code>(g.x-px)&sup2;+(g.y-py)&sup2;</code>) + เสียง ka-chunk สร้างสดจาก Web Audio ตอนเข้าเกียร์ — visual layer ทับ logic เดิมโดยไม่แตะกลไกส่งคำสั่ง</div>
       </div>
 
       <div class="hack-card devops" data-label="Mute">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
-        <h3>เสียงต้องปิดได้เร็ว โดยไม่ restart</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg><span>เสียงต้องปิดได้เร็ว โดยไม่ restart</span></h3>
         <p>เสียงแจ้งงานเสร็จมาจาก hooks หลายตัวที่รันแยกกัน — จะปิดทั้งชุดตอนประชุมให้ทันได้ยังไง</p>
         <div class="highlight">แก้: ทุก hook source <code>tts-lib.sh</code> ร่วมกัน แล้วใส่ guard <code>[ -f ~/.claude/hooks/.tts-muted ] &amp;&amp; return 0</code> ที่หัวฟังก์ชันพูด — สวิตช์แค่ touch/rm ไฟล์ flag = เงียบ/ดังทั้งชุดทันที ไม่ต้อง restart claude</div>
       </div>
 
       <div class="hack-card perf" data-label="Cost / Cache">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg>
-        <h3>TTS ยิง API ทุกครั้งแพงและช้า</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg><span>TTS ยิง API ทุกครั้งแพงและช้า</span></h3>
         <p>ถ้า gen เสียงใหม่ทุกครั้งที่งานเสร็จ ก็เปลืองเงิน + ต้องต่อเน็ต + หน่วง แถมแต่ละบุคลิกดังไม่เท่ากัน</p>
         <div class="highlight">แก้: cache แยกต่อบุคลิก hash = <code>md5(voice+instructions+text)</code> — มีไฟล์แล้ว <code>afplay</code> เลย (ยิง API 0 ครั้ง, $0), ไม่มีค่อย gen 1 ครั้งแล้วเซฟ + normalize ทุกเสียงด้วย <code>ffmpeg loudnorm</code> ไป <strong>-16 LUFS</strong> ให้ดังเท่ากัน (ไม่มี ffmpeg ก็ข้าม ไม่พัง)</div>
       </div>

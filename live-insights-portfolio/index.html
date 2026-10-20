@@ -1217,43 +1217,37 @@
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="ML Signal">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
-        <h3>Raw emotion จากวิดีโอสด กระตุกและ noisy</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg><span>Raw emotion จากวิดีโอสด กระตุกและ noisy</span></h3>
         <p>ผลดิบจากโมเดล FER สั่นทุกเฟรม — โฮสต์ยิ้มนิดเดียวเด้งเป็น "happy 0.9" แล้วกลับเป็น neutral ทันที เอาไป trigger alert ตรงๆ ไม่ได้</p>
         <div class="highlight">แก้: calibrate ด้วย <code>neutral_bias</code> / <code>smile_boost</code> / <code>frown_gate</code> แล้วกรองด้วย EMA smoothing + rolling window 1m/5m — ได้สัญญาณที่นิ่งพอจะเชื่อและเตือนได้จริง โดยรู้ข้อจำกัด (FER+ class-imbalance) ตั้งแต่ต้น</div>
       </div>
 
       <div class="hack-card platform" data-label="On-Device">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <h3>อ่านหน้าโฮสต์ แต่ห้ามให้วิดีโอออกนอกเครื่อง</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>อ่านหน้าโฮสต์ แต่ห้ามให้วิดีโอออกนอกเครื่อง</span></h3>
         <p>ใบหน้า = biometric ที่อ่อนไหวสุด — ส่งเฟรมขึ้น cloud ไปประมวลผลคือความเสี่ยงทั้ง privacy และ latency</p>
         <div class="highlight">แก้: แยก local ML server (FastAPI + WebSocket ที่ <code>localhost:8765</code>) ประมวลผลบนเครื่อง ส่งต่อแค่ตัวเลข (emotion/energy/intent) ขึ้น cloud — <strong>0 เฟรมวิดีโอออกนอกเครื่อง</strong> เป็นหลักการที่ตัดสินตั้งแต่ architecture</div>
       </div>
 
       <div class="hack-card arch" data-label="Contracts">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
-        <h3>Desktop กับ cloud หลุด sync กันง่าย</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>Desktop กับ cloud หลุด sync กันง่าย</span></h3>
         <p>สองฝั่งคนละภาษา (TypeScript/Electron ↔ NestJS) — พอ payload เปลี่ยนฝั่งเดียว อีกฝั่งพังเงียบๆ ตอน runtime</p>
         <div class="highlight">แก้: ยก contracts เป็น package กลาง <code>@ไลฟ์ AI avatar/contracts</code> — F1–F5 เป็น JSON Schema 2020-12 + OpenAPI 3.1 + Ajv validators + fixtures + compat check ในสคริปต์ ทำให้ breaking change ถูกจับตั้งแต่ CI ไม่ใช่ตอน production</div>
       </div>
 
       <div class="hack-card devops" data-label="Cross-Platform">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
-        <h3>ML detector เร็วบน Windows(GPU) แต่ต้องรันบน mac ด้วย</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span>ML detector เร็วบน Windows(GPU) แต่ต้องรันบน mac ด้วย</span></h3>
         <p>YuNet detector บน onnxruntime CUDA เร็วมากบน Windows — แต่ mac arm64 ไม่มี CUDA wheel ให้ ลง requirement ตรงๆ จะพัง</p>
         <div class="highlight">แก้: ใช้ pip env marker (<code>sys_platform == "win32"</code>) ให้ <code>onnxruntime-gpu</code> ลงเฉพาะ Windows ส่วน mac fallback ไปที่ <code>cv2.FaceDetectorYN</code> (CPU) อัตโนมัติ — โค้ดชุดเดียวรันได้ทั้งสอง OS ไม่ต้องแตก branch</div>
       </div>
 
       <div class="hack-card perf" data-label="Reliability">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"/></svg>
-        <h3>เน็ตหลุดกลางไลฟ์ = signal หาย / ซ้ำ</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2 2 0 0 1 2 2v15a1 1 0 0 1-1.496.868l-4.512-2.578a2 2 0 0 0-1.984 0l-4.512 2.578A1 1 0 0 1 5 20V5a2 2 0 0 1 2-2z"/></svg><span>เน็ตหลุดกลางไลฟ์ = signal หาย / ซ้ำ</span></h3>
         <p>ไลฟ์ยิงสัญญาณต่อเนื่อง แต่เน็ตช่วงไลฟ์ไม่เสถียร — ส่งไม่ถึงก็หาย ส่งซ้ำก็ข้อมูลเบิ้ล</p>
         <div class="highlight">แก้: buffer แบบ offline-first บนเครื่อง + ส่งขึ้น cloud ด้วย <code>high-water-mark</code> per session — ฝั่ง ingest ทำ idempotent ตัด batch ที่ต่ำกว่า watermark ทิ้ง ส่งซ้ำได้ปลอดภัย ข้อมูลไม่หายไม่เบิ้ล</div>
       </div>
 
       <div class="hack-card ux" data-label="Compliance">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
-        <h3>ข้อมูล biometric ต้องลบได้จริง + พิสูจน์ได้</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg><span>ข้อมูล biometric ต้องลบได้จริง + พิสูจน์ได้</span></h3>
         <p>PDPA ไม่ใช่แค่ "มีปุ่มลบ" — ต้องลบให้ครบทุก store จริง และต้องมีหลักฐานว่าใครทำอะไรกับข้อมูลเมื่อไหร่ ที่แก้ย้อนหลังไม่ได้</p>
         <div class="highlight">แก้: erasure worker เดินลบผ่าน <code>all-stores-registry</code> ทุก adapter + audit log แบบ WORM + hash-chain (แก้ย้อนไม่ได้) + provenance export — consent, ลบ, และการพิสูจน์ ครบเป็นระบบ ไม่ใช่ feature แปะข้าง</div>
       </div>

@@ -1198,43 +1198,37 @@
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Zero-Knowledge">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
-        <h3>อยากดู dashboard บน cloud แต่ห้าม cloud เห็นเงิน</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>อยากดู dashboard บน cloud แต่ห้าม cloud เห็นเงิน</span></h3>
         <p>deploy static ขึ้น Vercel = ใครเปิดลิงก์ก็เห็น ถ้าฝังตัวเลขจริงลงไฟล์ = มูลค่าพอร์ตหลุดทันที</p>
         <div class="highlight">แก้: เข้ารหัส payload ด้วย <code>AES-256-GCM + PBKDF2 250k</code> ในเครื่องก่อน แล้ว push เฉพาะ ciphertext · dashboard ถอดรหัสฝั่ง client ด้วย Web Crypto หลังผู้ใช้ใส่ passphrase — cloud ถือแต่ blob ที่อ่านไม่ออก</div>
       </div>
 
       <div class="hack-card arch" data-label="Serverless">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <h3>LINE webhook verify signature ไม่ผ่าน</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>LINE webhook verify signature ไม่ผ่าน</span></h3>
         <p>ต้อง verify <code>x-line-signature</code> จาก raw body — แต่ Vercel parse body เป็น object ให้ก่อน ทำให้ HMAC ที่คำนวณไม่ตรง เลย reject ของจริง</p>
         <div class="highlight">แก้: ปิด parser (<code>bodyParser: false</code>) แล้วอ่าน raw stream เอง → คำนวณ HMAC-SHA256 บน byte ดิบเป๊ะ ๆ ก่อนค่อย <code>JSON.parse</code> — signature จึงตรง กันคนยิง webhook ปลอมได้จริง</div>
       </div>
 
       <div class="hack-card devops" data-label="Automation">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
-        <h3>เลขต้องสดทุกวัน แต่คีย์ห้ามออกจากเครื่อง</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span>เลขต้องสดทุกวัน แต่คีย์ห้ามออกจากเครื่อง</span></h3>
         <p>ถ้าให้ cloud คำนวณมูลค่า = ต้องเอาคีย์ขึ้น cloud (ขัดกับ zero-knowledge) แต่ถ้าไม่อัปเดต ตัวเลขก็ค้าง</p>
         <div class="highlight">แก้: ให้ Mac เป็น source of truth — <code>launchd</code> ปลุก Bun script ทุกเช้า ดึงราคา → คำนวณ → เข้ารหัส → git push เอง · คีย์อ่านจาก macOS Keychain ไม่เคยขึ้น cloud · git push กลายเป็น deploy pipeline</div>
       </div>
 
       <div class="hack-card platform" data-label="Data Privacy">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>
-        <h3>cloud routine ต้องรู้ "โซนราคา" แต่ห้ามรู้ "จำนวนหุ้น/เงิน"</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg><span>cloud routine ต้องรู้ "โซนราคา" แต่ห้ามรู้ "จำนวนหุ้น/เงิน"</span></h3>
         <p>routine ฝั่ง cloud ต้องเทียบราคาสดกับ entry/stop เพื่อเตือน — แต่ข้อมูลพวกนั้นอยู่ปนกับจำนวนหุ้นและมูลค่าจริง</p>
         <div class="highlight">แก้: สร้าง <code>publish-levels</code> ที่คัดออกมาเฉพาะ ticker + โซน + held-flag ลง JSON สาธารณะ · มี <code>--check</code> รัน regex กันคำอย่าง share/cash/value/บาท หลุด — ผิดเมื่อไหร่ build fail</div>
       </div>
 
       <div class="hack-card ux" data-label="Anti-Spam">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
-        <h3>เตือนซ้ำ ๆ ทุกวันจนน่ารำคาญ</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg><span>เตือนซ้ำ ๆ ทุกวันจนน่ารำคาญ</span></h3>
         <p>ราคายังอยู่ใต้ stop หลายวันติด = ถ้ายิงทุกวันคนก็เลิกอ่าน · แถม Mac กับ cloud อาจเตือนเรื่องเดียวกันซ้อนกัน</p>
         <div class="highlight">แก้: cooldown ราย <code>ticker:kind</code> (เตือนแล้วเงียบ N วัน) + แบ่งหน้าที่ชัด — Mac ยิงเฉพาะ stop/trim ที่ safety-critical, cloud รับ entry nudge ไป กันเตือนซ้ำและกัน alert fatigue</div>
       </div>
 
       <div class="hack-card perf" data-label="Reliability">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>
-        <h3>ดึงราคาพลาดตอนเครื่องเพิ่งตื่นจาก sleep</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg><span>ดึงราคาพลาดตอนเครื่องเพิ่งตื่นจาก sleep</span></h3>
         <p>launchd ปลุกงานตอน Mac เพิ่งตื่น — บางครั้ง WiFi ยังไม่กลับมา ทำให้ fetch ราคาแรก ๆ ล้มเหลว แล้วงานทั้งรอบพัง</p>
         <div class="highlight">แก้: ห่อ fetch ด้วย retry 3 ครั้ง + หน่วง 4 วินาทีต่อรอบ (เผื่อเน็ตกลับ) · ทั้ง flow ออกแบบ best-effort — pull ไม่ได้ก็ update ต่อ, publish พลาดก็ไม่ล้มทั้งงาน — บทเรียน: งาน cron ต้องทน network ไม่พร้อม</div>
       </div>

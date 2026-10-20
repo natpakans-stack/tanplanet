@@ -1276,43 +1276,37 @@
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Browser API">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg>
-        <h3>เว็บ target ไม่รับ synthetic keystroke</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg><span>เว็บ target ไม่รับ synthetic keystroke</span></h3>
         <p>ช่องพรอมต์ใช้ rich-text editor (Lexical) ที่ปุ่ม generate จะเปิดก็ต่อเมื่อมี input จริงจากคน — ยิง event ด้วย JS ธรรมดา editor ไม่รับรู้ ปุ่มไม่เปิด</p>
         <div class="highlight">แก้: ใช้ <code>chrome.debugger</code> (CDP) — <code>Input.insertText</code> + <code>dispatchMouseEvent</code> เป็น trusted input เหมือนคนพิมพ์จริง · หา center ของช่อง/ปุ่มด้วยการ inject function เข้าไปวัด <code>getBoundingClientRect()</code> ในหน้า</div>
       </div>
 
       <div class="hack-card ux" data-label="Anti-bot">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <h3>เว็บอีคอมเมิร์ซบล็อกการ scrape</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>เว็บอีคอมเมิร์ซบล็อกการ scrape</span></h3>
         <p>เปิด URL สินค้าจาก automation ตรงๆ มักโดน WAF/anti-bot บล็อก — ดึงข้อมูลไม่ได้ตั้งแต่ต้น</p>
         <div class="highlight">แก้: ทำ <code>passive</code> scrape — content script ทำงานบน "หน้าที่ user เปิดเอง" (เสิร์ช/กดจากหน้าร้านตามปกติ) จึงไม่ trigger anti-bot ที่จับ automated navigation · แยก adapter ต่อเว็บ (Shopee API / generic JSON-LD)</div>
       </div>
 
       <div class="hack-card arch" data-label="DOM Resilience">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-        <h3>DOM เว็บ target เปราะ + มีปุ่มหลอก</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>DOM เว็บ target เปราะ + มีปุ่มหลอก</span></h3>
         <p>เว็บ target ใช้ class random (<code>sc-*</code>) ที่เปลี่ยนทุก build — locate ด้วย selector ตายตัวไม่ได้ · ปุ่ม "+" (เพิ่ม source) กับปุ่ม generate มีคำใกล้กัน กดผิดพัง</p>
         <div class="highlight">แก้: locate <code>by-text/by-role</code> แทน class — filter ปุ่มที่ visible + enabled + ข้อความ match <code>generate/create</code> แล้ว<strong>ตัดปุ่ม add ทิ้งชัดเจน</strong> (ถ้าไม่เจอปุ่มที่ถูก = คืน null ไม่ fallback ไปโดนปุ่มอื่น)</div>
       </div>
 
       <div class="hack-card platform" data-label="Config-driven">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg>
-        <h3>พรอมต์/ตัวเลือก hardcode = จูนที ship ที</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg><span>พรอมต์/ตัวเลือก hardcode = จูนที ship ที</span></h3>
         <p>เดิมพรอมต์ 4 โหมด + ตัวเลือกทั้งหมดฝังใน <code>sidepanel.js</code> — จูนพรอมต์แต่ละครั้งต้อง build + แจก extension ใหม่</p>
         <div class="highlight">แก้: ยกพรอมต์/ตัวเลือก/รูปปกขึ้น backend ที่แก้ผ่าน CMS ได้ → extension ดึง <code>GET /config</code> มา render · มี <code>config-fallback.js</code> (auto-gen จาก seed) ให้ทำงานได้แม้ backend ล่ม</div>
       </div>
 
       <div class="hack-card devops" data-label="Security">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
-        <h3>ถือ LLM key ให้ user = แบกความเสี่ยง</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>ถือ LLM key ให้ user = แบกความเสี่ยง</span></h3>
         <p>ถ้า backend เก็บคีย์ AI แทน user ต้องแบก cost/quota + ความเสี่ยงคีย์รั่ว + ต้องทำ proxy layer เพิ่ม</p>
         <div class="highlight">แก้: นโยบาย <strong>BYOK ตลอดทุก phase</strong> — คีย์อยู่ใน <code>chrome.storage.local</code> ของ user เท่านั้น ไม่เข้า backend · ไม่มี LLM proxy, ไม่รับ cost, ตัดความเสี่ยงคีย์รั่วฝั่งเราออกทั้งหมด</div>
       </div>
 
       <div class="hack-card perf" data-label="Abstraction">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M15 8V2"/><path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"/><path d="M9 8V2"/></svg>
-        <h3>รองรับหลาย LLM provider โดยไม่บวมโค้ด</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M15 8V2"/><path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"/><path d="M9 8V2"/></svg><span>รองรับหลาย LLM provider โดยไม่บวมโค้ด</span></h3>
         <p>user อาจใช้ OpenAI / DeepSeek / Gemini / Qwen — เขียน integration แยกทีละเจ้าคือโค้ดซ้ำ + maintain ยาก</p>
         <div class="highlight">แก้: ทุก provider พูด OpenAI chat/completions ได้ (Bearer + messages) → เก็บเป็น <strong>ตาราง 1 แถวต่อ provider</strong> (url + default model) · เพิ่ม provider ใหม่ = เพิ่มแถวเดียว ไม่แตะ logic เรียก LLM</div>
       </div>

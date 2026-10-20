@@ -1683,43 +1683,37 @@
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Rendering">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
-        <h3>สร้าง PDF ภาษาไทยให้ตัวอักษรเป๊ะ</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>สร้าง PDF ภาษาไทยให้ตัวอักษรเป๊ะ</span></h3>
         <p>ฟอนต์มาตรฐานของ pdf-lib วาดภาษาไทยไม่ได้ (สระ/วรรณยุกต์เพี้ยน) แต่ HR ต้องอ่านใบสมัครไทยที่ถูกต้อง 100%</p>
         <div class="highlight">แก้: render หน้าปกด้วย <strong>headless Chrome (puppeteer)</strong> ที่โหลดฟอนต์ Anuphan จริง → ได้ PDF หน้าปก แล้วค่อยใช้ <code>pdf-lib</code> merge กับเรซูเม่ &middot; ส่วน footer ที่ต้องปั๊มทุกหน้า ใช้วิธี <strong>screenshot เป็นรูป</strong> แล้ว embed กัน glyph ไทยเพี้ยนตอน stamp</div>
       </div>
 
       <div class="hack-card devops" data-label="Serverless">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-        <h3>เปิดเบราว์เซอร์บน serverless ไม่ได้ตรง ๆ</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span>เปิดเบราว์เซอร์บน serverless ไม่ได้ตรง ๆ</span></h3>
         <p>Puppeteer ต้องมี Chrome binary — บนเครื่อง dev มี Chrome อยู่แล้ว แต่บน serverless ไม่มี และ Chrome เต็มตัวใหญ่เกิน limit</p>
         <div class="highlight">แก้: ตรวจ env (<code>VERCEL</code> / <code>AWS_REGION</code>) → บน serverless โหลด <code>@sparticuz/chromium</code> (binary ที่ตัดให้เล็กพอ), บนเครื่อง dev ชี้ไป Chrome ที่ติดตั้งไว้ — โค้ดชุดเดียวรันได้ทั้งสอง environment</div>
       </div>
 
       <div class="hack-card platform" data-label="PII Safety">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <h3>ใบสมัครมี PII ห้ามหลุด public API</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>ใบสมัครมี PII ห้ามหลุด public API</span></h3>
         <p>Sanity เอกสารที่ published อ่านได้ผ่าน public API — ถ้าเก็บใบสมัครแบบปกติ ใครก็ query เลขบัตร/เบอร์โทรผู้สมัครได้</p>
         <div class="highlight">แก้: บันทึกเป็น <strong>draft</strong> (<code>_id = drafts.&lt;uuid&gt;</code>) ซึ่ง public API มองไม่เห็น แต่ HR เห็นใน Studio &middot; write token เป็น <strong>server-only</strong> (ไม่ขึ้นต้น <code>NEXT_PUBLIC_</code>) &middot; ตรวจ input ฝั่ง server ทุกฟิลด์ก่อนบันทึก</div>
       </div>
 
       <div class="hack-card perf" data-label="Non-blocking">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
-        <h3>Gen PDF + ส่งเมล ช้า → ผู้สมัครรอนาน</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg><span>Gen PDF + ส่งเมล ช้า → ผู้สมัครรอนาน</span></h3>
         <p>ถ้ารอ render PDF และส่งเมลให้เสร็จก่อนตอบ ผู้สมัครจะเห็น loading ค้างหลายวินาที — ประสบการณ์แย่</p>
         <div class="highlight">แก้: ใช้ <code>after()</code> ของ Next.js — <strong>ตอบผู้สมัครว่า "สำเร็จ" ทันที</strong> หลังบันทึก แล้วค่อย generate PDF + ส่งเมลแจ้ง HR เป็นงานเบื้องหลัง (ตั้ง <code>maxDuration = 60</code> เผื่องานหนัก) ผู้สมัครไม่ต้องรอ</div>
       </div>
 
       <div class="hack-card arch" data-label="Graceful Fallback">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
-        <h3>เว็บต้อง live ก่อนคีย์ครบ</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg><span>เว็บต้อง live ก่อนคีย์ครบ</span></h3>
         <p>ตอนเริ่มยังไม่มี Sanity project / Resend key / write token — แต่ต้อง publish เว็บให้ทันเพื่อเริ่มประชาสัมพันธ์</p>
         <div class="highlight">แก้: ทุกจุดที่ต่อ service มี fallback — CMS ยังไม่ตั้งก็ใช้ <strong>seed data</strong> (ตำแหน่งงานตัวอย่าง), เมลยังไม่ตั้งก็ตอบ <strong>stub</strong> แล้ว log, ฟอร์มยังทำงานได้ครบ — พอใส่ env ทีหลัง ระบบ "สลับไปของจริง" อัตโนมัติโดยไม่ต้องแก้โค้ด</div>
       </div>
 
       <div class="hack-card ux" data-label="i18n Content">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg>
-        <h3>แยกไอคอน/ภาพ ออกจากข้อความ 2 ภาษา</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>แยกไอคอน/ภาพ ออกจากข้อความ 2 ภาษา</span></h3>
         <p>section ในหน้าแรกมีทั้งไอคอน รูป และข้อความ — ถ้าเก็บทุกอย่างปนกันใน dictionary จะแก้ภาษายากและ layout พังง่าย</p>
         <div class="highlight">แก้: เก็บ <strong>ข้อความ</strong>ไว้ใน dictionary (แปลได้), แต่ <strong>ไอคอน/ลำดับรูป</strong>ผูกไว้ในโค้ดเป็น metadata แล้ว map เข้ากันด้วย index ตอน render — นักแปลแก้เฉพาะข้อความ ส่วนโครงหน้าคงเดิมทั้ง 2 ภาษา</div>
       </div>

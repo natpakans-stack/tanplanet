@@ -1289,43 +1289,37 @@
 
     <div class="hack-grid">
       <div class="hack-card ux" data-label="UX">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-        <h3>LIFF Tall size — 6 fields ใน 1 viewport</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg><span>LIFF Tall size — 6 fields ใน 1 viewport</span></h3>
         <p>เลือก LIFF size = Tall (~675px ใช้งานได้) แต่ Owner ต้องกรอก 3 มื้อ × 2 โรง = 6 ช่อง พร้อมกัน ถ้า scroll เยอะ keyboard ขึ้นบัง row ล่าง</p>
         <div class="highlight">แก้: Grid table layout (3 rows × 2 cols) แทน 6 input field แยก — ใช้ vertical space น้อยกว่าครึ่ง + เห็น overview ทั้งวันในที่เดียว + total cell คำนวณ realtime ที่ด้านล่าง</div>
       </div>
 
       <div class="hack-card platform" data-label="LINE Platform">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-        <h3>Bot ในกลุ่ม — ตอบทุกข้อความ = รบกวน</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>Bot ในกลุ่ม — ตอบทุกข้อความ = รบกวน</span></h3>
         <p>บอทอยู่ในกลุ่มที่คนงานคุยกันปกติ — ถ้าตอบทุก text message (คำสั่ง "สวัสดี" "เมื่อไหร่" ฯลฯ) จะกลายเป็น spam ทันที</p>
         <div class="highlight">แก้: ใน webhook handler — เช็ค <code>event.message.text.trim() === "เมนูหลัก"</code> เป็น trigger เดียว ข้อความอื่น bot เงียบ 100% ผลคือบอทเงียบเป็นธรรมชาติเหมือนสมาชิกในกลุ่ม แค่เรียกตอนจะใช้</div>
       </div>
 
       <div class="hack-card arch" data-label="LINE Limit">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
-        <h3>Push ไป group ไม่ใช่ loop users</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span>Push ไป group ไม่ใช่ loop users</span></h3>
         <p>คนงานในกลุ่มไม่ได้ add bot 1-on-1 → LINE block การ <code>pushMessage</code> หา <code>userId</code> ตรงๆ → scheduler ส่ง bubble ให้ทุกคนไม่ได้</p>
         <div class="highlight">แก้: เปลี่ยน design — webhook handle <code>join</code> event บันทึก <code>groupId</code> ลง sheet tab <code>groups</code> → scheduler push ไป <code>groupId</code> (ส่งครั้งเดียว ทุกคนในกลุ่มเห็น) ใน postback ยังจับ <code>userId</code> ของคนกดได้ปกติ — ได้ทั้ง broadcast efficiency + member identification</div>
       </div>
 
       <div class="hack-card precision" data-label="Data Quality">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
-        <h3>Timestamp อ่านยาก ใน Sheet</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg><span>Timestamp อ่านยาก ใน Sheet</span></h3>
         <p>ครั้งแรกเก็บเป็น ISO UTC (<code>2026-05-24T06:55:38.824Z</code>) — Owner เปิด Sheet อ่านไม่รู้เรื่อง ต้องคำนวณ +7 ทุกครั้ง</p>
         <div class="highlight">แก้: <code>formatBangkokTimestamp()</code> ใช้ <code>Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Bangkok" })</code> ให้ format <code>YYYY-MM-DD HH:mm:ss</code> ตรงตามเวลาไทยที่ Owner เข้าใจทันที + <code>parseBangkokTimestamp()</code> สำหรับคำนวณ duration/delay กลับเป็น Date + migration script update ข้อมูลเก่าให้เป็น format ใหม่ (idempotent)</div>
       </div>
 
       <div class="hack-card devops" data-label="Scheduler">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
-        <h3>Vercel Hobby cron จำกัด 2 jobs/day</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg><span>Vercel Hobby cron จำกัด 2 jobs/day</span></h3>
         <p>ต้องการ trigger 6 ครั้ง/วัน (5:45 / 8:00 / 9:45 / 11:00 / 15:45 / 18:00) — Vercel Hobby plan ให้แค่ 2 cron jobs/day ไม่พอ</p>
         <div class="highlight">แก้: ออกแบบ scheduler endpoint ให้ตรวจเวลาเองภายใน (<code>bangkokNow().time</code>) → ใช้ <code>cron-job.org</code> (ฟรี ยิงทุก 1 นาทีได้) ยิง 1,440 ครั้ง/วัน → endpoint ตอบ <code>due=0</code> เฉพาะตอนไม่ตรงเวลา (95% ของเวลา) — ไม่เปลือง LINE quota เลย รองรับการเพิ่ม schedule ในอนาคตได้โดยไม่ต้องแก้ cron config</div>
       </div>
 
       <div class="hack-card perf" data-label="DX">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-        <h3>Next.js 16 Turbopack + bun ทำเครื่องค้าง</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Next.js 16 Turbopack + bun ทำเครื่องค้าง</span></h3>
         <p>ตอน dev — <code>bun dev</code> (Turbopack default) + ngrok + traffic เข้า → MacBook ค้าง kernel panic ต้อง force reboot 2 ครั้งติด</p>
         <div class="highlight">แก้: สลับเป็น <code>next dev --webpack</code> (Next.js 16 ยัง support) — RSS 2.3GB ใช้งานได้ stable + เก็บ Turbopack ไว้ใน script สำรอง <code>dev:turbo</code> สำหรับลองใหม่ตอน upgrade Next.js version ภายหลัง บทเรียน: tech stack ใหม่ๆ ต้องมี fallback path เสมอ</div>
       </div>

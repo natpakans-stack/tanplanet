@@ -1,131 +1,1082 @@
-<title>Motion Graphic ประกอบคลิป YouTube — แทน</title>
-<meta name="description" content="ผลงาน Motion Graphic ประกอบคลิป YouTube: Showreel, ฉากภาพวาดจิตรกรรมไทย 2.5D เรื่องไหเงินใต้ดิน และ Long Form จาก ShotDeck">
-<meta property="og:image" content="https://projects.tanplanet.work/motion-reel-portfolio/posters/showreel-v2.jpg">
-<link rel="canonical" href="https://projects.tanplanet.work/motion-reel-portfolio/">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  /* โทนเดียวกับปก Fastwork (covers/og-cover.html) */
-  :root { --bg:#0F0F12; --card:#18181D; --ink:#F5F2EC; --mute:#A39E96; --line:rgba(245,242,236,.12); --accent:#FF5A1F; color-scheme:dark; }
-  * { box-sizing:border-box; margin:0; }
-  body { background:var(--bg); color:var(--ink); font-family:Anuphan, "Noto Sans Thai", sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased; }
-  .wrap { max-width:1280px; margin:0 auto; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); }
-  @media (min-width:768px) { .wrap { padding-left:max(40px, env(safe-area-inset-left, 0px)); padding-right:max(40px, env(safe-area-inset-right, 0px)); } }
-  .sec-head > *, .grid > * { min-width:0; }
-  video { max-width:100%; }
-  video:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Motion Graphic — เทคนิคเล่าเรื่องในคลิป YouTube</title>
+  <meta name="description" content="Portfolio: Motion Graphic ประกอบคลิป YouTube ตัดเป็นชิ้นสั้นทีละเทคนิค ทั้งซูมเข้าเอกสาร ตัวเลขวิ่ง พาดหัวข่าวซ้อน และฉากภาพวาดจิตรกรรมไทย 2.5D ที่กล้องเคลื่อนได้ สร้างด้วย Remotion">
+  <meta property="og:title" content="Motion Graphic — เทคนิคเล่าเรื่องในคลิป YouTube">
+  <meta property="og:description" content="Portfolio: Motion Graphic ประกอบคลิป YouTube ตัดเป็นชิ้นสั้นทีละเทคนิค ทั้งซูมเข้าเอกสาร ตัวเลขวิ่ง พาดหัวข่าวซ้อน และฉากภาพวาดจิตรกรรมไทย 2.5D ที่กล้องเคลื่อนได้ สร้างด้วย Remotion">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://projects.tanplanet.work/motion-reel-portfolio/">
+  <meta property="og:image" content="https://projects.tanplanet.work/motion-reel-portfolio/clips/jar-dive.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Motion Graphic — เทคนิคเล่าเรื่องในคลิป YouTube">
+  <meta name="twitter:description" content="Portfolio: Motion Graphic ประกอบคลิป YouTube ตัดเป็นชิ้นสั้นทีละเทคนิค ทั้งซูมเข้าเอกสาร ตัวเลขวิ่ง พาดหัวข่าวซ้อน และฉากภาพวาดจิตรกรรมไทย 2.5D ที่กล้องเคลื่อนได้ สร้างด้วย Remotion">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0f1f'/><rect x='18' y='26' width='64' height='48' rx='8' fill='none' stroke='%23f59e0b' stroke-width='6'/><path d='M44 40l16 10-16 10z' fill='%23f59e0b'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  header { padding:56px 0 32px; }
-  .back { display:inline-block; margin-bottom:24px; color:var(--mute); text-decoration:none; font-size:15px; padding:10px 0; }
-  .back:hover, .back:focus-visible { color:var(--ink); }
-  .eyebrow { color:var(--accent); font-weight:600; font-size:14px; letter-spacing:.08em; text-transform:uppercase; }
-  h1 { font-size:clamp(36px, 7vw, 72px); font-weight:700; line-height:1.15; letter-spacing:-.01em; margin-top:8px; text-wrap:balance; }
-  .lead { color:var(--mute); font-size:18px; max-width:40em; margin-top:16px; }
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #b45309;
+      --accent-light: #fef3c7;
+      --accent-dark: #78350f;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
 
-  section { padding:56px 0; border-top:1px solid var(--line); }
-  .sec-head { display:grid; gap:8px; margin-bottom:28px; }
-  @media (min-width:768px) { .sec-head { grid-template-columns:1fr 1.4fr; gap:40px; align-items:end; } }
-  .num { font-family:ui-monospace, Menlo, monospace; color:var(--accent); font-size:14px; }
-  h2 { font-size:clamp(26px, 4vw, 40px); font-weight:700; line-height:1.25; }
-  .sec-head p { color:var(--mute); }
-  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
-  .chips span { font-size:13px; padding:4px 12px; border-radius:999px; box-shadow:inset 0 0 0 1px var(--line); color:var(--mute); }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  .grid { display:grid; gap:24px; }
-  @media (min-width:768px) { .grid.two { grid-template-columns:1fr 1fr; } .grid.three { grid-template-columns:repeat(3, 1fr); } }
-  figure { display:grid; gap:12px; }
-  video { width:100%; aspect-ratio:16/9; display:block; border-radius:12px; background:var(--card); box-shadow:0 0 0 1px var(--line); }
-  figcaption b { display:block; font-weight:600; font-size:17px; }
-  figcaption span { color:var(--mute); font-size:15px; }
-  .dur { font-family:ui-monospace, Menlo, monospace; font-size:13px; color:var(--accent); margin-left:6px; }
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #0a0f1f 0%, #121b36 40%, #3f2d12 78%, #78350f 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(251,191,36,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #78350f, #f59e0b, #fde68a);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent { color: #fcd34d; }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
 
-  footer { padding:48px 0 64px; border-top:1px solid var(--line); color:var(--mute); }
-  footer b { color:var(--ink); }
-</style>
-<div class="wrap">
-  <header>
-    <a class="back" href="/">← ผลงานทั้งหมด</a>
-    <div class="eyebrow">Motion Graphic ประกอบคลิป YouTube</div>
-    <h1>เล่าเรื่องยาก ๆ<br>ให้ดูง่ายและน่าดูจนจบ</h1>
-    <p class="lead">รวมผลงาน Motion Graphic ทั้งฉากภาพวาด 2.5D, การ์ดตัวเลข, kinetic typography และคลิปยาวแบบ long form กดเล่นได้ทุกชิ้น</p>
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro { padding: 56px 0 32px; }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .section-intro p { color: var(--text-secondary); font-size: 1rem; }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0a0f1f, #223056);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block code { background: rgba(255,255,255,0.14); color: #fcd34d; }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p { font-size: 1.05rem; line-height: 1.7; position: relative; z-index: 1; }
+    .quote-block .author { margin-top: 12px; font-size: 0.82rem; opacity: 0.78; }
+
+    /* ===== Pain / Solution Cards ===== */
+    .pain-grid, .solution-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .pain-card, .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .pain-card { border-left: 4px solid var(--red); }
+    .solution-card { border-left: 4px solid var(--accent); }
+    .pain-card .emoji, .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3, .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p, .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(180,83,9,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers { display: flex; flex-direction: column; gap: 12px; max-width: 560px; margin: 0 auto; }
+    .arch-layer { padding: 14px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(180,83,9,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: var(--navy); color: #cbd5e1; border: 1px solid #223056; }
+    .arch-arrow { text-align: center; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+    .arch-sub { display: flex; justify-content: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .arch-layer.infra .arch-sub span { background: rgba(255,255,255,0.10); }
+
+    /* ===== Device Mockup (320x480 @ scale) ===== */
+    .dev-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .dev-frame {
+      width: 348px;
+      max-width: 100%;
+      background: #1a1a1c;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 14px 40px rgba(10,15,31,0.35);
+    }
+    .dev-screen {
+      background: var(--navy);
+      border-radius: 6px;
+      overflow: hidden;
+      color: #f2f5ff;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+    .dev-hero {
+      background: #121b36;
+      padding: 12px 14px 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .dev-clock { font-size: 2.4rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+    .dev-date { color: #8492bc; font-size: 0.72rem; margin-top: 4px; }
+    .dev-hero-right { text-align: right; font-size: 0.72rem; color: #8492bc; }
+    .dev-hero-right .t { color: #f2f5ff; font-size: 1.05rem; font-weight: 600; }
+    .dev-list { padding: 8px; display: flex; flex-direction: column; gap: 7px; }
+    .dev-card {
+      background: #161f3c;
+      border-radius: 8px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dev-card .body { flex: 1; min-width: 0; }
+    .dev-card .ttl { color: #8492bc; font-size: 0.68rem; letter-spacing: 0.02em; }
+    .dev-card .val { font-size: 0.95rem; font-weight: 600; }
+    .dev-card .sub { color: #8492bc; font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dev-card .up { color: #4ade80; }
+    .dev-card .warn { color: #fbbf24; }
+    .dev-card .down { color: #f87171; }
+    .dev-blob {
+      width: 42px;
+      height: 34px;
+      border-radius: 6px;
+      background: #223056;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .dev-bar { height: 5px; border-radius: 3px; background: #223056; margin-top: 6px; overflow: hidden; }
+    .dev-bar i { display: block; height: 100%; background: #fbbf24; }
+    .dev-caption { font-size: 0.8rem; color: var(--text-secondary); text-align: center; max-width: 420px; }
+
+    /* ===== Closing ===== */
+    .closing {
+      text-align: center;
+      padding: 48px 24px 64px;
+      border-top: 1px solid var(--border);
+      margin-top: 140px;
+      position: relative;
+    }
+    .mascot-half {
+      width: 180px;
+      height: 120px;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+    .mascot-half img { width: 100%; height: auto; display: block; }
+    .closing h2 { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .closing p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .closing .stack-icons { margin-top: 24px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+    .closing .links { margin-top: 24px; display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .closing .links a { color: var(--accent); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .closing .links a:hover { text-decoration: underline; }
+
+    .stack-icons { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .stack-icon {
+      padding: 4px 14px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* ===== Clips (เฉพาะหน้านี้) — คลิปสั้นเล่นวนเองเมื่อเลื่อนมาเห็น ===== */
+    .clip-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 16px; margin-top: 8px; }
+    @media (min-width: 720px) { .clip-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    .clip { display: grid; gap: 8px; align-content: start; }
+    .clip video { width: 100%; max-width: 100%; aspect-ratio: 16 / 9; display: block; border-radius: 10px; background: var(--navy); box-shadow: 0 0 0 1px var(--border); cursor: pointer; }
+    .clip figcaption { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; }
+    .clip figcaption b { display: block; color: var(--text); font-weight: 600; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m10 9 5 3-5 3z"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Remotion &middot; AI Art Direction &middot; 2.5D Motion
+      </div>
+      <h1>Motion Graphic<br><span class="accent">เล่าเรื่องยาก ๆ ในคลิป YouTube ให้คนดูจนจบ</span></h1>
+      <p>คลิปความรู้ที่มีแต่ภาพนิ่งกับเสียงบรรยาย คนดูเลื่อนผ่านตั้งแต่วินาทีแรก งานชุดนี้ใช้ Motion ช่วยเล่าเรื่อง ทั้งฉากภาพวาดจิตรกรรมไทยที่กล้องเคลื่อนได้ การ์ดตัวเลข และพาดหัวข่าวซ้อนกัน ทำเป็นระบบเพื่อให้ทุกตอนออกมาในโทนเดียวกัน</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Remotion</span>
+        <span class="hero-tag">2.5D Animation</span>
+        <span class="hero-tag">Kinetic Typography</span>
+        <span class="hero-tag">AI Image</span>
+        <span class="hero-tag">Thai TTS</span>
+        <span class="hero-tag">Art Direction</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#long">ดูงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#jar">ฉาก 2.5D</a>
+      </div>
+    </div>
   </header>
 
-  <section aria-labelledby="reel">
-    <div class="sec-head">
-      <div><div class="num">00</div><h2 id="reel">Showreel</h2></div>
-      <p>รวมไฮไลต์ทั้งหมดใน 40 วินาที</p>
-    </div>
-    <video src="videos/showreel-v2.mp4" poster="posters/showreel-v2.jpg" controls preload="none" playsinline></video>
-  </section>
+  <article>
 
-  <section aria-labelledby="jar">
-    <div class="sec-head">
-      <div><div class="num">01</div><h2 id="jar">ไหเงินใต้ดิน</h2></div>
-      <div>
-        <p>ฉากภาพวาดสไตล์จิตรกรรมไทยที่ขยับได้ กล้องเคลื่อนตามอารมณ์ของเรื่อง ตั้งแต่ไหเงินที่ฝังไว้ ไปจนถึงท้องพระคลังที่ว่างเปล่า</p>
-        <div class="chips"><span>2.5D Animation</span><span>Storytelling</span><span>Art Direction</span></div>
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>คลิปความรู้ไม่ได้แพ้เพราะเนื้อหา แต่แพ้ตั้งแต่ภาพแรก</h2>
+      <p>เนื้อหาดีแค่ไหน ถ้าภาพไม่ขยับ คนดูก็ไม่อยู่ฟังจนถึงจุดที่น่าสนใจ</p>
+    </section>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        <h3>ภาพนิ่งกับตัวหนังสือ ถูกเลื่อนผ่าน</h3>
+        <p>ภาพนิ่งที่มีเสียงพูดทับดูเหมือนสไลด์ คนดูตัดสินใจเลื่อนออกก่อนเรื่องจะเริ่มเข้มข้น</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h16"/><path d="M4 15h16"/><path d="M10 3 8 21"/><path d="M16 3l-2 18"/></svg>
+        <h3>ตัวเลขสำคัญ ผ่านไปเร็วจนจำไม่ได้</h3>
+        <p>ตัวเลขอย่าง "5 แสนบาทต่อเดือน เทียบกับ 16,000 ล้านบาท" ถ้าแค่พูดผ่าน ๆ คนดูจะไม่ทันเห็นว่ามันต่างกันมากแค่ไหน</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+        <h3>ภาพ AI ที่ดูออกว่าเป็น AI</h3>
+        <p>ภาพจาก AI ที่ไม่ได้กำกับมักมีหน้าตาเหมือนกันไปหมด คนดูจำได้ทันทีและเลิกเชื่อเนื้อหาไปด้วย</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+        <h3>ทำทีละตอน สไตล์เลยไม่นิ่ง</h3>
+        <p>ถ้าออกแบบใหม่ทุกตอน ช่องจะไม่มีหน้าตาของตัวเอง และใช้เวลาต่อคลิปมากเกินกว่าจะทำต่อเนื่องได้</p>
       </div>
     </div>
-    <div class="grid two">
-      <figure>
-        <video src="videos/1-jar-treasure.mp4" poster="posters/1-jar-treasure.jpg" controls preload="none" playsinline></video>
-        <figcaption><b>1/4 · ไหเงิน <span class="dur">0:19</span></b><span>กล้องดิ่งจากท้องทุ่งลงใต้ดิน แล้วเจอไหเงินที่ฝังไว้</span></figcaption>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="long">
+      <span class="eyebrow">Prototype</span>
+      <h2>เทคนิคที่ใช้ซ้ำได้ &mdash; เอกสาร ตัวเลข และตัวหนังสือ</h2>
+      <p>ตัดมาเป็นชิ้นสั้น ๆ ทีละเทคนิค จากงานคลิปยาวของโปรเจกต์ ShotDeck แต่ละชิ้นเป็นแม่แบบ เปลี่ยนแค่เนื้อหาก็ใช้กับตอนใหม่ได้</p>
+    </section>
+
+    <div class="clip-grid">
+      <figure class="clip">
+        <video src="clips/doc-zoom.mp4" poster="clips/doc-zoom.jpg" muted loop playsinline preload="none" aria-label="ซูมเข้าเอกสาร"></video>
+        <figcaption><b>ซูมเข้าเอกสาร</b>ดึงหนังสือพิมพ์เก่าขึ้นมา แล้วไฮไลต์บรรทัดที่ใช้อ้างอิง</figcaption>
       </figure>
-      <figure>
-        <video src="videos/2-siam-market-life.mp4" poster="posters/2-siam-market-life.jpg" controls preload="none" playsinline></video>
-        <figcaption><b>2/4 · ตลาดสยาม <span class="dur">0:24</span></b><span>บ้านหวย ร้านค้า และคลองเรือทั้งเช้าและค่ำ</span></figcaption>
+      <figure class="clip">
+        <video src="clips/count-up.mp4" poster="clips/count-up.jpg" muted loop playsinline preload="none" aria-label="ตัวเลขวิ่ง"></video>
+        <figcaption><b>ตัวเลขวิ่ง</b>ตัวเลขนับขึ้นแล้วมีแถบไฮไลต์ปิดท้าย</figcaption>
       </figure>
-      <figure>
-        <video src="videos/3-state-treasury.mp4" poster="posters/3-state-treasury.jpg" controls preload="none" playsinline></video>
-        <figcaption><b>3/4 · ท้องพระคลัง <span class="dur">0:10</span></b><span>กล้องเคลื่อนช้า ๆ ปูอารมณ์เรื่องเงินของรัฐ</span></figcaption>
+      <figure class="clip">
+        <video src="clips/compare.mp4" poster="clips/compare.jpg" muted loop playsinline preload="none" aria-label="เทียบตัวเลขสองยุค"></video>
+        <figcaption><b>เทียบตัวเลขสองยุค</b>ซ้ายกับขวาขึ้นทีละฝั่ง ให้เห็นว่าต่างกันมากแค่ไหน</figcaption>
       </figure>
-      <figure>
-        <video src="videos/4-dream-burden-empty.mp4" poster="posters/4-dream-burden-empty.jpg" controls preload="none" playsinline></video>
-        <figcaption><b>4/4 · ความฝันกับภาระ <span class="dur">0:27</span></b><span>ฉากปิดเรื่อง จากความฝันไปสู่ภาระ แล้วจบที่ไหว่างเปล่า</span></figcaption>
+      <figure class="clip">
+        <video src="clips/stats.mp4" poster="clips/stats.jpg" muted loop playsinline preload="none" aria-label="สถิติหลายช่อง"></video>
+        <figcaption><b>สถิติหลายช่อง</b>ตัวเลขสามชุดขึ้นตามจังหวะเสียงบรรยาย</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/quote.mp4" poster="clips/quote.jpg" muted loop playsinline preload="none" aria-label="คำพูดอ้างอิง"></video>
+        <figcaption><b>คำพูดอ้างอิง</b>ขีดเส้นใต้ประโยคสำคัญ แล้วค่อยขึ้นชื่อผู้พูด</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/headlines.mp4" poster="clips/headlines.jpg" muted loop playsinline preload="none" aria-label="พาดหัวข่าวซ้อนกัน"></video>
+        <figcaption><b>พาดหัวข่าวซ้อนกัน</b>ข่าวจากหลายปีวางซ้อนเหมือนตัดมาแปะ</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/title.mp4" poster="clips/title.jpg" muted loop playsinline preload="none" aria-label="ไตเติลเปิดเรื่อง"></video>
+        <figcaption><b>ไตเติลเปิดเรื่อง</b>ตัวหนังสือขึ้นทีละคำ แล้วไฮไลต์คำหลัก</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/cutout.mp4" poster="clips/cutout.jpg" muted loop playsinline preload="none" aria-label="ภาพตัดแปะ + ป้ายชี้"></video>
+        <figcaption><b>ภาพตัดแปะ + ป้ายชี้</b>ภาพวาดเก่าขยับเข้า แล้วป้ายชื่อชี้ตามตัวละคร</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/portrait.mp4" poster="clips/portrait.jpg" muted loop playsinline preload="none" aria-label="การ์ดแนะนำบุคคล"></video>
+        <figcaption><b>การ์ดแนะนำบุคคล</b>รูปบุคคลกับชื่อและตำแหน่ง ขึ้นพร้อมกัน</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/cartoon.mp4" poster="clips/cartoon.jpg" muted loop playsinline preload="none" aria-label="ซูมการ์ตูนเก่า"></video>
+        <figcaption><b>ซูมการ์ตูนเก่า</b>กล้องค่อย ๆ ซูมแล้ววงคำที่เป็นประเด็น</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/ep-card.mp4" poster="clips/ep-card.jpg" muted loop playsinline preload="none" aria-label="การ์ดเปิดตอน"></video>
+        <figcaption><b>การ์ดเปิดตอน</b>เปลี่ยนแค่เลขตอนกับชื่อเรื่องก็ใช้ได้ทันที</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/intro.mp4" poster="clips/intro.jpg" muted loop playsinline preload="none" aria-label="Intro ช่อง"></video>
+        <figcaption><b>Intro ช่อง</b>ไตเติลเปิดคลิปที่ใช้ซ้ำได้ทุกตอน</figcaption>
       </figure>
     </div>
-  </section>
 
-  <section aria-labelledby="long">
-    <div class="sec-head">
-      <div><div class="num">02</div><h2 id="long">Long Form ประกอบคลิป YouTube</h2></div>
-      <div>
-        <p>Motion สำหรับคลิปยาว มีทั้งไตเติล การ์ดเปิดตอน การ์ดตัวเลข และพาดหัวข่าวซ้อนกัน ทำเป็นระบบเพื่อให้ทุกตอนออกมาในโทนเดียวกัน</p>
-        <div class="chips"><span>Kinetic Typography</span><span>Explainer</span><span>Remotion</span></div>
+    <hr class="divider">
+
+    <section class="section-intro" id="jar">
+      <span class="eyebrow">Prototype</span>
+      <h2>ฉาก 2.5D &mdash; ภาพวาดจิตรกรรมไทยที่กล้องเคลื่อนได้</h2>
+      <p>จากเรื่อง "ไหเงินใต้ดิน" ใช้สไตล์ภาพเดียวตลอดทั้งเรื่อง แล้วให้กล้องเป็นตัวเล่า</p>
+    </section>
+
+    <div class="clip-grid">
+      <figure class="clip">
+        <video src="clips/jar-dive.mp4" poster="clips/jar-dive.jpg" muted loop playsinline preload="none" aria-label="กล้องดิ่งลงใต้ดิน"></video>
+        <figcaption><b>กล้องดิ่งลงใต้ดิน</b>จากท้องทุ่งลงไปเจอไหเงินที่ฝังไว้</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/crowd.mp4" poster="clips/crowd.jpg" muted loop playsinline preload="none" aria-label="ฝูงคนบ้านหวย"></video>
+        <figcaption><b>ฝูงคนบ้านหวย</b>ฉากคนเยอะที่ยังขยับได้ทั้งภาพ</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/boat.mp4" poster="clips/boat.jpg" muted loop playsinline preload="none" aria-label="คลองเรือยามเช้า"></video>
+        <figcaption><b>คลองเรือยามเช้า</b>กล้องเลื่อนตามเรือในคลอง</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/tiles.mp4" poster="clips/tiles.jpg" muted loop playsinline preload="none" aria-label="ป้ายตัวอักษรจีน"></video>
+        <figcaption><b>ป้ายตัวอักษรจีน</b>แพนกล้องผ่านแผงป้ายในโรงหวย</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/dream.mp4" poster="clips/dream.jpg" muted loop playsinline preload="none" aria-label="ความฝัน"></video>
+        <figcaption><b>ความฝัน</b>เมฆและภาพฝันลอยรอบตัวละคร</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/burden.mp4" poster="clips/burden.jpg" muted loop playsinline preload="none" aria-label="ภาระ"></video>
+        <figcaption><b>ภาระ</b>ตัวละครแบกกองกระดาษท่ามกลางพายุ</figcaption>
+      </figure>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน &mdash; 5 จังหวะ จากบทถึงคลิปที่พร้อมลง</h2>
+      <p>ส่วนที่ต้องใช้สายตาคนทำเอง ส่วนที่ซ้ำ ๆ ปล่อยให้เครื่องทำ</p>
+    </section>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg>
+        <h4>บทและเสียงบรรยาย</h4>
+        <p>อัดเสียงพากย์ไทยทีละบรรทัด แล้วให้ระบบถอดเสียงกลับมาตรวจว่าอ่านถูกคำ ก่อนจะเอาไปวางภาพ</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+        <h4>กำกับภาพให้เป็นชุดเดียว</h4>
+        <p>ล็อกสไตล์ภาพทั้งเรื่องก่อน แล้วสร้างภาพแต่ละฉากตามนั้น เกรดสีให้เข้ากัน ไม่ปล่อยภาพที่ดูออกว่าเป็น AI ผ่านไป</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/></svg>
+        <h4>จัดวางใน Remotion Studio</h4>
+        <p>ตั้งจังหวะการ์ด ตัวหนังสือ และการเคลื่อนกล้องให้ตรงกับเสียง ดูพรีวิวสดได้ทันทีโดยยังไม่ต้องเรนเดอร์</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6 6h.01"/><path d="M6 18h.01"/></svg>
+        <h4>เรนเดอร์บนเครื่องที่เปิดทิ้งไว้</h4>
+        <p>สั่งเรนเดอร์ไปที่เครื่องเซิร์ฟเวอร์ที่บ้าน คลิปยาวราว 1 นาทีใช้เวลาประมาณ 8 นาที ระหว่างนั้นทำอย่างอื่นต่อได้</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        <h4>ตรวจก่อนปล่อย</h4>
+        <p>เช็กว่าตัวหนังสือไม่ล้นพื้นที่ปลอดภัย ไม่มีเฟรมกะพริบ และเสียงดังเท่ากันทุกบรรทัด ก่อนเข้าคิวโพสต์</p>
       </div>
     </div>
-    <figure>
-      <video src="videos/LongDemo.mp4" poster="posters/LongDemo.jpg" controls preload="none" playsinline></video>
-      <figcaption><b>"ทำไมทั้งโลกพูดว่า OK" <span class="dur">0:39</span></b><span>สไตล์กระดาษตัดแปะ ใช้ภาพหนังสือพิมพ์เก่าและการ์ตูนล้อการเมืองยุค 1840</span></figcaption>
-    </figure>
-    <div class="grid two" style="margin-top:24px">
-      <figure>
-        <video src="videos/LongParts.mp4" poster="posters/LongParts.jpg" controls preload="none" playsinline></video>
-        <figcaption><b>คลิปเรื่องหวย <span class="dur">0:20</span></b><span>การ์ดตัวเลขใหญ่ คำพูดอ้างอิง และพาดหัวข่าวซ้อนกัน</span></figcaption>
-      </figure>
-      <figure>
-        <video src="videos/LongJar.mp4" poster="posters/LongJar.jpg" controls preload="none" playsinline></video>
-        <figcaption><b>ฉากเปิดเรื่องไหเงิน <span class="dur">0:09</span></b><span>ภาพวาดประกอบที่มีป้ายปี พ.ศ. กำกับ</span></figcaption>
-      </figure>
-    </div>
-    <div class="grid two" style="margin-top:24px">
-      <figure>
-        <video src="videos/Intro.mp4" poster="posters/Intro.jpg" controls preload="none" playsinline></video>
-        <figcaption><b>Intro ช่อง <span class="dur">0:09</span></b><span>ไตเติลเปิดคลิปที่ใช้ซ้ำได้ทุกตอน</span></figcaption>
-      </figure>
-      <figure>
-        <video src="videos/EpCard.mp4" poster="posters/EpCard.jpg" controls preload="none" playsinline></video>
-        <figcaption><b>การ์ดเปิดตอน <span class="dur">0:03</span></b><span>เปลี่ยนแค่เลขตอนกับชื่อเรื่องก็ใช้ได้ทันที</span></figcaption>
-      </figure>
-    </div>
-  </section>
 
-  <footer><b>แทน · tanplanet</b> · Designer &amp; Builder · มีไอเดียคลิปอยู่แล้ว ทักมาคุยกันได้เลยครับ</footer>
-</div>
-<script>
-  // เล่นทีละคลิป: กดเล่นอันใหม่ อันเดิมหยุดเอง
-  document.addEventListener('play', e => {
-    document.querySelectorAll('video').forEach(v => v !== e.target && v.pause());
-  }, true);
+    <hr class="divider">
+
+    <section class="section-intro" id="hacks">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>สี่บทเรียนจากการตัดคลิปจริง</h2>
+      <p>ส่วนใหญ่ได้มาจากการดูคลิปที่ทำออกไปแล้วรู้สึกว่า "ยังไม่ใช่"</p>
+    </section>
+
+    <div class="hack-grid">
+
+      <div class="hack-card" data-label="Shot selection">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>ช็อตที่สวยที่สุด ไม่ใช่ช็อตที่ดีที่สุดเสมอไป</span></h3>
+        <p>Showreel เวอร์ชันแรกเลือกช็อตที่ภาพสวยและมีตัวหนังสือชัด แต่พอเรียงต่อกันกลับดูเหมือนสไลด์ ไม่มีอะไรบอกว่านี่คืองาน Motion</p>
+        <div class="highlight"><strong>แก้:</strong> เลือกช่วงที่<strong>มีการกระทำ</strong> เช่น เอกสารถูกดึงขึ้นมาแล้วไฮไลต์ ตัวเลขวิ่ง หรือกล้องดิ่ง แล้วตัดให้ถึงจังหวะที่ภาพตอบแทนคนดู</div>
+      </div>
+
+      <div class="hack-card" data-label="Pacing">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>กล้องเคลื่อนแรงสุดตอนต้นฉาก</span></h3>
+        <p>ฉากภาพวาดส่วนใหญ่เคลื่อนกล้องแรงในช่วงแรก แล้วค่อย ๆ ช้าลง ถ้าตัดจากกลางฉากจะได้แต่ช่วงที่ภาพเกือบนิ่ง</p>
+        <div class="highlight"><strong>แก้:</strong> <strong>ตัดเข้าตั้งแต่วินาทีแรกของฉาก</strong> เพื่อให้ได้การเคลื่อนไหวเต็มที่ แล้วค่อยตัดออกก่อนภาพจะหยุด</div>
+      </div>
+
+      <div class="hack-card" data-label="Art direction">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>ภาพแต่ละฉากสวย แต่รวมกันแล้วไม่เป็นเรื่องเดียว</span></h3>
+        <p>สร้างภาพทีละฉากโดยไม่มีกติกากลาง ได้ภาพที่สีและลายเส้นต่างกันจนคนดูรู้สึกว่ากำลังดูคนละเรื่อง</p>
+        <div class="highlight"><strong>แก้:</strong> <strong>ล็อกสไตล์ก่อนสร้างภาพแรก</strong> ทั้งโทนสี ลายเส้น และพื้นผิว แล้วใช้กติกาเดียวกันทุกฉาก ไหเงินใต้ดินทั้ง 13 ฉากจึงดูเป็นจิตรกรรมชุดเดียวกัน</div>
+      </div>
+
+      <div class="hack-card" data-label="Thai voice">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>เสียงพากย์ไทยอ่านผิด และดังไม่เท่ากัน</span></h3>
+        <p>เสียงสังเคราะห์อ่านชื่อเฉพาะและคำไทยบางคำผิด และแต่ละบรรทัดดังไม่เท่ากัน ฟังแล้วสะดุด</p>
+        <div class="highlight"><strong>แก้:</strong> ทำ<strong>พจนานุกรมคำอ่าน</strong>ไว้ใช้ซ้ำ ให้ระบบ<strong>ถอดเสียงกลับมาเทียบกับบท</strong>ทุกบรรทัด และปรับความดังทุกบรรทัดให้อยู่ที่ระดับเดียวกัน</div>
+      </div>
+
+    </div>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">12</div><div class="label">เทคนิคที่ทำเป็นแม่แบบใช้ซ้ำ</div></div>
+      <div class="metric-card"><div class="num">13</div><div class="label">ฉากภาพวาดในเรื่องไหเงินใต้ดิน</div></div>
+      <div class="metric-card"><div class="num">~8</div><div class="label">นาที เวลาเรนเดอร์คลิปยาวราว 1 นาที</div></div>
+      <div class="metric-card"><div class="num">1080p</div><div class="label">ความละเอียดต้นฉบับทุกชิ้น</div></div>
+    </div>
+
+  </article>
+
+  <div class="closing">
+
+    <div class="mascot-half">
+
+      <img src="https://natpakans-stack.github.io/talk-to-figma-mcp/assets/aw-mascot.avif" alt="Aw mascot">
+
+    </div>
+    <h2>Motion Graphic ประกอบคลิป YouTube</h2>
+    <p>Motion ที่ใส่เพื่อให้เรื่องเดินหน้า ไม่ใช่ใส่เพื่อความสวยอย่างเดียว ทำเป็นแม่แบบเพื่อให้ทุกตอนใช้เวลาน้อยลงและหน้าตาเหมือนกัน</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Remotion</span>
+      <span class="stack-icon">React</span>
+      <span class="stack-icon">AI Image</span>
+      <span class="stack-icon">Thai TTS</span>
+      <span class="stack-icon">Speech-to-text QA</span>
+      <span class="stack-icon">FFmpeg</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+  <script>
+  // คลิปสั้นเล่นวนเองเฉพาะตอนอยู่ในจอ · ผู้ใช้ที่ตั้งลดการเคลื่อนไหว ต้องกดเล่นเอง
+  (function(){
+    var vids=document.querySelectorAll('.clip video');
+    var still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    vids.forEach(function(v){ v.addEventListener('click',function(){ v.paused?v.play():v.pause(); }); });
+    if(still||!('IntersectionObserver' in window)) return;
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ e.isIntersecting?e.target.play().catch(function(){}):e.target.pause(); }); },{threshold:0.4});
+    vids.forEach(function(v){ v.preload='metadata'; io.observe(v); });
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"Motion Graphic ประกอบคลิป YouTube","item":"https://projects.tanplanet.work/motion-reel-portfolio/"}
+  ]
+}
 </script>
+
+</body>
+</html>

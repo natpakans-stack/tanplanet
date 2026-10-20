@@ -1310,43 +1310,37 @@
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Model Bias">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
-        <h3>โมเดลที่ train เอง อ่านหน้านิ่งเป็น "angry"</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg><span>โมเดลที่ train เอง อ่านหน้านิ่งเป็น "angry"</span></h3>
         <p>โมเดล classifier ที่ fine-tune บนชุดข้อมูล public มี class imbalance หนัก (คลาสหนึ่งมีรูปมากกว่าอีกคลาสหลายเท่า) พอเจอ webcam จริงก็ลำเอียงไปคลาสที่ข้อมูลเยอะ — หน้านิ่งโดนอ่านเป็น angry มั่นใจสูง</p>
         <div class="highlight">แก้: หลังเทียบ per-class recall + ทดสอบสดแล้วเห็น failure mode ชัด จึงเปลี่ยนไปใช้ pretrained ViT (FER+) ที่ train บนชุดใหญ่และสมดุลกว่า — บทเรียน: หัวข้อ 2 ในส่วน Knowledge Domain</div>
       </div>
 
       <div class="hack-card arch" data-label="Signal Fusion">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
-        <h3>ViT ยังติดอ่าน "sad" บนหน้าปกติที่กำลังพูด</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg><span>ViT ยังติดอ่าน "sad" บนหน้าปกติที่กำลังพูด</span></h3>
         <p>แม้ pretrained ViT ดีกว่า แต่ก็ยัง sticky กับอารมณ์ลบบนหน้านิ่ง/หน้าพูด ทำให้ mood score เพี้ยนลบเกินจริง</p>
         <div class="highlight">แก้: เอาสัญญาณเชิงเรขาคณิตจาก FaceMesh (blendshape ขมวดคิ้ว/ยิ้ม) มา "gate" ผลของ ViT — ถ้าไม่มีหลักฐานขมวดคิ้วก็หน่วงความน่าจะเป็นของอารมณ์ลบลง, ถ้ายิ้มจริงก็ดัน happy ขึ้น รวมเป็น multimodal calibration ที่ชนะอคติของโมเดลเดียว</div>
       </div>
 
       <div class="hack-card platform" data-label="Tracking">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
-        <h3>ป้ายอารมณ์กระพริบไปมาระหว่างเฟรม</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg><span>ป้ายอารมณ์กระพริบไปมาระหว่างเฟรม</span></h3>
         <p>อ่านอารมณ์ทีละเฟรมอิสระ ทำให้ label เด้งสลับ happy/neutral/sad ตลอด ดูไม่นิ่ง และตัวตนของแต่ละหน้าก็สลับกันเวลาคนขยับ</p>
         <div class="highlight">แก้: จับคู่ใบหน้าข้ามเฟรมด้วย IoU tracking ให้แต่ละหน้ามี track id คงที่ แล้ว smooth เวกเตอร์ความน่าจะเป็นด้วย EMA ต่อ track — ป้ายจึงนิ่ง และ metric สะสมต่อคนได้ถูกตัว</div>
       </div>
 
       <div class="hack-card ux" data-label="Enrollment">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-        <h3>Face recognition ต้องมีชุดรูปก่อนถึงใช้ได้</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>Face recognition ต้องมีชุดรูปก่อนถึงใช้ได้</span></h3>
         <p>ระบบระบุตัวตนปกติต้องเตรียมรูป reference ของแต่ละคนล่วงหน้า — ไม่เวิร์กเวลาโฮสต์เปลี่ยนหน้างานบ่อย</p>
         <div class="highlight">แก้: ทำ click-to-enroll — operator คลิกใบหน้าในวิดีโอสด พิมพ์ชื่อ กด Enter ระบบดึง embedding ของเฟรมนั้นมาเฉลี่ยเข้าไฟล์ทันที เปิดใช้ recognition ได้เลยโดยไม่ต้องมีชุดรูปมาก่อน</div>
       </div>
 
       <div class="hack-card devops" data-label="Integration">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
-        <h3>จะแคปไลฟ์ + ดึง comment พร้อมกันยาก</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span>จะแคปไลฟ์ + ดึง comment พร้อมกันยาก</span></h3>
         <p>อยากได้ทั้งภาพวิดีโอไลฟ์ (เพื่ออ่านหน้า) และ metadata ไลฟ์ (comment/gift/viewer) ในแอปเดียว โดยไม่พึ่ง API ที่เข้าถึงยาก</p>
         <div class="highlight">แก้: ใช้ Electron WebContentsView ฝัง browser จริงเปิดไลฟ์ → แคปเฟรมส่งเข้าโมเดล + ต่อ live-comment connector อ่าน event comment/gift/like/join แบบสด แล้ว position view ให้ทับ placeholder ของ React ตลอดเวลา</div>
       </div>
 
       <div class="hack-card perf" data-label="Latency">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
-        <h3>Face detector คือคอขวด + เจอ bug ของ MPS</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg><span>Face detector คือคอขวด + เจอ bug ของ MPS</span></h3>
         <p>ขั้นตอน detect หน้าช้าสุดในไปป์ไลน์ และตัว detector ก็ชน bug ของ Apple MPS (pooling ต้องการขนาดหารลงตัว) ทำให้ค้าง</p>
         <div class="highlight">แก้: ปัก detector ไว้ที่ CPU เพื่อเลี่ยง bug แล้วให้ embedding + emotion วิ่งบน MPS, ทำ detect เว้นเฟรม + ประมวลผลแบบ async ต่อ WebSocket — จบที่ราว 8–12 FPS บน Apple M4 Pro พอสำหรับ monitoring สด</div>
       </div>

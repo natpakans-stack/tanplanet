@@ -1234,43 +1234,37 @@
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Multi-tenant">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
-        <h3>ข้อมูลข้าม workspace ห้ามรั่วแม้แถวเดียว</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>ข้อมูลข้าม workspace ห้ามรั่วแม้แถวเดียว</span></h3>
         <p>Agency ดูหลายร้านใน dashboard เดียว — พลาด scope query แค่ครั้งเดียวก็ข้อมูลรั่วข้ามลูกค้า ซึ่งเป็น non-negotiable</p>
         <div class="highlight">แก้: บังคับ <code>workspace_id</code> scoping ทุก query + <strong>Postgres RLS</strong> เป็นด่านสุดท้ายที่ DB, มี <strong>ESLint guard</strong> กันเขียน query ที่ไม่ scope, และ <strong>negative isolation test</strong> ยืนยันว่าไม่มี leak — isolation ฝังใน Definition of Done ไม่ดองไป hardening ท้าย</div>
       </div>
 
       <div class="hack-card arch" data-label="Tenancy">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-        <h3>ใครเป็นเจ้าของข้อมูล tenancy? (Model B)</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span>ใครเป็นเจ้าของข้อมูล tenancy? (Model B)</span></h3>
         <p>ทั้ง ecosystem มีหลาย product — ถ้าแต่ละตัวเก็บ workspace/membership/subscription เองจะ sync ไม่ตรงและ entitlement เพี้ยน</p>
         <div class="highlight">แก้: แยกหน้าที่ชัด — <strong>hub กลางเป็น authority</strong> ของ tenancy/entitlement (resolve workspace + verify สิทธิ์ผ่าน Hub API), <strong>Zitadel ทำแค่ identity (login)</strong> ส่วน แพลตฟอร์มไลฟ์ AI Avatar mirror membership มาใช้ในเครื่อง มี Prism mock ของ Hub ให้ dev ไม่ต้องรัน hub จริงทุกครั้ง</div>
       </div>
 
       <div class="hack-card perf" data-label="Realtime">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
-        <h3>คอมเมนต์ถล่ม แต่ avatar ตอบได้ทีละอย่าง</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg><span>คอมเมนต์ถล่ม แต่ avatar ตอบได้ทีละอย่าง</span></h3>
         <p>ช่วง peak คอมเมนต์เข้ามาพร้อมกันเป็นสิบ — ตอบทุกอันไม่ได้และไม่ควร ต้องเลือกตอบอันสำคัญก่อนในงบเวลาที่จำกัด</p>
         <div class="highlight">แก้: <strong>Reply Burst</strong> จัดคิว priority — ราคา/สต็อก (P1) แทรกก่อน chit-chat (P3), จำกัด &le;6 ต่อ batch, และ <strong>per-script TTL drop</strong> ทิ้งคอมเมนต์ที่ค้างเกินอายุเมื่อ script ถัดไปมา — กันคิวบวมและตอบตรงจังหวะ</div>
       </div>
 
       <div class="hack-card platform" data-label="SSE Stream">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
-        <h3>Console ต้องสด แต่เน็ตหลุด/ต่อใหม่ตลอด</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg><span>Console ต้องสด แต่เน็ตหลุด/ต่อใหม่ตลอด</span></h3>
         <p>ไลฟ์บนมือถือเน็ตกระตุก — ถ้า stream หลุดแล้ว event หาย/ซ้ำ/สลับลำดับ Manager จะอ่านสถานะผิดและตัดสินใจพลาด</p>
         <div class="highlight">แก้: ออกแบบ <strong>SSE console stream</strong> ให้ <strong>auto-reconnect</strong>, รักษา <strong>ordering</strong>, <strong>dedupe</strong> event ซ้ำ และมี <strong>backpressure</strong> เมื่อ client ตามไม่ทัน — reliability contract เขียนเป็น NFR แยกไม่ใช่ best-effort</div>
       </div>
 
       <div class="hack-card devops" data-label="Contract-first">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
-        <h3>ต่อกับ engine/service ภายนอกที่ยังไม่มีจริง</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg><span>ต่อกับ engine/service ภายนอกที่ยังไม่มีจริง</span></h3>
         <p>Avatar Engine, comment source และ Hub บาง endpoint ยังไม่พร้อมตอนเริ่ม dev — ถ้ารอให้เสร็จก่อนถึงเขียน integration จะบล็อกทั้ง pipeline</p>
         <div class="highlight">แก้: <strong>contract-first</strong> — เขียน contract test แบบ network-free จาก spec ก่อน (red-first แม้ impl ยัง pending), มี <strong>OpenAPI/contract drift gate</strong> ใน CI Tier 1 ทุก PR และ Prism mock ให้ dev รันคู่ขนานได้โดยไม่ต้องมีของจริง</div>
       </div>
 
       <div class="hack-card ux" data-label="Live Session">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
-        <h3>Engine cap session 20 นาที แต่ไลฟ์ต้องต่อเนื่อง</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>Engine cap session 20 นาที แต่ไลฟ์ต้องต่อเนื่อง</span></h3>
         <p>Avatar Engine ปิด session ทุก 20 นาที — ถ้าปล่อยให้จบดื้อๆ ภาพจะกระตุก เสียงขาด ผู้ชมรู้สึกสะดุดทันที</p>
         <div class="highlight">แก้: แพลตฟอร์มไลฟ์ AI Avatar จัด <strong>session lifecycle</strong> — preload session ถัดไป &ge;90s ก่อน cap (หรือ &ge;30s ก่อนสลับ scene) แล้วทำ <strong>seamless handover</strong> โดย budget audio &le;200ms / visual &le;100ms + รักษา pose continuity — ผู้ชมไม่รู้ว่ามีการสลับ session อยู่เบื้องหลัง</div>
       </div>

@@ -1191,43 +1191,37 @@
 
     <div class="hack-grid">
       <div class="hack-card arch" data-label="SSG">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
-        <h3>SPA ทำให้ crawler เห็นหน้าว่าง</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg><span>SPA ทำให้ crawler เห็นหน้าว่าง</span></h3>
         <p>Vue SPA render content ด้วย JS ทีหลัง — bot ที่ไม่รัน JS เต็มที่จะเห็นแค่ <code>&lt;div id="app"&gt;</code> เปล่า SEO ตาย</p>
         <div class="highlight">แก้: ใช้ <code>vite-ssg</code> prerender ทุก route เป็น static HTML ตอน build (memory history ฝั่ง server, web history ฝั่ง client) แล้ว hydrate ต่อ — crawler เห็น content เต็ม ผู้ใช้ได้ SPA</div>
       </div>
 
       <div class="hack-card precision" data-label="Asset Paths">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-        <h3>Vite rewrite path รูป/JS ของ template พัง</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>Vite rewrite path รูป/JS ของ template พัง</span></h3>
         <p>template ผูก asset กับ <code>/public</code> + <code>&lt;base href="/"&gt;</code> — Vite ปกติจะ bundle/hash asset ในเทมเพลต ทำให้ path เดิมพังหมด</p>
         <div class="highlight">แก้: ตั้ง <code>transformAssetUrls: { tags: {} }</code> ใน vue plugin — บอก Vite ให้ปล่อย src/href/url() เป็น literal runtime path ไม่แตะ ทำให้ assets ชุดเดิมของ template resolve ได้ตรง</div>
       </div>
 
       <div class="hack-card platform" data-label="Hydration">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
-        <h3>component โต้ตอบรันบน SSR ไม่ได้</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span>component โต้ตอบรันบน SSR ไม่ได้</span></h3>
         <p>ตอน prerender ไม่มี <code>window</code> / DOM จริง — IntersectionObserver, matchMedia, motion เรียกตอน render จะ crash หรือ hydrate mismatch</p>
         <div class="highlight">แก้: ยิง observer / matchMedia ใน <code>onMounted</code> เท่านั้น + cleanup ใน onBeforeUnmount ให้ prerender ออก markup ตั้งต้น แล้วค่อย animate ตอน hydrate ฝั่ง client — SSR ผ่าน ไม่ mismatch</div>
       </div>
 
       <div class="hack-card ux" data-label="Duplicate Domain">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-        <h3>apex กับ www ตอบ 200 ทั้งคู่</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span>apex กับ www ตอบ 200 ทั้งคู่</span></h3>
         <p><code>yourdomain.com</code> และ <code>www.yourdomain.com</code> เสิร์ฟเหมือนกัน = duplicate content — Google หารคะแนน SEO / ลิงก์ / ผลแอด แยกกัน</p>
         <div class="highlight">แก้: ตั้ง <code>canonical</code>/<code>og:url</code> ใน useHead ชี้ apex เสมอ (คุมจาก <code>SITE_URL</code> ที่เดียว) + www→apex redirect ที่ชั้น ingress (301/308) — รวมสัญญาณ SEO เป็นก้อนเดียว</div>
       </div>
 
       <div class="hack-card devops" data-label="Legacy Links">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></svg>
-        <h3>ลิงก์ในเนื้อหายังชี้ *.html</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></svg><span>ลิงก์ในเนื้อหายังชี้ *.html</span></h3>
         <p>เนื้อหา/เมนูจาก template ยังลิงก์ <code>contact.html</code> — refresh หรือเปิดตรง /contact.html บน SPA แล้ว 404</p>
         <div class="highlight">แก้: gen redirect map จาก routes ทุกตัว — <code>/x.html → /x</code> — ให้ direct-load / refresh resolve ได้ แล้ว normalize URL เป็น clean path เพื่อให้ active-nav (match บน <code>$route.path</code>) ยังทำงาน</div>
       </div>
 
       <div class="hack-card perf" data-label="No-Image Data">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
-        <h3>dashboard เดิมเป็นรูป .jpg โหลดช้า</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg><span>dashboard เดิมเป็นรูป .jpg โหลดช้า</span></h3>
         <p>โชว์ผลเป็นภาพ export — โหลดหนัก เบลอบนจอ retina และแก้ตัวเลขทีต้องออกรูปใหม่ทั้งใบ</p>
         <div class="highlight">แก้: วาด chart ด้วย SVG + data array ในโค้ด (เส้น trend ทำ Catmull-Rom → cubic bezier ให้โค้งลื่น), bar ปรับจำนวนตามจอด้วย matchMedia — บทเรียน: ข้อมูลที่ render เป็น HTML/SVG เบากว่า คมกว่า และแก้ในโค้ดจบ ไม่ต้อง export ภาพ</div>
       </div>

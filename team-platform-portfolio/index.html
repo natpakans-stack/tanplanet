@@ -1221,43 +1221,37 @@
 
     <div class="hack-grid">
       <div class="hack-card arch" data-label="Serverless">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16.326A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 .5 8.973"/><path d="m13 12-3 5h4l-3 5"/></svg>
-        <h3>ฆ่าบอทที่ต้องรัน 24/7</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16.326A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 .5 8.973"/><path d="m13 12-3 5h4l-3 5"/></svg><span>ฆ่าบอทที่ต้องรัน 24/7</span></h3>
         <p>ระบบเตือน/แจ้งเดิมต้องมี process ค้างตลอด — เปลือง host และล่มเงียบ อยากได้ automation ที่ไม่มีเครื่องต้องเลี้ยง</p>
         <div class="highlight">แก้: cron tick เดียวทุก 30 นาที (GitHub Actions) ขับ 2 งานใน job เดียว (repo ส่วนตัว = Actions minutes มีค่าใช้จ่าย จึงไม่แตกหลาย workflow) — digest รายสัปดาห์ self-gate ด้วยการเช็คว่าเป็น tick เช้าจันทร์ (08:00–08:29 เขตไทย) ในโค้ด route เอง</div>
       </div>
 
       <div class="hack-card platform" data-label="Recording API">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg>
-        <h3>ถอดประชุมจากลิงก์อัดที่ไม่มี public API</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg><span>ถอดประชุมจากลิงก์อัดที่ไม่มี public API</span></h3>
         <p>ไฟล์อัดประชุมอยู่บนบริการภายนอกที่ไม่เปิด API ทางการ — และ serverless function ลง ffmpeg ไม่ได้ ทำ audio processing หนักๆ ไม่ได้</p>
         <div class="highlight">แก้: reverse-engineer endpoint จากหน้าดาวน์โหลด (metadata &rarr; สั่ง cook &rarr; poll &rarr; ดึง zip) ให้ฝั่งบริการ cook เสียงรายคนเป็น AAC ให้ แล้ว unzip ใน memory ด้วย <code>fflate</code> — ไม่ต้องพึ่ง ffmpeg เลย รันบน serverless ได้</div>
       </div>
 
       <div class="hack-card precision" data-label="AI Grounding">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
-        <h3>กัน AI มโนชื่อลูกค้า/ข้อสรุป</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg><span>กัน AI มโนชื่อลูกค้า/ข้อสรุป</span></h3>
         <p>ให้ LLM สรุปประชุมดิบๆ มันเดาชื่อลูกค้าและ project ที่ไม่มีจริง — สรุปสวยแต่เชื่อไม่ได้</p>
         <div class="highlight">แก้: ฉีด context ของบอร์ดจริง (รายชื่อลูกค้า + การ์ดที่มีกำหนด) เข้าไปใน prompt ให้ model ground กับข้อมูลจริง + บังคับ JSON output มีโครงสร้าง &middot; ส่วน "Next Actions" ไม่ให้ AI ทำ แต่ roll up จากการ์ดที่มี due date ตรงๆ (factual ไม่ใช่ generative)</div>
       </div>
 
       <div class="hack-card perf" data-label="Realtime">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
-        <h3>ลากการ์ดแล้วต้องไม่กระตุก/ชนกัน</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg><span>ลากการ์ดแล้วต้องไม่กระตุก/ชนกัน</span></h3>
         <p>บอร์ดหลายคนใช้พร้อมกัน — ลากการ์ดแล้วรอ round-trip ถึงขยับ = หน่วง และถ้าสองคนขยับพร้อมกันลำดับพัง</p>
         <div class="highlight">แก้: optimistic update ขยับการ์ดในจอทันที แล้วค่อย reconcile กับ Supabase Realtime ที่ broadcast การเปลี่ยนแปลงให้ทุก client — ลำดับ (position) คำนวณจาก weight ของ priority + ordering ในคอลัมน์ ให้ผลตรงกันทุกเครื่อง</div>
       </div>
 
       <div class="hack-card devops" data-label="Discord REST">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
-        <h3>ยิง Discord จาก serverless โดยไม่มี gateway</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg><span>ยิง Discord จาก serverless โดยไม่มี gateway</span></h3>
         <p><code>discord.js</code> ปกติต้องเปิด gateway (websocket ค้าง) — ขัดกับโมเดล serverless ที่ function จบแล้วดับ</p>
         <div class="highlight">แก้: โพสต์ embed ผ่าน Discord REST v10 ตรงๆ (<code>POST /channels/:id/messages</code>) ไม่พึ่ง discord.js เลย รันจาก cron ได้สบาย + ออกแบบให้ fail soft (log ไม่ throw) ช่องเดียวพังไม่ล้มทั้ง batch</div>
       </div>
 
       <div class="hack-card ux" data-label="Multi-tenant">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg>
-        <h3>เครื่องมือภายในที่พร้อมกลายเป็น product</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg><span>เครื่องมือภายในที่พร้อมกลายเป็น product</span></h3>
         <p>ถ้าสร้างแบบผูกบริษัทเดียว วันหนึ่งจะขายลูกค้าต้องรื้อ data model — แต่ทำ multi-tenant เต็มรูปตั้งแต่แรกก็ over-engineer สำหรับ v1</p>
         <div class="highlight">แก้: ใส่ <code>org_id</code> + Row Level Security ทุกตารางตั้งแต่ migration ต้นๆ (v1 รัน org เดียว) — schema ค่อยๆ โตแบบ incremental ผ่าน migration หลายสิบไฟล์ ไม่ big-bang จึงพร้อมขยายเป็นหลายองค์กรโดยไม่ต้องรื้อ</div>
       </div>

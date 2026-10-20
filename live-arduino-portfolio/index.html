@@ -1142,50 +1142,43 @@
 
     <div class="hack-grid">
       <div class="hack-card perf" data-label="Memory">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="13" r="9"/><path d="M14.35 4.65 16.3 2.7a2.41 2.41 0 0 1 3.4 0l1.6 1.6a2.4 2.4 0 0 1 0 3.4l-1.95 1.95"/><path d="m22 2-1.5 1.5"/></svg>
-        <h3>กดแล้วค้าง ทั้งที่ heap ว่าง 165KB</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="13" r="9"/><path d="M14.35 4.65 16.3 2.7a2.41 2.41 0 0 1 3.4 0l1.6 1.6a2.4 2.4 0 0 1 0 3.4l-1.95 1.95"/><path d="m22 2-1.5 1.5"/></svg><span>กดแล้วค้าง ทั้งที่ heap ว่าง 165KB</span></h3>
         <p>แตะการ์ดแล้วจอค้างเป็นระยะ ตอนแรกนึกว่า RAM หมด แต่ ESP รายงาน heap ว่างตั้ง 165KB</p>
         <div class="highlight">แก้: LVGL ไม่ได้ใช้ heap ของระบบ มันใช้ pool ของตัวเองที่ <code>LV_MEM_SIZE</code> = 32KB และเต็มไปแล้ว 89% → เปลี่ยนไปใช้ <code>LV_STDLIB_CLIB</code> ให้ LVGL ขอ memory จาก heap จริงแทน &mdash; บทเรียน: บน MCU ต้องถามว่า "หน่วยความจำก้อนไหนเต็ม" ไม่ใช่แค่ "ว่างเท่าไร"</div>
       </div>
 
       <div class="hack-card perf" data-label="Stack">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
-        <h3>บอร์ดรีบูตตอนกดเข้าหน้า detail</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>บอร์ดรีบูตตอนกดเข้าหน้า detail</span></h3>
         <p>เปิดหน้า detail ของการ์ดมาสคอตทีไรบอร์ดรีบูตทันที ทั้งที่ heap เหลือเฟือ 163KB</p>
         <div class="highlight">แก้: struct ของรูปมาสคอตขนาด 1.7KB ถูกประกาศเป็นตัวแปร local ใน draw callback ซึ่งอยู่บน <strong>stack</strong> ของ task ไม่ใช่ heap → ย้ายไปเป็น static &mdash; บทเรียน: stack overflow บน ESP32 หน้าตาเหมือน "รีบูตเฉย ๆ" ไม่มี error ให้อ่าน</div>
       </div>
 
       <div class="hack-card precision" data-label="Fonts">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 12 2 2 4-4"/><path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"/><path d="M22 19H2"/></svg>
-        <h3>วรรณยุกต์ไทยซ้อนผิดตำแหน่ง</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 12 2 2 4-4"/><path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"/><path d="M22 19H2"/></svg><span>วรรณยุกต์ไทยซ้อนผิดตำแหน่ง</span></h3>
         <p>คำที่มีสระบนซ้อนวรรณยุกต์ เช่น "ที่" ออกมาชนกันเป็นก้อน เพราะ LVGL ไม่อ่านตาราง GPOS ของ OpenType</p>
         <div class="highlight">แก้: เขียน <code>make_thai_font.py</code> เจน bitmap font 5 ขนาดจาก Anuphan เอง แล้ว<strong>สร้าง glyph วรรณยุกต์ตำแหน่งยกสูงเก็บใน Private Use Area</strong> ตอน render ก็ map อักขระเป็นตัว PUA เมื่อเจอบริบทที่ต้องยก &mdash; ได้ตำแหน่งถูกโดยไม่ต้องมี shaping engine</div>
       </div>
 
       <div class="hack-card precision" data-label="Debug">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
-        <h3>กล่องสี่เหลี่ยมบนจอ ไม่ใช่ loading</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/></svg><span>กล่องสี่เหลี่ยมบนจอ ไม่ใช่ loading</span></h3>
         <p>ตัวเลขนาฬิกาบางสถานะขึ้นเป็นกล่องสี่เหลี่ยม — ไล่หา race condition ของการโหลดข้อมูลอยู่นาน</p>
         <div class="highlight">แก้: มันคือ glyph ที่ไม่มีในฟอนต์ ฟอนต์นาฬิกา 48px มีแค่ <code>0-9 : &deg;</code> พอส่ง <code>--:--</code> เข้าไป ขีดจึงกลายเป็นกล่อง → เปลี่ยนเป็นส่งสตริงว่างตอนยังไม่มีเวลา &mdash; บทเรียน: กล่องสี่เหลี่ยม = ฟอนต์ ไม่ใช่ state</div>
       </div>
 
       <div class="hack-card devops" data-label="Network">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg>
-        <h3>จอไม่มีข้อมูล แต่ backend ไม่ได้ล่ม</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg><span>จอไม่มีข้อมูล แต่ backend ไม่ได้ล่ม</span></h3>
         <p>จอขึ้น error ทั้งที่ <code>curl</code> จาก Mac ได้ 200 ปกติ — เสียเวลาไล่หาสาเหตุที่ฝั่ง backend อยู่นาน</p>
         <div class="highlight">แก้: เฟิร์มแวร์ไม่เคยเรียก <code>MDNS.begin()</code> เลย lwip จึง resolve ชื่อ <code>.local</code> ไม่ได้ → ใช้ <code>MDNS.queryHost()</code> เอา IP มาเสียบแล้วแคชไว้ &mdash; <strong>หลุมที่ทำให้หลงทาง: curl ชื่อ .local จาก Mac เองมันวิ่งเข้า 127.0.0.1 ต้อง curl ด้วย LAN IP ถึงจะรู้ความจริง</strong></div>
       </div>
 
       <div class="hack-card ux" data-label="Text">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
-        <h3>ชื่อสภาพอากาศยาวเกินไปทับนาฬิกา</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg><span>ชื่อสภาพอากาศยาวเกินไปทับนาฬิกา</span></h3>
         <p>ใส่ <code>LV_LABEL_LONG_DOT</code> แล้วยังทับอยู่ เพราะ LVGL จะ wrap ขึ้นบรรทัดสองก่อน แล้วค่อยใส่จุดไข่ปลา</p>
         <div class="highlight">แก้: เขียน <code>setThaiTextFit()</code> วัดความกว้างจริงด้วย <code>lv_text_get_size</code> แล้วถอยข้อความทีละ<strong>ตัวอักษร UTF-8</strong> จนพอดีกรอบ &mdash; ห้ามถอยทีละไบต์ เพราะจะตัดกลางอักขระไทยแล้วได้ขยะ</div>
       </div>
 
       <div class="hack-card arch" data-label="Refresh">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
-        <h3>การ์ด Claude ช้าไป 5 นาที</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg><span>การ์ด Claude ช้าไป 5 นาที</span></h3>
         <p>การ์ดที่บอกว่า agent กำลังทำอะไร ต้องสด แต่มันรออัปเดตพร้อมรอบใหญ่ 60 วินาที/5 นาที ทำให้ข้อมูลตกยุคตลอด</p>
         <div class="highlight">แก้: แยกท่อ <code>/api/claude</code> ที่ส่งเฉพาะการ์ดใบเดียว (~300 bytes) ทุก 10 วิ แล้ว<strong>เขียนทับ label เดิมในที่</strong> โดยจำ pointer ไว้ ไม่ <code>lv_obj_clean</code> ทั้งจอ &mdash; ถ้าล้างทั้งจอ scroll จะเด้งกลับหัวทุก 10 วินาที</div>
       </div>

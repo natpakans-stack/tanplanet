@@ -1511,43 +1511,37 @@
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Saju Accuracy">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg>
-        <h3>เวลามาตรฐานเกาหลีอิงเส้นญี่ปุ่น — เสาชั่วโมงเพี้ยน</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg><span>เวลามาตรฐานเกาหลีอิงเส้นญี่ปุ่น — เสาชั่วโมงเพี้ยน</span></h3>
         <p>KST อิงเมอริเดียน 135° (ญี่ปุ่น) แต่โซลอยู่ 126.98° — เวลาสุริยะจริงช้ากว่า ~32 นาที เอา KST มาคิดเสาชั่วโมงตรง ๆ เสาผิด</p>
         <div class="highlight">แก้: ใช้ engine <code>korean-saju</code> ที่แก้ <code>진태양시</code> ตาม longitude ของเมืองเกิด + อ้าง <code>절기</code>/<code>입춘</code> boundary จาก KASI + แยก <code>야자시</code>/<code>조자시</code> — verify ตรง 100% กับ 35,000 วัน</div>
       </div>
 
       <div class="hack-card arch" data-label="No Hallucination">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
-        <h3>ถ้าให้ AI คำนวณดวง มันมโนตัวเลข</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg><span>ถ้าให้ AI คำนวณดวง มันมโนตัวเลข</span></h3>
         <p>โมเดลภาษาตอบเลขดวงแบบมั่นใจแต่ผิด — จะเชื่อคำทำนายไม่ได้ถ้าฐานตัวเลขมั่ว</p>
         <div class="highlight">แก้: แยกหน้าที่เด็ดขาด — Python engine คำนวณ "ข้อเท็จจริง" (เสา/격국/forecast) ส่งเป็น context ให้ AI, AI มีหน้าที่ "เล่า" อย่างเดียว + prompt caching ส่วน system + ผังสาจู กัน token บาน</div>
       </div>
 
       <div class="hack-card platform" data-label="Python on Vercel">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg>
-        <h3>รัน engine เกาหลี (Python) ร่วมกับ Next.js</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg><span>รัน engine เกาหลี (Python) ร่วมกับ Next.js</span></h3>
         <p>เว็บเป็น TypeScript/Next.js แต่ศาสตร์คำนวณอยู่ในแพ็กเกจ Python — จะเอามารันบน serverless เดียวกันยังไง</p>
         <div class="highlight">แก้: วาง engine เป็น Vercel Python function (<code>/api/*.py</code>) — inject <code>korean_saju/src</code> เข้า <code>sys.path</code>, แพ็กเกจ 0 dependency จึง bundle ง่าย, Next.js เรียกผ่าน fetch ภายใน แล้ว cache ผลลง DB</div>
       </div>
 
       <div class="hack-card devops" data-label="Atomic Quota">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
-        <h3>กันโกงโควตา + race condition ตอนหักเลข</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg><span>กันโกงโควตา + race condition ตอนหักเลข</span></h3>
         <p>ถ้าหักโควตาฝั่ง client แก้ได้เอง / ยิงพร้อมกันหลาย request อาจหักพลาดหรือติดลบ + เติมเงินซ้ำจาก webhook ที่มาซ้ำ</p>
         <div class="highlight">แก้: Postgres function <code>consume_question()</code> หัก free/paid แบบ atomic ใน query เดียว + RLS เขียนได้เฉพาะ service-role + <code>quota_ledger</code> append-only + Stripe webhook idempotent ด้วย <code>stripe_session_id</code> unique</div>
       </div>
 
       <div class="hack-card ux" data-label="Voice / Character">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
-        <h3>ศาสตร์เป็นฮันจา + AI ต้องอบอุ่นไม่ขู่</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg><span>ศาสตร์เป็นฮันจา + AI ต้องอบอุ่นไม่ขู่</span></h3>
         <p>ผล engine เป็น 오행/십신/격국 ล้วน คนอ่านไม่ออก — และ AI default มักฟันธง/ทางการเกินไป ไม่ใช่เสียงอาแปะ</p>
         <div class="highlight">แก้: engine map ป้ายเป็นภาษาไทยก่อนส่ง + system prompt ฝัง brand pillars ของอาแปะ (อ่านดวงเป็นกระจก ไม่ขู่ ไม่ขายของมงคล เหลือทางเลือกเสมอ) + starter prompts พาคนเริ่มคุย</div>
       </div>
 
       <div class="hack-card perf" data-label="Forecast Cache">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
-        <h3>ปฏิทินเดือน = คำนวณหลายสิบวัน ช้า + เปลือง</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg><span>ปฏิทินเดือน = คำนวณหลายสิบวัน ช้า + เปลือง</span></h3>
         <p>เปิดปฏิทินมุมมองเดือนต้อง forecast ทุกวัน ถ้าเรียก Python ใหม่ทุกครั้งที่เปิด ทั้งช้าและเปลือง</p>
         <div class="highlight">แก้: forecast เป็น deterministic (ดวงเดิม + วันเดิม = ผลเดิม) จึง cache ต่อ user ต่อวันในตาราง <code>daily_forecast_cache</code> — เปิดปฏิทินเช็ค cache ก่อน ไม่มีค่อยเรียก engine แล้วเก็บไว้</div>
       </div>

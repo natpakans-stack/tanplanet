@@ -987,43 +987,37 @@
 
     <div class="hack-grid">
       <div class="hack-card scale" data-label="Scale">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-        <h3>RBAC 18 Roles แตกจาก 11</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>RBAC 18 Roles แตกจาก 11</span></h3>
         <p>PRD ระบุ 15 roles แต่ codebase รวบยอดเป็น 11 → approval threshold ทำงานไม่ตรงกับ org chart จริง คนที่ควรเห็นเอกสารเห็นไม่ครบ คนที่ไม่ควรเห็นกลับเข้าได้</p>
         <div class="highlight">แก้: split manager → m3/e1/e2/e3, Finance → Lv1/Head, Acc → Lv1/Head, Procurement Manager + เพิ่ม Reviewer + tab filter per role + backward-compat normalize legacy roles ด้วย mapping function</div>
       </div>
 
       <div class="hack-card perf" data-label="Performance">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
-        <h3>Document PDF ที่ Scale ได้ 8 Doc Types</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>Document PDF ที่ Scale ได้ 8 Doc Types</span></h3>
         <p>8 doc types × signature block × attachment index × ต้องการ real PDF merge (text-selectable) — ถ้า duplicate layout ต่อ doc คือฝันร้าย maintainability</p>
         <div class="highlight">แก้: สร้าง component กลาง <code>components/document/*</code> (SignatureBlock, AttachmentIndex, AttachmentPage) + ใช้ pdf-lib merge real PDF bytes ติดท้าย + html2canvas สำหรับ image-only attachments — 1 abstraction รองรับทุก doc</div>
       </div>
 
       <div class="hack-card process" data-label="Process">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-        <h3>i18n Project-wide ใน 1 Sprint</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span>i18n Project-wide ใน 1 Sprint</span></h3>
         <p>~50 views, 1000+ strings, ต้องบังคับ TH/EN parity แบบ strict (ขาด key ฝั่งใดฝั่งหนึ่ง = build แตก) — ทำมือคนเดียวไม่ทันแน่</p>
         <div class="highlight">แก้: handwritten composable <code>useLocale</code> (zero-dep, type-safe via LocaleKey union) + delegate batch ไป subagents 10 ตัว + auto type-check ทุก batch ก่อน commit → TH/EN parity บังคับด้วย TypeScript ไม่ใช่ discipline</div>
       </div>
 
       <div class="hack-card brand" data-label="Brand">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
-        <h3>Login Dark Mode ที่ขัดกับ App</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg><span>Login Dark Mode ที่ขัดกับ App</span></h3>
         <p>App รองรับ dark mode ทั้งระบบ แต่หน้า Login เป็น brand experience ที่ต้องคงสีขาว + brand panel สีเข้มตลอด — token cascade เผลอ flip สีตอนเปิด dark mode</p>
         <div class="highlight">แก้: pattern <code>.login-light-scope</code> lock token values ใน CSS scope; brand panel hardcoded <code>#231F20</code> + <code>!important</code> rule กัน cascade override; SplashScreen ใช้ pattern เดียวกัน reuse ได้</div>
       </div>
 
       <div class="hack-card visibility" data-label="Visibility">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
-        <h3>Approval Bottleneck Real-time</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg><span>Approval Bottleneck Real-time</span></h3>
         <p>C-Level อยากเห็นว่างานค้างอยู่ที่ใคร, chain ขั้นไหน, ค้างมานานเท่าไหร่ — แต่ refresh เอามันก็ไม่ทันใจ</p>
         <div class="highlight">แก้: Socket.io broadcast ทุก approve/reject event ไป channel ของ company; Dashboard chart "ค้าง >24 ชม." เรียงตามเวลา + drill-down เห็นชื่อผู้อนุมัติ + click ส่ง LINE notify ตรงได้</div>
       </div>
 
       <div class="hack-card consistency" data-label="Consistency">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg>
-        <h3>Design Tokens 100% — กัน Drift ก่อนเกิด</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg><span>Design Tokens 100% — กัน Drift ก่อนเกิด</span></h3>
         <p>Tailwind v4 + PrimeVue Aura theme + custom tokens — 3 layers ที่ override กันได้ ถ้าไม่มีระเบียบ hex hardcode จะแอบหลุดเข้ามาเรื่อยๆ</p>
         <div class="highlight">แก้: audit hex hardcodes → swap เป็น CSS variables; token definitions ใน <code>design-tokens.css</code> เป็น single source of truth; dark mode flip ผ่าน <code>:root.dark-mode</code> overrides — ไม่ต้องเขียน Tailwind dark: variant</div>
       </div>

@@ -1220,43 +1220,37 @@
 
     <div class="hack-grid">
       <div class="hack-card platform" data-label="Desktop Runtime">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/></svg>
-        <h3>รวม 3 โปรเซสให้เป็นแอปเดียวติดตั้งง่าย</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/></svg><span>รวม 3 โปรเซสให้เป็นแอปเดียวติดตั้งง่าย</span></h3>
         <p>Go backend, ffmpeg และ SPA เป็นคนละ runtime — จะให้ seller ลงเองทีละตัวไม่ได้ ต้องแพ็กรวมและคุม lifecycle ให้เนียน</p>
         <div class="highlight">แก้: Electron main <code>spawn</code> Go binary เป็น sidecar (loopback), รอ <code>/healthz</code> 200 ก่อนเปิด BrowserWindow บน origin ของ backend — ทำให้ flow OIDC login → callback → cookie เป็น first-party ทั้งหมด · ffmpeg static ฝังมากับ package (electron-builder)</div>
       </div>
 
       <div class="hack-card precision" data-label="Media Core">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        <h3>Overlay ชนกฎ "ห้าม re-encode"</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>Overlay ชนกฎ "ห้าม re-encode"</span></h3>
         <p>แกน re-air ล็อก <code>-c copy</code> ไว้ (invariant: ไม่ re-encode = คุณภาพ/CPU คงที่) แต่การซ้อนนาฬิกา/ข้อความต้องผ่าน <code>filter_complex</code> = ต้อง re-encode</p>
         <div class="highlight">แก้: เปิด re-encode branch (<code>libx264</code> + filtergraph) <strong>เฉพาะ session ที่มี overlay</strong> เท่านั้น — no-overlay ยังเป็น <code>-c copy</code> เป๊ะ · เป็น decision ระดับ media core ที่ตั้งใจ scope ไว้แคบ</div>
       </div>
 
       <div class="hack-card arch" data-label="Concurrency">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>
-        <h3>ใส่ตัวจับเสียงเงียบใน stream-copy ไม่ได้</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg><span>ใส่ตัวจับเสียงเงียบใน stream-copy ไม่ได้</span></h3>
         <p><code>silencedetect</code> เป็น audio filter (<code>-af</code>) แต่ push หลักเป็น <code>-c copy</code> — เติม <code>-af</code> ลงไปตรงๆ ทำ stream-copy พัง</p>
         <div class="highlight">แก้: รัน ffmpeg <strong>ตัวที่สองคู่ขนาน</strong> (<code>-af silencedetect -f null -</code>) เป็น co-goroutine ที่ decode แค่เสียงแล้วทิ้งผล — push หลักยัง <code>-c copy</code> วิดีโอไม่ถูกแตะ · scan stderr สดแทนอ่าน log ทั้งไฟล์</div>
       </div>
 
       <div class="hack-card devops" data-label="Signing">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg>
-        <h3>บาง action ต้องลายเซ็นจากหน้าเว็บที่ login</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg><span>บาง action ต้องลายเซ็นจากหน้าเว็บที่ login</span></h3>
         <p>chat / ปักตะกร้า / GMV ต้องมีลายเซ็นคำขอที่สร้างโดย JS ของแพลตฟอร์มในหน้า login แล้วเท่านั้น — Go เซ็นเองไม่ได้</p>
         <div class="highlight">แก้: browser oracle — hidden BrowserWindow ต่อบัญชี (<code>session.fromPartition</code>) รับงานจาก backend ผ่าน validated IPC (sender id + size cap) แล้วเรียก <code>executeJavaScript</code> ที่ preload ไว้ (ห้าม string-interpolate logic เข้าหน้า remote) ให้หน้าเว็บ fetch + เซ็นเอง → ส่งผลกลับ</div>
       </div>
 
       <div class="hack-card ux" data-label="Transient State">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M15 8V2"/><path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"/><path d="M9 8V2"/></svg>
-        <h3>chat/GMV เป็นข้อมูลสด — ไม่ควรลง DB ทุกชิ้น</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M15 8V2"/><path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"/><path d="M9 8V2"/></svg><span>chat/GMV เป็นข้อมูลสด — ไม่ควรลง DB ทุกชิ้น</span></h3>
         <p>คอมเมนต์และยอดขายสดไหลเข้ามาเร็วมาก ถ้าเขียน DB ทุก event = คอขวด และไม่ได้ต้องการ history ข้าม restart</p>
         <div class="highlight">แก้: ทำ SSE broker เป็น live transport — chat/GMV/pin เป็น <strong>ephemeral</strong> (in-memory queue, fan-out ผ่าน SSE) ไม่แตะ DB · persist เฉพาะสิ่งที่ควร persist จริง (product_sets, overlay config, accounts) ผ่าน migration</div>
       </div>
 
       <div class="hack-card perf" data-label="Security">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
-        <h3>credential ต่อบัญชีต้องไม่รั่ว</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>credential ต่อบัญชีต้องไม่รั่ว</span></h3>
         <p>cookie/credential ของแต่ละ identity คือความลับชั้นสูงสุด — เก็บ plaintext หรือ log ออกมาเมื่อไหร่คือจบ</p>
         <div class="highlight">แก้: vault envelope encryption (AES-256 ผ่าน OS keychain) เก็บ secret ทุกตัว · log แค่ <code>length</code> ไม่เคย log ค่า · desktop↔backend ใช้ per-machine key (constant-time bearer, loopback เท่านั้น) แทน static key ที่ hardcode ไว้</div>
       </div>

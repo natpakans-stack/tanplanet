@@ -1557,43 +1557,37 @@
 
     <div class="hack-grid">
       <div class="hack-card arch" data-label="HTML Parsing">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
-        <h3>เทมเพลตผูกกับ commerce — เอามาใช้กับข้อมูลจริงไม่ได้</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg><span>เทมเพลตผูกกับ commerce — เอามาใช้กับข้อมูลจริงไม่ได้</span></h3>
         <p>markup ของเทมเพลตซ้อนกันลึกและมี node ตะกร้าฝังอยู่ — จะแทนที่การ์ดสินค้าด้วย regex ธรรมดามันจับ tag ปิดผิดตัวทันทีเมื่อมี <code>&lt;div&gt;</code> ซ้อน</p>
         <div class="highlight">แก้: เขียน DOM transform เอง โดยนับ depth ของ tag เปิด-ปิดให้ balance (เจอ <code>&lt;div&gt;</code> +1, <code>&lt;/div&gt;</code> −1) หา inner ที่ถูกต้องแล้วค่อยแทน — ฉีดการ์ดจริง, ตัด commerce node, สลับ hero banner ได้แม่นแม้ markup nest ลึก</div>
       </div>
 
       <div class="hack-card platform" data-label="Runtime">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>
-        <h3>แอนิเมชันของเทมเพลตไม่เล่นหลัง hydration</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg><span>แอนิเมชันของเทมเพลตไม่เล่นหลัง hydration</span></h3>
         <p>reveal animation ตั้ง element เป็น <code>opacity:0</code> แล้วรอ event <code>load</code> — แต่เราฉีด script หลัง React hydrate (เลย <code>load</code> ไปแล้ว) พอเปลี่ยนหน้าแบบ SPA element เลยค้างซ่อนทั้งหน้า</p>
         <div class="highlight">แก้: โหลด lib ครั้งเดียวต่อ session แล้ว re-init เอนจิน animation ใหม่ทุกครั้งที่ mount หน้า + ยิง event <code>load</code>/<code>readystatechange</code> เอง — บวก safety net ที่กวาด reveal ทุก element ที่ยังซ่อนภายใน 1 วินาที กันพลาด</div>
       </div>
 
       <div class="hack-card devops" data-label="Deep Link">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        <h3>ข้อความมี emoji / ช่องว่าง / ขึ้นบรรทัดใหม่ → deep-link พัง</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span>ข้อความมี emoji / ช่องว่าง / ขึ้นบรรทัดใหม่ → deep-link พัง</span></h3>
         <p>ข้อความสั่งซื้อมี emoji 🛍️ เว้นวรรค และ <code>\n</code> — เอาต่อท้าย URL ตรง ๆ ลิงก์ LINE/Telegram แตกทันที</p>
         <div class="highlight">แก้: ห่อทั้งข้อความและ OA id ด้วย <code>encodeURIComponent()</code> ก่อนประกอบเป็น deep-link + normalize prefix (<code>@</code> ของ LINE, ตัด <code>@</code> ของ Telegram) ให้แบรนด์กรอกแบบไหนก็ทำงาน</div>
       </div>
 
       <div class="hack-card precision" data-label="API Collision">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18v-6a5 5 0 1 1 10 0v6"/><path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z"/><path d="M21 12h1"/><path d="M18.5 4.5 18 5"/><path d="M2 12h1"/><path d="M12 2v1"/><path d="m4.929 4.929.707.707"/><path d="M12 12v6"/></svg>
-        <h3>commerce ของเทมเพลตยิง <code>/api/cart</code> ชนกับ CMS</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18v-6a5 5 0 1 1 10 0v6"/><path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z"/><path d="M21 12h1"/><path d="M18.5 4.5 18 5"/><path d="M2 12h1"/><path d="M12 2v1"/><path d="m4.929 4.929.707.707"/><path d="M12 12v6"/></svg><span>commerce ของเทมเพลตยิง <code>/api/cart</code> ชนกับ CMS</span></h3>
         <p>runtime เดิมของเทมเพลตพยายาม fetch <code>/api/...</code> (ตะกร้า) ซึ่งชน endpoint <code>/api</code> ของ CMS → เด้ง error CSRF + alert "site unsecured" โผล่หน้าลูกค้า</p>
         <div class="highlight">แก้: intercept <code>window.alert</code> กรองข้อความ cart/checkout/unsecured ทิ้ง + ดัก <code>unhandledrejection</code>/<code>error</code> ที่เป็น noise ของ commerce (CSRF, Failed to fetch) ให้เงียบ — เหลือแต่ flow จริงที่เราคุม</div>
       </div>
 
       <div class="hack-card perf" data-label="Caching">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
-        <h3>หน้า dynamic re-parse ไฟล์ใหญ่ทุกครั้งที่เปิด</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg><span>หน้า dynamic re-parse ไฟล์ใหญ่ทุกครั้งที่เปิด</span></h3>
         <p>หน้าเป็น <code>force-dynamic</code> (ข้อมูลสด) แต่ต้องอ่าน + regex แกะไฟล์เทมเพลตหลักร้อย KB ทุก navigation — เปลืองและช้า</p>
         <div class="highlight">แก้: cache ผล parse ต่อ slug ไว้ใน <code>Map</code> (in-memory) — ไฟล์เทมเพลตเป็น static design ที่ไม่เปลี่ยน parse ครั้งเดียวใช้ซ้ำ ส่วนข้อมูลสินค้ายังดึงสดจาก CMS ทุก request แยกกันชัดเจน</div>
       </div>
 
       <div class="hack-card ux" data-label="Scoping">
-        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-        <h3>โจทย์ขอ WordPress + คิดว่าต้องมี e-commerce</h3>
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>โจทย์ขอ WordPress + คิดว่าต้องมี e-commerce</span></h3>
         <p>ความคาดหวังตั้งต้นคือ CMS แบบ WordPress พร้อมระบบตะกร้า — แต่การขายจริงจบในแชท ระบบ checkout จะกลายเป็น dead weight</p>
         <div class="highlight">แก้: เสนอ scope ใหม่ — Next.js + Payload (admin ในตัว แก้เนื้อหาเองได้เหมือนกัน) และ "ไม่ทำ" checkout/payment เลย เหลือ chat-to-order — บทเรียน: การตัด requirement ที่ไม่จำเป็นออก คือคุณค่าที่ให้ลูกค้าได้มากกว่าการทำทุกอย่างตามคำขอ</div>
       </div>
