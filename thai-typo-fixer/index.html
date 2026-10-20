@@ -527,6 +527,7 @@
             overflow-x: auto;
             font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
             font-size: 0.82rem;
+            white-space: pre;
             line-height: 1.7;
             color: var(--code-text);
         }
@@ -897,6 +898,7 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
     .hero-badge .ico { width: 14px; height: 14px; }
+  .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.5}.shot-pair .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;max-width:var(--shot-max,100%);margin:0 auto}@media (max-width:640px){.shot-pair .pair{grid-template-columns:1fr}}.shot-narrow img{max-width:min(100%,var(--shot-max,520px));margin:0 auto}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -926,6 +928,8 @@
         <h2>ก่อนอื่น — ลองดูสิ่งที่เกิดขึ้น</h2>
         <p>ทุกคนเคยเจอแบบนี้...</p>
     </section>
+    <figure class="shot shot-pair"><div class="pair"><img src="img/tt-before.jpg" width="1600" height="890" loading="lazy" alt="หน้าต่างแชทที่ช่องพิมพ์มีข้อความ l;ylfu8iy[ ถูกเลือกไว้ พร้อมคำแนะนำกด Control Shift T"><img src="img/tt-after.jpg" width="1600" height="890" loading="lazy" alt="ช่องพิมพ์หลังแปลงกลายเป็น สวัสดีครับ พร้อมแจ้งว่าจำคู่คำนี้แล้ว ครั้งที่ 1 จาก 3"></div><figcaption>ภาพคอนเซ็ปต์ — ซ้าย: ลืมเปลี่ยนภาษา เลือกข้อความแล้วกดปุ่มลัด · ขวา: ได้ภาษาไทยทันที (แปลงด้วย mapping เกษมณีจริง)</figcaption></figure>
+
 
     <div class="typo-demo">
         <div class="demo-label">ตั้งใจจะพิมพ์ "สวัสดีครับ" แต่ลืมเปลี่ยนภาษา</div>
@@ -939,7 +943,7 @@
 
     <div class="typo-demo">
         <div class="demo-label">หรือจะพิมพ์ "ทดสอบ"</div>
-        <div class="typo-input">kgx'iyd</div>
+        <div class="typo-input">mflv[</div>
         <span class="typo-arrow">&#11015;</span>
         <div class="typo-output">ทดสอบ</div>
         <div class="typo-shortcut">
@@ -954,6 +958,8 @@
         <h2>Design Thinking Process</h2>
         <p>จากปัญหาเล็กๆ ที่เจอทุกวัน — สู่ไอเดียเครื่องมือที่ช่วยคนไทยทุกคน</p>
     </section>
+    <figure class="shot"><img src="img/tt-dt-unsplash.jpg" width="1200" height="750" loading="lazy" alt="มือกำลังพิมพ์บนคีย์บอร์ดหน้าจอคอมพิวเตอร์"><figcaption>ปัญหาเกิดที่นิ้ว ไม่ใช่ที่สมอง — นิ้วกดถูกตำแหน่ง แค่ผิดภาษา · ภาพ: Ilya Pavlov / Unsplash</figcaption></figure>
+
 
     <!-- EMPATHIZE -->
     <div class="dt-step" data-step="01 EMPATHIZE">
@@ -1006,9 +1012,11 @@
         <h2>Keyboard Mapping — หัวใจของระบบ</h2>
         <p>EN key → TH character ตาม Kedmanee layout (1:1 mapping)</p>
     </section>
+    <figure class="shot"><img src="img/tt-keyboard.jpg" width="1600" height="552" loading="lazy" alt="แผนผังคีย์บอร์ดที่แต่ละปุ่มมีอักษรอังกฤษและไทยเกษมณี ไฮไลต์ปุ่มที่ใช้พิมพ์คำว่า สวัสดีครับ พร้อมลำดับการกด"><figcaption>แผนผังเกษมณี 1:1 — ปุ่มสีม่วงคือปุ่มที่กดเพื่อพิมพ์ "สวัสดีครับ" ตัวเลขคือลำดับที่กด</figcaption></figure>
+
 
     <div class="keyboard-map">
-        <h4>&#9000; ตัวอย่าง: l;ylfu8iy[ → สวัสดีครับ</h4>
+        <h4><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg> ตัวอย่าง: l;ylfu8iy[ → สวัสดีครับ</h4>
         <div class="key-grid">
             <div class="key-pair">
                 <div class="key-en">l</div>
@@ -1070,34 +1078,36 @@
         <h2>System Architecture</h2>
         <p>Data flow ตั้งแต่ผู้ใช้กด shortcut จนได้ข้อความภาษาไทย</p>
     </section>
+    <figure class="shot"><img src="img/tt-menubar.jpg" width="1520" height="760" loading="lazy" alt="เมนูบาร์ macOS ที่เปิดเมนู Thai Typo Fixer: แปลงข้อความที่เลือก คำที่ระบบจำได้ 24 คำ และ Auto-replace"><figcaption>ภาพคอนเซ็ปต์ของตัว Swift menu bar app — ทุกขั้นในแผนผังด้านล่างวิ่งอยู่หลังไอคอนเล็กๆ นี้</figcaption></figure>
+
 
     <div class="arch-flow">
         <div class="arch-node">
-            <div class="node-icon">&#9000;</div>
+            <div class="node-icon"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg></div>
             <div class="node-title">Shortcut Listener</div>
             <div class="node-desc">จับ Ctrl+Shift+T แบบ system-wide</div>
         </div>
         <div class="arch-arrow">&#8595;</div>
         <div class="arch-node">
-            <div class="node-icon">&#128203;</div>
+            <div class="node-icon"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg></div>
             <div class="node-title">Text Capture</div>
             <div class="node-desc">คัดลอก text ที่เลือกอยู่ผ่าน clipboard</div>
         </div>
         <div class="arch-arrow">&#8595;</div>
         <div class="arch-node highlight-node">
-            <div class="node-icon">&#128260;</div>
+            <div class="node-icon"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></div>
             <div class="node-title">Mapping Engine</div>
             <div class="node-desc">เช็ค Dictionary ก่อน → ถ้าไม่มี ใช้ Kedmanee mapping</div>
         </div>
         <div class="arch-arrow">&#8595;</div>
         <div class="arch-node">
-            <div class="node-icon">&#128221;</div>
+            <div class="node-icon"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg></div>
             <div class="node-title">Text Replace</div>
             <div class="node-desc">วางข้อความภาษาไทยแทนที่</div>
         </div>
         <div class="arch-arrow">&#8595;</div>
         <div class="arch-node">
-            <div class="node-icon">&#129504;</div>
+            <div class="node-icon"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/></svg></div>
             <div class="node-title">Learning Engine</div>
             <div class="node-desc">บันทึกคู่ EN→TH ลง dictionary.json</div>
         </div>
@@ -1110,12 +1120,14 @@
         <h2>Self-Learning Dictionary</h2>
         <p>ระบบที่ยิ่งใช้ยิ่งเก่ง — เรียนรู้จากพฤติกรรมผู้ใช้จริง</p>
     </section>
+    <figure class="shot"><img src="img/tt-learned.jpg" width="1600" height="628" loading="lazy" alt="ตารางคำที่ระบบจำได้ แสดงคู่คำอังกฤษกับไทย แถบนับครั้ง และสถานะ auto หรือ manual"><figcaption>ภาพคอนเซ็ปต์ — คำที่แปลงครบ 3 ครั้งเปลี่ยนเป็น auto-replace (คู่คำแปลงด้วย mapping จริง)</figcaption></figure>
+
 
     <div class="learning-visual">
-        <h4>&#129504; วิธีการเรียนรู้</h4>
+        <h4><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/></svg> วิธีการเรียนรู้</h4>
         <div class="learn-step">
             <span class="step-num">1</span>
-            <span class="step-text">ผู้ใช้พิมพ์ <strong>kgx'iyd</strong> แล้วกด shortcut แปลง</span>
+            <span class="step-text">ผู้ใช้พิมพ์ <strong>mflv[</strong> แล้วกด shortcut แปลง</span>
         </div>
         <div class="learn-step">
             <span class="step-num">2</span>
@@ -1162,7 +1174,7 @@
         </div>
         <div class="code-body">
 {
-  <span class="str">"kgx'iyd"</span>: {
+  <span class="str">"mflv["</span>: {
     <span class="fn">"value"</span>: <span class="str">"ทดสอบ"</span>,
     <span class="fn">"count"</span>: <span class="num">5</span>
   },
@@ -1181,15 +1193,17 @@
         <h2>ใช้ได้ทุกที่บน macOS</h2>
         <p>ทำงานแบบ system-wide — ไม่ว่าจะอยู่ app ไหนก็กดปุ่มลัดแปลงได้</p>
     </section>
+    <figure class="shot"><img src="img/tt-apps-unsplash.jpg" width="1200" height="750" loading="lazy" alt="คนใช้แล็ปท็อป MacBook ทำงานบนโต๊ะ"><figcaption>ทำงานระดับระบบ ไม่ผูกกับแอปไหน · ภาพ: Glenn Carstens-Peters / Unsplash</figcaption></figure>
+
 
     <div class="app-grid">
-        <span class="app-chip">&#127760; Safari / Chrome</span>
-        <span class="app-chip">&#128172; Slack</span>
-        <span class="app-chip">&#128994; LINE</span>
-        <span class="app-chip">&#128221; Notion</span>
-        <span class="app-chip">&#128187; VS Code</span>
-        <span class="app-chip">&#9000; Terminal</span>
-        <span class="app-chip">&#128196; Word / Pages</span>
+        <span class="app-chip"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg> Safari / Chrome</span>
+        <span class="app-chip"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> Slack</span>
+        <span class="app-chip"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z"/></svg> LINE</span>
+        <span class="app-chip"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg> Notion</span>
+        <span class="app-chip"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg> VS Code</span>
+        <span class="app-chip"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg> Terminal</span>
+        <span class="app-chip"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg> Word / Pages</span>
     </div>
 
     <hr class="divider">
@@ -1199,20 +1213,22 @@
         <h2>Roadmap</h2>
         <p>แผนพัฒนา 3 เฟส — จากแปลงง่ายๆ สู่ AI ที่เข้าใจบริบท</p>
     </section>
+    <figure class="shot"><img src="img/tt-suggest.jpg" width="1600" height="544" loading="lazy" alt="กล่องแนะนำเหนือข้อความ mflv[ ว่าดูเหมือนพิมพ์ผิดภาษา แปลงเป็น ทดสอบ พร้อมปุ่มแปลง"><figcaption>ภาพคอนเซ็ปต์ Phase 2 — ระบบเดาเองว่าพิมพ์ผิดภาษา แล้วเสนอคำแปลงให้กด Tab</figcaption></figure>
+
 
     <div class="feature-grid">
         <div class="feature-card phase1">
-            <div class="feat-icon">&#9000;</div>
+            <div class="feat-icon"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg></div>
             <div class="feat-title">Phase 1 — Core</div>
             <div class="feat-desc">Keyboard mapping + Shortcut trigger + Dictionary learning</div>
         </div>
         <div class="feature-card phase2">
-            <div class="feat-icon">&#129504;</div>
+            <div class="feat-icon"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/></svg></div>
             <div class="feat-title">Phase 2 — Smart</div>
             <div class="feat-desc">Auto-detection + Pattern learning + Thai spell check</div>
         </div>
         <div class="feature-card phase3">
-            <div class="feat-icon">&#10024;</div>
+            <div class="feat-icon"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/></svg></div>
             <div class="feat-title">Phase 3 — AI</div>
             <div class="feat-desc">AI typo prediction + Context-aware correction</div>
         </div>
@@ -1243,6 +1259,8 @@
         <h2>Target Metrics</h2>
         <p>เป้าหมายประสิทธิภาพของระบบ</p>
     </section>
+    <figure class="shot"><img src="img/tt-metrics-unsplash.jpg" width="1200" height="750" loading="lazy" alt="ปุ่มคีย์บอร์ดเรืองแสงในที่มืดระยะใกล้"><figcaption>เป้าคือเร็วจนไม่รู้สึกว่ามีเครื่องมือคั่นกลาง · ภาพ: Sam Albury / Unsplash</figcaption></figure>
+
 
     <div class="metrics">
         <div class="metric-card">
@@ -1270,6 +1288,8 @@
         <h2>Key Takeaways</h2>
         <p>สิ่งที่ได้เรียนรู้จากการคิดโปรเจกต์นี้</p>
     </section>
+    <figure class="shot"><img src="img/tt-learn-unsplash.jpg" width="1200" height="750" loading="lazy" alt="มือคนกำลังพิมพ์บนแล็ปท็อปสีเงิน"><figcaption>ปัญหาเล็กที่เจอทุกวัน คือโจทย์ที่คุ้มที่สุด · ภาพ: Mimi Thian / Unsplash</figcaption></figure>
+
 
     <div class="learning-card">
         <strong>ปัญหาเล็กที่ทุกคนชินชา = โอกาสที่ดี</strong> — การลืมเปลี่ยนภาษาเป็นเรื่องที่คนไทยเจอทุกวัน แต่ไม่มีใครคิดว่า "แก้ได้" เพราะชินกับการลบแล้วพิมพ์ใหม่ ถ้ามองปัญหาเล็กๆ ที่คนยอมรับว่าเป็นเรื่องปกติ จะเจอโอกาสสร้างเครื่องมือที่มีคุณค่า
@@ -1291,7 +1311,7 @@
 
 <!-- ===== CLOSING ===== -->
 <div class="closing">
-    <h2>&#9000; พิมพ์ผิดภาษา? ไม่ต้องลบแล้ว</h2>
+    <h2><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg> พิมพ์ผิดภาษา? ไม่ต้องลบแล้ว</h2>
     <p>โปรเจกต์นี้เกิดจากความหงุดหงิดเล็กๆ ที่เจอทุกวัน — ลืมเปลี่ยนภาษาแล้วต้องลบทั้งหมด ถ้าแค่กดปุ่มเดียวแล้วแปลงกลับได้ ชีวิตจะง่ายขึ้นเยอะ</p>
     <div class="stack-icons">
         <span class="stack-icon">Python</span>

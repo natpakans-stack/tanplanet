@@ -9,7 +9,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Design Inspector for Claude — Chrome Extension Portfolio">
   <meta name="twitter:description" content="Chrome Extension ที่ช่วย UX Designer inspect element แล้ว copy เป็น Markdown สำหรับ Claude AI ได้ทันที">
-  <meta property="og:url" content="https://projects.tanplanet.info/design-inspector-for-claude/">
+  <meta property="og:url" content="https://projects.tanplanet.work/design-inspector-for-claude/">
   <meta property="og:type" content="website">
   <meta property="og:description" content="Chrome Extension ที่ช่วย UX Designer inspect element แล้ว copy เป็น Markdown สำหรับ Claude AI ได้ทันที">
   <meta property="og:title" content="Design Inspector for Claude — Chrome Extension Portfolio">
@@ -586,6 +586,7 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
     .hero-badge .ico { width: 14px; height: 14px; }
+  .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.5}.shot-pair .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;max-width:var(--shot-max,100%);margin:0 auto}@media (max-width:640px){.shot-pair .pair{grid-template-columns:1fr}}.shot-narrow img{max-width:min(100%,var(--shot-max,520px));margin:0 auto}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -618,11 +619,15 @@
     <h2><span class="material-symbols-outlined">lightbulb</span> Background</h2>
     <p>ในฐานะ UX Designer ที่ใช้ Claude เป็น design assistant — ปัญหาที่เจอทุกวันคือ: เวลาจะบอก Claude ว่า "แก้ element นี้ให้หน่อย" ต้อง<strong>เปิด DevTools → หาข้อมูล → คัดลอก CSS → จัดรูปแบบ → วางใน prompt</strong> ทุกครั้ง</p>
     <p style="margin-top:12px; color: var(--text-secondary);">กระบวนการนี้เสีย 2-3 นาทีต่อ element และเกิดขึ้นซ้ำๆ วันละหลายสิบครั้ง — รวมแล้วเสียเวลามากกว่าที่คิด</p>
+    <figure class="shot"><img src="img/di-bg-unsplash.jpg" width="1200" height="800" loading="lazy" alt="หน้าจอเขียนโค้ดธีมมืดที่มี terminal และไฟล์โปรเจกต์"><figcaption>ก่อนมีเครื่องมือ — ต้องสลับไปมาระหว่าง DevTools, editor และ prompt ทุกครั้งที่จะเล่าว่า "แก้ element ไหน" · ภาพ: Bernd Dittrich / Unsplash</figcaption></figure>
+
   </div>
 
   <!-- DESIGN THINKING PROCESS -->
   <div class="section">
     <h2><span class="material-symbols-outlined">psychology</span> Design Thinking Process</h2>
+    <figure class="shot shot-narrow" style="--shot-max:300px"><img src="img/di-popup.jpg" width="480" height="520" loading="lazy" alt="popup ของ extension: สถานะ Active ปุ่ม Disable และตัวเลือก Copy Sections"><figcaption>Popup ตัวจริง — เปิด/ปิด inspector และเลือกว่าจะ copy ส่วนไหน (Element &amp; Path · CSS Styles · Classname)</figcaption></figure>
+
     <div class="dt-process">
 
       <div class="dt-card">
@@ -676,6 +681,8 @@
   <!-- FEATURES -->
   <div class="section">
     <h2><span class="material-symbols-outlined">deployed_code</span> Features</h2>
+    <figure class="shot"><img src="img/di-hover-c.jpg" width="1400" height="470" loading="lazy" alt="ชี้เมาส์ที่กล่องสถานะ รอชำระเงิน แล้วเห็น overlay สี box model และ tooltip บอก tag ขนาด และฟอนต์"><figcaption>Hover Inspect ของจริง — overlay สีแยก margin / padding / content + tooltip บอก tag, ขนาด, ฟอนต์ (หน้าเว็บตัวอย่าง)</figcaption></figure>
+
     <div class="feature-list">
       <div class="feature-item">
         <div class="feature-icon"><span class="material-symbols-outlined">select_all</span></div>
@@ -711,6 +718,8 @@
   <!-- OUTPUT DEMO -->
   <div class="section">
     <h2><span class="material-symbols-outlined">code</span> Output ที่ได้</h2>
+    <figure class="shot"><img src="img/di-md.jpg" width="1600" height="334" loading="lazy" alt="Markdown ที่ extension copy ลง clipboard จริง วางในช่องพิมพ์พร้อมคำสั่งแก้ดีไซน์"><figcaption>Markdown ที่ได้จริงจากการคลิก 1 ครั้ง (วางต่อด้วยคำสั่งภาษาไทยได้ทันที)</figcaption></figure>
+
     <p>คลิก element เดียว ได้ข้อมูลครบ — Claude อ่านแล้วรู้ทันทีว่า element ไหน อยู่ไฟล์ไหน style อะไร:</p>
     <div class="code-demo">
       <span class="key">**Element:**</span> <span class="val">`div.vd-status-hero--warning`</span> <span class="dim">(844×132)</span><br>
@@ -730,6 +739,8 @@
   <!-- DESIGN DECISIONS -->
   <div class="section">
     <h2><span class="material-symbols-outlined">decision</span> Design Decisions</h2>
+    <figure class="shot"><img src="img/di-panel.jpg" width="1600" height="900" loading="lazy" alt="Detail panel ธีมมืดด้านขวาแสดง box model, layout, typography และปุ่ม Copy for Claude"><figcaption>Detail Panel ใน Shadow DOM ธีมมืด #1e1e2e — ไม่ชนกับ CSS ของเว็บที่ inspect</figcaption></figure>
+
     <table class="decision-table">
       <thead>
         <tr><th>Decision</th><th>Choice</th><th>Why</th></tr>
@@ -767,6 +778,8 @@
   <!-- ITERATION JOURNEY -->
   <div class="section">
     <h2><span class="material-symbols-outlined">refresh</span> Iteration Journey</h2>
+    <figure class="shot"><img src="img/di-toast-c.jpg" width="1120" height="900" loading="lazy" alt="element ที่เลือกถูกไฮไลต์สีฟ้า และมี toast Copied to clipboard ลอยด้านล่าง"><figcaption>ผลของรอบ v3 — flash สีฟ้าที่ element + toast "Copied to clipboard" บอกสถานะทันที</figcaption></figure>
+
     <div class="iteration-list">
       <div class="iteration-item">
         <div class="iteration-num">1</div>
@@ -809,6 +822,8 @@
   <!-- ARCHITECTURE -->
   <div class="section">
     <h2><span class="material-symbols-outlined">account_tree</span> Architecture</h2>
+    <figure class="shot"><img src="img/di-offscreen.jpg" width="1600" height="578" loading="lazy" alt="โค้ดจริงจาก background.js และ offscreen.js ที่ส่งต่อข้อความไป copy ใน offscreen document"><figcaption>โค้ดจริง — content script ส่งข้อความ → background → offscreen document ที่ copy ลง clipboard ได้</figcaption></figure>
+
     <div class="arch-diagram">
 <span class="accent">┌─────────────────────────────────────┐</span>
 │  <span class="accent">Content Scripts</span> (injected per page)  │
@@ -834,6 +849,8 @@
   <!-- TECH STACK -->
   <div class="section">
     <h2><span class="material-symbols-outlined">build</span> Tech Stack</h2>
+    <figure class="shot"><img src="img/di-manifest.jpg" width="1600" height="438" loading="lazy" alt="ไฟล์ manifest.json แบบ Manifest V3 พร้อมรายการ permissions"><figcaption>manifest.json (Manifest V3) — ขอ permission แค่ 5 ตัว · เบลอชื่อองค์กรออก</figcaption></figure>
+
     <div class="tags">
       <span class="tag">Chrome Extension Manifest V3</span>
       <span class="tag">Shadow DOM</span>
@@ -849,6 +866,8 @@
   <!-- LEARNINGS -->
   <div class="section">
     <h2><span class="material-symbols-outlined">school</span> สิ่งที่ได้เรียนรู้</h2>
+    <figure class="shot"><img src="img/di-learn-unsplash.jpg" width="1200" height="900" loading="lazy" alt="กระดาษสเก็ตช์ wireframe หน้าจอมือถือหลายแผ่นบนโต๊ะทำงาน"><figcaption>เครื่องมือที่ดีเริ่มจากสังเกต workflow ตัวเอง · ภาพ: Amélie Mourichon / Unsplash</figcaption></figure>
+
     <div class="learning-grid">
       <div class="learning-card">
         <h3>Clipboard ≠ Simple</h3>
@@ -884,7 +903,7 @@
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -909,13 +928,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Design Inspector for Claude",
-      "item": "https://projects.tanplanet.info/design-inspector-for-claude-portfolio/"
+      "item": "https://projects.tanplanet.work/design-inspector-for-claude-portfolio/"
     }
   ]
 }

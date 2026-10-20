@@ -7,9 +7,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ลูกเจี๊ยบ — LINE Bot บันทึกการให้อาหารฟาร์มไก่สาว">
   <meta name="twitter:description" content="Portfolio: LINE chatbot สำหรับฟาร์มไก่สาว — เตือนคนงานวันละ 3 มื้อ, บันทึกการให้อาหาร, รายงานเข้า Google Sheets อัตโนมัติ. Next.js 16 + LIFF + Vercel">
-  <meta property="og:url" content="https://projects.tanplanet.info/chatbot-farm-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/chatbot-farm-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/chatbot-farm-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/chatbot-farm-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: LINE chatbot สำหรับฟาร์มไก่สาว — เตือนคนงานวันละ 3 มื้อ, บันทึกการให้อาหาร, รายงานเข้า Google Sheets อัตโนมัติ. Next.js 16 + LIFF + Vercel">
@@ -504,13 +504,14 @@
       position: relative;
     }
     .chat-bubble.bot::before {
-      content: '🐥';
+      content: '';
+      background: #fff8e6 url(img/chick.png) center/80% no-repeat;
       position: absolute;
       left: -34px;
       top: 0;
       width: 28px;
       height: 28px;
-      background: var(--accent);
+      background-color: #fff8e6;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -894,6 +895,7 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
     .hero-badge .ico { width: 14px; height: 14px; }
+  .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.5}.shot-pair .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;max-width:var(--shot-max,100%);margin:0 auto}@media (max-width:640px){.shot-pair .pair{grid-template-columns:1fr}}.shot-narrow img{max-width:min(100%,var(--shot-max,520px));margin:0 auto}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -937,6 +939,8 @@
       <h2>ปัญหาที่เจอ</h2>
       <p>ทำไมการดูแลให้อาหารฟาร์มไก่สาวถึงต้องการระบบ?</p>
     </section>
+    <figure class="shot"><img src="img/cf-problem-unsplash.jpg" width="1200" height="675" loading="lazy" alt="ไก่สีน้ำตาลจำนวนมากรุมกินอาหารจากถังให้อาหาร"><figcaption>งานประจำวันของฟาร์ม — ให้อาหารหลายมื้อ หลายโรง และต้องจดทุกครั้ง · ภาพ: Arisa Chattasa / Unsplash</figcaption></figure>
+
 
     <div class="quote-block">
       <p>ฟาร์มไก่สาวต้องให้อาหารตรงเวลาวันละ 3 มื้อทุกวัน — ถ้าคนงานลืม ไก่ไม่ได้กิน เจ้าของไม่รู้จนกว่าจะเข้าฟาร์ม ส่วนรายงาน "วันนี้ให้ไปกี่กระสอบ ตายกี่ตัว ป่วยกี่ตัว" จดบนกระดาษบ้าง LINE chat บ้าง สุดท้ายหาย รวมข้อมูลไม่ได้</p>
@@ -978,6 +982,8 @@
       <h2>วิธีแก้ปัญหา</h2>
       <p>เอาบอทเข้ากลุ่ม LINE ที่คนงานอยู่อยู่แล้ว — เตือนตามเวลา กรอกผ่านฟอร์ม เก็บใน Sheet</p>
     </section>
+    <figure class="shot"><img src="img/cf-richmenu.jpg" width="1250" height="843" loading="lazy" alt="Rich menu 6 ปุ่มใน LINE: กำหนดอาหาร กำหนดการผสม ดูรายงาน กรอกรายงาน บันทึกการผสม เช็คโควต้า"><figcaption>Rich menu จริงของบอท — ทุกงานเริ่มจากปุ่มในแชท LINE ที่คนงานใช้อยู่แล้ว</figcaption></figure>
+
 
     <div class="solution-grid">
       <div class="solution-card">
@@ -1014,6 +1020,8 @@
       <h2>User Flow</h2>
       <p>1 วันของลูกเจี๊ยบ — Owner วางแผนตอนกลางคืน บอททำงานเองตลอดวัน</p>
     </section>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/cf-chat-morning.jpg" width="786" height="1436" loading="lazy" alt="แชทกลุ่ม LINE: บอทแจ้งแผนอาหารมื้อเช้า บันทึกเวลาเริ่ม และเตือนกรอกรายงาน"><figcaption>Flow ตอนเช้าในกลุ่ม — แจ้งแผน → กดเริ่ม → เตือนกรอกรายงาน (render จาก Flex JSON จริงของบอท · กรอบแชทเป็นภาพจำลอง)</figcaption></figure>
+
 
     <div class="flow-grid">
       <div class="flow-step">
@@ -1049,6 +1057,8 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>Stack ที่เลือกเพื่อให้คนเดียวดูแลได้ทั้งระบบ — ไม่มี DB ที่ต้องบริหาร ไม่มี admin UI ที่ต้องสร้าง</p>
     </section>
+    <figure class="shot"><img src="img/cf-scheduler.jpg" width="1600" height="482" loading="lazy" alt="โค้ด scheduler ที่อ่านเวลาไทยและตารางจาก Google Sheet แล้ว push เข้ากลุ่ม"><figcaption>โค้ดจริง — cron ภายนอกยิงทุกนาที endpoint เทียบเวลาไทยกับตารางใน Google Sheet แล้ว push เข้า group</figcaption></figure>
+
 
     <div class="arch-diagram">
       <div class="arch-layers">
@@ -1109,6 +1119,8 @@
       <h2>สิ่งที่สร้าง — 8 ฟีเจอร์หลัก</h2>
       <p>ครบ loop ตั้งแต่วางแผนถึงเก็บข้อมูล</p>
     </section>
+    <figure class="shot shot-pair" style="--shot-max:560px"><div class="pair"><img src="img/cf-mp.jpg" width="600" height="1298" loading="lazy" alt="ฟอร์ม LIFF กำหนดการผสม: ปฏิทิน 7 วัน สูตรอาหาร และเป้าหมายจำนวนกระสอบ"><img src="img/cf-fm.jpg" width="600" height="1298" loading="lazy" alt="ฟอร์ม LIFF บันทึกการผสม: วันที่ สูตร จำนวนที่ผสมได้ และหมายเหตุ"></div><figcaption>ฟอร์ม LIFF จริงอีก 2 ตัว — กำหนดการผสม (เจ้าของ) · บันทึกการผสม (คนงาน) · ข้อมูลตัวอย่าง</figcaption></figure>
+
 
     <div class="module-grid">
       <div class="module-card">
@@ -1160,6 +1172,8 @@
       <h2>หน้าตาในกลุ่ม LINE</h2>
       <p>ตัวอย่าง flow ตอนเช้า — bot ส่ง instruction → คนงานกดเริ่ม</p>
     </section>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/cf-chat-mixing.jpg" width="786" height="1226" loading="lazy" alt="แชทกลุ่ม LINE: บอทเตือนผสมอาหารสูตร A เป้า 16 กระสอบ และการ์ดโควต้าข้อความเดือนนี้"><figcaption>Bubble เตือนผสมอาหาร + การ์ดเช็คโควต้าข้อความ (Flex JSON จริง · ตัวเลขตัวอย่าง)</figcaption></figure>
+
 
     <div class="chat-mockup">
       <div class="chat-bubble bot">
@@ -1193,15 +1207,17 @@
       <h2>หน้าตาฟอร์ม LIFF</h2>
       <p>กำหนดอาหาร 3 มื้อ ในหน้าจอเดียว (LIFF Tall size — viewport จำกัด)</p>
     </section>
+    <figure class="shot shot-pair" style="--shot-max:560px"><div class="pair"><img src="img/cf-fp.jpg" width="600" height="1298" loading="lazy" alt="ฟอร์ม LIFF กำหนดอาหาร: ปฏิทินสัปดาห์บอกวันที่ตั้งแผนแล้ว และตาราง 3 มื้อ × 2 โรง รวม 16.5 กระสอบ"><img src="img/cf-wr.jpg" width="600" height="1298" loading="lazy" alt="ฟอร์ม LIFF รายงานการให้อาหารของคนงาน: อาหารจริง ไก่ตาย ไก่ป่วย แยกโรง 1 และโรง 2"></div><figcaption>ฟอร์มจริง (รันจากโค้ดด้วยโหมด mock) — ซ้าย: เจ้าของกำหนดอาหาร · ขวา: คนงานรายงานผล</figcaption></figure>
+
 
     <div class="liff-mockup">
       <div class="liff-header">
-        <h4>🐥 ลูกเจี๊ยบ</h4>
+        <h4><img src="img/chick.png" width="22" height="22" alt="" style="vertical-align:-5px;border-radius:50%"> ลูกเจี๊ยบ</h4>
         <div class="sub">กำหนดอาหารแต่ละมื้อ</div>
       </div>
       <div class="liff-body">
         <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:8px;">วันที่ต้องการให้แจ้งเตือน</div>
-        <div style="padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:0.88rem; margin-bottom:14px;">📅 25 พฤษภาคม 2026 (พรุ่งนี้)</div>
+        <div style="padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:0.88rem; margin-bottom:14px;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg> 25 พฤษภาคม 2026 (พรุ่งนี้)</div>
         <table class="liff-table">
           <thead>
             <tr><th>มื้อ</th><th>โรง 1</th><th>โรง 2</th></tr>
@@ -1224,6 +1240,8 @@
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์ที่ต้องคิดทางแก้เอง — design constraint + LINE platform limit + serverless quirk</p>
     </section>
+    <figure class="shot"><img src="img/cf-hack.jpg" width="1600" height="450" loading="lazy" alt="โค้ดจริง: keyword เมนูหลัก เป็น trigger เดียว และฟังก์ชันแปลงเวลาเป็นเวลาไทยที่อ่านง่าย"><figcaption>โค้ดจริง 2 จุด — บอทตอบแค่ "เมนูหลัก" และเก็บเวลาในรูปแบบไทยที่เจ้าของอ่านใน Sheet ได้ทันที</figcaption></figure>
+
 
     <div class="hack-grid">
       <div class="hack-card ux" data-label="UX">
@@ -1270,6 +1288,8 @@
       <h2>Design Decision ที่ต้องคุยกับลูกค้า</h2>
       <p>UX trade-off ที่ไม่ได้อยู่ใน playbook — ต้อง explain + decide ร่วมกัน</p>
     </section>
+    <figure class="shot shot-pair" style="--shot-max:560px"><div class="pair"><img src="img/cf-fp-confirm.jpg" width="600" height="1300" loading="lazy" alt="กล่องยืนยันก่อนบันทึกแผน สรุปตาราง 3 มื้อ 2 โรง รวม 16.5 กระสอบ"><img src="img/cf-fp-ok.jpg" width="600" height="1300" loading="lazy" alt="หน้าบันทึกสำเร็จ: มาสคอตลูกเจี๊ยบ สรุปจำนวนกระสอบแต่ละมื้อ และปุ่มกลับไป LINE"></div><figcaption>Confirm Dialog ก่อนบันทึก → หน้าสำเร็จพร้อมสรุป (ใช้ซ้ำทั้ง 3 ฟอร์ม)</figcaption></figure>
+
 
     <div class="quote-block" style="margin-bottom: 24px;">
       <p>ในการทำ MVP ทุกตัว trade-off จะเยอะ — ส่ง message ทุกข้อความหรือเฉพาะ keyword? Native date picker หรือ custom? Owner mark group manually หรือ auto-detect? คำตอบที่ "ถูกต้อง" มีหลายแบบ ต้องวางทางเลือกให้ลูกค้าเห็น แล้ว explain trade-off ของแต่ละทาง ไม่ใช่เลือกแทนลูกค้า</p>
@@ -1277,22 +1297,22 @@
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#127911;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></strong><br>
         <strong>Confirm Dialog</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Reusable component ใช้ครบทั้ง 3 ฟอร์ม — สรุปข้อมูลก่อน save</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#127919;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></strong><br>
         <strong>Keyword Trigger</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">"เมนูหลัก" เท่านั้น — เงียบในกลุ่ม ไม่รบกวน</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128197;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></strong><br>
         <strong>Tomorrow Prefill</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Date default = today+1 เพราะ Owner วางแผนกลางคืน</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128279;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></strong><br>
         <strong>Sheet Card</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">"ดูรายงาน" = เปิด Google Sheet ตรง ไม่สร้าง dashboard</p>
       </div>
@@ -1305,6 +1325,8 @@
       <h2>เราได้อะไรจากโปรเจกต์นี้</h2>
       <p>5 บทเรียนจากการทำลูกเจี๊ยบ ตั้งแต่ requirement ถึง production</p>
     </section>
+    <figure class="shot"><img src="img/cf-learn-unsplash.jpg" width="1200" height="750" loading="lazy" alt="ไก่สีน้ำตาลกินอาหารจากที่ให้อาหารบนสนามหญ้า"><figcaption>เครื่องมือที่ดีสำหรับหน้างาน คือเครื่องมือที่อยู่ในแอปที่เขาใช้อยู่แล้ว · ภาพ: Lucas / Unsplash</figcaption></figure>
+
 
     <div class="learning-card">
       <strong>1. ออกแบบให้ "อยู่ในที่ที่ user อยู่อยู่แล้ว" — ไม่ใช่ดึง user มาที่ระบบเรา:</strong>
@@ -1369,12 +1391,12 @@
     <div class="links">
       <a href="https://chatbot-farm-indol.vercel.app" target="_blank" rel="noopener">เปิด Production &#8599;</a>
       <a href="https://github.com/natpakans-stack/chatbot-farm" target="_blank" rel="noopener">GitHub Repo &#8599;</a>
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1397,13 +1419,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "ลูกเจี๊ยบ (Chicken Farm Bot) Portfolio",
-      "item": "https://projects.tanplanet.info/chatbot-farm-portfolio/"
+      "item": "https://projects.tanplanet.work/chatbot-farm-portfolio/"
     }
   ]
 }

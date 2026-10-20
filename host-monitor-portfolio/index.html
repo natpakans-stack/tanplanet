@@ -7,9 +7,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="วิเคราะห์โฮสต์ไลฟ์คอมเมิร์ซ real-time — อ่านตัวตน–อารมณ์–engagement แบบ real-time">
   <meta name="twitter:description" content="งานวิจัย Computer Vision: จับใบหน้า → ตัวตน → อารมณ์ → engagement ของโฮสต์ไลฟ์คอมเมิร์ซ แบบ real-time — Electron + React desktop + Python ML backend (MTCNN · FaceNet · ViT/FER+ · MediaPipe FaceMesh)">
-  <meta property="og:url" content="https://projects.tanplanet.info/host-monitor-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/host-monitor-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/host-monitor-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/host-monitor-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="งานวิจัย Computer Vision: จับใบหน้า → ตัวตน → อารมณ์ → engagement ของโฮสต์ไลฟ์คอมเมิร์ซ แบบ real-time — Electron + React desktop + Python ML backend (MTCNN · FaceNet · ViT/FER+ · MediaPipe FaceMesh)">
@@ -925,6 +925,7 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
     .hero-badge .ico { width: 14px; height: 14px; }
+  .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.5}.shot-pair .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;max-width:var(--shot-max,100%);margin:0 auto}@media (max-width:640px){.shot-pair .pair{grid-template-columns:1fr}}.shot-narrow img{max-width:min(100%,var(--shot-max,520px));margin:0 auto}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -967,6 +968,8 @@
       <h2>ปัญหาที่เจอ</h2>
       <p>ไลฟ์คอมเมิร์ซหนึ่งรอบยาวหลายชั่วโมง — จะรู้ได้ยังไงว่าโฮสต์ยัง "มีพลัง" และ engagement ตกตรงไหน โดยไม่ต้องมานั่งดูซ้ำทั้งคลิป?</p>
     </section>
+    <figure class="shot"><img src="img/hm-problem-unsplash.jpg" width="1200" height="679" loading="lazy" alt="มือถือบนขาตั้งกำลังไลฟ์ โชว์หน้าจอคนไลฟ์อยู่"><figcaption>ไลฟ์หนึ่งรอบยาวหลายชั่วโมง — จะรู้ได้ยังไงว่าโฮสต์ยังมีพลังตรงไหน · ภาพ: Detail .co / Unsplash</figcaption></figure>
+
 
     <div class="quote-block">
       <p>ทีม ops อยากเข้าใจว่าโฮสต์ไลฟ์แต่ละคน "อิน" กับกล้องแค่ไหน อารมณ์เป็นยังไงตลอด session แต่การให้คนมานั่งดูวิดีโอย้อนหลังหลายชั่วโมงแล้วให้คะแนนเอง มันช้า ไม่ทัน และ subjective — โจทย์คือทำให้ metric พวกนี้ "อ่านได้ต่อวินาที" แบบอัตโนมัติ พร้อมเคารพความเป็นส่วนตัวของคนที่ถูกวัด</p>
@@ -1009,6 +1012,8 @@
       <h2>วิธีแก้ปัญหา</h2>
       <p>ให้ไปป์ไลน์ CV ทำงานหนักแทน — จับ, รู้จัก, อ่านอารมณ์, วัด engagement ทุกเฟรม แล้วสรุปเป็น KPI ที่คนอ่านเข้าใจใน 3 วินาที</p>
     </section>
+    <figure class="shot shot-narrow" style="--shot-max:520px"><img src="img/hm-face.jpg" width="900" height="840" loading="lazy" alt="กรอบสีเขียวรอบใบหน้า พร้อมป้าย host_01 happy 82% และค่า energy smile talking looking frown ต่อนาที"><figcaption>overlay จากแอปจริง — กรอบหน้า + ชื่อจาก enroll + อารมณ์ + สัญญาณราย 1 นาที (ภาพตัวอย่างเป็นพรีเซนเตอร์ AI ไม่ใช่โฮสต์จริง)</figcaption></figure>
+
 
     <div class="solution-grid">
       <div class="solution-card">
@@ -1046,6 +1051,8 @@
       <h2>วิธีทำงาน — 4 จังหวะ</h2>
       <p>ตั้งแต่เฟรมวิดีโอไลฟ์ จนได้ KPI สดบน dashboard</p>
     </section>
+    <figure class="shot"><img src="img/hm-pipeline.jpg" width="1600" height="546" loading="lazy" alt="แผนผังไปป์ไลน์ใน README: MTCNN, FaceNet, MediaPipe FaceMesh, ViT emotion, calibration, EMA และ report"><figcaption>ไปป์ไลน์จริงจาก README — 4 โมเดลต่อกันใน 1 เฟรม แล้ว smooth เป็น metric ราย 1/5 นาที</figcaption></figure>
+
 
     <div class="flow-grid">
       <div class="flow-step">
@@ -1082,6 +1089,8 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>Desktop app คุยกับ Python ML backend ในเครื่อง ผ่าน WebSocket — ประมวลผลทุกอย่าง local ไม่มี cloud</p>
     </section>
+    <figure class="shot"><img src="img/hm-csv.jpg" width="1600" height="378" loading="lazy" alt="ตัวอย่างแถวในไฟล์ log CSV ต่อเฟรม: เวลา track id อารมณ์ ความมั่นใจ สัญญาณยิ้มพูดมอง และพิกัดกรอบ"><figcaption>log ต่อเฟรมจากไฟล์ session จริง (ไม่ได้ enroll ชื่อ = unknown) — วัตถุดิบของ report และกราฟ</figcaption></figure>
+
 
     <div class="arch-diagram">
       <div class="arch-layers">
@@ -1138,6 +1147,8 @@
       <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
       <p>ครบ loop ตั้งแต่จับใบหน้า ถึง session report ที่ทีมเปิดดูย้อนหลังได้</p>
     </section>
+    <figure class="shot shot-narrow" style="--shot-max:360px"><img src="img/hm-sidebar.jpg" width="400" height="1126" loading="lazy" alt="แถบข้างของแอป: KPI ของโฮสต์ สถิติไลฟ์ ยอดไลก์ ของขวัญ คอมเมนต์ และรายการคอมเมนต์"><figcaption>Sidebar ของแอปจริง — KPI โฮสต์ + สถิติไลฟ์ + คอมเมนต์ที่ดึงมาได้ (ข้อมูลตัวอย่าง)</figcaption></figure>
+
 
     <div class="module-grid">
       <div class="module-card">
@@ -1190,6 +1201,8 @@
       <h2>หน้าตา Desktop App</h2>
       <p>เปิดไลฟ์ในหน้าต่างแอป → เห็นวิดีโอ + กล่องใบหน้า + KPI สดในหน้าจอเดียว</p>
     </section>
+    <figure class="shot"><img src="img/hm-app.jpg" width="1600" height="1000" loading="lazy" alt="หน้าต่าง Live Host Monitor เต็มจอ: sidebar KPI ด้านซ้าย และวิดีโอไลฟ์พร้อมกรอบหน้าด้านขวา"><figcaption>UI จริงของ Electron app (render จาก renderer จริง + ข้อมูลตัวอย่าง) — เทียบกับภาพจำลองด้านบน</figcaption></figure>
+
 
     <div class="app-mockup">
       <div class="app-titlebar">
@@ -1199,7 +1212,7 @@
       </div>
       <div class="app-body">
         <div class="app-side">
-          <h4>&#9889; Live</h4>
+          <h4><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg> Live</h4>
           <div class="app-primary">host_01 <span class="em">· happy 82%</span></div>
           <div class="app-kpi-grid">
             <div class="app-kpi ok"><b>Energy</b><span>74%</span></div>
@@ -1209,7 +1222,7 @@
             <div class="app-kpi"><b>Frown</b><span>7%</span></div>
             <div class="app-kpi ok"><b>Mood</b><span>+0.53</span></div>
           </div>
-          <h4 style="margin-top:12px;">&#128065; Stream</h4>
+          <h4 style="margin-top:12px;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg> Stream</h4>
           <div class="app-kpi-grid">
             <div class="app-kpi"><b>Viewers</b><span>1.2k</span></div>
             <div class="app-kpi"><b>&#10084;/min</b><span>3.4k</span></div>
@@ -1219,19 +1232,19 @@
         </div>
         <div class="app-video">
           <span class="live-badge"><span class="d"></span>LIVE</span>
-          <span class="viewers">&#128065; 1,204</span>
+          <span class="viewers"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg> 1,204</span>
           <div class="host-silhouette"></div>
           <div class="app-face-box">
             <span class="app-face-label">host_01 · happy 82%</span>
           </div>
           <div class="app-chips">
-            <span class="app-chip on">&#128512; smile</span>
-            <span class="app-chip on">&#128172; talking</span>
-            <span class="app-chip on">&#128064; looking</span>
-            <span class="app-chip">&#128533; frown</span>
+            <span class="app-chip on"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg> smile</span>
+            <span class="app-chip on"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z"/></svg> talking</span>
+            <span class="app-chip on"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg> looking</span>
+            <span class="app-chip"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg> frown</span>
           </div>
           <div class="app-comment">
-            <span class="u">@mint_shop</span>ไซซ์ M ยังมีไหมคะ 🙋‍♀️
+            <span class="u">@mint_shop</span>ไซซ์ M ยังมีไหมคะ
           </div>
         </div>
       </div>
@@ -1245,6 +1258,8 @@
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์ที่ต้องคิดทางแก้เอง — ML model bias, hardware quirk และ real-time engineering</p>
     </section>
+    <figure class="shot"><img src="img/hm-report.jpg" width="1600" height="742" loading="lazy" alt="รายงาน session: KPI รวม กราฟพฤติกรรมต่อนาที และกราฟสัดส่วนอารมณ์ต่อนาที"><figcaption>Session report จริงจาก log 32,938 เฟรม — หลัง calibration + EMA กราฟอารมณ์นิ่งพอให้อ่านแนวโน้มได้</figcaption></figure>
+
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Model Bias">
@@ -1292,6 +1307,8 @@
       <h2>Design Decision ที่ตั้งใจเลือก</h2>
       <p>เพราะเป็นงานที่แตะข้อมูล biometric ของคน ขอบเขต "ไม่ทำ" สำคัญพอๆ กับสิ่งที่ทำ</p>
     </section>
+    <figure class="shot"><img src="img/hm-gitignore.jpg" width="1600" height="380" loading="lazy" alt="ไฟล์ .gitignore ที่กันไม่ให้ face embeddings และ log session ขึ้น repository"><figcaption>Local-only ตั้งแต่วันแรก — embedding และ log ถูก gitignore ไม่ออกนอกเครื่อง</figcaption></figure>
+
 
     <div class="quote-block" style="margin-bottom: 24px;">
       <p>นี่คือ research prototype ที่จับข้อมูล biometric (face embedding) และ behavioral (อารมณ์/ความสนใจ) จึงออกแบบโดยยึดหลัก PDPA ตั้งแต่ต้น — ข้อมูลทุกอย่างอยู่ในเครื่อง ไม่ส่งออก, metric ที่ได้เป็น "สัญญาณ" ไว้ดูภาพรวม ไม่ใช่คำตัดสินตายตัวของคน, และเอกสารระบุ limitation/bias ของโมเดลไว้ชัด production จริงต้องมี consent + retention window + จำกัดสิทธิ์เข้าถึงก่อนเสมอ</p>
@@ -1299,22 +1316,22 @@
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128274;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></strong><br>
         <strong>Local-only เท่านั้น</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">embedding + log อยู่ในเครื่อง (gitignored) ไม่ส่งออกนอก</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128221;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></strong><br>
         <strong>PDPA-aware</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ออกแบบเผื่อ consent · retention window · access control</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128202;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></strong><br>
         <strong>สัญญาณ ไม่ใช่คำตัดสิน</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">metric ไว้ดูภาพรวม + ระบุ bias ของโมเดลกำกับ</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#129514;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></svg></strong><br>
         <strong>ยอมรับว่าเป็น prototype</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">calibration ปรับด้วยมือ ยังไม่ validate บน labelled set</p>
       </div>
@@ -1328,6 +1345,8 @@
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
     </section>
+    <figure class="shot"><img src="img/hm-know-unsplash.jpg" width="1200" height="800" loading="lazy" alt="จอแสดงแดชบอร์ดกราฟข้อมูลหลายแบบ"><figcaption>จากโมเดลหลายตัว สู่ตัวเลขที่ทีมอ่านแล้วตัดสินใจได้ · ภาพ: Luke Chesser / Unsplash</figcaption></figure>
+
 
     <div class="learning-card">
       <strong>1. Real-time Computer Vision pipeline — orchestrate หลายโมเดลให้ทันเฟรม:</strong>
@@ -1387,12 +1406,12 @@
       <span class="stack-icon">Chart.js</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1415,13 +1434,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "ระบบวิเคราะห์โฮสต์ Portfolio",
-      "item": "https://projects.tanplanet.info/host-monitor-portfolio/"
+      "item": "https://projects.tanplanet.work/host-monitor-portfolio/"
     }
   ]
 }

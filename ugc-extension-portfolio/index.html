@@ -7,9 +7,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="UGC Video-Prompt Studio — Chrome Extension + CMS สร้างพรอมต์วิดีโอ UGC">
   <meta name="twitter:description" content="Portfolio: Chrome extension (MV3, Side Panel) + NestJS API + CMS — scrape สินค้า → ประกอบพรอมต์ (BYOK LLM) → ป้อนเข้าเว็บ AI video ที่ไม่มี public API ผ่าน CDP อัตโนมัติ">
-  <meta property="og:url" content="https://projects.tanplanet.info/ugc-extension-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/ugc-extension-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/ugc-extension-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/ugc-extension-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: Chrome extension (MV3, Side Panel) + NestJS API + CMS — scrape สินค้า → ประกอบพรอมต์ (BYOK LLM) → ป้อนเข้าเว็บ AI video ที่ไม่มี public API ผ่าน CDP อัตโนมัติ">
@@ -898,6 +898,7 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
     .hero-badge .ico { width: 14px; height: 14px; }
+  .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.5}.shot-pair .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;max-width:var(--shot-max,100%);margin:0 auto}@media (max-width:640px){.shot-pair .pair{grid-template-columns:1fr}}.shot-narrow img{max-width:min(100%,var(--shot-max,520px));margin:0 auto}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -941,6 +942,8 @@
       <h2>ปัญหาที่เจอ</h2>
       <p>ทำไมการทำวิดีโอ UGC รีวิวสินค้าด้วย AI ถึงยังต้องนั่งก๊อป-วาง-กรอกมือเป็นสิบขั้น?</p>
     </section>
+    <figure class="shot"><img src="img/uge-problem-unsplash.jpg" width="1200" height="800" loading="lazy" alt="ผู้หญิงนั่งเลื่อนดูหน้าเว็บบนแล็ปท็อปพร้อมจดโน้ต"><figcaption>ก่อนมีเครื่องมือ — เปิดหน้าสินค้า ก๊อปชื่อ/ราคา/รูปทีละช่อง แล้วไปเขียนพรอมต์เองทุกสินค้า · ภาพ: Tran Mau Tri Tam / Unsplash</figcaption></figure>
+
 
     <div class="quote-block">
       <p>เครื่องมือสร้างวิดีโอ AI ที่คุณภาพดีสุดสำหรับครีเอเตอร์ไทย <strong>ไม่มี public API</strong> — ต้องเข้าเว็บ พิมพ์พรอมต์เอง อัปรูป reference เอง กด generate ทีละซีน · ก่อนถึงตรงนั้นยังต้องหาข้อมูลสินค้า เขียนพรอมต์ภาษาอังกฤษให้ดี ทำซ้ำทุกสินค้า ทุกซีน เสียเวลามหาศาลและไม่ consistent</p>
@@ -983,6 +986,8 @@
       <h2>วิธีแก้ปัญหา</h2>
       <p>ให้ extension ต่อ 3 งานเป็นสายเดียว — scrape → gen prompt → ป้อนเข้าเว็บ AI video — เหลือแค่ "เลือก แล้วกด Auto"</p>
     </section>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-home.jpg" width="800" height="1180" loading="lazy" alt="หน้าแรกของ side panel: ปุ่มดึงข้อมูลจากหน้านี้ วางลิงก์ อัปโหลดรูปเอง และโหมดพรีเซนเตอร์ ละครสั้น ไวรัล"><figcaption>Side panel ตัวจริง — เปิดข้างหน้าเว็บสินค้า กดปุ่มเดียวดึงข้อมูล หรือเลือกโหมดอื่น (เบลอโลโก้องค์กร)</figcaption></figure>
+
 
     <div class="solution-grid">
       <div class="solution-card">
@@ -1020,6 +1025,8 @@
       <h2>วิธีทำงาน — 4 จังหวะ</h2>
       <p>ตั้งแต่เปิดหน้าสินค้า จนวิดีโอเริ่ม generate ในเว็บ AI</p>
     </section>
+    <figure class="shot shot-pair" style="--shot-max:600px"><div class="pair"><img src="img/uge-pulled.jpg" width="800" height="1800" loading="lazy" alt="หลังกดดึงข้อมูล: รูปสินค้า 3 รูป ชื่อ ราคา จุดขาย และรีวิวลูกค้าถูกดึงมาให้เลือก"><img src="img/uge-scenes.jpg" width="800" height="1800" loading="lazy" alt="บทพูดภาษาไทยและการ์ดฉากวิดีโอ 2 ฉากพร้อมพรอมต์ภาษาอังกฤษ ปุ่มส่งเข้าเว็บสร้างวิดีโอ"></div><figcaption>ซ้าย: ดึงสินค้า + รีวิวจากหน้าที่เปิดอยู่ · ขวา: ได้บทพูด + การ์ดพรอมต์ทีละฉาก พร้อมส่งเข้าเว็บสร้างวิดีโอ (ข้อมูลสินค้าตัวอย่าง · รูปสินค้า: Onur Binay, Kowon vn / Unsplash)</figcaption></figure>
+
 
     <div class="flow-grid">
       <div class="flow-step">
@@ -1056,6 +1063,8 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>3-tier — clients (extension + CMS) คุยผ่าน NestJS API เท่านั้น ไม่แตะ DB ตรง</p>
     </section>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-settings.jpg" width="800" height="1220" loading="lazy" alt="หน้าตั้งค่า: เลือก AI provider ใส่คีย์ของตัวเอง เลือกโมเดล ภาษาพากย์ และ Backend URL"><figcaption>หน้าตั้งค่าจริง — BYOK: คีย์ AI อยู่ในเครื่องผู้ใช้ · Backend URL ชี้ไป NestJS API (เบลอ URL และชื่อองค์กร)</figcaption></figure>
+
 
     <div class="arch-diagram">
       <div class="arch-layers">
@@ -1113,6 +1122,8 @@
       <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
       <p>ครบ loop ตั้งแต่ดึงข้อมูลสินค้า ถึงป้อนงานเข้าเว็บ AI video</p>
     </section>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-viral.jpg" width="800" height="1800" loading="lazy" alt="โหมดไวรัล: การ์ดเทมเพลตเอฟเฟกต์ เช่น ซูมออกสู่อวกาศ ตกอิสระ บินความเร็วสูง กล้องไนท์วิชัน"><figcaption>โหมดไวรัล — เทมเพลตเอฟเฟกต์ที่ดึงพรอมต์และรูปปกมาจาก CMS ไม่ต้อง ship extension ใหม่</figcaption></figure>
+
 
     <div class="module-grid">
       <div class="module-card">
@@ -1165,11 +1176,13 @@
       <h2>หน้าตา Side Panel</h2>
       <p>เปิดข้างหน้าเว็บ target → ดึงสินค้า → ได้การ์ดพรอมต์ → กด Auto</p>
     </section>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-script.jpg" width="800" height="1800" loading="lazy" alt="ส่วนบทพูดใน side panel: บทภาษาไทยที่ AI ร่างจากรีวิวจริง ตัวนับตัวอักษร และปุ่มขออีกแบบ"><figcaption>ของจริงเทียบกับภาพจำลองด้านบน — บทพูดที่ร่างจากรีวิวจริง พร้อมตัวนับความยาวให้พอดีความยาวซีน</figcaption></figure>
+
 
     <div class="app-mockup">
       <div class="app-head">
         <span class="app-brand"><span class="logo">U</span> UGC Studio</span>
-        <span class="app-gear">&#9881;</span>
+        <span class="app-gear"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></span>
       </div>
       <div class="app-tabs">
         <span class="app-tab">พรีเซนเตอร์</span>
@@ -1179,7 +1192,7 @@
       </div>
       <div class="app-body">
         <div class="app-product">
-          <div class="app-thumb">&#129380;</div>
+          <div class="app-thumb"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/></svg></div>
           <div>
             <div class="name">เซรั่มบำรุงผิวหน้า 30ml</div>
             <div class="price">฿590</div>
@@ -1199,7 +1212,7 @@
       </div>
       <div class="app-foot">
         <span class="app-btn ghost">แก้พรอมต์</span>
-        <span class="app-btn primary">&#9654; Auto</span>
+        <span class="app-btn primary"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><polygon points="6 3 20 12 6 21 6 3"/></svg> Auto</span>
       </div>
     </div>
 
@@ -1211,6 +1224,8 @@
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์ที่ต้องคิดทางแก้เอง — browser automation quirk + full-stack product architecture</p>
     </section>
+    <figure class="shot"><img src="img/uge-cdp.jpg" width="1600" height="448" loading="lazy" alt="โค้ดจริงที่ใช้ chrome.debugger ส่ง Input.insertText และ dispatchMouseEvent เข้าเว็บ"><figcaption>โค้ดจริง — ใช้ CDP (chrome.debugger) ยิง trusted input ให้ rich-text editor ของเว็บปลายทางยอมรับ</figcaption></figure>
+
 
     <div class="hack-grid">
       <div class="hack-card precision" data-label="Browser API">
@@ -1258,6 +1273,8 @@
       <h2>Design Decision ที่ตั้งใจเลือก</h2>
       <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอๆ กับสิ่งที่ทำ</p>
     </section>
+    <figure class="shot"><img src="img/uge-providers.jpg" width="1600" height="484" loading="lazy" alt="ตาราง LLM_PROVIDERS 4 เจ้าและฟังก์ชัน genLLM ที่ใช้คีย์ของผู้ใช้"><figcaption>BYOK + provider table — เพิ่มเจ้าใหม่ = เพิ่ม 1 แถว · ไม่มีคีย์ก็ไม่ยิง ไม่มี proxy ฝั่ง server</figcaption></figure>
+
 
     <div class="quote-block" style="margin-bottom: 24px;">
       <p>extension นี้เป็น "สะพาน" ไม่ใช่ "โรงงาน" — มันช่วย scrape, ประกอบพรอมต์ และป้อนงานเข้าเว็บ AI video ให้เร็วขึ้น แต่ <strong>จบที่ "สั่ง generate"</strong> · ไม่ตัดต่อให้ (user ทำเอง), ไม่ถือ LLM key, ไม่แตะ DB ตรง (คุยผ่าน API เท่านั้น) — ขอบเขตชัดตั้งแต่ต้น = implement ตรงและ maintain ง่าย</p>
@@ -1265,22 +1282,22 @@
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128273;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg></strong><br>
         <strong>BYOK ตลอดทุก phase</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">คีย์อยู่กับ user เท่านั้น — ไม่ถือ ไม่ proxy ไม่แบก cost</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128736;&#65039;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></strong><br>
         <strong>Config-driven</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">แก้พรอมต์/ตัวเลือกจาก CMS ไม่ต้อง ship extension ใหม่</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128274;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></strong><br>
         <strong>Clients คุยผ่าน API</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">extension/CMS ไม่แตะ DB ตรง — โครงชัด ควบคุม auth/audit ได้</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#9986;&#65039;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg></strong><br>
         <strong>จบที่ "สั่ง generate"</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ไม่ตัดต่อให้ — ขอบเขตคม เครื่องมือเล็ก โฟกัส</p>
       </div>
@@ -1294,6 +1311,8 @@
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
     </section>
+    <figure class="shot"><img src="img/uge-know-unsplash.jpg" width="1200" height="800" loading="lazy" alt="ช่างภาพถือกล้องวิดีโอในสตูดิโอไฟสีแดง"><figcaption>ปลายทางของทั้งระบบคือคลิปวิดีโอ — เครื่องมือแค่ทำให้ทางไปถึงสั้นลง · ภาพ: Kyle Loftus / Unsplash</figcaption></figure>
+
 
     <div class="learning-card">
       <strong>1. Chrome Extension MV3 + CDP automation — จาก UI ธรรมดาสู่ควบคุมเว็บอื่น:</strong>
@@ -1354,12 +1373,12 @@
       <span class="stack-icon">Vanilla JS</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1382,13 +1401,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "UGC Extension Portfolio",
-      "item": "https://projects.tanplanet.info/ugc-extension-portfolio/"
+      "item": "https://projects.tanplanet.work/ugc-extension-portfolio/"
     }
   ]
 }

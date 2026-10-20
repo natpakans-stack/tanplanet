@@ -7,9 +7,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Model Shift — สลับโมเดล Claude Code ด้วยคันเกียร์รถ (VS Code Extension)">
   <meta name="twitter:description" content="Portfolio: VS Code extension โยกคันเกียร์ H-pattern เพื่อสลับโมเดล Claude Code — ยิง /model เข้า terminal, sync สถานะจริงจาก transcript, สวิตช์ปิดเสียงแจ้งงานเสร็จ">
-  <meta property="og:url" content="https://projects.tanplanet.info/model-switcher-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/model-switcher-portfolio/">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://projects.tanplanet.info/model-switcher-portfolio/og-image.png">
+  <meta property="og:image" content="https://projects.tanplanet.work/model-switcher-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: VS Code extension โยกคันเกียร์ H-pattern เพื่อสลับโมเดล Claude Code — ยิง /model เข้า terminal, sync สถานะจริงจาก transcript, สวิตช์ปิดเสียงแจ้งงานเสร็จ">
@@ -899,6 +899,7 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
     .hero-badge .ico { width: 14px; height: 14px; }
+  .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.5}.shot-pair .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;max-width:var(--shot-max,100%);margin:0 auto}@media (max-width:640px){.shot-pair .pair{grid-template-columns:1fr}}.shot-narrow img{max-width:min(100%,var(--shot-max,520px));margin:0 auto}
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -941,6 +942,8 @@
       <h2>ปัญหาที่เจอ</h2>
       <p>ทำไมการสลับโมเดลไปมาระหว่างทำงานกับ Claude Code ถึงกวนใจกว่าที่ควร?</p>
     </section>
+    <figure class="shot"><img src="img/ms-problem.jpg" width="1600" height="530" loading="lazy" alt="หน้าจอ Claude Code ใน terminal ที่ผู้ใช้ต้องพิมพ์ /model พร้อมชื่อ flag เองกลางบทสนทนา"><figcaption>ก่อนมี Model Shift — จะสลับโมเดลต้องพิมพ์ <code>/model</code> + จำชื่อ flag เองกลางบทสนทนา (ภาพจำลองหน้าจอ terminal)</figcaption></figure>
+
 
     <div class="quote-block">
       <p>Claude Code สลับโมเดลได้ด้วย <code>/model &lt;name&gt;</code> — แต่ต้องพิมพ์เอง + จำชื่อ flag (<code>sonnet[1m]</code>, <code>fable</code>) ทุกครั้ง โมเดลก็เพิ่มขึ้นเรื่อยๆ (Haiku / Sonnet / Sonnet 1M / Opus / Fable) และเราสลับบ่อยเพื่อคุมงบ vs คุณภาพ vs ความเร็ว การพิมพ์คำสั่งกลางบทสนทนาเลยขัดจังหวะ แถมสถานะที่ว่า "ตอนนี้โมเดลไหนติดอยู่ / context เหลือเท่าไร" ก็เป็น text ล้วน ไม่เห็นเป็นภาพ</p>
@@ -983,6 +986,8 @@
       <h2>วิธีแก้ปัญหา</h2>
       <p>ยกงานพิมพ์คำสั่งออกมาเป็นคันเกียร์ — โยก 1 ที = สลับโมเดล + เห็นสถานะเป็นภาพเหมือนหน้าปัดรถ</p>
     </section>
+    <figure class="shot shot-narrow" style="--shot-max:480px"><img src="img/ms-solution.jpg" width="1600" height="1260" loading="lazy" alt="panel Model Shift ของจริง: แถบโควตา 5H/7D, เกียร์ที่ติด, VU meter, เกจ context และคันเกียร์ H-pattern"><figcaption>Panel ตัวจริง (render จาก webview ของ extension) — โควตา, เกียร์ที่ติด, เกจ context และคันเกียร์อยู่ในจอเดียว</figcaption></figure>
+
 
     <div class="solution-grid">
       <div class="solution-card">
@@ -1020,6 +1025,8 @@
       <h2>วิธีทำงาน — 4 จังหวะ</h2>
       <p>ตั้งแต่เปิด panel จนโมเดลสลับจริงในบทสนทนา</p>
     </section>
+    <figure class="shot"><img src="img/ms-how.jpg" width="1600" height="942" loading="lazy" alt="หน้าต่าง VS Code ที่มี panel Model Shift อยู่แถบข้าง และ terminal รับคำสั่ง /model opus ที่ panel ยิงเข้าไป"><figcaption>โยกเกียร์ไปช่อง 4 → panel ยิง <code>/model opus</code> เข้า integrated terminal ที่ claude รันอยู่ (panel จริง · หน้าต่าง VS Code และ terminal เป็นภาพจำลอง)</figcaption></figure>
+
 
     <div class="flow-grid">
       <div class="flow-step">
@@ -1056,6 +1063,8 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>2 surface บนกลไกเดียวกัน — zero npm dependency, ไม่ยุ่งกับข้อมูลออกนอกเครื่อง</p>
     </section>
+    <figure class="shot shot-narrow" style="--shot-max:620px"><img src="img/ms-web.jpg" width="1600" height="1120" loading="lazy" alt="หน้าเว็บ Model Shift เวอร์ชัน localhost ที่ใช้ Bun.serve และ tmux send-keys"><figcaption>Surface ที่ 2 — หน้าเว็บ localhost (Bun.serve) สำหรับคนที่รัน claude ใน terminal เปล่า สั่งผ่าน <code>tmux send-keys</code></figcaption></figure>
+
 
     <div class="arch-diagram">
       <div class="arch-layers">
@@ -1112,6 +1121,8 @@
       <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
       <p>ครบตั้งแต่โยกเกียร์ ยิงคำสั่ง ไปจนเสียงแจ้งงานเสร็จ</p>
     </section>
+    <figure class="shot shot-narrow" style="--shot-max:560px"><img src="img/ms-readout.jpg" width="1520" height="532" loading="lazy" alt="ส่วนหัวของ panel: แถบโควตา 5 ชั่วโมงและ 7 วัน, เกียร์ 2 Sonnet, VU meter และเกจ context 63%"><figcaption>Readout แบบหน้าปัดรถ — แถบโควตา 5H/7D, VU meter บอกความแรงโมเดล และเกจ context E→F</figcaption></figure>
+
 
     <div class="module-grid">
       <div class="module-card">
@@ -1164,9 +1175,11 @@
       <h2>หน้าตา Panel</h2>
       <p>คลิกไอคอนเกียร์ใน activity bar → เห็นเกียร์ที่ติด, เกจ context และสวิตช์เสียงในหน้าจอเดียว</p>
     </section>
+    <figure class="shot shot-narrow" style="--shot-max:640px"><img src="img/ms-pair.jpg" width="1600" height="1084" loading="lazy" alt="panel สองสถานะเทียบกัน: เกียร์ 1 Haiku context ต่ำ กับเกียร์ 4 Opus context 86% เกจแดงและปิดเสียง"><figcaption>สถานะจริง 2 แบบ — ซ้าย Haiku งานเบา · ขวา Opus context ใกล้เต็ม เกจเป็นสีแดง และสวิตช์เสียงอยู่โหมดเงียบ</figcaption></figure>
+
 
     <div class="gear-panel">
-      <div class="gp-head">&#9834; Model Shift</div>
+      <div class="gp-head"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> Model Shift</div>
       <div class="gp-readout">
         <div class="gp-gauge">
           <svg viewBox="0 0 92 52">
@@ -1191,7 +1204,7 @@
         <div class="gp-cell"><span class="g">R</span><span class="m">DEFAULT</span></div>
       </div>
       <div class="gp-mute">
-        <span class="lab">&#128266; เสียงแจ้งงานเสร็จ</span>
+        <span class="lab"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg> เสียงแจ้งงานเสร็จ</span>
         <span class="gp-sw"><span class="on">ON</span><span class="knob"></span></span>
       </div>
     </div>
@@ -1204,6 +1217,8 @@
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์ที่ต้องคิดทางแก้เอง — ข้อจำกัดของ tooling + การประกอบคำสั่งให้ปลอดภัย</p>
     </section>
+    <figure class="shot"><img src="img/ms-code.jpg" width="1600" height="686" loading="lazy" alt="โค้ดจริง 2 จุด: regex กัน injection ก่อน sendText และบรรทัดเช็คไฟล์ .tts-muted ใน tts-lib.sh"><figcaption>โค้ดจริงจาก extension.js และ tts-lib.sh — whitelist ชื่อโมเดลก่อนยิงเข้า terminal + mute ทั้งชุดด้วยไฟล์ flag ไฟล์เดียว</figcaption></figure>
+
 
     <div class="hack-grid">
       <div class="hack-card arch" data-label="No API">
@@ -1251,6 +1266,8 @@
       <h2>Design Decision ที่ตั้งใจเลือก</h2>
       <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอๆ กับสิ่งที่ทำ</p>
     </section>
+    <figure class="shot"><img src="img/ms-gear-unsplash.jpg" width="1400" height="933" loading="lazy" alt="หัวเกียร์รถยนต์แบบ H-pattern 5 สปีดพร้อมเกียร์ถอย"><figcaption>แรงบันดาลใจของ UI: คันเกียร์ H-pattern — ทุกคนรู้วิธีใช้โดยไม่ต้องอ่านคู่มือ · ภาพ: Alok Sharma / Unsplash</figcaption></figure>
+
 
     <div class="quote-block" style="margin-bottom: 24px;">
       <p>เครื่องมือนี้ทำหน้าที่เดียว: สลับโมเดลให้เร็วขึ้น + สื่อสารสถานะเป็นภาพ — มันไม่ได้แทนที่ <code>/model</code> picker ในตัว Claude Code (ขายที่ "เร็วกว่า + เห็นเป็นภาพ + ไม่ต้องจำ flag"), การ sync เป็นการ "อ่านอย่างเดียว" จาก transcript ไม่เขียนอะไรกลับ, และไม่มีข้อมูลออกนอกเครื่อง ขอบเขตชัดตั้งแต่ต้น = implement ตรงและ maintain ง่าย</p>
@@ -1258,22 +1275,22 @@
 
     <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128228;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg></strong><br>
         <strong>ยิงคำสั่ง ไม่ replace picker</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">ขายที่เร็ว + เห็นเป็นภาพ ไม่ใช่อุดช่องว่างฟังก์ชัน</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128065;&#65039;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></strong><br>
         <strong>Sync อ่านอย่างเดียว</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">อ่าน transcript มาแสดง ไม่เขียนกลับ ไม่แตะ session</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#128263;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg></strong><br>
         <strong>Mute = flag file จุดเดียว</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">คุมทั้งชุด hooks ด้วยไฟล์เดียว ไม่ต้อง restart</p>
       </div>
       <div class="learning-card" style="text-align:center; padding:20px;">
-        <strong style="font-size:1.5rem;">&#129513;</strong><br>
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg></strong><br>
         <strong>Zero npm dependency</strong>
         <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Vanilla JS + Bun แก้ UI ใน 1 ไฟล์ ไม่มี build step</p>
       </div>
@@ -1287,6 +1304,8 @@
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
     </section>
+    <figure class="shot"><img src="img/ms-jsonl.jpg" width="1600" height="542" loading="lazy" alt="ตัวอย่างโครงสร้างบรรทัด assistant ในไฟล์ transcript jsonl ของ Claude Code: model และ usage tokens"><figcaption>สิ่งที่ต้องอ่านให้ออก — <code>message.model</code> และ token usage ใน transcript <code>*.jsonl</code> (ค่าตัวอย่าง)</figcaption></figure>
+
 
     <div class="learning-card">
       <strong>1. VS Code Extension development — จาก "ใช้ extension" เป็น "เขียนเอง":</strong>
@@ -1346,12 +1365,12 @@
       <span class="stack-icon">Vanilla JS</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
   <!-- ===== Fixed UI ===== -->
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -1374,13 +1393,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
-      "item": "https://projects.tanplanet.info/"
+      "item": "https://projects.tanplanet.work/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "ModelSwitcher Portfolio",
-      "item": "https://projects.tanplanet.info/model-switcher-portfolio/"
+      "item": "https://projects.tanplanet.work/model-switcher-portfolio/"
     }
   ]
 }
