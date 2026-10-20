@@ -8,7 +8,7 @@
   <meta property="og:title" content="Premium Club Revamp — เขียนกฎว่าห้ามทำอะไร ก่อนลงมือออกแบบ">
   <meta property="og:description" content="Portfolio: งานออกแบบ revamp เว็บไซต์คลับระดับพรีเมียม ที่เริ่มจากการเขียนรายการสิ่งต้องห้าม ก่อนออกแบบ — design token OKLCH ไฟล์เดียว ตัวตรวจคอนทราสต์ที่ต้องผ่านก่อนใช้สี และ demo-first">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://projects.tanplanet.info/club-revamp-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/club-revamp-portfolio/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Premium Club Revamp — เขียนกฎว่าห้ามทำอะไร ก่อนลงมือออกแบบ">
   <meta name="twitter:description" content="Portfolio: งานออกแบบ revamp เว็บไซต์คลับระดับพรีเมียม ที่เริ่มจากการเขียนรายการสิ่งต้องห้าม ก่อนออกแบบ — design token OKLCH ไฟล์เดียว ตัวตรวจคอนทราสต์ที่ต้องผ่านก่อนใช้สี และ demo-first">
@@ -734,6 +734,118 @@
 
     .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
     .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* ============================================================
+       ภาพประกอบ — ภาพหน้าจอจริงจากเว็บสาธิต + แผงที่สร้างด้วย HTML
+       ============================================================ */
+    .shot { margin: 28px 0 0; }
+    .shot img {
+      display: block; width: 100%; height: auto;
+      border-radius: var(--radius);
+      box-shadow: 0 0 0 1px var(--border), 0 12px 32px rgba(28,25,23,0.10);
+      background: var(--navy);
+    }
+    .shot figcaption {
+      margin-top: 12px; text-align: center;
+      font-size: 0.84rem; line-height: 1.65; color: var(--text-secondary);
+      text-wrap: pretty;
+    }
+    /* ภาพที่ควรกว้างกว่าคอลัมน์อ่าน */
+    .shot.wide { width: min(1040px, calc(100vw - 48px)); position: relative; left: 50%; transform: translateX(-50%); }
+
+    /* เดสก์ท็อป + มือถือวางคู่กัน (อัตราส่วนคำนวณให้สูงเท่ากัน) */
+    .shot-pair { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.48fr); gap: 20px; align-items: end; }
+    .phone { background: #1a1a1c; border-radius: 26px; padding: 7px; box-shadow: 0 14px 36px rgba(10,15,31,0.30); }
+    .phone img { border-radius: 20px; box-shadow: none; }
+
+    /* สามความกว้าง วางเรียงให้สูงเท่ากัน */
+    .shot-widths { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.75fr) minmax(0, 0.461fr); gap: 16px; align-items: end; }
+    .shot-widths > div { min-width: 0; }
+    .shot-widths .w {
+      display: block; margin-top: 8px; text-align: center;
+      font-family: var(--mono); font-size: 0.74rem; color: var(--text-secondary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ภาพในพื้นที่ hero (พื้นเข้ม) */
+    .hero-shots { position: relative; z-index: 2; margin: 52px auto 0; max-width: 1000px; }
+    .hero-shots img { box-shadow: 0 0 0 1px rgba(255,255,255,0.14), 0 24px 60px rgba(0,0,0,0.45); }
+    .hero-shots .phone { background: #000; box-shadow: 0 0 0 1px rgba(255,255,255,0.16), 0 24px 60px rgba(0,0,0,0.5); }
+    .hero-shots figcaption { color: rgba(255,255,255,0.78); }
+
+    /* แผง "ห้าม / ทำแทน" — ตัวอย่างนามธรรมวาดด้วย CSS ไม่ใช่ภาพ UI สมมติ */
+    .dont-do { margin-top: 28px; border-top: 1px solid var(--border); }
+    .dd-row {
+      display: grid; grid-template-columns: 110px minmax(0, 1fr) minmax(0, 1fr);
+      gap: 0 20px; padding: 20px 0; border-bottom: 1px solid var(--border); align-items: start;
+    }
+    .dd-row > .topic { font-weight: 600; font-size: 0.92rem; padding-top: 2px; }
+    .dd-cell { min-width: 0; }
+    .dd-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+    .dd-tag .ico { width: 14px; height: 14px; }
+    .dd-cell.no .dd-tag { color: var(--red); }
+    .dd-cell.yes .dd-tag { color: var(--emerald-dark); }
+    .dd-cell p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin-top: 8px; }
+    .spec {
+      height: 92px; border-radius: 8px; overflow: hidden; position: relative;
+      border: 1px solid var(--border); background: var(--surface);
+    }
+    .dd-cell.no .spec { opacity: 0.9; }
+    /* เลย์เอาต์ */
+    .spec-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 14px; height: 100%; }
+    .spec-cards i { border-radius: 10px; background: #e7e5e4; box-shadow: 0 4px 10px rgba(0,0,0,0.12); }
+    .spec-asym { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px; padding: 14px 16px; height: 100%; background: #0b0b0d; border-color: #0b0b0d; }
+    .spec-asym .a { background: #2a2a30; }
+    .spec-asym .b { display: flex; flex-direction: column; gap: 6px; padding-top: 22px; }
+    .spec-asym .b i { height: 3px; background: #4a4a52; }
+    .spec-asym .b i:first-child { width: 60%; background: #e4002d; }
+    /* ตัวอักษร */
+    .spec-type { display: flex; flex-direction: column; justify-content: center; padding: 0 16px; height: 100%; line-height: 1.15; }
+    .spec-type.bold b { font-family: var(--font); font-weight: 700; font-size: 1.15rem; color: #111; }
+    .spec-type.bold b + b { font-size: 1rem; }
+    .spec-type.light { background: #0b0b0d; border-color: #0b0b0d; }
+    .spec-type.light .s { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: 1.5rem; color: #f4efe6; letter-spacing: -0.01em; }
+    .spec-type.light .s em { color: #ff3355; }
+    .spec-type.light .c { font-size: 0.6rem; letter-spacing: 0.24em; color: #b9b7b2; margin-top: 6px; font-weight: 300; }
+    /* สี */
+    .spec-grad { background: linear-gradient(135deg, #7c3aed, #3b82f6 60%, #22d3ee); display: flex; align-items: center; justify-content: center; }
+    .spec-grad i { width: 60%; height: 48px; border-radius: 14px; background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.45); backdrop-filter: blur(6px); }
+    .spec-mark { background: #0b0b0d; border-color: #0b0b0d; }
+    .spec-mark::before { content: ''; position: absolute; width: 2px; height: 140%; background: #e4002d; right: 30%; top: -20%; transform: rotate(32deg); }
+    .spec-mark i { position: absolute; left: 16px; bottom: 18px; width: 40%; height: 3px; background: #4a4a52; }
+
+    /* แผง token จริงจาก tokens.css + ผลตัวตรวจคอนทราสต์ */
+    .tokens-panel { margin-top: 28px; background: #0b0b0d; border-radius: var(--radius-lg); padding: 24px; color: #f5f4f2; }
+    .swatches { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+    .sw { border-radius: 8px; min-height: 108px; padding: 10px; display: flex; flex-direction: column; justify-content: flex-end; border: 1px solid #2e2e34; }
+    .sw b { font-family: var(--mono); font-size: 0.74rem; font-weight: 600; }
+    .sw code { background: none; color: inherit; padding: 0; font-size: 0.68rem; opacity: 0.86; overflow-wrap: anywhere; }
+    .sw.dark { color: #f5f4f2; }
+    .sw.light { color: #1a1a1c; }
+    .checker { margin-top: 20px; border-top: 1px solid #2e2e34; padding-top: 16px; font-family: var(--mono), var(--font); font-size: 0.76rem; line-height: 1.85; color: #b9b7b2; overflow-x: auto; }
+    .checker div { white-space: pre; }
+    .checker .cmd { color: #8a8a90; }
+    .checker .pass { color: #7fcf9e; }
+    .checker .all { color: #f5f4f2; font-weight: 600; }
+    .tokens-panel figcaption { color: #b9b7b2; }
+
+    @media (max-width: 640px) {
+      .shot.wide { width: auto; left: auto; transform: none; }
+      .shot-pair { grid-template-columns: 1fr; }
+      .shot-pair .phone { width: 62%; max-width: 240px; margin: 0 auto; }
+      .shot-widths { grid-template-columns: minmax(0, 0.75fr) minmax(0, 0.461fr); }
+      .shot-widths > div:first-child { grid-column: 1 / -1; }
+      .dd-row { grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+      .dd-row > .topic { grid-column: 1 / -1; }
+      .swatches { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .tokens-panel { padding: 18px; }
+      .checker { font-size: 0.62rem; }
+      .spec-type { padding: 0 12px; }
+      .spec-type.bold b { font-size: 0.8rem; }
+      .spec-type.bold b + b { font-size: 0.74rem; }
+      .spec-type.light .s { font-size: 1.15rem; }
+      .spec-type.light .c { font-size: 0.5rem; letter-spacing: 0.16em; }
+    }
   </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -763,6 +875,13 @@
         <a class="cta-btn cta-ghost" href="#system">ระบบดีไซน์</a>
       </div>
     </div>
+    <figure class="shot hero-shots">
+      <div class="shot-pair">
+        <img src="img/hero-desktop.jpg" width="1440" height="900" alt="หน้าแรกเว็บสาธิต ALPHA X บนจอเดสก์ท็อป พื้นดำ หัวข้อเซริฟ Wealth with Passion คำว่า Passion เป็นสีแดงแบรนด์ ข้างหลังเป็นภาพรถสปอร์ตในแสงแดงสลัว">
+        <div class="phone"><img src="img/hero-mobile.jpg" width="509" height="1076" alt="หน้าแรกเดียวกันบนมือถือกว้าง 393 พิกเซล หัวข้อและปุ่มเรียงลงมาเป็นคอลัมน์เดียว ปุ่มหลักสีครีมเต็มความกว้าง"></div>
+      </div>
+      <figcaption>หน้าแรกของเว็บสาธิตที่กดได้จริง — ฟอนต์แบรนด์ เซริฟน้ำหนักเบา และสีแดงจากโลโก้ที่ใช้เป็นจุดเน้นเพียงจุดเดียว</figcaption>
+    </figure>
   </header>
 
   <article>
@@ -809,6 +928,51 @@
       <p>ข้อห้ามที่เขียนไว้ล่วงหน้าตัดสินง่าย เพราะยังไม่มีงานให้เสียดาย ส่วนข้อห้ามที่คิดตอนรีวิวมักกลายเป็นการหาเหตุผลให้ของที่ทำไปแล้ว</p>
     </section>
 
+    <figure class="shot" role="group" aria-labelledby="dd-cap">
+      <div class="dont-do">
+        <div class="dd-row">
+          <div class="topic">เลย์เอาต์</div>
+          <div class="dd-cell no">
+            <span class="dd-tag"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>ห้าม</span>
+            <div class="spec"><div class="spec-cards" aria-hidden="true"><i></i><i></i><i></i></div></div>
+            <p>การ์ดสามใบเท่ากัน มุมโค้ง เงาค่าเริ่มต้น วางกลางจอซ้ำทุกหน้า</p>
+          </div>
+          <div class="dd-cell yes">
+            <span class="dd-tag"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>ทำแทน</span>
+            <div class="spec spec-asym" aria-hidden="true"><div class="a"></div><div class="b"><i></i><i></i><i></i></div></div>
+            <p>แบ่งจอสัดส่วนใหญ่ไม่เท่ากัน ปล่อยให้พื้นที่ว่างทำงาน</p>
+          </div>
+        </div>
+        <div class="dd-row">
+          <div class="topic">ตัวอักษร</div>
+          <div class="dd-cell no">
+            <span class="dd-tag"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>ห้าม</span>
+            <div class="spec spec-type bold" aria-hidden="true"><b>WEALTH WITH PASSION</b><b>หัวข้อหนาดำเท่ากันทุกหัว</b></div>
+            <p>ทุกหัวข้อหนาเท่ากัน เลยไม่มีอะไรถูกเน้น</p>
+          </div>
+          <div class="dd-cell yes">
+            <span class="dd-tag"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>ทำแทน</span>
+            <div class="spec spec-type light" aria-hidden="true"><span class="s">Wealth with <em>Passion</em></span><span class="c">PRIVATE FINANCIAL SOLUTIONS</span></div>
+            <p>เซริฟน้ำหนักเบา คู่ตัวพิมพ์ใหญ่บางที่เว้นช่องไฟกว้าง</p>
+          </div>
+        </div>
+        <div class="dd-row">
+          <div class="topic">สีและพื้นผิว</div>
+          <div class="dd-cell no">
+            <span class="dd-tag"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>ห้าม</span>
+            <div class="spec spec-grad" aria-hidden="true"><i></i></div>
+            <p>ไล่สีม่วงฟ้า และกล่องกระจกฝ้า</p>
+          </div>
+          <div class="dd-cell yes">
+            <span class="dd-tag"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>ทำแทน</span>
+            <div class="spec spec-mark" aria-hidden="true"><i></i></div>
+            <p>พื้นดำของแบรนด์ แดงจากโลโก้ใช้เป็นเส้นเน้นเพียงจุดเดียว</p>
+          </div>
+        </div>
+      </div>
+      <figcaption id="dd-cap">สามข้อที่เห็นผลชัดที่สุดจากรายการสิ่งต้องห้าม — แต่ละข้อมี &ldquo;สิ่งที่ทำแทน&rdquo; กำกับไว้ด้วย ส่วนตารางด้านล่างคือรายการเต็ม</figcaption>
+    </figure>
+
     <div class="ledger-wrap">
       <table class="ledger">
         <thead><tr><th>เรื่อง</th><th class="num">กติกา</th><th>เหตุผล</th></tr></thead>
@@ -849,6 +1013,28 @@
       </div>
     </div>
 
+    <figure class="shot tokens-panel" aria-labelledby="tk-cap">
+      <div class="swatches">
+        <div class="sw dark" style="background:#0b0b0d;background:oklch(16% 0.004 285)"><b>--ax-black</b><code>oklch(16% 0.004 285)</code></div>
+        <div class="sw dark" style="background:#16161a;background:oklch(21% 0.006 285)"><b>--ax-ink</b><code>oklch(21% 0.006 285)</code></div>
+        <div class="sw dark" style="background:#e4002d;background:oklch(57% 0.24 23)"><b>--ax-red</b><code>oklch(57% 0.24 23)</code></div>
+        <div class="sw light" style="background:#c9a24b;background:oklch(72% 0.10 84)"><b>--ax-gold</b><code>oklch(72% 0.10 84)</code></div>
+        <div class="sw light" style="background:#f4efe6;background:oklch(95% 0.012 85)"><b>--ax-cream</b><code>oklch(95% 0.012 85)</code></div>
+      </div>
+      <div class="checker">
+        <div class="cmd">$ python3 check-contrast.py</div>
+        <div><span class="pass">PASS</span>  17.80:1  (ต้อง ≥4.5)  text on bg</div>
+        <div><span class="pass">PASS</span>   5.33:1  (ต้อง ≥4.5)  text-3 on bg</div>
+        <div><span class="pass">PASS</span>  15.64:1  (ต้อง ≥4.5)  cta-text on cta-bg</div>
+        <div><span class="pass">PASS</span>   7.78:1  (ต้อง ≥4.5)  gold on bg (label)</div>
+        <div><span class="pass">PASS</span>   3.96:1  (ต้อง ≥3.0)  red on bg (accent txt)</div>
+        <div><span class="pass">PASS</span>   6.55:1  (ต้อง ≥4.5)  lt red-deep on cream</div>
+        <div class="cmd">… อีก 11 คู่</div>
+        <div class="all">ALL PASS ✓</div>
+      </div>
+      <figcaption id="tk-cap">สีหลักห้าสีจากไฟล์ token จริงของโปรเจกต์ (ค่า OKLCH ตามไฟล์) กับผลจากสคริปต์ตรวจคอนทราสต์ 17 คู่ — ต้องขึ้น ALL PASS ก่อนจึงเอา token ไปใช้</figcaption>
+    </figure>
+
     <div class="learning-card note">
       <strong>เลือกใช้ระบบสีแบบ OKLCH</strong>
       <p>ทำให้ปรับความสว่างของสีได้โดยที่เฉดไม่เพี้ยนตาม ซึ่งสำคัญมากกับงานโทนเข้มที่มีสีเน้นเพียงสีเดียว — เวลาต้องทำสีเน้นให้อ่อนลงเพื่อผ่านคอนทราสต์ สีจะไม่กลายเป็นคนละสี</p>
@@ -861,6 +1047,14 @@
       <h2>สลับลำดับงาน &mdash; ทำของที่กดได้จริงก่อน แล้วค่อยทำเอกสารนำเสนอ</h2>
       <p>เดิมวางแผนจะทำงานนำเสนอก่อนแล้วค่อยทำตัวอย่างเว็บ แต่เปลี่ยนลำดับกลางทางเพราะเหตุผลที่ชัดเจน</p>
     </section>
+
+    <figure class="shot wide">
+      <div class="shot-pair">
+        <img src="img/demo-values-desktop.jpg" width="1440" height="900" loading="lazy" alt="เซกชัน The Alpha X Standard บนเดสก์ท็อป หัวข้อเซริฟใหญ่ฝั่งซ้ายคู่ภาพรถในเงามืด ฝั่งขวาเป็นรายการสามข้อมีเลขลำดับสีแดง และเส้นทแยงสีแดงที่ถอดมาจากตัว X ในโลโก้">
+        <div class="phone"><img src="img/demo-values-mobile.jpg" width="509" height="1104" loading="lazy" alt="เซกชันเดียวกันบนมือถือ หัวข้อ ภาพ และรายการเรียงเป็นคอลัมน์เดียว เส้นทแยงสีแดงยังอยู่มุมบน"></div>
+      </div>
+      <figcaption>ภาพหน้าจอจากเว็บสาธิตจริง ไม่ใช่ภาพจำลอง — เลย์เอาต์ไม่สมมาตร และเส้นทแยงสีแดงที่ถอดมาจากตัว X ของโลโก้คือ &ldquo;ร่องรอย craft&rdquo; ที่เทมเพลตไม่มี</figcaption>
+    </figure>
 
     <div class="hack-grid">
 
@@ -898,6 +1092,15 @@
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span><b>ไล่ดูสามความกว้างเสมอ</b> — ออกแบบจากจอเล็กก่อน แล้วขยายขึ้น ไม่ใช่ออกแบบจอใหญ่แล้วค่อยบีบลง</span></li>
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg><span><b>เกณฑ์สุดท้ายเป็นคำถามเดียว</b> — ถ้าเห็นงานนี้ในที่ที่นักออกแบบเอาผลงานไปลง จะเชื่อไหมว่าสตูดิโอทำ ตอบไม่ได้เต็มปาก แปลว่ายังไม่ผ่าน</span></li>
     </ul>
+
+    <figure class="shot wide">
+      <div class="shot-widths">
+        <div><img src="img/review-1440.jpg" width="1440" height="900" loading="lazy" alt="เซกชัน Our Expertise ที่ความกว้าง 1440 พิกเซล หัวข้อซ้าย คำอธิบายขวา ภาพสามภาพเรียงแถวเดียว"><span class="w">1440</span></div>
+        <div><img src="img/review-768.jpg" width="768" height="1024" loading="lazy" alt="เซกชันเดียวกันที่ 768 พิกเซล ภาพกับข้อความวางคู่กันทีละรายการ"><span class="w">768</span></div>
+        <div><img src="img/review-393.jpg" width="509" height="1104" loading="lazy" alt="เซกชันเดียวกันที่ 393 พิกเซล ทุกอย่างเรียงเป็นคอลัมน์เดียว"><span class="w">393</span></div>
+      </div>
+      <figcaption>เซกชันเดียวกันที่สามความกว้าง — ทุกหน้าต้องผ่านครบทั้งสามก่อนจะนับว่าผ่าน และแต่ละขนาดจัดองค์ประกอบใหม่ ไม่ใช่แค่ย่อลง</figcaption>
+    </figure>
 
     <div class="metrics">
       <div class="metric-card"><div class="num">1</div><div class="label">ไฟล์ token ที่ทั้งเว็บสาธิตและงานนำเสนอใช้ร่วมกัน</div></div>
@@ -937,11 +1140,11 @@
       <span class="stack-icon">Mobile First</span>
     </div>
     <div class="links">
-      <a href="https://projects.tanplanet.info/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
     </div>
   </div>
 
-  <a class="back-nav" href="https://projects.tanplanet.info/" rel="noopener">
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
     Projects
   </a>
@@ -960,8 +1163,8 @@
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {"@type":"ListItem","position":1,"name":"ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio","item":"https://projects.tanplanet.info/"},
-    {"@type":"ListItem","position":2,"name":"Premium Club Revamp — Design System &amp; Anti-template","item":"https://projects.tanplanet.info/club-revamp-portfolio/"}
+    {"@type":"ListItem","position":1,"name":"ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"Premium Club Revamp — Design System &amp; Anti-template","item":"https://projects.tanplanet.work/club-revamp-portfolio/"}
   ]
 }
 </script>
