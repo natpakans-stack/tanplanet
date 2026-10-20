@@ -45,3 +45,11 @@ Playwright (`~/.claude/skills/playwright-skill/node_modules/playwright/index.mjs
 - `git add` เฉพาะไฟล์ของงานนี้ (repo มีไฟล์ค้างของโปรเจกต์อื่นเสมอ ห้าม `git add -A` ทั้ง repo)
 - commit → push (ถ้า reject: `git pull --rebase --autostash` แล้ว push ใหม่ — มี cron MegaCoach commit เข้ามาตลอด)
 - รอจน `curl https://projects.tanplanet.work/<slug>-portfolio/` ได้ 200 แล้วส่งลิงก์ให้แทน
+
+## 7. Workflow: เติมภาพประกอบหลายหน้าพร้อมกัน (ใช้จริง 20 ต.ค. 2026 — แทนบอก "แบบนี้แหละ")
+1. `python3 tools/portfolio-image-audit.py` → รายการ section ที่ยังไม่มีภาพ (ข้ามหน้าที่ gitignore = อยู่ repo อื่น)
+2. แบ่งหน้าเป็นชุด ชุดละ ≤7 หน้า ตามประเภทงาน (ส่วนตัว / แอป live / extension-bot / งานบริษัท / งานดีไซน์) → spawn agent ชุดละตัว ส่งต่อ brief `image-brief.md` (ในโฟลเดอร์ skill นี้) + hint แหล่งภาพของแต่ละหน้า
+3. agent ห้าม commit / ห้ามแตะ index.html, sitemap, llms.txt, common/ — แก้เฉพาะโฟลเดอร์หน้าของตัวเอง
+4. ชุดไหนเสร็จ: เปิดดูภาพที่เสี่ยงเอง (แดชบอร์ด, ตาราง, หน้าที่มีตัวเลข) + grep คำต้องห้าม → `git add` เฉพาะโฟลเดอร์ของชุดนั้น → commit + push ทันที → สรุปให้แทนสั้น ๆ ทีละชุด
+5. แทนเปลี่ยนกติกากลางทาง → อัปเดต image-brief.md แล้ว SendMessage บอก agent ที่ยังรันอยู่ทุกตัว
+6. จบ: ย้ายไฟล์ภาพหลงที่ root ของ repo ออก · รัน audit อีกรอบให้ได้ "ครบแล้ว"
