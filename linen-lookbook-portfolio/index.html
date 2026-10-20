@@ -957,6 +957,14 @@
     .photo-credit { margin-top: 6px; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.7; }
     .photo-credit a { color: inherit; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--border); }
     .hero-badge .ico { width: 14px; height: 14px; }
+    /* ===== Figures (ภาพประกอบเซกชัน) ===== */
+    .shot { margin: 8px 0 32px; }
+    .shot img { display: block; width: 100%; height: auto; border-radius: var(--radius, 12px); box-shadow: 0 0 0 1px var(--border, #e7e5e4), 0 12px 32px rgba(0,0,0,.08); }
+    .shot figcaption { margin-top: 10px; font-size: .82rem; color: var(--text-secondary, #57534e); text-align: center; line-height: 1.6; }
+    .shot-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+    .shot-pair .lbl { display: block; margin-top: 8px; font-size: .78rem; font-weight: 600; color: var(--text); text-align: center; }
+    .shot.narrow { max-width: 560px; margin-left: auto; margin-right: auto; }
+    @media (max-width: 639px) { .shot-pair { grid-template-columns: 1fr; } }
 </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -1000,6 +1008,11 @@
       <p>แบรนด์เสื้อผ้าลินินที่โตมาจาก Instagram อยากมีหน้าร้านที่ดูพรีเมียมและค้นหาง่ายกว่า feed — แต่ยังไม่พร้อมทำ e-commerce เต็มรูปแบบ</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/template-checkout.jpg" width="1440" height="900" loading="lazy" alt="หน้า Checkout ของเทมเพลตแฟชั่นต้นฉบับ มีฟอร์มอีเมล ที่อยู่จัดส่ง กล่องสรุปคำสั่งซื้อ และปุ่ม Place Order">
+      <figcaption>เทมเพลตแฟชั่น (Avolin) ที่แบรนด์ถูกใจ &mdash; สวย แต่มาพร้อมตะกร้า ฟอร์มที่อยู่ และหน้า Checkout ทั้งชุด ซึ่งแบรนด์ที่ปิดการขายในแชทไม่ได้ใช้เลย</figcaption>
+    </figure>
+
     <div class="quote-block">
       <p>ลูกค้าเจอลุคสวยใน IG แต่พอจะสั่ง ต้องเลื่อน feed หากลับ ถามซ้ำว่ารุ่นไหน มีไซซ์อะไร สีอะไร ราคาเท่าไหร่ ของหมดยัง — แบรนด์ตอบเดิมทุกวัน ส่วนระบบตะกร้า/ตัดบัตร กลับหนักและเกินจำเป็นสำหรับการขายที่จบด้วยการ "คุยกันใน LINE" อยู่แล้ว</p>
       <div class="author">— โจทย์ตั้งต้น: ยกระดับจาก IG feed เป็นเว็บ catalog ที่ยังปิดการขายผ่านแชท</div>
@@ -1042,6 +1055,11 @@
       <p>ทำ catalog ให้เป็นระบบ + เปลี่ยน "ปุ่มสั่งซื้อ" ให้เป็น deep-link เข้าแชท ตัด checkout ทิ้ง แล้วให้แบรนด์คุมทุกอย่างจากหลังบ้าน</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/cms-products.jpg" width="1440" height="860" loading="lazy" alt="หน้ารายการสินค้าในระบบหลังบ้านภาษาไทย ตารางมีรูป ชื่อสินค้า หมวดหมู่ ราคา ราคาก่อนลด และป้ายสถานะพร้อมขาย พรีออเดอร์ ของหมด มีช่องค้นหาและตัวกรองหมวดหมู่กับสถานะ">
+      <figcaption>หลังบ้านจริงของโปรเจกต์ (ข้อมูลตัวอย่างจาก seed) &mdash; สินค้าทุกชิ้นมีหมวด ราคา และสถานะ แทนการไล่ตอบในแชท โลโก้และชื่อเจ้าของแบรนด์ถูกเบลอไว้</figcaption>
+    </figure>
+
     <div class="solution-grid">
       <div class="solution-card">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
@@ -1079,6 +1097,11 @@
       <p>ตั้งแต่เปิดเว็บ จนถึงข้อความสั่งซื้อเด้งเข้าแชท</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/storefront-collection.jpg" width="1200" height="958" loading="lazy" alt="หน้ารวมสินค้า All Collection ของหน้าร้าน แท็บกรองหมวด Dresses Tops Outerwear Bottoms การ์ดสินค้าแสดงหมวด ชื่อ ราคาเป็นบาท ไซซ์ที่มี และปุ่ม View Details">
+      <figcaption>จังหวะที่ 1 Explore บนหน้าร้านจริง &mdash; การ์ดสินค้าดึงจาก CMS ฉีดลงดีไซน์ของเทมเพลต กรองตามหมวดได้ และบอกไซซ์ที่มีตั้งแต่หน้ารวม (ภาพสินค้าตัวอย่างจากเทมเพลต)</figcaption>
+    </figure>
+
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
@@ -1114,6 +1137,11 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>หน้าร้าน RSC-first + headless CMS + deep-link ออกแชท — ไม่มี payment layer</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/cms-dashboard.jpg" width="1440" height="900" loading="lazy" alt="หน้าหลักของระบบจัดการคลังสินค้า การ์ดสรุปจำนวนสินค้าทั้งหมด พร้อมขาย หมวดหมู่ และรูปในคลัง กราฟแท่งสินค้าแยกตามหมวด กล่องต้องจัดการที่นับสินค้ายังไม่ตั้งราคา พรีออเดอร์ และของหมด และแถวสินค้าล่าสุด">
+      <figcaption>ชั้น Payload CMS ในมุมที่แบรนด์เห็น &mdash; หน้าหลักบอกทันทีว่ามีอะไรต้องจัดการ เช่น ของหมดหรือยังไม่ตั้งราคา ทั้งหมดอ่านจาก PostgreSQL ชุดเดียวกับหน้าร้าน</figcaption>
+    </figure>
 
     <div class="arch-diagram">
       <div class="arch-layers">
@@ -1170,6 +1198,11 @@
       <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
       <p>ครบ loop ตั้งแต่ catalog หลังบ้าน ถึงข้อความสั่งซื้อในแชท</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/cms-edit.jpg" width="1440" height="900" loading="lazy" alt="หน้าแก้ไขสินค้าในหลังบ้าน ช่องชื่อสินค้า รหัส SKU slug ที่สร้างจากชื่อได้ หมวดหมู่ สถานะพร้อมขาย ราคา ราคาก่อนลด ป้ายมุมรูป และติ๊กโชว์บนหน้าแรก">
+      <figcaption>ความสามารถ &ldquo;CMS Catalog&rdquo; ในหน้าจอจริง &mdash; สถานะ ป้าย badge ราคาก่อนลด สินค้าแนะนำ และ slug ที่เว้นว่างได้เพราะระบบสร้างจากชื่อให้</figcaption>
+    </figure>
 
     <div class="module-grid">
       <div class="module-card">
@@ -1479,6 +1512,14 @@
       <p>6 โจทย์ที่ต้องคิดทางแก้เอง — ระหว่างเอาเทมเพลตสำเร็จรูปมาเชื่อมกับข้อมูลจริง + ช่องทางแชท</p>
     </section>
 
+    <figure class="shot">
+      <div class="shot-pair">
+        <div><img src="img/buy-before.jpg" width="720" height="420" loading="lazy" alt="ส่วนซื้อสินค้าของเทมเพลตต้นฉบับ มีป้ายลดราคา ราคาเป็นดอลลาร์ ตัวเลือกสีและไซซ์ ช่องจำนวน และปุ่ม Add to Cart"><span class="lbl">ก่อน: เทมเพลตต้นฉบับ</span></div>
+        <div><img src="img/buy-after.jpg" width="720" height="420" loading="lazy" alt="ส่วนซื้อสินค้าหลัง rewire ราคาเป็นบาทจาก CMS ปุ่มเลือกไซซ์ S M L XL และปุ่มสีเขียว Order via LINE แทนช่องจำนวนและตะกร้า"><span class="lbl">หลัง: rewire แล้ว</span></div>
+      </div>
+      <figcaption>ผลของ Commerce Stripper ในหน้าจริง &mdash; ช่องจำนวนกับปุ่ม Add to Cart ถูกตัดออกทั้งก้อน แล้วเสียบปุ่มสั่งผ่าน LINE ลงจุดเดิม โดยดีไซน์รอบ ๆ ยังเป็นของเทมเพลต</figcaption>
+    </figure>
+
     <div class="hack-grid">
       <div class="hack-card arch" data-label="HTML Parsing">
         <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg><span>เทมเพลตผูกกับ commerce — เอามาใช้กับข้อมูลจริงไม่ได้</span></h3>
@@ -1526,6 +1567,11 @@
       <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอ ๆ กับสิ่งที่ทำ</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/cms-settings.jpg" width="1440" height="900" loading="lazy" alt="หน้าตั้งค่าแบรนด์และช่องทางติดต่อในหลังบ้าน ช่องชื่อแบรนด์ สโลแกน LINE OA ID Telegram username Instagram URL ที่ถูกเบลอไว้ และกล่องข้อความตั้งต้นตอนกดสนใจสั่งซื้อที่ใช้ตัวแปร product กับ url">
+      <figcaption>&ldquo;CMS-first ไม่ hardcode&rdquo; และ &ldquo;deep-link ตรงถึงแบรนด์&rdquo; อยู่ในหน้าเดียว &mdash; แบรนด์ตั้ง LINE OA และข้อความสั่งซื้อเองได้ (เบลอบัญชีจริงของแบรนด์ไว้)</figcaption>
+    </figure>
+
     <div class="quote-block" style="margin-bottom: 24px;">
       <p>เว็บนี้ทำหน้าที่เดียว: เป็น catalog ที่พาลูกค้าเข้าสู่บทสนทนาใน LINE ให้เร็วและเนียนที่สุด — มันไม่มีตะกร้า ไม่มี payment ไม่เก็บ order เอง จุดปิดการขายคือแชทของแบรนด์ ขอบเขตที่คมตั้งแต่ต้น = implement ตรง เบา และส่งมอบให้แบรนด์ดูแลต่อเองได้จริง</p>
     </div>
@@ -1545,6 +1591,11 @@
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
     </section>
+
+    <figure class="shot narrow">
+      <img src="img/admin-login.jpg" width="560" height="420" loading="lazy" alt="หน้าเข้าสู่ระบบ Li-ne Admin บนเว็บที่ deploy จริง คำอธิบายภาษาไทยว่าเข้าสู่ระบบเพื่อจัดการร้าน ช่องอีเมล รหัสผ่าน และปุ่มเข้าสู่ระบบ">
+      <figcaption>ทางเข้าหลังบ้านบนเว็บที่ deploy จริง &mdash; label ภาษาไทยทั้งหมด เพื่อให้ทีมแบรนด์ดูแลร้านเองได้โดยไม่ต้องเรียก dev</figcaption>
+    </figure>
 
     <div class="learning-card">
       <strong>1. Conversational commerce — ออกแบบการขายที่จบในแชท:</strong>

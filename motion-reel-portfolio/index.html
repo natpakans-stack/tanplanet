@@ -743,6 +743,13 @@
     .clip video { width: 100%; max-width: 100%; aspect-ratio: 16 / 9; display: block; border-radius: 10px; background: var(--navy); box-shadow: 0 0 0 1px var(--border); cursor: pointer; }
     .clip figcaption { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; }
     .clip figcaption b { display: block; color: var(--text); font-weight: 600; font-size: 0.9rem; }
+    /* ===== Figures (ภาพประกอบเซกชัน) ===== */
+    .shot { margin: 8px 0 32px; }
+    .shot img { display: block; width: 100%; height: auto; border-radius: var(--radius, 12px); box-shadow: 0 0 0 1px var(--border, #e7e5e4), 0 12px 32px rgba(0,0,0,.08); }
+    .shot figcaption { margin-top: 10px; font-size: .82rem; color: var(--text-secondary, #57534e); text-align: center; line-height: 1.6; }
+    .shot-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+    .shot-pair .lbl { display: block; margin-top: 8px; font-size: .78rem; font-weight: 600; color: var(--text); text-align: center; }
+    @media (max-width: 639px) { .shot-pair { grid-template-columns: 1fr; } }
   </style>
   <link rel="stylesheet" href="../common/closing.css">
   <script src="../common/closing.js" defer></script>
@@ -780,6 +787,14 @@
       <h2>คลิปความรู้ไม่ได้แพ้เพราะเนื้อหา แต่แพ้ตั้งแต่ภาพแรก</h2>
       <p>เนื้อหาดีแค่ไหน ถ้าภาพไม่ขยับ คนดูก็ไม่อยู่ฟังจนถึงจุดที่น่าสนใจ</p>
     </section>
+
+    <figure class="shot">
+      <div class="shot-pair">
+        <div><img src="img/still-frame.jpg" width="1200" height="676" loading="lazy" alt="ภาพวาดจิตรกรรมไทยภาพเดียว ไหดินที่เต็มไปด้วยเงินแท่งฝังอยู่ใต้ดินท่ามกลางรากไม้ ภาพนิ่งไม่มีการเคลื่อนไหว"><span class="lbl">ภาพนิ่ง 1 ภาพ</span></div>
+        <div><img src="img/motion-frames.jpg" width="1200" height="676" loading="lazy" alt="สี่เฟรมจากฉากเดียวกันที่กล้องเคลื่อน เริ่มจากภาพทุ่ง กล้องดิ่งผ่านหญ้าลงใต้ดิน จนเห็นไหที่เต็มไปด้วยเงินแท่ง"><span class="lbl">ฉากเดียวกัน เมื่อกล้องเป็นคนเล่า</span></div>
+      </div>
+      <figcaption>ภาพเดียวกันจากเรื่อง &ldquo;ไหเงินใต้ดิน&rdquo; &mdash; ซ้ายคือแบบที่คนดูเลื่อนผ่าน ขวาคือสี่เฟรมจากคลิปที่กล้องดิ่งลงไปหาไหเงิน คนดูได้คำตอบด้วยตาก่อนเสียงบรรยายจะพูด</figcaption>
+    </figure>
 
     <div class="pain-grid">
       <div class="pain-card">
@@ -906,6 +921,11 @@
       <p>ส่วนที่ต้องใช้สายตาคนทำเอง ส่วนที่ซ้ำ ๆ ปล่อยให้เครื่องทำ</p>
     </section>
 
+    <figure class="shot">
+      <img src="img/remotion-studio.jpg" width="1440" height="900" loading="lazy" alt="หน้าจอ Remotion Studio พรีวิวฉากไหเงินใต้ดินเต็มจอ ด้านล่างเป็นไทม์ไลน์ที่มีแถบคลิปของฉากนั้นวางต่อจากช็อตอื่น และหัวเล่นสีแดงหยุดอยู่ที่วินาทีที่ 12">
+      <figcaption>จังหวะที่ 03 ในหน้าจอจริง &mdash; Remotion Studio เปิดคอมโพสิชันจริงของงาน หยุดที่ฉากกล้องดิ่งลงดิน ลากหัวเล่นดูได้ทันทีโดยยังไม่ต้องเรนเดอร์</figcaption>
+    </figure>
+
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">01</div>
@@ -946,6 +966,11 @@
       <h2>สี่บทเรียนจากการตัดคลิปจริง</h2>
       <p>ส่วนใหญ่ได้มาจากการดูคลิปที่ทำออกไปแล้วรู้สึกว่า "ยังไม่ใช่"</p>
     </section>
+
+    <figure class="shot">
+      <img src="img/scene-sheet.jpg" width="1200" height="506" loading="lazy" alt="ภาพวาด 12 ฉากจากเรื่องไหเงินใต้ดินเรียงเป็นตาราง ทั้งไหเงิน ตลาดริมน้ำ โรงหวย แผงป้ายอักษรจีน กระทรวง ความฝัน และคนแบกกองกระดาษ ทุกภาพใช้โทนสีอุ่นและลายเส้นจิตรกรรมไทยแบบเดียวกัน">
+      <figcaption>12 จาก 13 ฉากของ &ldquo;ไหเงินใต้ดิน&rdquo; วางเรียงกัน &mdash; ผลของการล็อกสไตล์ก่อนสร้างภาพแรก สี ลายเส้น และพื้นผิวกระดาษจึงเป็นชุดเดียวกันทั้งเรื่อง</figcaption>
+    </figure>
 
     <div class="hack-grid">
 
