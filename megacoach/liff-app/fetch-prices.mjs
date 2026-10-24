@@ -2,7 +2,8 @@
 // fetch-prices.mjs — ดึงราคาหุ้นสดจาก SerpApi Google Finance เป็น JSON ตัวเลขเป๊ะ ๆ
 // ใช้แทนการให้ AI เดาราคาจาก WebSearch (ต้นเหตุราคาเพี้ยน/รอบบรีฟล่มเงียบ)
 //
-// ใช้:   SERPAPI_KEY=xxx node fetch-prices.mjs            # ดึง 6 ตัวมาตรฐาน
+// ใช้:   SERPAPI_KEY=xxx SERPAPI_KEY_2=yyy node fetch-prices.mjs
+//        ถ้าคีย์แรกหมดโควตา/ใช้ไม่ได้ จะสลับไปคีย์ที่สองอัตโนมัติ
 //        SERPAPI_KEY=xxx node fetch-prices.mjs NVDA:NASDAQ VST:NYSE
 //        node fetch-prices.mjs --selftest                 # เช็ก parser ไม่ต้องต่อเน็ต
 //
@@ -26,11 +27,34 @@ function parseQuote(j) {
   return { price: Math.round(price * 100) / 100, changePct, dir, currency: s.currency || "USD" };
 }
 
+class KeyUnavailableError extends Error {}
+
+function isKeyUnavailable(status, body) {
+  if ([401, 403, 429].includes(status)) return true;
+  const message = String(body?.error || "").toLowerCase();
+  return /quota|limit|exhaust|run out|searches|api key|account/.test(message);
+}
+
 async function fetchOne(q, key) {
   const url = `https://serpapi.com/search?engine=google_finance&q=${encodeURIComponent(q)}&api_key=${key}`;
   const r = await fetch(url);
+  const body = await r.json().catch(() => null);
+  if (isKeyUnavailable(r.status, body)) {
+    throw new KeyUnavailableError(body?.error || `HTTP ${r.status}`);
+  }
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  return parseQuote(await r.json());
+  if (body?.error) throw new Error(body.error);
+  return parseQuote(body);
+}
+
+function getKeys() {
+  // รองรับทั้งแบบแยกสองบรรทัด และแบบ SERPAPI_KEYS=key1,key2
+  const keys = [
+    process.env.SERPAPI_KEY,
+    process.env.SERPAPI_KEY_2,
+    ...(process.env.SERPAPI_KEYS || "").split(/[\s,]+/),
+  ].map(k => k?.trim()).filter(Boolean);
+  return [...new Set(keys)];
 }
 
 function selftest() {
@@ -40,6 +64,9 @@ function selftest() {
   console.assert(out.changePct === -1.23, "changePct signed negative on Down");
   console.assert(out.dir === "down", "dir from movement word");
   console.assert(parseQuote({}) === null, "empty → null");
+  console.assert(isKeyUnavailable(429, null), "HTTP 429 switches key");
+  console.assert(isKeyUnavailable(200, { error: "Your account has run out of searches." }), "quota response switches key");
+  console.assert(!isKeyUnavailable(500, null), "server error does not disable key");
   console.log("selftest ok");
 }
 
@@ -47,19 +74,32 @@ async function main() {
   const args = process.argv.slice(2);
   if (args.includes("--selftest")) return selftest();
 
-  const key = process.env.SERPAPI_KEY;
-  if (!key) { console.error("ERROR: ตั้ง SERPAPI_KEY ก่อน"); process.exit(1); }
+  const keys = getKeys();
+  if (!keys.length) { console.error("ERROR: ตั้ง SERPAPI_KEY ก่อน"); process.exit(1); }
 
   const tickers = args.length ? args : DEFAULT;
   const out = {};
+  let activeKey = 0;
   for (const q of tickers) {
     const sym = q.split(":")[0];
-    try {
-      out[sym] = await fetchOne(q, key);
-      if (!out[sym]) console.error(`WARN ${sym}: ไม่มี summary.price`);
-    } catch (e) {
-      out[sym] = null;
-      console.error(`WARN ${sym}: ${e.message}`);
+    out[sym] = null;
+    while (activeKey < keys.length) {
+      try {
+        out[sym] = await fetchOne(q, keys[activeKey]);
+        if (!out[sym]) console.error(`WARN ${sym}: ไม่มี summary.price`);
+        break;
+      } catch (e) {
+        if (e instanceof KeyUnavailableError) {
+          console.error(`WARN ${sym}: คีย์ ${activeKey + 1} ใช้ไม่ได้หรือโควตาหมด — สลับคีย์`);
+          activeKey += 1;
+          continue;
+        }
+        console.error(`WARN ${sym}: ${e.message}`);
+        break;
+      }
+    }
+    if (activeKey >= keys.length && out[sym] === null) {
+      console.error(`WARN ${sym}: ไม่มี SerpApi key ที่ใช้งานได้เหลืออยู่`);
     }
   }
   console.log(JSON.stringify(out, null, 2));
