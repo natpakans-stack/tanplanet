@@ -810,6 +810,23 @@
       <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span><b>โหลดโลโก้ครั้งเดียว</b> ใช้ crest URL เป็น key มีทั้ง memory cache, disk cache และรวม request ทีมเดียวกัน แม้อันดับจาก API จะเปลี่ยนก็ไม่ต้องโหลดภาพใหม่ทั้งหมด</span></li>
     </ul>
 
+    <section class="section-intro">
+      <span class="eyebrow">Results &middot; Highlights</span>
+      <h2>ตื่นมาเห็นผลเมื่อคืน แล้วกดดูไฮไลท์ได้เลย</h2>
+      <p>หน้าเดิมโชว์แค่โปรแกรมคู่ถัดไป ทั้งที่สิ่งแรกที่คนในบ้านอยากรู้ตอนเช้าคือผลเมื่อคืน ตอนนี้ผลจะขึ้นก่อนโปรแกรม และคู่ที่ Monomax Sports ลงคลิปแล้วจะมีป้าย "ไฮไลท์" คร่อมขอบกล่อง กดตกลงก็เปิดคลิปในแอป YouTube ได้เลย</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/football-highlights.png" width="1280" height="720" loading="lazy" alt="หน้ารายละเอียด Premier League แสดงผลการแข่งขันวันเสาร์ 24 ตุลาคม ห้าคู่ ทุกคู่มีป้ายไฮไลท์สีแดงคร่อมขอบบนของกล่อง แถวแรกมีกรอบโฟกัสสีขาว และมุมขวาบนมีปุ่มย้อนกลับ">
+      <figcaption>ผล 3 วันล่าสุดอยู่บนสุด ป้ายไฮไลท์บอกว่าแถวนี้กดได้ และปุ่มย้อนกลับกลายเป็นปุ่มที่โฟกัสได้จริง</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 5 3.5-5 3.5z"/></svg><span><b>หนึ่งแถว หนึ่ง action</b> แถวที่จบแล้วทำได้อย่างเดียวคือเปิดไฮไลท์ ป้ายจึงบอกทั้งว่ามีคลิปและว่ากดได้ ไม่ต้องมีปุ่มแยก</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h10M4 17h6"/></svg><span><b>จับคู่คลิปจากชื่อคลิป</b> Monomax ตั้งชื่อเป็นแพทเทิร์นเดียวกัน (ทีมเหย้า vs ทีมเยือน + วันที่ พ.ศ.) Worker อ่านเพลย์ลิสต์ไฮไลท์ทุก 10 นาที ใช้โควต้า YouTube แค่ 1 หน่วยต่อครั้ง คลิปมักขึ้นราว 45–60 นาทีหลังจบเกม</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg><span><b>ไม่เก็บถาวร</b> ไฮไลท์อาทิตย์ที่แล้วไม่มีใครย้อนกลับไปดู ข้อมูลทุกชิ้นบน Worker หมดอายุเองใน 4 วัน บนกล่องเหลือแค่ JSON ไม่กี่ KB ที่ถูกเขียนทับทุกรอบ</span></li>
+    </ul>
+
     <hr class="divider">
 
     <section class="section-intro" id="malware">
@@ -1024,6 +1041,12 @@
         <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>บนทีวีไม่มี cursor คอยบอกว่ากำลังเลือกอะไร</span></h3>
         <p>ตารางที่ดูชัดบนหน้าจอคอมพิวเตอร์กลับสับสนเมื่อควบคุมด้วย D-pad จากระยะไกล</p>
         <div class="highlight"><strong>แก้:</strong> ทำ focus state เป็นส่วนหนึ่งของ design system ทั้งหัวคอลัมน์ เส้น active และการเลื่อนภายในแต่ละฝั่ง</div>
+      </div>
+
+      <div class="hack-card" data-label="API">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>ตอนเช้ายังขึ้น "กำลังแข่งขัน" ของเมื่อวาน</span></h3>
+        <p>API ฟุตบอลตอบจากหลายเครื่อง และราวครึ่งหนึ่งยังค้างข้อมูลเมื่อวาน ผลออกมาสลับไปมา บางรอบบอกว่าเตะจบแล้ว บางรอบบอกว่ายังเตะอยู่</p>
+        <div class="highlight"><strong>แก้:</strong> Worker จำเวอร์ชันล่าสุดของแต่ละคู่ และไม่ยอมส่งเวอร์ชันที่เก่ากว่า ฝั่งแอปก็ไม่เชื่อสถานะ "กำลังเตะ" ที่เกิน 3 ชั่วโมงหลังเริ่มเกม</div>
       </div>
 
       <div class="hack-card" data-label="Icon">
