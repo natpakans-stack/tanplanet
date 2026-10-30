@@ -54,8 +54,11 @@ function getKeys() {
     process.env.SERPAPI_KEY_2,
     ...(process.env.SERPAPI_KEYS || "").split(/[\s,]+/),
   ].map(k => k?.trim()).filter(Boolean);
-  return [...new Set(keys)];
+  return rotate([...new Set(keys)], Math.floor(Date.now() / 864e5));
 }
+
+// สลับคีย์แรกวันละตัว → โควตาเฉลี่ยทุกคีย์ (ตัวที่เหลือยังเป็น failover ตามลำดับ)
+const rotate = (a, n) => a.length ? [...a.slice(n % a.length), ...a.slice(0, n % a.length)] : a;
 
 function selftest() {
   const sample = { summary: { price: 192.53, currency: "USD", price_movement: { percentage: 1.23, movement: "Down" } } };
@@ -67,6 +70,7 @@ function selftest() {
   console.assert(isKeyUnavailable(429, null), "HTTP 429 switches key");
   console.assert(isKeyUnavailable(200, { error: "Your account has run out of searches." }), "quota response switches key");
   console.assert(!isKeyUnavailable(500, null), "server error does not disable key");
+  console.assert(rotate(["a", "b"], 0).join() === "a,b" && rotate(["a", "b"], 1).join() === "b,a", "rotate by day");
   console.log("selftest ok");
 }
 
