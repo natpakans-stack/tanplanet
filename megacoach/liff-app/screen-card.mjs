@@ -13,6 +13,7 @@ const LV = { // ระดับ → [ไอคอน, สี] โทนเดี
   "Strong Buy": ["chevrons-up", "#15803D"], Buy: ["arrow-up", "#15803D"], Neutral: ["minus", "#B45309"],
   Sell: ["arrow-down", "#B91C1C"], "Strong Sell": ["chevrons-down", "#B91C1C"],
 };
+const SIG = { go: ["circle-check", "#15803D"], wait: ["clock", "#B45309"], avoid: ["ban", "#B91C1C"] }; // ไฟจราจรจังหวะเข้า
 const pct = x => (x >= 0 ? "+" : "−") + Math.abs(x).toFixed(1) + "%";
 const MONTH = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
 const thDate = d => { const [y, m, dd] = d.split("-"); return `${+dd} ${MONTH[m - 1]} ${y}`; };
@@ -27,12 +28,17 @@ export function screenBubble(sc) {
       { type: "text", text: `1Y ${pct(s.rs12)}`, size: "xs", color: s.rs12 >= 0 ? "#15803D" : "#B91C1C", align: "end", flex: 3 },
     ],
   }));
-  // ตัวที่ยังไม่ร้อนขึ้นก่อน (เข้าได้จริง) แล้วค่อยตัวร้อน · สูงสุด 5 ตัว
-  const picks = sc.groups.flatMap(g => g.stocks.filter(x => x.pick).map(x => ({ ...x, group: g.name })))
-    .sort((a, b) => a.hot - b.hot || b.score - a.score || b.relVol - a.relVol).slice(0, 5);
+  // เรียงตามจังหวะเข้า: เข้าได้ → รอจังหวะ → อย่าเพิ่ง แล้วตามคะแนน · สูงสุด 5 ตัว
+  const ORDER = { go: 0, wait: 1, avoid: 2 };
+  const all = sc.groups.flatMap(g => g.stocks.filter(x => x.pick).map(x => ({ ...x, group: g.name })));
+  const picks = all.sort((a, b) => ORDER[a.plan?.sig ?? "avoid"] - ORDER[b.plan?.sig ?? "avoid"] || a.hot - b.hot || b.score - a.score).slice(0, 5);
+  const nGo = all.filter(x => x.plan?.sig === "go").length;
   const rows = picks.flatMap(x => {
     const [ic, color] = LV[x.label] || LV.Neutral, p = x.pattern;
-    const note = x.hot ? ["flame", "ร้อนเกิน รอย่อ"] : p ? ["activity", `${p.th.replace(/ \(.*\)/, "")} · ${p.status.split(" · ")[0]}`] : null;
+    const pl = x.plan;
+    const note = x.hot ? ["flame", `${x.group} · ร้อนเกิน รอย่อ`] : p ? ["activity", `${x.group} · ${p.th.replace(/ \(.*\)/, "")} · ${p.status.split(" · ")[0]}`] : null;
+    // บรรทัดจังหวะเข้า: เข้าได้/รอ = บอกโซน+stop+เป้า · อย่าเพิ่ง = บอกเหตุผล
+    const planLine = pl && [SIG[pl.sig][0], pl.sig === "avoid" ? `${pl.sigTh} · ${pl.why}` : `${pl.sigTh} · โซน $${pl.lo}–${pl.hi} · stop $${pl.stop} · เป้า $${pl.trim}`, SIG[pl.sig][1]];
     return [{
       type: "box", layout: "baseline", margin: "md", contents: [
         { type: "icon", url: ICON(ic), size: "sm" },
@@ -40,10 +46,15 @@ export function screenBubble(sc) {
         { type: "text", text: x.th, size: "xs", weight: "bold", color, flex: 3 },
         { type: "text", text: `Vol ${x.relVol}x`, size: "xs", color: "#475569", align: "end", flex: 2 },
       ],
-    }, ...(note ? [{
+    }, ...(planLine ? [{
+      type: "box", layout: "baseline", contents: [
+        { type: "icon", url: ICON(planLine[0]), size: "xxs" },
+        { type: "text", text: planLine[1], size: "xxs", weight: "bold", color: planLine[2], margin: "sm", flex: 1, wrap: true },
+      ],
+    }] : []), ...(note ? [{
       type: "box", layout: "baseline", contents: [
         { type: "icon", url: ICON(note[0]), size: "xxs" },
-        { type: "text", text: `${x.group} · ${note[1]}`, size: "xxs", color: "#64748B", margin: "sm", flex: 1 },
+        { type: "text", text: note[1], size: "xxs", color: "#64748B", margin: "sm", flex: 1 },
       ],
     }] : [])];
   });
@@ -56,10 +67,10 @@ export function screenBubble(sc) {
     ] },
     body: { type: "box", layout: "vertical", paddingAll: "16px", contents: [
       { ...label("กลุ่มที่แรงสุด (เทียบ S&P 500)"), margin: "none" }, ...sectors, sep,
-      label(`ผ่านเกณฑ์คัด ${picks.length} ตัว`),
+      label(`ผ่านเกณฑ์คัด ${all.length} ตัว · เข้าได้วันนี้ ${nGo} ตัว`),
       ...(rows.length ? rows : [{ type: "text", text: "วันนี้ยังไม่มีตัวผ่านเกณฑ์ — รอ", size: "sm", color: "#64748B", margin: "md" }]),
       sep,
-      { type: "text", text: "คัดแล้ว = เทคนิคน่าซื้อ + volume ≥1.5 เท่า + 1 ปีชนะกลุ่ม · ร้อนเกิน = RSI ≥70", size: "xxs", color: "#94A3B8", wrap: true, margin: "lg" },
+      { type: "text", text: "คัดแล้ว = เทคนิคน่าซื้อ + volume ≥1.5 เท่า + 1 ปีชนะกลุ่ม · โซน/stop/เป้า ระบบตั้งเอง (stop ห่าง ≥2 ATR, R:R ≥1.5) · ตั้ง stop ทุกครั้งที่เข้า", size: "xxs", color: "#94A3B8", wrap: true, margin: "lg" },
     ] },
     footer: { type: "box", layout: "vertical", spacing: "sm", paddingAll: "16px", contents: [
       { type: "button", style: "primary", color: "#15803D", height: "sm", action: { type: "uri", label: "ดูทุกตัว + ถาม AI", uri: DASH } },
