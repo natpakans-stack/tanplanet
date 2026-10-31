@@ -182,6 +182,47 @@
   .disc-sub span{white-space:nowrap}
   .sign{margin-top:var(--s5);font-size:12px;font-weight:600;color:var(--ink-2);letter-spacing:.05em}
 
+  /* ---------- คัดหุ้นวันนี้ (screen-data.json จาก scripts/stock-screen.mjs) ---------- */
+  .sc-sectors{display:flex;gap:6px;overflow-x:auto;padding:var(--s4) var(--s4) 2px;scrollbar-width:none}
+  .sc-sectors::-webkit-scrollbar{display:none}
+  .sc-sec{flex-shrink:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 11px;border-radius:var(--r-md);border:1px solid var(--border);background:var(--surface);color:var(--ink-2);font:inherit;font-size:12px;font-weight:600;cursor:pointer;min-height:44px}
+  .sc-sec small{font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:500}
+  .sc-sec small.up{color:var(--up)} .sc-sec small.down{color:var(--down)}
+  .sc-sec[disabled]{cursor:default;opacity:.55}
+  .sc-sec.active{border-color:var(--accent);background:var(--accent-bg);color:var(--accent-ink)}
+  .sc-tools{display:flex;align-items:center;gap:8px;padding:10px var(--s4) 0;font-size:11.5px;color:var(--ink-3)}
+  .sc-toggle{margin-left:auto;display:flex;border:1px solid var(--border);border-radius:var(--r-pill);overflow:hidden}
+  .sc-toggle button{font:inherit;font-size:11.5px;font-weight:600;padding:6px 12px;border:none;background:none;color:var(--ink-2);cursor:pointer;min-height:32px}
+  .sc-toggle button.on{background:var(--ink);color:var(--surface)}
+  .sc-list{padding:4px var(--s4) var(--s2)}
+  .sc-row{border-top:1px solid var(--hair)}
+  .sc-row:first-child{border-top:none}
+  .sc-head{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;width:100%;padding:12px 0;background:none;border:none;font:inherit;color:inherit;text-align:left;cursor:pointer}
+  .sc-badge{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;flex-shrink:0}
+  .sc-badge svg{width:19px;height:19px}
+  .sc-badge.go{background:var(--go-bg);color:var(--go)} .sc-badge.wait{background:var(--wait-bg);color:var(--wait)} .sc-badge.avoid{background:var(--avoid-bg);color:var(--avoid)}
+  .sc-top{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .sc-tkr{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600;color:var(--ink)}
+  .sc-lbl{font-size:13px;font-weight:700}
+  .sc-lbl.go{color:var(--go)} .sc-lbl.wait{color:var(--wait)} .sc-lbl.avoid{color:var(--avoid)}
+  .sc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+  .sc-tag{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:var(--r-pill);background:var(--panel);color:var(--ink-2)}
+  .sc-tag svg{width:11px;height:11px}
+  .sc-tag.pick{background:var(--accent-bg);color:var(--accent-ink)}
+  .sc-tag.hot{background:var(--wait-bg);color:var(--wait)}
+  .sc-px{text-align:right;font-family:"IBM Plex Mono",monospace;font-size:12.5px;font-weight:600;color:var(--ink)}
+  .sc-px small{display:block;font-size:10.5px;font-weight:500}
+  .sc-px small.up{color:var(--up)} .sc-px small.down{color:var(--down)}
+  .sc-more{display:none;padding:0 0 14px 52px}
+  .sc-row.open .sc-more{display:block}
+  .sc-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+  .sc-fact{background:var(--panel);border-radius:var(--r-sm);padding:7px 8px}
+  .sc-fact b{display:block;font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:var(--ink)}
+  .sc-fact span{font-size:10.5px;color:var(--ink-3)}
+  .sc-pat{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--ink-2);line-height:1.5;margin-bottom:10px}
+  .sc-pat svg{width:15px;height:15px;flex-shrink:0;margin-top:2px;color:var(--accent)}
+  .sc-empty{padding:var(--s5) 0;text-align:center;font-size:12.5px;color:var(--ink-3)}
+
   /* ---------- idea radar ---------- */
   .radar-pick{display:flex;gap:12px;align-items:flex-start;margin:var(--s4) var(--s4) 0;padding:13px 14px;border-radius:var(--r-md);background:var(--accent-bg)}
   .radar-pick .ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex-shrink:0;background:var(--accent);color:#fff}
@@ -863,6 +904,7 @@
       </div><!-- /.g-panel -->
     </div><!-- /#guide -->
 
+    <div id="screen"></div>
     <div id="radar"></div>
     <div id="northstar"></div>
     <div id="insurance"></div>
@@ -1089,6 +1131,100 @@
             <div class="radar-foot">คะแนนเต็ม 25 (Durability · Evidence · Investability · Timing · Edge) · ${r.cadence || "สแกนรายสัปดาห์"} · ป้าย stage = จังหวะของธีม ไม่ใช่สัญญาณรายตัว · เป็นไอเดียตั้งต้น ไม่ใช่คำสั่งซื้อขาย</div>
           </div>
         </section>`;
+    }
+
+    /* ---------- คัดหุ้นวันนี้ ---------- */
+    // ไอคอนชุด Lucide (ชุดเดียวกับทั้งหน้า) · ระดับ → [ไอคอน, โทนสี]
+    const SC_LV = {
+      "Strong Buy":  ['<path d="m17 11-5-5-5 5"/><path d="m17 18-5-5-5 5"/>', "go"],
+      "Buy":         ['<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>', "go"],
+      "Neutral":     ['<path d="M5 12h14"/>', "wait"],
+      "Sell":        ['<path d="M12 5v14"/><path d="m19 12-7 7-7-7"/>', "avoid"],
+      "Strong Sell": ['<path d="m7 6 5 5 5-5"/><path d="m7 13 5 5 5-5"/>', "avoid"],
+    };
+    const SC_FLAME = '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>';
+    const SC_FUNNEL = '<path d="M22 3H2l8 9.46V19l4 2v-8.54z"/>';
+    let SC = null, scGroup = 0, scPicksOnly = true;
+    const pct = (x, d = 0) => (x >= 0 ? "+" : "−") + Math.abs(x).toFixed(d) + "%";
+
+    function renderScreen(){
+      const el = document.getElementById("screen");
+      if(!el || !SC || !SC.groups?.length) return;
+      const g = SC.groups[scGroup];
+      const groupIdx = Object.fromEntries(SC.groups.map((x, i) => [x.t, i]));
+      const chips = SC.sectors.map(s => {
+        const i = groupIdx[s.t], on = i === scGroup;
+        return `<button class="sc-sec${on ? " active" : ""}" ${i == null ? "disabled" : `onclick="scPick(${i})"`} aria-pressed="${on}">
+          ${esc(s.name)}<small class="${s.rs1 >= 0 ? "up" : "down"}">1M ${pct(s.rs1, 1)} · 1Y ${pct(s.rs12, 0)}</small></button>`;
+      }).join("");
+      const list = g.stocks.filter(x => !scPicksOnly || x.pick);
+      const rows = list.map(x => {
+        const [ic, tone] = SC_LV[x.label] || SC_LV.Neutral, p = x.pattern;
+        if(!STOCKS[x.t]) STOCKS[x.t] = {   // context ให้ "ถาม AI" (ไม่ทับหุ้นใน watchlist)
+          ticker: x.t, sector: g.name, price: "$" + x.price, signalLabel: "คัดหุ้น: " + x.th,
+          signalDesc: x.pick ? "ผ่านเกณฑ์คัดแล้ว: เทคนิคน่าซื้อ + volume หนุน + 1 ปีชนะกลุ่ม" : "",
+          factors: [
+            { label: "Volume เทียบเฉลี่ย 20 วัน", value: x.relVol + "x" }, { label: "RSI", value: String(x.rsi) },
+            { label: "ผลตอบแทน 1 ปี", value: pct(x.y1) + " (เทียบกลุ่ม " + pct(x.vsSector) + ")" },
+            ...(p ? [{ label: "รูปแบบกราฟ", value: p.th + " — " + p.status }] : []),
+          ],
+        };
+        return `<div class="sc-row">
+          <button class="sc-head" onclick="this.parentElement.classList.toggle('open')" aria-label="${x.t} ${esc(x.th)} แตะดูรายละเอียด">
+            <span class="sc-badge ${tone}">${svg(ic)}</span>
+            <span>
+              <span class="sc-top"><span class="sc-tkr">${x.t}</span><span class="sc-lbl ${tone}">${esc(x.th)}</span></span>
+              <span class="sc-tags">
+                ${x.pick ? `<span class="sc-tag pick">${svg(ICON.northstar)}คัดแล้ว</span>` : ""}
+                ${x.hot ? `<span class="sc-tag hot">${svg(SC_FLAME)}ร้อนเกิน รอย่อ</span>` : ""}
+                ${p ? `<span class="sc-tag">${svg(ICON.pulse)}${esc(p.th.replace(/ \(.*\)/, ""))}</span>` : ""}
+              </span>
+            </span>
+            <span class="sc-px">$${x.price}<small class="${x.y1 >= 0 ? "up" : "down"}">1Y ${pct(x.y1)}</small></span>
+          </button>
+          <div class="sc-more">
+            <div class="sc-facts">
+              <div class="sc-fact"><b>${x.relVol}x</b><span>Volume vs เฉลี่ย</span></div>
+              <div class="sc-fact"><b>${x.rsi}</b><span>RSI ${x.rsi >= 70 ? "· ร้อน" : x.rsi <= 30 ? "· ถูกขายหนัก" : ""}</span></div>
+              <div class="sc-fact"><b>${pct(x.vsSector)}</b><span>1 ปี ${x.vsSector >= 0 ? "ชนะ" : "แพ้"}กลุ่ม</span></div>
+            </div>
+            ${p ? `<div class="sc-pat">${svg(ICON.pulse)}<div><b>${esc(p.th)}</b><br>${esc(p.status)}${p.target ? ` · เป้าตามรูปกราฟ $${p.target}${(p.bias > 0 ? x.price >= p.target : x.price <= p.target) ? " (ถึงเป้าแล้ว)" : ""}` : ""}</div></div>` : ""}
+            <button class="ask-btn" onclick="openAsk('${x.t}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>ถาม AI เรื่อง ${x.t}</button>
+          </div>
+        </div>`;
+      }).join("");
+      const nPick = g.stocks.filter(x => x.pick).length;
+      el.innerHTML = `
+        <section class="rise">
+          <div class="sec-head">
+            <span class="sec-ic">${svg(SC_FUNNEL)}</span>
+            <h2>คัดหุ้นวันนี้</h2>
+            <span class="meta">ราคาปิด ${SC.updated}</span>
+          </div>
+          <div class="card">
+            <div class="sc-sectors" role="tablist" aria-label="กลุ่มอุตสาหกรรม เรียงจากแรงสุด">${chips}</div>
+            <div class="sc-tools">
+              <span>${esc(g.name)} · คัดแล้ว ${nPick}/${g.stocks.length} ตัว</span>
+              <span class="sc-toggle">
+                <button class="${scPicksOnly ? "on" : ""}" onclick="scFilter(true)">คัดแล้ว</button>
+                <button class="${scPicksOnly ? "" : "on"}" onclick="scFilter(false)">ทั้งหมด</button>
+              </span>
+            </div>
+            <div class="sc-list">${rows || `<div class="sc-empty">กลุ่มนี้วันนี้ยังไม่มีตัวผ่านเกณฑ์ · แตะ "ทั้งหมด" เพื่อดูทุกตัว</div>`}</div>
+            <div class="radar-foot">กลุ่มเรียงตามแรงเทียบ S&P 500 · <b>คัดแล้ว</b> = เทคนิคน่าซื้อ + volume ≥1.5 เท่า + 1 ปีชนะกลุ่มตัวเอง · <b>ร้อนเกิน</b> = RSI ≥70 รอย่อดีกว่าไล่ · รูปกราฟหาจากจุดกลับตัวย้อนหลัง 1 ปี · เป็นเครื่องมือคัดกรอง ไม่ใช่คำสั่งซื้อขาย</div>
+          </div>
+        </section>`;
+    }
+    function scPick(i){ scGroup = i; renderScreen(); }
+    function scFilter(on){ scPicksOnly = on; renderScreen(); }
+
+    async function loadScreen(){
+      try{
+        const res = await fetch("./screen-data.json?t=" + Date.now());
+        if(!res.ok) return;
+        SC = await res.json();
+        renderScreen();
+      }catch(e){ /* section optional — fail silently */ }
     }
 
     async function loadRadar(){
@@ -2050,6 +2186,7 @@
       renderCharts();
       loadToday();
       loadData();
+      loadScreen();
       loadRadar();
       loadNorthStar();
     }
