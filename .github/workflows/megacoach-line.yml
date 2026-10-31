@@ -43,6 +43,11 @@ jobs:
           SCRIPT
           node /tmp/attach.mjs
 
+      # ต่อการ์ด "คัดหุ้นวันนี้" ท้าย carousel (จาก screen-data.json ที่ box เขียนตอน 05:30)
+      # ข้อมูลเก่าเกิน 4 วัน/ไม่มีบรีฟเช้า → ข้าม · พังก็ไม่ขวางการส่งบรีฟ
+      - name: Attach คัดหุ้นวันนี้ card
+        run: node megacoach/liff-app/screen-card.mjs || echo "⚠️ ต่อการ์ดคัดหุ้นไม่ได้ ส่งเท่าเดิม"
+
       - name: Validate outbox JSON
         run: jq -e '.messages | type == "array" and length > 0' megacoach/liff-app/line-outbox.json
 
