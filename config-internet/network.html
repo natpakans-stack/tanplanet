@@ -1,0 +1,348 @@
+<title>ผังเน็ตบ้าน Joenat</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: เอกสารคอลัมน์เดียวแบบคู่มือช่าง — สรุป → ผังตอนนี้ → ปัญหา → ผังเป้าหมาย → config รายเครื่อง → ลำดับลงมือ */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --fg:#17202e; --muted:#5a6578; --line:#d5dbe5;
+  --accent:#1f56c4; --accent-soft:#e3ebfb;
+  --ok:#17804a; --ok-soft:#e1f3e8; --warn:#a85d00; --warn-soft:#fdf0dc; --bad:#b42318; --bad-soft:#fde7e5;
+  --huawei:#c2412d; --tplink:#1f8a8a;
+  --sans:"IBM Plex Sans Thai",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f141c; --surface:#171e29; --fg:#e6eaf1; --muted:#9aa5b8; --line:#2b3545;
+  --accent:#7ea6ff; --accent-soft:#1c2a47;
+  --ok:#5fd394; --ok-soft:#143323; --warn:#f2b45a; --warn-soft:#3a2a10; --bad:#ff8a7f; --bad-soft:#3d1a17;
+  --huawei:#ff8c76; --tplink:#5fd0cf; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141c; --surface:#171e29; --fg:#e6eaf1; --muted:#9aa5b8; --line:#2b3545;
+  --accent:#7ea6ff; --accent-soft:#1c2a47;
+  --ok:#5fd394; --ok-soft:#143323; --warn:#f2b45a; --warn-soft:#3a2a10; --bad:#ff8a7f; --bad-soft:#3d1a17;
+  --huawei:#ff8c76; --tplink:#5fd0cf; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.65 var(--sans)}
+.wrap{max-width:860px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+h1{font-size:1.9rem;line-height:1.25;margin:0;font-weight:600;text-wrap:balance}
+h2{font-size:1.3rem;margin:0 0 12px;font-weight:600;text-wrap:balance}
+h3{font-size:1.05rem;margin:0 0 6px;font-weight:600}
+p{margin:0;max-width:65ch}
+.eyebrow{font:500 .75rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);margin-top:8px}
+code,.mono{font-family:var(--mono);font-size:.9em}
+section{display:flex;flex-direction:column;gap:14px;min-width:0}
+.status{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.st{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.pill{align-self:flex-start;font:500 .72rem var(--mono);padding:2px 8px;border-radius:99px;letter-spacing:.03em}
+.ok{background:var(--ok-soft);color:var(--ok)} .warn{background:var(--warn-soft);color:var(--warn)} .bad{background:var(--bad-soft);color:var(--bad)}
+.st small{color:var(--muted);font-size:.85rem;line-height:1.5}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow-x:auto}
+.fig svg{display:block;width:100%;min-width:620px;height:auto}
+.fig figcaption{padding:10px 14px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+figure{margin:0}
+svg text{font-family:var(--sans);fill:var(--fg)}
+svg .m{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+svg .n{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+svg .hw{stroke:var(--huawei)} svg .tp{stroke:var(--tplink)} svg .ac{stroke:var(--accent)}
+svg .wire{stroke:var(--fg);stroke-width:2;fill:none}
+svg .air{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 5;fill:none}
+svg .unk{stroke:var(--warn);stroke-width:1.8;stroke-dasharray:2 4;fill:none}
+svg .off{opacity:.38}
+svg .t-hw{fill:var(--huawei)} svg .t-tp{fill:var(--tplink)} svg .t-warn{fill:var(--warn)} svg .t-ok{fill:var(--ok)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.85rem;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:22px;height:0;border-top:2px solid var(--fg);vertical-align:middle;margin-right:6px}
+.legend .l-air::before{border-top:2px dashed var(--muted)} .legend .l-unk::before{border-top:2px dotted var(--warn)}
+.problems{display:flex;flex-direction:column;gap:10px;padding:0;margin:0;list-style:none}
+.problems li{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--bad);border-radius:6px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.problems li.w{border-left-color:var(--warn)}
+.problems .ev{font-size:.85rem;color:var(--muted)}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 .72rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.mono,td .mono{white-space:nowrap;font-variant-numeric:tabular-nums}
+.cfg{display:flex;flex-direction:column;gap:16px}
+.dev{background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.dev header{padding:12px 14px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;border-bottom:1px solid var(--line)}
+.dev header .brand{font:500 .72rem var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.dev.h header .brand{color:var(--huawei)} .dev.t header .brand{color:var(--tplink)}
+.dev dl{margin:0;display:grid;grid-template-columns:minmax(120px,190px) 1fr}
+.dev dt,.dev dd{margin:0;padding:8px 14px;border-bottom:1px solid var(--line);min-width:0}
+.dev dt{color:var(--muted);font-size:.88rem}
+.dev dd{font-family:var(--mono);font-size:.88rem;overflow-wrap:anywhere}
+.dev dd em{font-family:var(--sans);font-style:normal;color:var(--muted);font-size:.85rem}
+.dev dl > :nth-last-child(-n+2){border-bottom:0}
+@media (max-width:520px){.dev dl{grid-template-columns:1fr}.dev dt{border-bottom:0;padding-bottom:0}}
+ol.steps{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:10px;max-width:70ch}
+ol.steps li::marker{font-family:var(--mono);color:var(--accent)}
+ol.steps small{display:block;color:var(--muted)}
+.note{background:var(--accent-soft);border-radius:8px;padding:12px 14px;font-size:.92rem}
+.choice{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.choice > div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.choice .rec{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.choice ul{margin:0;padding-left:1.1em;font-size:.92rem}
+footer{color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padding-top:16px}
+</style>
+
+<style>
+svg .slab{fill:var(--line)}
+svg .room{fill:var(--bg);stroke:var(--line);stroke-width:1.5}
+svg .fl{font:600 13px var(--sans);fill:var(--muted)}
+svg .cable{stroke:var(--accent);stroke-width:3;fill:none}
+.phase{display:flex;flex-direction:column;gap:14px}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">ตึกแถว 3 ชั้น · สแกนจาก Mac ชั้น 3 · 26 ต.ค. 2026 · วง 192.168.1.0/24</div>
+  <h1>ผังเน็ตบ้าน Joenat</h1>
+  <p class="lede">อินเทอร์เน็ตเข้าที่ชั้น 3 แต่ต้องส่งลงไปถึงชั้น 1 หลังบ้าน ตอนนี้ใช้ Wi-Fi 6 ตัวจาก 2 ระบบ (Huawei 3, Deco 3) ส่งสัญญาณต่อกันทะลุพื้นคอนกรีต หน้านี้แสดงว่าตอนนี้ต่อกันแบบไหน อะไรที่ทำให้เน็ตสะดุด และควรตั้งค่าแต่ละเครื่องอย่างไร</p>
+</header>
+
+<section>
+  <h2>สถานะตอนนี้</h2>
+  <div class="status">
+    <div class="st"><span class="pill ok">ปกติ</span><strong>เน็ตจาก ISP</strong><small>ping 1.1.1.1 หาย 0% · DNS ตอบใน 0.08–0.19 วิ</small></div>
+    <div class="st"><span class="pill ok">แก้แล้ว</span><strong>เน็ตวงเดียวทั้งบ้าน</strong><small>Deco เป็นโหมด AP แล้ว ทุกเครื่องอยู่วง 1.x เดียวกัน</small></div>
+    <div class="st"><span class="pill bad">ต้องแก้</span><strong>ส่งต่อแบบไร้สายทะลุพื้น</strong><small>ชั้น 2 และชั้น 1 รับเน็ตจาก Huawei ที่ส่งไร้สายลงมาจากชั้น 3 ยิ่งต่ำลงยิ่งช้า</small></div>
+    <div class="st"><span class="pill bad">ต้องแก้</span><strong>ช่องสัญญาณชนกัน</strong><small>ชั้นละ 2 ตัว ใช้ช่องทับกัน · ping กระโดดถึง 63–95 ms ทุกตัว</small></div>
+  </div>
+</section>
+
+<section>
+  <h2>ผังตอนนี้ (มองตัดขวางตึก)</h2>
+  <figure class="fig">
+    <svg viewBox="0 0 760 520" role="img" aria-label="ภาพตัดตึกแถว 3 ชั้น: ชั้น 3 มี Huawei ONT ต่อสายกับ Deco .101; ชั้น 2 มี Huawei mesh .130 คู่กับ Deco .103; ชั้น 1 มี Huawei .131 ด้านหน้า ลากสาย LAN ไป Deco .127 หลังบ้าน; Huawei แต่ละชั้นเชื่อมกันแบบไร้สาย">
+      <text class="m" x="70" y="22">← หน้าบ้าน (ถนน)</text>
+      <text class="m" x="690" y="22" text-anchor="end">หลังบ้าน →</text>
+      <!-- floors -->
+      <rect class="room" x="60" y="34" width="640" height="140"/>
+      <rect class="room" x="60" y="184" width="640" height="140"/>
+      <rect class="room" x="60" y="334" width="640" height="140"/>
+      <rect class="slab" x="56" y="174" width="648" height="10"/>
+      <rect class="slab" x="56" y="324" width="648" height="10"/>
+      <rect class="slab" x="56" y="474" width="648" height="10"/>
+      <text class="fl" x="72" y="56">ชั้น 3</text><text class="fl" x="72" y="206">ชั้น 2</text><text class="fl" x="72" y="356">ชั้น 1</text>
+      <!-- F3 -->
+      <rect class="n hw" x="140" y="80" width="150" height="62" rx="8"/>
+      <text class="t-hw" x="215" y="102" text-anchor="middle" font-weight="600" font-size="13">Huawei ONT (AIS)</text>
+      <text class="m" x="215" y="118" text-anchor="middle">.1 · router · DHCP</text>
+      <text class="m" x="215" y="133" text-anchor="middle">ping ต่ำสุด 3.9 ms</text>
+      <line class="wire" x1="290" y1="111" x2="350" y2="111"/>
+      <text class="m" x="320" y="104" text-anchor="middle">LAN</text>
+      <rect class="n tp" x="350" y="80" width="140" height="62" rx="8"/>
+      <text class="t-tp" x="420" y="102" text-anchor="middle" font-weight="600" font-size="13">Deco Bedroom · Main</text>
+      <text class="m" x="420" y="118" text-anchor="middle">.101 · ต่อสาย ✓</text>
+      <text class="m" x="420" y="133" text-anchor="middle">ต่ำสุด 2.8 ms</text>
+      <text class="m" x="520" y="108">โต๊ะทำงาน · Mac</text>
+      <!-- F2 -->
+      <rect class="n hw" x="140" y="230" width="150" height="62" rx="8"/>
+      <text class="t-hw" x="215" y="252" text-anchor="middle" font-weight="600" font-size="13">Huawei mesh</text>
+      <text class="m" x="215" y="268" text-anchor="middle">.130 (น่าจะ)</text>
+      <text class="m" x="215" y="283" text-anchor="middle">ต่ำสุด 4.6 ms</text>
+      <line class="wire" x1="290" y1="261" x2="330" y2="261"/>
+      <rect class="n tp" x="330" y="230" width="150" height="62" rx="8"/>
+      <text class="t-tp" x="405" y="252" text-anchor="middle" font-weight="600" font-size="13">Living Room</text>
+      <text class="m" x="405" y="268" text-anchor="middle">.127 · ข้าง Huawei</text>
+      <text class="m" x="405" y="283" text-anchor="middle" style="fill:var(--warn)">ไร้สาย เหลือง · 13 เครื่อง</text>
+      <rect x="560" y="230" width="130" height="62" rx="8" fill="none" stroke="var(--tplink)" stroke-dasharray="4 4"/>
+      <text class="m" x="625" y="256" text-anchor="middle" style="fill:var(--tplink)">ห้องนั่งเล่น</text>
+      <text class="m" x="625" y="272" text-anchor="middle">ตั้งใจย้ายมา</text>
+      <path class="unk" d="M480 261 L560 261"/>
+      <!-- F1 -->
+      <rect class="n hw" x="140" y="380" width="150" height="62" rx="8"/>
+      <text class="t-hw" x="215" y="402" text-anchor="middle" font-weight="600" font-size="13">Huawei Main Wi-Fi</text>
+      <text class="m" x="215" y="418" text-anchor="middle">.131 (น่าจะ)</text>
+      <text class="m" x="215" y="433" text-anchor="middle">ต่ำสุด 6.3 ms</text>
+      <line class="wire" x1="290" y1="411" x2="550" y2="411"/>
+      <text class="m" x="420" y="404" text-anchor="middle">สาย LAN ยาวไปครัว (Deco ไม่ได้ใช้)</text>
+      <rect class="n tp" x="550" y="380" width="140" height="62" rx="8"/>
+      <text class="t-tp" x="620" y="402" text-anchor="middle" font-weight="600" font-size="13">Deco Kitchen</text>
+      <text class="m" x="620" y="418" text-anchor="middle">.103 · ครัว</text>
+      <text class="m" x="620" y="433" text-anchor="middle">ไร้สาย เขียว</text>
+      <path class="air" d="M440 142 C440 180 420 200 415 230" style="stroke:var(--tplink)"/>
+      <path class="air" d="M490 120 C740 150 740 330 690 390" style="stroke:var(--tplink)"/>
+      <text class="m" x="640" y="160" style="fill:var(--tplink)">Deco ส่งหากันเอง</text>
+      <!-- wireless backhaul through slabs -->
+      <path class="air" d="M170 142 C120 175 120 200 170 230" style="stroke:var(--huawei)"/>
+      <path class="air" d="M170 292 C120 325 120 350 170 380" style="stroke:var(--huawei)"/>
+      <text class="m" x="98" y="190" style="fill:var(--huawei)">ไร้สาย</text>
+      <text class="m" x="98" y="340" style="fill:var(--huawei)">ไร้สาย</text>
+      <text class="m" x="400" y="500" text-anchor="middle">ตัวเลข ping วัดจาก Mac ชั้น 3 · ยิ่งสูงยิ่งอยู่ไกลหรือผ่านหลายทอด</text>
+    </svg>
+    <figcaption>ผมเดาว่า IP ไหนอยู่ชั้นไหนจากเวลา ping ที่เร็วที่สุดของแต่ละตัว ยืนยันได้ในแอป Deco โดยกดที่แต่ละเครื่องจะเห็น IP ของมัน</figcaption>
+  </figure>
+  <div class="legend"><span>สาย LAN</span><span class="l-air">ไร้สาย</span><span class="l-unk">ยังไม่รู้</span></div>
+</section>
+
+<section>
+  <h2>ทำไมเน็ต "เข้าไม่ค่อยได้"</h2>
+  <ul class="problems">
+    <li><strong>Deco ยังส่งเน็ตหากันเองแบบไร้สาย</strong>
+      <span>ในแอป Deco มีแค่ Bedroom (ตัวหลัก .101) ที่ต่อสายเข้าเน็ต ส่วน Kitchen (.103) กับ Living Room (.127) ขึ้นไอคอน Wi-Fi แปลว่ารับเน็ตจาก Bedroom แบบไร้สาย ไม่ได้ใช้สายที่ต่อกับ Huawei Living Room มีเครื่องเกาะอยู่ 13 เครื่อง แต่สัญญาณที่เชื่อมกับ Bedroom ขึ้นสีเหลือง (พอใช้) ตัวนี้จึงเป็นคอขวด แล้ว Deco กับ Huawei ก็ใช้ 5GHz ส่งเน็ตระหว่างกันพร้อมกันทั้งสองระบบ</span>
+      <span class="ev">หลักฐาน: แอป Deco หน้า Network และ All Devices · 26 ต.ค. 2026</span></li>
+    <li><strong>เน็ตวิ่งวนเป็นลูป ระหว่าง Huawei กับ Deco</strong>
+      <span>หน้า Kitchen ในแอปขึ้นว่า "Connected to: Bedroom" (ไร้สาย) และเห็น Huawei ชั้น 1 (HG8045X6-12) เป็นแค่เครื่องลูกที่ต่อสายเข้ามา แปลว่ามีทางวิ่งระหว่างชั้น 3 กับชั้น 1 อยู่ 2 ทางพร้อมกัน ทางแรกผ่าน Huawei mesh ทางที่สองผ่าน Deco mesh ทั้งสองทางต่อถึงกันด้วยสายที่ปลายทั้งสองข้าง ข้อมูลอาจวิ่งวน หรือสลับทางไปมา อาการที่เห็นคือ ping กระโดดและเน็ตหลุดเป็นช่วง ๆ</span>
+      <span class="ev">หลักฐาน: แอป Deco หน้า Kitchen · 26 ต.ค. 2026 11:21 · แยก Deco เป็นวงเดี่ยวแล้วลูปนี้จะหายไป</span></li>
+    <li><strong>ชั้นล่างได้เน็ตผ่าน Wi-Fi ที่ทะลุพื้นคอนกรีต</strong>
+      <span>ชั้น 2 กับชั้น 1 ไม่มีสายจาก ONT ลงมา Huawei mesh ต้องรับสัญญาณไร้สายจากชั้นบน แล้วปล่อยต่อให้ Deco ทุกทอดที่ส่งไร้สายจะเสียความเร็วไปราวครึ่งหนึ่ง พื้นคอนกรีตก็กินสัญญาณอีก Deco หลังบ้านชั้น 1 อยู่ปลายสุดของสายนี้</span>
+      <span class="ev">หลักฐาน: ping ต่ำสุดเพิ่มขึ้นตามชั้น 2.8 → 4.6 → 6.3 → 7.3 ms</span></li>
+    <li><strong>ชั้นละ 2 ตัวแย่งช่องกัน</strong>
+      <span>ทุกชั้นมีทั้ง Huawei และ Deco ปล่อย Wi-Fi อยู่ใกล้กัน 5GHz มีวงหนึ่งตั้งกว้าง 160MHz ทับช่อง 36–64 ทั้งหมด ส่วน 2.4GHz ใช้ช่อง 2 (40MHz), 8, 11 ทับกันหมด Huawei ยังต้องใช้ 5GHz ช่องเดียวกันนี้ส่งเน็ตลงชั้นล่างด้วย สัญญาณที่ชนกันจึงทำให้เน็ตชั้นล่างช้าลงอีกทอด</span>
+      <span class="ev">หลักฐาน: ping ทุกตัวกระโดดไปถึง 63–95 ms ทั้งที่ Mac รับสัญญาณได้แรง −36 dBm</span></li>
+    <li class="w"><strong>มือถือเกาะผิดตัว</strong>
+      <span>Huawei กับ Deco ไม่ได้ส่งมือถือต่อให้กันตอนเดินขึ้นลงชั้น มือถือจึงค้างกับตัวที่อยู่อีกชั้นทั้งที่สัญญาณอ่อนแล้ว</span></li>
+  </ul>
+</section>
+
+<section class="phase">
+  <h2>แผน: กลับไปตามความตั้งใจแรก</h2>
+  <p>ความตั้งใจแรกถูกแล้ว Huawei ของ AIS 3 ตัววางหน้าบ้าน ส่งเน็ตระหว่างชั้นในแนวดิ่ง แล้วลากสาย LAN จาก Huawei แต่ละชั้นเข้าไปหลังบ้าน ให้ Deco ปล่อย Wi-Fi ตรงนั้น ชั้น 1 ทำแบบนี้อยู่แล้ว แต่ชั้น 2 และชั้น 3 ยังวาง Deco ติดกับ Huawei สัญญาณจึงออกจากจุดเดียวกันและแย่งช่องกัน ทั้งที่ควรอยู่ปลายสายหลังบ้าน</p>
+  <div class="choice">
+    <div class="rec"><span class="pill ok">ระบบ 1 · หน้าบ้าน</span><h3>Huawei AIS ×3 ส่งเน็ตระหว่างชั้น</h3>
+      <ul><li>วางตรงกันในแนวดิ่งอยู่แล้ว ✓</li><li>ปล่อย Wi-Fi ครอบคลุมครึ่งหน้าของทุกชั้น</li><li>เป็นต้นทางสาย LAN ที่ลากไปหา Deco</li></ul></div>
+    <div class="rec"><span class="pill ok">ระบบ 2 · หลังบ้าน</span><h3>Deco M4R ×3 ปล่อย Wi-Fi ครึ่งหลังของตึก</h3>
+      <ul><li>ชั้นละ 1 ตัว วางที่ปลายสาย LAN ฝั่งหลังบ้าน</li><li>รับเน็ตทางสายจาก Huawei ชั้นเดียวกัน</li><li>อยู่ห่างจาก Huawei ตามความลึกของตึก จึงแย่งช่องกันน้อย</li></ul></div>
+  </div>
+  <p class="note">เน็ตทั้งบ้านยังเป็นวงเดียว (192.168.1.x) เหมือนตอนนี้ ให้ Deco อยู่โหมด Access Point ต่อไป ถ้าตั้ง Deco เป็นโหมด Router จะกลายเป็นวงใหม่ 192.168.68.x อีก แล้วกล้องกับกล่อง TV จะมองไม่เห็นกันเหมือนเมื่อก่อน</p>
+</section>
+
+<section>
+  <h2>ผังเป้าหมาย</h2>
+  <figure class="fig">
+    <svg viewBox="0 0 760 500" role="img" aria-label="ผังเป้าหมาย: Huawei 3 ตัววางหน้าบ้านตรงกันในแนวดิ่ง เชื่อมกันแบบไร้สาย แต่ละชั้นลากสาย LAN ไปหลังบ้านเข้า Deco">
+      <text class="m" x="70" y="12">← หน้าบ้าน</text><text class="m" x="690" y="12" text-anchor="end">หลังบ้าน →</text>
+      <rect class="room" x="60" y="20" width="640" height="140"/>
+      <rect class="room" x="60" y="170" width="640" height="140"/>
+      <rect class="room" x="60" y="320" width="640" height="140"/>
+      <rect class="slab" x="56" y="160" width="648" height="10"/>
+      <rect class="slab" x="56" y="310" width="648" height="10"/>
+      <rect class="slab" x="56" y="460" width="648" height="10"/>
+      <text class="fl" x="72" y="42">ชั้น 3</text><text class="fl" x="72" y="192">ชั้น 2</text><text class="fl" x="72" y="342">ชั้น 1</text>
+      <rect class="n hw" x="120" y="66" width="160" height="58" rx="8" stroke-width="2.5"/>
+      <text class="t-hw" x="200" y="88" text-anchor="middle" font-weight="600" font-size="13">Huawei ONT · .1</text>
+      <text class="m" x="200" y="106" text-anchor="middle">router · DHCP</text>
+      <rect class="n hw" x="120" y="216" width="160" height="58" rx="8" stroke-width="2.5"/>
+      <text class="t-hw" x="200" y="238" text-anchor="middle" font-weight="600" font-size="13">Huawei mesh · .130</text>
+      <text class="m" x="200" y="256" text-anchor="middle">หน้าบ้าน</text>
+      <rect class="n hw" x="120" y="366" width="160" height="58" rx="8" stroke-width="2.5"/>
+      <text class="t-hw" x="200" y="388" text-anchor="middle" font-weight="600" font-size="13">Huawei Main · .131</text>
+      <text class="m" x="200" y="406" text-anchor="middle">หน้าบ้าน</text>
+      <path class="air" d="M200 124 L200 216" style="stroke:var(--huawei);stroke-width:2.5"/>
+      <path class="air" d="M200 274 L200 366" style="stroke:var(--huawei);stroke-width:2.5"/>
+      <text class="m" x="210" y="175" style="fill:var(--huawei)">mesh ไร้สาย</text>
+      <text class="m" x="210" y="325" style="fill:var(--huawei)">mesh ไร้สาย</text>
+      <line class="cable" x1="280" y1="95" x2="550" y2="95"/>
+      <line class="cable" x1="280" y1="245" x2="550" y2="245"/>
+      <line class="cable" x1="280" y1="395" x2="550" y2="395"/>
+      <text class="m" x="415" y="87" text-anchor="middle" style="fill:var(--accent)">สายตรงจาก ONT ✓</text>
+      <text class="m" x="415" y="237" text-anchor="middle" style="fill:var(--accent)">สาย LAN มีแล้ว ✓</text>
+      <text class="m" x="415" y="387" text-anchor="middle" style="fill:var(--accent)">สาย LAN มีแล้ว ✓</text>
+      <rect class="n tp" x="550" y="66" width="140" height="58" rx="8"/>
+      <text class="t-tp" x="620" y="88" text-anchor="middle" font-weight="600" font-size="13">Deco ชั้น 3</text>
+      <text class="m" x="620" y="106" text-anchor="middle">ห้องเดียวกับ ONT ✓</text>
+      <rect class="n tp" x="550" y="216" width="140" height="58" rx="8"/>
+      <text class="t-tp" x="620" y="238" text-anchor="middle" font-weight="600" font-size="13">Deco ชั้น 2</text>
+      <text class="m" x="620" y="256" text-anchor="middle">ห้องนั่งเล่น หลังบ้าน ✓</text>
+      <rect class="n tp" x="550" y="366" width="140" height="58" rx="8"/>
+      <text class="t-tp" x="620" y="388" text-anchor="middle" font-weight="600" font-size="13">Deco ชั้น 1</text>
+      <text class="m" x="620" y="406" text-anchor="middle">ที่เดิม ✓</text>
+      <text class="m" x="400" y="488" text-anchor="middle">Huawei ดูแลครึ่งหน้า · Deco ดูแลครึ่งหลัง · เน็ตวงเดียว 192.168.1.x</text>
+    </svg>
+    <figcaption>เส้นน้ำเงินประคือสายที่ต้องลากใหม่ ระหว่างที่ยังไม่ได้ลาก ให้ถอดปลั๊ก Deco ชั้น 2 และชั้น 3 ไว้ก่อน เพราะวางติดกับ Huawei แล้วไม่ได้ช่วยอะไร มีแต่แย่งช่อง</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Config รายเครื่อง</h2>
+  <div class="cfg">
+    <article class="dev h">
+      <header><span class="brand">Huawei AIS · ชั้น 3</span><h3>ONT / Router · 192.168.1.1</h3></header>
+      <dl>
+        <dt>หน้าที่</dt><dd>Router ตัวเดียวในบ้าน · NAT · DHCP · ตัวแม่ของ mesh</dd>
+        <dt>LAN IP</dt><dd>192.168.1.1 / 255.255.255.0 <em>(คงเดิม)</em></dd>
+        <dt>DHCP</dt><dd>192.168.1.100 – 192.168.1.199 · lease 24 ชม.</dd>
+        <dt>DNS ที่แจก</dt><dd>1.1.1.1 · 8.8.8.8 <em>(หรือของ AIS ก็ได้ ตอนนี้ตอบเร็วอยู่)</em></dd>
+        <dt>จอง IP</dt><dd>Huawei .130 .131 · Deco .101 .103 .127 · กล้องทุกตัว · กล่อง TX98</dd>
+        <dt>ชื่อ Wi-Fi</dt><dd>คงชื่อและรหัสเดิม</dd>
+        <dt>2.4GHz</dt><dd>ช่อง 1 · 20MHz</dd>
+        <dt>5GHz</dt><dd>ช่อง 36 · 80MHz <em>(ถ้าตั้งไว้ 160MHz ให้ลดลง 80MHz ทะลุพื้นได้ดีกว่าและชนน้อยกว่า)</em></dd>
+        <dt>ความปลอดภัย</dt><dd>WPA2-PSK หรือ WPA2/WPA3 <em>(อย่าใช้ WPA3 อย่างเดียว กล้องเก่าจะต่อไม่ได้)</em></dd>
+        <dt>กำลังส่ง</dt><dd>สูงสุด / 100%</dd>
+        <dt>Firmware</dt><dd>อัปเดตให้เป็นรุ่นล่าสุด</dd>
+      </dl>
+    </article>
+    <article class="dev h">
+      <header><span class="brand">Huawei AIS · ชั้น 2 และ ชั้น 1</span><h3>Mesh node · .130 / .131</h3></header>
+      <dl>
+        <dt>ชื่อ Wi-Fi / ช่อง</dt><dd>ตามตัวแม่อัตโนมัติ <em>(ตั้งที่ ONT ที่เดียว)</em></dd>
+        <dt>ตำแหน่ง</dt><dd>หน้าบ้าน ตรงกันในแนวดิ่ง <em>(ตั้งไว้แบบนี้อยู่แล้ว ✓)</em> · สูงจากพื้น 1–1.5 ม. · ไม่อยู่ในตู้</dd>
+        <dt>พอร์ต LAN</dt><dd>ต่อสายยาวไปหา Deco หลังบ้านของชั้นนั้น</dd>
+        <dt>เช็ค</dt><dd>แอป AIS / Huawei → คุณภาพการเชื่อมต่อ ต้องขึ้น "ดี" หรือดีกว่า</dd>
+      </dl>
+    </article>
+    <article class="dev t">
+      <header><span class="brand">TP-Link Deco M4R · หลังบ้านทุกชั้น</span><h3>.101 / .103 / .127</h3></header>
+      <dl>
+        <dt>Operation Mode</dt><dd>Access Point <em>(ตั้งแล้ว ✓ ห้ามเปลี่ยนเป็น Router)</em></dd>
+        <dt>ตำแหน่ง</dt><dd>ปลายสาย LAN ฝั่งหลังบ้าน · ห่างจาก Huawei อย่างน้อยครึ่งความลึกตึก</dd>
+        <dt>Backhaul</dt><dd>Ethernet จาก Huawei ชั้นเดียวกัน</dd>
+        <dt>Wi-Fi หลัก</dt><dd>ชื่อและรหัสเดียวกับ Wi-Fi ที่มือถือใช้ของ Huawei <em>(เดินจากหน้าไปหลังบ้าน มือถือจะย้ายไปเกาะตัวที่ใกล้กว่าเอง)</em></dd>
+        <dt>IoT Network</dt><dd>Joenat38_2.4G_Deco <em>(ชื่อเดิม จอ ESP32 ต่อได้ทันที ให้กล้องหลังบ้านใช้ชื่อนี้ กล้องจะไม่ไปเกาะ Huawei ที่สัญญาณอ่อนกว่า)</em></dd>
+        <dt>ช่อง</dt><dd>Auto <em>(M4R ล็อกช่องเองไม่ได้ ล็อกฝั่ง Huawei ไว้แล้ว Deco จะหลบเอง)</em></dd>
+        <dt>ชื่อในแอป</dt><dd>Bedroom (ชั้น 3) · Living Room (ชั้น 2) · Kitchen (ชั้น 1)</dd>
+      </dl>
+    </article>
+  </div>
+</section>
+
+<section>
+  <h2>แยก Deco ให้แต่ละตัวทำงานเดี่ยว</h2>
+  <p>ถ้า Deco ตัวไหนขึ้นว่าเชื่อมต่อแบบไร้สาย ทั้งที่เสียบสายกับ Huawei อยู่ ให้แยกตัวนั้นออกมาเป็นวง Deco ของตัวเอง ตัวนั้นจะส่งเน็ตหา Deco ตัวอื่นแบบไร้สายไม่ได้อีก ต้องใช้สายจาก Huawei อย่างเดียว ถอด Deco ตัวไหนก็ไม่กระทบตัวอื่น</p>
+  <ol class="steps">
+    <li>แอป Deco → กดที่ตัวนั้น (เช่น Living Room) → Remove Deco<small>ไฟจะกระพริบ เครื่องรีเซ็ตตัวเอง</small></li>
+    <li>เช็คว่าสาย LAN จาก Huawei ชั้นเดียวกันเสียบอยู่ที่ Deco ตัวนั้น</li>
+    <li>แอป Deco → เมนู ≡ → สร้างวงใหม่ (Create new network / Add a new Deco) → เลือก Deco M4R → ตั้งเป็นตัวหลัก</li>
+    <li>เลือกโหมด Access Point แล้วตั้งชื่อ Wi-Fi และรหัสให้เหมือนวงเดิมทุกตัวอักษร<small>มือถือกับกล้องจะต่อเองโดยไม่ต้องตั้งใหม่</small></li>
+    <li>ทำซ้ำกับตัวที่เหลือ จนได้ Deco 3 วง วงละ 1 ตัว สลับดูแต่ละวงได้จากเมนู ≡ ในแอป</li>
+  </ol>
+</section>
+
+<section>
+  <h2>ลำดับลงมือ</h2>
+  <ol class="steps">
+    <li>ห้ามถอด Bedroom (.101) เพราะเป็น Deco ตัวหลัก ถ้าถอดตัวนี้ Deco ตัวอื่นจะหลุดหมด<small>ถ้าจะถอดตัวหลัก ต้องแยก Deco แต่ละตัวให้ทำงานเดี่ยวก่อน (ดูหัวข้อด้านล่าง)</small></li>
+    <li>หน้า admin Huawei <code>192.168.1.1</code>: ตั้ง 2.4GHz ช่อง 1 กว้าง 20MHz, 5GHz ช่อง 36 กว้าง 80MHz, กำลังส่งสูงสุด</li>
+    <li>แอป Deco: ตั้ง Wi-Fi หลักให้ชื่อและรหัสตรงกับของ Huawei และตั้ง IoT Network เป็น <code>Joenat38_2.4G_Deco</code></li>
+    <li>บอก Claude ให้สแกนซ้ำ เพื่อเทียบ ping กับวันนี้</li>
+    <li>ลากสาย LAN (Cat6) จาก Huawei ชั้น 3 และชั้น 2 ไปหลังบ้านของแต่ละชั้น แบบเดียวกับชั้น 1</li>
+    <li>เสียบ Deco ชั้น 3 และชั้น 2 ที่ปลายสาย แล้วดูในแอป Deco ว่าขึ้นการเชื่อมต่อแบบ Ethernet</li>
+    <li>ย้ายกล้องหลังบ้านทุกตัวมาต่อ <code>Joenat38_2.4G_Deco</code> แล้วจอง IP ให้กล้องใน Huawei</li>
+  </ol>
+</section>
+
+<section>
+  <h2>อุปกรณ์ที่สแกนเจอ (25 เครื่อง)</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>IP</th><th>MAC</th><th>คืออะไร</th><th>อยู่ไหน</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">.1</td><td class="mono">4c:b0:87:12:16:8e</td><td>Huawei ONT / Router</td><td>ชั้น 3</td></tr>
+      <tr><td class="mono">.130</td><td class="mono">4c:b0:87:12:99:cf</td><td>Huawei mesh</td><td>ชั้น 2 (น่าจะ)</td></tr>
+      <tr><td class="mono">.131</td><td class="mono">4c:b0:87:12:66:17</td><td>Huawei Main Wi-Fi</td><td>ชั้น 1 หน้า (น่าจะ)</td></tr>
+      <tr><td class="mono">.101</td><td class="mono">b0:a7:b9:7b:2e:90</td><td>Deco M4R "Bedroom" · Main · ต่อสาย</td><td>ชั้น 3 ข้าง ONT</td></tr>
+      <tr><td class="mono">.103</td><td class="mono">b0:a7:b9:7b:30:3c</td><td>Deco M4R "Kitchen" · ไร้สาย (เขียว)</td><td>ชั้น 1 ครัว หลังบ้าน</td></tr>
+      <tr><td class="mono">.127</td><td class="mono">b0:a7:b9:e0:13:64</td><td>Deco M4R "Living Room" · ไร้สาย (เหลือง) · 13 เครื่อง</td><td>ชั้น 2 ข้าง Huawei · ตั้งใจย้ายไปห้องนั่งเล่น</td></tr>
+      <tr><td class="mono">.104</td><td class="mono">4c:2f:7b:d8:85:31</td><td>กล้องหน้าบ้านชั้น 1</td><td>ชั้น 1</td></tr>
+      <tr><td class="mono">.120 .138 .139</td><td class="mono">4c:2f:7b:d8:…</td><td>กล้อง Xiaomi ตัวอื่น</td><td>–</td></tr>
+      <tr><td class="mono">.114 .135 .136 .140</td><td class="mono">e0:51:d8:…</td><td>ยังไม่รู้ ยี่ห้อเดียวกัน 4 เครื่อง</td><td>–</td></tr>
+      <tr><td class="mono">.132 .142 .144 .148 .151</td><td class="mono">(MAC สุ่ม)</td><td>มือถือ / iPad</td><td>–</td></tr>
+      <tr><td class="mono">.147</td><td class="mono">0a:1b:e1:83:3e:43</td><td>Mac ของแทน</td><td>ชั้น 3</td></tr>
+      <tr><td class="mono">.105 .107 .119 .124 .133</td><td class="mono">หลายยี่ห้อ</td><td>ยังไม่รู้ (TV, กล่อง TX98, กล้องตัวที่ 5)</td><td>–</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<footer>ข้อมูลจาก ARP scan, traceroute, ping 25 ครั้งต่อเครื่อง และการสแกนสัญญาณ Wi-Fi บน Mac (192.168.1.147) ชั้น 3 วันที่ 26 ต.ค. 2026 · ตำแหน่งที่เขียนว่า "น่าจะ" เดาจากเวลา ping รอยืนยันในแอป Deco</footer>
+</div>
