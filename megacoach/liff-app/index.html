@@ -238,6 +238,9 @@
   .sc-news a svg{width:12px;height:12px;flex-shrink:0;margin-top:3px}
   .sc-news a .go{color:var(--go)} .sc-news a .avoid{color:var(--avoid)} .sc-news a .wait{color:var(--ink-3)}
   .sc-news small{color:var(--ink-3)}
+  .sc-track{display:flex;gap:8px;align-items:flex-start;font-size:11.5px;line-height:1.5;color:var(--ink-2);background:var(--panel);border-radius:10px;padding:8px 10px;margin-bottom:10px}
+  .sc-track svg{width:15px;height:15px;flex-shrink:0;margin-top:2px;color:var(--accent)}
+  .sc-news a:not([href]){cursor:default}
   .sc-plan-k{margin-top:8px;font-size:10.5px;color:var(--ink-3);line-height:1.5}
   .sc-empty{padding:var(--s5) 0;text-align:center;font-size:12.5px;color:var(--ink-3)}
 
@@ -1163,6 +1166,8 @@
     const SC_FLAME = '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>';
     const SC_CAL = '<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>';
     const SC_NEWS = '<path d="M15 18h-5"/><path d="M18 14h-8"/><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0v-9a2 2 0 0 1 2-2h2"/><rect width="8" height="4" x="10" y="6" rx="1"/>';
+    const SC_USERS = '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>';
+    const SC_CHART = '<path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/>';
     const SC_FUNNEL = '<path d="M22 3H2l8 9.46V19l4 2v-8.54z"/>';
     // ไฟจราจรจังหวะเข้า (plan.sig จาก entryPlan ใน stock-screen.mjs) · Lucide circle-check / clock / ban
     const SC_SIG = {
@@ -1176,25 +1181,27 @@
     function renderScreen(){
       const el = document.getElementById("screen");
       if(!el || !SC || !SC.groups?.length) return;
-      const g = SC.groups[scGroup];
+      const g = SC.groups[scGroup], C = g.cur || "$";
       const groupIdx = Object.fromEntries(SC.groups.map((x, i) => [x.t, i]));
       const chips = SC.sectors.map(s => {
         const i = groupIdx[s.t], on = i === scGroup;
         return `<button class="sc-sec${on ? " active" : ""}" ${i == null ? "disabled" : `onclick="scPick(${i})"`} aria-pressed="${on}">
           ${esc(s.name)}<small class="${s.rs1 >= 0 ? "up" : "down"}">1M ${pct(s.rs1, 1)} · 1Y ${pct(s.rs12, 0)}</small></button>`;
-      }).join("");
+      }).join("") + SC.groups.map((x, i) => [x, i]).filter(([x]) => x.extra).map(([x, i]) =>
+        `<button class="sc-sec${i === scGroup ? " active" : ""}" onclick="scPick(${i})" aria-pressed="${i === scGroup}">${esc(x.name)}<small>${esc(x.sub || "")}</small></button>`).join("");
+      const tr = SC.track, trHtml = tr?.full ? `<div class="sc-track">${svg(SC_CHART)}<span><b>ผลงานสูตรย้อนหลัง 2 ปี</b> ตัวที่ผ่านเกณฑ์ ${tr.full.n} ครั้ง ได้ราคาในโซน ${tr.full.filled} · ถึงเป้า ${tr.full.win} โดน stop ${tr.full.loss} (ชนะ ${tr.full.winRate}%) · กำไรเฉลี่ย ${tr.full.avgR} เท่าของความเสี่ยง เทียบทุกตัว ${tr.base.avgR} — ${tr.full.avgR > tr.base.avgR ? "ดีกว่าเลือกสุ่ม" : "ยังไม่ดีกว่าเลือกสุ่ม"}${tr.full.winRate < 50 ? " แต่แพ้บ่อยกว่าชนะ ต้องตั้ง stop ทุกครั้ง" : ""}${tr.liveDays ? ` · สมุดจริงเก็บแล้ว ${tr.liveDays} วัน` : ""}</span></div>` : "";
       const list = g.stocks.filter(x => !scPicksOnly || x.pick);
       const rows = list.map(x => {
         const [ic, tone] = SC_LV[x.label] || SC_LV.Neutral, p = x.pattern, pl = x.plan, n = x.news;
         if(!STOCKS[x.t]) STOCKS[x.t] = {   // context ให้ "ถาม AI" (ไม่ทับหุ้นใน watchlist)
-          ticker: x.t, sector: g.name, price: "$" + x.price, signalLabel: "คัดหุ้น: " + x.th,
+          ticker: x.t, sector: g.name, price: C + x.price, signalLabel: "คัดหุ้น: " + x.th,
           signalDesc: x.pick ? "ผ่านเกณฑ์คัดแล้ว: เทคนิคน่าซื้อ + volume หนุน + 1 ปีชนะกลุ่ม" : "",
           factors: [
             { label: "Volume เทียบเฉลี่ย 20 วัน", value: x.relVol + "x" }, { label: "RSI", value: String(x.rsi) },
             { label: "ผลตอบแทน 1 ปี", value: pct(x.y1) + " (เทียบกลุ่ม " + pct(x.vsSector) + ")" },
             ...(p ? [{ label: "รูปแบบกราฟ", value: p.th + " — " + p.status }] : []),
             ...(n ? [{ label: "ข่าว 3 วัน", value: (n.earnTh ? n.earnTh + " · " : "") + n.items.map(i => i.title).join(" | ") }] : []),
-            ...(pl ? [{ label: "จังหวะเข้า (ระบบตั้งอัตโนมัติ)", value: `${pl.sigTh}: ${pl.why} · โซน $${pl.lo}–${pl.hi} · ไม่ไล่เกิน $${pl.cap} · stop $${pl.stop} · เป้า $${pl.trim} · R:R ${pl.rr}` }] : []),
+            ...(pl ? [{ label: "จังหวะเข้า (ระบบตั้งอัตโนมัติ)", value: `${pl.sigTh}: ${pl.why} · โซน ${C}${pl.lo}–${pl.hi} · ไม่ไล่เกิน ${C}${pl.cap} · stop ${C}${pl.stop} · เป้า ${C}${pl.trim} · R:R ${pl.rr}` }] : []),
           ],
         };
         return `<div class="sc-row">
@@ -1206,11 +1213,12 @@
                 ${pl ? `<span class="sc-tag sig-${pl.sig}">${svg(SC_SIG[pl.sig])}${esc(pl.sigTh)}</span>` : ""}
                 ${x.pick ? `<span class="sc-tag pick">${svg(ICON.northstar)}คัดแล้ว</span>` : ""}
                 ${n?.earnTh ? `<span class="sc-tag hot">${svg(SC_CAL)}${esc(n.earnTh)}</span>` : ""}
+                ${x.gurus ? `<span class="sc-tag pick">${svg(SC_USERS)}เซียนถือ ${x.gurus.length}</span>` : ""}
                 ${x.hot ? `<span class="sc-tag hot">${svg(SC_FLAME)}ร้อนเกิน รอย่อ</span>` : ""}
                 ${p ? `<span class="sc-tag">${svg(ICON.pulse)}${esc(p.th.replace(/ \(.*\)/, ""))}</span>` : ""}
               </span>
             </span>
-            <span class="sc-px">$${x.price}<small class="${x.y1 >= 0 ? "up" : "down"}">1Y ${pct(x.y1)}</small></span>
+            <span class="sc-px">${C}${x.price}<small class="${x.y1 >= 0 ? "up" : "down"}">1Y ${pct(x.y1)}</small></span>
           </button>
           <div class="sc-more">
             <div class="sc-facts">
@@ -1221,16 +1229,20 @@
             ${pl ? `<div class="sc-plan ${pl.sig}">
               <div class="sc-plan-h">${svg(SC_SIG[pl.sig])}<span><b>${esc(pl.sigTh)}</b> · ${esc(pl.why)}</span></div>
               <div class="sc-plan-g">
-                <div><span>โซนเข้า</span><b>$${pl.lo}–${pl.hi}</b></div>
-                <div><span>ไม่ไล่เกิน</span><b>$${pl.cap}</b></div>
+                <div><span>โซนเข้า</span><b>${C}${pl.lo}–${pl.hi}</b></div>
+                <div><span>ไม่ไล่เกิน</span><b>${C}${pl.cap}</b></div>
                 <div><span>R:R</span><b>${pl.rr}</b></div>
-                <div><span>ตัดขาดทุน (stop)</span><b class="dn">$${pl.stop}</b></div>
-                <div><span>ขายทำกำไร (เป้า)</span><b class="up">$${pl.trim}</b></div>
-                <div><span>ATR (แกว่ง/วัน)</span><b>$${pl.atr}</b></div>
+                <div><span>ตัดขาดทุน (stop)</span><b class="dn">${C}${pl.stop}</b></div>
+                <div><span>ขายทำกำไร (เป้า)</span><b class="up">${C}${pl.trim}</b></div>
+                <div><span>ATR (แกว่ง/วัน)</span><b>${C}${pl.atr}</b></div>
               </div>
               <div class="sc-plan-k">วิธีตั้งโซน: ${esc(pl.kind)} · ระบบตั้งให้อัตโนมัติด้วยกติกาเดียวกับ watchlist — ก่อนลงเงินจริงกด "ถาม AI" ดูบริบทก่อน</div>
             </div>` : ""}
-            ${p ? `<div class="sc-pat">${svg(ICON.pulse)}<div><b>${esc(p.th)}</b><br>${esc(p.status)}${p.target ? ` · เป้าตามรูปกราฟ $${p.target}${(p.bias > 0 ? x.price >= p.target : x.price <= p.target) ? " (ถึงเป้าแล้ว)" : ""}` : ""}</div></div>` : ""}
+            ${p ? `<div class="sc-pat">${svg(ICON.pulse)}<div><b>${esc(p.th)}</b><br>${esc(p.status)}${p.target ? ` · เป้าตามรูปกราฟ ${C}${p.target}${(p.bias > 0 ? x.price >= p.target : x.price <= p.target) ? " (ถึงเป้าแล้ว)" : ""}` : ""}</div></div>` : ""}
+            ${x.gurus ? `<div class="sc-news">
+              <div class="sc-news-h">${svg(SC_USERS)}พอร์ตเซียน (รายงาน 13F ล่าสุด)</div>
+              ${x.gurus.map(gu => `<a><span class="wait">${svg(SC_USERS)}</span><span><b>${esc(gu.who)}</b> · ${gu.w}% ของพอร์ต · ${esc(gu.chg)}</span></a>`).join("")}
+            </div>` : ""}
             ${n ? `<div class="sc-news">
               <div class="sc-news-h">${svg(SC_NEWS)}ข่าว 3 วันล่าสุด ${n.count} หัว${n.earnTh ? ` · ${esc(n.earnTh)}` : ""}</div>
               ${n.items.map(i => { const [ti, tt] = SC_LV[i.tone > 0 ? "Buy" : i.tone < 0 ? "Sell" : "Neutral"]; return `<a href="${/^https:\/\//.test(i.link) ? esc(i.link) : "#"}" target="_blank" rel="noopener"><span class="${i.tone ? tt : "wait"}">${svg(ti)}</span><span>${esc(i.title)} <small>· ${esc(i.src)}</small></span></a>`; }).join("") || `<small>ไม่มีข่าวสำคัญ</small>`}
@@ -1248,6 +1260,7 @@
             <span class="meta">ราคาปิด ${SC.updated}</span>
           </div>
           <div class="card">
+            ${trHtml}
             <div class="sc-sectors" role="tablist" aria-label="กลุ่มอุตสาหกรรม เรียงจากแรงสุด">${chips}</div>
             <div class="sc-tools">
               <span>${esc(g.name)} · คัดแล้ว ${nPick}/${g.stocks.length} ตัว</span>
@@ -1257,7 +1270,7 @@
               </span>
             </div>
             <div class="sc-list">${rows || `<div class="sc-empty">กลุ่มนี้วันนี้ยังไม่มีตัวผ่านเกณฑ์ · แตะ "ทั้งหมด" เพื่อดูทุกตัว</div>`}</div>
-            <div class="radar-foot">กลุ่มเรียงตามแรงเทียบ S&P 500 · <b>คัดแล้ว</b> = เทคนิคน่าซื้อ + volume ≥1.5 เท่า + 1 ปีชนะกลุ่มตัวเอง · <b>ร้อนเกิน</b> = RSI ≥70 รอย่อดีกว่าไล่ · <b>จังหวะเข้า</b> = โซน/stop/เป้าที่ระบบตั้งเอง (stop ห่าง ≥2 ATR, R:R ≥1.5 ไม่งั้นขึ้น "อย่าเพิ่ง") · รูปกราฟหาจากจุดกลับตัวย้อนหลัง 1 ปี · เป็นเครื่องมือคัดกรอง ไม่ใช่คำสั่งซื้อขาย</div>
+            <div class="radar-foot">กลุ่ม US เรียงตามแรงเทียบ S&P 500 (หุ้นไทยเทียบ SET50) · <b>เซียน</b> = จากรายงาน 13F ที่ช้า 1.5–4.5 เดือน · <b>คัดแล้ว</b> = เทคนิคน่าซื้อ + volume ≥1.5 เท่า + 1 ปีชนะกลุ่มตัวเอง · <b>ร้อนเกิน</b> = RSI ≥70 รอย่อดีกว่าไล่ · <b>จังหวะเข้า</b> = โซน/stop/เป้าที่ระบบตั้งเอง (stop ห่าง ≥2 ATR, R:R ≥1.5 ไม่งั้นขึ้น "อย่าเพิ่ง") · รูปกราฟหาจากจุดกลับตัวย้อนหลัง 1 ปี · เป็นเครื่องมือคัดกรอง ไม่ใช่คำสั่งซื้อขาย</div>
           </div>
         </section>`;
     }

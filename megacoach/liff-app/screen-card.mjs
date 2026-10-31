@@ -30,16 +30,17 @@ export function screenBubble(sc) {
   }));
   // เรียงตามจังหวะเข้า: เข้าได้ → รอจังหวะ → อย่าเพิ่ง แล้วตามคะแนน · สูงสุด 5 ตัว
   const ORDER = { go: 0, wait: 1, avoid: 2 };
-  const all = sc.groups.flatMap(g => g.stocks.filter(x => x.pick).map(x => ({ ...x, group: g.name })));
+  const all = sc.groups.flatMap(g => g.stocks.filter(x => x.pick).map(x => ({ ...x, group: g.name, cur: g.cur || "$" })));
   const picks = all.sort((a, b) => ORDER[a.plan?.sig ?? "avoid"] - ORDER[b.plan?.sig ?? "avoid"] || a.hot - b.hot || b.score - a.score).slice(0, 5);
   const nGo = all.filter(x => x.plan?.sig === "go").length;
   const rows = picks.flatMap(x => {
     const [ic, color] = LV[x.label] || LV.Neutral, p = x.pattern, pl = x.plan;
     // งบใกล้ = ความเสี่ยงสำคัญสุด ขึ้นก่อน (บรรทัดแผนโชว์โซน ไม่ได้โชว์เหตุผล)
     const earn = x.news?.earnTh ? ["calendar", `${x.group} · ${x.news.earnTh} ระวังราคากระโดด`] : null;
-    const note = earn ? earn : x.hot ? ["flame", `${x.group} · ร้อนเกิน รอย่อ`] : p ? ["activity", `${x.group} · ${p.th.replace(/ \(.*\)/, "")} · ${p.status.split(" · ")[0]}`] : null;
+    const gu = x.gurus ? ` · เซียนถือ ${x.gurus.length}` : "";
+    const note = earn ? earn : x.hot ? ["flame", `${x.group} · ร้อนเกิน รอย่อ${gu}`] : p ? ["activity", `${x.group} · ${p.th.replace(/ \(.*\)/, "")} · ${p.status.split(" · ")[0]}${gu}`] : gu ? ["star", x.group + gu] : null;
     // บรรทัดจังหวะเข้า: เข้าได้/รอ = บอกโซน+stop+เป้า · อย่าเพิ่ง = บอกเหตุผล
-    const planLine = pl && [SIG[pl.sig][0], pl.sig === "avoid" ? `${pl.sigTh} · ${pl.why}` : `${pl.sigTh} · โซน $${pl.lo}–${pl.hi} · stop $${pl.stop} · เป้า $${pl.trim}`, SIG[pl.sig][1]];
+    const planLine = pl && [SIG[pl.sig][0], pl.sig === "avoid" ? `${pl.sigTh} · ${pl.why}` : `${pl.sigTh} · โซน ${x.cur}${pl.lo}–${pl.hi} · stop ${x.cur}${pl.stop} · เป้า ${x.cur}${pl.trim}`, SIG[pl.sig][1]];
     return [{
       type: "box", layout: "baseline", margin: "md", contents: [
         { type: "icon", url: ICON(ic), size: "sm" },
@@ -64,13 +65,14 @@ export function screenBubble(sc) {
     header: { type: "box", layout: "vertical", backgroundColor: "#14532D", paddingAll: "16px", contents: [
       { type: "text", text: "STOCK SCREEN", color: "#BBF7D0", size: "xs", weight: "bold" },
       { type: "text", text: "คัดหุ้นวันนี้", color: "#FFFFFF", size: "xl", weight: "bold", margin: "xs" },
-      { type: "text", text: `ราคาปิด ${thDate(sc.updated)} · หุ้น US`, color: "#86EFAC", size: "xxs", margin: "sm" },
+      { type: "text", text: `ราคาปิด ${thDate(sc.updated)} · US · ไทย · ETF/ทอง`, color: "#86EFAC", size: "xxs", margin: "sm" },
     ] },
     body: { type: "box", layout: "vertical", paddingAll: "16px", contents: [
       { ...label("กลุ่มที่แรงสุด (เทียบ S&P 500)"), margin: "none" }, ...sectors, sep,
       label(`ผ่านเกณฑ์คัด ${all.length} ตัว · เข้าได้วันนี้ ${nGo} ตัว`),
       ...(rows.length ? rows : [{ type: "text", text: "วันนี้ยังไม่มีตัวผ่านเกณฑ์ — รอ", size: "sm", color: "#64748B", margin: "md" }]),
       sep,
+      ...(sc.track?.full ? [{ type: "text", text: `สูตรนี้ย้อนหลัง 2 ปี: ถึงเป้า ${sc.track.full.win} โดน stop ${sc.track.full.loss} ครั้ง (ชนะ ${sc.track.full.winRate}%) — แพ้ได้เสมอ ตั้ง stop ทุกครั้ง`, size: "xxs", color: "#475569", wrap: true, margin: "lg" }] : []),
       { type: "text", text: "คัดแล้ว = เทคนิคน่าซื้อ + volume ≥1.5 เท่า + 1 ปีชนะกลุ่ม · งบออกใน 7 วัน = รอหลังงบ · โซน/stop/เป้า ระบบตั้งเอง (stop ห่าง ≥2 ATR, R:R ≥1.5) · ตั้ง stop ทุกครั้งที่เข้า", size: "xxs", color: "#94A3B8", wrap: true, margin: "lg" },
     ] },
     footer: { type: "box", layout: "vertical", spacing: "sm", paddingAll: "16px", contents: [
