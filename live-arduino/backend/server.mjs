@@ -16,6 +16,8 @@ const ASTRO_API_BASE = process.env.ASTRO_API_BASE || "https://thai-astrology-fla
 //   2) ไม่มาเลย ≥ 14 วัน = แจ้งครั้งเดียว จนกว่าจอจะกลับมา
 // แจ้งผ่าน /api/notify ของ ShotDeck บน Box (ถือ token Telegram อยู่แล้ว) · ไม่มีก็แค่ไม่แจ้ง
 const SEEN_FILE = path.join(PROJECT_ROOT, "data", "device-seen.json");
+// 20 ต.ค.: จออยู่คนละบ้านกับ Box → ดึงผ่าน Tailscale Funnel (เน็ตสาธารณะ) · คำขอจาก Funnel ต้องแนบ ?k= ตรงนี้ ไม่งั้น 403
+const DEVICE_KEY = process.env.DEVICE_KEY || "";
 const NOTIFY_URL = process.env.NOTIFY_URL || "http://localhost:4400/api/notify";
 const BACK_AFTER_MS = 3 * 864e5, NOTIFY_GAP_MS = 7 * 864e5, IDLE_WARN_MS = 14 * 864e5;
 const notify = (text) => fetch(NOTIFY_URL, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text }) }).catch(() => {});
@@ -811,6 +813,10 @@ async function buildConfigPage() {
 async function handleRequest(req, res) {
   const url = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
   if (req.method === "OPTIONS") return sendJson(res, 204, {});
+  // header Tailscale-Funnel-Request ไม่มาจริง (ลองแล้ว 20 ต.ค.) → ดูจากชื่อ .ts.net แทน · ในบ้านเรียกด้วย IP/.local ไม่โดน
+  if (/\.ts\.net(:\d+)?$/.test(req.headers.host || "") && (!DEVICE_KEY || url.searchParams.get("k") !== DEVICE_KEY)) {
+    return sendJson(res, 403, { error: "forbidden" });
+  }
 
   if (url.pathname === "/ui" || url.pathname === "/mock-ui") {
     return sendHtmlFile(res, path.join(PROJECT_ROOT, "mock-ui", "index.html"));

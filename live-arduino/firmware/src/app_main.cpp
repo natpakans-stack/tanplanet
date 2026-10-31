@@ -9,6 +9,7 @@
 #include <WiFi.h>
 #include <WiFiManager.h>
 #include <HTTPClient.h>
+#include <WiFiClientSecure.h>
 #include <ESPmDNS.h>
 #include <ArduinoJson.h>
 #include <Preferences.h>
@@ -16,6 +17,10 @@
 #include <mbedtls/base64.h>
 #include <algorithm>
 #include <esp_task_wdt.h>
+// URL จริง (Funnel + key) อยู่ไฟล์นี้ — gitignored เพราะ repo public · ไม่มีไฟล์ก็ใช้ค่าใน platformio.ini
+#if __has_include("device_url.h")
+#include "device_url.h"
+#endif
 
 #include "icons/weather_icons.h"
 #include "pomodoro_sched.h"
@@ -1506,6 +1511,17 @@ static const char* holidayOf(int day) {
 // lwip resolve "ชื่อ.local" ได้บ้างไม่ได้บ้าง (คืน IPv6/แคชค้าง → connect timeout 5 วิ แล้วขึ้น -1)
 // ถาม mDNS ตรง ๆ เอา IPv4 มาเสียบแทนชื่อ แล้วจำไว้ ถ้า fetch พังค่อยล้างแคชถามใหม่
 static String mdnsIp;
+
+// https (Funnel) ต้องใช้ client TLS · ponytail: setInsecure ไม่เช็คใบเซิร์ต กันได้แค่ดักฟังเฉย ๆ — กลัว MITM ค่อยปักหมุด CA ของ Let's Encrypt
+static void httpBegin(HTTPClient& http, const String& url) {
+  if (!url.startsWith("https")) { http.begin(url); return; }
+  static WiFiClientSecure tls;
+  tls.setInsecure();
+  http.begin(tls, url);
+}
+// TLS handshake กิน stack เกิน 8KB ดีฟอลต์ของ loopTask → Stack canary panic (เจอ 20 ต.ค.)
+SET_LOOP_TASK_STACK_SIZE(16 * 1024);
+static const char* qsep(const String& url) { return url.indexOf('?') < 0 ? "?" : "&"; }
 static String backendUrl() {
   String url = DEVICE_SUMMARY_URL;
   int hs = url.indexOf("://") + 3;
@@ -1529,11 +1545,11 @@ static bool fetchMonth(int y, int m) {
   if (WiFi.status() != WL_CONNECTED) return false;
   String url = backendUrl();
   url.replace("/api/device-summary", "/api/month");
-  url += "?y=" + String(y) + "&m=" + String(m);
+  url += qsep(url) + String("y=") + String(y) + "&m=" + String(m);
 
   HTTPClient http;
   http.setTimeout(8000);
-  http.begin(url);
+  httpBegin(http, url);
   if (http.GET() != HTTP_CODE_OK) { http.end(); return false; }
   String payload = http.getString();
   http.end();
@@ -1569,7 +1585,7 @@ static void fetchClaudeNow() {
 
   HTTPClient http;
   http.setTimeout(5000);
-  http.begin(url);
+  httpBegin(http, url);
   if (http.GET() != HTTP_CODE_OK) { http.end(); return; }
   String payload = http.getString();
   http.end();
@@ -1605,11 +1621,11 @@ static bool fetchStock(const char* ticker) {
   if (WiFi.status() != WL_CONNECTED) return false;
   String url = backendUrl();
   url.replace("/api/device-summary", "/api/stock");
-  url += "?ticker=" + String(ticker);
+  url += qsep(url) + String("ticker=") + String(ticker);
 
   HTTPClient http;
   http.setTimeout(8000);
-  http.begin(url);
+  httpBegin(http, url);
   if (http.GET() != HTTP_CODE_OK) { http.end(); return false; }
   String payload = http.getString();
   http.end();
@@ -2374,7 +2390,7 @@ static bool fetchAndRender() {
   Serial.printf("fetch เริ่ม · heap %u\n", (unsigned)ESP.getFreeHeap());
   HTTPClient http;
   http.setTimeout(8000);
-  http.begin(backendUrl());
+  httpBegin(http, backendUrl());
   int code = http.GET();
   if (code != HTTP_CODE_OK) {
     Serial.printf("http failed: %d\n", code);
