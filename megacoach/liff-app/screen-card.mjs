@@ -32,7 +32,7 @@ export function screenBubble(sc) {
     .sort((a, b) => a.hot - b.hot || b.score - a.score || b.relVol - a.relVol).slice(0, 5);
   const rows = picks.flatMap(x => {
     const [ic, color] = LV[x.label] || LV.Neutral, p = x.pattern;
-    const note = x.hot ? ["flame", "ร้อนเกิน รอย่อ"] : p ? ["activity", `${p.th.replace(/ \(.*\)/, "")} · ${p.status.split(" ")[0]}`] : null;
+    const note = x.hot ? ["flame", "ร้อนเกิน รอย่อ"] : p ? ["activity", `${p.th.replace(/ \(.*\)/, "")} · ${p.status.split(" · ")[0]}`] : null;
     return [{
       type: "box", layout: "baseline", margin: "md", contents: [
         { type: "icon", url: ICON(ic), size: "sm" },
