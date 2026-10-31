@@ -34,9 +34,10 @@ export function screenBubble(sc) {
   const picks = all.sort((a, b) => ORDER[a.plan?.sig ?? "avoid"] - ORDER[b.plan?.sig ?? "avoid"] || a.hot - b.hot || b.score - a.score).slice(0, 5);
   const nGo = all.filter(x => x.plan?.sig === "go").length;
   const rows = picks.flatMap(x => {
-    const [ic, color] = LV[x.label] || LV.Neutral, p = x.pattern;
-    const pl = x.plan;
-    const note = x.hot ? ["flame", `${x.group} · ร้อนเกิน รอย่อ`] : p ? ["activity", `${x.group} · ${p.th.replace(/ \(.*\)/, "")} · ${p.status.split(" · ")[0]}`] : null;
+    const [ic, color] = LV[x.label] || LV.Neutral, p = x.pattern, pl = x.plan;
+    // งบใกล้ = ความเสี่ยงสำคัญสุด ขึ้นก่อน (บรรทัดแผนโชว์โซน ไม่ได้โชว์เหตุผล)
+    const earn = x.news?.earnTh ? ["calendar", `${x.group} · ${x.news.earnTh} ระวังราคากระโดด`] : null;
+    const note = earn ? earn : x.hot ? ["flame", `${x.group} · ร้อนเกิน รอย่อ`] : p ? ["activity", `${x.group} · ${p.th.replace(/ \(.*\)/, "")} · ${p.status.split(" · ")[0]}`] : null;
     // บรรทัดจังหวะเข้า: เข้าได้/รอ = บอกโซน+stop+เป้า · อย่าเพิ่ง = บอกเหตุผล
     const planLine = pl && [SIG[pl.sig][0], pl.sig === "avoid" ? `${pl.sigTh} · ${pl.why}` : `${pl.sigTh} · โซน $${pl.lo}–${pl.hi} · stop $${pl.stop} · เป้า $${pl.trim}`, SIG[pl.sig][1]];
     return [{
@@ -70,7 +71,7 @@ export function screenBubble(sc) {
       label(`ผ่านเกณฑ์คัด ${all.length} ตัว · เข้าได้วันนี้ ${nGo} ตัว`),
       ...(rows.length ? rows : [{ type: "text", text: "วันนี้ยังไม่มีตัวผ่านเกณฑ์ — รอ", size: "sm", color: "#64748B", margin: "md" }]),
       sep,
-      { type: "text", text: "คัดแล้ว = เทคนิคน่าซื้อ + volume ≥1.5 เท่า + 1 ปีชนะกลุ่ม · โซน/stop/เป้า ระบบตั้งเอง (stop ห่าง ≥2 ATR, R:R ≥1.5) · ตั้ง stop ทุกครั้งที่เข้า", size: "xxs", color: "#94A3B8", wrap: true, margin: "lg" },
+      { type: "text", text: "คัดแล้ว = เทคนิคน่าซื้อ + volume ≥1.5 เท่า + 1 ปีชนะกลุ่ม · งบออกใน 7 วัน = รอหลังงบ · โซน/stop/เป้า ระบบตั้งเอง (stop ห่าง ≥2 ATR, R:R ≥1.5) · ตั้ง stop ทุกครั้งที่เข้า", size: "xxs", color: "#94A3B8", wrap: true, margin: "lg" },
     ] },
     footer: { type: "box", layout: "vertical", spacing: "sm", paddingAll: "16px", contents: [
       { type: "button", style: "primary", color: "#15803D", height: "sm", action: { type: "uri", label: "ดูทุกตัว + ถาม AI", uri: DASH } },
