@@ -18,22 +18,33 @@ const env = k => {
 const fixUrl = u => u.replace(/^https:\/\/liff\.line\.me\/2010317620-52h5kCM1/, "https://liff-app-lilac.vercel.app");
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-// เดิน Flex tree → บรรทัดข้อความ + ปุ่มลิงก์
-function walk(node, lines, buttons, bold = false) {
+// ตัวหนังสือเทาอ่อน (#94A3B8 ฯลฯ) = หมายเหตุ/disclaimer → ย้ายไปท้ายเป็นตัวเอียง ไม่ปนเนื้อหาหลัก
+const muted = c => { const m = /^#([0-9a-f]{6})/i.exec(c || ""); if (!m) return false;
+  const [r, g, b] = [0, 2, 4].map(i => parseInt(m[1].slice(i, i + 2), 16)); return Math.min(r, g, b) >= 0x90 && Math.max(r, g, b) < 0xE0; };
+const spaced = n => ["md", "lg", "xl", "xxl"].includes(n.margin);
+// ปุ่มเว็บ https → Mini App (เปิดในแอป Telegram ไม่เด้งออก browser) · ใช้ได้เฉพาะแชตส่วนตัว ซึ่งบอทนี้ส่งแชตเดียว
+const btn = (label, uri) => { const u = fixUrl(uri); return [u.startsWith("https://") ? { text: label, web_app: { url: u } } : { text: label, url: u }]; };
+
+// เดิน Flex tree → out = {lines, notes, buttons}
+function walk(node, out, inRow = false) {
   if (!node || typeof node !== "object") return;
   if (node.type === "text") {
     const t = node.text ?? (node.contents || []).map(s => s.text || "").join("");
-    if (t.trim()) lines.push(bold || node.weight === "bold" ? `<b>${esc(t)}</b>` : esc(t));
+    if (!t.trim()) return;
+    const m = !inRow && muted(node.color), bold = node.weight === "bold";
+    if (m && node.size === "xxs") return out.notes.push(`<i>${esc(t)}</i>`);   // ตัวเล็กสุดสีเทา = fine print → ท้ายข้อความ
+    if (!inRow && (spaced(node) || (m && bold)) && out.lines.length && out.lines.at(-1) !== "") out.lines.push("");  // หัวข้อหมวด → เว้นบรรทัดก่อน
+    out.lines.push(bold ? `<b>${esc(t)}</b>` : m ? `<i>${esc(t)}</i>` : esc(t));
   } else if (node.type === "button" && node.action?.uri) {
-    buttons.push([{ text: node.action.label || "เปิด", url: fixUrl(node.action.uri) }]);
+    out.buttons.push(btn(node.action.label || "เปิด", node.action.uri));
   } else if (node.type === "separator") {
-    if (lines.length && lines.at(-1) !== "") lines.push("");
+    if (out.lines.length && out.lines.at(-1) !== "") out.lines.push("");
   } else if (node.type === "box") {
     // แถวแนวนอน (ticker | ราคา | สถานะ) → ต่อเป็นบรรทัดเดียว
     if (node.layout === "horizontal" || node.layout === "baseline") {
-      const sub = []; for (const c of node.contents || []) walk(c, sub, buttons, bold);
-      if (sub.length) lines.push(sub.join(" · "));
-    } else for (const c of node.contents || []) walk(c, lines, buttons, bold);
+      const sub = { lines: [], notes: [], buttons: out.buttons }; for (const c of node.contents || []) walk(c, sub, true);
+      if (sub.lines.length) out.lines.push(sub.lines.join(" · "));
+    } else for (const c of node.contents || []) walk(c, out, inRow);
   }
 }
 
@@ -42,11 +53,17 @@ export function toTelegram(msg) {
   if (msg.type !== "flex") return [];
   const bubbles = msg.contents.type === "carousel" ? msg.contents.contents : [msg.contents];
   return bubbles.map(b => {
-    const lines = [], buttons = [];
-    walk(b.header, lines, buttons, true);
-    if (lines.length) lines.push("");
-    walk(b.hero, lines, buttons); walk(b.body, lines, buttons); walk(b.footer, lines, buttons);
-    let text = lines.join("\n").replace(/\n{3,}/g, "\n\n").trim() || esc(msg.altText || "");
+    const head = { lines: [], notes: [], buttons: [] }; walk(b.header, head);
+    const out = { lines: [], notes: [], buttons: head.buttons };
+    walk(b.hero, out); walk(b.body, out); walk(b.footer, out);
+    // หัว: บรรทัดสุดท้ายของ header = หัวเรื่อง → ตัวหนา · บรรทัดแรกของเนื้อหา = ตัวเลขหลัก → ตัวหนา
+    const h = head.lines.map(s => s.replace(/<\/?b>/g, "")).filter(Boolean);
+    if (h.length) h[h.length - 1] = `<b>${h.at(-1)}</b>`;
+    const body = out.lines.slice(); while (body[0] === "") body.shift();
+    if (body[0] && !body[0].includes("<")) body[0] = `<b>${body[0]}</b>`;
+    const parts = [h.join("\n"), body.join("\n"), out.notes.join("\n")].filter(Boolean);
+    const buttons = out.buttons;
+    let text = parts.join("\n\n").replace(/\n{3,}/g, "\n\n").trim() || esc(msg.altText || "");
     if (text.length > 4000) text = text.slice(0, 4000) + "…";
     return { text, buttons };
   });
@@ -70,10 +87,10 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   if (a === "--test") {
     const out = toTelegram({ type: "flex", altText: "x", contents: { type: "carousel", contents: [{ type: "bubble",
       header: { type: "box", layout: "vertical", contents: [{ type: "text", text: "CACI <แตะ> โซน" }] },
-      body: { type: "box", layout: "vertical", contents: [{ type: "box", layout: "baseline", contents: [{ type: "text", text: "A" }, { type: "text", text: "B" }] }] },
+      body: { type: "box", layout: "vertical", contents: [{ type: "box", layout: "baseline", contents: [{ type: "text", text: "A" }, { type: "text", text: "B" }] }, { type: "text", text: "note", color: "#94A3B8", size: "xxs" }] },
       footer: { type: "box", layout: "vertical", contents: [{ type: "button", action: { type: "uri", label: "Dash", uri: "https://liff.line.me/2010317620-52h5kCM1/x" } }] } }] } });
-    console.assert(out.length === 1 && out[0].text === "<b>CACI &lt;แตะ&gt; โซน</b>\n\nA · B", out[0].text);
-    console.assert(out[0].buttons[0][0].url === "https://liff-app-lilac.vercel.app/x");
+    console.assert(out.length === 1 && out[0].text === "<b>CACI &lt;แตะ&gt; โซน</b>\n\n<b>A · B</b>\n\n<i>note</i>", out[0].text);
+    console.assert(out[0].buttons[0][0].web_app.url === "https://liff-app-lilac.vercel.app/x");
     console.log("ok");
   } else if (a === "--chatid") {
     const r = await (await fetch(`https://api.telegram.org/bot${env("TELEGRAM_BOT_TOKEN")}/getUpdates`)).json();
