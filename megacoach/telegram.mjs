@@ -43,8 +43,22 @@ function walk(node, out, inRow = false) {
     // แถวแนวนอน (ticker | ราคา | สถานะ) → ต่อเป็นบรรทัดเดียว
     if (node.layout === "horizontal" || node.layout === "baseline") {
       const sub = { lines: [], notes: [], buttons: out.buttons }; for (const c of node.contents || []) walk(c, sub, true);
-      if (sub.lines.length) out.lines.push(sub.lines.join(" · "));
-    } else for (const c of node.contents || []) walk(c, out, inRow);
+      if (sub.lines.length) out.lines.push(sub.lines.join(" · ").replace(/^(\p{Extended_Pictographic}\uFE0F?) · /u, "$1 "));   // 🟢 VOO ไม่ใช่ 🟢 · VOO
+    } else {
+      // หุ้นหนึ่งตัว = แถวที่มีชื่อ ticker + แถวรายละเอียด (ข้อความเดียว) ที่ตามมา → รวมเป็นกรอบ quote กรอบเดียว (แทนขอให้ดูเป็นบล็อก)
+      let blk = null;
+      const flush = () => { if (blk) out.lines.push(`<blockquote>${blk.join("\n")}</blockquote>`); blk = null; };
+      for (const c of node.contents || []) {
+        const isRow = c?.type === "box" && (c.layout === "horizontal" || c.layout === "baseline");
+        const texts = isRow ? (c.contents || []).filter(x => x.type === "text") : [];
+        if (isRow && texts.some(x => /^[A-Z][A-Z.\-]{0,5}$/.test((x.text || "").trim()))) {
+          flush(); const sub = { lines: [], notes: [], buttons: out.buttons }; walk(c, sub, inRow); blk = sub.lines;
+        } else if (blk && isRow && texts.length === 1) {
+          const sub = { lines: [], notes: [], buttons: out.buttons }; walk(c, sub, inRow); blk.push(...sub.lines);
+        } else { flush(); walk(c, out, inRow); }
+      }
+      flush();
+    }
   }
 }
 
@@ -89,7 +103,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       header: { type: "box", layout: "vertical", contents: [{ type: "text", text: "CACI <แตะ> โซน" }] },
       body: { type: "box", layout: "vertical", contents: [{ type: "box", layout: "baseline", contents: [{ type: "text", text: "A" }, { type: "text", text: "B" }] }, { type: "text", text: "note", color: "#94A3B8", size: "xxs" }] },
       footer: { type: "box", layout: "vertical", contents: [{ type: "button", action: { type: "uri", label: "Dash", uri: "https://liff.line.me/2010317620-52h5kCM1/x" } }] } }] } });
-    console.assert(out.length === 1 && out[0].text === "<b>CACI &lt;แตะ&gt; โซน</b>\n\n<b>A · B</b>\n\n<i>note</i>", out[0].text);
+    console.assert(out.length === 1 && out[0].text === "<b>CACI &lt;แตะ&gt; โซน</b>\n\n<blockquote>A · B</blockquote>\n\n<i>note</i>", out[0].text);
     console.assert(out[0].buttons[0][0].web_app.url === "https://liff-app-lilac.vercel.app/x");
     console.log("ok");
   } else if (a === "--chatid") {
