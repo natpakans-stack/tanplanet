@@ -55,4 +55,6 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # runner ไม่มี IPv6 + happy-eyeballs ของ Node ตัด IPv4 เร็วเกิน → ETIMEDOUT
+          NODE_OPTIONS: --dns-result-order=ipv4first --no-network-family-autoselection
         run: node megacoach/telegram.mjs megacoach/liff-app/line-outbox.json
