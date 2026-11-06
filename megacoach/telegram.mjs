@@ -24,6 +24,10 @@ const muted = c => { const m = /^#([0-9a-f]{6})/i.exec(c || ""); if (!m) return 
 const spaced = n => ["md", "lg", "xl", "xxl"].includes(n.margin);
 // ปุ่มเว็บ https → Mini App (เปิดในแอป Telegram ไม่เด้งออก browser) · ใช้ได้เฉพาะแชตส่วนตัว ซึ่งบอทนี้ส่งแชตเดียว
 const btn = (label, uri) => { const u = fixUrl(uri); return [u.startsWith("https://") ? { text: label, web_app: { url: u } } : { text: label, url: u }]; };
+// ปุ่ม "…ถาม AI" ของการ์ดคัดหุ้น → แยกเป็นเปิดเว็บ + ถาม Claude บน box (tg-claude.mjs รับ callback "ask:screen" แล้วตอบในแชต)
+const btnRow = (label, uri) => /ถาม AI/.test(label)
+  ? [btn(label.replace(/\s*\+?\s*ถาม AI/, "") || "เปิด", uri)[0], { text: "🤖 ถาม Claude บน box", callback_data: "ask:screen" }]
+  : btn(label, uri);
 
 // เดิน Flex tree → out = {lines, notes, buttons}
 function walk(node, out, inRow = false) {
@@ -36,7 +40,7 @@ function walk(node, out, inRow = false) {
     if (!inRow && (spaced(node) || (m && bold)) && out.lines.length && out.lines.at(-1) !== "") out.lines.push("");  // หัวข้อหมวด → เว้นบรรทัดก่อน
     out.lines.push(bold ? `<b>${esc(t)}</b>` : m ? `<i>${esc(t)}</i>` : esc(t));
   } else if (node.type === "button" && node.action?.uri) {
-    out.buttons.push(btn(node.action.label || "เปิด", node.action.uri));
+    out.buttons.push(btnRow(node.action.label || "เปิด", node.action.uri));
   } else if (node.type === "separator") {
     if (out.lines.length && out.lines.at(-1) !== "") out.lines.push("");
   } else if (node.type === "box") {
@@ -105,6 +109,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       footer: { type: "box", layout: "vertical", contents: [{ type: "button", action: { type: "uri", label: "Dash", uri: "https://liff.line.me/2010317620-52h5kCM1/x" } }] } }] } });
     console.assert(out.length === 1 && out[0].text === "<b>CACI &lt;แตะ&gt; โซน</b>\n\n<blockquote>A · B</blockquote>\n\n<i>note</i>", out[0].text);
     console.assert(out[0].buttons[0][0].web_app.url === "https://liff-app-lilac.vercel.app/x");
+    console.assert(toTelegram({ type: "flex", contents: { type: "bubble", footer: { type: "box", layout: "vertical", contents: [{ type: "button", action: { type: "uri", label: "ดูทุกตัว + ถาม AI", uri: "https://x.y" } }] } } })[0].buttons[0][1].callback_data === "ask:screen");
     console.log("ok");
   } else if (a === "--chatid") {
     const r = await (await fetch(`https://api.telegram.org/bot${env("TELEGRAM_BOT_TOKEN")}/getUpdates`)).json();
