@@ -87,6 +87,8 @@ try { var t = localStorage.getItem("mc_theme") || "dark"; if (t !== "system") do
     .mc-gate__aura, .mc-gate__hero { transform: none; }
   }
   /* คู่ซ้าย-ขวา (<Pair>) — จับคู่แบบตั้งใจใน JSX ไม่ให้ CSS เดาเอง · การ์ดในแถวสูงเท่ากัน */
+  /* ช่องรอรูปสมุดบัญชีในแผงข้าง — กรอบเส้นประบอกว่ารูปจะมาอยู่ตรงนี้ */
+  .mc-slot { display: grid; place-items: center; padding: var(--rf-space-300); border: 1px dashed var(--rf-border-bold); border-radius: var(--rf-radius-large); }
   .mc-pair { display: grid; gap: var(--rf-space-200); align-items: stretch; }
   .mc-pair > * { min-inline-size: 0; align-self: stretch; } /* การ์ดตัวเลือกของ DS ตั้ง align-self: start ไว้ */
   @media (min-width: 1024px) { .mc-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
