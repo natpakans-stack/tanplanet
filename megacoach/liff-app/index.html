@@ -30,7 +30,7 @@ try { var t = localStorage.getItem("mc_theme") || "dark"; if (t !== "system") do
             padding: calc(env(safe-area-inset-top) + var(--rf-space-200)) var(--mc-gut) 0; background: var(--rf-surface); position: relative; }
   .mc-menu { position: absolute; inset-block-start: calc(env(safe-area-inset-top) + var(--rf-space-200)); inset-inline-end: var(--mc-gut); }
   .mc .rfd-tabs__list { position: sticky; top: 0; z-index: 5; margin-inline: calc(-1 * var(--mc-gut));
-            padding-inline: var(--mc-gut); padding-block-start: calc(env(safe-area-inset-top) + var(--rf-space-100)); /* ตอนติดบนสุด แท็บไม่ชิดขอบจอ */ background: var(--rf-surface); }
+            padding-inline: var(--mc-gut); padding-block: calc(env(safe-area-inset-top) + var(--rf-space-200)) var(--rf-space-100); /* แท็บมีระยะบน-ล่าง ไม่ชิดขอบจอตอนติดบนสุด */ background: var(--rf-surface); }
   /* ---------- หน้าปลดล็อก (Glam: แสงแบรนด์ลอดหลัง · เกจเข็มกวาด · การ์ดกระจกฝ้า) ---------- */
   .mc-gate { position: relative; min-height: 100dvh; justify-content: center; align-items: center; overflow: hidden; isolation: isolate;
              padding-block: calc(env(safe-area-inset-top) + var(--rf-space-800)) calc(env(safe-area-inset-bottom) + var(--rf-space-800)); --mx: 0; --my: 0; }
