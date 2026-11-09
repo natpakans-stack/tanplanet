@@ -60,6 +60,10 @@ try { var t = localStorage.getItem("mc_theme") || "dark"; if (t !== "system") do
   .mc-gauge__shake { transform-origin: 140px 140px; animation: mc-shake .12s linear infinite alternate; }
   .mc-gauge__needle path { fill: var(--rf-text); }
   .mc-gauge__hub { fill: none !important; stroke: var(--rf-text); stroke-width: 7; }
+  /* หัวการ์ดปลดล็อก: โลโก้ + คำอธิบายอยู่กลาง (แกนเดียวกับเกจด้านบน) · ตัดบรรทัดสมดุล ไม่เหลือคำโดด */
+  .mc-gate__card .rfd-card__heading { align-items: center; text-align: center; }
+  .mc-gate__card .rfd-card__title { display: flex; justify-content: center; }
+  .mc-gate__card .rfd-card__description { text-wrap: balance; margin-block-start: var(--rf-space-150); }
   .mc-gate__card { inline-size: 100%; animation: mc-rise .7s cubic-bezier(.2,.8,.2,1) .2s both; }
   /* การ์ดกระจกฝ้า: พื้นโปร่ง + blur + เส้นขอบใส + ไฮไลต์ขอบบน */
   .mc-gate__card .rfd-card { background: color-mix(in srgb, var(--rf-surface-raised) 62%, transparent); -webkit-backdrop-filter: blur(18px) saturate(140%); backdrop-filter: blur(18px) saturate(140%);
