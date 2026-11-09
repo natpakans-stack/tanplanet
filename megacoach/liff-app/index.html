@@ -1608,6 +1608,8 @@
         el.innerHTML = html;
         li.insertBefore(el, body);
       };
+      if(mp.core) inject("core", `📌 <b>เดือนนี้:</b> ${mp.core.amount} · ${mp.core.how}`);
+      if(mp.rmf) inject("rmf", `📌 <b>เดือนนี้:</b> ${mp.rmf.amount} · ${mp.rmf.how}`);
       if(mp.alpha) inject("alpha", `📌 <b>เดือนนี้:</b> ${mp.alpha.ticker} ${mp.alpha.amount} · ${mp.alpha.how}`);
       if(mp.swing){
         if(mp.swing.hasSetup) inject("swing", `📌 <b>เดือนนี้:</b> ${mp.swing.ticker} เข้า ${mp.swing.entry} · เป้า ${mp.swing.target} · ตัด ${mp.swing.stop}<span class="dca-now-sub">${mp.swing.exec}</span>`);
