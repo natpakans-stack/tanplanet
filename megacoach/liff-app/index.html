@@ -30,7 +30,7 @@ try { var t = localStorage.getItem("mc_theme") || "dark"; if (t !== "system") do
             padding: calc(env(safe-area-inset-top) + var(--rf-space-200)) var(--mc-gut) 0; background: var(--rf-surface); position: relative; }
   .mc-menu { position: absolute; inset-block-start: calc(env(safe-area-inset-top) + var(--rf-space-200)); inset-inline-end: var(--mc-gut); }
   .mc .rfd-tabs__list { position: sticky; top: 0; z-index: 5; margin-inline: calc(-1 * var(--mc-gut));
-            padding-inline: var(--mc-gut); background: var(--rf-surface); }
+            padding-inline: var(--mc-gut); padding-block-start: calc(env(safe-area-inset-top) + var(--rf-space-100)); /* ตอนติดบนสุด แท็บไม่ชิดขอบจอ */ background: var(--rf-surface); }
   /* ---------- หน้าปลดล็อก (Glam: แสงแบรนด์ลอดหลัง · เกจเข็มกวาด · การ์ดกระจกฝ้า) ---------- */
   .mc-gate { position: relative; min-height: 100dvh; justify-content: center; align-items: center; overflow: hidden; isolation: isolate;
              padding-block: calc(env(safe-area-inset-top) + var(--rf-space-800)) calc(env(safe-area-inset-bottom) + var(--rf-space-800)); --mx: 0; --my: 0; }
@@ -90,6 +90,24 @@ try { var t = localStorage.getItem("mc_theme") || "dark"; if (t !== "system") do
   .mc-pair { display: grid; gap: var(--rf-space-200); align-items: stretch; }
   .mc-pair > * { min-inline-size: 0; align-self: stretch; } /* การ์ดตัวเลือกของ DS ตั้ง align-self: start ไว้ */
   @media (min-width: 1024px) { .mc-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  /* 3 คอลัมน์บนเดสก์ท็อป (ภาพรวม: เป้าหมาย · ความมั่งคั่ง · สุขภาพการเงิน) · ลูกที่เป็น StatGrid ยืดเต็มช่อง */
+  .mc-trio { display: grid; gap: var(--rf-space-200); align-items: stretch; }
+  .mc-trio > * { min-inline-size: 0; }
+  .mc-trio > .rfd-stat-grid { grid-template-columns: 1fr; }
+  .mc-trio .rfd-stat-tile { block-size: 100%; }
+  @media (min-width: 1024px) { .mc-trio { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  /* ป้ายเกรด: กว้างเท่ากัน วางหน้าตัวเลข */
+  .mc-grade-row { display: inline-flex; align-items: center; gap: var(--rf-space-100); }
+  .mc-grade { display: inline-flex; }
+  .mc-grade .rfd-lozenge { min-inline-size: 2.5rem; justify-content: center; text-align: center; }
+  /* S = ป้ายเหลืองแบบเดียวกับเกรดอื่น (DS warning) + เรืองแสงทองเบา ๆ ให้รู้ว่าพิเศษ */
+  /* S = ป้ายเหลืองแบบเดียวกับเกรดอื่น (ขอบ/สีตาม DS) + แสงปาดเฉียงผ่านหน้าป้ายเป็นระยะ */
+  .mc-grade--s .rfd-lozenge { position: relative; overflow: hidden; isolation: isolate; }
+  .mc-grade--s .rfd-lozenge::after { content: ""; position: absolute; inset: -60% auto -60% 0; inline-size: 40%; z-index: 1; pointer-events: none;
+    background: linear-gradient(105deg, transparent 0%, color-mix(in srgb, #fff 75%, transparent) 50%, transparent 100%);
+    transform: translateX(-180%) skewX(-20deg); animation: mc-sweep 2.6s ease-in-out infinite; }
+  @keyframes mc-sweep { 0%, 45% { transform: translateX(-180%) skewX(-20deg); } 100% { transform: translateX(320%) skewX(-20deg); } }
+  @media (prefers-reduced-motion: reduce) { .mc-grade--s .rfd-lozenge::after { animation: none; opacity: 0; } }
   .mc-stack > .mc-period { align-self: flex-start; }
   .mc .rfd-card { --rfd-chart-surface: var(--rf-surface-raised); } /* ช่องคั่นกราฟให้ตรงพื้นการ์ด (doc chart) */
   /* โลโก้ตามธีม: ค่าเริ่มต้น/ระบบมืด = ไฟล์ขาว · สว่าง = ไฟล์หมึก */
