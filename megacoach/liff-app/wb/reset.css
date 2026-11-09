@@ -1,0 +1,102 @@
+/* CSS reset — derivative of @atlaskit/css-reset · Apache-2.0 · ดู NOTICE.md
+   ฐานของหน้า: ล้างค่าเริ่มต้นของเบราว์เซอร์ + style พื้นฐานของ element HTML ด้วย token --rf-*
+   มีผลเฉพาะใต้ .rfd-reset (ใส่ที่ <body class="rfd-reset"> = ทั้งหน้า) — ไม่แตะหน้าเดิมของแอปจนกว่าจะเลือกใช้
+   ความเจาะจงเท่ากับหนึ่ง class (.rfd-reset + :where) — โหลดก่อน CSS อื่น class ของคอมโพเนนต์จึงชนะ
+   โหลดเป็น stylesheet แรกก่อน CSS อื่นทั้งหมด */
+
+/* ---------- reset ---------- */
+.rfd-reset,
+.rfd-reset :where(*, *::before, *::after) { box-sizing: border-box; }
+.rfd-reset :where(p, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, dd, img, pre, form, fieldset, figure, blockquote) { margin: 0; padding: 0; }
+.rfd-reset :where(img, fieldset) { border: 0; }
+.rfd-reset :where(img, svg, video, canvas) { max-width: 100%; vertical-align: middle; }
+.rfd-reset :where(button, input, select, textarea) { font: inherit; color: inherit; }
+.rfd-reset :where(h1, h2, h3, h4, h5, h6, p, li, dt, dd) { overflow-wrap: break-word; }
+
+/* ---------- base ---------- */
+.rfd-reset {
+  min-height: 100%;
+  background-color: var(--rf-surface);
+  color: var(--rf-text);
+  font: var(--rf-font-body);
+  text-decoration-skip-ink: auto;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ระยะเหนือบล็อก — บล็อกแรกในกล่องไม่มีระยะ */
+.rfd-reset :where(p, ul, ol, dl, h1, h2, h3, h4, h5, h6, blockquote, pre, form, table) { margin-top: var(--rf-space-150); }
+.rfd-reset :where(p, ul, ol, dl, h1, h2, h3, h4, h5, h6, blockquote, pre, form, table):first-child { margin-top: 0; }
+
+/* ลิงก์ */
+.rfd-reset :where(a) { color: var(--rf-link); text-decoration: none; }
+.rfd-reset :where(a:hover) { color: var(--rf-link); text-decoration: underline; }
+.rfd-reset :where(a:active) { color: var(--rf-link-pressed); }
+.rfd-reset :where(a:focus-visible) { outline: 2px solid var(--rf-border-focused); outline-offset: 2px; border-radius: var(--rf-radius-xsmall); }
+
+/* หัวข้อ */
+.rfd-reset :where(h1) { font: var(--rf-font-heading-xlarge); margin-top: var(--rf-space-500); }
+.rfd-reset :where(h2) { font: var(--rf-font-heading-large); margin-top: var(--rf-space-500); }
+.rfd-reset :where(h3) { font: var(--rf-font-heading-medium); margin-top: var(--rf-space-400); }
+.rfd-reset :where(h4) { font: var(--rf-font-heading-small); margin-top: var(--rf-space-300); }
+.rfd-reset :where(h5) { font: var(--rf-font-heading-xsmall); margin-top: var(--rf-space-250); }
+.rfd-reset :where(h6) { font: var(--rf-font-heading-xxsmall); margin-top: var(--rf-space-200); }
+.rfd-reset :where(h1, h2, h3, h4, h5, h6) { color: var(--rf-text); }
+
+/* รายการ */
+.rfd-reset :where(ul, ol) { padding-inline-start: var(--rf-space-500); }
+.rfd-reset :where(ul ul, ul ol, ol ul, ol ol) { margin-top: var(--rf-space-050); }
+.rfd-reset :where(li + li) { margin-top: var(--rf-space-050); }
+.rfd-reset :where(li)::marker { color: var(--rf-text-subtle); }
+.rfd-reset :where(dt) { font-weight: var(--rf-font-weight-semibold); }
+.rfd-reset :where(dd) { margin-inline-start: var(--rf-space-300); color: var(--rf-text-subtle); }
+.rfd-reset :where(dd + dt) { margin-top: var(--rf-space-100); }
+
+/* อ้างอิง */
+.rfd-reset :where(blockquote) { padding-inline-start: var(--rf-space-300); border-inline-start: 2px solid var(--rf-border); color: var(--rf-text-subtle); }
+.rfd-reset :where(blockquote cite) { display: block; margin-top: var(--rf-space-050); font: var(--rf-font-body-small); font-style: normal; color: var(--rf-text-subtlest); }
+.rfd-reset :where(blockquote cite)::before { content: '— '; }
+.rfd-reset :where(q) { quotes: '“' '”' '‘' '’'; }
+
+/* โค้ด */
+.rfd-reset :where(pre, code, kbd, samp) { font: var(--rf-font-code); }
+.rfd-reset :where(pre) { overflow-x: auto; padding: var(--rf-space-100) var(--rf-space-150); border-radius: var(--rf-radius-medium); background: var(--rf-background-neutral); }
+.rfd-reset :where(code) { padding: 0 var(--rf-space-050); border-radius: var(--rf-radius-small); background: var(--rf-background-neutral); color: var(--rf-text); overflow-wrap: break-word; }
+.rfd-reset :where(pre code) { padding: 0; background: none; }
+.rfd-reset :where(kbd) {
+  display: inline-block; min-width: 1.25rem; padding: 0 var(--rf-space-050); text-align: center;
+  border: 1px solid var(--rf-border); border-bottom-width: 2px; border-radius: var(--rf-radius-xsmall);
+  background: var(--rf-surface-raised); color: var(--rf-text);
+}
+
+/* อื่น ๆ */
+.rfd-reset :where(small) { font: var(--rf-font-body-small); }
+.rfd-reset :where(sub, sup) { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+.rfd-reset :where(sup) { top: -0.5em; }
+.rfd-reset :where(sub) { bottom: -0.25em; }
+.rfd-reset :where(abbr[title]) { text-decoration: underline dotted; cursor: help; }
+.rfd-reset :where(dfn) { font-style: italic; }
+.rfd-reset :where(var) { font-style: italic; font-family: var(--rf-font-family-code); }
+.rfd-reset :where(ins) { background: var(--rf-background-success); color: var(--rf-text); text-decoration: none; }
+.rfd-reset :where(del) { background: var(--rf-background-danger); color: var(--rf-text-subtle); }
+.rfd-reset :where(mark) { background: var(--rf-background-accent-yellow-subtler); color: var(--rf-text); }
+.rfd-reset :where(hr) { margin: var(--rf-space-300) 0; border: 0; border-top: 1px solid var(--rf-border); }
+.rfd-reset :where(::selection) { background: var(--rf-background-selected); }
+
+/* ตาราง — ตารางข้อมูลจริงใช้ DynamicTable */
+.rfd-reset :where(table) { width: 100%; border-collapse: collapse; }
+.rfd-reset :where(caption) { margin-bottom: var(--rf-space-100); font: var(--rf-font-heading-small); text-align: start; }
+.rfd-reset :where(thead th) { border-bottom: 2px solid var(--rf-border); font: var(--rf-font-body-small); font-weight: var(--rf-font-weight-bold); color: var(--rf-text-subtle); }
+.rfd-reset :where(th, td) { padding: var(--rf-space-050) var(--rf-space-100); border-bottom: 1px solid var(--rf-border); text-align: start; vertical-align: top; }
+.rfd-reset :where(th:first-child, td:first-child) { padding-inline-start: 0; }
+.rfd-reset :where(tbody th) { font-weight: var(--rf-font-weight-semibold); }
+.rfd-reset :where(tfoot td, tfoot th) { border-bottom: 0; border-top: 2px solid var(--rf-border); font-weight: var(--rf-font-weight-semibold); }
+
+/* ตัวช่วย */
+.rfd-reset :where(.rfd-visually-hidden) {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rfd-reset :where(*, *::before, *::after) { scroll-behavior: auto; }
+}
