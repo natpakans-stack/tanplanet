@@ -72,7 +72,7 @@ export function screenBubble(sc) {
       label(`🎯 ผ่านเกณฑ์คัด ${all.length} ตัว · เข้าได้วันนี้ ${nGo} ตัว`),
       ...(rows.length ? rows : [{ type: "text", text: "วันนี้ยังไม่มีตัวผ่านเกณฑ์ — รอ", size: "sm", color: "#64748B", margin: "md" }]),
       sep,
-      ...(sc.track?.full ? [{ type: "text", text: `สูตรนี้ย้อนหลัง 2 ปี: ถึงเป้า ${sc.track.full.win} โดน stop ${sc.track.full.loss} ครั้ง (ชนะ ${sc.track.full.winRate}%) — แพ้ได้เสมอ ตั้ง stop ทุกครั้ง`, size: "xxs", color: "#475569", wrap: true, margin: "lg" }] : []),
+      ...(sc.track?.full ? [{ type: "text", text: `สูตรนี้ย้อนหลัง 2 ปี: ถึงเป้า ${sc.track.full.win} โดน stop ${sc.track.full.loss} ครั้ง (ชนะ ${sc.track.full.winRate}%) — แพ้ได้เสมอ ตั้ง stop ทุกครั้ง`, size: "xxs", color: "#94A3B8", wrap: true, margin: "lg" }] : []),
       { type: "text", text: "คัดแล้ว = เทคนิคน่าซื้อ + volume ≥1.5 เท่า + 1 ปีชนะกลุ่ม · งบออกใน 7 วัน = รอหลังงบ · โซน/stop/เป้า ระบบตั้งเอง (stop ห่าง ≥2 ATR, R:R ≥1.5) · ตั้ง stop ทุกครั้งที่เข้า", size: "xxs", color: "#94A3B8", wrap: true, margin: "lg" },
     ] },
     footer: { type: "box", layout: "vertical", spacing: "sm", paddingAll: "16px", contents: [

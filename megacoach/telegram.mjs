@@ -66,10 +66,15 @@ function walk(node, out, inRow = false) {
       for (const c of node.contents || []) {
         const isRow = c?.type === "box" && (c.layout === "horizontal" || c.layout === "baseline");
         const texts = isRow ? (c.contents || []).filter(x => x.type === "text") : [];
-        if (isRow && texts.some(x => TICKER.test((x.text || "").trim()))) {
-          flush(); const sub = { lines: [], notes: [], buttons: out.buttons }; walk(c, sub, inRow); blk = sub.lines;
-        } else if (blk && isRow && texts.length === 1) {
+        const tick = isRow && texts.some(x => TICKER.test((x.text || "").trim()));
+        if (tick) {
+          flush(); const sub = { lines: [], notes: [], buttons: out.buttons }; walk(c, sub, inRow); blk = sub.lines; blk.tick = true;
+        } else if (blk?.tick && isRow && texts.length === 1) {
           const sub = { lines: [], notes: [], buttons: out.buttons }; walk(c, sub, inRow); blk.push(...sub.lines);
+        } else if (isRow && texts.length > 1) {
+          // แถวตารางที่ไม่ใช่หุ้น (เช่น กลุ่มที่แรงสุด) ติดกันหลายแถว → รวมเป็นกรอบเดียว
+          if (blk?.tick) flush();
+          const sub = { lines: [], notes: [], buttons: out.buttons }; walk(c, sub, inRow); (blk ??= []).push(...sub.lines);
         } else { flush(); walk(c, out, inRow); }
       }
       flush();
@@ -93,7 +98,9 @@ export function toTelegram(msg) {
     for (let i = 0; i < h.length; i++) h[i] = h[i].replace("\u0001", "");
     const body = out.lines.slice(); while (body[0] === "") body.shift();
     if (body[0] && !body[0].includes("<")) body[0] = `<b>${body[0]}</b>`;
-    const parts = [h.join("\n"), body.join("\n"), out.notes.join("\n")].filter(Boolean);
+    // หมายเหตุ/วิธีคิด → กรอบพับได้ (กดขยายเอง) ไม่ให้ยาวท่วมการ์ด
+    const notes = out.notes.length ? `<blockquote expandable>ℹ️ ${out.notes.map(n => n.replace(/<\/?i>/g, "")).join("\n")}</blockquote>` : "";
+    const parts = [h.join("\n"), body.join("\n"), notes].filter(Boolean);
     const buttons = out.buttons;
     let text = parts.join("\n\n").replace(/\n{3,}/g, "\n\n").trim() || esc(msg.altText || "");
     if (text.length > 4000) text = text.slice(0, 4000) + "…";
@@ -121,7 +128,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       header: { type: "box", layout: "vertical", contents: [{ type: "text", text: "CACI <แตะ> โซน" }] },
       body: { type: "box", layout: "vertical", contents: [{ type: "box", layout: "baseline", contents: [{ type: "text", text: "A" }, { type: "text", text: "B" }] }, { type: "text", text: "note", color: "#94A3B8", size: "xxs" }] },
       footer: { type: "box", layout: "vertical", contents: [{ type: "button", action: { type: "uri", label: "Dash", uri: "https://liff.line.me/2010317620-52h5kCM1/x" } }] } }] } });
-    console.assert(out.length === 1 && out[0].text === "<b>CACI &lt;แตะ&gt; โซน</b>\n\n<blockquote>A · B</blockquote>\n\n<i>note</i>", out[0].text);
+    console.assert(out.length === 1 && out[0].text === "<b>CACI &lt;แตะ&gt; โซน</b>\n\n<blockquote>A · B</blockquote>\n\n<blockquote expandable>ℹ️ note</blockquote>", out[0].text);
     console.assert(out[0].buttons[0][0].web_app.url === "https://liff-app-lilac.vercel.app/x");
     console.assert(toTelegram({ type: "flex", contents: { type: "bubble", footer: { type: "box", layout: "vertical", contents: [{ type: "button", action: { type: "uri", label: "ดูทุกตัว + ถาม AI", uri: "https://x.y" } }] } } })[0].buttons[0][1].callback_data === "ask:screen");
     console.log("ok");
