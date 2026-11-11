@@ -1,11 +1,11 @@
 ---
 name: portfolio-publish
-description: เขียนหน้า case study ของโปรเจกต์ใหม่ในโฟลเดอร์ tanplanet แล้ว publish ขึ้น projects.tanplanet.work (การ์ดแรก + sitemap + llms.txt + push). ใช้เมื่อแทนพูดว่า "ขึ้น portfolio", "publish โปรเจกต์ใหม่", "ทำ case study", "มีโปรเจกต์ไหนยังไม่ขึ้นเว็บ", "/portfolio-publish [ชื่อโฟลเดอร์]"
+description: เขียนหน้า case study ของโปรเจกต์ใหม่ในโฟลเดอร์ tanplanet แล้ว publish ขึ้น projects.tanplanet.work (การ์ดแรก + sitemap + llms.txt + push) แล้วทำภาพ + โพสต์ LinkedIn. ใช้เมื่อแทนพูดว่า "ขึ้น portfolio", "โพสต์ LinkedIn", "publish โปรเจกต์ใหม่", "ทำ case study", "มีโปรเจกต์ไหนยังไม่ขึ้นเว็บ", "/portfolio-publish [ชื่อโฟลเดอร์]"
 ---
 
 # Portfolio publish — projects.tanplanet.work
 
-เว็บ = repo นี้ (`~/Documents/Projects/tanplanet`, public, GitHub Pages) · push แล้วขึ้นจริงใน ~1 นาที
+เว็บ = repo นี้ (`/Volumes/My Passport/Projects/tanplanet`, public, GitHub Pages) · push แล้วขึ้นจริงใน ~1 นาที
 
 ## 1. เลือกโปรเจกต์
 - ไม่ได้ระบุชื่อ → รัน `python3 tools/portfolio-gaps.py` แล้วถามแทนว่าจะทำตัวไหน
@@ -45,6 +45,18 @@ Playwright (`~/.claude/skills/playwright-skill/node_modules/playwright/index.mjs
 - `git add` เฉพาะไฟล์ของงานนี้ (repo มีไฟล์ค้างของโปรเจกต์อื่นเสมอ ห้าม `git add -A` ทั้ง repo)
 - commit → push (ถ้า reject: `git pull --rebase --autostash` แล้ว push ใหม่ — มี cron MegaCoach commit เข้ามาตลอด)
 - รอจน `curl https://projects.tanplanet.work/<slug>-portfolio/` ได้ 200 แล้วส่งลิงก์ให้แทน
+
+## 6.5 ภาพประกอบที่ "ดูแล้วเข้าใจทันที" (แทนสั่ง 11 พ.ย. 2026 รอบ DEV panel)
+- งานที่เป็นเครื่องมือ/ระบบ: ภาพ UI เดี่ยว ๆ ไม่พอ — ทำ **ภาพจอเต็มแบบใช้งานจริง** (ซ้าย = แอป/เว็บ · ขวา = IDE/เทอร์มินัล/แผง) จัดวางด้วย HTML แล้วแคป · ติด**ป้ายเลข ① ② ③ เหนือหน้าต่าง** (ไม่ทับเนื้อหา) · caption บอกตรง ๆ ว่าส่วนไหนจัดวาง/เป็นตัวอย่าง
+- **อินโฟกราฟิก "ทำงานยังไงใน 1 ภาพ"**: กล่องหน้าต่าง + ตัวกลาง + เส้นไหลมีสี/ตัวอักษรกำกับ (A/B/C) + legend · ตัวหนังสือใหญ่พอให้อ่านที่ความกว้างคอลัมน์ (หัว ~64px บน canvas 2400)
+- ภาพทุกภาพเท่าความกว้างคอลัมน์ · **มีไลท์บ็อกซ์** (คลิกขยาย · `<dialog>`) + โน้ตใต้ภาพ "คลิกภาพเพื่อขยาย"
+- งานบริษัท: เบลอด้วย regex **ไม่สนตัวพิมพ์** (โดเมน/ชื่อไฟล์ตัวเล็กหลุดได้ เช่น design.<บริษัท>.ai) + ไล่ text node ทุกหน้าที่ถ่ายก่อนใช้ · หัวข้อไทยที่ตัดคำแปลก → `<span class="nb">` ครอบวลี
+
+## 6.6 โพสต์ LinkedIn (แทนสั่ง 11 พ.ย. 2026: "ทำรูปแล้วโพสต์ลง LinkedIn · ติดล็อกอินเดี๋ยวล็อกอินให้")
+1. **ภาพโพสต์ 4:5 (1080×1350)** — ภาพหลักให้ **Codex วาด** (`codex exec "…prompt…" -i ref1.jpg -i ref2.jpg` — ใส่ prompt **ก่อน** `-i` เพราะ `-i` รับหลายไฟล์แล้วกิน prompt) · สั่ง **ห้ามมีตัวหนังสือในภาพ** แล้ววางหัวข้อไทยด้วย HTML ทีหลัง (ตัวไทยที่ AI วาดเพี้ยน) · ภาพอ้างอิง = อินโฟกราฟิก/ภาพจอเต็มของหน้า
+2. **ข้อความโพสต์ไทย** สั้น: hook 1 บรรทัด → 3–4 bullet ผลลัพธ์จริง (ตัวเลข) → ลิงก์ case study → hashtag 4–5 ตัว · ห้ามชื่อบริษัท/ลูกค้า (กติกาเดียวกับข้อ 2)
+3. **ให้แทนดูภาพ + ข้อความก่อนเสมอ** — การโพสต์เป็นสาธารณะ ห้ามกดโพสต์เองโดยไม่ได้คำยืนยัน
+4. โพสต์ผ่าน chrome-devtools MCP (เปิดแท็บด้านหน้าให้แทนเห็น) · ติดหน้าล็อกอิน = เปิด linkedin.com/login ทิ้งไว้แล้วบอกแทนให้ล็อกอิน · หลังโพสต์ เก็บลิงก์โพสต์ส่งให้แทน
 
 ## 7. Workflow: เติมภาพประกอบหลายหน้าพร้อมกัน (ใช้จริง 20 ต.ค. 2026 — แทนบอก "แบบนี้แหละ")
 1. `python3 tools/portfolio-image-audit.py` → รายการ section ที่ยังไม่มีภาพ (ข้ามหน้าที่ gitignore = อยู่ repo อื่น)
