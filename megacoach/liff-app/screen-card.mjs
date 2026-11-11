@@ -68,8 +68,8 @@ export function screenBubble(sc) {
       { type: "text", text: `ราคาปิด ${thDate(sc.updated)} · US · ไทย · ETF/ทอง`, color: "#86EFAC", size: "xxs", margin: "sm" },
     ] },
     body: { type: "box", layout: "vertical", paddingAll: "16px", contents: [
-      { ...label("กลุ่มที่แรงสุด (เทียบ S&P 500)"), margin: "none" }, ...sectors, sep,
-      label(`ผ่านเกณฑ์คัด ${all.length} ตัว · เข้าได้วันนี้ ${nGo} ตัว`),
+      { ...label("🔥 กลุ่มที่แรงสุด (เทียบ S&P 500)"), margin: "none" }, ...sectors, sep,
+      label(`🎯 ผ่านเกณฑ์คัด ${all.length} ตัว · เข้าได้วันนี้ ${nGo} ตัว`),
       ...(rows.length ? rows : [{ type: "text", text: "วันนี้ยังไม่มีตัวผ่านเกณฑ์ — รอ", size: "sm", color: "#64748B", margin: "md" }]),
       sep,
       ...(sc.track?.full ? [{ type: "text", text: `สูตรนี้ย้อนหลัง 2 ปี: ถึงเป้า ${sc.track.full.win} โดน stop ${sc.track.full.loss} ครั้ง (ชนะ ${sc.track.full.winRate}%) — แพ้ได้เสมอ ตั้ง stop ทุกครั้ง`, size: "xxs", color: "#475569", wrap: true, margin: "lg" }] : []),

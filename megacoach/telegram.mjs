@@ -30,15 +30,26 @@ const btnRow = (label, uri) => /ถาม AI/.test(label)
   : btn(label, uri);
 
 // เดิน Flex tree → out = {lines, notes, buttons}
+// ไอคอน Lucide (PNG) ใน Flex → อีโมจิใน Telegram · ไม่อยู่ในแมพ = ข้าม (ไอคอนประดับ)
+const ICON_EMOJI = { "circle-check": "🟢", clock: "🟡", ban: "🔴", calendar: "📅", flame: "🔥", activity: "📈", star: "⭐" };
+// ticker US (VOO) + ไทย (GULF.BK) → ใช้จับว่าแถวไหนคือหัวหุ้นหนึ่งตัว
+const TICKER = /^[A-Z][A-Z\-]{0,5}(\.[A-Z]{1,3})?$/;
+
 function walk(node, out, inRow = false) {
   if (!node || typeof node !== "object") return;
+  if (node.type === "icon") {
+    const e = ICON_EMOJI[/\/([\w-]+)\.png$/.exec(node.url || "")?.[1]];
+    if (e) out.lines.push(e);
+    return;
+  }
   if (node.type === "text") {
     const t = node.text ?? (node.contents || []).map(s => s.text || "").join("");
     if (!t.trim()) return;
     const m = !inRow && muted(node.color), bold = node.weight === "bold";
     if (m && node.size === "xxs") return out.notes.push(`<i>${esc(t)}</i>`);   // ตัวเล็กสุดสีเทา = fine print → ท้ายข้อความ
     if (!inRow && (spaced(node) || (m && bold)) && out.lines.length && out.lines.at(-1) !== "") out.lines.push("");  // หัวข้อหมวด → เว้นบรรทัดก่อน
-    out.lines.push(bold ? `<b>${esc(t)}</b>` : m ? `<i>${esc(t)}</i>` : esc(t));
+    const big = ["xl", "xxl", "3xl", "4xl", "5xl"].includes(node.size) ? "\u0001" : "";   // ตัวใหญ่สุด = หัวเรื่องจริง
+    out.lines.push(big + (bold ? `<b>${esc(t)}</b>` : m ? `<i>${esc(t)}</i>` : esc(t)));
   } else if (node.type === "button" && node.action?.uri) {
     out.buttons.push(btnRow(node.action.label || "เปิด", node.action.uri));
   } else if (node.type === "separator") {
@@ -55,7 +66,7 @@ function walk(node, out, inRow = false) {
       for (const c of node.contents || []) {
         const isRow = c?.type === "box" && (c.layout === "horizontal" || c.layout === "baseline");
         const texts = isRow ? (c.contents || []).filter(x => x.type === "text") : [];
-        if (isRow && texts.some(x => /^[A-Z][A-Z.\-]{0,5}$/.test((x.text || "").trim()))) {
+        if (isRow && texts.some(x => TICKER.test((x.text || "").trim()))) {
           flush(); const sub = { lines: [], notes: [], buttons: out.buttons }; walk(c, sub, inRow); blk = sub.lines;
         } else if (blk && isRow && texts.length === 1) {
           const sub = { lines: [], notes: [], buttons: out.buttons }; walk(c, sub, inRow); blk.push(...sub.lines);
@@ -74,9 +85,12 @@ export function toTelegram(msg) {
     const head = { lines: [], notes: [], buttons: [] }; walk(b.header, head);
     const out = { lines: [], notes: [], buttons: head.buttons };
     walk(b.hero, out); walk(b.body, out); walk(b.footer, out);
+    out.lines = out.lines.map(l => l.replace("\u0001", ""));
     // หัว: บรรทัดสุดท้ายของ header = หัวเรื่อง → ตัวหนา · บรรทัดแรกของเนื้อหา = ตัวเลขหลัก → ตัวหนา
     const h = head.lines.map(s => s.replace(/<\/?b>/g, "")).filter(Boolean);
-    if (h.length) h[h.length - 1] = `<b>${h.at(-1)}</b>`;
+    const ti = h.findIndex(s => s.startsWith("\u0001")), t = ti >= 0 ? ti : h.length - 1;
+    if (h.length) h[t] = `<b>${h[t]}</b>`;
+    for (let i = 0; i < h.length; i++) h[i] = h[i].replace("\u0001", "");
     const body = out.lines.slice(); while (body[0] === "") body.shift();
     if (body[0] && !body[0].includes("<")) body[0] = `<b>${body[0]}</b>`;
     const parts = [h.join("\n"), body.join("\n"), out.notes.join("\n")].filter(Boolean);
