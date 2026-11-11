@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tan's Tools · DEV panel — รีโมตคุมจอของ design engineer ที่ทำงานคู่กับ AI</title>
+  <meta name="description" content="Portfolio: แผงข้าง IDE ที่สลับหน้าและ edge case ของแอปจริงได้ในคลิกเดียว (Empty state · ข้อมูลเยอะ · error) สลับธีมตรวจ และชี้จุดที่ต้องแก้บนหน้าจริงแล้วส่งเข้าเทอร์มินัลของ Claude พร้อมภาพมีกรอบเลข โดยไม่ต้องกดอนุมัติ">
+  <meta property="og:title" content="Tan's Tools · DEV panel — รีโมตคุมจอของ design engineer ที่ทำงานคู่กับ AI">
+  <meta property="og:description" content="Portfolio: แผงข้าง IDE ที่สลับหน้าและ edge case ของแอปจริงได้ในคลิกเดียว (Empty state · ข้อมูลเยอะ · error) สลับธีมตรวจ และชี้จุดที่ต้องแก้บนหน้าจริงแล้วส่งเข้าเทอร์มินัลของ Claude พร้อมภาพมีกรอบเลข โดยไม่ต้องกดอนุมัติ">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://projects.tanplanet.work/tans-tools-devpanel-portfolio/">
+  <meta property="og:url" content="https://projects.tanplanet.work/tans-tools-devpanel-portfolio/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tan's Tools · DEV panel — รีโมตคุมจอของ design engineer ที่ทำงานคู่กับ AI">
+  <meta name="twitter:description" content="Portfolio: แผงข้าง IDE ที่สลับหน้าและ edge case ของแอปจริงได้ในคลิกเดียว (Empty state · ข้อมูลเยอะ · error) สลับธีมตรวจ และชี้จุดที่ต้องแก้บนหน้าจริงแล้วส่งเข้าเทอร์มินัลของ Claude พร้อมภาพมีกรอบเลข โดยไม่ต้องกดอนุมัติ">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0f1f'/><path d='M50 22a18 18 0 0 0-18 18v12l-6 10h48l-6-10V40a18 18 0 0 0-18-18z' fill='none' stroke='%2334d399' stroke-width='6' stroke-linejoin='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #b45309;
+      --accent-light: #fef3c7;
+      --accent-dark: #78350f;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #0a0f1f 0%, #121b36 42%, #4a1d0c 80%, #9a3412 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(251,191,36,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #78350f, #f59e0b, #fde68a);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent { color: #fcd34d; }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro { padding: 56px 0 32px; }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .section-intro p { color: var(--text-secondary); font-size: 1rem; }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0a0f1f, #223056);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block code { background: rgba(255,255,255,0.14); color: #fcd34d; }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p { font-size: 1.05rem; line-height: 1.7; position: relative; z-index: 1; }
+    .quote-block .author { margin-top: 12px; font-size: 0.82rem; opacity: 0.78; }
+
+    /* ===== Pain / Solution Cards ===== */
+    .pain-grid, .solution-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .pain-card, .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .pain-card { border-left: 4px solid var(--red); }
+    .solution-card { border-left: 4px solid var(--accent); }
+    .pain-card .emoji, .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3, .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p, .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(180,83,9,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers { display: flex; flex-direction: column; gap: 12px; max-width: 560px; margin: 0 auto; }
+    .arch-layer { padding: 14px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(180,83,9,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: var(--navy); color: #cbd5e1; border: 1px solid #223056; }
+    .arch-arrow { text-align: center; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+    .arch-sub { display: flex; justify-content: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .arch-layer.infra .arch-sub span { background: rgba(255,255,255,0.10); }
+
+    /* ===== Device Mockup (320x480 @ scale) ===== */
+    .dev-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .dev-frame {
+      width: 348px;
+      max-width: 100%;
+      background: #1a1a1c;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 14px 40px rgba(10,15,31,0.35);
+    }
+    .dev-screen {
+      background: var(--navy);
+      border-radius: 6px;
+      overflow: hidden;
+      color: #f2f5ff;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+    .dev-hero {
+      background: #121b36;
+      padding: 12px 14px 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .dev-clock { font-size: 2.4rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+    .dev-date { color: #8492bc; font-size: 0.72rem; margin-top: 4px; }
+    .dev-hero-right { text-align: right; font-size: 0.72rem; color: #8492bc; }
+    .dev-hero-right .t { color: #f2f5ff; font-size: 1.05rem; font-weight: 600; }
+    .dev-list { padding: 8px; display: flex; flex-direction: column; gap: 7px; }
+    .dev-card {
+      background: #161f3c;
+      border-radius: 8px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dev-card .body { flex: 1; min-width: 0; }
+    .dev-card .ttl { color: #8492bc; font-size: 0.68rem; letter-spacing: 0.02em; }
+    .dev-card .val { font-size: 0.95rem; font-weight: 600; }
+    .dev-card .sub { color: #8492bc; font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dev-card .up { color: #4ade80; }
+    .dev-card .warn { color: #fbbf24; }
+    .dev-card .down { color: #f87171; }
+    .dev-blob {
+      width: 42px;
+      height: 34px;
+      border-radius: 6px;
+      background: #223056;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .dev-bar { height: 5px; border-radius: 3px; background: #223056; margin-top: 6px; overflow: hidden; }
+    .dev-bar i { display: block; height: 100%; background: #fbbf24; }
+    .dev-caption { font-size: 0.8rem; color: var(--text-secondary); text-align: center; max-width: 420px; }
+
+    /* ===== Closing ===== */
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+      .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.shot-pair figcaption{grid-column:1/-1}.shot-phone{max-width:360px;margin-left:auto;margin-right:auto}.shot-pair.shot-phone{max-width:620px}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
+</style>
+  <style>.nobr{display:inline-block;white-space:nowrap}@media (max-width:420px){.nobr{white-space:normal}}.nb{white-space:nowrap}.shot img{cursor:zoom-in}.zoom-hint{display:inline-flex;align-items:center;gap:5px;margin-left:8px;opacity:.75;white-space:nowrap}.zoom-hint svg{width:13px;height:13px}
+.lb{border:0;padding:0;max-width:none;max-height:none;width:100vw;height:100vh;background:rgba(8,10,20,.97);display:none;place-items:center;cursor:zoom-out}
+.lb[open]{display:grid}.lb::backdrop{background:transparent}
+.lb img{max-width:96vw;max-height:88vh;border-radius:12px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.lb p{position:fixed;left:0;right:0;bottom:16px;margin:0;text-align:center;color:#d7dae2;font-size:.9rem;padding:0 24px}
+.lb button{position:fixed;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:22px;cursor:pointer}</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        VS Code extension &middot; Shadow DOM &middot; Server-Sent Events &middot; Playwright
+      </div>
+      <h1>Tan&rsquo;s Tools &middot; DEV panel<br><span class="accent">รีโมตคุมจอของ design engineer ที่ทำงานคู่กับ AI</span></h1>
+      <p>แผงที่วางข้าง ๆ เทอร์มินัลใน IDE &mdash; เลือกหน้าของแอปจริง กดการ์ดเพื่อสลับไปเป็น edge case นั้นทันที (คลังว่าง &middot; ข้อมูล 120 ชิ้น &middot; ชื่อยาวมาก &middot; ระบบล่ม) สลับธีมสว่าง/มืด แล้วชี้ชิ้นที่ต้องแก้บนหน้าจริง ส่งเข้าเทอร์มินัลของ Claude พร้อมภาพที่มีกรอบเลข โดยไม่ต้องกดอนุมัติอะไรสักครั้ง</p>
+      <div class="hero-tags">
+        <span class="hero-tag">VS Code / Antigravity / Cursor</span>
+        <span class="hero-tag">Webview</span>
+        <span class="hero-tag">Shadow DOM</span>
+        <span class="hero-tag">SSE</span>
+        <span class="hero-tag">Playwright</span>
+        <span class="hero-tag">Design System</span>
+        <span class="hero-tag">Claude Code</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีใช้ &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#hacks">ปัญหาที่เจอระหว่างทาง</a>
+      </div>
+    </div>
+  </header>
+
+  <article>
+
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>รีวิวหน้าจอวันละหลายสิบรอบ แต่เวลาส่วนใหญ่หมดไปกับ<span class="nobr">&ldquo;การพาหน้าไปอยู่ในเคสที่จะดู&rdquo;</span></h2>
+      <p>ผมรีดีไซน์แอปเดสก์ท็อปทั้งแอปคู่กับ Claude Code ในงานประจำ &mdash; รอบหนึ่งชี้จุดแก้หลายสิบจุด และทุกจุดต้องตรวจซ้ำในหลายสถานะ</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/app-products-normal.jpg" width="1440" height="900" loading="lazy" alt="หน้าคลังสินค้าของแอปไลฟ์ขายของ แสดงการ์ดตัวเลขสรุป แท็บสถานะ และตารางสินค้า 3 ชิ้น โลโก้และชื่อบัญชีถูกเบลอ">
+      <figcaption>หน้าจริงของแอปที่ใช้ข้อมูลจำลองของ dev server &mdash; ถ้าอยากดู &ldquo;ตอนคลังว่าง&rdquo; ต้องไปลบสินค้าเองทีละชิ้น (โลโก้และชื่อบัญชีเบลอไว้)</figcaption>
+    </figure>
+
+    <div class="quote-block">
+      <p>อยากดูว่าคลังว่างหน้าตาเป็นยังไง ต้องลบของทิ้ง อยากดูตอนมี 120 ชิ้น ต้องสร้างเพิ่ม อยากรู้ว่าธีมมืดเป็นยังไง ต้องไปหน้าตั้งค่า พอเจอจุดผิดก็ต้องแคปจอ วาดกรอบ แล้วพิมพ์อธิบายให้ AI อีกรอบว่า &ldquo;ตรงนี้&rdquo; คือตรงไหน</p>
+      <div class="author">&mdash; โจทย์ตั้งต้น</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        <h3>Edge case ต้องสร้างด้วยมือทุกครั้ง</h3>
+        <p>Empty state, ข้อมูลล้น, ชื่อยาวเกิน, ระบบตอบ error &mdash; ไม่มีปุ่มไหนพาไปได้ตรง ๆ ต้องแก้ข้อมูลจริงแล้วค่อยลบคืน</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+        <h3>ไม่รู้ว่าหน้าไหนยังขาดเคสอะไร</h3>
+        <p>เช็กลิสต์อยู่ในหัวหรือในเอกสารที่ไม่มีใครเปิด เลยตรวจเฉพาะเคสที่นึกออกตอนนั้น</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        <h3>ส่งงานแก้ให้ AI ด้วยภาพแคปกับคำบรรยาย</h3>
+        <p>ภาพไม่บอกชื่อ component ขนาด หรือระยะห่าง AI ต้องเดา และการแคปแท็บของเบราว์เซอร์ต้องกดอนุญาตทุกครั้ง</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg>
+        <h3>แผงทดสอบลอยทับหน้าที่กำลังรีวิว</h3>
+        <p>เครื่องมือ dev ที่วางในหน้าเองบังเนื้อหาที่จะดู และใช้ฟอนต์คนละชุดกับระบบออกแบบ</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define &middot; Plan</span>
+      <h2>ก่อนลงมือออกแบบ เปิดเล่มแผนตาม Design System ก่อนเสมอ</h2>
+      <p>งานรีดีไซน์ทุกรอบเริ่มจากเล่มแผนที่สร้างจาก template ของ Design System ชุดเดียวกับแอป &mdash; รู้ตั้งแต่วันแรกว่าจะแก้อะไร priority เท่าไร และอยู่ขั้นไหนของงาน</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/plan-phases.jpg" width="1890" height="960" loading="lazy" alt="ลำดับงานเจ็ดขั้นในเล่มแผน: เตรียมของ Audit ตัดสินโครงใหม่ Redesign และ QA เก็บ edge case ส่งมอบและเข้า Design System สรุปบทเรียน แต่ละขั้นมีสถานะ เสร็จ กำลังทำ หรือยังไม่เริ่ม และจำนวนรายการที่ทำแล้วกับที่ค้าง">
+      <figcaption>ลำดับงาน 7 ขั้นจากเล่มแผนจริง &mdash; flowchart ตาม template ของ Design System แต่ละขั้นบอกสถานะและงานที่ค้าง (ชื่อผลิตภัณฑ์และเลขตั๋วเบลอไว้)</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span><b>เตรียมของ &rarr; Audit &rarr; ตัดสินโครงใหม่</b> &mdash; ตรวจทุกหน้าเทียบกับ Design System ได้ 131 ข้อ แยก P0 1 &middot; P1 70 &middot; P2 60 แล้วเลือก template ของ Design System ให้แต่ละหน้าก่อนวาดอะไรใหม่</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg><span><b>Redesign และ QA &rarr; เก็บ edge case</b> &mdash; แก้ทีละหน้าบนแอปที่รันอยู่ ตรวจทั้งธีมสว่าง/มืดและจอ 390 / 1024 / 1440 แล้วไล่ทุกสถานะของหน้า &mdash; ตรงนี้คือที่มาของแผง DEV</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg><span><b>ส่งมอบ + เข้า Design System &rarr; สรุปบทเรียน</b> &mdash; component ใหม่ที่เกิดระหว่างทางยกกลับเข้าเล่ม เช่น การ์ดสลับสถานะ และกฎใหม่จากการรีวิวกลายเป็นเช็กลิสต์ของรอบถัดไป</span></li>
+    </ul>
+
+    <figure class="shot">
+      <img src="img/plan-items.jpg" width="1890" height="1140" loading="lazy" alt="รายการที่ต้องปรับในเล่มแผน มีตัวกรองตามหน้า ชนิด สถานะ และที่มา ป้ายนับ P0 P1 P2 ที่เปิดอยู่ แต่ละรายการมีระดับ P1 หรือ P2 ป้ายชนิด เช่น ไม่ตรง DS หรือ UI แปลก ปัญหา ทางแก้ และสถานะ">
+      <figcaption>ทุกจุดที่เจอเป็นรายการเดียวกัน &mdash; ระดับ P0/P1/P2 &middot; ชนิด (ไม่ตรง Design System &middot; UI แปลก) &middot; ปัญหา &middot; ทางแก้ &middot; สถานะ &mdash; จุดที่ส่งจากแผง DEV ก็เข้ามาที่นี่</figcaption>
+    </figure>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>คุมหน้าจริงจากข้างนอก แทนการแยก component <span class="nb">ออกมาดูทีละชิ้น</span></h2>
+      <p>ปัญหาส่วนใหญ่เกิดตอนชิ้นต่าง ๆ อยู่รวมกันบนหน้าจริง ไม่ใช่ตอนอยู่เดี่ยว ๆ</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/desk-states.jpg" width="2560" height="1080" loading="lazy" alt="จอทำงานสองฝั่ง: ซ้ายเป็นแอปในเบราว์เซอร์ localhost หน้าคลังสินค้าแสดง Empty state ขวาเป็น IDE ที่มีเทอร์มินัลคุยกับ Claude และแผง DEV ที่เลือกการ์ดคลังสินค้าว่างอยู่">
+      <figcaption>จอที่ใช้ทำงานจริง &mdash; ① แอปใน localhost &middot; ② เทอร์มินัลที่สั่งแก้โค้ดผ่านการคุยกับ Claude &middot; ③ แผง DEV ที่เลือกเคส &ldquo;คลังสินค้าว่าง&rdquo; อยู่ (จัดวางจากภาพหน้าจอจริง ข้อความในเทอร์มินัลเป็นตัวอย่าง)</figcaption>
+    </figure>
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th>ทางเลือก</th><th>เห็นอะไร</th><th class="num">ต้นทุน</th><th>เหตุที่ตก / รับ</th></tr></thead>
+        <tbody>
+          <tr><td>หน้าแสดง component แยก (แบบ Storybook)</td><td>ทีละชิ้น นอกบริบท</td><td class="num">เขียน story ทุกสถานะ</td><td>เห็นชิ้นสวยแต่ไม่เห็นว่ามันชนกับอะไรบนหน้าจริง และต้องดูแลสองที่</td></tr>
+          <tr><td>แก้ข้อมูลจำลองด้วยมือทุกครั้ง</td><td>หน้าจริง</td><td class="num">หลายนาทีต่อเคส</td><td>ได้ภาพจริง แต่ช้า ลืมคืนค่า และคนอื่นในทีมทำซ้ำไม่ได้</td></tr>
+          <tr data-picked><td>แผงคุมหน้าจริง + ไฟล์ edge case ต่อโปรเจกต์<span class="pick"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> เลือก</span></td><td>หน้าจริง ทุกเคสที่ประกาศไว้</td><td class="num">เขียนไฟล์ JSON ครั้งเดียว</td><td>dev server ตอบข้อมูลตามเคสที่เลือก หน้าจริงสลับในคลิกเดียว และไฟล์เดียวกันคือเช็กลิสต์ของทีม</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>สามส่วนที่คุยกันผ่าน <span class="nb">dev server</span> ตัวเดียว</h2>
+      <p>แอปอยู่ใน Chrome แผงอยู่ใน IDE ส่วน AI อยู่ในเทอร์มินัล &mdash; ไม่มีใครต้องรู้จักใครตรง ๆ</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/how-it-works.jpg" width="2400" height="1110" loading="lazy" alt="อินโฟกราฟิก: ซ้ายคือแอปใน localhost ตรงกลางคือ dev server ขวาคือ IDE ที่มีเทอร์มินัลคุยกับ Claude และแผง DEV เส้นฟ้า A กดการ์ดเคสแล้วแอปสลับทันที เส้นส้ม B ชี้จุดพร้อมโน้ตแล้วภาพกรอบเลขกับบรรทัดสรุปเข้าเทอร์มินัล เส้นประเขียว C Claude แก้โค้ดแล้วแอปรีโหลดเห็นผล">
+      <figcaption>ทำงานยังไงใน 1 ภาพ &mdash; A สลับเคส &middot; B ส่งงานให้ AI &middot; C ผลกลับมาที่หน้าจริง</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg><span><b>ส่วนขยาย IDE</b> — webview ในแถบข้างขวาของ Antigravity / Cursor / VS Code ฝังหน้าแผงไว้ และเป็นคนเดียวที่พิมพ์ลงเทอร์มินัลได้</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span><b>dev server</b> — ท่อข้อความแบบ SSE ให้แผงกับแอปคุยกันข้ามเบราว์เซอร์ &middot; ตอบ API ตามเคสที่เลือก &middot; รับรายงานจุดที่ต้องแก้แล้วแคปภาพเอง</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg><span><b>ไฟล์ edge case ต่อโปรเจกต์</b> — หน้าตามเมนูจริง &middot; เคสของแต่ละหน้าพร้อมข้อมูลที่ API ต้องตอบ &middot; เคสที่ยังจำลองไม่ได้เป็นรายการให้ตรวจเอง &middot; ลิงก์เล่มแผนรีดีไซน์</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span><b>ระบบออกแบบเดียวกับแอป</b> — แผงใช้ฟอนต์ สี และ component จากระบบออกแบบชุดเดียวกับแอป &mdash; การ์ดสลับสถานะถูกยกเข้าระบบออกแบบเป็น component ใหม่</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีใช้ &mdash; 5 จังหวะ จากเลือกหน้าถึง AI ลงมือแก้</h2>
+      <p>มือไม่ต้องออกจาก IDE และไม่มีหน้าต่างขออนุญาตเด้งขึ้นมาเลย</p>
+    </section>
+
+    <figure class="shot shot-pair">
+      <img src="img/app-products-empty.jpg" width="1440" height="900" loading="lazy" alt="หน้าคลังสินค้าหลังกดการ์ดคลังสินค้าว่าง ตารางว่างและแสดงภาพ Empty state">
+      <img src="img/app-products-120.jpg" width="1440" height="900" loading="lazy" alt="หน้าคลังสินค้าหลังกดการ์ดสินค้า 120 ชิ้น ตารางยาวและตัวเลขสรุปนับตาม">
+      <figcaption>กดการ์ดเดียว หน้าจริงสลับเป็น &ldquo;คลังว่าง&rdquo; หรือ &ldquo;120 ชิ้น&rdquo; ทันที &mdash; กดปกติก็กลับมาเป็นข้อมูลเดิม</figcaption>
+    </figure>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+        <h4>เลือกหน้า</h4>
+        <p>ช่องเลือกหน้าเรียงตามเมนูจริงของแอป กดถัดไปเพื่อเดินทั้ง flow ทีละหน้า</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        <h4>กดการ์ด edge case</h4>
+        <p>dev server เปลี่ยนคำตอบของ API ตามเคส แล้วหน้าแอปโหลดใหม่ &mdash; เปลี่ยนหน้าเมื่อไรเคสล้างเอง</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>
+        <h4>สลับธีมของแอป</h4>
+        <p>สว่าง &middot; มืด &middot; ตามเครื่อง เขียนลงค่าธีมของแอปตรง ๆ ตรวจครบทั้งสองธีมจากจุดเดียว</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.034 12.681a.498.498 0 0 1 .647-.647l9 3.5a.5.5 0 0 1-.033.943l-3.444 1.068a1 1 0 0 0-.66.66l-1.067 3.443a.5.5 0 0 1-.943.033z"/><path d="M5 3a2 2 0 0 0-2 2"/><path d="M19 3a2 2 0 0 1 2 2"/><path d="M5 21a2 2 0 0 1-2-2"/><path d="M9 3h1"/><path d="M9 21h2"/><path d="M14 3h1"/><path d="M3 9v1"/><path d="M21 9v2"/><path d="M3 14v1"/></svg>
+        <h4>ชี้จุดที่ต้องแก้</h4>
+        <p>คลิกชิ้นบนหน้าจริง กด &uarr; เพื่อขยายไปกล่องแม่ ได้กรอบสีแดงพร้อมเลข แล้วพิมพ์ว่าจะแก้อะไร</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg>
+        <h4>ส่งให้ Claude</h4>
+        <p>แคปภาพมีกรอบเลข เพิ่มเข้าเล่มแผน และพิมพ์บรรทัดสรุปลงเทอร์มินัลพร้อมที่อยู่ภาพ &mdash; AI เริ่มทำงานทันที</p>
+      </div>
+    </div>
+
+    <figure class="shot">
+      <img src="img/desk-inspect.jpg" width="2560" height="1080" loading="lazy" alt="ซ้ายเป็นแอปหน้าคำห้ามพูดที่มีกรอบสีแดงเลข 1 ถึง 3 ขวาเป็นเทอร์มินัลที่ได้รับข้อความตรวจจุดสามจุดแล้ว Claude อ่านภาพและแก้ไฟล์ และแผงตรวจจุดที่มีโน้ตของแต่ละจุด">
+      <figcaption>ชี้ 3 จุดบนแอปทางซ้าย พิมพ์โน้ตในแผงขวา กดส่ง &mdash; บรรทัดสรุปพร้อมที่อยู่ภาพขึ้นในเทอร์มินัลแล้ว Claude ลงมือแก้ทันที (จัดวางจากภาพหน้าจอจริง ข้อความในเทอร์มินัลเป็นตัวอย่าง)</figcaption>
+    </figure>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="hacks">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>หกข้อที่เจอระหว่างทาง</h2>
+      <p>ส่วนใหญ่เป็นข้อจำกัดของเบราว์เซอร์และ IDE ที่เห็นก็ต่อเมื่อย้ายแผงออกจากหน้าแอปจริง ๆ</p>
+    </section>
+
+    <figure class="shot shot-phone">
+      <img src="img/panel-inspect-empty.jpg" width="840" height="1120" loading="lazy" alt="แท็บตรวจจุดในแผง ปุ่มเลือกจุดบนหน้าแอป และขั้นตอนสามข้อ">
+      <figcaption>แท็บตรวจจุด: ปุ่มหลักปุ่มเดียว ตอนยังไม่มีจุดแสดงขั้นตอนแทนย่อหน้ายาว</figcaption>
+    </figure>
+
+    <div class="hack-grid">
+      <div class="hack-card" data-label="Permission">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg><span>การแคปแท็บจากเบราว์เซอร์ต้องกด<span class="nb">อนุญาตทุกครั้ง</span></span></h3>
+        <p>ตอนแรกใช้ getDisplayMedia แคปแท็บตามสภาพจริง แต่ Chrome ถามสิทธิ์แชร์หน้าจอทุกรอบ ส่งงานบ่อยเข้าก็กลายเป็นกดอนุญาตทั้งวัน</p>
+        <div class="highlight"><strong>แก้:</strong> <strong>ส่ง DOM ของหน้าตอนนั้นไปให้ dev server วาดซ้ำ</strong> ใน Chrome ที่มองไม่เห็นแล้วแคปเอง &mdash; ค่าที่พิมพ์ในช่องและตำแหน่งเลื่อนติดไปด้วย เมนูที่เปิดค้างก็ติด แลกกับภาพจากกล้องที่ไม่ติดมา</div>
+      </div>
+      <div class="hack-card" data-label="Messaging">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>BroadcastChannel คุยได้แค่<span class="nb">ในเบราว์เซอร์เดียว</span></span></h3>
+        <p>พอย้ายแผงไปอยู่ใน IDE แผงกับแอปกลายเป็นคนละเบราว์เซอร์ ปุ่มถัดไปกดแล้วไม่มีอะไรเกิดขึ้น</p>
+        <div class="highlight"><strong>แก้:</strong> ทำ<strong>ท่อข้อความผ่าน dev server</strong> (SSE รับ + POST ส่ง) หน้าตาเหมือน BroadcastChannel เดิม โค้ดที่เหลือเลยไม่ต้องแก้</div>
+      </div>
+      <div class="hack-card" data-label="Storage">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg><span>iframe ใน webview ของ IDE ถูกแยก storage</span></h3>
+        <p>แผงเคยจำหน้าของแอปไว้ใน localStorage แต่ใน IDE ค่าไม่ติด แผงเลยรีโหลดตัวเองวนไม่จบ</p>
+        <div class="highlight"><strong>แก้:</strong> <strong>เก็บหน้าของแอปไว้ใน query ของ url แผงเอง</strong> ไม่พึ่ง storage เลย</div>
+      </div>
+      <div class="hack-card" data-label="Multi-tab">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg><span>เปิดแอปสองแท็บ แผงรีโหลดสลับไปมา</span></h3>
+        <p>ทั้งสองแท็บตอบ url ทุกวินาที แผงตามแท็บหนึ่ง แล้วอีกแท็บก็ดึงกลับ</p>
+        <div class="highlight"><strong>แก้:</strong> แผง<strong>ตาม url เฉพาะตอนแอปเปลี่ยนหน้า</strong> หรือตอนที่ยังไม่รู้หน้าเท่านั้น</div>
+      </div>
+      <div class="hack-card" data-label="CSP">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span>ตัวเช็กว่า server รันอยู่ ถูก CSP <span class="nb">ของตัวเองบล็อก</span></span></h3>
+        <p>webview บล็อก fetch ไป localhost ตัวเช็กเลยเข้าใจว่า server ไม่รัน แล้วซ่อนแผงทิ้งทั้งที่ทุกอย่างพร้อม</p>
+        <div class="highlight"><strong>แก้:</strong> เพิ่ม <code>connect-src</code> ให้ localhost &mdash; บทเรียนคือ<strong>ข้อความ error ที่ผิดทาง แย่กว่าไม่มีข้อความ</strong></div>
+      </div>
+      <div class="hack-card" data-label="Hierarchy">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><span>เช็กลิสต์ที่ติ๊กได้ ไม่ช่วยให้ตรวจเร็วขึ้น</span></h3>
+        <p>รอบแรกทำ edge case เป็นช่องติ๊กพร้อมปุ่ม &ldquo;ดูบนหน้า&rdquo; ผู้ใช้ (ตัวผมเอง) บอกว่าลำดับข้อมูลผิด เพราะสิ่งที่อยากได้คือการ์ดที่กดแล้วหน้าจริงสลับ ไม่ใช่การติ๊ก</p>
+        <div class="highlight"><strong>แก้:</strong> <strong>การ์ดเลือกได้ 2 คอลัมน์</strong> ที่มีไอคอนบอกชนิดเคส แล้วยกเข้าระบบออกแบบเป็นการ์ดสลับสถานะ</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Test</span>
+      <h2>ไฟล์ edge case คือเช็กลิสต์<span class="nb">ที่รันได้</span></h2>
+      <p>เขียนเคสครั้งเดียว ใช้ได้ทั้งตอนออกแบบ ตอนรีวิว และตอนส่งต่อให้ทีม</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/ds-state-card.jpg" width="900" height="369" loading="lazy" alt="การ์ดสลับสถานะในระบบออกแบบ ทั้งธีมสว่างและมืด หกใบ ปกติ คลังสินค้าว่าง ชื่อยาวมาก สินค้า 120 ชิ้น ใกล้เต็มโควตา โหลดไม่ได้">
+      <figcaption>การ์ดสลับสถานะที่ยกเข้าระบบออกแบบ: ไอคอนบอกชนิดเคส &middot; ติ๊กมุมขวาบน &middot; ธีมมืดไม่เป็นก้อนสีทึบ</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>เคสอยู่ในไฟล์ของโปรเจกต์</b> — แต่ละโปรเจกต์มี Empty state และ edge case ไม่เหมือนกัน แผงอ่านไฟล์ของโปรเจกต์ที่เปิดอยู่</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>ไล่ทุกเคสอัตโนมัติ</b> — สคริปต์เปิดทุกการ์ดทุกหน้า เช็ก error แล้วทำภาพรวมทุกเคสในภาพเดียว</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>รายงานจุดแก้เข้าเล่มแผน</b> — 1 จุด = 1 รายการ พร้อมภาพกรอบเลขแบบเดียวกับผลสแกนอัตโนมัติ ทีมเห็นในที่เดียวกัน</span></li>
+    </ul>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">13</div><div class="label">หน้าที่มี edge case ประกาศไว้</div></div>
+      <div class="metric-card"><div class="num">52</div><div class="label">การ์ดที่กดแล้วหน้าจริงสลับ</div></div>
+      <div class="metric-card"><div class="num">47</div><div class="label">เคสที่ไล่เปิดอัตโนมัติ ไม่มี error</div></div>
+      <div class="metric-card"><div class="num">0</div><div class="label">ครั้งที่ต้องกดอนุญาตตอนส่งงานให้ AI</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>ขอบเขตที่ตั้งใจไม่ทำ</h2>
+      <p>เครื่องมือสำหรับคนทำงาน ไม่ใช่ฟีเจอร์ของผลิตภัณฑ์</p>
+    </section>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span><b>อยู่แค่ใน dev server</b> — ไม่เข้าแอปที่ส่งถึงลูกค้า &mdash; แผงและการตอบ API แทนของจริงมีเฉพาะตอนพัฒนา</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg><span><b>ไม่แคปภาพจากกล้องหรือวิดีโอ</b> — ภาพที่วาดจาก DOM ไม่มีเนื้อหาของ canvas/video &mdash; เคสที่ต้องใช้กล้องจริงเหลือเป็นรายการตรวจเอง</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg><span><b>ไม่ส่งอะไรออกนอกเครื่อง</b> — รายงานและภาพอยู่ในโปรเจกต์ ข้อความเข้าเทอร์มินัลในเครื่อง ไม่ผ่านบริการภายนอก</span></li>
+    </ul>
+  </article>
+
+  <div class="closing">
+    <h2>Tan&rsquo;s Tools &middot; DEV panel</h2>
+    <p>เริ่มจากแถบปุ่มลอยมุมจอสำหรับข้ามหน้า แล้วกลายเป็นรีโมตคุมจอที่สลับ edge case ได้ในคลิกเดียว และส่งจุดที่ต้องแก้ให้ AI แบบมีภาพมีเลข โดยไม่ต้องออกจาก IDE</p>
+    <div class="stack-icons">
+      <span class="stack-icon">VS Code Extension API</span>
+      <span class="stack-icon">Webview</span>
+      <span class="stack-icon">Shadow DOM</span>
+      <span class="stack-icon">Server-Sent Events</span>
+      <span class="stack-icon">Playwright</span>
+      <span class="stack-icon">Node.js</span>
+      <span class="stack-icon">Svelte 5</span>
+      <span class="stack-icon">Claude Code</span>
+    </div>
+  </div>
+
+  <dialog class="lb" aria-label="ภาพขยาย"><button type="button" aria-label="ปิดภาพขยาย">&times;</button><img alt=""><p></p></dialog>
+  <script>
+  /* ไลท์บ็อกซ์: คลิกภาพประกอบ = ขยายเต็มจอ · คลิกที่ใดก็ได้ / Esc = ปิด */
+  (function(){
+    var d=document.querySelector('.lb'),im=d.querySelector('img'),cap=d.querySelector('p');
+    document.querySelectorAll('.shot img').forEach(function(i){
+      i.tabIndex=0; i.setAttribute('role','button'); i.setAttribute('aria-label','ขยายภาพ: '+i.alt);
+      function open(){im.src=i.currentSrc||i.src; im.alt=i.alt; var f=i.closest('figure').querySelector('figcaption'); cap.textContent=f?f.textContent:''; d.showModal();}
+      i.addEventListener('click',open); i.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
+    });
+    document.querySelectorAll('figure.shot figcaption').forEach(function(c){var h=document.createElement('span');h.className='zoom-hint';h.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>คลิกภาพเพื่อขยาย';c.appendChild(h);});
+    d.addEventListener('click',function(){d.close();});
+  })();
+  </script>
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"Tan's Tools · DEV panel — รีโมตคุมจอของ design engineer","item":"https://projects.tanplanet.work/tans-tools-devpanel-portfolio/"}
+  ]
+}
+</script>
+
+</body>
+</html>
