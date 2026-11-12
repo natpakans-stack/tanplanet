@@ -33,37 +33,31 @@ export function screenBubble(sc) {
   const all = sc.groups.flatMap(g => g.stocks.filter(x => x.pick).map(x => ({ ...x, group: g.name, cur: g.cur || "$" })));
   const picks = all.sort((a, b) => ORDER[a.plan?.sig ?? "avoid"] - ORDER[b.plan?.sig ?? "avoid"] || a.hot - b.hot || b.score - a.score).slice(0, 5);
   const nGo = all.filter(x => x.plan?.sig === "go").length;
+  // ponytail: แถวหุ้นหน้าตาเดียวกับบรีฟเช้า → "🟡 GULF.BK · ฿61.20 · รอจังหวะ" แล้วตามด้วยรายละเอียด 2 บรรทัด
+  const EMO = { go: "🟢", wait: "🟡", avoid: "🔴" };
   const rows = picks.flatMap(x => {
-    const [ic, color] = LV[x.label] || LV.Neutral, p = x.pattern, pl = x.plan;
-    // งบใกล้ = ความเสี่ยงสำคัญสุด ขึ้นก่อน (บรรทัดแผนโชว์โซน ไม่ได้โชว์เหตุผล)
-    const earn = x.news?.earnTh ? ["calendar", `${x.group} · ${x.news.earnTh} ระวังราคากระโดด`] : null;
+    const p = x.pattern, pl = x.plan, sig = pl?.sig ?? "avoid";
+    // งบใกล้ = ความเสี่ยงสำคัญสุด ขึ้นก่อน
+    const earn = x.news?.earnTh ? `📅 ${x.news.earnTh} ระวังราคากระโดด` : null;
     const gu = x.gurus ? ` · เซียนถือ ${x.gurus.length}` : "";
-    const note = earn ? earn : x.hot ? ["flame", `${x.group} · ร้อนเกิน รอย่อ${gu}`] : p ? ["activity", `${x.group} · ${p.th.replace(/ \(.*\)/, "")} · ${p.status.split(" · ")[0]}${gu}`] : gu ? ["star", x.group + gu] : null;
-    // บรรทัดจังหวะเข้า: เข้าได้/รอ = บอกโซน+stop+เป้า · อย่าเพิ่ง = บอกเหตุผล
-    const planLine = pl && [SIG[pl.sig][0], pl.sig === "avoid" ? `${pl.sigTh} · ${pl.why}` : `${pl.sigTh} · โซน ${x.cur}${pl.lo}–${pl.hi} · stop ${x.cur}${pl.stop} · เป้า ${x.cur}${pl.trim}`, SIG[pl.sig][1]];
+    const why = earn || (x.hot ? `🔥 ร้อนเกิน รอย่อ${gu}` : p ? `📈 ${p.th.replace(/ \(.*\)/, "")} · ${p.status.split(" · ")[0]}${gu}` : gu ? `⭐${gu.slice(2)}` : "");
+    const planTxt = pl && (sig === "avoid" ? pl.why : `โซน ${x.cur}${pl.lo}–${pl.hi} · stop ${x.cur}${pl.stop} · เป้า ${x.cur}${pl.trim}`);
+    const sub = (t, c = "#64748B") => ({ type: "box", layout: "baseline", contents: [{ type: "text", text: t, size: "xxs", color: c, wrap: true, flex: 1 }] });
     return [{
-      type: "box", layout: "baseline", margin: "md", contents: [
-        { type: "icon", url: ICON(ic), size: "sm" },
-        { type: "text", text: x.t, size: "sm", weight: "bold", color: "#0F172A", flex: 2, margin: "sm" },
-        { type: "text", text: x.th, size: "xs", weight: "bold", color, flex: 3 },
-        { type: "text", text: `Vol ${x.relVol}x`, size: "xs", color: "#475569", align: "end", flex: 2 },
+      type: "box", layout: "horizontal", margin: "md", contents: [
+        { type: "text", text: EMO[sig], flex: 0, size: "sm" },
+        { type: "text", text: x.t, size: "sm", weight: "bold", color: "#0F172A", flex: 3, margin: "sm" },
+        { type: "text", text: x.price != null ? `${x.cur}${x.price}` : "—", size: "sm", color: "#475569", align: "end", flex: 3 },
+        { type: "text", text: pl?.sigTh || "—", size: "xs", weight: "bold", color: SIG[sig][1], align: "end", flex: 3 },
       ],
-    }, ...(planLine ? [{
-      type: "box", layout: "baseline", contents: [
-        { type: "icon", url: ICON(planLine[0]), size: "xxs" },
-        { type: "text", text: planLine[1], size: "xxs", weight: "bold", color: planLine[2], margin: "sm", flex: 1, wrap: true },
-      ],
-    }] : []), ...(note ? [{
-      type: "box", layout: "baseline", contents: [
-        { type: "icon", url: ICON(note[0]), size: "xxs" },
-        { type: "text", text: note[1], size: "xxs", color: "#64748B", margin: "sm", flex: 1 },
-      ],
-    }] : [])];
+    },
+    ...(planTxt ? [sub(planTxt, SIG[sig][1])] : []),
+    sub([`${x.th} · Vol ${x.relVol}x · ${x.group}`, why].filter(Boolean).join(" · "))];
   });
   return {
     type: "bubble", size: "mega",
     header: { type: "box", layout: "vertical", backgroundColor: "#14532D", paddingAll: "16px", contents: [
-      { type: "text", text: "STOCK SCREEN", color: "#BBF7D0", size: "xs", weight: "bold" },
+      { type: "text", text: "🔎 STOCK SCREEN", color: "#BBF7D0", size: "xs", weight: "bold" },
       { type: "text", text: "คัดหุ้นวันนี้", color: "#FFFFFF", size: "xl", weight: "bold", margin: "xs" },
       { type: "text", text: `ราคาปิด ${thDate(sc.updated)} · US · ไทย · ETF/ทอง`, color: "#86EFAC", size: "xxs", margin: "sm" },
     ] },
