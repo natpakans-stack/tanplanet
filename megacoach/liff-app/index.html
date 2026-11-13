@@ -142,14 +142,22 @@ try { var t = localStorage.getItem("mc_theme") || "dark"; if (t !== "system") do
   .mc-frac__d { padding: var(--rf-space-050) var(--rf-space-050) 0; }
   /* ผลตรวจสุขภาพ: ชื่อ · ค่า · เกณฑ์ · สถานะ */
   .mc-labs { list-style: none; margin: 0; padding: 0; }
-  .mc-lab { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 0.8fr) auto; align-items: center; gap: var(--rf-space-050) var(--rf-space-150); padding-block: var(--rf-space-100); font-variant-numeric: tabular-nums; }
+  .mc-lab { display: grid; grid-template-columns: minmax(0, 1fr) 8.5rem 5rem 4.75rem; align-items: center; gap: var(--rf-space-050) var(--rf-space-150); padding-block: var(--rf-space-100); font-variant-numeric: tabular-nums; }
   .mc-lab + .mc-lab { border-top: 1px solid var(--rf-border); }
   .mc-lab > :nth-child(5) { grid-column: 1 / -1; }
+  .mc-lab__v { display: grid; gap: 2px; }
+  .mc-lab__unit { font: var(--rf-font-body-small); color: var(--rf-text-subtle); }
+  .mc-lab > .rfd-lozenge, .mc-lab > :nth-child(4) { justify-self: end; }
   .mc-lab__ref, .mc-lab__prev { font: var(--rf-font-body-small); color: var(--rf-text-subtle); }
-  @media (max-width: 599px) { .mc-lab { grid-template-columns: minmax(0, 1fr) auto; } .mc-lab__ref { grid-column: 1; } }
+  @media (max-width: 599px) { .mc-lab { grid-template-columns: minmax(0, 1fr) 7rem 4.75rem; } .mc-lab__ref { display: none; } }
   .mc-lab__tr { font: var(--rf-font-body-small); color: var(--rf-text-subtle); white-space: nowrap; }
   .mc-lab__tr.is-better { color: var(--rf-text-success); }
   .mc-lab__tr.is-worse { color: var(--rf-text-danger); }
+  /* หน้าตั้งค่า */
+  .mc-keys { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); gap: var(--rf-space-100) var(--rf-space-300); }
+  .mc-keys li { display: flex; justify-content: space-between; align-items: center; gap: var(--rf-space-150); padding-block: var(--rf-space-075); border-bottom: 1px solid var(--rf-border); }
+  .mc-id { overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+  .mc-prompt { margin: 0; white-space: pre-wrap; word-break: break-word; font: var(--rf-font-body-small); line-height: 1.7; padding: var(--rf-space-200); border-radius: var(--rf-radius-small); background: var(--rf-surface-sunken); max-block-size: 32rem; overflow: auto; }
   .mc-labgroups { display: grid; gap: var(--rf-space-300); }
   @media (min-width: 1024px) { .mc-labgroups { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--rf-space-400); } }
   .mc-plan { margin: 0; padding-inline-start: var(--rf-space-250); display: grid; gap: var(--rf-space-100); }
@@ -184,12 +192,12 @@ try { var t = localStorage.getItem("mc_theme") || "dark"; if (t !== "system") do
   @media (prefers-color-scheme: light) { :root:not([data-theme]) .mc-logo--on-light { display: block !important; } :root:not([data-theme]) .mc-logo--on-dark { display: none !important; } }
   .mc-stack { display: flex; flex-direction: column; gap: var(--rf-space-200); padding-top: var(--rf-space-200); }
   /* สารบัญซ้าย: จอกว้างเท่านั้น · ติดใต้แถบแท็บตอนเลื่อน · มือถือซ่อน */
-  .mc-toc { display: none; }
+  .mc-toc { display: none; }   /* สารบัญอยู่ขวา (order 2) — DOM ยังมาก่อนเนื้อหา ปุ่ม Tab ข้ามได้ */
   .mc-toc[hidden] > * { visibility: hidden; }   /* แท็บที่มีหัวข้อเดียว: เก็บคอลัมน์ไว้ ไม่ให้เนื้อหากระโดด */
   @media (min-width: 1100px) {
-    .mc-body { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: var(--rf-space-300); align-items: start; }
+    .mc-body { display: grid; grid-template-columns: minmax(0, 1fr) 15rem; gap: var(--rf-space-300); align-items: start; }
     .mc-body > .mc-stack { min-inline-size: 0; }
-    .mc-toc, .mc-toc[hidden] { display: block; position: sticky; top: 4.5rem; padding-top: var(--rf-space-200); max-block-size: calc(100vh - 6rem); overflow-y: auto; }
+    .mc-toc, .mc-toc[hidden] { order: 2; display: block; position: sticky; top: 4.5rem; padding-top: var(--rf-space-200); max-block-size: calc(100vh - 6rem); overflow-y: auto; }
   }
   .mc-toc__title { margin: 0 0 var(--rf-space-200); padding-inline-start: var(--rf-space-200); font: var(--rf-font-body); font-weight: var(--rf-font-weight-semibold); color: var(--rf-text-subtle); }
   .mc-toc ul { list-style: none; margin: 0; padding: var(--rf-space-050) 0; display: grid; gap: var(--rf-space-050); border-inline-start: 1px solid var(--rf-border); }
