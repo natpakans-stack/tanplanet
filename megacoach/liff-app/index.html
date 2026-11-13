@@ -134,7 +134,11 @@ try { var t = localStorage.getItem("mc_theme") || "dark"; if (t !== "system") do
   .mc-hc__ask { display: flex; justify-content: flex-end; margin-top: var(--rf-space-200); padding-top: var(--rf-space-200); border-top: 1px solid var(--rf-border); }
   /* สูตรแบบเศษส่วน: ตัวเศษ / เส้น / ตัวส่วน */
   .mc-fx { display: grid; gap: var(--rf-space-150); padding: var(--rf-space-200); border-radius: var(--rf-radius-small); background: var(--rf-surface-sunken); }
-  .mc-fx__row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--rf-space-100); }
+  /* สองบรรทัดใช้คอลัมน์ร่วมกัน: ป้าย · = · เศษส่วน · = · ผล → ตรงแนวกันทุกบรรทัด */
+  .mc-fx { grid-template-columns: max-content max-content max-content max-content 1fr; column-gap: var(--rf-space-150); align-items: center; }
+  .mc-fx__row { display: contents; }
+  .mc-fx__row > :first-child { grid-column: 1; }
+  .mc-fx .mc-frac { justify-self: stretch; }
   .mc-fx__row--num { font-variant-numeric: tabular-nums; }
   .mc-fx__row > span:first-child { color: var(--rf-text-subtle); }
   .mc-frac { display: inline-grid; text-align: center; vertical-align: middle; }
