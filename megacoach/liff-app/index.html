@@ -173,6 +173,8 @@ try { var t = localStorage.getItem("mc_theme") || "dark"; if (t !== "system") do
   .mc-scale { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--rf-space-050); }
   .mc-scale li { display: grid; grid-template-columns: 3rem 1fr auto; align-items: center; gap: var(--rf-space-150); padding: var(--rf-space-075) var(--rf-space-100); border-radius: var(--rf-radius-small); }
   .mc-scale li.is-current { background: var(--rf-surface-sunken); outline: 1px solid var(--rf-border-bold); }
+  .mc-scale li > span:nth-child(2) { display: grid; }
+  .mc-scale__b { font: var(--rf-font-body-small); color: var(--rf-text-subtle); font-variant-numeric: tabular-nums; }
   .mc-scale__pt { font: var(--rf-font-body-small); color: var(--rf-text-subtle); font-variant-numeric: tabular-nums; }
   .mc-hc { list-style: none; margin: 0; padding: 0; }
   .mc-hc__item { display: grid; grid-template-columns: minmax(0, 1fr); column-gap: var(--rf-space-150); row-gap: var(--rf-space-050); padding-block: var(--rf-space-150); }
