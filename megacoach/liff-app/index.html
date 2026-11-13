@@ -132,6 +132,14 @@ try { var t = localStorage.getItem("mc_theme") || "dark"; if (t !== "system") do
   .mc-hc--compact li + li { border-top: 1px solid var(--rf-border); }
   .mc-hc--compact li + li .mc-hc__go { border-top: 0; }
   .mc-hc__ask { display: flex; justify-content: flex-end; margin-top: var(--rf-space-200); padding-top: var(--rf-space-200); border-top: 1px solid var(--rf-border); }
+  /* สูตรแบบเศษส่วน: ตัวเศษ / เส้น / ตัวส่วน */
+  .mc-fx { display: grid; gap: var(--rf-space-150); padding: var(--rf-space-200); border-radius: var(--rf-radius-small); background: var(--rf-surface-sunken); }
+  .mc-fx__row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--rf-space-100); }
+  .mc-fx__row--num { font-variant-numeric: tabular-nums; }
+  .mc-fx__row > span:first-child { color: var(--rf-text-subtle); }
+  .mc-frac { display: inline-grid; text-align: center; vertical-align: middle; }
+  .mc-frac__n { padding: 0 var(--rf-space-050) var(--rf-space-050); border-bottom: 1px solid currentColor; }
+  .mc-frac__d { padding: var(--rf-space-050) var(--rf-space-050) 0; }
   .mc-scale { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--rf-space-050); }
   .mc-scale li { display: grid; grid-template-columns: 3rem 1fr auto; align-items: center; gap: var(--rf-space-150); padding: var(--rf-space-075) var(--rf-space-100); border-radius: var(--rf-radius-small); }
   .mc-scale li.is-current { background: var(--rf-surface-sunken); outline: 1px solid var(--rf-border-bold); }
