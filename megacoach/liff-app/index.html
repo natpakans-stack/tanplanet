@@ -147,6 +147,9 @@ try { var t = localStorage.getItem("mc_theme") || "dark"; if (t !== "system") do
   .mc-lab > :nth-child(5) { grid-column: 1 / -1; }
   .mc-lab__ref, .mc-lab__prev { font: var(--rf-font-body-small); color: var(--rf-text-subtle); }
   @media (max-width: 599px) { .mc-lab { grid-template-columns: minmax(0, 1fr) auto; } .mc-lab__ref { grid-column: 1; } }
+  .mc-lab__tr { font: var(--rf-font-body-small); color: var(--rf-text-subtle); white-space: nowrap; }
+  .mc-lab__tr.is-better { color: var(--rf-text-success); }
+  .mc-lab__tr.is-worse { color: var(--rf-text-danger); }
   .mc-labgroups { display: grid; gap: var(--rf-space-300); }
   @media (min-width: 1024px) { .mc-labgroups { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--rf-space-400); } }
   .mc-plan { margin: 0; padding-inline-start: var(--rf-space-250); display: grid; gap: var(--rf-space-100); }
