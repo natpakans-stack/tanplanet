@@ -404,6 +404,83 @@
 .rfd-badge-anchor > .rfd-badge { position: absolute; top: 0; inset-inline-end: 0; transform: translate(40%, -40%); }
 .rfd-badge-anchor > .rfd-badge:dir(rtl) { transform: translate(-40%, -40%); }
 
+/* ---- annotation.css ---- */
+/* Annotation — มาร์กจุดบนภาพ เอกสาร หรือหน้าจอ: กรอบ · เลข · จุดที่เลือก · callout · รายการจุด (Realfact · 10 พ.ย. 2026)
+   .rfd-annotation-layer [--compact]   ← ครอบเนื้อหาที่ถูกมาร์ก (img · canvas · กระดาษ) · position: relative
+     > .rfd-annotation [--information] [.is-active] (style: inset-block-start / inset-inline-start / inline-size / block-size เป็น %)
+         > .rfd-annotation__num        ← เลขกลมที่มุมบนซ้ายของกรอบ
+     > .rfd-annotation-callout [--start] ← ป้ายข้อความสั้นข้างกรอบที่เลือก (ไม่บังกรอบ)
+   ol.rfd-annotation-list > li.rfd-annotation-item [.is-selected] > .rfd-annotation__num + ข้อความ   ← ตัวแทนที่อ่านได้ (ลำดับเดียวกับเลขบนภาพ)
+   สี: ค่าเริ่มต้น = danger (จุดที่ผิด/ถูกแก้) · --information = จุดอธิบาย/แนะนำ · ไม่พึ่งสีอย่างเดียว — มีเลขและรายการเป็นข้อความเสมอ */
+.rfd-annotation-layer { position: relative; }
+.rfd-annotation, .rfd-annotation-item { --_c: var(--rf-border-danger); --_c-bold: var(--rf-background-danger-bold); }
+.rfd-annotation--information, .rfd-annotation-item--information { --_c: var(--rf-border-information); --_c-bold: var(--rf-background-information-bold); }
+
+.rfd-annotation {
+  position: absolute;
+  box-sizing: border-box;
+  min-inline-size: 0.75rem;
+  min-block-size: 0.75rem;
+  border: 2px solid var(--_c);
+  border-radius: var(--rf-radius-xsmall);
+  pointer-events: none;
+}
+.rfd-annotation__num {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  border-radius: var(--rf-radius-full);
+  background: var(--_c-bold);
+  color: var(--rf-text-inverse);
+  font: var(--rf-font-body-small);
+  font-weight: var(--rf-font-weight-bold);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+/* เลขบนภาพคร่อมมุมบนซ้ายของกรอบ — ไม่บังสิ่งที่อยู่ในกรอบ · ขอบ surface แยกเลขออกจากภาพทุกสี */
+.rfd-annotation > .rfd-annotation__num { position: absolute; inset-block-start: -0.625rem; inset-inline-start: -0.625rem; box-shadow: 0 0 0 2px var(--rf-surface); }
+/* จุดที่เลือก: วงเรืองรอบกรอบ + อยู่บนสุด — ตัวอื่นยังเห็นครบ (ไม่จางลง) */
+.rfd-annotation.is-active { z-index: 1; box-shadow: 0 0 0 4px color-mix(in srgb, var(--_c) 30%, transparent); }  /* วงเรือง = สีกรอบโปร่ง 30% — เห็นได้ทั้งบนกระดาษขาวและภาพเข้ม */
+.rfd-annotation.is-active > .rfd-annotation__num { inline-size: 1.5rem; block-size: 1.5rem; inset-block-start: -0.75rem; inset-inline-start: -0.75rem; }
+/* ที่แคบหรือจุดถี่ (ภาพย่อ · มือถือ): เลขแสดงเฉพาะจุดที่เลือก กันเลขทับเนื้อหา */
+.rfd-annotation-layer--compact .rfd-annotation:not(.is-active) > .rfd-annotation__num { display: none; }
+
+/* callout: ข้อความสั้นข้างกรอบที่เลือก — วางเองด้วย inset-* (ขวาของกรอบเป็นค่าแนะนำ · --start = ชิดซ้ายของกรอบ) */
+.rfd-annotation-callout {
+  position: absolute;
+  z-index: 2;
+  max-inline-size: 16rem;
+  padding: var(--rf-space-100) var(--rf-space-150);
+  border-radius: var(--rf-radius-medium);
+  background: var(--rf-surface-overlay);
+  box-shadow: var(--rf-shadow-overlay);
+  color: var(--rf-text);
+  font: var(--rf-font-body-small);
+  overflow-wrap: break-word;
+}
+
+/* รายการจุด: ลำดับเดียวกับเลขบนภาพ · กดแล้วกรอบเดียวกันเป็น is-active */
+.rfd-annotation-list { display: grid; gap: var(--rf-space-100); margin: 0; padding: 0; list-style: none; }
+.rfd-annotation-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--rf-space-100);
+  min-inline-size: 0;
+  padding: var(--rf-space-100) var(--rf-space-150);
+  border: var(--rf-border-width) solid var(--rf-border);
+  border-radius: var(--rf-radius-medium);
+  background: var(--rf-surface-raised);
+  color: var(--rf-text);
+  font: var(--rf-font-body);
+  overflow-wrap: break-word;
+}
+.rfd-annotation-item.is-selected { border-color: var(--rf-border-selected); box-shadow: inset 0 0 0 1px var(--rf-border-selected); }
+:is(button, a).rfd-annotation-item { inline-size: 100%; text-align: start; cursor: pointer; }
+:is(button, a).rfd-annotation-item:hover { background: var(--rf-surface-raised-hovered); }
+:is(button, a).rfd-annotation-item:focus-visible { outline: var(--rf-focus-ring-width) solid var(--rf-border-focused); outline-offset: 2px; }
+
 /* ---- banner.css ---- */
 /* Banner — derivative of @atlaskit/banner · Apache-2.0
    .rfd-banner.rfd-banner--(information|warning|danger).rfd-banner--(bold|subtle) > .rfd-banner__inner(__icon + __text > __action?) + __dismiss?
@@ -1459,6 +1536,31 @@ button.rfd-card__link { margin: 0; padding: 0; border: 0; background: none; font
 .rfd-card--selectable:has(:checked) .rfd-card__select-check::after, .rfd-card--selectable.is-selected .rfd-card__select-check::after { background: var(--rf-icon-inverse); }
 .rfd-card--selectable.is-disabled .rfd-card__select-check, .rfd-card--selectable:has(:disabled) .rfd-card__select-check { border-color: var(--rf-border-disabled); background: var(--rf-background-disabled); }
 .rfd-card--selectable:has(:disabled) { cursor: not-allowed; }
+
+/* ── State card (Takra Lip-Sync 11 พ.ย. 2026 · ผู้ใช้: "ออกแบบการ์ดให้สวยขึ้น สำหรับ container ที่กดไปแต่ละ state")
+   การ์ดสลับสถานะ/edge case ของหน้า (แผง DEV · ตัวเลือกพรีวิว) — กะทัดรัดสำหรับกริด 2 คอลัมน์ในแผงแคบ
+   <button class="rfd-card rfd-card--selectable rfd-card--state [is-selected]" role="radio" aria-checked>
+     <span class="rfd-card__select-icon"><span class="rfd-icon-tile rfd-icon-tile--small rfd-icon-tile--{gray|brand|red|yellow|blue} rfd-icon-tile--subtle">…</span></span>
+     <span class="rfd-card__select-text"><span class="rfd-card__select-title">…</span><span class="rfd-card__select-description">…</span></span>
+     <span class="rfd-card__select-check" aria-hidden="true"></span>
+   </button>
+   ไอคอนบอกชนิดเคส (ว่าง · error · ข้อมูลเยอะ · ข้อความยาว · กำลังทำงาน) · ติ๊กมุมขวาบน ไม่กินความกว้างข้อความ · เลือกแล้วพื้นอ่อนเพียง 35% (ธีมมืดไม่เป็นก้อนทึบ) */
+.rfd-card--state {
+  --rfd-card-pad: var(--rf-space-150);
+  position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: var(--rf-space-100);
+  min-height: 6.5rem; height: 100%; box-sizing: border-box;
+  text-align: start; font: inherit; color: inherit;
+}
+.rfd-card--state .rfd-card__select-text { gap: var(--rf-space-025); padding-inline-end: var(--rf-space-300); }
+.rfd-card--state .rfd-card__select-title { font: var(--rf-font-body); font-weight: var(--rf-font-weight-semibold); color: var(--rf-text); }
+.rfd-card--state .rfd-card__select-description { font: var(--rf-font-body-small); -webkit-line-clamp: 2; line-clamp: 2; }
+.rfd-card--state .rfd-card__select-check { position: absolute; inset-block-start: var(--rf-space-150); inset-inline-end: var(--rf-space-150); width: 1.125rem; height: 1.125rem; }
+.rfd-card--state:is(:hover, .is-hover):not(.is-selected, .is-disabled) { border-color: var(--rf-border-bold); }
+.rfd-card--state.is-selected {
+  background: color-mix(in oklab, var(--rf-background-brand-subtlest) 35%, var(--rf-surface-raised));
+}
+.rfd-card--state.is-selected .rfd-card__select-title { color: var(--rf-text-brand); }
+.rfd-card-states { display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: var(--rf-space-100); }
 .rfd-card-choice__legend { margin-bottom: var(--rf-space-100); padding: 0; font: var(--rf-font-heading-xsmall); color: var(--rf-text); }
 
 /* ── Action / launcher: ทั้งใบเป็นลิงก์/ปุ่มเดียว ── */
@@ -1518,12 +1620,12 @@ button.rfd-card__link { margin: 0; padding: 0; border: 0; background: none; font
 .rfd-card-grid--comfortable { gap: var(--rf-space-500); }
 
 @media (prefers-reduced-motion: reduce) {
-  .rfd-card, .rfd-card--action, .rfd-card--selectable, .rfd-card--interactive, .rfd-card__select-check { transition: none; }
+  .rfd-card, .rfd-card--action, .rfd-card--selectable, .rfd-card--interactive, .rfd-card--state, .rfd-card__select-check { transition: none; }
 }
 
 /* ── Corner tag: ป้ายเด่นที่มุมขวาบน เกาะขอบบนของการ์ด มีรอยพับซ้ายบน (ต้นแบบ Atlassian Marketplace "BESTSELLER" · 6 พ.ย. 2026)
    <article class="rfd-card rfd-card--corner-tag"><span class="rfd-card__corner-tag rfd-card__corner-tag--success">ขายดี</span> …</article>
-   ต่างจาก ribbon (เหตุผล/สิ่งที่ต้องทำต่อ ใต้การ์ด) · ไม่ใช่สถานะ (สถานะใช้ Lozenge ในหัวการ์ด) · หนึ่งใบหนึ่งป้าย */
+   ต่างจาก ribbon (เหตุผล/สิ่งที่ต้องทำต่อ ใต้การ์ด) · สองการใช้: การตลาด (ribbon หรือ flat · ขายดี/แนะนำ/ใหม่) และสถานะ (flat เท่านั้น · 12 พ.ย. 2026) · หนึ่งใบหนึ่งป้าย */
 .rfd-card.rfd-card--corner-tag { position: relative; overflow: visible; }
 .rfd-card__corner-tag {
   /* วัดจากของจริง (Atlassian Marketplace app-tile badge 6 พ.ย. 2026): ยื่นพ้นขอบ 4px = ความสูงรอยพับ · รอยพับ 7×4
@@ -1555,7 +1657,9 @@ button.rfd-card__link { margin: 0; padding: 0; border: 0; background: none; font
   --_tag-bg: var(--rf-background-success-subtler); --_tag-fg: var(--rf-text-success); --_tag-dot: var(--rf-icon-success);
   display: inline-flex; align-items: center; gap: var(--rf-space-075);
   top: 0; right: auto; inset-inline-end: 0;
-  padding: 0 var(--rf-space-100);
+  /* breathing room above/below the text · เส้นขอบ 1px สีเดียวกับพื้น (มองไม่เห็นปกติ · forced-colors ยังเห็นกรอบป้าย) หักออกจากระยะใน ขนาดเท่าเดิม */
+  border: var(--rf-border-width) solid var(--_tag-bg);
+  padding: calc(var(--rf-space-050) - var(--rf-border-width)) calc(var(--rf-space-150) - var(--rf-border-width));
   border-radius: 0; border-start-end-radius: calc(var(--rfd-card-radius) - var(--rf-border-width)); border-end-start-radius: var(--rf-radius-large);
   background: var(--_tag-bg); color: var(--_tag-fg);
   font: var(--rf-font-body-small); font-weight: 600; text-transform: none; box-shadow: none;
@@ -1566,6 +1670,27 @@ button.rfd-card__link { margin: 0; padding: 0; border: 0; background: none; font
 }
 .rfd-card__corner-tag--flat.rfd-card__corner-tag--brand { --_tag-bg: var(--rf-background-brand-subtler); --_tag-fg: var(--rf-text-brand); --_tag-dot: var(--rf-icon-brand); }
 .rfd-card__corner-tag--flat.rfd-card__corner-tag--discovery { --_tag-bg: var(--rf-background-discovery-subtler); --_tag-fg: var(--rf-text-discovery); --_tag-dot: var(--rf-icon-discovery); }
+/* status tones (same corner, same shape) — a card's status always sits here so every card reads the same way */
+.rfd-card__corner-tag--flat.rfd-card__corner-tag--information { --_tag-bg: var(--rf-background-information-subtler); --_tag-fg: var(--rf-text-information); --_tag-dot: var(--rf-icon-information); }
+.rfd-card__corner-tag--flat.rfd-card__corner-tag--warning { --_tag-bg: var(--rf-background-warning-subtler); --_tag-fg: var(--rf-text-warning); --_tag-dot: var(--rf-icon-warning); }
+.rfd-card__corner-tag--flat.rfd-card__corner-tag--danger { --_tag-bg: var(--rf-background-danger-subtler); --_tag-fg: var(--rf-text-danger); --_tag-dot: var(--rf-icon-danger); }
+.rfd-card__corner-tag--flat.rfd-card__corner-tag--neutral { --_tag-bg: var(--rf-background-neutral); --_tag-fg: var(--rf-text-subtle); --_tag-dot: var(--rf-icon-subtle); }
+/* live = ออกอากาศอยู่: โทน danger + จุดนำหน้ากระพริบ (จังหวะเดียวกับ Lozenge live · rfd-lozenge-pulse) — แดงเดียวกันทุกที่ที่แปลว่าออกอากาศ
+   วงกระพริบเป็น ::after ทับจุด ::before (ป้ายเป็น position:absolute อยู่แล้ว) · keyframes ซ้ำไว้ในไฟล์นี้ ให้โหลด card.css เดี่ยวได้ */
+.rfd-card__corner-tag--flat.rfd-card__corner-tag--live { --_tag-bg: var(--rf-background-danger-subtler); --_tag-fg: var(--rf-text-danger); --_tag-dot: var(--rf-icon-danger); }
+.rfd-card__corner-tag--flat.rfd-card__corner-tag--live::after {
+  content: ''; position: absolute; top: 50%; inset-inline-start: calc(var(--rf-space-150) - var(--rf-border-width));
+  width: var(--rf-space-075); height: var(--rf-space-075); margin-top: calc(var(--rf-space-075) / -2);
+  border-radius: var(--rf-radius-full); background: var(--_tag-dot);
+  animation: rfd-card-live-pulse 1.6s var(--rf-easing-out-practical) infinite;
+}
+@keyframes rfd-card-live-pulse { from { opacity: 0.6; transform: scale(1); } to { opacity: 0; transform: scale(2.2); } }
+@media (prefers-reduced-motion: reduce) { .rfd-card__corner-tag--flat.rfd-card__corner-tag--live::after { animation: none; opacity: 0; } }
+@media (forced-colors: active) {
+  .rfd-card__corner-tag--flat { border-color: CanvasText; }
+  .rfd-card__corner-tag--flat::before { forced-color-adjust: none; background: CanvasText; }
+  .rfd-card__corner-tag--flat.rfd-card__corner-tag--live::after { display: none; }
+}
 
 /* ───────── การ์ดแคตตาล็อก/หน้าขาย (Patterns › Card patterns · 7 พ.ย. 2026) ─────────
    ทั้งใบกดได้ = ลิงก์เดียวในชื่อ (.rfd-card__link) · ไม่ซ้อนปุ่ม
@@ -2847,6 +2972,26 @@ button.rfd-card__link { margin: 0; padding: 0; border: 0; background: none; font
 .rfd-checkbox-group--cards { align-items: stretch; gap: var(--rf-space-100); }
 .rfd-checkbox-group--cards > .rfd-checkbox-card { align-self: stretch; }
 
+/* Checkbox แบบ input เปล่า — input.rfd-checkbox-input (ไม่ต้องมีกล่องห่อ) สำหรับ markup ที่ห่อเองไม่ได้ (หน้าที่เฟรมเวิร์กอื่นเป็นเจ้าของ · ช่องในแถวตาราง)
+   หน้าตา/สถานะเดียวกับ .rfd-checkbox (กล่อง 16 · ขอบ border-input · ติ๊กสีกลับ · วงโฟกัส) · พื้นที่กดมาจาก <label> ที่ห่อหรือผูก for — ไม่มีป้ายในตัว
+   [aria-invalid=true] = ขอบแดง · :indeterminate = ขีดกลาง */
+input.rfd-checkbox-input {
+  appearance: none; -webkit-appearance: none;
+  flex: none; box-sizing: border-box; width: 1rem; height: 1rem; margin: 0; vertical-align: -0.125rem;
+  border: 1px solid var(--rf-border-input); border-radius: var(--rf-radius-small);
+  background: var(--rf-background-input) center / 0.75rem no-repeat;
+  transition: var(--rf-input-selection); cursor: pointer;
+}
+input.rfd-checkbox-input:hover { background-color: var(--rf-background-input-hovered); }
+input.rfd-checkbox-input:is(:checked, :indeterminate) { border-color: var(--rf-background-selected-bold); background-color: var(--rf-background-selected-bold); }
+input.rfd-checkbox-input:checked { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2 5 8.6 9.5 3.6' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+input.rfd-checkbox-input:indeterminate { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 6h6' stroke='%23fff' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E"); }
+input.rfd-checkbox-input:is(:checked, :indeterminate):hover { border-color: var(--rf-background-selected-bold-hovered); background-color: var(--rf-background-selected-bold-hovered); }
+input.rfd-checkbox-input:focus-visible { outline: 2px solid var(--rf-border-focused); outline-offset: 2px; }
+input.rfd-checkbox-input[aria-invalid='true'] { border: 2px solid var(--rf-border-danger); }
+input.rfd-checkbox-input:disabled { border-color: var(--rf-border-disabled, var(--rf-border)); background-color: var(--rf-background-disabled); cursor: not-allowed; }
+input.rfd-checkbox-input:disabled:checked { background-color: var(--rf-background-disabled); }
+
 /* ---- chip.css ---- */
 /* Chip — ของเราเอง (ตัวกรองด่วน / เลือกหนึ่งจากชุดสั้น)
    .rfd-chip-group [--compact] > button.rfd-chip [--compact] [--has-icon] [is-selected] > __icon? + __text + __count?
@@ -3046,6 +3191,8 @@ button.rfd-card__link { margin: 0; padding: 0; border: 0; background: none; font
          > .rfd-folder-card__go                     วง › (บอกว่าเข้าไปได้ · ประดับ)
      > .rfd-folder-card__more                       ⋯ บนแถบสี (อยู่เหนือ ::after จึงกดแยกได้)
    .rfd-folder-grid                                 กริดการ์ด (≥ 200px)
+   button.rfd-folder-card.rfd-folder-card--create   การ์ด "สร้างโฟลเดอร์" ใบสุดท้ายของกริด (ขอบประ · ขนาดเท่าการ์ดโฟลเดอร์ · กดแล้วเปิด Drawer)
+     > .rfd-folder-card__plus + .rfd-folder-card__create-title + .rfd-folder-card__create-hint?
    div.rfd-folder-picker[role=radiogroup] > label.rfd-folder-picker__option[data-rfd-color]
      > input[type=radio].rfd-folder-picker__input + .rfd-folder-picker__icon[.is-root] + .rfd-folder-picker__name (> .rfd-folder-picker__now) + .rfd-folder-picker__check
    สถานะบังคับ: .is-hover .is-focus (บน .rfd-folder-card และ .rfd-folder-picker__option) */
@@ -3125,6 +3272,31 @@ button.rfd-card__link { margin: 0; padding: 0; border: 0; background: none; font
 /* ⋯ บนแถบสี: ไอคอนสีเดียวกับตัวอักษรบนพื้น bold (ผ่าน contrast gate คู่ accent-bolder + text-inverse) */
 .rfd-folder-card__more .rfd-button { --_fg: var(--rf-text-inverse); --_icon: var(--rf-text-inverse); color: var(--rf-text-inverse); }
 .rfd-folder-card__more .rfd-button:hover { background: color-mix(in srgb, var(--rf-text-inverse) 20%, transparent); }
+
+/* การ์ด "สร้างโฟลเดอร์" (Lip-Sync คลังบท 11 พ.ย. 2026) — ช่องว่างให้เติม: ขอบประ · พื้นผิวปกติ ไม่มีแถบสี/เงา · สูงเท่าการ์ดโฟลเดอร์ในแถว
+   เป็น <button> ทั้งใบ (ไม่มี __open::after) · วางท้ายกริดเสมอ */
+.rfd-folder-card--create {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--rf-space-050);
+  min-height: 9.5rem;
+  margin: 0;
+  padding: var(--rf-space-200);
+  border: var(--rf-border-width) dashed var(--rf-border-bold);
+  background: var(--rf-surface);
+  box-shadow: none;
+  color: var(--rf-text);
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+}
+.rfd-folder-card--create:is(:hover, .is-hover) { border-color: var(--rf-border-brand); background: var(--rf-background-neutral-subtle-hovered); box-shadow: none; }
+.rfd-folder-card--create:is(:focus-visible, .is-focus) { outline: var(--rf-focus-ring-width) solid var(--rf-border-focused); outline-offset: 2px; }
+.rfd-folder-card__plus { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: var(--rf-radius-full); background: var(--rf-background-brand-subtlest); color: var(--rf-icon-brand); }
+.rfd-folder-card__create-title { font: var(--rf-font-heading-xsmall); font-family: var(--rf-font-family-heading); }
+.rfd-folder-card__create-hint { color: var(--rf-text-subtle); font: var(--rf-font-body-small); }
 
 /* ตัวเลือกโฟลเดอร์ (ย้ายไป · เก็บไว้ที่ไหน) — แถวที่เลือกได้อันเดียว ติ๊กกลมท้ายแถว */
 .rfd-folder-picker { display: grid; gap: var(--rf-space-075); max-height: 20rem; overflow: auto; padding: 2px; }
@@ -3292,6 +3464,24 @@ button.rfd-card__link { margin: 0; padding: 0; border: 0; background: none; font
 }
 .rfd-clamp-toggle { justify-self: start; align-self: flex-start; }
 .rfd-clamp-toggle[hidden] { display: none; }
+
+/* ---- scrollbar.css ---- */
+/* Scrollbar — แถบเลื่อนของเล่ม (ผู้ใช้ขอ 5 พ.ย. 2026 · เจอตอน audit Takra Lip-Sync)
+   .rfd-scrollbar ใส่ที่กล่องที่เลื่อนได้ หรือที่ <html> ทั้งหน้า · [--stable] จองที่ไว้ไม่ให้เนื้อหากระโดด · [--none] ซ่อนแถบ (ยังเลื่อนได้)
+   ใช้คุณสมบัติมาตรฐาน (scrollbar-width/color) — Chrome 121+ · Firefox · Safari 18.2+ · ::-webkit-scrollbar สำรองเฉพาะเบราว์เซอร์เก่า
+   สี: ตัวจับ = border-bold (≥ 3:1 บนพื้นสว่าง · WCAG 1.4.11) · รางโปร่ง · ธีมมืดตาม token เอง */
+.rfd-scrollbar { scrollbar-width: thin; scrollbar-color: var(--rf-border-bold) transparent; }
+.rfd-scrollbar:hover { scrollbar-color: var(--rf-text-subtlest) transparent; }
+.rfd-scrollbar--stable { scrollbar-gutter: stable; }
+.rfd-scrollbar--none { scrollbar-width: none; }
+@supports not (scrollbar-color: auto) {
+  .rfd-scrollbar::-webkit-scrollbar { width: 10px; height: 10px; }
+  .rfd-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .rfd-scrollbar::-webkit-scrollbar-thumb { background: var(--rf-border-bold); border: 2px solid transparent; background-clip: padding-box; border-radius: var(--rf-radius-full); }
+  .rfd-scrollbar::-webkit-scrollbar-thumb:hover { background-color: var(--rf-text-subtlest); }
+  .rfd-scrollbar--none::-webkit-scrollbar { display: none; }
+}
+@media (forced-colors: active) { .rfd-scrollbar { scrollbar-color: auto; } }
 
 /* ---- text-diff.css ---- */
 /* TextDiff — ความต่างของข้อความสองเวอร์ชัน (ของเราเอง)
@@ -3501,6 +3691,11 @@ button.rfd-card__link { margin: 0; padding: 0; border: 0; background: none; font
 @media (max-width: 400px) {
   .rfd-datetime-picker { width: 100%; }
 }
+
+/* โหมด popup (input[data-rfd-picker="popup"]) — ช่องเดิมไม่เปลี่ยน · ไอคอนของเบราว์เซอร์ยังอยู่เป็นตัวบอก แต่คลิกแล้วเปิด popup ของ DS · เคอร์เซอร์มือ */
+input.rfd-picker-native { cursor: pointer; }
+/* ไอคอนของเบราว์เซอร์ไม่รับคลิก (คลิกทะลุไปที่ช่อง = เปิด popup ของ DS) — ไม่งั้นตัวเลือกของเบราว์เซอร์เปิดซ้อนกับของ DS */
+input.rfd-picker-native::-webkit-calendar-picker-indicator { pointer-events: none; }
 
 /* ---- description-list.css ---- */
 /* DescriptionList — คู่ป้าย–ค่าของระเบียน (ADS ไม่มี component แยก — แบบหน้า Details ของ Jira issue + Foundations › Typography / Spacing)
@@ -3995,6 +4190,24 @@ button.rfd-card__link { margin: 0; padding: 0; border: 0; background: none; font
 @media (forced-colors: active) {
   .rfd-accordion__trigger:focus-visible { outline-color: Highlight; }
 }
+
+/* Accordion แบบ <details> ไม่ใช้ JS — div.rfd-accordion > details.rfd-accordion__item > summary.rfd-accordion__trigger + เนื้อหา
+   สำหรับ markup ที่เป็น <details> อยู่แล้ว (เนื้อหาคงที่ · หน้าที่เฟรมเวิร์กอื่นเป็นเจ้าของ) · หน้าตาเดียวกับแบบปุ่ม · chevron-down วาดด้วย ::after หมุนเมื่อ [open]
+   ใช้เดี่ยวได้ (ไม่มี .rfd-accordion ครอบ) — ระยะตั้งค่าเริ่มที่ตัว details */
+:where(details.rfd-accordion__item:not(.rfd-accordion *)) { --_pad-x: 0px; --_pad-y: var(--rf-space-150); }
+details.rfd-accordion__item > summary.rfd-accordion__trigger { list-style: none; align-items: center; }
+details.rfd-accordion__item > summary.rfd-accordion__trigger::-webkit-details-marker { display: none; }
+details.rfd-accordion__item > summary.rfd-accordion__trigger::marker { content: ''; }
+details.rfd-accordion__item > summary.rfd-accordion__trigger::after {
+  content: ''; flex: none; margin-inline-start: auto; inline-size: 1rem; block-size: 1rem;
+  background: var(--rf-icon-subtle);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform var(--rf-duration-short) var(--rf-easing-standard);
+}
+details.rfd-accordion__item[open] > summary.rfd-accordion__trigger::after { transform: rotate(180deg); }
+details.rfd-accordion__item > summary ~ * { margin-block-end: var(--_pad-y); }
+@media (prefers-reduced-motion: reduce) { details.rfd-accordion__item > summary.rfd-accordion__trigger::after { transition: none; } }
 
 /* ---- faq.css ---- */
 /* FAQ — คำถามที่พบบ่อย บน Accordion (css/accordion.css)
@@ -4925,7 +5138,7 @@ input.rfd-dynamic-table__check:focus-visible { outline: 2px solid var(--rf-borde
 .rfd-file-picker__dropzone:is(.is-dragover) { background: var(--rf-background-selected); border-color: var(--rf-border-selected); }
 .rfd-file-picker__drop-icon { display: grid; place-items: center; flex: none; width: 2.5rem; height: 2.5rem; border-radius: var(--rf-radius-full); background: var(--rf-background-brand-subtlest); color: var(--rf-icon-brand); }
 .rfd-file-picker__drop-text { color: var(--rf-text); }
-.rfd-file-picker__limits { width: 100%; color: var(--rf-text-subtlest); font: var(--rf-font-body-small); }
+.rfd-file-picker__limits { width: 100%; color: var(--rf-text-subtle);  /* subtlest = 4.3:1 ไม่ผ่าน 4.5:1 ที่ 12px (WCAG 1.4.3) */ font: var(--rf-font-body-small); }
 .rfd-file-picker__bar { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: var(--rf-space-100) var(--rf-space-150); }
 .rfd-file-picker__bar .rfd-file-picker__limits { flex-basis: auto; }
 
@@ -7603,6 +7816,8 @@ html:has(.rfd-save-bar) .rfd-flag-group:not(.rfd-flag-group--inline) {
   background: var(--rf-surface);
   container: rfd-top-nav / inline-size;
 }
+/* แถบบนที่แอปตั้ง sticky บนหน้าเลื่อนทั้งหน้า (ไม่มีเมนูข้าง): ตัวที่โฟกัสด้วย Tab ต้องไม่ถูกแถบบัง (WCAG 2.4.11) — เบราว์เซอร์เลื่อนเผื่อความสูงแถบ */
+html:has(.rfd-top-nav) { scroll-padding-top: calc(var(--rf-topbar-height) + var(--rf-space-100)); }
 .rfd-top-nav__start { display: flex; flex: none; align-items: center; gap: var(--rf-space-050); min-width: 0; }
 /* กางเมนูข้างบนจอกว้าง: ส่วนต้นของแถบบนกว้างเท่าเมนูข้าง — ดูเป็นแถบข้างเต็มความสูง (ADS) */
 .rfd-nav-root:not([data-overlay])[data-side-nav='expanded'] .rfd-top-nav__start { width: calc(var(--rfd-side-nav-width) - var(--rf-space-150)); }
@@ -8289,6 +8504,18 @@ h2.rfd-nav-section__heading[class] { margin: 0; font: var(--rf-font-body-small);
    · ปุ่มตัวเดียวไม่ยืด · ลูกหลายตัว (เช่นปุ่มสลับมุมมอง) เรียงเป็นแถวและขึ้นบรรทัดใหม่เองตามเดิม */
 .rfd-page-header__bottom-bar > :only-child:not(.rfd-button) { flex: 1 1 100%; min-width: 0; }
 
+/* band — แถบเต็มกว้างของพื้นที่เนื้อหา (ขวาของเมนูข้าง ถึงขอบจอ) พื้น surface + เส้นล่าง ไม่มีมุมมน
+   วางนอก padding ของหน้า (ลูกตัวแรกของพื้นที่เนื้อหา) · ระยะข้างเท่า margin ของเนื้อหา (16 · 24 ที่ ≥ 768 · 32 ที่ ≥ 1024)
+   ขอบข้อความตรงกับการ์ดด้านล่าง · เนื้อหาด้านล่างอยู่บนพื้น sunken */
+.rfd-page-header--band {
+  margin: 0 0 var(--rf-space-300);
+  padding: var(--rf-space-300) var(--rf-space-200);
+  background: var(--rf-surface);
+  border-bottom: var(--rf-border-width) solid var(--rf-border);
+}
+@media (width >= 768px) { .rfd-page-header--band { padding-inline: var(--rf-space-300); } }
+@media (width >= 1024px) { .rfd-page-header--band { padding-inline: var(--rf-space-400); } }
+
 /* แถบเส้นทางของ shell (Realfact · ผู้ใช้ตัดสิน 21 ต.ค. 2026) — เต็มกว้างใต้แถบบน ขวาของเมนูข้าง · เส้นล่าง
    ช่องนี้คือ element ที่ shell ส่งเข้า BreadcrumbSlotContext · ระยะข้างตาม margin ของเนื้อหา (16 · 32 ที่ ≥ 1024) */
 .rfd-page-header__breadcrumb-strip {
@@ -8302,10 +8529,16 @@ h2.rfd-nav-section__heading[class] { margin: 0; font: var(--rf-font-body-small);
 }
 .rfd-page-header__breadcrumb-strip:empty { display: none; }
 @media (width >= 1024px) { .rfd-page-header__breadcrumb-strip { padding-inline: var(--rf-space-400); } }
+/* below — แถบBreadcrumb ใต้ Page header (ผู้ใช้ตัดสิน 10 พ.ย. 2026) · แอปที่ไม่มีเมนูข้าง + Page header แบบ band: อ่านชื่อหน้าก่อนแล้วจึงเห็นเส้นทาง
+   Page header เลิกเว้นระยะล่าง · แถบมีเส้นล่างเส้นเดียว (เส้นบนคือเส้นล่างของ band — ไม่ซ้อนเป็นสองเส้น) · ระยะถึงเนื้อหาย้ายมาไว้ใต้แถบ */
+.rfd-page-header--band:has(+ .rfd-page-header__breadcrumb-strip--below) { margin-block-end: 0; }
+.rfd-page-header__breadcrumb-strip--below { margin-block-end: var(--rf-space-300); }
+@media (width >= 768px) and (width < 1024px) { .rfd-page-header__breadcrumb-strip--below { padding-inline: var(--rf-space-300); } }
 
 /* จอแคบ (< 768): ปุ่มของหัวหน้าขึ้นบรรทัดใต้ชื่อ · ปุ่มหลักเต็มกว้าง */
 @media (width < 768px) {
   .rfd-page-header--contained { padding: var(--rf-space-200); }
+  .rfd-page-header--band { padding-block: var(--rf-space-200); }
   .rfd-page-header__actions { margin-inline-start: 0; width: 100%; }
   .rfd-page-header__actions > .rfd-button--primary:only-child { flex: 1 1 100%; justify-content: center; }
 }
@@ -9590,6 +9823,20 @@ button.rfd-review__image:focus-visible { outline: var(--rf-focus-ring-width) sol
 .rfd-radio-card--compact > .rfd-radio-card__more { margin-top: var(--rf-space-100); padding-top: var(--rf-space-150); padding-bottom: var(--rf-space-050); }
 .rfd-radio-group--cards > .rfd-radio-card { align-self: stretch; }
 
+/* Radio แบบ input เปล่า — input.rfd-radio-input (ไม่ต้องมีกล่องห่อ) — คู่ของ input.rfd-checkbox-input · วง 14 · จุดกลางสีกลับ · พื้นที่กดมาจาก <label> */
+input.rfd-radio-input {
+  appearance: none; -webkit-appearance: none;
+  flex: none; box-sizing: border-box; width: 0.875rem; height: 0.875rem; margin: 0; vertical-align: -0.0625rem;
+  border: 1px solid var(--rf-border-input); border-radius: var(--rf-radius-full);
+  background: var(--rf-background-input); transition: var(--rf-input-selection); cursor: pointer;
+}
+input.rfd-radio-input:hover { background-color: var(--rf-background-input-hovered); }
+input.rfd-radio-input:checked { border-color: var(--rf-background-selected-bold); background: radial-gradient(circle, var(--rf-icon-inverse) 0 0.1875rem, var(--rf-background-selected-bold) 0.2rem); }
+input.rfd-radio-input:checked:hover { border-color: var(--rf-background-selected-bold-hovered); }
+input.rfd-radio-input:focus-visible { outline: 2px solid var(--rf-border-focused); outline-offset: 2px; }
+input.rfd-radio-input[aria-invalid='true'] { border: 2px solid var(--rf-border-danger); }
+input.rfd-radio-input:disabled { background: var(--rf-background-disabled); cursor: not-allowed; }
+
 /* ---- scribble.css ---- */
 /* Scribble — เส้นขีดเน้นแบบลายมือใต้คำ (เหมือนเอาปากกามาร์คเกอร์ขีด) · วาดเส้นตอนแสดงครั้งแรก · ลดการเคลื่อนไหว = แสดงเส้นเต็มทันที */
 .rfd-scribble { position: relative; display: inline-block; white-space: nowrap; }
@@ -9730,7 +9977,9 @@ button.rfd-review__image:focus-visible { outline: var(--rf-focus-ring-width) sol
 /* ข้อถัดไปคั่นด้วยเส้นบาง — เคล็ดลับเป็นข้อสั้น ไม่ใช่ก้อนข้อความ (ต้นแบบ Takra AI สตูดิโอ TipItem · 29 ต.ค. 2026) */
 .rfd-guide-card__tip + .rfd-guide-card__tip { padding-top: var(--rf-space-150); border-top: var(--rf-border-width) solid var(--rf-border-brand-subtle); }
 .rfd-guide-card__tip b { display: block; margin-bottom: var(--rf-space-025); color: var(--rf-text); font-weight: var(--rf-font-weight-semibold); }
-.rfd-guide-card__tip-icon { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; margin-top: -0.25rem; border-radius: var(--rf-radius-small); background: var(--rf-surface); color: var(--rf-icon-brand); }
+/* icon tile = two text lines (title + description) — reads as one block with the text beside it */
+.rfd-guide-card__tip-icon { display: grid; place-items: center; width: calc(2lh + var(--rf-space-025)); height: calc(2lh + var(--rf-space-025)); margin-top: 0; border-radius: var(--rf-radius-small); background: var(--rf-surface); color: var(--rf-icon-brand); }
+.rfd-guide-card__tip-icon :is(svg, .rfd-icon) { width: 1.125rem; height: 1.125rem; }
 .rfd-guide-card__actions { display: flex; flex-wrap: wrap; gap: var(--rf-space-100); margin-top: var(--rf-space-050); }
 
 .rfd-guide-bulb { position: relative; display: block; width: 6rem; height: 6rem; color: var(--rf-background-brand-bold); }
@@ -10788,14 +11037,9 @@ button.rfd-review__image:focus-visible { outline: var(--rf-focus-ring-width) sol
   overflow-x: auto;
   scrollbar-width: thin;
 }
-.rfd-tabs__list::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 1px;
-  background: var(--rf-border);
-  pointer-events: none;
-}
+/* เส้นใต้แถบ = เงาด้านในของกล่อง ไม่ใช่ ::after — ::after แบบ absolute อยู่ในกล่องที่เลื่อนได้ จึงเลื่อนหายไปพร้อมแท็บเมื่อปัด
+   เงาด้านในติดขอบกล่องที่มองเห็นเสมอ และไม่หายเมื่อแอปตั้ง background ให้แถบ */
+.rfd-tabs__list { box-shadow: inset 0 -1px 0 var(--rf-border); }
 .rfd-tab {
   position: relative;
   flex: none;
@@ -10864,6 +11108,11 @@ button.rfd-review__image:focus-visible { outline: var(--rf-focus-ring-width) sol
   }
 }
 
+/* ตัวเลขนับในแท็บ: Badge ต่อท้ายป้าย (.rfd-tab > .rfd-tab__label + .rfd-badge) — จัดกลางแนวตั้งกับป้าย (ยึด baseline แล้วต่ำกว่า ~1.4px) */
+.rfd-tab:has(> .rfd-badge) { display: inline-flex; align-items: center; justify-content: center; gap: var(--rf-space-075); }
+/* จอสัมผัส: แท็บสูง ≥ 44px ให้แตะง่าย — แท็บปกติสูง ~32 */
+@media (pointer: coarse) { .rfd-tab { min-height: 2.75rem; } }
+
 /* ---- tag.css ---- */
 /* Tag — derivative of @atlaskit/tag (new) · Apache-2.0 · ดู NOTICE.md
    .rfd-tag [--{blue|red|yellow|green|teal|purple|lime|orange|magenta}] [--rounded] [--link] [--removable]
@@ -10917,7 +11166,9 @@ button.rfd-review__image:focus-visible { outline: var(--rf-focus-ring-width) sol
 .rfd-tag--small .rfd-tag__text { padding-inline: var(--rf-space-050); line-height: 1.25rem; }
 .rfd-tag.is-disabled { color: var(--rf-text-disabled); }
 .rfd-tag.is-disabled .rfd-tag__before, .rfd-tag.is-disabled .rfd-tag__swatch { opacity: 0.5; }
-.rfd-tag--rounded .rfd-tag__text { padding-inline: var(--rf-space-075); }
+/* ทรงมน: มุมโค้งกินที่ข้าง — ข้อความไทยที่มีสระบน/ล่างดูชิดขอบถ้าเว้นแค่ 6 ⇒ เว้น 8 (small เว้น 6) · ความสูงคงเดิม 24/20 (Lip-Sync I-118 · 12 พ.ย. 2026) */
+.rfd-tag--rounded .rfd-tag__text { padding-inline: var(--rf-space-100); }
+.rfd-tag--rounded.rfd-tag--small .rfd-tag__text { padding-inline: var(--rf-space-075); }
 .rfd-tag__swatch { flex: none; width: 0.75rem; height: 0.75rem; margin-inline-start: var(--rf-space-025); border-radius: var(--rf-radius-xsmall); background: var(--_swatch); }
 .rfd-tag__before { display: inline-flex; flex: none; margin-inline-start: var(--rf-space-050); color: var(--rf-icon-subtle); }
 .rfd-tag__swatch + .rfd-tag__text, .rfd-tag__before + .rfd-tag__text { padding-inline-start: var(--rf-space-050); }

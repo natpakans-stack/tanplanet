@@ -29,6 +29,11 @@ try { var t = localStorage.getItem("mc_theme") || "dark"; if (t !== "system") do
   .mc-top { margin-inline: calc(-1 * var(--mc-gut)); margin-block-end: calc(-1 * var(--rf-space-200));
             padding: calc(env(safe-area-inset-top) + var(--rf-space-200)) var(--mc-gut) 0; background: var(--rf-surface); position: relative; }
   .mc-menu { position: absolute; inset-block-start: calc(env(safe-area-inset-top) + var(--rf-space-200)); inset-inline-end: var(--mc-gut); }
+  /* ranking: ชื่อบนบรรทัดเดียว · meta ใต้ชื่อเสมอ 1 บรรทัด (ตัด …) · ระยะแถวแน่นขึ้น — ponytail: ข้อความเต็มดูที่ "ดูเป็นตาราง" */
+  .mc .rfd-ranking { gap: var(--rf-space-100); }
+  .mc .rfd-ranking__body { gap: 2px; }
+  .mc .rfd-ranking__label { display: grid; }
+  .mc .rfd-ranking__meta { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .mc .rfd-tabs__list { position: sticky; top: 0; z-index: 5; margin-inline: calc(-1 * var(--mc-gut));
             padding-inline: var(--mc-gut); padding-block: calc(env(safe-area-inset-top) + var(--rf-space-200)) var(--rf-space-100); /* แท็บมีระยะบน-ล่าง ไม่ชิดขอบจอตอนติดบนสุด */ background: var(--rf-surface); }
   /* ---------- หน้าปลดล็อก (Glam: แสงแบรนด์ลอดหลัง · เกจเข็มกวาด · การ์ดกระจกฝ้า) ---------- */
@@ -97,8 +102,31 @@ try { var t = localStorage.getItem("mc_theme") || "dark"; if (t !== "system") do
   .mc-trio > * { min-inline-size: 0; }
   .mc-trio > .rfd-stat-grid { grid-template-columns: 1fr; }
   .mc-trio .rfd-stat-tile { block-size: 100%; }
-  @media (min-width: 1024px) { .mc-trio { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 1024px) { .mc-trio { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   /* ป้ายเกรด: กว้างเท่ากัน วางหน้าตัวเลข */
+  /* สุขภาพการเงิน: 1 ข้อ = 1 บล็อก · ป้ายเกรดซ้าย · ชื่อ+ค่าบรรทัดเดียว · เกณฑ์ · กล่องคำแนะนำ · เส้นคั่นระหว่างข้อ */
+  .mc-hc-cols .rfd-section-heading { font: var(--rf-font-heading-xsmall); margin: 0; }
+  @media (min-width: 1024px) { .mc-hc-cols { column-gap: var(--rf-space-300); } .mc-hc-cols > * + * { border-inline-start: 1px solid var(--rf-border); padding-inline-start: var(--rf-space-300); } }
+  .mc-hc--compact .mc-hc__item { padding-block: var(--rf-space-100); }
+  .mc-hc--compact .mc-hc__badge { grid-row: 1 / span 2; }
+  /* กรมธรรม์: 2 คอลัมน์ × 2 แถว (จอกว้าง) · ชื่อเต็ม ไม่ตัด … */
+  @media (min-width: 768px) { .mc-ins.rfd-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; } }
+  .mc-ins .rfd-card__title-row > .rfd-card__title { white-space: normal; overflow: visible; text-overflow: clip; }
+  /* ภาพรวม: ทั้งแถวกดได้ → สลับไปแท็บของข้อนั้น */
+  .mc-hc__go { inline-size: 100%; margin: 0; border: 0; background: none; color: inherit; font: inherit; text-align: start; cursor: pointer; border-radius: var(--rf-radius-small); padding-inline: var(--rf-space-100); }
+  .mc-hc li + li .mc-hc__go { border-top: 1px solid var(--rf-border); border-radius: 0; }
+  .mc-hc__go:hover { background: var(--rf-surface-raised); }
+  .mc-hc__go:focus-visible { outline: 2px solid var(--rf-border-focused); outline-offset: -2px; }
+  .mc-hc__to { display: inline-flex; align-items: center; gap: var(--rf-space-050); font: var(--rf-font-body-small); color: var(--rf-text-subtle); }
+  .mc-hc__go:hover .mc-hc__to { color: var(--rf-text); }
+  .mc-hc { list-style: none; margin: 0; padding: 0; }
+  .mc-hc__item { display: grid; grid-template-columns: 4rem minmax(0, 1fr); column-gap: var(--rf-space-150); row-gap: var(--rf-space-050); padding-block: var(--rf-space-150); }
+  .mc-hc__item + .mc-hc__item { border-top: 1px solid var(--rf-border); }
+  .mc-hc__item > :not(.mc-hc__badge) { grid-column: 2; }
+  .mc-hc__badge { grid-row: 1 / span 3; }
+  .mc-hc__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0 var(--rf-space-150); }
+  .mc-hc__head > span { font-variant-numeric: tabular-nums; }
+  .mc-hc__tip { margin-top: var(--rf-space-050); padding: var(--rf-space-075) var(--rf-space-100); border-radius: var(--rf-radius-small); background: var(--rf-surface-sunken); font: var(--rf-font-body-small); }
   .mc-grade-row { display: inline-flex; align-items: center; gap: var(--rf-space-100); }
   .mc-grade { display: inline-flex; }
   .mc-grade .rfd-lozenge { min-inline-size: 2.5rem; justify-content: center; text-align: center; }
