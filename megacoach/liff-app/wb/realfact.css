@@ -1344,7 +1344,8 @@ a.rfd-split-menu__item { text-decoration: none; }
 /* ชื่อยาว (ร้าน · บัญชี · สินค้า) ห่อได้ 2 บรรทัดก่อนตัด */
 .rfd-card__header--rich .rfd-card__title { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
 .rfd-card__meta { color: var(--rf-text-subtle); font: var(--rf-font-body-small); }
-.rfd-card__description { margin: 0; max-width: 64ch; color: var(--rf-text-subtle); font: var(--rf-font-body); }
+/* ข้อความไทยตัดบรรทัด (TAKRA CMS 18 พ.ย. 2026) — คำอธิบายสั้นหลายบรรทัด = balance (ไม่เหลือคำโดด 2–3 คำในบรรทัดท้าย) · เนื้อความ = pretty */
+.rfd-card__description { margin: 0; max-width: 64ch; color: var(--rf-text-subtle); font: var(--rf-font-body); text-wrap: balance; }
 .rfd-card__status { display: inline-flex; margin-top: var(--rf-space-050); }
 /* (v1.1.2) สถานะต่อท้ายชื่อบรรทัดเดียว — การ์ดในกริด (พนักงานไลฟ์ · สินค้า) · ชื่อยาวตัดด้วย … (ใส่ title ให้เห็นชื่อเต็ม) · ป้ายไม่ตกบรรทัดและไม่ถูกดันออก */
 .rfd-card__title-row { display: flex; align-items: center; gap: var(--rf-space-100); min-width: 0; max-width: 100%; }
@@ -2746,7 +2747,8 @@ button.rfd-card__link { margin: 0; padding: 0; border: 0; background: none; font
 .rfd-ranking { display: grid; gap: var(--rf-space-150); margin: 0; padding: 0; list-style: none; font: var(--rf-font-body); }
 .rfd-ranking__row { display: grid; grid-template-columns: auto auto minmax(0, 1fr); align-items: start; gap: var(--rf-space-150); }
 .rfd-ranking__row:not(:has(.rfd-ranking__media)) { grid-template-columns: auto minmax(0, 1fr); }
-.rfd-ranking__rank { min-width: 1.25rem; line-height: 1.5; color: var(--rf-text-subtle); font-variant-numeric: tabular-nums; text-align: end; }
+/* เลขอันดับชิดต้นบรรทัด — ตรงแนวกับหัวการ์ด/ข้อความอื่นในการ์ด (เดิม end ในกล่อง 20 เลขหลักเดียวเยื้องเข้า ~6px) · tabular-nums ให้หลักเดียว/สองหลักกว้างเท่ากัน */
+.rfd-ranking__rank { min-width: 1.25rem; line-height: 1.5; color: var(--rf-text-subtle); font-variant-numeric: tabular-nums; text-align: start; }
 .rfd-ranking__media { display: inline-flex; }
 .rfd-ranking__body { display: grid; gap: var(--rf-space-050); min-width: 0; }
 .rfd-ranking__top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--rf-space-150); min-width: 0; }
@@ -2928,7 +2930,8 @@ button.rfd-card__link { margin: 0; padding: 0; border: 0; background: none; font
 .rfd-checkbox-card:has(> .rfd-checkbox :checked), .rfd-checkbox-card:has(> .rfd-checkbox-card__head > .rfd-checkbox :checked), .rfd-checkbox-card.is-selected { border-color: var(--rf-border-selected); background: var(--rf-background-selected); }
 .rfd-checkbox-card__title { color: var(--rf-text); font: var(--rf-font-heading-small); }
 .rfd-checkbox-card__body { padding-inline-start: calc(1.5rem + var(--rf-space-050) + (1rem - 1.5rem) / 2); }
-.rfd-checkbox-card__desc { margin: 0; color: var(--rf-text-subtle); font: var(--rf-font-body); text-wrap: pretty; }
+/* ข้อความไทยตัดบรรทัด (TAKRA CMS 18 พ.ย. 2026) — คำอธิบายสั้นหลายบรรทัด = balance (ไม่เหลือคำโดด 2–3 คำในบรรทัดท้าย) · เนื้อความ = pretty */
+.rfd-checkbox-card__desc { margin: 0; color: var(--rf-text-subtle); font: var(--rf-font-body); text-wrap: balance; }
 .rfd-checkbox-card__more { margin-top: var(--rf-space-200); padding-top: var(--rf-space-200); border-top: var(--rf-border-width) solid var(--rf-border); }
 .rfd-checkbox-card.is-disabled { background: var(--rf-background-disabled); }
 /* child fields sit on the tinted selected surface — soft (translucent) input fill reads as disabled there, so use the solid input fill */
@@ -4456,11 +4459,16 @@ details.rfd-accordion__item > summary ~ * { margin-block-end: var(--_pad-y); }
    วางใน .rfd-grouped-list__rows หรือ .rfd-issue-list (เป็น container) — กล่องแคบกว่า 760 สถานะลงไปอยู่ใต้เนื้อหา ⋯ อยู่ขวาบน
    เสร็จ / ไม่ทำ = เนื้อหาจางลง (ไม่ทำ = ขีดฆ่าชื่อ) แต่สถานะและ ⋯ ยังเข้มเท่าเดิม (ยังเปลี่ยนกลับได้)
    อ่านอย่างเดียว (รายงาน audit · 3 พ.ย. 2026): article.rfd-issue.rfd-issue--readonly — ไม่มี ⋯ · __status = Lozenge กว้างตามตัว
+   คอลัมน์ความสำคัญ (TAKRA CMS 18 พ.ย. 2026): กว้าง --rfd-issue-severity-width (ค่าเริ่มต้น 2.5rem พอดี "P0") — ป้ายยาวกว่า (ไอคอน + คำ "สูง"/"ปานกลาง")
+     ตั้งที่ .rfd-issue-list ทั้งรายการ เช่น max-content ไม่ได้ (แต่ละแถวจะเริ่มชื่อคนละ x) → ใช้ความยาวจริง เช่น 5.5rem
+     · .rfd-issue--no-severity = ไม่มีคอลัมน์นี้ (รายการแบ่งกลุ่มตามความสำคัญอยู่แล้ว)
+     · .rfd-issue--stacked = __status/__actions เป็นแถวใต้เนื้อหา ชิดแนวชื่อเรื่อง ทุกความกว้าง (แบบเดียวกับกล่องแคบ)
    หลักฐาน: dd > ul.__measures (li > span ป้าย + b ค่าที่วัด + span ค่าที่ต้องเป็น) · ul.__shots > li > figure.__shot[.is-missing]
      > a.__shot-link[href=ไฟล์ภาพ] > img  +  figcaption.__shot-caption — JS rfd.shots (รวมใน data-auto) เปิดภาพใหญ่ใน Modal · ไฟล์หาย = "ไม่พบภาพ" */
 .rfd-issue-list { display: grid; container: rfd-issue-row / inline-size; min-width: 0; }
 .rfd-issue {
-  display: grid; grid-template-columns: 2.5rem minmax(0, 1fr) 9.25rem auto;
+  --_sev: var(--rfd-issue-severity-width, 2.5rem);
+  display: grid; grid-template-columns: var(--_sev) minmax(0, 1fr) 9.25rem auto;
   gap: var(--rf-space-100) var(--rf-space-150); align-items: start;
   padding: var(--rf-space-150) var(--rf-space-200); min-width: 0;
   transition: background-color var(--rf-duration-short) var(--rf-easing-standard);
@@ -4488,14 +4496,26 @@ details.rfd-accordion__item > summary ~ * { margin-block-end: var(--_pad-y); }
 .rfd-issue:is(.is-done, .is-dropped) .rfd-issue__main { opacity: 0.6; }
 .rfd-issue.is-dropped .rfd-issue__title { text-decoration: line-through; }
 @container rfd-issue-row (max-width: 47.5rem) {
-  .rfd-issue { grid-template-columns: 2.5rem minmax(0, 1fr) auto; }
+  .rfd-issue { grid-template-columns: var(--_sev) minmax(0, 1fr) auto; }
   .rfd-issue__status { grid-column: 2; grid-row: 2; max-width: 15rem; }
   .rfd-issue__actions { grid-column: 3; grid-row: 1; }
 }
-.rfd-issue--readonly { grid-template-columns: 2.5rem minmax(0, 1fr) auto; }
+.rfd-issue--readonly { grid-template-columns: var(--_sev) minmax(0, 1fr) auto; }
 @container rfd-issue-row (max-width: 47.5rem) {
-  .rfd-issue--readonly { grid-template-columns: 2.5rem minmax(0, 1fr); }
+  .rfd-issue--readonly { grid-template-columns: var(--_sev) minmax(0, 1fr); }
 }
+/* ไม่มีคอลัมน์ความสำคัญ — คอลัมน์แรกกว้าง 0 แล้วดึงของในคอลัมน์ที่ 2 ชิดขอบแถว (ไม่เหลือช่องไฟของคอลัมน์ที่หายไป) */
+.rfd-issue.rfd-issue--no-severity { --_sev: 0px; }
+.rfd-issue--no-severity > .rfd-issue__severity { display: none; }
+.rfd-issue--no-severity > .rfd-issue__main,
+.rfd-issue--no-severity.rfd-issue--stacked > :is(.rfd-issue__status, .rfd-issue__actions) { margin-inline-start: calc(-1 * var(--rf-space-150)); }
+@container rfd-issue-row (max-width: 47.5rem) {
+  .rfd-issue--no-severity > .rfd-issue__status { margin-inline-start: calc(-1 * var(--rf-space-150)); }
+}
+/* สถานะ/ปุ่มเป็นแถวใต้เนื้อหา ทุกความกว้าง */
+.rfd-issue.rfd-issue--stacked { grid-template-columns: var(--_sev) minmax(0, 1fr); }
+.rfd-issue--stacked > .rfd-issue__main { grid-column: 2; }
+.rfd-issue--stacked > :is(.rfd-issue__status, .rfd-issue__actions) { grid-column: 2; grid-row: auto; display: flex; flex-wrap: wrap; align-items: center; gap: var(--rf-space-100); max-width: none; }
 
 /* ---- หลักฐาน: ค่าที่วัด ---- */
 .rfd-issue__measures { display: grid; gap: var(--rf-space-025); margin: 0; padding: 0; list-style: none; white-space: normal; }
@@ -5598,6 +5618,7 @@ textarea.rfd-form__control { min-height: 4.5rem; resize: vertical; }
 .rfd-form .rfd-form__legend, .rfd-form__legend { margin: var(--rf-space-100) 0 0; color: var(--rf-text-subtle); font: var(--rf-font-body); }
 .rfd-field__label-row { display: flex; align-items: center; gap: var(--rf-space-050); margin-bottom: var(--rf-space-050); min-width: 0; }
 .rfd-field__label-row > .rfd-label { min-width: 0; }
+.rfd-helper-message { text-wrap: pretty; } /* ไทยไม่เหลือคำโดดบรรทัดท้าย */
 .rfd-helper-message--above { margin-top: 0; margin-bottom: var(--rf-space-050); }
 .rfd-message-wrapper:empty { display: none; }
 
@@ -6581,11 +6602,23 @@ a.rfd-menu-item[class]:is(.is-disabled, [aria-disabled='true']) { color: var(--r
 /* modal กลางจอ (ไม่ใช่ลิ้นชัก): ปุ่มคู่แบ่งท้ายกล่อง 50:50 เต็มความกว้าง (เจ้าของตัดสิน 27 ต.ค. 2026 · ต้นแบบ Takra Live shell.css)
    — กล่องยืนยันมีคำถามเดียว ปุ่มคู่คือคำตอบสองทาง จึงกว้างเท่ากันเต็มท้ายกล่อง · ลิ้นชัก (.rfd-drawer) ยังชิดขวาตามกติกาเดิม */
 .rfd-modal:not(.rfd-drawer, .rfd-modal--side) .rfd-modal__footer:has(> .rfd-button ~ .rfd-button):not(:has(> .rfd-button ~ .rfd-button ~ .rfd-button, > .is-start)) { width: 100%; }
+/* ข้อความสถานะชิดซ้าย + ปุ่มคู่ (TAKRA CMS 18 พ.ย. 2026) — .is-start ที่เป็นข้อความ (p หรือ .rfd-submit-status) เช่น <p class="rfd-submit-status is-start" role="status">ยังไม่มีการแก้ไข</p>
+   ปุ่มคู่ยังกว้างเท่ากัน (รองซ้าย หลักขวา) — เดิม .is-start ทุกแบบทำให้ท้ายกลับเป็น flex ปุ่มกว้างตามป้าย
+   สามคอลัมน์เท่ากัน: ข้อความ | รอง | หลัก · ปุ่มไม่แคบกว่าป้าย · ข้อความยาวห่อในคอลัมน์ของมัน (.is-start ที่เป็น div ห่อปุ่มลบ/ทำลาย ยังเป็น flex เดิม · :has() ซ้อนกันไม่ได้จึงแยกด้วยชนิด element) */
+.rfd-modal__footer:has(> .is-start:is(p, .rfd-submit-status)):has(> .rfd-button ~ .rfd-button):not(:has(> .rfd-button ~ .rfd-button ~ .rfd-button)) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) repeat(2, minmax(max-content, 1fr));
+}
+.rfd-modal__footer > .is-start:is(p, .rfd-submit-status) { min-width: 0; margin-inline-end: 0; text-wrap: pretty; }
 @media (width < 480px) {
   /* ปุ่มเต็มกว้างบนมือถือสูงเท่าเป้าสัมผัส (44) · เดสก์ท็อปคง 32 */
   .rfd-modal__footer > .rfd-button { min-height: var(--rf-touch-target); }
   .rfd-modal__footer:has(> .rfd-button ~ .rfd-button):not(:has(> .rfd-button ~ .rfd-button ~ .rfd-button, > .is-start)) { grid-template-columns: 1fr; width: 100%; }
   .rfd-modal__footer:has(> .rfd-button ~ .rfd-button):not(:has(> .rfd-button ~ .rfd-button ~ .rfd-button, > .is-start)) > :is(.rfd-button--primary, .rfd-button--warning, .rfd-button--danger) { order: -1; }
+  /* ข้อความสถานะ + ปุ่มคู่บนจอแคบ: ซ้อนบน-ล่าง ปุ่มหลักบน ข้อความล่างสุด */
+  .rfd-modal__footer:has(> .is-start:is(p, .rfd-submit-status)):has(> .rfd-button ~ .rfd-button):not(:has(> .rfd-button ~ .rfd-button ~ .rfd-button)) { grid-template-columns: 1fr; }
+  .rfd-modal__footer:has(> .is-start:is(p, .rfd-submit-status)):has(> .rfd-button ~ .rfd-button) > :is(.rfd-button--primary, .rfd-button--warning, .rfd-button--danger) { order: -1; }
+  .rfd-modal__footer > .is-start:is(p, .rfd-submit-status) { order: 1; }
 }
 .rfd-dialog-layer > :not(.rfd-modal__blanket, .rfd-modal) { z-index: 2; }
 
@@ -7436,7 +7469,7 @@ html:has(.rfd-save-bar) .rfd-flag-group:not(.rfd-flag-group--inline) {
 
 /* ---- editor-layout.css ---- */
 /* EditorLayout — โครงหน้าแก้เนื้อหาหลังบ้าน (ของเราเอง · Patterns › Back-office content editor)
-   .rfd-editor-layout[--with-aside]
+   .rfd-editor-layout[--with-aside][--cards]
      > .rfd-editor-layout__header                       PageHeader + EditorStatus
      > .rfd-editor-layout__body (--rfd-editor-aside-width)
          > .rfd-editor-layout__main                     ฟอร์ม = พื้นผิวเดียว > .rfd-editor-section × n (คั่นด้วยเส้น)
@@ -7448,6 +7481,22 @@ html:has(.rfd-save-bar) .rfd-flag-group:not(.rfd-flag-group--inline) {
 .rfd-editor-layout__body { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--rf-space-300); align-items: start; min-width: 0; }
 .rfd-editor-layout__main { min-width: 0; }
 .rfd-editor-layout__main > * { max-inline-size: var(--rfd-editor-main-max, 760px); }
+/* --cards = ฟอร์มและแผงข้างอยู่ในกล่องแบบ Card (หน้าที่เนื้อหาเป็นการ์ดบนพื้น sunken เช่น CMS หลังบ้าน)
+   เนื้อในเต็มกว้างของกล่อง — เพดาน 760 ของฟอร์มเปล่ามีไว้กันบรรทัดยาวบนพื้นหน้า ในการ์ดเพดานทำให้ช่องจบกลางการ์ด เหลือที่ว่างขวา
+   ต้องการเพดานในการ์ดด้วย = ตั้ง --rfd-editor-card-content-max (เช่น 760px) */
+.rfd-editor-layout--cards :is(.rfd-editor-layout__main, .rfd-editor-layout__aside) {
+  box-sizing: border-box;
+  padding: var(--rfd-card-pad, var(--rf-space-250));
+  border: var(--rf-border-width) solid var(--rf-border);
+  border-radius: var(--rf-radius-xlarge);
+  background: var(--rf-surface-raised);
+}
+.rfd-editor-layout--cards .rfd-editor-layout__main > * { max-inline-size: var(--rfd-editor-card-content-max, none); }
+/* ช่องกรอกบนการ์ดใช้พื้นทึบแบบเดียวกับใน Card (controls.css · specificity 0) */
+:where(.rfd-editor-layout--cards) :where(.rfd-editor-layout__main, .rfd-editor-layout__aside) {
+  --rfd-input-bg: var(--rf-background-input);
+  --rfd-input-bg-hovered: var(--rf-background-input-hovered);
+}
 /* --split = กล่องกว้างพอ (EditorLayout วัดเอง) — ฟอร์ม | เส้นแบ่ง | แผงข้าง · ไม่ split = แผงข้างเรียงใต้ฟอร์ม */
 .rfd-editor-layout--split .rfd-editor-layout__body { grid-template-columns: minmax(0, 1fr) auto var(--rfd-editor-aside-width, 420px); gap: 0; }
 .rfd-editor-layout--split .rfd-editor-layout__aside {
@@ -7470,6 +7519,9 @@ html:has(.rfd-save-bar) .rfd-flag-group:not(.rfd-flag-group--inline) {
 }
 .rfd-editor-layout__separator:is(:hover, :focus-visible, .is-hover)::before { width: 3px; margin-inline-start: -1px; background: var(--rf-border-selected); }
 .rfd-editor-layout__separator:focus-visible { box-shadow: none; }
+/* --cards: ขอบการ์ดสองใบแบ่งอยู่แล้ว เส้นกลางจึงซ้อนเป็นเส้นคู่ — ซ่อนไว้จนชี้/โฟกัส/ลาก (ยังเป็น separator ที่ลากและใช้คีย์บอร์ดได้) */
+.rfd-editor-layout--cards .rfd-editor-layout__separator:not(:hover, :focus-visible, .is-hover)::before { background: transparent; }
+
 
 /* section ของฟอร์ม — หัว 16 + คำอธิบายบรรทัดเดียว · เส้นคั่นบนทุก section ยกเว้นแรก · ระยะ 24 */
 .rfd-editor-section { display: flex; flex-direction: column; gap: var(--rf-space-200); min-width: 0; padding-block: var(--rf-space-300); }
@@ -7478,7 +7530,7 @@ html:has(.rfd-save-bar) .rfd-flag-group:not(.rfd-flag-group--inline) {
 .rfd-editor-section__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--rf-space-200); }
 .rfd-editor-section__titles { min-width: 0; }
 .rfd-editor-section__title { margin: 0; font: var(--rf-font-heading-small); color: var(--rf-text); }
-.rfd-editor-section__description { margin: var(--rf-space-050) 0 0; max-width: 64ch; color: var(--rf-text-subtle); }
+.rfd-editor-section__description { margin: var(--rf-space-050) 0 0; max-width: 64ch; color: var(--rf-text-subtle); text-wrap: balance; }
 .rfd-editor-section__action { flex: none; }
 .rfd-editor-section__body { display: flex; flex-direction: column; gap: var(--rf-space-200); min-width: 0; }
 
@@ -7764,6 +7816,12 @@ html:has(.rfd-save-bar) .rfd-flag-group:not(.rfd-flag-group--inline) {
    โครง: .rfd-nav-root[data-overlay][data-side-nav=expanded|collapsed] > .rfd-skip-links · .rfd-nav-banner · .rfd-top-nav · .rfd-side-nav · .rfd-nav-main · .rfd-nav-panel
    แถบบนและเมนูข้างใช้พื้น surface ทั้งสองธีมแบบ ADS (ไม่ใช่พื้นกรมของ .rf-shell เดิม) · สถานะบังคับ .is-hover .is-active .is-focus
    ชั้น: แถบบน/เมนูข้าง 200 (ADS navigation) · ผืนคลุมของแผงลอย 500 · แผงลอย 510 */
+/* ความกว้างเมนูข้าง (ตัวแปรสาธารณะ · TAKRA CMS 18 พ.ย. 2026): --rfd-side-nav-width = ตอนกาง (ค่าเริ่มต้น token --rf-nav-width 256)
+   · --rfd-side-nav-rail-width = แถบไอคอน (ค่าเริ่มต้น --rf-space-800 64) — React ตั้ง --rfd-side-nav-width เป็น inline ตามที่ผู้ใช้ลาก
+   · class ล้วนไม่ต้องตั้งเอง · แอปที่ต้องการกว้างอื่นตั้งที่ .rfd-nav-root (ใช้ค่าเดียวกันทั้งเมนูข้าง แถบบน และแนวช่องค้นหา) */
+:where(.rfd-nav-root) {
+  --rfd-side-nav-width: var(--rf-nav-width);
+}
 .rfd-nav-root {
   --rfd-top-nav-height: var(--rf-topbar-height);
   position: relative;
@@ -8492,7 +8550,8 @@ h2.rfd-nav-section__heading[class] { margin: 0; font: var(--rf-font-body-small);
 }
 .rfd-page-header__title:focus-visible, .rfd-page-header.is-focus .rfd-page-header__title { outline: 2px solid var(--rf-border-focused); outline-offset: 2px; border-radius: var(--rf-radius-xsmall); }
 .rfd-page-header__title--truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.rfd-page-header__description { margin: var(--rf-space-050) 0 0; max-width: 64ch; font: var(--rf-font-body); color: var(--rf-text-subtle); }
+/* ข้อความไทยตัดบรรทัด (TAKRA CMS 18 พ.ย. 2026) — คำอธิบายสั้นหลายบรรทัด = balance (ไม่เหลือคำโดด 2–3 คำในบรรทัดท้าย) · เนื้อความ = pretty */
+.rfd-page-header__description { margin: var(--rf-space-050) 0 0; max-width: 64ch; font: var(--rf-font-body); color: var(--rf-text-subtle); text-wrap: balance; }
 /* แถวข้อมูลใต้ชื่อ (DescriptionList layout="meta" · เลขที่คำสั่งซื้อ) — ไม่จำกัด 64ch เหมือนคำอธิบาย */
 .rfd-page-header__meta { margin-block-start: var(--rf-space-100); }
 /* ปุ่มชิดขวา · เมื่อห่อบรรทัดแล้วยังชิดขวา (พฤติกรรมเดิมของ .rf-page-h__acts) */
@@ -8507,14 +8566,19 @@ h2.rfd-nav-section__heading[class] { margin: 0; font: var(--rf-font-body-small);
 /* band — แถบเต็มกว้างของพื้นที่เนื้อหา (ขวาของเมนูข้าง ถึงขอบจอ) พื้น surface + เส้นล่าง ไม่มีมุมมน
    วางนอก padding ของหน้า (ลูกตัวแรกของพื้นที่เนื้อหา) · ระยะข้างเท่า margin ของเนื้อหา (16 · 24 ที่ ≥ 768 · 32 ที่ ≥ 1024)
    ขอบข้อความตรงกับการ์ดด้านล่าง · เนื้อหาด้านล่างอยู่บนพื้น sunken */
+/* ระยะในข้าง = margin ของเนื้อหา (--_gutter) + --rfd-page-band-inset (ค่าเริ่มต้น 0 = ชื่อตรงขอบการ์ด)
+   · .rfd-page-header--band-inset-card / React bandInset="card" = + ระยะในของการ์ด (20) → ชื่อหน้าตรงกับหัวการ์ด/ข้อความในการ์ด (TAKRA CMS 18 พ.ย. 2026)
+   · พื้น --rfd-page-band-bg (ค่าเริ่มต้น --rf-surface) ใช้ร่วมกับแถบเส้นทางที่ต่อเป็นผืนเดียว (__breadcrumb-strip--merged) — สองชิ้นสีเดียวกันทั้งสว่าง/มืด */
 .rfd-page-header--band {
+  --_gutter: var(--rf-space-200);
   margin: 0 0 var(--rf-space-300);
-  padding: var(--rf-space-300) var(--rf-space-200);
-  background: var(--rf-surface);
+  padding: var(--rf-space-300) calc(var(--_gutter) + var(--rfd-page-band-inset, 0px));
+  background: var(--rfd-page-band-bg, var(--rf-surface));
   border-bottom: var(--rf-border-width) solid var(--rf-border);
 }
-@media (width >= 768px) { .rfd-page-header--band { padding-inline: var(--rf-space-300); } }
-@media (width >= 1024px) { .rfd-page-header--band { padding-inline: var(--rf-space-400); } }
+.rfd-page-header--band-inset-card { --rfd-page-band-inset: var(--rfd-card-pad, var(--rf-space-250)); }
+@media (width >= 768px) { .rfd-page-header--band { --_gutter: var(--rf-space-300); } }
+@media (width >= 1024px) { .rfd-page-header--band { --_gutter: var(--rf-space-400); } }
 
 /* แถบเส้นทางของ shell (Realfact · ผู้ใช้ตัดสิน 21 ต.ค. 2026) — เต็มกว้างใต้แถบบน ขวาของเมนูข้าง · เส้นล่าง
    ช่องนี้คือ element ที่ shell ส่งเข้า BreadcrumbSlotContext · ระยะข้างตาม margin ของเนื้อหา (16 · 32 ที่ ≥ 1024) */
@@ -8529,6 +8593,19 @@ h2.rfd-nav-section__heading[class] { margin: 0; font: var(--rf-font-body-small);
 }
 .rfd-page-header__breadcrumb-strip:empty { display: none; }
 @media (width >= 1024px) { .rfd-page-header__breadcrumb-strip { padding-inline: var(--rf-space-400); } }
+/* --merged — แถบเส้นทางกับหัวหน้าแบบ band เป็นผืนเดียว (ไม่มีเส้นคั่นกลาง · พื้น --rfd-page-band-bg เดียวกับ band · ขอบซ้ายตรงชื่อหน้า)
+   ใช้คู่กับ band ที่เป็นลูกตัวแรกของพื้นที่เนื้อหาเท่านั้น · หัวแบบ contained เป็นการ์ดแยก ไม่ต่อกับแถบนี้
+   band ที่ต่อจากแถบนี้: ใส่ .rfd-page-header--band-after-strip (ระยะบนเหลือ 8 — เส้นทางกับชื่ออ่านเป็นก้อนเดียว)
+   inset ตั้ง --rfd-page-band-inset ที่กล่องแม่ร่วม (เช่น .rfd-nav-root) หรือ class --inset-card ทั้งสองชิ้น */
+.rfd-page-header__breadcrumb-strip--merged {
+  padding-inline: calc(var(--rf-space-200) + var(--rfd-page-band-inset, 0px));
+  border-bottom: 0;
+  background: var(--rfd-page-band-bg, var(--rf-surface));
+}
+.rfd-page-header__breadcrumb-strip--inset-card { --rfd-page-band-inset: var(--rfd-card-pad, var(--rf-space-250)); }
+@media (width >= 768px) { .rfd-page-header__breadcrumb-strip--merged { padding-inline: calc(var(--rf-space-300) + var(--rfd-page-band-inset, 0px)); } }
+@media (width >= 1024px) { .rfd-page-header__breadcrumb-strip--merged { padding-inline: calc(var(--rf-space-400) + var(--rfd-page-band-inset, 0px)); } }
+.rfd-page-header--band.rfd-page-header--band-after-strip { padding-top: var(--rf-space-100); }
 /* below — แถบBreadcrumb ใต้ Page header (ผู้ใช้ตัดสิน 10 พ.ย. 2026) · แอปที่ไม่มีเมนูข้าง + Page header แบบ band: อ่านชื่อหน้าก่อนแล้วจึงเห็นเส้นทาง
    Page header เลิกเว้นระยะล่าง · แถบมีเส้นล่างเส้นเดียว (เส้นบนคือเส้นล่างของ band — ไม่ซ้อนเป็นสองเส้น) · ระยะถึงเนื้อหาย้ายมาไว้ใต้แถบ */
 .rfd-page-header--band:has(+ .rfd-page-header__breadcrumb-strip--below) { margin-block-end: 0; }
@@ -9383,7 +9460,7 @@ button.rfd-review__image:focus-visible { outline: var(--rf-focus-ring-width) sol
 /* Progress tracker — ตัวบอกขั้นของงานหลายหน้าจอ
    div.rfd-progress-tracker.rfd-progress-tracker--(horizontal|vertical) [--comfortable|--cosy|--compact] [--wrap]
      > ol.rfd-progress-tracker__list [style="--rfd-tracker-count: 4"]
-       > li.rfd-progress-tracker__step.is-(done|current|upcoming|error|disabled) [style="--rfd-step-progress: 0–1"]
+       > li.rfd-progress-tracker__step.is-(done|current|upcoming|error|waiting|disabled) [style="--rfd-step-progress: 0–1"]
          > .rfd-progress-tracker__target (a | button | span)
              > .rfd-progress-tracker__marker (เลข · ไอคอนถูก · !)
              + .rfd-progress-tracker__text > .rfd-progress-tracker__label + .rfd-progress-tracker__description?
@@ -9483,6 +9560,14 @@ button.rfd-review__image:focus-visible { outline: var(--rf-focus-ring-width) sol
   background: var(--rf-background-danger-bold);
   color: var(--rf-text-inverse);
 }
+/* waiting — ขั้นติดเพราะรอสิ่งภายนอก (ยังไม่มี key · รอผู้อนุมัติ · รอโควตารอบใหม่) ไม่ใช่ความผิดของขั้นนี้
+   ไอคอนนาฬิกา (Icon clock) ในวงโทนเตือน + ข้อความบอกว่ารออะไร (description) + "กำลังรอ" ให้ screen reader — ไม่ใช้สีอย่างเดียว */
+.is-waiting > * > .rfd-progress-tracker__marker,
+.rfd-progress-tracker__summary.is-waiting .rfd-progress-tracker__marker {
+  border-color: var(--rf-border-warning);
+  background: var(--rf-background-warning);
+  color: var(--rf-icon-warning);
+}
 .is-disabled > * > .rfd-progress-tracker__marker {
   border-color: transparent;
   background: var(--rf-background-disabled);
@@ -9513,6 +9598,8 @@ button.rfd-review__image:focus-visible { outline: var(--rf-focus-ring-width) sol
 .is-current .rfd-progress-tracker__label { color: var(--rf-text); font-weight: var(--rf-font-weight-semibold); }
 .is-error .rfd-progress-tracker__label { color: var(--rf-text); font-weight: var(--rf-font-weight-semibold); }
 .is-error .rfd-progress-tracker__description { color: var(--rf-text-danger); }
+.is-waiting .rfd-progress-tracker__label { color: var(--rf-text); font-weight: var(--rf-font-weight-semibold); }
+.is-waiting .rfd-progress-tracker__description { color: var(--rf-text-warning); }
 .is-disabled .rfd-progress-tracker__label,
 .is-disabled .rfd-progress-tracker__description { color: var(--rf-text-disabled); }
 .rfd-progress-tracker--compact .rfd-progress-tracker__label { font: var(--rf-font-body-small); }
@@ -9561,6 +9648,7 @@ button.rfd-review__image:focus-visible { outline: var(--rf-focus-ring-width) sol
 .rfd-progress-tracker__meter { position: relative; display: block; height: var(--rf-space-050); overflow: hidden; border-radius: var(--rf-radius-full); background: var(--_track); }
 .rfd-progress-tracker__meter > span { position: absolute; inset: 0 auto 0 0; width: calc(100% * var(--rfd-tracker-fill, 0)); border-radius: inherit; background: var(--_fill); transition: width var(--rf-duration-long) var(--rf-easing-out-bold); }
 .rfd-progress-tracker__meter.is-error > span { background: var(--rf-background-danger-bold); }
+.rfd-progress-tracker__meter.is-waiting > span { background: var(--rf-background-warning-bold); }
 .rfd-progress-tracker__next { margin: 0; color: var(--rf-text-subtlest); font: var(--rf-font-body-small); }
 
 @media (prefers-reduced-motion: reduce) {
@@ -9571,6 +9659,7 @@ button.rfd-review__image:focus-visible { outline: var(--rf-focus-ring-width) sol
 /* เครื่องหมายถูกในวง 24px ต้องหนากว่าไอคอนทั่วไปจึงอ่านออก */
 .rfd-progress-tracker__marker svg { stroke-width: 3; }
 .rfd-progress-tracker__next.is-error { color: var(--rf-text-danger); }
+.rfd-progress-tracker__next.is-waiting { color: var(--rf-text-warning); }
 /* แนวนอนกว้างเท่ากล่องแม่เสมอ — ไม่ดันกล่องแม่ให้กว้างตามจำนวนขั้น (ขั้นที่ล้นเลื่อนใน __list) */
 .rfd-progress-tracker--horizontal { contain: inline-size; }
 
@@ -9744,7 +9833,8 @@ button.rfd-review__image:focus-visible { outline: var(--rf-focus-ring-width) sol
 .rfd-radio--card .rfd-radio__input { inset: 0; top: 0; width: 100%; height: 100%; border-radius: inherit; }
 .rfd-radio--card .rfd-radio__content { display: flex; flex-direction: column; gap: var(--rf-space-025); min-width: 0; }
 .rfd-radio--card .rfd-radio__label { padding: 0; font-weight: var(--rf-font-weight-semibold); }
-.rfd-radio__desc { font: var(--rf-font-body-small); color: var(--rf-text-subtle); }
+/* ข้อความไทยตัดบรรทัด (TAKRA CMS 18 พ.ย. 2026) — คำอธิบายสั้นหลายบรรทัด = balance (ไม่เหลือคำโดด 2–3 คำในบรรทัดท้าย) · เนื้อความ = pretty */
+.rfd-radio__desc { font: var(--rf-font-body-small); color: var(--rf-text-subtle); text-wrap: balance; }
 .rfd-radio--card .rfd-radio__more { grid-column: 1 / -1; position: relative; z-index: 1; cursor: auto; }
 /* indicator at the end: an empty ring, or a filled circle with a check */
 .rfd-radio--card .rfd-radio__box { grid-column: 2; grid-row: 1; margin: 0; width: 1.25rem; height: 1.25rem; }
@@ -9783,7 +9873,7 @@ button.rfd-review__image:focus-visible { outline: var(--rf-focus-ring-width) sol
 .rfd-radio-card:has(> .rfd-radio :checked), .rfd-radio-card:has(> .rfd-radio-card__head > .rfd-radio :checked), .rfd-radio-card.is-selected { border-color: var(--rf-border-selected); background: var(--rf-background-selected); }
 .rfd-radio-card__title { color: var(--rf-text); font: var(--rf-font-heading-small); }
 .rfd-radio-card__body { padding-inline-start: calc(1.5rem + var(--rf-space-050) + (1rem - 1.5rem) / 2); }
-.rfd-radio-card__desc { margin: 0; color: var(--rf-text-subtle); font: var(--rf-font-body); text-wrap: pretty; }
+.rfd-radio-card__desc { margin: 0; color: var(--rf-text-subtle); font: var(--rf-font-body); text-wrap: balance; }
 .rfd-radio-card__more { margin-top: var(--rf-space-200); padding-top: var(--rf-space-200); border-top: var(--rf-border-width) solid var(--rf-border); }
 .rfd-radio-card.is-disabled { background: var(--rf-background-disabled); }
 /* child fields sit on the tinted selected surface — soft (translucent) input fill reads as disabled there, so use the solid input fill */
@@ -9891,12 +9981,16 @@ input.rfd-radio-input:disabled { background: var(--rf-background-disabled); curs
 .rfd-error-summary__list a:is(:focus-visible, .is-focus) { outline: 2px solid var(--rf-border-focused); outline-offset: 2px; border-radius: var(--rf-radius-xsmall); }
 .rfd-section-message--success { --_border: var(--rf-border-success-subtle); --_bg: var(--rf-background-success); --_icon: var(--rf-icon-success); }
 .rfd-section-message--discovery { --_border: var(--rf-border-discovery-subtle); --_bg: var(--rf-background-discovery); --_icon: var(--rf-icon-discovery); }
-.rfd-section-message__icon { display: inline-flex; flex: none; padding-block: var(--rf-space-025); color: var(--_icon); }
+/* icon 16 centred on the first 24px body line: (24 - 16) / 2 = 4 — 2px left it sitting 2px high (Takra AI review 18 พ.ย. 2026) */
+.rfd-section-message__icon { display: inline-flex; flex: none; padding-block: var(--rf-space-050); color: var(--_icon); }
 .rfd-section-message__content { display: flex; flex: 1 1 auto; flex-direction: column; gap: var(--rf-space-100); min-width: 0; overflow-wrap: break-word; }
 .rfd-section-message .rfd-section-message__title { margin: 0; color: var(--rf-text); font: var(--rf-font-heading-small); }
 /* compact ต้องมาหลังกฎ base (น้ำหนักเท่ากัน) — เดิมอยู่ก่อน หัวข้อของ compact จึงไม่เล็กลง (DS-NOTES 1.12) */
 .rfd-section-message.rfd-section-message--compact .rfd-section-message__title { font: var(--rf-font-heading-xsmall); }
 .rfd-section-message .rfd-section-message__body { margin: 0; } /* body written as <p> must not inherit the browser's 1em margin — it pushed the text a line below the icon */
+/* ข้อความไทยตัดบรรทัด (TAKRA CMS 18 พ.ย. 2026) — คำอธิบายสั้นหลายบรรทัด = balance (ไม่เหลือคำโดด 2–3 คำในบรรทัดท้าย) · เนื้อความ = pretty */
+.rfd-section-message__body { text-wrap: pretty; }
+.rfd-section-message__title { text-wrap: balance; }
 .rfd-section-message__body > :first-child { margin-top: 0; }
 .rfd-section-message__body > :last-child { margin-bottom: 0; }
 .rfd-section-message__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--rf-space-050) 0; margin: 0; padding: 0; list-style: none; }
@@ -10173,6 +10267,14 @@ input.rfd-radio-input:disabled { background: var(--rf-background-disabled); curs
   list-style: none;
 }
 .rfd-select__menu--floating { position: fixed; z-index: var(--rf-z-flag); }
+/* กว้างตามตัวเลือกที่ยาวที่สุด ไม่น้อยกว่าช่อง (สคริปต์ตั้ง min-width = กว้างช่อง) ไม่เกินจอ — เดิมกว้างเท่าช่องพอดี "เผยแพร่แล้ว (5)" ตกบรรทัด
+   ตัวเลือก --truncate = เมนูกว้างเท่าช่อง ตัดด้วย … เหมือนเดิม · ที่ตั้ง style.width เอง (เช่นที่อยู่ไทย) ยังกว้างตามที่ตั้ง */
+.rfd-select__menu--floating {
+  width: max-content;
+  min-width: var(--rfd-select-trigger-width, 0);
+  max-width: calc(100vw - 2 * var(--rf-space-100));
+}
+.rfd-select__menu--floating:has(.rfd-select__option--truncate) { width: var(--rfd-select-trigger-width, 100%); }
 .rfd-select__menu--static { position: relative; width: 100%; }
 /* shouldRenderToParent — เมนูต่อใต้ช่องในสายเนื้อหา (ดันเนื้อข้างล่างลง) */
 .rfd-select__menu--inline { position: relative; width: 100%; margin-top: var(--rf-space-100); }
@@ -10658,7 +10760,7 @@ input.rfd-radio-input:disabled { background: var(--rf-background-disabled); curs
 
 /* ---- stat-tile.css ---- */
 /* StatTile — ตัวชี้วัดหนึ่งตัว (ของเราเอง)
-   .rfd-stat-tile[--medium|--large][--bare][--link][--spark] > __label(__link) | __head(__label + __icon--<chart color>) · __value(__unit) · __reason · __delta(--good|--bad|--neutral) · __footer · __spark
+   .rfd-stat-tile[--medium|--large][--bare][--card][--link][--spark] > __label(__link) | __head(__label + __icon--<chart color>) · __value(__unit) · __reason · __delta(--good|--bad|--neutral) · __footer · __spark
    กรอบแบน (ขอบ ไม่มีเงา) เหมือนการ์ด · ทุกใบในแถวสูงเท่ากัน (.rfd-stat-grid ยืดลูก) · ตัวเลขเป็นเลขความกว้างเท่ากัน */
 .rfd-stat-tile {
   position: relative;
@@ -10678,6 +10780,9 @@ input.rfd-radio-input:disabled { background: var(--rf-background-disabled); curs
   color: var(--rf-text);
 }
 .rfd-stat-tile--bare { --_pad: 0px; --rfd-chart-surface: var(--rf-surface); border: 0; background: transparent; }
+/* --card — วางแถวเดียวกับ Card: ระยะใน/มุมเท่าการ์ด (20 · 12 · ตัวแปรเดียวกับ .rfd-card) ข้อความเริ่ม x เดียวกับหัวการ์ด มุมเท่ากันทั้งแถว
+   (ค่าเริ่มต้น 16 · 8 สำหรับแถว tile ล้วน — เดิมวางคู่การ์ดข้อความเหลื่อม 4px · TAKRA CMS 18 พ.ย. 2026) */
+.rfd-stat-tile--card { --_pad: var(--rfd-card-pad, var(--rf-space-250)); border-radius: var(--rfd-card-radius, var(--rf-radius-xlarge)); }
 
 .rfd-stat-tile__label {
   max-width: 100%;
@@ -11429,7 +11534,7 @@ input.rfd-radio-input:disabled { background: var(--rf-background-disabled); curs
 
 /* ---- textfield.css ---- */
 /* Textfield — derivative of @atlaskit/textfield · Apache-2.0 · ดู NOTICE.md
-   .rfd-textfield [--subtle|--none] [--medium|--large] [--mono] [--secret]   (--compact = นามแฝงเดิมของ --medium) [is-invalid] [is-disabled] [is-readonly]
+   .rfd-textfield [--subtle|--none] [--medium|--large] [--mono] [--secret] [--password]   (--compact = นามแฝงเดิมของ --medium) [is-invalid] [is-disabled] [is-readonly]
      > [.rfd-textfield__elem] input.rfd-textfield__input [button.rfd-textfield__clear] [.rfd-textfield__spinner] [button.rfd-textfield__reveal]
    .rfd-textfield-group > .rfd-textfield-group__addon | .rfd-textfield-group__button[--accent] + .rfd-textfield
    สถานะจริงมาจาก :hover · :focus-within · aria-invalid · :disabled · [readonly] — class is-* ใช้ตรึงสถานะในหน้าเอกสาร
@@ -11568,6 +11673,12 @@ input.rfd-radio-input:disabled { background: var(--rf-background-disabled); curs
    ตัวอักษรความกว้างเท่ากัน (นับ/เทียบตัวท้ายได้) · ปุ่มแสดง/ซ่อนอยู่ในกรอบ ไม่ใช่ปุ่มติดนอกกรอบ · ต้นแบบ Takra Live settings.html (27 ต.ค. 2026) */
 .rfd-textfield--secret .rfd-textfield__input { font-family: var(--rf-font-family-code); letter-spacing: 0.02em; }
 .rfd-textfield--secret .rfd-textfield__input::placeholder { font-family: var(--rf-font-family-body); letter-spacing: normal; }
+/* ช่องรหัสผ่าน — .rfd-textfield--password > input[type=password|text][autocomplete=current-password|new-password] + button.rfd-textfield__reveal[aria-pressed]
+   ตัวอักษรปกติ (ไม่ใช่ monospace แบบ --secret — รหัสผ่านพิมพ์เอง ไม่ได้วางแล้วเทียบตัวท้าย) · ปุ่มแสดง/ซ่อนชุดเดียวกับ --secret
+   ซ่อนปุ่มตาของเบราว์เซอร์ (Edge/IE) ไม่ให้มีสองปุ่ม */
+.rfd-textfield--password .rfd-textfield__input { font-family: inherit; letter-spacing: normal; }
+.rfd-textfield--password .rfd-textfield__input::-ms-reveal,
+.rfd-textfield--password .rfd-textfield__input::-ms-clear { display: none; }
 .rfd-textfield__reveal {
   display: inline-grid;
   flex: none;
@@ -11988,11 +12099,13 @@ input.rfd-radio-input:disabled { background: var(--rf-background-disabled); curs
 .rfd-toggle-row__main { display: flex; align-items: center; justify-content: space-between; gap: var(--rf-space-200); min-width: 0; }
 .rfd-toggle-row__text { display: flex; flex-direction: column; gap: var(--rf-space-025); min-width: 0; }
 .rfd-toggle-row__label { color: var(--rf-text); font: var(--rf-font-body); font-weight: var(--rf-font-weight-semibold); cursor: pointer; }
-.rfd-toggle-row__description { max-width: 64ch; color: var(--rf-text-subtle); font: var(--rf-font-body-small); }
+/* ข้อความไทยตัดบรรทัด (TAKRA CMS 18 พ.ย. 2026) — คำอธิบายสั้นหลายบรรทัด = balance (ไม่เหลือคำโดด 2–3 คำในบรรทัดท้าย) · เนื้อความ = pretty */
+.rfd-toggle-row__description { max-width: 64ch; color: var(--rf-text-subtle); font: var(--rf-font-body-small); text-wrap: balance; }
 .rfd-toggle-row__reason { color: var(--rf-text-subtlest); font: var(--rf-font-body-small); }
 .rfd-toggle-row.is-disabled .rfd-toggle-row__label { color: var(--rf-text-disabled); cursor: not-allowed; }
 .rfd-toggle-row > .rfd-toggle-row__main > .rfd-toggle { flex: none; }
-.rfd-toggle-row__details { min-width: 0; padding-inline-start: var(--rf-space-200); }
+/* ชิดซ้ายตรงกับป้าย ไม่เยื้อง — การเยื้องอ่านเป็น "เบี้ยว" (ผู้ใช้ 3 พ.ย. · 19 พ.ย. 2026) */
+.rfd-toggle-row__details { min-width: 0; }
 
 /* ---- tooltip.css ---- */
 /* Tooltip — derivative of @atlaskit/tooltip · Apache-2.0 · ดู NOTICE.md
