@@ -4178,6 +4178,8 @@ input.rfd-picker-native::-webkit-calendar-picker-indicator { pointer-events: non
 }
 .rfd-accordion--card > .rfd-accordion__item.is-open { box-shadow: var(--rf-shadow-raised); }
 .rfd-accordion--card .rfd-accordion__trigger { border-radius: calc(var(--rf-radius-large) - 1px); }
+/* การ์ดเปิด: หัวมีพื้น ⇒ เนื้อต้องเว้นจากหัวเอง (เดิมชิดขอบพื้นหัว — ผู้ใช้ 23 พ.ย. "ต้องใส่ top padding ให้ตัวเอง") */
+.rfd-accordion--card .rfd-accordion__content { padding-block-start: var(--rf-space-200); }
 .rfd-accordion--card > .rfd-accordion__item.is-open > .rfd-accordion__heading .rfd-accordion__trigger { border-end-start-radius: 0; border-end-end-radius: 0; }
 
 /* ---- 2 คอลัมน์บนจอกว้าง (≥ 64rem) — แต่ละข้อสูงตามตัวเอง ข้างเคียงไม่ยืดตาม ---- */

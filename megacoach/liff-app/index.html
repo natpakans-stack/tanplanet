@@ -167,8 +167,19 @@ try { var t = localStorage.getItem("mc_theme") || "dark"; if (t !== "system") do
   .mc-md h2, .mc-md h3, .mc-md h4 { margin: var(--rf-space-200) 0 0; font: var(--rf-font-heading-xsmall); }
   .mc-md > :first-child { margin-top: 0; }
   .mc-md p, .mc-md ul { margin: 0; } .mc-md ul { padding-inline-start: var(--rf-space-250); display: grid; gap: var(--rf-space-050); }
-  .mc-md__note, .mc-md__row { font: var(--rf-font-body-small); color: var(--rf-text-subtle); }
+  .mc-md__note { font: var(--rf-font-body-small); color: var(--rf-text-subtle); }
   .mc-md a { overflow-wrap: anywhere; }
+  .mc-md__table { width: 100%; border-collapse: collapse; margin: var(--rf-space-100) 0; }
+  .mc-md__table th { text-align: start; font: var(--rf-font-body-small); font-weight: 600; color: var(--rf-text-subtle); padding: var(--rf-space-100); border-bottom: 1px solid var(--rf-border, rgba(127,127,127,.3)); }
+  .mc-md__table td { vertical-align: top; padding: var(--rf-space-150) var(--rf-space-100); border-bottom: 1px solid var(--rf-border, rgba(127,127,127,.15)); }
+  .mc-md__table td:first-child { width: 32%; } .mc-md__table td:nth-child(2) { width: 26%; font-weight: 600; }
+  .mc-md__table td:nth-child(n+3) { font: var(--rf-font-body-small); color: var(--rf-text-subtle); }
+  @media (max-width: 640px) {
+    .mc-md__table thead { display: none; } .mc-md__table, .mc-md__table tbody, .mc-md__table tr, .mc-md__table td { display: block; width: auto !important; }
+    .mc-md__table tr { padding: var(--rf-space-150) 0; border-bottom: 1px solid var(--rf-border, rgba(127,127,127,.15)); }
+    .mc-md__table td { border: 0; padding: var(--rf-space-025) 0; }
+    .mc-md__table td:nth-child(n+2)::before { content: attr(data-label) " · "; font-weight: 400; color: var(--rf-text-subtle); }
+  }
   .mc-cardinfo { display: grid; gap: var(--rf-space-100); margin-top: var(--rf-space-300); padding-top: var(--rf-space-300); border-top: 1px solid var(--rf-border); }
   .mc-prompt { margin: 0; white-space: pre-wrap; word-break: break-word; font: var(--rf-font-body-small); line-height: 1.7; padding: var(--rf-space-200); border-radius: var(--rf-radius-small); background: var(--rf-surface-sunken); max-block-size: 32rem; overflow: auto; }
   .mc-labgroups { display: grid; gap: var(--rf-space-300); }
