@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MegaCoach logo system</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0e0d13;color:#d8dade;font:14px/1.4 system-ui,sans-serif}header{padding:40px 5vw 28px}h1{margin:0 0 6px;font-size:28px}p{margin:0;color:#94919d}.grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#33313a}.panel{min-width:0;padding:32px 5vw 44px}.light{background:#f7f8fa;color:#2a2c2f}.dark{background:#17151f;color:#d8dade}h2{margin:0 0 28px;font-size:12px;letter-spacing:.14em;text-transform:uppercase}.asset{margin:0 0 34px}.label{margin-bottom:14px;font-size:11px;opacity:.62}.row{display:flex;align-items:flex-end;gap:22px;min-height:132px;overflow:auto}.sample{display:grid;justify-items:center;gap:8px}.sample span{font-size:10px;opacity:.48}.icon{display:block}.wide{align-items:center;min-height:86px}.wide img{display:block;max-width:none}@media(max-width:760px){.grid{grid-template-columns:1fr}.panel{padding-inline:24px}}
+</style>
+</head>
+<body>
+<header><h1>MegaCoach logo system</h1><p>Gauge progress, embedded in the name.</p></header>
+<main class="grid">
+<section class="panel light"><h2>On light</h2>
+  <div class="asset"><div class="label">mark.svg</div><div class="row" data-icons="mark.svg"></div></div>
+  <div class="asset"><div class="label">app-icon.svg</div><div class="row" data-icons="app-icon.svg"></div></div>
+  <div class="asset"><div class="label">wordmark-mark.svg</div><div class="row" data-icons="wordmark-mark.svg"></div></div>
+  <div class="asset"><div class="label">wordmark.svg</div><div class="row wide" data-wide="wordmark.svg"></div></div>
+  <div class="asset"><div class="label">wordmark-dark.svg</div><div class="row wide" data-wide="wordmark-dark.svg"></div></div>
+  <div class="asset"><div class="label">lockup.svg</div><div class="row wide" data-wide="lockup.svg"></div></div>
+  <div class="asset"><div class="label">lockup-dark.svg</div><div class="row wide" data-wide="lockup-dark.svg"></div></div>
+</section>
+<section class="panel dark"><h2>On dark</h2>
+  <div class="asset"><div class="label">mark.svg</div><div class="row" data-icons="mark.svg"></div></div>
+  <div class="asset"><div class="label">app-icon.svg</div><div class="row" data-icons="app-icon.svg"></div></div>
+  <div class="asset"><div class="label">wordmark-mark.svg</div><div class="row" data-icons="wordmark-mark.svg"></div></div>
+  <div class="asset"><div class="label">wordmark.svg</div><div class="row wide" data-wide="wordmark.svg"></div></div>
+  <div class="asset"><div class="label">wordmark-dark.svg</div><div class="row wide" data-wide="wordmark-dark.svg"></div></div>
+  <div class="asset"><div class="label">lockup.svg</div><div class="row wide" data-wide="lockup.svg"></div></div>
+  <div class="asset"><div class="label">lockup-dark.svg</div><div class="row wide" data-wide="lockup-dark.svg"></div></div>
+</section>
+</main>
+<script>
+for(const row of document.querySelectorAll('[data-icons]'))for(const s of [16,32,64,128])row.insertAdjacentHTML('beforeend',`<div class="sample"><img class="icon" src="${row.dataset.icons}" width="${s}" height="${s}" alt=""><span>${s}px</span></div>`);
+for(const row of document.querySelectorAll('[data-wide]'))for(const s of [24,40,64])row.insertAdjacentHTML('beforeend',`<div class="sample"><img src="${row.dataset.wide}" height="${s}" alt=""><span>${s}px high</span></div>`);
+</script>
+</body></html>
