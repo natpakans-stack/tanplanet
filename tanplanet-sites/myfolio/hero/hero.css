@@ -11,10 +11,10 @@
 }
 .fh-center > * { pointer-events: auto; }
 .fh-title {
-  margin: 0; font-size: clamp(36px, 3.8vw, 64px); line-height: 1.08; font-weight: 700;
-  letter-spacing: -0.02em; color: #111;
+  margin: 0; font-family: "Google Sans", Inter, sans-serif; font-size: clamp(36px, 4.4vw, 64px);
+  line-height: 1.2; font-weight: 500; letter-spacing: -0.025em; color: #2b313b;
 }
-.fh-sub { margin: 20px 0 0; max-width: 440px; font-size: 18px; line-height: 1.6; color: #52525b; }
+.fh-sub { margin: 20px 0 0; max-width: 480px; font-size: 18px; line-height: 1.6; color: #52525b; }
 .fh-cta { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; justify-content: center; }
 .fh-btn {
   display: inline-flex; align-items: center; height: 48px; padding: 0 24px; border-radius: 999px;
@@ -60,7 +60,29 @@
 @media (prefers-reduced-motion: reduce) { .fh { height: 100vh; } }
 
 /* section Projects บนหน้าแรก — การ์ดดึงงานจาก projects.tanplanet.work ใช้ thumbnail เต็มกว้างแทนไอคอนแอป */
-.pp-thumb { display: block; width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; object-position: 8% center;
-  border-radius: 14px; margin-bottom: 24px; background: #f4f4f5; }
+.pp-thumb { display: block; width: calc(100% + 64px); max-width: none; margin: -40px -32px 28px; aspect-ratio: 16 / 9;
+  object-fit: cover; background: #f4f4f5; }  /* ชิดขอบการ์ด: ลบ padding ของ .card.portfolio-project (40/32) */
+@media (max-width: 479px) { .pp-thumb { width: calc(100% + 40px); margin: -30px -20px 22px; } }
 .pp-more { margin-top: 32px; font-size: 15px; color: #71717a; }
 .pp-more a { color: #111; text-decoration: underline; }
+
+/* โลโก้โปรเจกต์ทรงกลมซ้อนขอบล่างของรูป (แบบ avatar ในการ์ดต้นแบบ) */
+.fh-card { display: flex; flex-direction: column; }
+.fh-ava {
+  display: grid; place-items: center; width: 44px; height: 44px; margin: -26px 0 0 12px; position: relative;
+  border-radius: 50%; background: var(--c); border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+.fh-ico { width: 20px; height: 20px; color: #fff; stroke: currentColor; }
+.fh-card b { padding-top: 8px; }
+@media (max-width: 767px) { .fh-ava { width: 32px; height: 32px; margin-top: -18px; border-width: 2px; } .fh-ico { width: 15px; height: 15px; } }
+
+/* คำเน้นลายมือ: เขียนจากซ้ายไปขวาตอนโหลด แล้วสั่นเบา ๆ ทุก 0.6s แบบเส้นวาดมือ (จังหวะอิงต้นแบบ) */
+.fh-accent {
+  display: inline-block; margin: 0 .18em; font-family: Sriracha, "Google Sans", cursive; font-style: normal; font-weight: 400;
+  font-size: 1.08em; color: #2b313b; transform-origin: 50% 60%;
+  clip-path: inset(-20% 100% -20% 0); animation: fh-write .9s cubic-bezier(.4,0,.2,1) .35s forwards, fh-idle 1.8s steps(1) 1.3s infinite;
+}
+@keyframes fh-write { to { clip-path: inset(-20% -2% -20% 0); } }
+@keyframes fh-idle { 0% { rotate: -1.2deg; } 33% { rotate: .8deg; translate: 0 -1px; } 66% { rotate: -.4deg; translate: 0 1px; } }
+@media (prefers-reduced-motion: reduce) { .fh-accent { animation: none; clip-path: none; } }
+.nw { white-space: nowrap; }
