@@ -135,6 +135,12 @@ UI = {"th": dict(ghost="ผลงาน", prev="← ผลงานก่อน�
 
 
 def en_title(slug, fallback):
+    import json
+    cj = ROOT / "pj/cards-en.json"
+    if cj.exists():
+        t = json.loads(cj.read_text()).get(slug + "/")
+        if t:
+            return t["title"]
     f = SRC / "en" / f"{slug}.html"
     if f.exists():
         m = re.search(r'<header class="hero">.*?<h1>(.*?)</h1>', f.read_text(), re.S)
@@ -186,7 +192,7 @@ def build(slug, cards, lang="th"):
         head_meta = re.sub(r'<meta\s[^>]*(?:og:image|twitter:image)[^>]*>\s*', "", head_meta)
         head_meta += (f'<meta property="og:image" content="{og}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
                       f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{og}">')
-    head_meta = re.sub(r'<link[^>]*rel="(?:icon|shortcut icon|apple-touch-icon)"[^>]*>\s*', "", head_meta)  # favicon เดียวกับ myfolio
+    head_meta = re.sub(r'<link[^>]*rel="(?:icon|shortcut icon|apple-touch-icon)"(?:[^>"]|"[^"]*")*>\s*', "", head_meta)  # href เป็น data:svg มี > ข้างใน  # favicon เดียวกับ myfolio
     head_meta += "".join(absolutize(l, "blog/") for l in re.findall(r'<link[^>]*rel="(?:icon|shortcut icon|apple-touch-icon)"[^>]*>', shell[:shell.find("</head>")]))
     head_meta = re.sub(r"<style.*?</style>|<link rel=\"stylesheet\" href=\"\.\./common/closing\.css\">", "", head_meta, flags=re.S)
     # ภาษา: canonical · hreflang · og:locale
@@ -209,6 +215,9 @@ def build(slug, cards, lang="th"):
     share = re.sub(r"https://myfolio\.tanplanet\.work/blog/dream-faculty", url, share)
     shell_links = re.findall(r'<link[^>]+(?:tokens\.css|webflow\.shared|fonts\.googleapis\.com/css2)[^>]*>', shell[:shell.find("</head>")])
 
+    # ลิงก์ข้าง/ก่อน-ถัดไป เฉพาะการ์ดที่มีหน้าในภาษานี้จริง (การ์ดลิงก์ภายนอก · หน้าที่ยังไม่มีฉบับอังกฤษ = ข้าม)
+    has = lambda c: not c["slug"].startswith("http") and ((SRC / "en" / f'{c["slug"]}.html').exists() if en else (ROOT / c["slug"] / "index.html").exists())
+    cards = [c for c in cards if c is card or has(c)]
     i = cards.index(card)
     latest = [c for c in cards if c is not card][:5]
     side = "".join(
@@ -236,6 +245,17 @@ def build(slug, cards, lang="th"):
 <aside class="ap-side"><div class="ap-side-inner"><section class="ap-widget"><h2 class="ap-widget-title"><span>{T["latest"]}</span></h2><ol class="ap-rank">{side}</ol></section></div></aside>
 </div>{progress}</article>'''
 
+    # AEO/GEO: บอกเครื่องว่าหน้านี้คือ case study ของใคร เรื่องอะไร เมื่อไร (ข้างกับ BreadcrumbList เดิม)
+    import json as _json
+    desc_m = re.search(r'<meta[^>]*name="description"[^>]*content="([^"]*)"|<meta[^>]*content="([^"]*)"[^>]*name="description"', head_meta)
+    ld = {"@context": "https://schema.org", "@type": "Article", "inLanguage": "en" if en else "th",
+          "headline": html.unescape(title_html), "description": html.unescape((desc_m.group(1) or desc_m.group(2)) if desc_m else ""),
+          "url": en_url if en else th_url, "mainEntityOfPage": en_url if en else th_url, "datePublished": card["added"],
+          "image": f"{PROJ}/pj/covers/{slug}-{lang}-og.jpg", "genre": CAT.get(card["cat"], "Project"),
+          "keywords": ", ".join(re.sub("<[^>]+>", "", t) for t in tags),
+          "author": {"@type": "Person", "name": "Natpakan Sirirat", "alternateName": "Tan", "url": "https://myfolio.tanplanet.work/about"},
+          "publisher": {"@type": "Person", "name": "Natpakan Sirirat", "url": "https://myfolio.tanplanet.work/"}}
+    head_meta += f'<script type="application/ld+json">{_json.dumps(ld, ensure_ascii=False)}</script>'
     html_tag = re.search(r"<html[^>]*>", shell).group(0)            # data-wf-page/site — Webflow IX ต้องใช้ ไม่งั้น page-wrapper ค้าง opacity 0
     html_tag = re.sub(r'\s(data-wf-collection|data-wf-item-slug)="[^"]*"', "", html_tag)
     extras = re.sub(r"<script\b.*?</script>", "", after, flags=re.S)  # ไลท์บ็อกซ์ · ปุ่มกลับขึ้นบน ฯลฯ ที่อยู่นอก <article>
@@ -247,7 +267,7 @@ def build(slug, cards, lang="th"):
            + f'<link rel="stylesheet" href="{BASE}/blog/article.css"/><link rel="stylesheet" href="../common/closing.css">'
            + ''
            + f"<style>{css_urls(scope_css(page_css), slug, en, R)}</style>"
-           + '<link rel="stylesheet" href="../common/components.css?v=7"/><link rel="stylesheet" href="../pj/case.css?v=12"/></head>'  # หลัง CSS ของหน้า → ของกลางชนะเสมอ
+           + '<link rel="stylesheet" href="../common/components.css?v=18"/><link rel="stylesheet" href="../pj/case.css?v=12"/></head>'  # หลัง CSS ของหน้า → ของกลางชนะเสมอ
            + absolutize(top, "blog/") + article + absolutize(foot, "blog/").replace("</body>", f'<div class="cs cs-extras">{extras}</div>' + scripts + "</body>", 1))
     out = re.sub(r'<script src="[^"]*/blog/article\.js"', f'<script src="{BASE}/blog/article.js"', out)
     # ปุ่มสลับภาษา → หน้านี้อีกภาษา (ไม่มีฉบับอังกฤษ = หน้ารวมภาษาอังกฤษ)

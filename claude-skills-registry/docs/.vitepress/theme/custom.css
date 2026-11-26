@@ -135,9 +135,14 @@ nav.prev-next,
   border: none !important;
 }
 
-/* Local search trigger button */
-#local-search button,
-.VPNavBarSearchButton {
-  min-width: 240px !important;
-  padding: 6px 16px !important;
+/* Local search trigger button — กว้างเฉพาะจอ ≥768 (มือถือ 240px ดันหน้าล้นแนวนอน) */
+@media (min-width: 768px) {
+  #local-search button,
+  .VPNavBarSearchButton {
+    min-width: 240px !important;
+    padding: 6px 16px !important;
+  }
 }
+
+/* มือถือ: ปุ่มค้นหาเหลือแค่ไอคอน ไม่ดันหน้าล้นแนวนอน */
+@media (max-width:767px){.VPNavBarSearch{flex:0 0 auto!important;width:auto!important;padding-left:0!important}.VPNavBarSearch .DocSearch-Button{width:48px!important;min-width:0!important}}

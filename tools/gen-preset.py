@@ -51,6 +51,9 @@ ITEMS = [
      '<div class="arch-layer">ชั้นแรก — สิ่งที่ผู้ใช้เห็น<div class="arch-sub"><span>หน้าเว็บ</span><span>LINE Bot</span></div></div><div class="arch-arrow">↕</div>'
      '<div class="arch-layer">ชั้นกลาง — ตัวประมวลผล<div class="arch-sub"><span>API</span><span>คิวงาน</span></div></div><div class="arch-arrow">↕</div>'
      '<div class="arch-layer">ชั้นล่าง — ที่เก็บข้อมูล<div class="arch-sub"><span>Postgres</span><span>ไฟล์บน S3</span></div></div></div></div>'),
+    ("คำถามที่พบบ่อย", "div.faq > details.faq-item > summary + p.faq-a · คู่กับ JSON-LD FAQPage", "ตอบคำถามสั้น ตรงประเด็น (AEO) · หน้า About",
+     '<div class="faq"><details class="faq-item" name="pv-faq" open><summary>คำถามสั้น ๆ ที่คนค้นหาจริง</summary><p class="faq-a">คำตอบสั้น ชัด ตรงประเด็นในย่อหน้าเดียว</p></details>'
+     '<details class="faq-item" name="pv-faq"><summary>คำถามข้อที่สอง</summary><p class="faq-a">คำตอบข้อที่สอง</p></details></div>'),
     ("เส้นคั่น", "hr.divider", "คั่นภายในช่วงเดียวกัน (ระหว่างช่วงใช้ section-intro แทน)", '<hr class="divider">'),
 ]
 
@@ -69,6 +72,17 @@ def contrast(a, b="#ffffff"):
         return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
     la, lb = sorted([L(a), L(b)], reverse=True)
     return (la + 0.05) / (lb + 0.05)
+
+
+def brand_html():
+    items = [("พระอาทิตย์", "ทุกวันคือหน้าใหม่ เริ่มด้วยการทบทวนว่าเมื่อวานได้เรียนรู้อะไร"),
+             ("ภูเขา", "ประสบการณ์ที่ค่อย ๆ สะสม จนเป็นฐานที่มั่นคงของงาน"),
+             ("สายน้ำ", "ความทรงจำที่ไหลต่อ ส่งต่อให้คนอื่นได้ใช้และต่อยอด")]
+    li = "".join(f"<li><b>{a}</b><span>{b}</span></li>" for a, b in items)
+    return ('<section class="pv-item" id="f-brand"><header class="pv-head"><span class="pv-no">A</span><h2 class="pv-name">แบรนด์ tanplanet</h2>'
+            '<p class="pv-meta"><code>logo-header.png</code><br>tanplanet = ไดอารี่สะสมประสบการณ์และความทรงจำ แชร์ให้คนอื่น และทบทวนตัวเองทุกวัน</p></header>'
+            f'<div class="pv-demo pv-brand"><img src="https://myfolio.tanplanet.work/logo-header.png" alt="tanplanet logo" width="200" height="100"><ul>{li}</ul>'
+            '<p class="pv-brand-rule">โลโก้สีดำบนพื้นขาวเท่านั้น · ไม่ใส่สี เงา หรือกรอบ · เล่าเรื่องแบรนด์ด้วย 3 ความหมายนี้ชุดเดียว</p></div></section>')
 
 
 def foundations():
@@ -93,9 +107,9 @@ def foundations():
         if m and m.group(1) not in seen:
             seen.add(m.group(1)); icons.append((m.group(1), re.sub("<[^>]+>", "", t.group(1)).strip() if t else ""))
     ic = "".join(f'<figure class="pv-ic">{svg}<figcaption>{lab}</figcaption></figure>' for svg, lab in icons)
-    return (f'<section class="pv-item" id="f-color"><header class="pv-head"><span class="pv-no">A</span><h2 class="pv-name">สี</h2><p class="pv-meta"><code>common/tokens.css</code><br>หน้าบ้านขาวดำ · ข้อความทุกสี ≥ 4.5:1 บนขาว (WCAG AA) · สีอื่นใช้เฉพาะคำเน้นใน hero</p></header><div class="pv-demo pv-swatches">{sw}</div></section>'
-            f'<section class="pv-item" id="f-type"><header class="pv-head"><span class="pv-no">B</span><h2 class="pv-name">ตัวอักษร</h2><p class="pv-meta"><code>--tp-font · --tp-font-display</code><br>Google Sans ทั้งไทยและอังกฤษ (น้ำหนักเส้นเท่ากันในบรรทัดเดียว) · โค้ดใช้ SF Mono</p></header><div class="pv-demo">{ty}</div></section>'
-            f'<section class="pv-item" id="f-icon"><header class="pv-head"><span class="pv-no">C</span><h2 class="pv-name">ไอคอน</h2><p class="pv-meta"><code>svg viewBox 0 0 24 24 · stroke 1.4–1.8 · round</code><br>ไอคอนเส้นชุดเดียว (แนว Lucide) · สีตาม currentColor · ห้ามใช้ emoji แทนไอคอน · {len(icons)} ตัวที่ใช้อยู่</p></header><div class="pv-demo pv-icons">{ic}</div></section>')
+    return (brand_html() + f'<section class="pv-item" id="f-color"><header class="pv-head"><span class="pv-no">B</span><h2 class="pv-name">สี</h2><p class="pv-meta"><code>common/tokens.css</code><br>หน้าบ้านขาวดำ · ข้อความทุกสี ≥ 4.5:1 บนขาว (WCAG AA) · สีอื่นใช้เฉพาะคำเน้นใน hero</p></header><div class="pv-demo pv-swatches">{sw}</div></section>'
+            f'<section class="pv-item" id="f-type"><header class="pv-head"><span class="pv-no">C</span><h2 class="pv-name">ตัวอักษร</h2><p class="pv-meta"><code>--tp-font · --tp-font-display</code><br>Google Sans ทั้งไทยและอังกฤษ (น้ำหนักเส้นเท่ากันในบรรทัดเดียว) · โค้ดใช้ SF Mono</p></header><div class="pv-demo">{ty}</div></section>'
+            f'<section class="pv-item" id="f-icon"><header class="pv-head"><span class="pv-no">D</span><h2 class="pv-name">ไอคอน</h2><p class="pv-meta"><code>svg viewBox 0 0 24 24 · stroke 1.4–1.8 · round</code><br>ไอคอนเส้นชุดเดียว (แนว Lucide) · สีตาม currentColor · ห้ามใช้ emoji แทนไอคอน · {len(icons)} ตัวที่ใช้อยู่</p></header><div class="pv-demo pv-icons">{ic}</div></section>')
 
 
 def section(n, name, cls, when, demo):
@@ -104,7 +118,13 @@ def section(n, name, cls, when, demo):
 
 
 def main():
-    shell = (MF / "blog/dream-faculty.html").read_text()
+    for lang in ("th", "en"):
+        build(lang)
+
+
+def build(lang):
+    en = lang == "en"
+    shell = (MF / ("en/" if en else "") / "blog/dream-faculty.html").read_text()
     html_tag = re.sub(r'\s(data-wf-collection|data-wf-item-slug)="[^"]*"', "", re.search(r"<html[^>]*>", shell).group(0))
     links = "".join(absolutize(l, "") for l in re.findall(r'<link[^>]+(?:tokens\.css|webflow\.shared|fonts\.googleapis\.com/css2|rel="icon"|rel="apple-touch-icon")[^>]*>', shell[:shell.find("</head>")]))
     top = absolutize(shell[shell.find("<body"):shell.find('<article class="ap"')], "blog/")
@@ -117,7 +137,7 @@ def main():
     art = "".join(section(i, *it) for i, it in enumerate(ARTICLE_ITEMS, n_case + 1))
     page = f'''<!DOCTYPE html>{html_tag}<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Preset — คอมโพเนนต์ชุดเดียวของ tanplanet</title><meta name="robots" content="noindex, nofollow"><meta property="og:title" content="Preset — คอมโพเนนต์ชุดเดียวของ tanplanet"><meta property="og:image" content="https://projects.tanplanet.work/pj/covers/site-preset-th-og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://projects.tanplanet.work/pj/covers/site-preset-th-og.jpg">{links}
-<link rel="stylesheet" href="{BASE}/blog/article.css"/><link rel="stylesheet" href="../common/components.css?v=7"/>
+<link rel="stylesheet" href="{BASE}/blog/article.css"/><link rel="stylesheet" href="../common/components.css?v=18"/>
 <style>
 .pv-page {{ max-width: var(--tp-container, 1120px); margin: 0 auto; padding: var(--tp-page-top, 100px) 24px 96px; }}
 .pv-title {{ margin: 0; font-family: var(--tp-font-display); font-size: 48px; line-height: 1.15; color: var(--tp-text); }}
@@ -129,7 +149,7 @@ def main():
 .pv-toc {{ margin: 0 0 28px; padding: 0; list-style: none; }}
 .pv-toc a {{ display: flex; gap: 12px; padding: 5px 0; font-size: 14px; line-height: 1.5; color: var(--tp-text-2); text-decoration: none; }}
 .pv-toc a:hover {{ color: var(--tp-text); }}
-.pv-tn {{ flex: none; width: 20px; color: var(--tp-text-4); font-variant-numeric: tabular-nums; }}
+.pv-tn {{ flex: none; width: 24px; color: var(--tp-text-4); font-variant-numeric: tabular-nums; }}
 .pv-main > .pv-group {{ margin-top: 48px; }}
 .pv-main > .pv-group:first-child {{ margin-top: 0; }}
 .pv-item {{ padding: 28px 0; border-top: 1px solid var(--tp-border); scroll-margin-top: 100px; }}
@@ -141,6 +161,12 @@ def main():
 .pv-meta code {{ display: inline-block; margin-bottom: 4px; font-size: 12.5px; }}
 .pv-demo {{ margin-left: 32px; padding: 24px; border: 1px solid var(--tp-border); border-radius: 16px; background: var(--tp-surface); }}
 .pv-demo > :first-child {{ margin-top: 0 !important; }} .pv-demo > :last-child {{ margin-bottom: 0 !important; }}
+.pv-brand {{ display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: center; }}
+.pv-brand img {{ width: 100%; height: auto; }} .pv-brand ul {{ margin: 0; padding: 0; list-style: none; }}
+.pv-brand li {{ display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: 12px; padding: 10px 0; border-top: 1px solid var(--tp-border); font-size: 15px; color: var(--tp-text-3); }}
+.pv-brand li:first-child {{ border-top: 0; }} .pv-brand b {{ color: var(--tp-text); }}
+.pv-brand-rule {{ grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--tp-text-3); }}
+@media (max-width: 860px) {{ .pv-brand {{ grid-template-columns: minmax(0, 1fr); }} }}
 .pv-swatches {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }}
 .pv-sw {{ display: flex; flex-direction: column; gap: 2px; font-size: 13px; color: var(--tp-text-3); }}
 .pv-sw b {{ color: var(--tp-text); font-weight: 600; }} .pv-sw code {{ align-self: start; font-size: 12px; }} .pv-sw small {{ font-size: 12px; line-height: 1.5; }}
@@ -156,15 +182,28 @@ def main():
 </style></head>
 {top}<main class="pv-page"><h1 class="pv-title">Preset</h1>
 <p class="pv-lead">คอมโพเนนต์ชุดเดียวที่ทุกหน้าใช้ ต้นฉบับอยู่ที่ <code>common/components.css</code> ขาดอะไรให้เพิ่มที่นั่นและในหน้านี้ก่อนใช้</p>
-<div class="pv"><aside class="pv-side"><p class="pv-group">พื้นฐาน</p><ol class="pv-toc"><li><a href="#f-color"><span class="pv-tn">A</span>สี</a></li><li><a href="#f-type"><span class="pv-tn">B</span>ตัวอักษร</a></li><li><a href="#f-icon"><span class="pv-tn">C</span>ไอคอน</a></li></ol>
+<div class="pv"><aside class="pv-side"><p class="pv-group">พื้นฐาน</p><ol class="pv-toc"><li><a href="#f-brand"><span class="pv-tn">A</span>แบรนด์</a></li><li><a href="#f-color"><span class="pv-tn">B</span>สี</a></li><li><a href="#f-type"><span class="pv-tn">C</span>ตัวอักษร</a></li><li><a href="#f-icon"><span class="pv-tn">D</span>ไอคอน</a></li></ol>
 <p class="pv-group">เนื้อหา case study</p><ol class="pv-toc">{toc_list(ITEMS, 1)}</ol>
 <p class="pv-group">บทความบล็อก</p><ol class="pv-toc">{toc_list(ARTICLE_ITEMS, n_case + 1)}</ol></aside>
 <div class="pv-main tp-doc"><p class="pv-group">พื้นฐาน</p>{foundations()}<p class="pv-group">เนื้อหา case study</p>{body}<p class="pv-group">บทความบล็อก</p><div class="ap"><div class="ap-content">{art}</div></div></div></div></main>
 {foot}'''
-    out = ROOT / "preset/index.html"
+    # ปุ่มสลับภาษา: /preset/ ↔ /en/preset/ (เปลือกยืมมาจากบทความ เลยต้องตั้งใหม่)
+    page = re.sub(r'(<a class="lang-switch" href=")[^"]*', r'\g<1>https://projects.tanplanet.work/' + ("preset/" if en else "en/preset/"), page)
+    if en:  # แปลทีละข้อความ (text node/alt ที่ตรงทั้งก้อน) จาก pj/preset-en.json
+        import json
+        tr = json.loads((ROOT / "pj/preset-en.json").read_text())
+        a, b = page.find("<title>"), page.find("</main>")
+        mid = re.sub(r">(\s*)([^<>]*?)(\s*)<", lambda m: ">" + m[1] + tr.get(m[2], m[2]) + m[3] + "<", page[a:b])
+        mid = re.sub(r'(content|alt)="([^"]*)"', lambda m: f'{m[1]}="{tr.get(m[2], m[2])}"', mid)
+        for k, v in tr.items():  # ข้อความที่มี > ในตัว (ชื่อคลาส) ไม่หลุดเป็น text node
+            if ">" in k:
+                mid = mid.replace(k.replace(">", "&gt;"), v).replace(k, v)
+        mid = mid.replace("บนขาว", "on white").replace('src="../', 'src="../../').replace('href="../common', 'href="../../common')
+        page = page[:a] + mid + page[b:]
+    out = ROOT / ("en/preset/index.html" if en else "preset/index.html")
     out.parent.mkdir(exist_ok=True)
     out.write_text(page)
-    print("ok", out.relative_to(ROOT), len(ITEMS) + len(ARTICLE_ITEMS), "คอมโพเนนต์")
+    print("ok", out.relative_to(ROOT), len(ITEMS) + len(ARTICLE_ITEMS), "คอมโพเนนต์", "ไทยค้าง", len(re.findall("[ก-๙]+", page[page.find("<main"):page.find("</main>")])) if en else "")
 
 
 if __name__ == "__main__":

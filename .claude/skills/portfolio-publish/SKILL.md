@@ -44,6 +44,12 @@ description: เขียนหน้า case study ของโปรเจก�
 - รัน `python3 tools/gen-myfolio-projects.py` → สร้าง `index.html` + `en/index.html` ใหม่ในเทมเพลต myfolio (การ์ด · JSON-LD · ลิงก์เมนู) — ห้ามแก้เปลือกหน้าใน index.html ตรง ๆ
 - รัน `python3 tools/gen-seo.py` → อัปเดต sitemap.xml + llms.txt จากการ์ด
 
+## 5.0 ตรวจ SEO ทุกครั้งก่อนถือว่าเสร็จ (แทนสั่ง 27 พ.ย. 2026: "เวลาสั่งทำเรื่องใหม่ เขียนใหม่ อยากให้การ audit SEO รวมอยู่ใน workflow")
+- สร้างหน้าใหม่ทั้งหมดด้วย `bash tools/build.sh --local` (ดูในเครื่อง) / `bash tools/build.sh` (ก่อน push) — รวมแก้หัวข้อและขนาดรูปให้เอง
+- หน้าใหม่/บทความใหม่/แก้หน้าเดิม ทั้งไทยและอังกฤษ → รัน `bash tools/seo-check.sh` (ต้องเปิด myfolio :3001 + projects :3003) — ใช้กติกาเดียวกับหลังบ้าน › ตรวจคุณภาพ
+- ไม่ผ่าน = ยังไม่เสร็จ: ชื่อ/คำอธิบายยาวเกินหรือไม่มีคำค้น → `python3 tools/seo-rewrite.py /tmp/tp-seo-check.txt` · หัวข้อข้ามระดับ → `python3 tools/fix-headings.py <ไฟล์>` · รูปไม่มีขนาด → `python3 tools/fix-img-size.py <ไฟล์>` · แก้ที่ต้นฉบับ `_case-src` ด้วยเสมอ
+- รันซ้ำจนขึ้น "ผ่านทุกหน้า" แล้วค่อย push/deploy
+
 ## 5. ตรวจก่อน push
 Playwright (`~/.claude/skills/playwright-skill/node_modules/playwright/index.mjs`, import ด้วย path เต็ม) ที่ 1280 และ 393:
 ไม่ล้นแนวนอน · หัวการ์ด hack ไม่ตัดคำทีละบรรทัด · มาสคอตโผล่เหนือ footer · ไม่มี console error · grep หาคำต้องห้ามในข้อ 2

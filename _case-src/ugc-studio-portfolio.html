@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UGC Studio — Pipeline ผลิตวิดีโอ UGC จากรูปสินค้า (AI Director → Higgsfield → ElevenLabs → Remotion)</title>
+  <title>UGC Studio Case Study: AI ทำวิดีโอ UGC จากรูปสินค้า</title>
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="UGC Studio — Pipeline ผลิตวิดีโอ UGC จากรูปสินค้า">
   <meta name="twitter:description" content="Portfolio: เครื่องมือภายในทีมผลิตวิดีโอ UGC ขายของจากรูปสินค้า — AI เป็นผู้กำกับ วางแผนช็อต เขียนสคริปต์ไทย สร้างฟุตเทจ พากย์เสียง แล้วตัดต่อ keyword sync เป็น .mp4">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: เครื่องมือภายในทีมผลิตวิดีโอ UGC ขายของจากรูปสินค้า — AI เป็นผู้กำกับ วางแผนช็อต เขียนสคริปต์ไทย สร้างฟุตเทจ พากย์เสียง แล้วตัดต่อ keyword sync เป็น .mp4">
   <meta property="og:title" content="UGC Studio — Pipeline ผลิตวิดีโอ UGC จากรูปสินค้า">
-  <meta name="description" content="Portfolio: เครื่องมือภายในทีมผลิตวิดีโอ UGC ขายของจากรูปสินค้า — AI เป็นผู้กำกับ วางแผนช็อต เขียนสคริปต์ไทย สร้างฟุตเทจ พากย์เสียง แล้วตัดต่อ keyword sync เป็น .mp4 · React 19 + Bun + Higgsfield + ElevenLabs + Remotion">
+  <meta name="description" content="Case study เครื่องมือภายในทีมที่ใช้ AI ออกแบบ pipeline เปลี่ยนรูปสินค้าเป็นวิดีโอ UGC ตั้งแต่วางแผนช็อต พากย์เสียงไทย จนตัดต่อ keyword sync">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23e11d48'/><text x='50' y='62' text-anchor='middle' font-size='54'>🎞️</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -874,7 +874,7 @@
       <h2>ปัญหาที่เจอ</h2>
       <p>ทำไมการมีวิดีโอ UGC ขายของสักตัวถึงช้าและแพงขนาดนี้ ทั้งที่คอนเทนต์ต้องเทสต์เยอะ?</p>
     </section>
-    <figure class="shot"><img src="img/ugs-problem-unsplash.jpg" width="1200" height="800" loading="lazy" alt="ทีมกองถ่ายหลายคนพร้อมกล้อง ไฟ และจอมอนิเตอร์ในสตูดิโอ"><figcaption>วิธีเดิม — คลิปขายของแต่ละตัวต้องมีคนถ่าย คนจัดไฟ คนตัดต่อ · ภาพ: Jakob Owens / Unsplash</figcaption></figure>
+    <figure class="shot"><img src="img/ugs-problem-unsplash.webp" width="1200" height="800" loading="lazy" alt="ทีมกองถ่ายหลายคนพร้อมกล้อง ไฟ และจอมอนิเตอร์ในสตูดิโอ"><figcaption>วิธีเดิม — คลิปขายของแต่ละตัวต้องมีคนถ่าย คนจัดไฟ คนตัดต่อ · ภาพ: Jakob Owens / Unsplash</figcaption></figure>
 
 
     <div class="quote-block">
@@ -957,14 +957,14 @@
       <h2>วิธีทำงาน — 4 จังหวะ</h2>
       <p>ตั้งแต่อัปรูปสินค้า จนได้วิดีโอ UGC พร้อมลง</p>
     </section>
-    <figure class="shot"><img src="img/ugs-how.jpg" width="1488" height="640" loading="lazy" alt="4 เฟรมจากวิดีโอผลลัพธ์จริง: เปิดฝา ตักผง เทน้ำร้อน คนให้เข้ากัน แต่ละช็อตมี keyword สีต่างกัน"><figcaption>ผลลัพธ์จริง — shot plan แตกเป็นหลายช็อต แต่ละช็อตมี keyword ของตัวเองเด้งตามจังหวะพากย์</figcaption></figure>
+    <figure class="shot"><img src="img/ugs-how.webp" width="1488" height="640" loading="lazy" alt="4 เฟรมจากวิดีโอผลลัพธ์จริง: เปิดฝา ตักผง เทน้ำร้อน คนให้เข้ากัน แต่ละช็อตมี keyword สีต่างกัน"><figcaption>ผลลัพธ์จริง — shot plan แตกเป็นหลายช็อต แต่ละช็อตมี keyword ของตัวเองเด้งตามจังหวะพากย์</figcaption></figure>
 
 
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
-        <h4>อัป &amp; ตั้งค่า</h4>
+        <h3>อัป &amp; ตั้งค่า</h3>
         <p>อัปรูปสินค้า + เลือกพรีเซนเตอร์ + พิมพ์ brief/สคริปต์ + ตั้งขนาด/ความยาว</p>
       </div>
       <div class="flow-step">
@@ -995,7 +995,7 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>หน้าเดียวบน localhost — React บน Bun bundler (ไม่มี Vite) + Bun server ซ่อน key แล้วขับ AI pipeline</p>
     </section>
-    <figure class="shot"><img src="img/ugs-done.jpg" width="1600" height="1000" loading="lazy" alt="หน้าจอ UGC Studio หลังสร้างเสร็จ: วิดีโอแนวตั้งแสดงในคอลัมน์ Output และปุ่มเปิดใน Remotion"><figcaption>UI จริงหลังสร้างเสร็จ — วิดีโอ .mp4 จาก pipeline + ปุ่มเปิดใน Remotion Studio เพื่อปรับจังหวะต่อ (รันบน localhost ด้วยข้อมูลตัวอย่าง)</figcaption></figure>
+    <figure class="shot"><img src="img/ugs-done.webp" width="1600" height="1000" loading="lazy" alt="หน้าจอ UGC Studio หลังสร้างเสร็จ: วิดีโอแนวตั้งแสดงในคอลัมน์ Output และปุ่มเปิดใน Remotion"><figcaption>UI จริงหลังสร้างเสร็จ — วิดีโอ .mp4 จาก pipeline + ปุ่มเปิดใน Remotion Studio เพื่อปรับจังหวะต่อ (รันบน localhost ด้วยข้อมูลตัวอย่าง)</figcaption></figure>
 
 
     <div class="arch-diagram">
@@ -1055,7 +1055,7 @@
       <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
       <p>ครบ loop ตั้งแต่วางแผนช็อต ถึงวิดีโอ .mp4 ที่ keyword เด้งตรงคำ</p>
     </section>
-    <figure class="shot shot-narrow" style="--shot-max:620px"><img src="img/ugs-script.jpg" width="925" height="1046" loading="lazy" alt="คอลัมน์ Script: ช่อง brief ให้ AI ช่วยร่าง บทพูดภาษาไทย และไทม์ไลน์เสียงระดับวินาที"><figcaption>คอลัมน์ Script ของจริง — ให้ AI ร่างจาก brief, นับความยาวบทเทียบเวลา, และแตกไทม์ไลน์เสียงเป็นช่วงละ ~3 วิ</figcaption></figure>
+    <figure class="shot shot-narrow" style="--shot-max:620px"><img src="img/ugs-script.webp" width="925" height="1046" loading="lazy" alt="คอลัมน์ Script: ช่อง brief ให้ AI ช่วยร่าง บทพูดภาษาไทย และไทม์ไลน์เสียงระดับวินาที"><figcaption>คอลัมน์ Script ของจริง — ให้ AI ร่างจาก brief, นับความยาวบทเทียบเวลา, และแตกไทม์ไลน์เสียงเป็นช่วงละ ~3 วิ</figcaption></figure>
 
 
     <div class="module-grid">
@@ -1109,7 +1109,7 @@
       <h2>หน้าตา UI — Studio 3 คอลัมน์</h2>
       <p>หน้าเดียวสไตล์ NotebookLM — ซ้ายอัปรูป/เลือกพรีเซนเตอร์ · กลางคุมสคริปต์+มาร์ก keyword · ขวาตั้งค่า+กด Generate</p>
     </section>
-    <figure class="shot"><img src="img/ugs-idle.jpg" width="1600" height="1000" loading="lazy" alt="UGC Studio 3 คอลัมน์: Source รูปสินค้าและ avatar, Script บทพูดและไทม์ไลน์, Output ตั้งค่าและปุ่มสร้างวิดีโอ"><figcaption>หน้าจอจริง 3 คอลัมน์ — Source · Script · Output (รูปสินค้าทดสอบ · avatar เป็นพรีเซนเตอร์ AI)</figcaption></figure>
+    <figure class="shot"><img src="img/ugs-idle.webp" width="1600" height="1000" loading="lazy" alt="UGC Studio 3 คอลัมน์: Source รูปสินค้าและ avatar, Script บทพูดและไทม์ไลน์, Output ตั้งค่าและปุ่มสร้างวิดีโอ"><figcaption>หน้าจอจริง 3 คอลัมน์ — Source · Script · Output (รูปสินค้าทดสอบ · avatar เป็นพรีเซนเตอร์ AI)</figcaption></figure>
 
 
     <div class="studio-mock">
@@ -1152,7 +1152,7 @@
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์ที่ต้องคิดทางแก้เอง — ต่อ AI หลายตัว + คุมงานยาวที่ external ไม่นิ่ง</p>
     </section>
-    <figure class="shot"><img src="img/ugs-hack.jpg" width="1112" height="640" loading="lazy" alt="3 เฟรมจากคลิปนาฬิกา: keyword ฟีเจอร์วัดหัวใจ กันน้ำได้อย่างมั่นใจ แบตทน เด้งตรงจังหวะพูด"><figcaption>keyword sync จาก timestamp ของ ElevenLabs — ข้อความเด้งตรงกับประโยคที่กำลังพูด (เฟรมจากคลิปทดสอบ)</figcaption></figure>
+    <figure class="shot"><img src="img/ugs-hack.webp" width="1112" height="640" loading="lazy" alt="3 เฟรมจากคลิปนาฬิกา: keyword ฟีเจอร์วัดหัวใจ กันน้ำได้อย่างมั่นใจ แบตทน เด้งตรงจังหวะพูด"><figcaption>keyword sync จาก timestamp ของ ElevenLabs — ข้อความเด้งตรงกับประโยคที่กำลังพูด (เฟรมจากคลิปทดสอบ)</figcaption></figure>
 
 
     <div class="hack-grid">
@@ -1201,7 +1201,7 @@
       <h2>Design Decision ที่ตั้งใจเลือก</h2>
       <p>ขอบเขตที่จงใจ "ไม่ทำ" ในรอบแรก สำคัญพอๆ กับสิ่งที่ทำ</p>
     </section>
-    <figure class="shot"><img src="img/ugs-decision.jpg" width="1488" height="640" loading="lazy" alt="4 เฟรมช็อตมือกับสินค้า ไม่เห็นหน้าคน พร้อม keyword"><figcaption>เลี่ยง lip-sync ใน v1 — ตัดสลับเป็นช็อตมือ/สินค้า ไม่เห็นปาก ให้เสียงพากย์ + keyword เล่าเรื่องแทน</figcaption></figure>
+    <figure class="shot"><img src="img/ugs-decision.webp" width="1488" height="640" loading="lazy" alt="4 เฟรมช็อตมือกับสินค้า ไม่เห็นหน้าคน พร้อม keyword"><figcaption>เลี่ยง lip-sync ใน v1 — ตัดสลับเป็นช็อตมือ/สินค้า ไม่เห็นปาก ให้เสียงพากย์ + keyword เล่าเรื่องแทน</figcaption></figure>
 
 
     <div class="quote-block" style="margin-bottom: 24px;">

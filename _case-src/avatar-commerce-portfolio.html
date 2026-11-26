@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar — ให้ AI Avatar ไลฟ์ขายของแทน — ต่อได้ทุกชั่วโมง</title>
+  <title>Case Study: แพลตฟอร์มไลฟ์คอมเมิร์ซ AI Avatar สำหรับ SME</title>
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar — ให้ AI Avatar ไลฟ์ขายของแทน — ต่อได้ทุกชั่วโมง">
-  <meta name="twitter:description" content="Portfolio: integration/orchestration layer สำหรับไลฟ์ขายของด้วย AI Avatar — monorepo (Next.js 16 + NestJS/Fastify + Drizzle/Postgres RLS), multi-tenant, real-time Live Console (SSE), auto-reply pipeline">
+  <meta name="twitter:title" content="Case Study: แพลตฟอร์มไลฟ์คอมเมิร์ซ AI Avatar สำหรับ SME">
+  <meta name="twitter:description" content="Case study การออกแบบระบบไลฟ์ขายของด้วย AI Avatar ตั้งแต่ Live Studio, Live Console แบบสด, ตอบคอมเมนต์อัตโนมัติ ไปจนถึงระบบหลายร้านค้า">
   <meta property="og:url" content="https://projects.tanplanet.work/avatar-commerce-portfolio/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://projects.tanplanet.work/avatar-commerce-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:description" content="Portfolio: integration/orchestration layer สำหรับไลฟ์ขายของด้วย AI Avatar — monorepo (Next.js 16 + NestJS/Fastify + Drizzle/Postgres RLS), multi-tenant, real-time Live Console (SSE), auto-reply pipeline">
-  <meta property="og:title" content="แพลตฟอร์มไลฟ์คอมเมิร์ซด้วย AI Avatar — ให้ AI Avatar ไลฟ์ขายของแทน — ต่อได้ทุกชั่วโมง">
-  <meta name="description" content="Portfolio: integration/orchestration layer สำหรับไลฟ์ขายของด้วย AI Avatar — monorepo (Next.js 16 + NestJS/Fastify + Drizzle/Postgres RLS), multi-tenant, real-time Live Console (SSE), auto-reply pipeline">
+  <meta property="og:description" content="Case study การออกแบบระบบไลฟ์ขายของด้วย AI Avatar ตั้งแต่ Live Studio, Live Console แบบสด, ตอบคอมเมนต์อัตโนมัติ ไปจนถึงระบบหลายร้านค้า">
+  <meta property="og:title" content="Case Study: แพลตฟอร์มไลฟ์คอมเมิร์ซ AI Avatar สำหรับ SME">
+  <meta name="description" content="Case study การออกแบบระบบไลฟ์ขายของด้วย AI Avatar ตั้งแต่ Live Studio, Live Console แบบสด, ตอบคอมเมนต์อัตโนมัติ ไปจนถึงระบบหลายร้านค้า">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%237c3aed'/><text x='50' y='62' text-anchor='middle' font-size='54'>🤖</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -903,7 +903,7 @@
       <span class="eyebrow">Empathize &middot; Define</span>
       <h2>ปัญหาที่เจอ</h2>
       <p>ทำไมร้านค้า SME ถึงไลฟ์ขายของ "ต่อเนื่อง" ไม่ได้ ทั้งที่ทุกชั่วโมงที่ไลฟ์ = โอกาสขาย?</p>
-          <figure class="shot"><img src="img/live-dashboard.jpg" width="1440" height="831" loading="lazy" alt="แดชบอร์ดไลฟ์ แสดง 3 ไลฟ์ที่ AI Avatar กำลังออกอากาศพร้อมกัน พร้อมยอดผู้ชม คอมเมนต์ และจำนวนที่ AI ตอบ"><figcaption>แดชบอร์ดไลฟ์จริง — avatar ออกอากาศได้หลายห้องพร้อมกัน ชั่วโมงที่ Host มนุษย์ไม่อยู่ก็ยังขายได้ (ข้อมูลทดสอบ UAT)</figcaption></figure>
+          <figure class="shot"><img src="img/live-dashboard.webp" width="1440" height="831" loading="lazy" alt="แดชบอร์ดไลฟ์ แสดง 3 ไลฟ์ที่ AI Avatar กำลังออกอากาศพร้อมกัน พร้อมยอดผู้ชม คอมเมนต์ และจำนวนที่ AI ตอบ"><figcaption>แดชบอร์ดไลฟ์จริง — avatar ออกอากาศได้หลายห้องพร้อมกัน ชั่วโมงที่ Host มนุษย์ไม่อยู่ก็ยังขายได้ (ข้อมูลทดสอบ UAT)</figcaption></figure>
     </section>
 
     <div class="quote-block">
@@ -946,7 +946,7 @@
       <span class="eyebrow">Ideate</span>
       <h2>วิธีแก้ปัญหา</h2>
       <p>ไม่สร้าง core AI ใหม่ — ต่อยอด Avatar Engine เดิม แล้วทำส่วนที่ขาดให้ครบ loop ไลฟ์คอมเมิร์ซ</p>
-          <figure class="shot"><img src="img/risk-words.jpg" width="1440" height="831" loading="lazy" alt="หน้าคำเสี่ยง แบ่งชุดคำต้องห้ามตามประเภทธุรกิจ พร้อมสถิติคอมเมนต์ที่ถูกบล็อกและคำที่ถูก trigger บ่อย"><figcaption>Risk Filter ในหลังบ้าน — ชุดคำเสี่ยงตามประเภทธุรกิจ บล็อกก่อน avatar พูดคำเกินจริง</figcaption></figure>
+          <figure class="shot"><img src="img/risk-words.webp" width="1440" height="831" loading="lazy" alt="หน้าคำเสี่ยง แบ่งชุดคำต้องห้ามตามประเภทธุรกิจ พร้อมสถิติคอมเมนต์ที่ถูกบล็อกและคำที่ถูก trigger บ่อย"><figcaption>Risk Filter ในหลังบ้าน — ชุดคำเสี่ยงตามประเภทธุรกิจ บล็อกก่อน avatar พูดคำเกินจริง</figcaption></figure>
     </section>
 
     <div class="solution-grid">
@@ -984,14 +984,14 @@
       <span class="eyebrow">Prototype</span>
       <h2>วิธีทำงาน — 4 จังหวะ</h2>
       <p>ตั้งแต่เตรียม avatar/สินค้า จนถึงปิดการขายและสรุปผล</p>
-          <figure class="shot"><img src="img/avatar-library.jpg" width="1440" height="831" loading="lazy" alt="คลังอวาตาร์ ให้เลือก avatar ผู้นำเสนอที่จะใช้ในห้องไลฟ์"><figcaption>จังหวะที่ 1 ตั้งค่า — เลือก avatar จากคลังที่ engine เตรียมไว้</figcaption></figure>
+          <figure class="shot"><img src="img/avatar-library.webp" width="1440" height="831" loading="lazy" alt="คลังอวาตาร์ ให้เลือก avatar ผู้นำเสนอที่จะใช้ในห้องไลฟ์"><figcaption>จังหวะที่ 1 ตั้งค่า — เลือก avatar จากคลังที่ engine เตรียมไว้</figcaption></figure>
     </section>
 
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
-        <h4>ตั้งค่า</h4>
+        <h3>ตั้งค่า</h3>
         <p>เลือก Avatar/Voice, ทำ Product Catalog + Risk Words, ตั้ง Live Schedule</p>
       </div>
       <div class="flow-step">
@@ -1021,7 +1021,7 @@
       <span class="eyebrow">Prototype</span>
       <h2>Tech Stack &amp; Architecture</h2>
       <p>Monorepo (pnpm workspaces) — Next.js PWA + NestJS/Fastify API + Drizzle/Postgres พร้อม external integrations</p>
-          <figure class="shot"><img src="img/workspace-home.jpg" width="1440" height="831" loading="lazy" alt="หน้าภาพรวม workspace แสดงทีมงาน คลังข้อมูล และตารางไลฟ์ของ workspace เดียว"><figcaption>Back office ของ 1 workspace — ทุกข้อมูลผูก workspace_id และกั้นด้วย RLS</figcaption></figure>
+          <figure class="shot"><img src="img/workspace-home.webp" width="1440" height="831" loading="lazy" alt="หน้าภาพรวม workspace แสดงทีมงาน คลังข้อมูล และตารางไลฟ์ของ workspace เดียว"><figcaption>Back office ของ 1 workspace — ทุกข้อมูลผูก workspace_id และกั้นด้วย RLS</figcaption></figure>
     </section>
 
     <div class="arch-diagram">
@@ -1080,7 +1080,7 @@
       <span class="eyebrow">Prototype</span>
       <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
       <p>ครบ loop ตั้งแต่ back office ถึงไลฟ์สดและสรุปผลหลังไลฟ์</p>
-          <figure class="shot"><img src="img/live-studio.jpg" width="1440" height="831" loading="lazy" alt="Live Studio จัดฉากแนวตั้ง 9:16 มี avatar การ์ดสินค้า รายการฉาก เลเยอร์ และสคริปต์ที่ผ่านการตรวจคำเสี่ยง"><figcaption>Live Studio — จัดฉาก/เลเยอร์/สินค้า ผูกสคริปต์ และเตือนคำเสี่ยงก่อนอนุมัติ</figcaption></figure>
+          <figure class="shot"><img src="img/live-studio.webp" width="1440" height="831" loading="lazy" alt="Live Studio จัดฉากแนวตั้ง 9:16 มี avatar การ์ดสินค้า รายการฉาก เลเยอร์ และสคริปต์ที่ผ่านการตรวจคำเสี่ยง"><figcaption>Live Studio — จัดฉาก/เลเยอร์/สินค้า ผูกสคริปต์ และเตือนคำเสี่ยงก่อนอนุมัติ</figcaption></figure>
     </section>
 
     <div class="module-grid">
@@ -1184,7 +1184,7 @@
       <span class="eyebrow">Test &amp; Iterate</span>
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์วิศวกรรมที่ต้องออกแบบทางแก้เอง — multi-tenant, real-time, integration lifecycle</p>
-          <figure class="shot"><img src="img/script-library.jpg" width="1440" height="831" loading="lazy" alt="คลังสคริปต์ แยกสถานะรออนุมัติ ใช้งานในระบบ พร้อมตัวกรองประเภทสคริปต์"><figcaption>คลังสคริปต์ — lifecycle รออนุมัติ → ใช้งาน คุมด้วย role และ risk check ต่อ content</figcaption></figure>
+          <figure class="shot"><img src="img/script-library.webp" width="1440" height="831" loading="lazy" alt="คลังสคริปต์ แยกสถานะรออนุมัติ ใช้งานในระบบ พร้อมตัวกรองประเภทสคริปต์"><figcaption>คลังสคริปต์ — lifecycle รออนุมัติ → ใช้งาน คุมด้วย role และ risk check ต่อ content</figcaption></figure>
     </section>
 
     <div class="hack-grid">
@@ -1232,7 +1232,7 @@
       <span class="eyebrow">Define</span>
       <h2>Design Decision ที่ตั้งใจเลือก</h2>
       <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอๆ กับสิ่งที่ทำ</p>
-          <figure class="shot"><img src="img/studio-avatar-picker.jpg" width="1440" height="831" loading="lazy" alt="หน้าต่างเลือกอวาตาร์ใน Live Studio กรองตามเพศ ภาษา และประเภท"><figcaption>เลือก avatar จาก engine เดิมได้ตรงใน Studio — integrate ไม่ rebuild engine</figcaption></figure>
+          <figure class="shot"><img src="img/studio-avatar-picker.webp" width="1440" height="831" loading="lazy" alt="หน้าต่างเลือกอวาตาร์ใน Live Studio กรองตามเพศ ภาษา และประเภท"><figcaption>เลือก avatar จาก engine เดิมได้ตรงใน Studio — integrate ไม่ rebuild engine</figcaption></figure>
     </section>
 
     <div class="quote-block" style="margin-bottom: 24px;">
@@ -1269,7 +1269,7 @@
       <span class="eyebrow">Level Up &middot; Reflect</span>
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
-          <figure class="shot"><img src="img/live-history.jpg" width="1440" height="831" loading="lazy" alt="หน้าไลฟ์ล่าสุดทั้งหมด แสดงผู้ชมสูงสุด คอมเมนต์ และจำนวน AI ตอบต่อไลฟ์ พร้อมแนวโน้ม"><figcaption>ประวัติไลฟ์ — ตัวเลขผู้ชม/คอมเมนต์/AI ตอบ ต่อ session สำหรับ Post-Live Recap (ข้อมูลทดสอบ)</figcaption></figure>
+          <figure class="shot"><img src="img/live-history.webp" width="1440" height="831" loading="lazy" alt="หน้าไลฟ์ล่าสุดทั้งหมด แสดงผู้ชมสูงสุด คอมเมนต์ และจำนวน AI ตอบต่อไลฟ์ พร้อมแนวโน้ม"><figcaption>ประวัติไลฟ์ — ตัวเลขผู้ชม/คอมเมนต์/AI ตอบ ต่อ session สำหรับ Post-Live Recap (ข้อมูลทดสอบ)</figcaption></figure>
     </section>
 
     <div class="learning-card">

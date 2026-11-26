@@ -612,7 +612,7 @@
       <p>As a UX designer who uses Claude as a design assistant, I hit the same problem every day: to say "please fix this element", I had to <strong>open DevTools → find the details → copy the CSS → format it → paste it into the prompt</strong> every single time</p>
     </section>
     <p>That took 2–3 minutes per element and happened dozens of times a day. It added up to far more time than I expected.</p>
-    <figure class="shot"><img src="img/di-bg-unsplash.jpg" width="1200" height="800" loading="lazy" alt="A dark-theme code editor with a terminal and project files"><figcaption>Before the tool: switching between DevTools, the editor and the prompt every time I needed to say which element to fix · Photo: Bernd Dittrich / Unsplash</figcaption></figure>
+    <figure class="shot"><img src="img/di-bg-unsplash.webp" width="1200" height="800" loading="lazy" alt="A dark-theme code editor with a terminal and project files"><figcaption>Before the tool: switching between DevTools, the editor and the prompt every time I needed to say which element to fix · Photo: Bernd Dittrich / Unsplash</figcaption></figure>
 
     <section class="section-intro">
       <span class="eyebrow">Design Thinking Process</span>
@@ -621,7 +621,7 @@
     </section>
     <figure class="shot shot-narrow" style="--shot-max:300px"><img src="img/di-popup.jpg" width="480" height="520" loading="lazy" alt="The extension popup: Active status, a Disable button and Copy Sections options"><figcaption>The actual popup: turn the inspector on or off and choose what to copy (Element &amp; Path · CSS Styles · Classname)</figcaption></figure>
     <div class="flow-grid">
-      <div class="flow-step"><div class="step-num">01</div><h4>Empathize: understand the pain point</h4><p>Watched my own workflow with Claude · The slowest step was preparing element details for Claude · Constant switching between DevTools, code editor and Claude prompt</p></div>
+      <div class="flow-step"><div class="step-num">01</div><h3>Empathize: understand the pain point</h3><p>Watched my own workflow with Claude · The slowest step was preparing element details for Claude · Constant switching between DevTools, code editor and Claude prompt</p></div>
       <div class="flow-step"><div class="step-num">02</div><h4>Define: a clear problem</h4><p><strong>HMW:</strong> How might we let a designer send element details to Claude in one click, without opening DevTools?</p></div>
       <div class="flow-step"><div class="step-num">03</div><h4>Ideate: explore the options</h4><p>Bookmarklet: simple, but lacks the permissions it needs · Chrome extension: full API access, works on every site · Studied the Element Inspector extension as a reference</p></div>
       <div class="flow-step"><div class="step-num">04</div><h4>Prototype: build and test</h4><p>v1: hover inspect + detail panel · v2: auto-copy Markdown on click · v3: ⌘+C shortcut + toast feedback</p></div>
@@ -648,7 +648,7 @@
     </section>
     <figure class="shot"><img src="img/di-md.jpg" width="1600" height="334" loading="lazy" alt="The Markdown the extension actually copies to the clipboard, pasted into the input with a design-change instruction"><figcaption>Real Markdown from a single click (you can follow it with an instruction in any language)</figcaption></figure>
     <div class="code-demo">
-      <span class="key">**Element:**</span> <span class="val">`div.vd-status-hero--warning`</span> <span class="dim">(844×132)</span><br> <span class="key">**File:**</span> <span class="str">http://localhost/voucher-detail.html</span><br> <span class="key">**Path:**</span> <span class="val">`div.real-content > div#status-hero > div.vd-status-hero`</span><br> <span class="key">**Styles:**</span> <span class="dim">padding: 14px 16px | font: 400 16px/26px IBM Plex Sans Thai | bg: #FEF9EB | radius: 12px</span><br> <span class="comment">```html</span><br> <span class="dim">&lt;div class="vd-status-hero vd-status-hero--warning"&gt;</span><br> <span class="dim">&nbsp;&nbsp;&lt;div class="vd-status-hero__title"&gt;รอชำระเงิน&lt;/div&gt;</span><br> <span class="dim">&nbsp;&nbsp;...</span><br> <span class="dim">&lt;/div&gt;</span><br> <span class="comment">```</span>
+      <span class="key">**Element:**</span> <span class="val">`div.vd-status-hero--warning`</span> <span class="dim">(844×132)</span><br> <span class="key">**File:**</span> <span class="str">http://localhost/voucher-detail.html</span><br> <span class="key">**Path:**</span> <span class="val">`div.real-content > div#status-hero > div.vd-status-hero`</span><br> <span class="key">**Styles:**</span> <span class="dim">padding: 14px 16px | font: 400 16px/26px IBM Plex Sans Thai | bg: #FEF9EB | radius: 12px</span><br> <span class="comment">```html</span><br> <span class="dim">&lt;div class="vd-status-hero vd-status-hero--warning"&gt;</span><br> <span class="dim">&nbsp;&nbsp;&lt;div class="vd-status-hero__title"&gt;Awaiting payment&lt;/div&gt;</span><br> <span class="dim">&nbsp;&nbsp;...</span><br> <span class="dim">&lt;/div&gt;</span><br> <span class="comment">```</span>
     </div>
 
     <div class="learning-card note"><p>~200 tokens per element: compact enough for Claude to understand without eating the context window</p></div>
@@ -658,7 +658,7 @@
       <h2>What I decided, and why</h2>
       <p>Five key decisions that keep the extension working on any site without breaking</p>
     </section>
-    <figure class="shot"><img src="img/di-panel.jpg" width="1600" height="900" loading="lazy" alt="Dark-theme detail panel on the right showing box model, layout, typography and a Copy for Claude button"><figcaption>Detail panel inside Shadow DOM with a dark #1e1e2e theme, so it never clashes with the CSS of the page being inspected</figcaption></figure>
+    <figure class="shot"><img src="img/di-panel.webp" width="1600" height="900" loading="lazy" alt="Dark-theme detail panel on the right showing box model, layout, typography and a Copy for Claude button"><figcaption>Detail panel inside Shadow DOM with a dark #1e1e2e theme, so it never clashes with the CSS of the page being inspected</figcaption></figure>
     <div class="ledger-wrap"><table class="ledger">
       <thead><tr><th>Decision</th><th>Choice</th><th>Why</th></tr></thead>
       <tbody>
@@ -675,9 +675,9 @@
       <h2>Five rounds of refinement, from usable to good</h2>
       <p>Each round came from real use. Some added things, some cut them.</p>
     </section>
-    <figure class="shot"><img src="img/di-toast-c.jpg" width="1120" height="900" loading="lazy" alt="The selected element highlighted in blue, with a &quot;Copied to clipboard&quot; toast at the bottom"><figcaption>The v3 result: a blue flash on the element + a "Copied to clipboard" toast that confirms the status immediately</figcaption></figure>
+    <figure class="shot"><img src="img/di-toast-c.webp" width="1120" height="900" loading="lazy" alt="The selected element highlighted in blue, with a &quot;Copied to clipboard&quot; toast at the bottom"><figcaption>The v3 result: a blue flash on the element + a "Copied to clipboard" toast that confirms the status immediately</figcaption></figure>
     <div class="flow-grid">
-      <div class="flow-step"><div class="step-num">01</div><h4>v1.0 — Hover + Panel + Manual Copy</h4><p>Could inspect elements, but copying still needed a button press → slower than it should be</p></div>
+      <div class="flow-step"><div class="step-num">01</div><h3>v1.0 — Hover + Panel + Manual Copy</h3><p>Could inspect elements, but copying still needed a button press → slower than it should be</p></div>
       <div class="flow-step"><div class="step-num">02</div><h4>v1.0 + Screenshot: removed</h4><p>Added auto-screenshot + element highlight capture → the image clipboard was unreliable, slowed the flow and made file downloads messy → removed</p></div>
       <div class="flow-step"><div class="step-num">03</div><h4>Clipboard Fix — Offscreen Document</h4><p>navigator.clipboard did not work in the content script because the user gesture expires after an async call → fixed by sending the copy to an offscreen document via background</p></div>
       <div class="flow-step"><div class="step-num">04</div><h4>Shorter Markdown: from verbose to compact</h4><p>The original Markdown had a table + ASCII box model, about 400 tokens → condensed to one-line styles, about 200 tokens, saving 50% of context</p></div>
@@ -689,7 +689,7 @@
       <h2>Content script → background → offscreen</h2>
       <p>Responsibilities split into three layers so clipboard copy works on every site</p>
     </section>
-    <figure class="shot"><img src="img/di-offscreen.jpg" width="1600" height="578" loading="lazy" alt="Actual code from background.js and offscreen.js that relays the message and copies in the offscreen document"><figcaption>Real code: the content script sends a message → background → an offscreen document that can write to the clipboard</figcaption></figure>
+    <figure class="shot"><img src="img/di-offscreen.webp" width="1600" height="578" loading="lazy" alt="Actual code from background.js and offscreen.js that relays the message and copies in the offscreen document"><figcaption>Real code: the content script sends a message → background → an offscreen document that can write to the clipboard</figcaption></figure>
     <div class="arch-diagram">
       <div class="arch-layers">
         <div class="arch-layer">Content Scripts (injected per page)
@@ -713,7 +713,7 @@
       <h2>Tech Stack</h2>
       <p>Pure Manifest V3, no framework</p>
     </section>
-    <figure class="shot"><img src="img/di-manifest.jpg" width="1600" height="438" loading="lazy" alt="A Manifest V3 manifest.json file with its list of permissions"><figcaption>manifest.json (Manifest V3): only 5 permissions requested · organization name blurred</figcaption></figure>
+    <figure class="shot"><img src="img/di-manifest.webp" width="1600" height="438" loading="lazy" alt="A Manifest V3 manifest.json file with its list of permissions"><figcaption>manifest.json (Manifest V3): only 5 permissions requested · organization name blurred</figcaption></figure>
     <div class="chips"><span class="chip">Chrome Extension Manifest V3</span><span class="chip">Shadow DOM</span><span class="chip">Offscreen API</span><span class="chip">Content Scripts</span><span class="chip">Service Worker</span><span class="chip">Clipboard API</span><span class="chip">getComputedStyle()</span><span class="chip">CSS Variable Detection</span></div>
 
     <section class="section-intro">
@@ -721,7 +721,7 @@
       <h2>What I learned</h2>
       <p>Four lessons from building a tool for myself</p>
     </section>
-    <figure class="shot"><img src="img/di-learn-unsplash.jpg" width="1200" height="900" loading="lazy" alt="Paper wireframe sketches of several mobile screens on a desk"><figcaption>Good tools start from watching your own workflow · Photo: Amélie Mourichon / Unsplash</figcaption></figure>
+    <figure class="shot"><img src="img/di-learn-unsplash.webp" width="1200" height="900" loading="lazy" alt="Paper wireframe sketches of several mobile screens on a desk"><figcaption>Good tools start from watching your own workflow · Photo: Amélie Mourichon / Unsplash</figcaption></figure>
     <div class="learning-card"><p><strong>Clipboard ≠ Simple:</strong> Content scripts have no direct clipboard permission. You need to understand the user gesture lifecycle and use an offscreen document as a proxy.</p></div>
     <div class="learning-card"><p><strong>Less &gt; More:</strong> The screenshot feature looked good on paper but was slow and unreliable in practice. The tool is better without it.</p></div>
     <div class="learning-card"><p><strong>Shadow DOM Isolation:</strong> If you inject UI into a page, use Shadow DOM. Otherwise the site's CSS and the extension's CSS will clash, guaranteed.</p></div>

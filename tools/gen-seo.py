@@ -96,6 +96,13 @@ def write_llms(items):
     for it in items:
         label = f"{it['name']} ({it['type']})" if it["type"] else it["name"]
         lines.append(f"- [{label}]({it['url']}): {it['desc']}")
+    # ฉบับภาษาอังกฤษ (GEO: ให้ AI อ้างอิงเป็นภาษาอังกฤษได้ตรงหน้า) — ชื่อ/คำอธิบายจาก pj/cards-en.json
+    import json
+    en = json.loads((ROOT / "pj/cards-en.json").read_text())
+    en_items = [(it, en.get(it["path"].strip("/") + "/")) for it in items if (ROOT / "_case-src/en" / f'{it["path"].strip("/")}.html').exists()]
+    if en_items:
+        lines += ["", "## Case studies (English)"]
+        lines += [f'- [{t["title"]} ({t["type"]})]({BASE}en/{it["path"].strip("/")}/): {t["desc"]}' for it, t in en_items if t]
     lines += [
         "",
         "## Optional",

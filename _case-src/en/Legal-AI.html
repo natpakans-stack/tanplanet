@@ -924,11 +924,11 @@
         <p>Why lawyers need a tool like this</p>
     </section>
 
-    <figure class="shot"><img src="img/empty-state.jpg" width="1400" height="886" loading="lazy" decoding="async" alt="New chat screen with example questions grouped by situation"><figcaption>New chat: example questions organized by "situation" so lawyers can start asking right away</figcaption></figure>
+    <figure class="shot"><img src="img/empty-state.webp" width="1400" height="886" loading="lazy" decoding="async" alt="New chat screen with example questions grouped by situation"><figcaption>New chat: example questions organized by "situation" so lawyers can start asking right away</figcaption></figure>
 
 
     <div class="flow-grid">
-<div class="flow-step"><div class="step-num">01</div><h4>Empathize · Lawyers and legal research: the hidden problem</h4><p>To prepare a single case, a Thai lawyer may need to search 84,000+ sections across many acts. The usual way is keyword search on the OCS website, which only works if you know the exact name of the act or the section number. If you don't, you won't find it.</p>
+<div class="flow-step"><div class="step-num">01</div><h3>Empathize · Lawyers and legal research: the hidden problem</h3><p>To prepare a single case, a Thai lawyer may need to search 84,000+ sections across many acts. The usual way is keyword search on the OCS website, which only works if you know the exact name of the act or the section number. If you don't, you won't find it.</p>
         <p><b>Insight:</b> lawyers know the "situation" but not which "section" to look up. They need a tool they can ask in plain language.</p></div>
 <div class="flow-step"><div class="step-num">02</div><h4>Define · "If the AI gets the law wrong, you could lose the case"</h4><p>ChatGPT can answer legal questions, but it often cites the wrong section or hallucinates laws that don't exist, which is dangerous in legal work. The system has to <strong>cite real law</strong> that can be checked.</p>
         <p><b>HMW:</b> How might we build an AI that answers legal questions accurately, citing only real sections from the database?</p></div>
@@ -952,7 +952,7 @@
         <p>Ask in plain language, get an answer with Citation Cards that open the real law</p>
     </section>
 
-    <figure class="shot"><img src="img/chat-3-panel.jpg" width="1600" height="1000" loading="lazy" decoding="async" alt="The 3-part chat page: chat history, an answer with citation cards, and a panel for reading the legal text"><figcaption>The real 3-panel layout: chat history · answer + Citation Cards · Law Viewer showing the section text alongside</figcaption></figure>
+    <figure class="shot"><img src="img/chat-3-panel.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="The 3-part chat page: chat history, an answer with citation cards, and a panel for reading the legal text"><figcaption>The real 3-panel layout: chat history · answer + Citation Cards · Law Viewer showing the section text alongside</figcaption></figure>
 
 
     <div class="chat-mockup">
@@ -999,7 +999,7 @@
         <p>Core features designed for lawyers</p>
     </section>
 
-    <div class="shot-pair"><figure class="shot narrow"><img src="img/landing-mobile.jpg" width="786" height="1704" loading="lazy" decoding="async" alt="Home page on mobile"><figcaption>Home page on mobile</figcaption></figure><figure class="shot narrow"><img src="img/chat-mobile.jpg" width="786" height="1704" loading="lazy" decoding="async" alt="Chat page on mobile"><figcaption>Chat page on mobile</figcaption></figure></div>
+    <div class="shot-pair"><figure class="shot narrow"><img src="img/landing-mobile.webp" width="786" height="1704" loading="lazy" decoding="async" alt="Home page on mobile"><figcaption>Home page on mobile</figcaption></figure><figure class="shot narrow"><img src="img/chat-mobile.webp" width="786" height="1704" loading="lazy" decoding="async" alt="Chat page on mobile"><figcaption>Chat page on mobile</figcaption></figure></div>
 
 
     <div class="module-grid">
@@ -1021,7 +1021,7 @@
         <p>The Retrieval-Augmented Generation system that makes the AI cite real law</p>
     </section>
 
-    <figure class="shot"><img src="img/rag-answer.jpg" width="1560" height="1430" loading="lazy" decoding="async" alt="The AI answer split across 3 laws, with section numbers and related court decisions"><figcaption>The result of RAG: answers grouped by the laws found, with section links and related court decisions</figcaption></figure>
+    <figure class="shot"><img src="img/rag-answer.webp" width="1560" height="1430" loading="lazy" decoding="async" alt="The AI answer split across 3 laws, with section numbers and related court decisions"><figcaption>The result of RAG: answers grouped by the laws found, with section links and related court decisions</figcaption></figure>
 
 
     <div class="arch-flow">
@@ -1051,7 +1051,7 @@
     </div>
 
     <div class="flow-grid">
-<div class="flow-step"><div class="step-num">01</div><h4>Scrape &amp; Store</h4><p>Pull 1,811 laws and 84,376 sections from the OCS API into Supabase (PostgreSQL), with deduplication</p></div>
+<div class="flow-step"><div class="step-num">01</div><h3>Scrape &amp; Store</h3><p>Pull 1,811 laws and 84,376 sections from the OCS API into Supabase (PostgreSQL), with deduplication</p></div>
 <div class="flow-step"><div class="step-num">02</div><h4>Hybrid Search</h4><p>Full-text search (tsvector) + vector search (pgvector, text-embedding-3-small, 1536 dims) through the Supabase function <code>hybrid_search</code></p></div>
 <div class="flow-step"><div class="step-num">03</div><h4>AI Generation</h4><p>GPT-4o receives the real section text as context. The prompt says "ONLY cite sections that APPEAR in the context" to prevent hallucination.</p></div>
 <div class="flow-step"><div class="step-num">04</div><h4>Structured Output</h4><p>The response is JSON: content (markdown), citations (laws + cited sections), courtDecisions, summary (next steps)</p></div>
@@ -1065,7 +1065,7 @@
         <p>Supabase (PostgreSQL) + pgvector + Row Level Security</p>
     </section>
 
-    <figure class="shot"><img src="img/data-sources.jpg" width="1600" height="645" loading="lazy" decoding="async" alt="Cards for the collected legal data sources, with Active and Planned status"><figcaption>Data sources stored in the database, with Active / Planned status per source</figcaption></figure>
+    <figure class="shot"><img src="img/data-sources.webp" width="1600" height="645" loading="lazy" decoding="async" alt="Cards for the collected legal data sources, with Active and Planned status"><figcaption>Data sources stored in the database, with Active / Planned status per source</figcaption></figure>
 
 
     <div class="ledger-wrap"><table class="ledger">
@@ -1119,7 +1119,7 @@
         <p>The prompt went through 13 versions to make answers accurate enough for lawyers</p>
     </section>
 
-    <figure class="shot"><img src="img/citation-cards.jpg" width="1600" height="904" loading="lazy" decoding="async" alt="The legal citation card and summary box components"><figcaption>Citation Card + Summary Box: why the AI is forced to answer in structured JSON</figcaption></figure>
+    <figure class="shot"><img src="img/citation-cards.webp" width="1600" height="904" loading="lazy" decoding="async" alt="The legal citation card and summary box components"><figcaption>Citation Card + Summary Box: why the AI is forced to answer in structured JSON</figcaption></figure>
 
 
     <div class="code-block">
@@ -1151,7 +1151,7 @@
         <p>Legal data pulled from the Office of the Council of State</p>
     </section>
 
-    <figure class="shot mid"><img src="img/law-viewer.jpg" width="840" height="1100" loading="lazy" decoding="async" alt="A panel for reading the act, with a table of contents and the sections cited in the chat highlighted"><figcaption>Law Viewer: section text pulled from OCS + table of contents + highlights for sections cited in the chat</figcaption></figure>
+    <figure class="shot mid"><img src="img/law-viewer.webp" width="840" height="1100" loading="lazy" decoding="async" alt="A panel for reading the act, with a table of contents and the sections cited in the chat highlighted"><figcaption>Law Viewer: section text pulled from OCS + table of contents + highlights for sections cited in the chat</figcaption></figure>
 
 
     <div class="code-block">
@@ -1181,11 +1181,11 @@
         <p>From zero to a production-ready POC</p>
     </section>
 
-    <figure class="shot"><img src="img/release-notes.jpg" width="1520" height="1240" loading="lazy" decoding="async" alt="Release Notes page showing versions 1.3 and 1.2"><figcaption>The prototype's Release Notes page (the numbers in the image are sample prototype data)</figcaption></figure>
+    <figure class="shot"><img src="img/release-notes.webp" width="1520" height="1240" loading="lazy" decoding="async" alt="Release Notes page showing versions 1.3 and 1.2"><figcaption>The prototype's Release Notes page (the numbers in the image are sample prototype data)</figcaption></figure>
 
 
     <div class="flow-grid">
-<div class="flow-step"><div class="step-num">01</div><h4>Foundation · Database + Scraper + Auth</h4><p>Scraped 1,811 laws and 84K sections from OCS, built the Supabase schema (5 migrations), Supabase Auth (email + Google OAuth)</p></div>
+<div class="flow-step"><div class="step-num">01</div><h3>Foundation · Database + Scraper + Auth</h3><p>Scraped 1,811 laws and 84K sections from OCS, built the Supabase schema (5 migrations), Supabase Auth (email + Google OAuth)</p></div>
 <div class="flow-step"><div class="step-num">02</div><h4>Landing Page · Hero + Data Sources + Login</h4><p>Landing page with stats from the database, OCS data sources, a Release Notes section and a login modal</p></div>
 <div class="flow-step"><div class="step-num">03</div><h4>Chat System · 3-Panel Layout + RAG + Citations</h4><p>Full 3-panel chat page: sidebar (history), chat (AI response + Citation Cards), Law Viewer (real legal text)</p></div>
 <div class="flow-step"><div class="step-num">04</div><h4>AI Refinement · Prompt v13 + Vector Embeddings</h4><p>Tuned the prompt to verify sections before citing them, added pgvector + text-embedding-3-small for semantic search</p></div>
@@ -1200,7 +1200,7 @@
         <p>Frontend (React 19 + Vite) + Backend (Supabase Edge Functions)</p>
     </section>
 
-    <figure class="shot"><img src="img/component-library.jpg" width="1600" height="833" loading="lazy" decoding="async" alt="The Legal AI component library page"><figcaption>Component Library: the single component reference for the whole project</figcaption></figure>
+    <figure class="shot"><img src="img/component-library.webp" width="1600" height="833" loading="lazy" decoding="async" alt="The Legal AI component library page"><figcaption>Component Library: the single component reference for the whole project</figcaption></figure>
 
 
     <div class="code-block">

@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UGC Video-Prompt Studio — a Chrome extension + CMS that builds video prompts and feeds them into an AI video site</title>
+  <title>UGC Extension: AI Video Prompt Builder · Case Study</title>
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="UGC Video-Prompt Studio — a Chrome extension + CMS for building UGC video prompts">
-  <meta name="twitter:description" content="Portfolio: a Chrome extension (MV3, Side Panel) + NestJS API + CMS. Scrape a product → build the prompt (BYOK LLM) → feed it automatically via CDP into an AI video site that has no public API">
+  <meta name="twitter:description" content="Case study: a Chrome extension and CMS that scrapes a product, builds a video prompt with your own LLM key, and feeds an AI video site via CDP.">
   <meta property="og:url" content="https://projects.tanplanet.work/ugc-extension-portfolio/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://projects.tanplanet.work/ugc-extension-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:description" content="Portfolio: a Chrome extension (MV3, Side Panel) + NestJS API + CMS. Scrape a product → build the prompt (BYOK LLM) → feed it automatically via CDP into an AI video site that has no public API">
+  <meta property="og:description" content="Case study: a Chrome extension and CMS that scrapes a product, builds a video prompt with your own LLM key, and feeds an AI video site via CDP.">
   <meta property="og:title" content="UGC Video-Prompt Studio — a Chrome extension + CMS for building UGC video prompts">
-  <meta name="description" content="Portfolio: a Chrome extension (MV3, Side Panel) + NestJS API + CMS. Scrape a product → build the prompt (BYOK LLM) → feed it automatically via CDP into an AI video site that has no public API">
+  <meta name="description" content="Case study: a Chrome extension and CMS that scrapes a product, builds a video prompt with your own LLM key, and feeds an AI video site via CDP.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23ea580c'/><text x='50' y='62' text-anchor='middle' font-size='54'>🎥</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -942,7 +942,7 @@
       <h2>The problem</h2>
       <p>Why does making a UGC product review video with AI still take a dozen steps of copying, pasting and typing by hand?</p>
     </section>
-    <figure class="shot"><img src="img/uge-problem-unsplash.jpg" width="1200" height="800" loading="lazy" alt="A woman scrolling a web page on a laptop and taking notes"><figcaption>Before the tool: open a product page, copy the name, price and images one field at a time, then write a prompt by hand for every product · Photo: Tran Mau Tri Tam / Unsplash</figcaption></figure>
+    <figure class="shot"><img src="img/uge-problem-unsplash.webp" width="1200" height="800" loading="lazy" alt="A woman scrolling a web page on a laptop and taking notes"><figcaption>Before the tool: open a product page, copy the name, price and images one field at a time, then write a prompt by hand for every product · Photo: Tran Mau Tri Tam / Unsplash</figcaption></figure>
 
 
     <div class="quote-block">
@@ -986,7 +986,7 @@
       <h2>The solution</h2>
       <p>Have the extension chain 3 jobs into one pipeline (scrape → generate prompt → feed the AI video site), so all that's left is "pick, then press Auto"</p>
     </section>
-    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-home.jpg" width="800" height="1180" loading="lazy" alt="The side panel home screen: pull from this page, paste a link, upload your own images, and presenter, short drama and viral modes"><figcaption>The real side panel: it opens next to the product page and pulls data in one click, or you pick another mode (company logo blurred)</figcaption></figure>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-home.webp" width="800" height="1180" loading="lazy" alt="The side panel home screen: pull from this page, paste a link, upload your own images, and presenter, short drama and viral modes"><figcaption>The real side panel: it opens next to the product page and pulls data in one click, or you pick another mode (company logo blurred)</figcaption></figure>
 
 
     <div class="solution-grid">
@@ -1025,14 +1025,14 @@
       <h2>How it works, in 4 steps</h2>
       <p>From opening a product page to the video starting to generate on the AI site</p>
     </section>
-    <figure class="shot shot-pair" style="--shot-max:600px"><div class="pair"><img src="img/uge-pulled.jpg" width="800" height="1800" loading="lazy" alt="After pulling data: 3 product images, name, price, selling points and customer reviews ready to choose from"><img src="img/uge-scenes.jpg" width="800" height="1800" loading="lazy" alt="A Thai voiceover script and 2 video scene cards with English prompts, plus a button to send them to the video site"></div><figcaption>Left: product and reviews pulled from the open page · Right: the script and a prompt card per scene, ready to send to the video site (sample product data · product photos: Onur Binay, Kowon vn / Unsplash)</figcaption></figure>
+    <figure class="shot shot-pair" style="--shot-max:600px"><div class="pair"><img src="img/uge-pulled.webp" width="800" height="1800" loading="lazy" alt="After pulling data: 3 product images, name, price, selling points and customer reviews ready to choose from"><img src="img/uge-scenes.webp" width="800" height="1800" loading="lazy" alt="A Thai voiceover script and 2 video scene cards with English prompts, plus a button to send them to the video site"></div><figcaption>Left: product and reviews pulled from the open page · Right: the script and a prompt card per scene, ready to send to the video site (sample product data · product photos: Onur Binay, Kowon vn / Unsplash)</figcaption></figure>
 
 
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-        <h4>Pull product data</h4>
+        <h3>Pull product data</h3>
         <p>Open a product page as usual → press "Pull data" → passive scrape of name, price and images</p>
       </div>
       <div class="flow-step">
@@ -1119,7 +1119,7 @@
       <h2>What I built: 8 core capabilities</h2>
       <p>The full loop, from pulling product data to feeding work into the AI video site</p>
     </section>
-    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-viral.jpg" width="800" height="1800" loading="lazy" alt="Viral mode: effect template cards such as zoom out to space, free fall, high-speed flight and night vision camera"><figcaption>Viral mode: effect templates whose prompts and cover images come from the CMS, no new extension release needed</figcaption></figure>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-viral.webp" width="800" height="1800" loading="lazy" alt="Viral mode: effect template cards such as zoom out to space, free fall, high-speed flight and night vision camera"><figcaption>Viral mode: effect templates whose prompts and cover images come from the CMS, no new extension release needed</figcaption></figure>
 
 
     <div class="module-grid">
@@ -1173,7 +1173,7 @@
       <h2>The side panel</h2>
       <p>Open it next to the target page → pull the product → get prompt cards → press Auto</p>
     </section>
-    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-script.jpg" width="800" height="1800" loading="lazy" alt="The script section of the side panel: a Thai script the AI drafted from real reviews, a character counter and a button to request another version"><figcaption>The real thing compared with the mockup above: a script drafted from real reviews, with a length counter to fit the scene duration</figcaption></figure>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-script.webp" width="800" height="1800" loading="lazy" alt="The script section of the side panel: a Thai script the AI drafted from real reviews, a character counter and a button to request another version"><figcaption>The real thing compared with the mockup above: a script drafted from real reviews, with a length counter to fit the scene duration</figcaption></figure>
 
 
     <div class="app-mockup">
@@ -1218,7 +1218,7 @@
       <h2>Hacking the problems</h2>
       <p>6 problems I had to solve myself: browser automation quirks and full-stack product architecture</p>
     </section>
-    <figure class="shot"><img src="img/uge-cdp.jpg" width="1600" height="448" loading="lazy" alt="Real code using chrome.debugger to send Input.insertText and dispatchMouseEvent to the site"><figcaption>Real code: using CDP (chrome.debugger) to send trusted input the target site's rich-text editor will accept</figcaption></figure>
+    <figure class="shot"><img src="img/uge-cdp.webp" width="1600" height="448" loading="lazy" alt="Real code using chrome.debugger to send Input.insertText and dispatchMouseEvent to the site"><figcaption>Real code: using CDP (chrome.debugger) to send trusted input the target site's rich-text editor will accept</figcaption></figure>
 
 
     <div class="hack-grid">
@@ -1267,7 +1267,7 @@
       <h2>Deliberate design decisions</h2>
       <p>What I chose not to build matters as much as what I built</p>
     </section>
-    <figure class="shot"><img src="img/uge-providers.jpg" width="1600" height="484" loading="lazy" alt="The LLM_PROVIDERS table with 4 providers and the genLLM function that uses the user's key"><figcaption>BYOK + provider table: a new provider = one more row · No key, no call, and no server-side proxy</figcaption></figure>
+    <figure class="shot"><img src="img/uge-providers.webp" width="1600" height="484" loading="lazy" alt="The LLM_PROVIDERS table with 4 providers and the genLLM function that uses the user's key"><figcaption>BYOK + provider table: a new provider = one more row · No key, no call, and no server-side proxy</figcaption></figure>
 
 
     <div class="quote-block" style="margin-bottom: 24px;">
@@ -1305,7 +1305,7 @@
       <h2>Knowledge domains that got stronger</h2>
       <p>5 areas where my skills actually moved up through this project</p>
     </section>
-    <figure class="shot"><img src="img/uge-know-unsplash.jpg" width="1200" height="800" loading="lazy" alt="A camera operator holding a video camera in a red-lit studio"><figcaption>The whole system ends in a video clip. The tool just makes the way there shorter · Photo: Kyle Loftus / Unsplash</figcaption></figure>
+    <figure class="shot"><img src="img/uge-know-unsplash.webp" width="1200" height="800" loading="lazy" alt="A camera operator holding a video camera in a red-lit studio"><figcaption>The whole system ends in a video clip. The tool just makes the way there shorter · Photo: Kyle Loftus / Unsplash</figcaption></figure>
 
 
     <div class="learning-card">

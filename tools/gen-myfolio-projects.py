@@ -23,8 +23,8 @@ TXT = {
                lead="รวมโปรเจกต์ที่ออกแบบและสร้างเอง ตั้งแต่ UX/UI ไปจนถึงเครื่องมือที่ใช้ AI ช่วยสร้าง กดการ์ดเพื่ออ่าน case study",
                search="ค้นหาผลงาน เช่น LINE Bot, Design System…", all="ทั้งหมด", grid="มุมมองตาราง", list="มุมมองรายการ",
                empty_t="ไม่พบผลงานที่ตรงกับคำค้น", empty_p="ลองคำอื่น หรือเลือกหมวด “ทั้งหมด”", count="งาน"),
-    "en": dict(title="Natpakan Sirirat (Tan) — Projects", h1="Projects",
-               lead="Projects I designed and built, from UX/UI work to AI-assisted tools. Open a card to read the case study (written in Thai).",
+    "en": dict(title="Natpakan Sirirat (Tan) — Product design & AI-built projects", h1="Projects",
+               lead="Projects I designed and built, from UX/UI work to AI-assisted tools. Open a card to read the case study.",
                search="Search projects, e.g. LINE Bot, Design System…", all="All", grid="Grid view", list="List view",
                empty_t="No projects match your search", empty_p="Try another word, or pick “All”.", count="projects"),
 }
@@ -41,19 +41,44 @@ def cards():
     return out
 
 
+def en_card(c):
+    """การ์ดฉบับอังกฤษจาก pj/cards-en.json (คีย์ = href ใน index.html) — ไม่มีคำแปล = ใช้ของเดิม"""
+    import json
+    f = ROOT / "pj/cards-en.json"
+    if not f.exists():
+        return c
+    href = re.search(r'href="([^"]+)"', c).group(1)
+    t = json.loads(f.read_text()).get(href)
+    if not t:
+        return c
+    c = re.sub(r'(<div class="card-type">)(.*?)(</div>)', lambda m: m.group(1) + t["type"] + m.group(3), c, count=1, flags=re.S)
+    c = re.sub(r"(<h3>)(.*?)(</h3>)", lambda m: m.group(1) + t["title"] + m.group(3), c, count=1, flags=re.S)
+    c = re.sub(r"(<p>)(.*?)(</p>)", lambda m: m.group(1) + t["desc"] + m.group(3), c, count=1, flags=re.S)
+    tags = iter(t.get("tags", []))
+    c = re.sub(r'(<span class="tag">)(.*?)(</span>)', lambda m: m.group(1) + next(tags, m.group(2)) + m.group(3), c, flags=re.S)
+    if t.get("footer"):
+        c = re.sub(r'(<div class="card-footer">.*?<span>)(.*?)(</span>)', lambda m: m.group(1) + t["footer"] + m.group(3), c, count=1, flags=re.S)
+    return c
+
+
 def body(lang, cs):
     t = TXT[lang]
     pre = "../" if lang == "en" else ""
     def cover_key(c):  # คีย์ปก = โฟลเดอร์ในเครื่อง หรือส่วนท้ายของ URL ภายนอก (ตรงกับ pj/covers.d/batch-4)
         h = re.search(r'href="([^"]+)"', c).group(1)
-        return [x for x in h.split("?")[0].split("/") if x][-1] if h.startswith("http") else h.strip("/").split("/")[0]
+        if not h.startswith("http"):
+            return h.strip("/").split("/")[0]
+        last = [x for x in h.split("?")[0].split("/") if x][-1]
+        return last.split(".")[0] if last.endswith((".webflow.io", ".vercel.app", ".github.io")) else last  # โดเมนล้วน → ชื่อ subdomain
 
     def with_cover(c):  # มีปกจาก engine (pj/covers) → ใช้ปกแทนไอคอน
         key = cover_key(c)
         if not (ROOT / f"pj/covers/{key}-{lang}.webp").exists():
             return c
+        if "card-cover" in c:  # การ์ดต้นทาง (index.html) มีปกไทยอยู่แล้ว → สลับเป็นปกภาษาของหน้า
+            return c.replace(f"{key}-th.webp", f"{key}-{lang}.webp")
         return c.replace('<div class="card-visual">', f'<div class="card-visual has-cover"><img class="card-cover" src="pj/covers/{key}-{lang}.webp" alt="" width="1600" height="900" loading="lazy" decoding="async">', 1)
-    cs = [with_cover(c) for c in cs]
+    cs = [with_cover(en_card(c) if lang == "en" else c) for c in cs]
     def link(c):  # ฉบับอังกฤษของ case study มีแล้ว → การ์ดหน้า /en/ ชี้ /en/<slug>/ (relative ไม่ต้องเติม ../)
         m = re.search(r'href="([^"/]+)/?"', c)
         if lang == "en" and m and (ROOT / "_case-src/en" / f"{m.group(1)}.html").exists():
@@ -139,6 +164,8 @@ def update_hero(cs):
             latest.append(dict(slug=m.group(1), color=g(r'class="card card--(\w+)'), icon=g(r'<span class="icon">(.*?)</span>\s*</div>'),
                                title=re.split(r"\s+[—–-]\s+", re.sub("<[^>]+>", "", g(r"<h3>(.*?)</h3>")).strip())[0],
                                type=re.sub("<[^>]+>", "", g(r'class="card-type">(.*?)</div>')).strip()))
+    import json
+    en_map = json.loads((ROOT / "pj/cards-en.json").read_text()) if (ROOT / "pj/cards-en.json").exists() else {}
     for rel, lang in (("index.html", "th"), ("en/index.html", "en")):
         f = MF / rel
         s = f.read_text()
@@ -148,7 +175,8 @@ def update_hero(cs):
             new = (f'<a class="fh-card" href="{PROJ}/{it["slug"]}/" style="{style}">'
                    f'<img src="{proj_base}/pj/covers/{it["slug"]}-{lang}.webp" alt="" loading="eager" decoding="async"/>'
                    f'<span class="fh-ava" style="--c:{COLOR.get(it["color"], "#1f1f1f")}" aria-hidden="true">{it["icon"]}</span>'
-                   f'<b>{it["title"]}</b><span>{it["type"]}</span></a>')
+                   f'<b>{(en_map.get(it["slug"] + "/") or {}).get("title", it["title"]) if lang == "en" else it["title"]}</b>'
+                   f'<span>{(en_map.get(it["slug"] + "/") or {}).get("type", it["type"]) if lang == "en" else it["type"]}</span></a>')
             s = s.replace(old, new, 1)
         # การ์ดผลงานในหน้าแรก (section Projects): รูป = ปกจาก engine ของงานนั้น → ตรงกับหน้า case study
         def thumb(m):

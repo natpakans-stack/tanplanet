@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UGC Video-Prompt Studio — Chrome Extension + CMS สร้างพรอมต์วิดีโอ → เว็บ AI video</title>
+  <title>UGC Video-Prompt Studio · Case Study Chrome Extension + AI</title>
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="UGC Video-Prompt Studio — Chrome Extension + CMS สร้างพรอมต์วิดีโอ UGC">
-  <meta name="twitter:description" content="Portfolio: Chrome extension (MV3, Side Panel) + NestJS API + CMS — scrape สินค้า → ประกอบพรอมต์ (BYOK LLM) → ป้อนเข้าเว็บ AI video ที่ไม่มี public API ผ่าน CDP อัตโนมัติ">
+  <meta name="twitter:description" content="Case study ออกแบบ Chrome extension ที่ดึงข้อมูลสินค้า ประกอบพรอมต์ด้วย LLM ของผู้ใช้ แล้วป้อนเข้าเว็บ AI video อัตโนมัติ พร้อม CMS แก้พรอมต์ได้">
   <meta property="og:url" content="https://projects.tanplanet.work/ugc-extension-portfolio/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://projects.tanplanet.work/ugc-extension-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:description" content="Portfolio: Chrome extension (MV3, Side Panel) + NestJS API + CMS — scrape สินค้า → ประกอบพรอมต์ (BYOK LLM) → ป้อนเข้าเว็บ AI video ที่ไม่มี public API ผ่าน CDP อัตโนมัติ">
+  <meta property="og:description" content="Case study ออกแบบ Chrome extension ที่ดึงข้อมูลสินค้า ประกอบพรอมต์ด้วย LLM ของผู้ใช้ แล้วป้อนเข้าเว็บ AI video อัตโนมัติ พร้อม CMS แก้พรอมต์ได้">
   <meta property="og:title" content="UGC Video-Prompt Studio — Chrome Extension + CMS สร้างพรอมต์วิดีโอ UGC">
-  <meta name="description" content="Portfolio: Chrome extension (MV3, Side Panel) + NestJS API + CMS — scrape สินค้า → ประกอบพรอมต์ (BYOK LLM) → ป้อนเข้าเว็บ AI video ที่ไม่มี public API ผ่าน CDP อัตโนมัติ">
+  <meta name="description" content="Case study ออกแบบ Chrome extension ที่ดึงข้อมูลสินค้า ประกอบพรอมต์ด้วย LLM ของผู้ใช้ แล้วป้อนเข้าเว็บ AI video อัตโนมัติ พร้อม CMS แก้พรอมต์ได้">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23ea580c'/><text x='50' y='62' text-anchor='middle' font-size='54'>🎥</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -943,7 +943,7 @@
       <h2>ปัญหาที่เจอ</h2>
       <p>ทำไมการทำวิดีโอ UGC รีวิวสินค้าด้วย AI ถึงยังต้องนั่งก๊อป-วาง-กรอกมือเป็นสิบขั้น?</p>
     </section>
-    <figure class="shot"><img src="img/uge-problem-unsplash.jpg" width="1200" height="800" loading="lazy" alt="ผู้หญิงนั่งเลื่อนดูหน้าเว็บบนแล็ปท็อปพร้อมจดโน้ต"><figcaption>ก่อนมีเครื่องมือ — เปิดหน้าสินค้า ก๊อปชื่อ/ราคา/รูปทีละช่อง แล้วไปเขียนพรอมต์เองทุกสินค้า · ภาพ: Tran Mau Tri Tam / Unsplash</figcaption></figure>
+    <figure class="shot"><img src="img/uge-problem-unsplash.webp" width="1200" height="800" loading="lazy" alt="ผู้หญิงนั่งเลื่อนดูหน้าเว็บบนแล็ปท็อปพร้อมจดโน้ต"><figcaption>ก่อนมีเครื่องมือ — เปิดหน้าสินค้า ก๊อปชื่อ/ราคา/รูปทีละช่อง แล้วไปเขียนพรอมต์เองทุกสินค้า · ภาพ: Tran Mau Tri Tam / Unsplash</figcaption></figure>
 
 
     <div class="quote-block">
@@ -987,7 +987,7 @@
       <h2>วิธีแก้ปัญหา</h2>
       <p>ให้ extension ต่อ 3 งานเป็นสายเดียว — scrape → gen prompt → ป้อนเข้าเว็บ AI video — เหลือแค่ "เลือก แล้วกด Auto"</p>
     </section>
-    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-home.jpg" width="800" height="1180" loading="lazy" alt="หน้าแรกของ side panel: ปุ่มดึงข้อมูลจากหน้านี้ วางลิงก์ อัปโหลดรูปเอง และโหมดพรีเซนเตอร์ ละครสั้น ไวรัล"><figcaption>Side panel ตัวจริง — เปิดข้างหน้าเว็บสินค้า กดปุ่มเดียวดึงข้อมูล หรือเลือกโหมดอื่น (เบลอโลโก้องค์กร)</figcaption></figure>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-home.webp" width="800" height="1180" loading="lazy" alt="หน้าแรกของ side panel: ปุ่มดึงข้อมูลจากหน้านี้ วางลิงก์ อัปโหลดรูปเอง และโหมดพรีเซนเตอร์ ละครสั้น ไวรัล"><figcaption>Side panel ตัวจริง — เปิดข้างหน้าเว็บสินค้า กดปุ่มเดียวดึงข้อมูล หรือเลือกโหมดอื่น (เบลอโลโก้องค์กร)</figcaption></figure>
 
 
     <div class="solution-grid">
@@ -1026,14 +1026,14 @@
       <h2>วิธีทำงาน — 4 จังหวะ</h2>
       <p>ตั้งแต่เปิดหน้าสินค้า จนวิดีโอเริ่ม generate ในเว็บ AI</p>
     </section>
-    <figure class="shot shot-pair" style="--shot-max:600px"><div class="pair"><img src="img/uge-pulled.jpg" width="800" height="1800" loading="lazy" alt="หลังกดดึงข้อมูล: รูปสินค้า 3 รูป ชื่อ ราคา จุดขาย และรีวิวลูกค้าถูกดึงมาให้เลือก"><img src="img/uge-scenes.jpg" width="800" height="1800" loading="lazy" alt="บทพูดภาษาไทยและการ์ดฉากวิดีโอ 2 ฉากพร้อมพรอมต์ภาษาอังกฤษ ปุ่มส่งเข้าเว็บสร้างวิดีโอ"></div><figcaption>ซ้าย: ดึงสินค้า + รีวิวจากหน้าที่เปิดอยู่ · ขวา: ได้บทพูด + การ์ดพรอมต์ทีละฉาก พร้อมส่งเข้าเว็บสร้างวิดีโอ (ข้อมูลสินค้าตัวอย่าง · รูปสินค้า: Onur Binay, Kowon vn / Unsplash)</figcaption></figure>
+    <figure class="shot shot-pair" style="--shot-max:600px"><div class="pair"><img src="img/uge-pulled.webp" width="800" height="1800" loading="lazy" alt="หลังกดดึงข้อมูล: รูปสินค้า 3 รูป ชื่อ ราคา จุดขาย และรีวิวลูกค้าถูกดึงมาให้เลือก"><img src="img/uge-scenes.webp" width="800" height="1800" loading="lazy" alt="บทพูดภาษาไทยและการ์ดฉากวิดีโอ 2 ฉากพร้อมพรอมต์ภาษาอังกฤษ ปุ่มส่งเข้าเว็บสร้างวิดีโอ"></div><figcaption>ซ้าย: ดึงสินค้า + รีวิวจากหน้าที่เปิดอยู่ · ขวา: ได้บทพูด + การ์ดพรอมต์ทีละฉาก พร้อมส่งเข้าเว็บสร้างวิดีโอ (ข้อมูลสินค้าตัวอย่าง · รูปสินค้า: Onur Binay, Kowon vn / Unsplash)</figcaption></figure>
 
 
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-        <h4>ดึงข้อมูลสินค้า</h4>
+        <h3>ดึงข้อมูลสินค้า</h3>
         <p>เปิดหน้าสินค้าตามปกติ → กด "ดึงข้อมูล" → passive scrape ชื่อ/ราคา/รูป</p>
       </div>
       <div class="flow-step">
@@ -1123,7 +1123,7 @@
       <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
       <p>ครบ loop ตั้งแต่ดึงข้อมูลสินค้า ถึงป้อนงานเข้าเว็บ AI video</p>
     </section>
-    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-viral.jpg" width="800" height="1800" loading="lazy" alt="โหมดไวรัล: การ์ดเทมเพลตเอฟเฟกต์ เช่น ซูมออกสู่อวกาศ ตกอิสระ บินความเร็วสูง กล้องไนท์วิชัน"><figcaption>โหมดไวรัล — เทมเพลตเอฟเฟกต์ที่ดึงพรอมต์และรูปปกมาจาก CMS ไม่ต้อง ship extension ใหม่</figcaption></figure>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-viral.webp" width="800" height="1800" loading="lazy" alt="โหมดไวรัล: การ์ดเทมเพลตเอฟเฟกต์ เช่น ซูมออกสู่อวกาศ ตกอิสระ บินความเร็วสูง กล้องไนท์วิชัน"><figcaption>โหมดไวรัล — เทมเพลตเอฟเฟกต์ที่ดึงพรอมต์และรูปปกมาจาก CMS ไม่ต้อง ship extension ใหม่</figcaption></figure>
 
 
     <div class="module-grid">
@@ -1177,7 +1177,7 @@
       <h2>หน้าตา Side Panel</h2>
       <p>เปิดข้างหน้าเว็บ target → ดึงสินค้า → ได้การ์ดพรอมต์ → กด Auto</p>
     </section>
-    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-script.jpg" width="800" height="1800" loading="lazy" alt="ส่วนบทพูดใน side panel: บทภาษาไทยที่ AI ร่างจากรีวิวจริง ตัวนับตัวอักษร และปุ่มขออีกแบบ"><figcaption>ของจริงเทียบกับภาพจำลองด้านบน — บทพูดที่ร่างจากรีวิวจริง พร้อมตัวนับความยาวให้พอดีความยาวซีน</figcaption></figure>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/uge-script.webp" width="800" height="1800" loading="lazy" alt="ส่วนบทพูดใน side panel: บทภาษาไทยที่ AI ร่างจากรีวิวจริง ตัวนับตัวอักษร และปุ่มขออีกแบบ"><figcaption>ของจริงเทียบกับภาพจำลองด้านบน — บทพูดที่ร่างจากรีวิวจริง พร้อมตัวนับความยาวให้พอดีความยาวซีน</figcaption></figure>
 
 
     <div class="app-mockup">
@@ -1225,7 +1225,7 @@
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์ที่ต้องคิดทางแก้เอง — browser automation quirk + full-stack product architecture</p>
     </section>
-    <figure class="shot"><img src="img/uge-cdp.jpg" width="1600" height="448" loading="lazy" alt="โค้ดจริงที่ใช้ chrome.debugger ส่ง Input.insertText และ dispatchMouseEvent เข้าเว็บ"><figcaption>โค้ดจริง — ใช้ CDP (chrome.debugger) ยิง trusted input ให้ rich-text editor ของเว็บปลายทางยอมรับ</figcaption></figure>
+    <figure class="shot"><img src="img/uge-cdp.webp" width="1600" height="448" loading="lazy" alt="โค้ดจริงที่ใช้ chrome.debugger ส่ง Input.insertText และ dispatchMouseEvent เข้าเว็บ"><figcaption>โค้ดจริง — ใช้ CDP (chrome.debugger) ยิง trusted input ให้ rich-text editor ของเว็บปลายทางยอมรับ</figcaption></figure>
 
 
     <div class="hack-grid">
@@ -1274,7 +1274,7 @@
       <h2>Design Decision ที่ตั้งใจเลือก</h2>
       <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอๆ กับสิ่งที่ทำ</p>
     </section>
-    <figure class="shot"><img src="img/uge-providers.jpg" width="1600" height="484" loading="lazy" alt="ตาราง LLM_PROVIDERS 4 เจ้าและฟังก์ชัน genLLM ที่ใช้คีย์ของผู้ใช้"><figcaption>BYOK + provider table — เพิ่มเจ้าใหม่ = เพิ่ม 1 แถว · ไม่มีคีย์ก็ไม่ยิง ไม่มี proxy ฝั่ง server</figcaption></figure>
+    <figure class="shot"><img src="img/uge-providers.webp" width="1600" height="484" loading="lazy" alt="ตาราง LLM_PROVIDERS 4 เจ้าและฟังก์ชัน genLLM ที่ใช้คีย์ของผู้ใช้"><figcaption>BYOK + provider table — เพิ่มเจ้าใหม่ = เพิ่ม 1 แถว · ไม่มีคีย์ก็ไม่ยิง ไม่มี proxy ฝั่ง server</figcaption></figure>
 
 
     <div class="quote-block" style="margin-bottom: 24px;">
@@ -1312,7 +1312,7 @@
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
     </section>
-    <figure class="shot"><img src="img/uge-know-unsplash.jpg" width="1200" height="800" loading="lazy" alt="ช่างภาพถือกล้องวิดีโอในสตูดิโอไฟสีแดง"><figcaption>ปลายทางของทั้งระบบคือคลิปวิดีโอ — เครื่องมือแค่ทำให้ทางไปถึงสั้นลง · ภาพ: Kyle Loftus / Unsplash</figcaption></figure>
+    <figure class="shot"><img src="img/uge-know-unsplash.webp" width="1200" height="800" loading="lazy" alt="ช่างภาพถือกล้องวิดีโอในสตูดิโอไฟสีแดง"><figcaption>ปลายทางของทั้งระบบคือคลิปวิดีโอ — เครื่องมือแค่ทำให้ทางไปถึงสั้นลง · ภาพ: Kyle Loftus / Unsplash</figcaption></figure>
 
 
     <div class="learning-card">

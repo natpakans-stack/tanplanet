@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Luk Jiab: a LINE bot that logs feeding on a pullet farm</title>
+  <title>Luk Jiab: LINE Bot Case Study for a Pullet Farm</title>
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Luk Jiab: a LINE bot that logs feeding on a pullet farm">
-  <meta name="twitter:description" content="Portfolio: a LINE chatbot for a pullet farm. Reminds workers about 3 meals a day, logs feeding, and reports into Google Sheets automatically. Next.js 16 + LIFF + Vercel">
+  <meta name="twitter:title" content="Luk Jiab: LINE Bot Case Study for a Pullet Farm">
+  <meta name="twitter:description" content="Portfolio case study: a LINE bot for a pullet farm that reminds workers of 3 meals a day, logs feeding via LIFF and saves to Google Sheets.">
   <meta property="og:url" content="https://projects.tanplanet.work/chatbot-farm-portfolio/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://projects.tanplanet.work/chatbot-farm-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:description" content="Portfolio: a LINE chatbot for a pullet farm. Reminds workers about 3 meals a day, logs feeding, and reports into Google Sheets automatically. Next.js 16 + LIFF + Vercel">
-  <meta property="og:title" content="Luk Jiab: a LINE bot that logs feeding on a pullet farm">
-  <meta name="description" content="Portfolio: a LINE chatbot for a pullet farm. Reminds workers about 3 meals a day, logs feeding, and reports into Google Sheets automatically. Next.js 16 + LIFF + Vercel">
+  <meta property="og:description" content="Portfolio case study: a LINE bot for a pullet farm that reminds workers of 3 meals a day, logs feeding via LIFF and saves to Google Sheets.">
+  <meta property="og:title" content="Luk Jiab: LINE Bot Case Study for a Pullet Farm">
+  <meta name="description" content="Portfolio case study: a LINE bot for a pullet farm that reminds workers of 3 meals a day, logs feeding via LIFF and saves to Google Sheets.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23B07710'/><text x='50' y='62' text-anchor='middle' font-size='58'>🐥</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -937,7 +937,7 @@
       <h2>The problem</h2>
       <p>Why does feeding on a pullet farm need a system?</p>
     </section>
-    <figure class="shot"><img src="img/cf-problem-unsplash.jpg" width="1200" height="675" loading="lazy" alt="A crowd of brown hens eating from a feeder"><figcaption>Daily farm work: several meals, several barns, and every one has to be recorded · Photo: Arisa Chattasa / Unsplash</figcaption></figure>
+    <figure class="shot"><img src="img/cf-problem-unsplash.webp" width="1200" height="675" loading="lazy" alt="A crowd of brown hens eating from a feeder"><figcaption>Daily farm work: several meals, several barns, and every one has to be recorded · Photo: Arisa Chattasa / Unsplash</figcaption></figure>
 
 
     <div class="quote-block">
@@ -980,7 +980,7 @@
       <h2>The solution</h2>
       <p>Put the bot in the LINE group workers already use: reminders on schedule, input through forms, storage in a Sheet</p>
     </section>
-    <figure class="shot"><img src="img/cf-richmenu.jpg" width="1250" height="843" loading="lazy" alt="The 6-button rich menu in LINE: plan feed, plan mixing, view report, submit report, log mixing, check quota"><figcaption>The bot's real rich menu: every task starts from a button in the LINE chat workers already use</figcaption></figure>
+    <figure class="shot"><img src="img/cf-richmenu.webp" width="1250" height="843" loading="lazy" alt="The 6-button rich menu in LINE: plan feed, plan mixing, view report, submit report, log mixing, check quota"><figcaption>The bot's real rich menu: every task starts from a button in the LINE chat workers already use</figcaption></figure>
 
 
     <div class="solution-grid">
@@ -1018,14 +1018,14 @@
       <h2>User Flow</h2>
       <p>A day with Luk Jiab: the owner plans at night, the bot runs on its own all day</p>
     </section>
-    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/cf-chat-morning.jpg" width="786" height="1436" loading="lazy" alt="LINE group chat: the bot posts the breakfast feeding plan, records the start time and reminds workers to report"><figcaption>The morning flow in the group: plan → tap start → report reminder (rendered from the bot's real Flex JSON · the chat frame is a mockup)</figcaption></figure>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/cf-chat-morning.webp" width="786" height="1436" loading="lazy" alt="LINE group chat: the bot posts the breakfast feeding plan, records the start time and reminds workers to report"><figcaption>The morning flow in the group: plan → tap start → report reminder (rendered from the bot's real Flex JSON · the chat frame is a mockup)</figcaption></figure>
 
 
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
-        <h4>Owner plans</h4>
+        <h3>Owner plans</h3>
         <p>At night the owner fills in 3 meals × 2 barns for the next day</p>
       </div>
       <div class="flow-step">
@@ -1055,7 +1055,7 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>A stack chosen so one person can run the whole system: no database to manage, no admin UI to build</p>
     </section>
-    <figure class="shot"><img src="img/cf-scheduler.jpg" width="1600" height="482" loading="lazy" alt="Scheduler code that reads Thai time and the schedule from Google Sheets, then pushes to the group"><figcaption>Real code: an external cron calls the endpoint every minute, which compares Thai time with the schedule in Google Sheets and pushes to the group</figcaption></figure>
+    <figure class="shot"><img src="img/cf-scheduler.webp" width="1600" height="482" loading="lazy" alt="Scheduler code that reads Thai time and the schedule from Google Sheets, then pushes to the group"><figcaption>Real code: an external cron calls the endpoint every minute, which compares Thai time with the schedule in Google Sheets and pushes to the group</figcaption></figure>
 
 
     <div class="arch-diagram">
@@ -1117,7 +1117,7 @@
       <h2>What I built: 8 core features</h2>
       <p>The full loop, from planning to stored data</p>
     </section>
-    <figure class="shot shot-pair" style="--shot-max:560px"><div class="pair"><img src="img/cf-mp.jpg" width="600" height="1298" loading="lazy" alt="LIFF mixing-plan form: a 7-day calendar, feed formula and target number of sacks"><img src="img/cf-fm.jpg" width="600" height="1298" loading="lazy" alt="LIFF mixing-log form: date, formula, amount mixed and notes"></div><figcaption>Two more real LIFF forms: mixing plan (owner) · mixing log (worker) · sample data</figcaption></figure>
+    <figure class="shot shot-pair" style="--shot-max:560px"><div class="pair"><img src="img/cf-mp.webp" width="600" height="1298" loading="lazy" alt="LIFF mixing-plan form: a 7-day calendar, feed formula and target number of sacks"><img src="img/cf-fm.jpg" width="600" height="1298" loading="lazy" alt="LIFF mixing-log form: date, formula, amount mixed and notes"></div><figcaption>Two more real LIFF forms: mixing plan (owner) · mixing log (worker) · sample data</figcaption></figure>
 
 
     <div class="module-grid">
@@ -1170,13 +1170,13 @@
       <h2>What it looks like in the LINE group</h2>
       <p>The morning flow: the bot sends the instruction → a worker taps start</p>
     </section>
-    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/cf-chat-mixing.jpg" width="786" height="1226" loading="lazy" alt="LINE group chat: the bot reminds workers to mix formula A, target 16 sacks, plus this month's message quota card"><figcaption>The mixing reminder bubble + the message quota card (real Flex JSON · sample numbers)</figcaption></figure>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="img/cf-chat-mixing.webp" width="786" height="1226" loading="lazy" alt="LINE group chat: the bot reminds workers to mix formula A, target 16 sacks, plus this month's message quota card"><figcaption>The mixing reminder bubble + the message quota card (real Flex JSON · sample numbers)</figcaption></figure>
 
 
     <div class="chat-mockup">
       <div class="chat-bubble bot">
         <div class="label">Luk Jiab &middot; 05:45</div>
-        <h4>Breakfast feeding is coming up</h4>
+        <h3>Breakfast feeding is coming up</h3>
         <div class="houses">
           <div>Barn 1: <strong style="color:#78350f;">3.5</strong> sacks</div>
           <div>Barn 2: <strong style="color:#78350f;">3.0</strong> sacks</div>
@@ -1205,12 +1205,12 @@
       <h2>What the LIFF forms look like</h2>
       <p>Plan 3 meals on a single screen (LIFF Tall size, limited viewport)</p>
     </section>
-    <figure class="shot shot-pair" style="--shot-max:560px"><div class="pair"><img src="img/cf-fp.jpg" width="600" height="1298" loading="lazy" alt="LIFF feed-plan form: a week calendar showing which days are planned, and a 3 meals × 2 barns table totaling 16.5 sacks"><img src="img/cf-wr.jpg" width="600" height="1298" loading="lazy" alt="LIFF feeding report form for workers: actual feed, dead and sick birds, split by barn 1 and barn 2"></div><figcaption>The real forms (running from code in mock mode). Left: the owner plans feed · Right: a worker reports</figcaption></figure>
+    <figure class="shot shot-pair" style="--shot-max:560px"><div class="pair"><img src="img/cf-fp.webp" width="600" height="1298" loading="lazy" alt="LIFF feed-plan form: a week calendar showing which days are planned, and a 3 meals × 2 barns table totaling 16.5 sacks"><img src="img/cf-wr.jpg" width="600" height="1298" loading="lazy" alt="LIFF feeding report form for workers: actual feed, dead and sick birds, split by barn 1 and barn 2"></div><figcaption>The real forms (running from code in mock mode). Left: the owner plans feed · Right: a worker reports</figcaption></figure>
 
 
     <div class="liff-mockup">
       <div class="liff-header">
-        <h4><img src="img/chick.png" width="22" height="22" alt="" style="vertical-align:-5px;border-radius:50%"> Luk Jiab</h4>
+        <h3><img src="img/chick.png" width="22" height="22" alt="" style="vertical-align:-5px;border-radius:50%"> Luk Jiab</h3>
         <div class="sub">Plan feed for each meal</div>
       </div>
       <div class="liff-body">
@@ -1238,7 +1238,7 @@
       <h2>Hacking the problems</h2>
       <p>6 problems I had to solve myself: design constraints + LINE platform limits + serverless quirks</p>
     </section>
-    <figure class="shot"><img src="img/cf-hack.jpg" width="1600" height="450" loading="lazy" alt="Real code: the main-menu keyword as the only trigger, and a function that formats timestamps in readable Thai time"><figcaption>Two pieces of real code: the bot only responds to "main menu", and timestamps are stored in Thai time the owner can read in the Sheet</figcaption></figure>
+    <figure class="shot"><img src="img/cf-hack.webp" width="1600" height="450" loading="lazy" alt="Real code: the main-menu keyword as the only trigger, and a function that formats timestamps in readable Thai time"><figcaption>Two pieces of real code: the bot only responds to "main menu", and timestamps are stored in Thai time the owner can read in the Sheet</figcaption></figure>
 
 
     <div class="hack-grid">
@@ -1286,7 +1286,7 @@
       <h2>Design decisions to discuss with the client</h2>
       <p>UX trade-offs that aren't in any playbook: they need explaining and deciding together</p>
     </section>
-    <figure class="shot shot-pair" style="--shot-max:560px"><div class="pair"><img src="img/cf-fp-confirm.jpg" width="600" height="1300" loading="lazy" alt="The confirmation box before saving a plan, summarizing the 3 meals × 2 barns table, totaling 16.5 sacks"><img src="img/cf-fp-ok.jpg" width="600" height="1300" loading="lazy" alt="The success screen: the Luk Jiab mascot, a summary of sacks per meal, and a button back to LINE"></div><figcaption>Confirm dialog before saving → success screen with a summary (reused across all 3 forms)</figcaption></figure>
+    <figure class="shot shot-pair" style="--shot-max:560px"><div class="pair"><img src="img/cf-fp-confirm.webp" width="600" height="1300" loading="lazy" alt="The confirmation box before saving a plan, summarizing the 3 meals × 2 barns table, totaling 16.5 sacks"><img src="img/cf-fp-ok.webp" width="600" height="1300" loading="lazy" alt="The success screen: the Luk Jiab mascot, a summary of sacks per meal, and a button back to LINE"></div><figcaption>Confirm dialog before saving → success screen with a summary (reused across all 3 forms)</figcaption></figure>
 
 
     <div class="quote-block" style="margin-bottom: 24px;">
@@ -1323,7 +1323,7 @@
       <h2>What I took away from this project</h2>
       <p>5 lessons from building Luk Jiab, from requirements to production</p>
     </section>
-    <figure class="shot"><img src="img/cf-learn-unsplash.jpg" width="1200" height="750" loading="lazy" alt="Brown hens eating from a feeder on the grass"><figcaption>The best tool for field work lives in the app people already use · Photo: Lucas / Unsplash</figcaption></figure>
+    <figure class="shot"><img src="img/cf-learn-unsplash.webp" width="1200" height="750" loading="lazy" alt="Brown hens eating from a feeder on the grass"><figcaption>The best tool for field work lives in the app people already use · Photo: Lucas / Unsplash</figcaption></figure>
 
 
     <div class="learning-card">

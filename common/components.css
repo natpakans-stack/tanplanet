@@ -128,3 +128,89 @@
 :is(.cs, .tp-doc) :is(.shot-pair, figure.shot.shot-pair) > :is(figcaption, .shot-cap) { grid-column: 1 / -1; margin-top: 2px; text-align: left; font-size: 14px; line-height: 1.6; color: var(--tp-text-3); }
 :is(.cs, .tp-doc) :is(.shot-pair, figure.shot.shot-pair) > img { width: 100%; height: auto; border: 1px solid var(--tp-border); border-radius: 12px; }
 :is(.cs, .tp-doc) figure.shot figcaption { text-align: left; }
+
+/* 14 · โหลดหน้า: skeleton + shimmer ระหว่างรอรูป (header-autohide.js ใส่ .tp-sk ให้รูปที่ยังโหลดไม่เสร็จ แล้วค่อย fade เข้าด้วย Motion) */
+@keyframes tp-shimmer { from { background-position: 150% 0; } to { background-position: -50% 0; } }
+.tp-sk { color: transparent !important; background: linear-gradient(100deg, var(--tp-surface-3) 30%, #fafafa 50%, var(--tp-surface-3) 70%) 0 0 / 200% 100% !important; animation: tp-shimmer 1.3s linear infinite; }
+img.tp-sk { opacity: 1; }
+img.tp-sk[src]:not([src=""]) { -webkit-mask: none; }
+.tp-enter { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .tp-sk { animation: none; } .tp-enter { opacity: 1 !important; } }
+
+/* 15 · หน้าโหลด: โลโก้ tanplanet เต็มจอจนรูปพร้อม (header-autohide.js ใส่ html.tp-ready ตอน window load)
+   CSS ล้วน: โผล่หลัง .15s (หน้าเร็วไม่กระพริบ) · หายเองที่ 4s ถ้า JS ไม่ทำงาน · ลดการเคลื่อนไหว = ไม่หายใจ */
+@keyframes tp-loader-in { to { opacity: 1; } }
+@keyframes tp-loader-out { to { opacity: 0; visibility: hidden; } }
+@keyframes tp-breathe { 0%, 100% { transform: scale(1); opacity: .9; } 50% { transform: scale(1.06); opacity: 1; } }
+html:not(.tp-ready) body::before { content: ""; position: fixed; inset: 0; z-index: 10000; background: var(--tp-bg, #fff); opacity: 0; pointer-events: none;
+  animation: tp-loader-in .2s ease .15s forwards, tp-loader-out .4s ease 4s forwards; }
+html:not(.tp-ready) body::after { content: ""; position: fixed; left: 50%; top: 50%; z-index: 10001; width: 128px; height: 64px; margin: -32px 0 0 -64px; opacity: 0; pointer-events: none;
+  background: url("data:image/png;base64,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") center / contain no-repeat;
+  animation: tp-loader-in .2s ease .15s forwards, tp-breathe 1.6s ease-in-out .35s infinite, tp-loader-out .4s ease 4s forwards; }
+html.tp-ready body::before, html.tp-ready body::after { content: none; }
+@media (prefers-reduced-motion: reduce) { html:not(.tp-ready) body::after { animation: tp-loader-in .2s ease .15s forwards, tp-loader-out .4s ease 4s forwards; } }
+
+/* 16 · คำถามที่พบบ่อย (AEO): details.faq-item[name] (ชื่อเดียวกัน = เปิดได้ทีละข้อ) > summary + .faq-a · คู่กับ JSON-LD FAQPage ในหน้าเดียวกัน */
+.faq { margin: 0; padding: 0; border-top: 1px solid var(--tp-border); }
+.faq-item { border-bottom: 1px solid var(--tp-border); }
+.faq-item > summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0; cursor: pointer; list-style: none; font: 600 18px/1.45 var(--tp-font-display); color: var(--tp-text); }
+.faq-item > summary::-webkit-details-marker { display: none; }
+.faq-item > summary::after { content: "+"; flex: none; font-size: 22px; font-weight: 400; color: var(--tp-text-3); transition: transform .2s; }
+.faq-item[open] > summary::after { transform: rotate(45deg); }
+.faq-a { margin: 0 0 20px; max-width: 720px; font-size: 16px; line-height: 1.75; color: var(--tp-text-2); }
+.faq-a a { color: var(--tp-text); text-decoration: underline; text-underline-offset: 3px; }
+.faq-item > summary:focus-visible { outline: 2px solid var(--tp-text); outline-offset: 4px; border-radius: 4px; }
+
+/* 17 · ดูรูปเต็มจอ (lightbox) — header-autohide.js ผูกกับรูปในเนื้อหาบทความ/หน้าเคส · <dialog> ของเบราว์เซอร์ (Esc ปิดได้เอง) */
+:is(.ap-content, .cs article, .pv-demo) img.tp-zoomable { cursor: zoom-in; }
+.tp-lb { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; }
+.tp-lb::backdrop { background: rgba(10, 10, 10, .88); }
+.tp-lb-fig { display: grid; grid-template-rows: minmax(0, 1fr) auto auto; place-items: center; gap: 12px; width: 100%; height: 100%; margin: 0; padding: 56px 72px 16px; box-sizing: border-box; }
+.tp-lb-fig > img { max-width: 100%; max-height: 100%; min-height: 0; object-fit: contain; border-radius: 8px; cursor: zoom-out; }
+.tp-lb-fig figcaption { color: rgba(255, 255, 255, .8); font-size: 14px; text-align: center; max-width: 720px; }
+.tp-lb-btn { position: fixed; display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 999px; background: rgba(255, 255, 255, .12); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
+.tp-lb-btn:hover { background: rgba(255, 255, 255, .22); }
+.tp-lb-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.tp-lb-close { top: 16px; right: 16px; }
+.tp-lb-prev { left: 16px; top: 50%; transform: translateY(-50%); }
+.tp-lb-next { right: 16px; top: 50%; transform: translateY(-50%); }
+.tp-lb-thumbs { display: flex; gap: 8px; max-width: 100%; overflow-x: auto; padding: 4px; scrollbar-width: thin; }
+.tp-lb-thumbs button { flex: none; width: 88px; height: 56px; padding: 0; border: 2px solid transparent; border-radius: 8px; background: rgba(255, 255, 255, .06); cursor: pointer; opacity: .55; transition: opacity .15s, border-color .15s; }
+.tp-lb-thumbs button:hover { opacity: .9; }
+.tp-lb-thumbs button[aria-current="true"] { border-color: #fff; opacity: 1; }
+.tp-lb-thumbs img { width: 100%; height: 100%; object-fit: cover; border-radius: 6px; display: block; }
+.tp-lb-thumbs button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.tp-lb-count { position: fixed; top: 26px; left: 50%; transform: translateX(-50%); color: rgba(255, 255, 255, .7); font-size: 13px; }
+@media (max-width: 640px) { .tp-lb-fig { padding: 56px 12px 12px; } .tp-lb-thumbs button { width: 64px; height: 42px; } .tp-lb-prev, .tp-lb-next { top: 50%; } }
+
+/* 18 · footer: แถวล่าง © + เวอร์ชัน รวมกันกลางบรรทัด (กลางเดียวกับมาสคอต) */
+.footer .small-print { display: flex; justify-content: center; align-items: center; gap: 8px; text-align: center; }
+.footer .small-print .tp-version::before { content: "·"; margin-right: 8px; }
+.footer .small-print .tp-version { font-variant-numeric: tabular-nums; color: var(--tp-text-4); }
+@media (max-width: 479px) { .footer .small-print { flex-wrap: wrap; } }
+.tp-zoom-prev { padding: 0; border: 0; background: none; font: inherit; font-weight: 600; color: var(--tp-text); text-decoration: underline; text-underline-offset: 3px; cursor: zoom-in; }
+.tp-zoom-prev:focus-visible { outline: 2px solid var(--tp-text); outline-offset: 2px; border-radius: 4px; }
+
+/* 19 · ปุ่มเรซูเม่บน navbar: hover เปลี่ยนแค่พื้น — กันแอนิเมชัน hover ของ Webflow (IX) ที่เลื่อน/จางตัวหนังสือจนจม */
+.header .link-header-wrapper .link-primary,
+.header .link-header-wrapper .link-primary:hover,
+.header .link-header-wrapper .link-primary :is(.link-primary-text, .link-primary-text-arrow, .link-primary-arrow) { color: var(--tp-on-brand, #fff) !important; opacity: 1 !important; transform: none !important; }
+/* 16b · FAQ motion: เปิด/ปิดแบบยืดหดนุ่ม ๆ + คำตอบค่อย ๆ ขึ้น (เบราว์เซอร์ที่ยังไม่รองรับ = เปิดทันทีตามเดิม) */
+:root { interpolate-size: allow-keywords; }
+.faq-item::details-content { block-size: 0; overflow: hidden; transition: block-size .35s cubic-bezier(.22, 1, .36, 1), content-visibility .35s allow-discrete; }
+.faq-item[open]::details-content { block-size: auto; }
+.faq-item .faq-a { opacity: 0; transform: translateY(-6px); transition: opacity .3s ease .05s, transform .35s cubic-bezier(.22, 1, .36, 1) .05s; }
+.faq-item[open] .faq-a { opacity: 1; transform: none; }
+.faq-item > summary::after { transition: transform .3s cubic-bezier(.22, 1, .36, 1); }
+.faq-item > summary:hover { color: var(--tp-text-2); }
+@media (prefers-reduced-motion: reduce) { .faq-item::details-content, .faq-item .faq-a, .faq-item > summary::after { transition: none; } }
+
+/* 20. หัวข้อหลักหน้าเดียวต้องมี H1 อันเดียว (ตัวตรวจคุณภาพ) — ตัวที่ลดเป็น h2/p ยังหน้าตาเหมือน H1 เดิม */
+.home-hero-left > h2.home-hello { margin: 0 0 24px; font: 600 clamp(30px, 3.4vw, 42px)/1.24 var(--tp-font-display, "Google Sans", Inter, sans-serif); letter-spacing: normal; color: rgb(26, 26, 26); text-wrap: wrap; }
+p.title.category { margin-top: 0; font-family: var(--tp-font-display, "Google Sans", Inter, sans-serif); font-weight: 600; color: rgb(26, 26, 26); }
+/* รูปที่ใส่ width/height (tools/fix-img-size.py) ต้องย่อตามสัดส่วน — :where = ความสำคัญ 0 คลาสไหนตั้งความสูงไว้ยังชนะ */
+:where(img[width][height]) { height: auto; }
+/* ลิงก์นโยบายความเป็นส่วนตัวท้าย footer (ต่อจากเลขเวอร์ชัน) */
+.tp-privacy::before { content: "·"; margin-right: 8px; color: var(--tp-text-4); }
+.tp-privacy { color: var(--tp-text-3); text-decoration: none; }
+.tp-privacy:hover { color: var(--tp-text); text-decoration: underline; }

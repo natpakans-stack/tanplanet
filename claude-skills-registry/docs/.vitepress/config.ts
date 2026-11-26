@@ -6,6 +6,9 @@ export default defineConfig({
   description: 'รวมทุก Skill, Plugin, MCP Server ที่ติดตั้งไว้ใน Claude Code',
   lang: 'th',
   head: [
+    ['meta', { property: 'og:image', content: 'https://projects.tanplanet.work/pj/covers/claude-skills-registry-th-og.jpg' }],
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['link', { rel: 'icon', type: 'image/png', href: 'https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=64&height=64' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],

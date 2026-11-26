@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All team work in one place — board, calendar, clients, documents and AI meeting notes</title>
+  <title>Team Platform Case Study: Board, CRM &amp; AI Meeting Notes</title>
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="All team work in one place — board, calendar, clients, documents and AI meeting notes">
-  <meta name="twitter:description" content="Portfolio: an internal platform — Kanban board, calendar, CRM, quotations/expense claims, AI meeting notes — Next.js 16 + Supabase (RLS) + serverless cron, no host running 24/7">
+  <meta name="twitter:title" content="Team Platform Case Study: Board, CRM &amp; AI Meeting Notes">
+  <meta name="twitter:description" content="Case study of an internal team platform: Kanban board, calendar, CRM, documents and AI meeting notes on Next.js 16, Supabase and serverless cron.">
   <meta property="og:url" content="https://projects.tanplanet.work/team-platform-portfolio/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://projects.tanplanet.work/team-platform-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:description" content="Portfolio: an internal platform — Kanban board, calendar, CRM, quotations/expense claims, AI meeting notes — Next.js 16 + Supabase (RLS) + serverless cron, no host running 24/7">
-  <meta property="og:title" content="All team work in one place — board, calendar, clients, documents and AI meeting notes">
-  <meta name="description" content="Portfolio: an internal platform — Kanban board, calendar, CRM, quotations/expense claims, AI meeting notes — Next.js 16 + Supabase (RLS) + serverless cron, no host running 24/7">
+  <meta property="og:description" content="Case study of an internal team platform: Kanban board, calendar, CRM, documents and AI meeting notes on Next.js 16, Supabase and serverless cron.">
+  <meta property="og:title" content="Team Platform Case Study: Board, CRM &amp; AI Meeting Notes">
+  <meta name="description" content="Case study of an internal team platform: Kanban board, calendar, CRM, documents and AI meeting notes on Next.js 16, Supabase and serverless cron.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%231e3a8a'/><text x='50' y='62' text-anchor='middle' font-size='54'>🗂️</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -891,7 +891,7 @@
       <p>The team's work was spread across several tools. Why was day-to-day work still messy, with things slipping through?</p>
     </section>
 
-    <figure class="shot"><img src="img/before-after.jpg" width="1600" height="892" loading="lazy" decoding="async" alt="Diagram of team work scattered across chat, calendars, spreadsheets, files and meeting recordings, merged into one platform"><figcaption>Before → after: work in 5 places becomes one data set (illustration)</figcaption></figure>
+    <figure class="shot"><img src="img/before-after.webp" width="1600" height="892" loading="lazy" decoding="async" alt="Diagram of team work scattered across chat, calendars, spreadsheets, files and meeting recordings, merged into one platform"><figcaption>Before → after: work in 5 places becomes one data set (illustration)</figcaption></figure>
 
 
     <div class="quote-block">
@@ -976,14 +976,14 @@
       <p>The core of the architecture: no host running 24/7. Every automation is driven by a stateless cron tick.</p>
     </section>
 
-    <figure class="shot"><img src="img/discord-notify.jpg" width="1600" height="1066" loading="lazy" decoding="async" alt="Notifications in a Discord channel: upcoming meeting, overdue task and weekly summary"><figcaption>Where the cron ends up: notifications in Discord (mockup, using the message headings from the real code)</figcaption></figure>
+    <figure class="shot"><img src="img/discord-notify.webp" width="1600" height="1066" loading="lazy" decoding="async" alt="Notifications in a Discord channel: upcoming meeting, overdue task and weekly summary"><figcaption>Where the cron ends up: notifications in Discord (mockup, using the message headings from the real code)</figcaption></figure>
 
 
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
-        <h4>The team works on the platform</h4>
+        <h3>The team works on the platform</h3>
         <p>Drag cards on the board, schedule meetings in the calendar, paste meeting recording links</p>
       </div>
       <div class="flow-step">
@@ -1015,7 +1015,7 @@
       <p>Bun monorepo &middot; Next.js 16 on Vercel &middot; Supabase — no backend of its own, no machine running all the time</p>
     </section>
 
-    <figure class="shot"><img src="img/cron-workflow.jpg" width="1600" height="1489" loading="lazy" decoding="async" alt="GitHub Actions cron.yml file that runs every 30 minutes"><figcaption>The real cron.yml: one tick every 30 minutes calls 2 routes, no 24/7 host (domain replaced with yourdomain.com)</figcaption></figure>
+    <figure class="shot"><img src="img/cron-workflow.webp" width="1600" height="1489" loading="lazy" decoding="async" alt="GitHub Actions cron.yml file that runs every 30 minutes"><figcaption>The real cron.yml: one tick every 30 minutes calls 2 routes, no 24/7 host (domain replaced with yourdomain.com)</figcaption></figure>
 
 
     <div class="arch-diagram">
@@ -1076,7 +1076,7 @@
       <p>The full loop of running team work, from the task queue to documents and meeting notes</p>
     </section>
 
-    <figure class="shot"><img src="img/quotation.jpg" width="1600" height="812" loading="lazy" decoding="async" alt="Quotation page showing status, line items and a PDF preview with signature"><figcaption>Quotation: status flow + Thai-language PDF + attached signature (mockup, sample data)</figcaption></figure>
+    <figure class="shot"><img src="img/quotation.webp" width="1600" height="812" loading="lazy" decoding="async" alt="Quotation page showing status, line items and a PDF preview with signature"><figcaption>Quotation: status flow + Thai-language PDF + attached signature (mockup, sample data)</figcaption></figure>
 
 
     <div class="module-grid">
@@ -1131,7 +1131,7 @@
       <p>The whole team's queue on one screen. Drag cards across columns and everyone sees the update live.</p>
     </section>
 
-    <figure class="shot"><img src="img/calendar.jpg" width="1600" height="1206" loading="lazy" decoding="async" alt="Team calendar month view with meetings and tasks that have due dates"><figcaption>Team calendar: meetings (synced with Google) + cards with due dates in one view (mockup)</figcaption></figure>
+    <figure class="shot"><img src="img/calendar.webp" width="1600" height="1206" loading="lazy" decoding="async" alt="Team calendar month view with meetings and tasks that have due dates"><figcaption>Team calendar: meetings (synced with Google) + cards with due dates in one view (mockup)</figcaption></figure>
 
 
     <div class="ext-mockup">
@@ -1187,7 +1187,7 @@
       <p>6 engineering problems I had to work out myself: serverless constraints, undocumented APIs and multi-tenancy</p>
     </section>
 
-    <figure class="shot"><img src="img/meeting-brief.jpg" width="1600" height="1174" loading="lazy" decoding="async" alt="AI meeting notes split into decisions, risks and Next Actions with a completeness score"><figcaption>AI meeting notes: structured brief + completeness score · Next Actions come from real cards, not written by the AI (mockup)</figcaption></figure>
+    <figure class="shot"><img src="img/meeting-brief.webp" width="1600" height="1174" loading="lazy" decoding="async" alt="AI meeting notes split into decisions, risks and Next Actions with a completeness score"><figcaption>AI meeting notes: structured brief + completeness score · Next Actions come from real cards, not written by the AI (mockup)</figcaption></figure>
 
 
     <div class="hack-grid">
@@ -1237,7 +1237,7 @@
       <p>Choosing what "not to build" keeps the tool small, focused and easy to maintain</p>
     </section>
 
-    <figure class="shot"><img src="img/event-discord.jpg" width="1600" height="636" loading="lazy" decoding="async" alt="Meeting card with a button to join a Discord voice room, and a list of what was and wasn't built"><figcaption>No built-in meeting room: in-app meetings link to a Discord voice room (mockup)</figcaption></figure>
+    <figure class="shot"><img src="img/event-discord.webp" width="1600" height="636" loading="lazy" decoding="async" alt="Meeting card with a button to join a Discord voice room, and a list of what was and wasn't built"><figcaption>No built-in meeting room: in-app meetings link to a Discord voice room (mockup)</figcaption></figure>
 
 
     <div class="quote-block" style="margin-bottom: 24px;">
@@ -1276,7 +1276,7 @@
       <p>5 areas where this project genuinely moved my skills up</p>
     </section>
 
-    <figure class="shot"><img src="img/migrations.jpg" width="1600" height="667" loading="lazy" decoding="async" alt="List of the first 30 SQL migration files"><figcaption>The first 30 migrations (real file names): RLS arrives in file 2</figcaption></figure>
+    <figure class="shot"><img src="img/migrations.webp" width="1600" height="667" loading="lazy" decoding="async" alt="List of the first 30 SQL migration files"><figcaption>The first 30 migrations (real file names): RLS arrives in file 2</figcaption></figure>
 
 
     <div class="learning-card">

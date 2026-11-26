@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UGC Studio — a pipeline that turns product photos into UGC videos (AI Director → Higgsfield → ElevenLabs → Remotion)</title>
+  <title>UGC Studio Case Study: AI Director for UGC Videos</title>
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="UGC Studio — a pipeline that turns product photos into UGC videos">
   <meta name="twitter:description" content="Portfolio: an internal tool that turns product photos into UGC sales videos — AI acts as the director: it plans shots, writes a Thai script, generates footage, records the voiceover, then edits with keyword sync into an .mp4">
@@ -14,7 +14,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:description" content="Portfolio: an internal tool that turns product photos into UGC sales videos — AI acts as the director: it plans shots, writes a Thai script, generates footage, records the voiceover, then edits with keyword sync into an .mp4">
   <meta property="og:title" content="UGC Studio — a pipeline that turns product photos into UGC videos">
-  <meta name="description" content="Portfolio: an internal tool that turns product photos into UGC sales videos — AI acts as the director: it plans shots, writes a Thai script, generates footage, records the voiceover, then edits with keyword sync into an .mp4 · React 19 + Bun + Higgsfield + ElevenLabs + Remotion">
+  <meta name="description" content="Case study: an internal AI tool that turns a product photo into a UGC video, from shot plan and script to voiceover and keyword-synced edit.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23e11d48'/><text x='50' y='62' text-anchor='middle' font-size='54'>🎞️</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -874,7 +874,7 @@
       <h2>The problem</h2>
       <p>Why is a single UGC sales video so slow and expensive, when content needs a lot of testing?</p>
     </section>
-    <figure class="shot"><img src="img/ugs-problem-unsplash.jpg" width="1200" height="800" loading="lazy" alt="A film crew with cameras, lights and monitors in a studio"><figcaption>The old way — every sales clip needs someone to shoot, someone to light, someone to edit · Photo: Jakob Owens / Unsplash</figcaption></figure>
+    <figure class="shot"><img src="img/ugs-problem-unsplash.webp" width="1200" height="800" loading="lazy" alt="A film crew with cameras, lights and monitors in a studio"><figcaption>The old way — every sales clip needs someone to shoot, someone to light, someone to edit · Photo: Jakob Owens / Unsplash</figcaption></figure>
 
 
     <div class="quote-block">
@@ -957,14 +957,14 @@
       <h2>How it works — 4 steps</h2>
       <p>From uploading a product photo to a UGC video ready to post</p>
     </section>
-    <figure class="shot"><img src="img/ugs-how.jpg" width="1488" height="640" loading="lazy" alt="4 frames from a real output video: opening the lid, scooping the powder, pouring hot water, stirring. Each shot has a keyword in a different color"><figcaption>A real result — the shot plan splits into several shots, each with its own keyword popping up in time with the voiceover</figcaption></figure>
+    <figure class="shot"><img src="img/ugs-how.webp" width="1488" height="640" loading="lazy" alt="4 frames from a real output video: opening the lid, scooping the powder, pouring hot water, stirring. Each shot has a keyword in a different color"><figcaption>A real result — the shot plan splits into several shots, each with its own keyword popping up in time with the voiceover</figcaption></figure>
 
 
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
-        <h4>Upload &amp; set up</h4>
+        <h3>Upload &amp; set up</h3>
         <p>Upload a product photo + choose a presenter + type a brief/script + set size/length</p>
       </div>
       <div class="flow-step">
@@ -995,7 +995,7 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>One page on localhost — React on the Bun bundler (no Vite) + a Bun server that hides the keys and drives the AI pipeline</p>
     </section>
-    <figure class="shot"><img src="img/ugs-done.jpg" width="1600" height="1000" loading="lazy" alt="UGC Studio after a run finishes: the vertical video shows in the Output column with a button to open it in Remotion"><figcaption>The real UI after a run — the .mp4 from the pipeline + a button to open Remotion Studio to fine-tune the timing (running on localhost with sample data)</figcaption></figure>
+    <figure class="shot"><img src="img/ugs-done.webp" width="1600" height="1000" loading="lazy" alt="UGC Studio after a run finishes: the vertical video shows in the Output column with a button to open it in Remotion"><figcaption>The real UI after a run — the .mp4 from the pipeline + a button to open Remotion Studio to fine-tune the timing (running on localhost with sample data)</figcaption></figure>
 
 
     <div class="arch-diagram">
@@ -1055,7 +1055,7 @@
       <h2>What I built — 8 core capabilities</h2>
       <p>The full loop, from planning shots to an .mp4 where keywords pop up on the exact word</p>
     </section>
-    <figure class="shot shot-narrow" style="--shot-max:620px"><img src="img/ugs-script.jpg" width="925" height="1046" loading="lazy" alt="The Script column: a brief field for AI drafting, the Thai voiceover script, and a per-second audio timeline"><figcaption>The real Script column — AI drafts from the brief, counts script length against time, and splits the audio timeline into ~3-second segments</figcaption></figure>
+    <figure class="shot shot-narrow" style="--shot-max:620px"><img src="img/ugs-script.webp" width="925" height="1046" loading="lazy" alt="The Script column: a brief field for AI drafting, the Thai voiceover script, and a per-second audio timeline"><figcaption>The real Script column — AI drafts from the brief, counts script length against time, and splits the audio timeline into ~3-second segments</figcaption></figure>
 
 
     <div class="module-grid">
@@ -1109,7 +1109,7 @@
       <h2>The UI — a 3-column studio</h2>
       <p>One page in the style of NotebookLM — left: upload photos/pick a presenter · middle: control the script + mark keywords · right: settings + Generate</p>
     </section>
-    <figure class="shot"><img src="img/ugs-idle.jpg" width="1600" height="1000" loading="lazy" alt="UGC Studio in 3 columns: Source with product photo and avatar, Script with voiceover and timeline, Output with settings and the generate button"><figcaption>The real screen in 3 columns — Source · Script · Output (test product photo · the avatar is an AI presenter)</figcaption></figure>
+    <figure class="shot"><img src="img/ugs-idle.webp" width="1600" height="1000" loading="lazy" alt="UGC Studio in 3 columns: Source with product photo and avatar, Script with voiceover and timeline, Output with settings and the generate button"><figcaption>The real screen in 3 columns — Source · Script · Output (test product photo · the avatar is an AI presenter)</figcaption></figure>
 
 
     <div class="studio-mock">
@@ -1152,7 +1152,7 @@
       <h2>Hacks for the hard parts</h2>
       <p>6 problems I had to work out myself — chaining several AIs + managing long jobs on unstable external services</p>
     </section>
-    <figure class="shot"><img src="img/ugs-hack.jpg" width="1112" height="640" loading="lazy" alt="3 frames from a smartwatch clip: the keywords heart-rate tracking, confidently waterproof, and long battery life pop up in time with the voice"><figcaption>Keyword sync from ElevenLabs timestamps — the text pops up with the sentence being spoken (frames from a test clip)</figcaption></figure>
+    <figure class="shot"><img src="img/ugs-hack.webp" width="1112" height="640" loading="lazy" alt="3 frames from a smartwatch clip: the keywords heart-rate tracking, confidently waterproof, and long battery life pop up in time with the voice"><figcaption>Keyword sync from ElevenLabs timestamps — the text pops up with the sentence being spoken (frames from a test clip)</figcaption></figure>
 
 
     <div class="hack-grid">
@@ -1201,7 +1201,7 @@
       <h2>Design decisions I made on purpose</h2>
       <p>What I deliberately "didn't build" in the first round matters as much as what I did</p>
     </section>
-    <figure class="shot"><img src="img/ugs-decision.jpg" width="1488" height="640" loading="lazy" alt="4 frames of hand-and-product shots, no faces, with keywords"><figcaption>Avoiding lip-sync in v1 — cutting to hand/product shots with no visible mouth, and letting the voiceover + keywords tell the story</figcaption></figure>
+    <figure class="shot"><img src="img/ugs-decision.webp" width="1488" height="640" loading="lazy" alt="4 frames of hand-and-product shots, no faces, with keywords"><figcaption>Avoiding lip-sync in v1 — cutting to hand/product shots with no visible mouth, and letting the voiceover + keywords tell the story</figcaption></figure>
 
 
     <div class="quote-block" style="margin-bottom: 24px;">

@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Model Shift — สลับโมเดล Claude Code ด้วยคันเกียร์รถ (VS Code Extension)</title>
+  <title>Model Shift: ออกแบบคันเกียร์สลับโมเดล Claude Code</title>
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Model Shift — สลับโมเดล Claude Code ด้วยคันเกียร์รถ (VS Code Extension)">
-  <meta name="twitter:description" content="Portfolio: VS Code extension โยกคันเกียร์ H-pattern เพื่อสลับโมเดล Claude Code — ยิง /model เข้า terminal, sync สถานะจริงจาก transcript, สวิตช์ปิดเสียงแจ้งงานเสร็จ">
+  <meta name="twitter:title" content="Model Shift: ออกแบบคันเกียร์สลับโมเดล Claude Code">
+  <meta name="twitter:description" content="Case study ออกแบบ VS Code extension ที่โยกคันเกียร์ H-pattern เพื่อสลับโมเดล Claude Code เห็นสถานะเป็นภาพ และปิดเสียงแจ้งงานเสร็จได้ในสวิตช์เดียว">
   <meta property="og:url" content="https://projects.tanplanet.work/model-switcher-portfolio/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://projects.tanplanet.work/model-switcher-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:description" content="Portfolio: VS Code extension โยกคันเกียร์ H-pattern เพื่อสลับโมเดล Claude Code — ยิง /model เข้า terminal, sync สถานะจริงจาก transcript, สวิตช์ปิดเสียงแจ้งงานเสร็จ">
-  <meta property="og:title" content="Model Shift — สลับโมเดล Claude Code ด้วยคันเกียร์รถ (VS Code Extension)">
-  <meta name="description" content="Portfolio: VS Code extension โยกคันเกียร์ H-pattern เพื่อสลับโมเดล Claude Code — ยิง /model เข้า terminal, sync สถานะจริงจาก transcript, สวิตช์ปิดเสียงแจ้งงานเสร็จ">
+  <meta property="og:description" content="Case study ออกแบบ VS Code extension ที่โยกคันเกียร์ H-pattern เพื่อสลับโมเดล Claude Code เห็นสถานะเป็นภาพ และปิดเสียงแจ้งงานเสร็จได้ในสวิตช์เดียว">
+  <meta property="og:title" content="Model Shift: ออกแบบคันเกียร์สลับโมเดล Claude Code">
+  <meta name="description" content="Case study ออกแบบ VS Code extension ที่โยกคันเกียร์ H-pattern เพื่อสลับโมเดล Claude Code เห็นสถานะเป็นภาพ และปิดเสียงแจ้งงานเสร็จได้ในสวิตช์เดียว">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23a21caf'/><text x='50' y='62' text-anchor='middle' font-size='54'>🔀</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -987,7 +987,7 @@
       <h2>วิธีแก้ปัญหา</h2>
       <p>ยกงานพิมพ์คำสั่งออกมาเป็นคันเกียร์ — โยก 1 ที = สลับโมเดล + เห็นสถานะเป็นภาพเหมือนหน้าปัดรถ</p>
     </section>
-    <figure class="shot shot-narrow" style="--shot-max:480px"><img src="img/ms-solution.jpg" width="1600" height="1260" loading="lazy" alt="panel Model Shift ของจริง: แถบโควตา 5H/7D, เกียร์ที่ติด, VU meter, เกจ context และคันเกียร์ H-pattern"><figcaption>Panel ตัวจริง (render จาก webview ของ extension) — โควตา, เกียร์ที่ติด, เกจ context และคันเกียร์อยู่ในจอเดียว</figcaption></figure>
+    <figure class="shot shot-narrow" style="--shot-max:480px"><img src="img/ms-solution.webp" width="1600" height="1260" loading="lazy" alt="panel Model Shift ของจริง: แถบโควตา 5H/7D, เกียร์ที่ติด, VU meter, เกจ context และคันเกียร์ H-pattern"><figcaption>Panel ตัวจริง (render จาก webview ของ extension) — โควตา, เกียร์ที่ติด, เกจ context และคันเกียร์อยู่ในจอเดียว</figcaption></figure>
 
 
     <div class="solution-grid">
@@ -1026,14 +1026,14 @@
       <h2>วิธีทำงาน — 4 จังหวะ</h2>
       <p>ตั้งแต่เปิด panel จนโมเดลสลับจริงในบทสนทนา</p>
     </section>
-    <figure class="shot"><img src="img/ms-how.jpg" width="1600" height="942" loading="lazy" alt="หน้าต่าง VS Code ที่มี panel Model Shift อยู่แถบข้าง และ terminal รับคำสั่ง /model opus ที่ panel ยิงเข้าไป"><figcaption>โยกเกียร์ไปช่อง 4 → panel ยิง <code>/model opus</code> เข้า integrated terminal ที่ claude รันอยู่ (panel จริง · หน้าต่าง VS Code และ terminal เป็นภาพจำลอง)</figcaption></figure>
+    <figure class="shot"><img src="img/ms-how.webp" width="1600" height="942" loading="lazy" alt="หน้าต่าง VS Code ที่มี panel Model Shift อยู่แถบข้าง และ terminal รับคำสั่ง /model opus ที่ panel ยิงเข้าไป"><figcaption>โยกเกียร์ไปช่อง 4 → panel ยิง <code>/model opus</code> เข้า integrated terminal ที่ claude รันอยู่ (panel จริง · หน้าต่าง VS Code และ terminal เป็นภาพจำลอง)</figcaption></figure>
 
 
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
-        <h4>เปิด panel</h4>
+        <h3>เปิด panel</h3>
         <p>คลิกไอคอนเกียร์ใน activity bar → panel คันเกียร์ H-pattern โผล่ในแถบข้าง</p>
       </div>
       <div class="flow-step">
@@ -1176,7 +1176,7 @@
       <h2>หน้าตา Panel</h2>
       <p>คลิกไอคอนเกียร์ใน activity bar → เห็นเกียร์ที่ติด, เกจ context และสวิตช์เสียงในหน้าจอเดียว</p>
     </section>
-    <figure class="shot shot-narrow" style="--shot-max:640px"><img src="img/ms-pair.jpg" width="1600" height="1084" loading="lazy" alt="panel สองสถานะเทียบกัน: เกียร์ 1 Haiku context ต่ำ กับเกียร์ 4 Opus context 86% เกจแดงและปิดเสียง"><figcaption>สถานะจริง 2 แบบ — ซ้าย Haiku งานเบา · ขวา Opus context ใกล้เต็ม เกจเป็นสีแดง และสวิตช์เสียงอยู่โหมดเงียบ</figcaption></figure>
+    <figure class="shot shot-narrow" style="--shot-max:640px"><img src="img/ms-pair.webp" width="1600" height="1084" loading="lazy" alt="panel สองสถานะเทียบกัน: เกียร์ 1 Haiku context ต่ำ กับเกียร์ 4 Opus context 86% เกจแดงและปิดเสียง"><figcaption>สถานะจริง 2 แบบ — ซ้าย Haiku งานเบา · ขวา Opus context ใกล้เต็ม เกจเป็นสีแดง และสวิตช์เสียงอยู่โหมดเงียบ</figcaption></figure>
 
 
     <div class="gear-panel">
@@ -1218,7 +1218,7 @@
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์ที่ต้องคิดทางแก้เอง — ข้อจำกัดของ tooling + การประกอบคำสั่งให้ปลอดภัย</p>
     </section>
-    <figure class="shot"><img src="img/ms-code.jpg" width="1600" height="686" loading="lazy" alt="โค้ดจริง 2 จุด: regex กัน injection ก่อน sendText และบรรทัดเช็คไฟล์ .tts-muted ใน tts-lib.sh"><figcaption>โค้ดจริงจาก extension.js และ tts-lib.sh — whitelist ชื่อโมเดลก่อนยิงเข้า terminal + mute ทั้งชุดด้วยไฟล์ flag ไฟล์เดียว</figcaption></figure>
+    <figure class="shot"><img src="img/ms-code.webp" width="1600" height="686" loading="lazy" alt="โค้ดจริง 2 จุด: regex กัน injection ก่อน sendText และบรรทัดเช็คไฟล์ .tts-muted ใน tts-lib.sh"><figcaption>โค้ดจริงจาก extension.js และ tts-lib.sh — whitelist ชื่อโมเดลก่อนยิงเข้า terminal + mute ทั้งชุดด้วยไฟล์ flag ไฟล์เดียว</figcaption></figure>
 
 
     <div class="hack-grid">
@@ -1267,7 +1267,7 @@
       <h2>Design Decision ที่ตั้งใจเลือก</h2>
       <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอๆ กับสิ่งที่ทำ</p>
     </section>
-    <figure class="shot"><img src="img/ms-gear-unsplash.jpg" width="1400" height="933" loading="lazy" alt="หัวเกียร์รถยนต์แบบ H-pattern 5 สปีดพร้อมเกียร์ถอย"><figcaption>แรงบันดาลใจของ UI: คันเกียร์ H-pattern — ทุกคนรู้วิธีใช้โดยไม่ต้องอ่านคู่มือ · ภาพ: Alok Sharma / Unsplash</figcaption></figure>
+    <figure class="shot"><img src="img/ms-gear-unsplash.webp" width="1400" height="933" loading="lazy" alt="หัวเกียร์รถยนต์แบบ H-pattern 5 สปีดพร้อมเกียร์ถอย"><figcaption>แรงบันดาลใจของ UI: คันเกียร์ H-pattern — ทุกคนรู้วิธีใช้โดยไม่ต้องอ่านคู่มือ · ภาพ: Alok Sharma / Unsplash</figcaption></figure>
 
 
     <div class="quote-block" style="margin-bottom: 24px;">
@@ -1305,7 +1305,7 @@
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
     </section>
-    <figure class="shot"><img src="img/ms-jsonl.jpg" width="1600" height="542" loading="lazy" alt="ตัวอย่างโครงสร้างบรรทัด assistant ในไฟล์ transcript jsonl ของ Claude Code: model และ usage tokens"><figcaption>สิ่งที่ต้องอ่านให้ออก — <code>message.model</code> และ token usage ใน transcript <code>*.jsonl</code> (ค่าตัวอย่าง)</figcaption></figure>
+    <figure class="shot"><img src="img/ms-jsonl.webp" width="1600" height="542" loading="lazy" alt="ตัวอย่างโครงสร้างบรรทัด assistant ในไฟล์ transcript jsonl ของ Claude Code: model และ usage tokens"><figcaption>สิ่งที่ต้องอ่านให้ออก — <code>message.model</code> และ token usage ใน transcript <code>*.jsonl</code> (ค่าตัวอย่าง)</figcaption></figure>
 
 
     <div class="learning-card">

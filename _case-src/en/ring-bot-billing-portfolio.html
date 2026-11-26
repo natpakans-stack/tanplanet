@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nong Kring + Budget: a LINE bot that bills the household for electricity every month</title>
-  <meta name="description" content="Portfolio: two linked Apps Scripts. One reads the electricity bill from Gmail and writes the amount into a sheet as an auditable formula; the other sends a bill with a PromptPay QR to LINE on a set schedule, after passing 6 checks every time">
-  <meta property="og:title" content="Nong Kring + Budget: a LINE bot that bills the household for electricity every month">
-  <meta property="og:description" content="Portfolio: two linked Apps Scripts. One reads the electricity bill from Gmail and writes the amount into a sheet as an auditable formula; the other sends a bill with a PromptPay QR to LINE on a set schedule, after passing 6 checks every time">
+  <title>Case Study: LINE Bot That Bills Household Electricity</title>
+  <meta name="description" content="A case study of two linked Apps Scripts that read the electricity bill from Gmail, then send a LINE bill with a PromptPay QR after 6 checks.">
+  <meta property="og:title" content="Case Study: LINE Bot That Bills Household Electricity">
+  <meta property="og:description" content="A case study of two linked Apps Scripts that read the electricity bill from Gmail, then send a LINE bill with a PromptPay QR after 6 checks.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://projects.tanplanet.work/ring-bot-billing-portfolio/">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Nong Kring + Budget: a LINE bot that bills the household for electricity every month">
-  <meta name="twitter:description" content="Portfolio: two linked Apps Scripts. One reads the electricity bill from Gmail and writes the amount into a sheet as an auditable formula; the other sends a bill with a PromptPay QR to LINE on a set schedule, after passing 6 checks every time">
+  <meta name="twitter:title" content="Case Study: LINE Bot That Bills Household Electricity">
+  <meta name="twitter:description" content="A case study of two linked Apps Scripts that read the electricity bill from Gmail, then send a LINE bill with a PromptPay QR after 6 checks.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0f1f'/><path d='M50 22a18 18 0 0 0-18 18v12l-6 10h48l-6-10V40a18 18 0 0 0-18-18z' fill='none' stroke='%2334d399' stroke-width='6' stroke-linejoin='round'/></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -777,7 +777,7 @@
     </section>
 
     <figure class="shot">
-      <img src="img/electric-meters.jpg" width="1400" height="788" loading="lazy" alt="Several electricity meters mounted on a brick wall">
+      <img src="img/electric-meters.webp" width="1400" height="788" loading="lazy" alt="Several electricity meters mounted on a brick wall">
       <figcaption>The bill comes every month without fail, but it is the same person who has to remember and ask every month &middot; Photo: ABDURREHMAN / Unsplash</figcaption>
     </figure>
 
@@ -857,7 +857,7 @@
     </section>
 
     <figure class="shot">
-      <img src="img/sheet-control-real.jpg" width="1429" height="413" loading="lazy" alt="Google Sheet named Nong Kring — Control Panel, with columns for mode, destination, bill name, counterparty, amount, bank, account name, account number and start date, with personal data blurred">
+      <img src="img/sheet-control-real.webp" width="1429" height="413" loading="lazy" alt="Google Sheet named Nong Kring — Control Panel, with columns for mode, destination, bill name, counterparty, amount, bank, account name, account number and start date, with personal data blurred">
       <figcaption>The real &ldquo;Control Panel&rdquo; sheet &mdash; every bill is a row in the sheet before it gets sent (destination, counterparty, amount and account number blurred)</figcaption>
     </figure>
 
@@ -899,8 +899,8 @@
     </section>
 
     <figure class="shot shot-pair shot-phone">
-      <img src="img/form-create-bill.jpg" width="640" height="1205" loading="lazy" alt="Nong Kring's bill form, payment section: choose PromptPay linked to a phone number and the system immediately draws a QR with 812.50 baht locked in">
-      <img src="img/line-bill-card.jpg" width="640" height="1193" loading="lazy" alt="Bill card in LINE: a payment request for September electricity, 812.50 baht, PromptPay QR details and a button to open the QR full screen">
+      <img src="img/form-create-bill.webp" width="640" height="1205" loading="lazy" alt="Nong Kring's bill form, payment section: choose PromptPay linked to a phone number and the system immediately draws a QR with 812.50 baht locked in">
+      <img src="img/line-bill-card.webp" width="640" height="1193" loading="lazy" alt="Bill card in LINE: a payment request for September electricity, 812.50 baht, PromptPay QR details and a button to open the QR full screen">
       <figcaption>The real bill form running locally with sample data &mdash; enter an amount and the QR locks it in &middot; The bill card the payer sees in LINE, rendered from the real card code (name, amount and PromptPay number are sample values; the QR is not a payment code)</figcaption>
     </figure>
 
@@ -908,7 +908,7 @@
       <div class="flow-step">
         <div class="step-num">01</div>
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
-        <h4>Read the bill from email</h4>
+        <h3>Read the bill from email</h3>
         <p>Extract the total and billing period from the electronic bill, and remember the bill number so the same bill is never processed twice</p>
       </div>
       <div class="flow-step">
@@ -1005,7 +1005,7 @@
     </section>
 
     <figure class="shot">
-      <img src="img/sheet-formula.jpg" width="1400" height="783" loading="lazy" alt="Sample household budget sheet: the electricity share cell is the formula =C6*0.5, with a note saying which bill the bot took the amount from">
+      <img src="img/sheet-formula.webp" width="1400" height="783" loading="lazy" alt="Sample household budget sheet: the electricity share cell is the formula =C6*0.5, with a note saying which bill the bot took the amount from">
       <figcaption>The amount in the sheet is a formula, not a finished number, with a note on its source &mdash; mock-up with sample numbers</figcaption>
     </figure>
 
@@ -1032,7 +1032,7 @@
     </section>
 
     <figure class="shot">
-      <img src="img/code-menu-permission.jpg" width="1400" height="891" loading="lazy" alt="Code for the ringSyncMenu function in Ring.js, which removes the default menu and links the menu only to people ticked in the sheet">
+      <img src="img/code-menu-permission.webp" width="1400" height="891" loading="lazy" alt="Code for the ringSyncMenu function in Ring.js, which removes the default menu and links the menu only to people ticked in the sheet">
       <figcaption>Real code in <code>Ring.js</code> &mdash; removes the default menu every time, then links the menu person by person based on the ticks in the sheet</figcaption>
     </figure>
 

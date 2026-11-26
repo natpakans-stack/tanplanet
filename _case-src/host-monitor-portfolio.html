@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>วิเคราะห์โฮสต์ไลฟ์คอมเมิร์ซ real-time — อ่านตัวตน–อารมณ์–engagement แบบ real-time</title>
+  <title>Case Study: วิเคราะห์โฮสต์ไลฟ์ด้วย AI แบบ real-time</title>
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="วิเคราะห์โฮสต์ไลฟ์คอมเมิร์ซ real-time — อ่านตัวตน–อารมณ์–engagement แบบ real-time">
-  <meta name="twitter:description" content="งานวิจัย Computer Vision: จับใบหน้า → ตัวตน → อารมณ์ → engagement ของโฮสต์ไลฟ์คอมเมิร์ซ แบบ real-time — Electron + React desktop + Python ML backend (MTCNN · FaceNet · ViT/FER+ · MediaPipe FaceMesh)">
+  <meta name="twitter:title" content="Case Study: วิเคราะห์โฮสต์ไลฟ์ด้วย AI แบบ real-time">
+  <meta name="twitter:description" content="งานวิจัย Computer Vision ที่ออกแบบไปป์ไลน์ AI 4 โมเดล จับใบหน้า ระบุตัวตน อ่านอารมณ์ และวัด engagement ของโฮสต์ไลฟ์เป็น KPI สด">
   <meta property="og:url" content="https://projects.tanplanet.work/host-monitor-portfolio/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://projects.tanplanet.work/host-monitor-portfolio/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:description" content="งานวิจัย Computer Vision: จับใบหน้า → ตัวตน → อารมณ์ → engagement ของโฮสต์ไลฟ์คอมเมิร์ซ แบบ real-time — Electron + React desktop + Python ML backend (MTCNN · FaceNet · ViT/FER+ · MediaPipe FaceMesh)">
-  <meta property="og:title" content="วิเคราะห์โฮสต์ไลฟ์คอมเมิร์ซ real-time — อ่านตัวตน–อารมณ์–engagement แบบ real-time">
-  <meta name="description" content="งานวิจัย Computer Vision: จับใบหน้า → ตัวตน → อารมณ์ → engagement ของโฮสต์ไลฟ์คอมเมิร์ซ แบบ real-time — Electron + React desktop + Python ML backend (MTCNN · FaceNet · ViT/FER+ · MediaPipe FaceMesh)">
+  <meta property="og:description" content="งานวิจัย Computer Vision ที่ออกแบบไปป์ไลน์ AI 4 โมเดล จับใบหน้า ระบุตัวตน อ่านอารมณ์ และวัด engagement ของโฮสต์ไลฟ์เป็น KPI สด">
+  <meta property="og:title" content="Case Study: วิเคราะห์โฮสต์ไลฟ์ด้วย AI แบบ real-time">
+  <meta name="description" content="งานวิจัย Computer Vision ที่ออกแบบไปป์ไลน์ AI 4 โมเดล จับใบหน้า ระบุตัวตน อ่านอารมณ์ และวัด engagement ของโฮสต์ไลฟ์เป็น KPI สด">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%230d9488'/><text x='50' y='62' text-anchor='middle' font-size='54'>📡</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1013,7 +1013,7 @@
       <h2>วิธีแก้ปัญหา</h2>
       <p>ให้ไปป์ไลน์ CV ทำงานหนักแทน — จับ, รู้จัก, อ่านอารมณ์, วัด engagement ทุกเฟรม แล้วสรุปเป็น KPI ที่คนอ่านเข้าใจใน 3 วินาที</p>
     </section>
-    <figure class="shot shot-narrow" style="--shot-max:520px"><img src="img/hm-face.jpg" width="900" height="840" loading="lazy" alt="กรอบสีเขียวรอบใบหน้า พร้อมป้าย host_01 happy 82% และค่า energy smile talking looking frown ต่อนาที"><figcaption>overlay จากแอปจริง — กรอบหน้า + ชื่อจาก enroll + อารมณ์ + สัญญาณราย 1 นาที (ภาพตัวอย่างเป็นพรีเซนเตอร์ AI ไม่ใช่โฮสต์จริง)</figcaption></figure>
+    <figure class="shot shot-narrow" style="--shot-max:520px"><img src="img/hm-face.webp" width="900" height="840" loading="lazy" alt="กรอบสีเขียวรอบใบหน้า พร้อมป้าย host_01 happy 82% และค่า energy smile talking looking frown ต่อนาที"><figcaption>overlay จากแอปจริง — กรอบหน้า + ชื่อจาก enroll + อารมณ์ + สัญญาณราย 1 นาที (ภาพตัวอย่างเป็นพรีเซนเตอร์ AI ไม่ใช่โฮสต์จริง)</figcaption></figure>
 
 
     <div class="solution-grid">
@@ -1052,14 +1052,14 @@
       <h2>วิธีทำงาน — 4 จังหวะ</h2>
       <p>ตั้งแต่เฟรมวิดีโอไลฟ์ จนได้ KPI สดบน dashboard</p>
     </section>
-    <figure class="shot"><img src="img/hm-pipeline.jpg" width="1600" height="546" loading="lazy" alt="แผนผังไปป์ไลน์ใน README: MTCNN, FaceNet, MediaPipe FaceMesh, ViT emotion, calibration, EMA และ report"><figcaption>ไปป์ไลน์จริงจาก README — 4 โมเดลต่อกันใน 1 เฟรม แล้ว smooth เป็น metric ราย 1/5 นาที</figcaption></figure>
+    <figure class="shot"><img src="img/hm-pipeline.webp" width="1600" height="546" loading="lazy" alt="แผนผังไปป์ไลน์ใน README: MTCNN, FaceNet, MediaPipe FaceMesh, ViT emotion, calibration, EMA และ report"><figcaption>ไปป์ไลน์จริงจาก README — 4 โมเดลต่อกันใน 1 เฟรม แล้ว smooth เป็น metric ราย 1/5 นาที</figcaption></figure>
 
 
     <div class="flow-grid">
       <div class="flow-step">
         <div class="step-num">1</div>
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
-        <h4>ดึงเฟรมไลฟ์</h4>
+        <h3>ดึงเฟรมไลฟ์</h3>
         <p>Electron ฝัง browser จริงเปิดไลฟ์ แคปหน้าจอเป็นเฟรมส่งเข้า backend ผ่าน WebSocket</p>
       </div>
       <div class="flow-step">
@@ -1090,7 +1090,7 @@
       <h2>Tech Stack &amp; Architecture</h2>
       <p>Desktop app คุยกับ Python ML backend ในเครื่อง ผ่าน WebSocket — ประมวลผลทุกอย่าง local ไม่มี cloud</p>
     </section>
-    <figure class="shot"><img src="img/hm-csv.jpg" width="1600" height="378" loading="lazy" alt="ตัวอย่างแถวในไฟล์ log CSV ต่อเฟรม: เวลา track id อารมณ์ ความมั่นใจ สัญญาณยิ้มพูดมอง และพิกัดกรอบ"><figcaption>log ต่อเฟรมจากไฟล์ session จริง (ไม่ได้ enroll ชื่อ = unknown) — วัตถุดิบของ report และกราฟ</figcaption></figure>
+    <figure class="shot"><img src="img/hm-csv.webp" width="1600" height="378" loading="lazy" alt="ตัวอย่างแถวในไฟล์ log CSV ต่อเฟรม: เวลา track id อารมณ์ ความมั่นใจ สัญญาณยิ้มพูดมอง และพิกัดกรอบ"><figcaption>log ต่อเฟรมจากไฟล์ session จริง (ไม่ได้ enroll ชื่อ = unknown) — วัตถุดิบของ report และกราฟ</figcaption></figure>
 
 
     <div class="arch-diagram">
@@ -1202,7 +1202,7 @@
       <h2>หน้าตา Desktop App</h2>
       <p>เปิดไลฟ์ในหน้าต่างแอป → เห็นวิดีโอ + กล่องใบหน้า + KPI สดในหน้าจอเดียว</p>
     </section>
-    <figure class="shot"><img src="img/hm-app.jpg" width="1600" height="1000" loading="lazy" alt="หน้าต่าง Live Host Monitor เต็มจอ: sidebar KPI ด้านซ้าย และวิดีโอไลฟ์พร้อมกรอบหน้าด้านขวา"><figcaption>UI จริงของ Electron app (render จาก renderer จริง + ข้อมูลตัวอย่าง) — เทียบกับภาพจำลองด้านบน</figcaption></figure>
+    <figure class="shot"><img src="img/hm-app.webp" width="1600" height="1000" loading="lazy" alt="หน้าต่าง Live Host Monitor เต็มจอ: sidebar KPI ด้านซ้าย และวิดีโอไลฟ์พร้อมกรอบหน้าด้านขวา"><figcaption>UI จริงของ Electron app (render จาก renderer จริง + ข้อมูลตัวอย่าง) — เทียบกับภาพจำลองด้านบน</figcaption></figure>
 
 
     <div class="app-mockup">
@@ -1213,7 +1213,7 @@
       </div>
       <div class="app-body">
         <div class="app-side">
-          <h4><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg> Live</h4>
+          <h3><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg> Live</h3>
           <div class="app-primary">host_01 <span class="em">· happy 82%</span></div>
           <div class="app-kpi-grid">
             <div class="app-kpi ok"><b>Energy</b><span>74%</span></div>
@@ -1259,7 +1259,7 @@
       <h2>Hack กับปัญหา</h2>
       <p>6 โจทย์ที่ต้องคิดทางแก้เอง — ML model bias, hardware quirk และ real-time engineering</p>
     </section>
-    <figure class="shot"><img src="img/hm-report.jpg" width="1600" height="742" loading="lazy" alt="รายงาน session: KPI รวม กราฟพฤติกรรมต่อนาที และกราฟสัดส่วนอารมณ์ต่อนาที"><figcaption>Session report จริงจาก log 32,938 เฟรม — หลัง calibration + EMA กราฟอารมณ์นิ่งพอให้อ่านแนวโน้มได้</figcaption></figure>
+    <figure class="shot"><img src="img/hm-report.webp" width="1600" height="742" loading="lazy" alt="รายงาน session: KPI รวม กราฟพฤติกรรมต่อนาที และกราฟสัดส่วนอารมณ์ต่อนาที"><figcaption>Session report จริงจาก log 32,938 เฟรม — หลัง calibration + EMA กราฟอารมณ์นิ่งพอให้อ่านแนวโน้มได้</figcaption></figure>
 
 
     <div class="hack-grid">
@@ -1346,7 +1346,7 @@
       <h2>Knowledge Domain ที่แข็งขึ้น</h2>
       <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
     </section>
-    <figure class="shot"><img src="img/hm-know-unsplash.jpg" width="1200" height="800" loading="lazy" alt="จอแสดงแดชบอร์ดกราฟข้อมูลหลายแบบ"><figcaption>จากโมเดลหลายตัว สู่ตัวเลขที่ทีมอ่านแล้วตัดสินใจได้ · ภาพ: Luke Chesser / Unsplash</figcaption></figure>
+    <figure class="shot"><img src="img/hm-know-unsplash.webp" width="1200" height="800" loading="lazy" alt="จอแสดงแดชบอร์ดกราฟข้อมูลหลายแบบ"><figcaption>จากโมเดลหลายตัว สู่ตัวเลขที่ทีมอ่านแล้วตัดสินใจได้ · ภาพ: Luke Chesser / Unsplash</figcaption></figure>
 
 
     <div class="learning-card">
