@@ -98,19 +98,20 @@
 
 @keyframes fh-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
-/* ฝุ่นตอนการ์ดกระทบพื้น — เม็ดสุ่มจาก hero.js (--x0 จุดเกิด · --dx/--dy ทิศ · --s ขนาด · --d หน่วง · --t ระยะเวลา) */
-.fh-smoke { position: absolute; width: 0; height: 0; pointer-events: none; z-index: 3; }
-.fh-smoke i {
-  position: absolute; left: var(--x0); top: 0; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
-  border-radius: 50%; background: radial-gradient(circle, rgba(214,211,206,.75) 0%, rgba(214,211,206,.3) 42%, rgba(214,211,206,0) 70%);
-  filter: blur(8px); opacity: 0; mix-blend-mode: multiply;
-  animation: fh-dust var(--t) cubic-bezier(.12,.75,.25,1) var(--d) forwards;
+/* ตกถึงพื้น: แสงฟุ้ง (หลังการ์ด) + แสงวาบกวาดผ่านหน้าการ์ด — โทนเดียวกับคำเน้นในหัวข้อ */
+.fh-glow {
+  position: absolute; translate: -50% -50%; border-radius: 50%; pointer-events: none; z-index: 0;
+  background: radial-gradient(circle, rgba(219,39,119,.28) 0%, rgba(124,58,237,.18) 32%, rgba(249,115,22,.08) 52%, rgba(255,255,255,0) 68%);
+  filter: blur(10px); opacity: 0; animation: fh-glow 1.1s cubic-bezier(.2,.7,.3,1) forwards;
 }
-@keyframes fh-dust {
-  0%   { opacity: 0;   transform: translate(0, 4px) scale(.25); }
-  15%  { opacity: .95; }
-  100% { opacity: 0;   transform: translate(var(--dx), var(--dy)) scale(1.6); }
+@keyframes fh-glow { 0% { opacity: 0; transform: scale(.35); } 20% { opacity: 1; } 100% { opacity: 0; transform: scale(1.15); } }
+.fh-card.fh-shine::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  background: linear-gradient(115deg, rgba(255,255,255,0) 35%, rgba(255,255,255,.85) 50%, rgba(255,255,255,0) 65%);
+  transform: translateX(-120%); animation: fh-shine .75s cubic-bezier(.4,0,.2,1) forwards;
 }
+@keyframes fh-shine { to { transform: translateX(120%); } }
+
 @media (prefers-reduced-motion: reduce) { .fh-cue { animation: none; } }
 
 

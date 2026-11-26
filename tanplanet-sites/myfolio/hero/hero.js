@@ -45,24 +45,15 @@
       setTimeout(function () { puff(stage, c); }, delay + dur * 0.72);
     });
   }
+  // ตกถึงพื้น: แสงฟุ้งสีแบรนด์บานออกจากหลังการ์ด + แสงวาบกวาดผ่านหน้าการ์ด
   function puff(stage, c) {
-    // ตำแหน่งปลายทางจาก offset* (ไม่ขึ้นกับ animation ที่ยังเล่นอยู่) · stage sticky = offsetParent
-    var p = document.createElement("span");
-    p.className = "fh-smoke";
-    p.style.left = (c.offsetLeft + c.offsetWidth / 2) + "px";
-    p.style.top = (c.offsetTop + c.offsetHeight - 4) + "px";
-    p.style.width = c.offsetWidth * 1.3 + "px";
-    // ฝุ่นฟุ้ง: เม็ดสุ่มขนาด/ทิศ เตะออกด้านข้างตามพื้นเป็นหลัก ลอยขึ้นนิดเดียว (ฝั่งซ้ายไปซ้าย ขวาไปขวา)
-    var n = 12, w = c.offsetWidth;
-    for (var i = 0; i < n; i++) {
-      var d = document.createElement("i"), side = i % 2 ? 1 : -1, t = Math.random();
-      var size = 34 + Math.random() * 70;
-      d.style.cssText = "--x0:" + (side * t * w * 0.45).toFixed(0) + "px;--dx:" + (side * (40 + Math.random() * 110)).toFixed(0) +
-        "px;--dy:" + (-(8 + Math.random() * 46)).toFixed(0) + "px;--s:" + size.toFixed(0) + "px;--d:" + (Math.random() * 120).toFixed(0) +
-        "ms;--t:" + (1300 + Math.random() * 700).toFixed(0) + "ms";
-      p.appendChild(d);
-    }
-    stage.appendChild(p);
-    setTimeout(function () { p.remove(); }, 2300);
+    var g = document.createElement("span"), w = c.offsetWidth, h = c.offsetHeight;
+    g.className = "fh-glow";
+    g.style.left = (c.offsetLeft + w / 2) + "px";
+    g.style.top = (c.offsetTop + h / 2) + "px";
+    g.style.width = g.style.height = Math.max(w, h) * 1.9 + "px";
+    stage.appendChild(g);
+    c.classList.add("fh-shine");
+    setTimeout(function () { g.remove(); c.classList.remove("fh-shine"); }, 1200);
   }
 })();
