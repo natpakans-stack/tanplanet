@@ -69,20 +69,29 @@
 /* โลโก้โปรเจกต์ทรงกลมซ้อนขอบล่างของรูป (แบบ avatar ในการ์ดต้นแบบ) */
 .fh-card { display: flex; flex-direction: column; }
 .fh-ava {
-  display: grid; place-items: center; width: 44px; height: 44px; margin: -26px 0 0 12px; position: relative;
+  display: grid; place-items: center; flex: none; width: 44px; height: 44px; margin: -22px 0 0 12px; position: relative; /* flex: none — ไม่งั้นโดนบีบจนไม่กลม · ยกขึ้นครึ่งวง = คร่อมขอบรูปพอดี */
   border-radius: 50%; background: var(--c); border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.15);
 }
 .fh-ico { width: 20px; height: 20px; color: #fff; stroke: currentColor; }
 .fh-card b { padding-top: 8px; }
-@media (max-width: 767px) { .fh-ava { width: 32px; height: 32px; margin-top: -18px; border-width: 2px; } .fh-ico { width: 15px; height: 15px; } }
+@media (max-width: 767px) { .fh-ava { width: 32px; height: 32px; margin-top: -16px; border-width: 2px; } .fh-ico { width: 15px; height: 15px; } }
 
 /* คำเน้นลายมือ: เขียนจากซ้ายไปขวาตอนโหลด แล้วสั่นเบา ๆ ทุก 0.6s แบบเส้นวาดมือ (จังหวะอิงต้นแบบ) */
 .fh-accent {
   display: inline-block; margin: 0 .18em; font-family: Sriracha, "Google Sans", cursive; font-style: normal; font-weight: 400;
   font-size: 1.08em; color: #2b313b; transform-origin: 50% 60%;
-  clip-path: inset(-20% 100% -20% 0); animation: fh-write .9s cubic-bezier(.4,0,.2,1) .35s forwards, fh-idle 1.8s steps(1) 1.3s infinite;
+  position: relative; clip-path: inset(-20% 100% -60% 0); animation: fh-write .9s cubic-bezier(.4,0,.2,1) .35s forwards, fh-idle 1.8s steps(1) 1.3s infinite;
 }
-@keyframes fh-write { to { clip-path: inset(-20% -2% -20% 0); } }
+@keyframes fh-write { to { clip-path: inset(-20% -2% -60% 0); } }
 @keyframes fh-idle { 0% { rotate: -1.2deg; } 33% { rotate: .8deg; translate: 0 -1px; } 66% { rotate: -.4deg; translate: 0 1px; } }
 @media (prefers-reduced-motion: reduce) { .fh-accent { animation: none; clip-path: none; } }
 .nw { white-space: nowrap; }
+
+/* ไล่สีคำเน้น + เส้นใต้ลายมือ (path วาดเอง) ลากตามหลังคำที่เขียนเสร็จ */
+.fh-grad { background: linear-gradient(90deg, #7c3aed, #db2777 55%, #f97316); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.fh-ul { position: absolute; left: -2%; bottom: -.12em; width: 104%; height: .32em; overflow: visible; }
+.fh-ul path { fill: none; stroke: url(#fhg); stroke-width: 5; stroke-linecap: round; vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1; stroke-dashoffset: 1; animation: fh-ul .6s cubic-bezier(.4,0,.2,1) 1.15s forwards; }
+@keyframes fh-ul { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .fh-ul path { animation: none; stroke-dashoffset: 0; } }
+@media (max-width: 767px) { .fh-ul path { stroke-width: 3.5; } }
