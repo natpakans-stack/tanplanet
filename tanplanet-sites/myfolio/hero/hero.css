@@ -14,7 +14,7 @@
   margin: 0; font-family: "Google Sans", Inter, sans-serif; font-size: clamp(36px, 4.4vw, 64px);
   line-height: 1.2; font-weight: 500; letter-spacing: -0.025em; color: #2b313b;
 }
-.fh-sub { margin: 24px 0 0; max-width: min(480px, 100%); font-size: 18px; line-height: 1.6; color: #52525b; }
+.fh-sub { margin: 40px 0 0;  /* เส้นใต้คำเน้นยื่นลงมา — เว้นที่ให้ */ max-width: min(480px, 100%); font-size: 18px; line-height: 1.6; color: #52525b; }
 .fh-cta { display: flex; gap: 12px; margin-top: 36px; flex-wrap: wrap; justify-content: center; }
 .fh-btn {
   display: inline-flex; align-items: center; justify-content: center; min-width: 200px; height: 48px; padding: 0 24px; border-radius: 999px;
@@ -55,7 +55,7 @@
   .fh-card:nth-child(4) { left: 70%;  top: 80%; }
   .fh-card b { font-size: 11px; padding: 6px 8px 0; }
   .fh-card span { font-size: 10px; padding: 2px 8px 8px; }
-  .fh-sub { font-size: 15px; margin-top: 14px; }
+  .fh-sub { font-size: 15px; margin-top: 30px; }
   .fh-cta { flex-direction: column; align-items: center; gap: 10px; margin-top: 24px; }
   .fh-btn { justify-content: center; min-width: 200px; height: 46px; font-size: 15px; }
 }
@@ -99,23 +99,21 @@
 @media (max-width: 767px) { .fh-ul path { stroke-width: 3.5; } }
 
 @keyframes fh-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+/* ฝุ่นตอนการ์ดกระทบพื้น — เม็ดสุ่มจาก hero.js (--x0 จุดเกิด · --dx/--dy ทิศ · --s ขนาด · --d หน่วง · --t ระยะเวลา) */
+.fh-smoke { position: absolute; width: 0; height: 0; pointer-events: none; z-index: 3; }
+.fh-smoke i {
+  position: absolute; left: var(--x0); top: 0; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  border-radius: 50%; background: radial-gradient(circle, rgba(214,211,206,.75) 0%, rgba(214,211,206,.3) 42%, rgba(214,211,206,0) 70%);
+  filter: blur(8px); opacity: 0; mix-blend-mode: multiply;
+  animation: fh-dust var(--t) cubic-bezier(.12,.75,.25,1) var(--d) forwards;
+}
+@keyframes fh-dust {
+  0%   { opacity: 0;   transform: translate(0, 4px) scale(.25); }
+  15%  { opacity: .95; }
+  100% { opacity: 0;   transform: translate(var(--dx), var(--dy)) scale(1.6); }
+}
 @media (prefers-reduced-motion: reduce) { .fh-cue { animation: none; } }
 
-/* ควันตอนการ์ดตกถึงพื้น: 5 ก้อนฟุ้งออกจากขอบล่างการ์ด (อยู่หน้าการ์ด ไม่งั้นโดนบัง) ขยาย + จางหาย */
-.fh-smoke { position: absolute; height: 0; translate: -50% 0; pointer-events: none; z-index: 3; }
-.fh-smoke i {
-  position: absolute; top: -44px; width: 88px; height: 88px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(148,152,163,.7) 0%, rgba(148,152,163,.35) 38%, rgba(148,152,163,0) 70%);
-  filter: blur(6px); opacity: 0; animation: fh-puff 1.2s cubic-bezier(.15,.7,.3,1) forwards;
-}
-.fh-smoke i:nth-child(1) { left: -6%; --dx: -70px; --dy: -14px; }
-.fh-smoke i:nth-child(2) { left: 20%; --dx: -30px; --dy: -34px; animation-delay: 50ms; }
-.fh-smoke i:nth-child(3) { left: 42%; --dx: 0px;   --dy: -42px; animation-delay: 20ms; }
-.fh-smoke i:nth-child(4) { left: 64%; --dx: 30px;  --dy: -30px; animation-delay: 70ms; }
-.fh-smoke i:nth-child(5) { right: -6%; --dx: 70px; --dy: -12px; animation-delay: 30ms; }
-@keyframes fh-puff {
-  0%   { opacity: 0;  transform: translate(0, 10px) scale(.3); }
-  18%  { opacity: 1; }
-  100% { opacity: 0;  transform: translate(var(--dx), var(--dy)) scale(2.1); }
-}
+
 @media (max-width: 520px) { .nw { white-space: normal; } }  /* จอแคบมาก: ปล่อยให้ตัดบรรทัดได้ ดีกว่าล้นขอบ */
