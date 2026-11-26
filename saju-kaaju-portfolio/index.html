@@ -693,7 +693,8 @@
     }
     .ui-tk .box { background: var(--accent); flex-shrink: 0; }
 
-    /* — Block B: Screen Showcase — */
+    /* — Block B: Screen Showcase — ภาพหน้าจอจริงจากแอป (เดิมเป็น mock HTML) */
+    .ui-real { display: block; width: 100%; height: auto; }  /* เต็มกว้าง ไม่ตัดข้าง · เห็นช่วงบนของหน้าจอ */
     .ui-screens {
       display: flex; gap: 16px; overflow-x: auto; padding: 6px 2px 14px;
       scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
@@ -705,7 +706,7 @@
     }
     .ui-phone-screen {
       background: var(--surface); border-radius: 23px; overflow: hidden;
-      height: 470px; display: flex; flex-direction: column;
+      height: 405px; /* = ความสูงของภาพจริงที่เตี้ยสุดเมื่อกว้าง 246px — เต็มจอทุกใบ ไม่มีที่ว่าง */ display: flex; flex-direction: column;
     }
     .ui-scr-head { padding: 14px 15px 10px; border-bottom: 1px solid var(--border); }
     .ui-scr-head .st {
@@ -1351,80 +1352,22 @@
     <div class="ui-block">
       <div class="ui-block-label">Screen Showcase — flow จริงบนมือถือ</div>
       <div class="ui-screens">
-
-        <!-- Screen 1: Onboarding -->
         <div class="ui-phone-wrap">
-          <div class="ui-phone">
-            <div class="ui-phone-screen">
-              <div class="ui-scr-head">
-                <div class="st">ขั้นที่ 1 &middot; Onboarding</div>
-                <div class="ti">บอกวันเกิดให้แปะดู</div>
-              </div>
-              <div class="ui-scr-body">
-                <div class="ui-field"><div class="fl">วันเกิด</div><div class="fv">14 มีนาคม 2537</div></div>
-                <div class="ui-field"><div class="fl">เวลาเกิด</div><div class="fv">23:20 น.</div></div>
-                <div class="ui-field"><div class="fl">เมืองเกิด</div><div class="fv">กรุงเทพฯ &middot; 100.50°E</div></div>
-                <p class="ui-hint">แปะขอไว้เปิดเสาให้เท่านั้น — เวลาเกิดยิ่งตรง เสายิ่งแม่น (ปรับ 진태양시 ตาม longitude)</p>
-                <div class="ui-cta">ให้แปะอ่านให้</div>
-              </div>
-            </div>
-          </div>
-          <div class="ui-phone-label">กรอกวันเกิด &middot; ขอข้อมูลพร้อมบอกเหตุผล</div>
+          <div class="ui-phone"><div class="ui-phone-screen"><img class="ui-real" src="img/landing-hero-mobile.jpg" alt="หน้าแรกแปะก่าจู้บนมือถือ" loading="lazy" decoding="async"></div></div>
+          <div class="ui-phone-label">หน้าแรก &middot; แปะแนะนำตัวและเริ่มดูดวง</div>
         </div>
-
-        <!-- Screen 2: ผังธาตุ -->
         <div class="ui-phone-wrap">
-          <div class="ui-phone">
-            <div class="ui-phone-screen">
-              <div class="ui-scr-head">
-                <div class="st">โปรไฟล์ &middot; ผังสาจู</div>
-                <div class="ti">ผังธาตุของลื้อ</div>
-              </div>
-              <div class="ui-scr-body">
-                <div class="ui-pillars">
-                  <div class="ui-pillar"><div class="cap">時 ยาม</div><div class="gz">癸巳</div></div>
-                  <div class="ui-pillar"><div class="cap">日 วัน</div><div class="gz">丙寅</div></div>
-                  <div class="ui-pillar"><div class="cap">月 เดือน</div><div class="gz">丙子</div></div>
-                  <div class="ui-pillar"><div class="cap">年 ปี</div><div class="gz">己巳</div></div>
-                </div>
-                <div class="ui-el"><span class="lb">🌲 ไม้</span><span class="track"><span class="fill" style="width:33%"></span></span><span class="vv">1</span></div>
-                <div class="ui-el"><span class="lb">🔥 ไฟ</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="vv">3</span></div>
-                <div class="ui-el"><span class="lb">🏔 ดิน</span><span class="track"><span class="fill" style="width:33%"></span></span><span class="vv">1</span></div>
-                <div class="ui-el"><span class="lb">⚡ ทอง</span><span class="track"><span class="fill" style="width:5%"></span></span><span class="vv">0</span></div>
-                <div class="ui-el"><span class="lb">💧 น้ำ</span><span class="track"><span class="fill" style="width:100%"></span></span><span class="vv">3</span></div>
-                <p class="ui-hint">ไฟกับน้ำเด่น ทองพร่อง — ใจร้อนแต่คิดลึก แปะสรุปให้เป็นภาษาคน</p>
-              </div>
-            </div>
-          </div>
-          <div class="ui-phone-label">ผังธาตุ 4 เสา &middot; 오행 balance อ่านง่าย</div>
+          <div class="ui-phone"><div class="ui-phone-screen"><img class="ui-real" src="img/login-mobile.jpg" alt="หน้าเข้าสู่ระบบ ปุ่มดำเนินการต่อด้วย Google และฟอร์มอีเมล รหัสผ่าน" loading="lazy" decoding="async"></div></div>
+          <div class="ui-phone-label">เข้าสู่ระบบ &middot; Google หรืออีเมล</div>
         </div>
-
-        <!-- Screen 3: ปฏิทินดวง -->
         <div class="ui-phone-wrap">
-          <div class="ui-phone">
-            <div class="ui-phone-screen">
-              <div class="ui-scr-head">
-                <div class="st">ปฏิทินดวง &middot; เดือนนี้</div>
-                <div class="ti">วันไหนควรก้าว วันไหนควรรอ</div>
-              </div>
-              <div class="ui-scr-body">
-                <div class="ui-cal-wk"><span>อา</span><span>จ</span><span>อ</span><span>พ</span><span>พฤ</span><span>ศ</span><span>ส</span></div>
-                <div class="ui-cal">
-                  <span class="d">1</span><span class="d good">2</span><span class="d">3</span><span class="d">4</span><span class="d warn">5</span><span class="d">6</span><span class="d">7</span>
-                  <span class="d">8</span><span class="d">9</span><span class="d good">10</span><span class="d today">11</span><span class="d">12</span><span class="d warn">13</span><span class="d">14</span>
-                  <span class="d">15</span><span class="d good">16</span><span class="d">17</span><span class="d">18</span><span class="d">19</span><span class="d">20</span><span class="d good">21</span>
-                </div>
-                <div class="ui-day-card">
-                  <div class="dh">วันนี้ · ไฟแรง</div>
-                  <div class="dp">ค่อย ๆ ก้าว อย่าเพิ่งรีบตัดสินใจเรื่องใหญ่ในวันนี้นะ</div>
-                  <div class="ui-day-chips"><span class="g">ก้าวได้: คุยงาน</span><span class="w">ระวัง: ปากร้อน</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="ui-phone-label">ปฏิทินดวงรายวัน &middot; deep-link คุยกับแปะ</div>
+          <div class="ui-phone"><div class="ui-phone-screen"><img class="ui-real" src="img/report-overview.jpg" alt="รายงานดวงฉบับเต็ม หัวข้อลื้อคือดินภูเขาที่นั่งบนลิง ชิป 12 หัวข้อ" loading="lazy" decoding="async"></div></div>
+          <div class="ui-phone-label">รายงานดวง &middot; สรุป 12 หัวข้อ</div>
         </div>
-
+        <div class="ui-phone-wrap">
+          <div class="ui-phone"><div class="ui-phone-screen"><img class="ui-real" src="img/report-element-balance.jpg" alt="ส่วนสมดุลธาตุในรายงาน แถบเปอร์เซ็นต์ไม้ ไฟ ดิน ทอง น้ำ" loading="lazy" decoding="async"></div></div>
+          <div class="ui-phone-label">สมดุลธาตุ &middot; 오행 balance จาก engine</div>
+        </div>
       </div>
     </div>
 
