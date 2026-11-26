@@ -7005,3 +7005,10 @@ figcaption {
 
 /* โลโก้บริษัทในหน้า About — ไอคอนสี่เหลี่ยมมุมมนแบบในเรซูเม่ · เส้นขอบบางไว้แยกไอคอนพื้นขาวออกจากหน้า */
 .company-logo { display: block; width: 56px; height: 56px; border-radius: 12px; border: 1px solid rgba(0,0,0,.08); object-fit: cover; margin-bottom: 20px; }
+
+/* blog-readability: ย่อหน้าบทความยาว ~700 ตัวอักษร ⇒ ตัวใหญ่ขึ้น สีเข้มขึ้น (เดิม #848484 contrast ไม่ผ่าน) บรรทัดสั้นลง (~65 ตัวอักษรไทย) และเว้นย่อหน้ามากขึ้น */
+.blog-post .rich-text :is(p, li) { font-size: 18px; line-height: 1.9; color: #3f3f46; max-width: 640px; margin-bottom: 1.6em; }
+.blog-post .rich-text :is(h2, h3, h4) { max-width: 640px; margin-top: 2.2em; }
+.blog-post .rich-text :is(ul, ol) { max-width: 640px; }
+.blog-post .rich-text li { margin-bottom: .9em; }
+@media (max-width: 767px) { .blog-post .rich-text :is(p, li) { font-size: 17px; } }
