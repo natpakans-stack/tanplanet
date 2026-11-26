@@ -12,21 +12,21 @@
 .fh-center > * { pointer-events: auto; }
 .fh-title {
   margin: 0; font-family: "Google Sans", Inter, sans-serif; font-size: clamp(36px, 4.4vw, 64px);
-  line-height: 1.2; font-weight: 500; letter-spacing: -0.025em; color: #2b313b;
+  line-height: 1.2; font-weight: 500; letter-spacing: -0.025em; color: var(--tp-text);
 }
-.fh-sub { margin: 40px 0 0;  /* เส้นใต้คำเน้นยื่นลงมา — เว้นที่ให้ */ max-width: min(480px, 100%); font-size: 18px; line-height: 1.6; color: #52525b; }
+.fh-sub { margin: 40px 0 0;  /* เส้นใต้คำเน้นยื่นลงมา — เว้นที่ให้ */ max-width: min(480px, 100%); font-size: 18px; line-height: 1.6; color: var(--tp-text-2); }
 .fh-cta { display: flex; gap: 12px; margin-top: 36px; flex-wrap: wrap; justify-content: center; }
 .fh-btn {
   display: inline-flex; align-items: center; justify-content: center; min-width: 200px; height: 48px; padding: 0 24px; border-radius: 999px;
   font-size: 16px; font-weight: 600; text-decoration: none; transition: transform .15s ease, background .15s ease;
 }
 .fh-btn:hover { transform: translateY(-1px); }
-.fh-btn--solid { background: #111; color: #fff; }
-.fh-btn--ghost { border: 1px solid #d4d4d8; color: #111; background: #fff; }
+.fh-btn--solid { background: var(--tp-text); color: var(--tp-on-brand); }
+.fh-btn--ghost { border: 1px solid var(--tp-border-strong); color: var(--tp-text); background: var(--tp-surface); }
 .fh-cue {
   position: absolute; left: 50%; bottom: 24px; translate: -50% 0; z-index: 2;
   animation: fh-float 2.2s ease-in-out infinite;  /* ลอยขึ้นลง 8px · จังหวะเดียวกับต้นแบบ */
-  font-size: 13px; color: #71717a; text-align: center; text-decoration: none;
+  font-size: 13px; color: var(--tp-text-3); text-align: center; text-decoration: none;
 }
 .fh-cue::after { content: ""; display: block; width: 8px; height: 8px; margin: 6px auto 0;
   border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); }
@@ -34,13 +34,13 @@
 /* การ์ด: ตำแหน่งเริ่มเป็น % ของจอ (ถอดจากต้นแบบที่ 1728×997) · หมุนคงที่ · JS เติม translate */
 .fh-card {
   position: absolute; left: var(--x); top: var(--y); width: var(--w);
-  background: #fff; border-radius: 10px; overflow: hidden; text-decoration: none; color: #111;
+  background: var(--tp-surface); border-radius: 10px; overflow: hidden; text-decoration: none; color: var(--tp-text);
   box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.10);
   rotate: var(--r); will-change: transform; z-index: 1;
 }
-.fh-card img { display: block; width: 100%; aspect-ratio: 4 / 3.4; object-fit: cover; object-position: 8% center; /* ชื่องานใน og image อยู่ชิดซ้าย */ background: #f4f4f5; }
+.fh-card img { display: block; width: 100%; aspect-ratio: 4 / 3.4; object-fit: cover; object-position: 8% center; /* ชื่องานใน og image อยู่ชิดซ้าย */ background: var(--tp-surface-2); }
 .fh-card b { display: block; padding: 10px 12px 0; font-size: 13px; font-weight: 600; line-height: 1.35; }
-.fh-card span { display: block; padding: 2px 12px 12px; font-size: 11px; color: #71717a; }
+.fh-card span { display: block; padding: 2px 12px 12px; font-size: 11px; color: var(--tp-text-3); }
 .fh-card:hover { z-index: 3; }
 
 /* จอแคบ (อิงต้นแบบบนมือถือ): หัวข้อค่อนบน · การ์ด 4 ใบโผล่ครึ่งใบจากขอบซ้าย-ขวาช่วงล่างจอ · ปุ่มเรียงซ้อน */
@@ -63,23 +63,23 @@
 
 /* section Projects บนหน้าแรก — การ์ดดึงงานจาก projects.tanplanet.work ใช้ thumbnail เต็มกว้างแทนไอคอนแอป */
 .pp-thumb { display: block; width: calc(100% + 64px); max-width: none; margin: -40px -32px 28px; aspect-ratio: 16 / 9;
-  object-fit: cover; background: #f4f4f5; }  /* ชิดขอบการ์ด: ลบ padding ของ .card.portfolio-project (40/32) */
+  object-fit: cover; background: var(--tp-surface-2); }  /* ชิดขอบการ์ด: ลบ padding ของ .card.portfolio-project (40/32) */
 @media (max-width: 479px) { .pp-thumb { width: calc(100% + 40px); margin: -30px -20px 22px; } }
 
 /* โลโก้โปรเจกต์ทรงกลมซ้อนขอบล่างของรูป (แบบ avatar ในการ์ดต้นแบบ) */
 .fh-card { display: flex; flex-direction: column; }
 .fh-card .fh-ava {  /* ต้องชนะ .fh-card span (บรรทัดรอง) ไม่งั้นได้ display:block + padding ไอคอนเบี้ยว */
   display: grid; place-items: center; padding: 0; flex: none; width: 44px; height: 44px; margin: -22px 0 0 12px; position: relative; /* flex: none — ไม่งั้นโดนบีบจนไม่กลม · ยกขึ้นครึ่งวง = คร่อมขอบรูปพอดี */
-  border-radius: 50%; background: var(--c); border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  border-radius: 50%; background: var(--c); border: 3px solid var(--tp-surface); box-shadow: 0 2px 6px rgba(0,0,0,.15);
 }
-.fh-ico { width: 20px; height: 20px; color: #fff; stroke: currentColor; }
+.fh-ico { width: 20px; height: 20px; color: var(--tp-on-brand); stroke: currentColor; }
 .fh-card b { padding-top: 8px; }
 @media (max-width: 767px) { .fh-card .fh-ava { width: 32px; height: 32px; margin-top: -16px; border-width: 2px; } .fh-ico { width: 15px; height: 15px; } }
 
 /* คำเน้นลายมือ: เขียนจากซ้ายไปขวาตอนโหลด แล้วสั่นเบา ๆ ทุก 0.6s แบบเส้นวาดมือ (จังหวะอิงต้นแบบ) */
 .fh-accent {
   display: inline-block; margin: 0 .18em; font-family: Sriracha, "Google Sans", cursive; font-style: normal; font-weight: 400;
-  font-size: 1.08em; color: #2b313b; transform-origin: 50% 60%;
+  font-size: 1.08em; color: var(--tp-text); transform-origin: 50% 60%;
   position: relative; clip-path: inset(-20% 100% -60% 0); animation: fh-write .9s cubic-bezier(.4,0,.2,1) .35s forwards, fh-idle 1.8s steps(1) 1.3s infinite;
 }
 @keyframes fh-write { to { clip-path: inset(-20% -2% -60% 0); } }
@@ -88,7 +88,7 @@
 .nw { white-space: nowrap; }
 
 /* ไล่สีคำเน้น + เส้นใต้ลายมือ (path วาดเอง) ลากตามหลังคำที่เขียนเสร็จ */
-.fh-grad { background: linear-gradient(90deg, #7c3aed, #db2777 50%, #2b313b 92%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.fh-grad { background: linear-gradient(90deg, var(--tp-brand-2), var(--tp-brand) 50%, var(--tp-text) 92%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .fh-ul { position: absolute; left: -2%; bottom: -.12em; width: 104%; height: .32em; overflow: visible; }
 .fh-ul path { fill: none; stroke: url(#fhg); stroke-width: 5; stroke-linecap: round; vector-effect: non-scaling-stroke;
   stroke-dasharray: 1; stroke-dashoffset: 1; animation: fh-ul .6s cubic-bezier(.4,0,.2,1) 1.15s forwards; }

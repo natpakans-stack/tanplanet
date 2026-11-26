@@ -1,0 +1,57 @@
+/* tokens.css — สีกลางของ tanplanet · ต้นฉบับอยู่ที่นี่ที่เดียว (myfolio ใช้สำเนาจาก tools/sync-tokens.sh)
+   2 ชุด:
+   · หน้าบ้าน (ค่าเริ่มต้น) — ขาว clean ให้เนื้อหาผลงานเด่น: myfolio + projects.tanplanet.work
+   · หลังบ้าน  [data-theme="back"] — ตามโทน Takra (studio เข้ม + saffron) สำหรับแดชบอร์ด/เครื่องมือที่ใช้เอง
+   ชื่อตัวแปรเหมือนกันทั้งสองชุด → คอมโพเนนต์เขียนครั้งเดียว สลับชุดด้วย data-theme บน <html>/<body> หรือกล่องไหนก็ได้ */
+
+:root, [data-theme="front"] {
+  /* พื้น */
+  --tp-bg: #ffffff;
+  --tp-surface: #ffffff;
+  --tp-surface-2: #f6f6f7;          /* กล่องรอง แถบหัว สารบัญ */
+  --tp-surface-3: #f0f0f1;          /* code, chip */
+  --tp-border: #ececec;
+  --tp-border-strong: #d4d4d8;
+  /* ตัวหนังสือ */
+  --tp-text: #1f1f1f;               /* หัวข้อ */
+  --tp-text-2: #3f3f46;             /* เนื้อหา */
+  --tp-text-3: #6b6b6b;             /* รอง/คำบรรยาย */
+  --tp-text-4: #9a9a9a;             /* จางสุด: เลขลำดับ วันที่ */
+  /* แบรนด์ (ม่วง → ชมพู → ส้ม จากคำเน้นบนหน้าแรก) */
+  --tp-brand: #db2777;
+  --tp-brand-2: #7c3aed;
+  --tp-brand-3: #f97316;
+  --tp-brand-gradient: linear-gradient(90deg, var(--tp-brand-2), var(--tp-brand));
+  --tp-on-brand: #ffffff;
+  /* เงา */
+  --tp-shadow-sm: 0 1px 2px rgba(0, 0, 0, .06);
+  --tp-shadow-md: 0 12px 32px rgba(0, 0, 0, .10);
+  --tp-overlay: rgba(255, 255, 255, .9);
+  /* ฟอนต์ */
+  --tp-font: Inter, "Google Sans", "IBM Plex Sans Thai", system-ui, sans-serif;
+  --tp-font-display: "Google Sans", Inter, "IBM Plex Sans Thai", sans-serif;
+}
+
+[data-theme="back"] {
+  /* จาก takra-tokens.css: studio-950/900/300/50 · saffron-500/600 · dark-border */
+  --tp-bg: #020617;
+  --tp-surface: #0f172a;
+  --tp-surface-2: #111a2e;
+  --tp-surface-3: #1e293b;
+  --tp-border: rgba(248, 250, 252, .12);
+  --tp-border-strong: rgba(248, 250, 252, .24);
+  --tp-text: #f8fafc;
+  --tp-text-2: #cbd5e1;
+  --tp-text-3: #94a3b8;
+  --tp-text-4: #64748b;
+  --tp-brand: #ff6b1a;
+  --tp-brand-2: #e5571a;
+  --tp-brand-3: #06b6d4;            /* ai-teal-500 */
+  --tp-brand-gradient: linear-gradient(90deg, #ffb366, var(--tp-brand));
+  --tp-on-brand: #ffffff;
+  --tp-shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
+  --tp-shadow-md: 0 12px 32px rgba(0, 0, 0, .45);
+  --tp-overlay: rgba(11, 15, 26, .85);
+  --tp-font: Inter, "IBM Plex Sans Thai", system-ui, sans-serif;
+  --tp-font-display: Inter, "IBM Plex Sans Thai", system-ui, sans-serif;
+}
