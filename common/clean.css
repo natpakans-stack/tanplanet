@@ -1,0 +1,107 @@
+/* clean.css — เลย์เอาต์สะอาดแบบหน้า project ของ myfolio (ต้นแบบ: myfolio.tanplanet.work/project/jump-ui-travel-app-v2)
+   โหลดท้ายสุดใน <head> ทับสไตล์เดิมของหน้า · ไม่แตะเนื้อหา · ส่วนหัว (.cl-head) สร้างโดย tools/cleanify.py
+   หลัก: พื้นขาว คอลัมน์เดียว 720px · หัวข้อดำ เนื้อความเทา · ไม่มีกล่องสี/gradient/ไอคอนตกแต่ง */
+
+html body { background: #fff; color: #1f1f1f; }
+/* ── ทับตัวแปรสีของทุกหน้าเป็นโทนเทา (ทุกส่วนประกอบใช้ตัวแปรพวกนี้ → เรียบทั้งหน้าในที่เดียว) ── */
+html body {
+  --bg: #fff; --surface: #fff; --bg-card: #fff; --border: #ececec;
+  --text: #1f1f1f; --text-primary: #1f1f1f; --text-secondary: #6b6b6b; --text-muted: #9a9a9a; --text-tertiary: #9a9a9a;
+  --accent: #1f1f1f; --accent-dark: #1f1f1f; --accent-light: #f4f4f5; --accent-glow: transparent;
+  --orange: #6b6b6b; --red: #6b6b6b; --purple: #6b6b6b; --blue: #6b6b6b; --emerald: #e5e5e5; --teal: #6b6b6b;
+  --pink: #6b6b6b; --navy: #1f1f1f; --green: #6b6b6b; --gold: #6b6b6b;
+  --orange-light: #f5f5f5; --red-light: #f5f5f5; --purple-light: #f5f5f5; --blue-light: #f5f5f5; --emerald-light: #f5f5f5;
+  --teal-light: #f5f5f5; --pink-light: #f5f5f5; --green-light: #f5f5f5; --gold-light: #f5f5f5;
+  --emerald-dark: #1f1f1f; --green-dark: #1f1f1f;
+  --shadow: none; --shadow-sm: none; --shadow-md: none; --shadow-lg: none;
+  --tag-bg: #f4f4f5; --code-bg: #f4f4f5; --code-text: #1f1f1f;
+}
+html body .highlight { border-left: 0; }
+html body .pipe-phase { border-color: #ececec; }
+html body .pipe-phase > ol > li.gate, html body .pipe-phase > ol > li.gate--key { border-color: #d4d4d4; box-shadow: none; }
+
+html body article { max-width: 720px; margin: 0 auto; padding: 0 24px 40px; }
+html body p, html body li { color: #6b6b6b; line-height: 1.85; }
+html body b, html body strong { color: #1f1f1f; }
+
+/* ── ส่วนหัว ───────────────────────────────────────────── */
+.cl-head { max-width: 720px; margin: 0 auto; padding: 88px 24px 0; }
+.cl-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.cl-logo { display: grid; place-items: center; width: 80px; height: 80px; border-radius: 20px;
+  background: #fff; border: 1px solid #ececec; box-shadow: 0 1px 2px rgba(0,0,0,.04); color: var(--c, #111); }
+.cl-logo svg { width: 40px; height: 40px; }
+.cl-view { font-weight: 600; color: #111; text-decoration: none; font-size: 16px; }
+.cl-view:hover { text-decoration: underline; }
+.cl-head h1 { margin: 36px 0 0; font-size: clamp(32px, 4.4vw, 48px); line-height: 1.2; font-weight: 700; color: #1f1f1f; letter-spacing: -.01em; }
+.cl-lead { margin: 16px 0 0; max-width: 560px; font-size: 17px; color: #6b6b6b; line-height: 1.8; }
+.cl-meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin: 48px 0 0; }
+.cl-meta dt { font-weight: 600; color: #1f1f1f; font-size: 15px; }
+.cl-meta dd { margin: 12px 0 0; color: #6b6b6b; font-size: 15px; line-height: 1.7; }
+.cl-rule { max-width: 672px; margin: 64px auto 0; border: 0; border-top: 1px solid #ececec; }
+@media (max-width: 640px) { .cl-head { padding-top: 76px; } .cl-meta { grid-template-columns: 1fr 1fr; } }
+
+/* ── หัวข้อ section ─────────────────────────────────────── */
+html body .section-intro { margin: 72px 0 0; padding: 0; text-align: left; background: none; }
+html body .section-intro .eyebrow { display: none; }
+html body .section-intro h2, html body article h2 { font-size: clamp(26px, 3vw, 34px); line-height: 1.3; font-weight: 700; color: #1f1f1f; margin: 0 0 20px; background: none; -webkit-text-fill-color: currentColor; }
+html body .section-intro p { margin: 0 0 16px; font-size: 16px; max-width: none; }
+html body article h3, html body article h4 { color: #1f1f1f; font-weight: 600; }
+html body .divider { display: none; }
+
+/* ── ตัดของตกแต่ง: ไอคอนในการ์ด สีพื้น เงา ─────────────── */
+html body article .ico, html body article .ico-i { display: none; }
+html body :is(.pain-card, .solution-card, .module-card, .flow-step, .hack-card, .metric-card, .learning-card, .partner-grid > *, .note, .quote-block) {
+  background: none; border: 0; box-shadow: none; border-radius: 0; padding: 0; }
+html body .hack-card::before, html body .hack-card::after { display: none; content: none; }
+
+/* กลุ่มการ์ด → รายการเรียบ มีเส้นคั่นบาง */
+html body :is(.pain-grid, .solution-grid, .module-grid, .hack-grid, .flow-grid, .partner-grid) {
+  display: block; margin: 24px 0 0; }
+html body :is(.pain-card, .solution-card, .module-card, .hack-card, .flow-step) { padding: 20px 0; border-top: 1px solid #f0f0f0; }
+html body :is(.pain-card, .solution-card, .module-card, .hack-card, .flow-step) h3,
+html body .flow-step h4 { margin: 0 0 6px; font-size: 17px; display: block; }
+html body .hack-card h3 span { display: inline; }
+html body :is(.pain-card, .solution-card, .module-card, .hack-card, .flow-step) p { margin: 0; font-size: 16px; }
+html body .flow-step { display: grid; grid-template-columns: 36px 1fr; column-gap: 8px; }
+html body .flow-step .step-num { grid-row: span 3; width: auto; height: auto; background: none; color: #b0b0b0; font-weight: 700; font-size: 15px; box-shadow: none; }
+html body .highlight { margin: 10px 0 0; padding: 12px 14px; background: #f7f7f7; border: 0; border-radius: 10px; color: #4a4a4a; font-size: 15px; }
+html body .highlight code, html body article code { background: #f0f0f0; color: #1f1f1f; border-radius: 4px; padding: 1px 5px; }
+
+/* คำพูด/โน้ต */
+html body .quote-block { margin: 28px 0; padding-left: 18px; border-left: 2px solid #e5e5e5; }
+html body .quote-block p { font-style: normal; color: #4a4a4a; }
+html body .quote-block .author { color: #9a9a9a; font-size: 14px; }
+html body .note { margin: 16px 0; color: #8a8a8a; font-size: 15px; }
+
+/* ตาราง ledger */
+html body .ledger-wrap { margin: 24px 0; border: 0; background: none; box-shadow: none; }
+html body .ledger { width: 100%; border-collapse: collapse; font-size: 15px; }
+html body .ledger th { text-align: left; color: #1f1f1f; font-weight: 600; border-bottom: 1px solid #e5e5e5; padding: 10px 8px; background: none; }
+html body .ledger td { color: #6b6b6b; border-bottom: 1px solid #f0f0f0; padding: 12px 8px; background: none; }
+html body .ledger tr[data-picked] td { color: #1f1f1f; font-weight: 600; }
+html body .ledger .pick { background: #f0f0f0; color: #1f1f1f; border-radius: 999px; padding: 2px 8px; font-size: 12px; }
+
+/* แผนผังสถาปัตยกรรม → กล่องเส้นบางสีเทา */
+html body .arch-diagram { margin: 28px 0; padding: 0; background: none; border: 0; }
+html body .arch-layer { background: #fafafa !important; color: #1f1f1f !important; border: 1px solid #ececec !important; border-radius: 12px; box-shadow: none; font-weight: 600; }
+html body .arch-sub span { background: #fff !important; color: #6b6b6b !important; border: 1px solid #ececec !important; }
+html body .arch-arrow { color: #c4c4c4; }
+
+/* ตัวเลขผลลัพธ์ → แถวตัวเลขใหญ่แบบเรียบ */
+html body .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 24px; margin: 28px 0; padding: 28px 0; border-top: 1px solid #ececec; border-bottom: 1px solid #ececec; }
+html body .metric-card .num { color: #1f1f1f; font-size: 34px; font-weight: 700; background: none; -webkit-text-fill-color: currentColor; }
+html body .metric-card .label { color: #6b6b6b; font-size: 14px; }
+
+/* สิ่งที่ได้เรียนรู้ */
+html body .learning-card { margin: 0; padding: 16px 0; border-top: 1px solid #f0f0f0; }
+html body .learning-card strong { display: block; margin-bottom: 4px; }
+
+/* รายการ plain */
+html body ul.plain { padding: 0; margin: 20px 0; list-style: none; }
+html body ul.plain li { display: block; padding: 10px 0; border-top: 1px solid #f0f0f0; }
+
+/* ภาพ */
+html body figure.shot { margin: 32px 0; }
+html body figure.shot img { border-radius: 14px; border: 1px solid #ececec; box-shadow: none; }
+html body figure.shot figcaption { color: #9a9a9a; font-size: 14px; text-align: left; }
+html body .tag, html body .chip { background: #f4f4f5 !important; color: #52525b !important; border: 0 !important; }

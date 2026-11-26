@@ -16,6 +16,7 @@ description: เขียนหน้า case study ของโปรเจก�
 
 **ห้ามขึ้นเว็บ (repo public):** ชื่อบริษัทที่ทำงานประจำ · ชื่อลูกค้า · เงิน/รายได้/พอร์ต · อีเมล ชื่อบัญชี ชื่อเพจ/ช่อง · IP, tailnet, URL ภายใน, key, รหัสผ่าน · ข้อมูลครอบครัว
 ถ้าไม่แน่ใจข้อไหน ให้ตัดออกก่อน แล้วถามแทนตอนสรุป
+**ข้อยกเว้น (แทนอนุญาต 26 พ.ย. 2026):** งาน UX/UI รุ่นก่อนที่ย้ายมาจาก myfolio (NocNoc, Kollab, Siriraj NCDs, Pukao/Krungsri, Jump/Wongnai, LINE MAN Mart) ใส่ชื่อลูกค้า/บริษัทได้ — เปิดเผยบน myfolio มาตั้งแต่แรก
 
 ## 3. เขียนหน้า `<slug>-portfolio/index.html` — แพทเทิร์นเดิมเป๊ะ ห้ามดีไซน์ใหม่
 - ก๊อปทั้ง `<head>`/`<style>` + โครง body จาก `ring-bot-billing-portfolio/index.html`
