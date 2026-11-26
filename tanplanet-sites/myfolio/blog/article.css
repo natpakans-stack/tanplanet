@@ -7,7 +7,7 @@
 }
 .ap a { text-decoration: none; }
 .ap .ic { width: 1em; height: 1em; flex: none; }
-.ap-container { max-width: 893px; margin: 0 auto; padding: 0 24px; }   /* = .container-header ของ navbar → ขอบซ้ายตรงโลโก้ทั้งหน้า */
+.ap-container { max-width: var(--tp-container, 1200px); margin: 0 auto; padding: 0 24px; }   /* = grid หลักของเว็บ → ขอบซ้ายตรงโลโก้ */
 .section.blog-post .container-medium-652px { display: none; }   /* "Latest articles" เดิม — แทนด้วย อ่านเพิ่มเติม + sidebar */
 .section.blog-post { padding-top: 0; }
 
@@ -24,7 +24,7 @@
 .ap-meta span { display: inline-flex; align-items: center; gap: 6px; }
 
 /* ── เนื้อหา 850 + sidebar 300 · ปกคร่อมขอบล่างแถบ 50 ── */
-.ap-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 35px; margin-top: -50px; padding-bottom: 100px; }
+.ap-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 35px; margin-top: -50px; padding-bottom: 100px; }
 .ap-main { min-width: 0; }
 .ap-cover { margin: 0 0 45px; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; background: var(--secondary-color); }
 .ap-cover > img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -101,7 +101,7 @@
 .ap-btn-all:hover { color: var(--tp-on-brand); filter: brightness(1.08); }
 
 /* sidebar: บทความล่าสุด — รูปย่อ 16:9 + เลขวงกลมมุมซ้ายบน */
-.ap-side { display: none; }   /* ponytail: กว้าง 845 ใส่ sidebar ไม่ได้ · ซ้ำกับ "อ่านเพิ่มเติม" อยู่แล้ว */
+.ap-side { padding-top: 110px; }
 .ap-side-inner { position: sticky; top: 120px; display: flex; flex-direction: column; gap: 40px; }
 .ap-widget-title { display: flex; align-items: center; gap: 12px; margin: 0 0 24px; font-size: 15px; font-weight: 600; color: var(--primary-color); }
 .ap-widget-title::after { content: ''; flex: 1; height: 1px; background: var(--divider-color); }
@@ -123,6 +123,8 @@
 .ap-progress-bar { stroke: var(--accent-color); stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset .15s linear; }
 .ap-progress span { position: relative; font-size: 14px; font-weight: 600; color: var(--primary-color); }
 @media (prefers-reduced-motion: reduce) { .ap-share-btn, .ap-progress, .ap-progress-bar, .ap-pn-label .ic { transition: none; } }
+
+@media (max-width: 1199px) { .ap-grid { grid-template-columns: minmax(0, 1fr); } .ap-side { display: none; } }  /* แคบกว่า grid เต็ม: ไม่มีที่ให้ sidebar */
 
 /* ≤ 991: คอลัมน์เดียว · แชร์เป็นแถวใต้ปก · sidebar ท้ายเนื้อหา */
 @media (max-width: 991px) {
