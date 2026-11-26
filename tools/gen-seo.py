@@ -13,7 +13,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 BASE = "https://projects.tanplanet.work/"
 
-CARD_RE = re.compile(r'<a class="card[^"]*"[^>]*href="([^"]+)"[^>]*>(.*?)</a>', re.S)
+# ponytail: lookahead = ลำดับ attribute ไม่สำคัญ (การ์ดที่ใส่ data-added ไว้หน้า class เคยหลุดจาก sitemap/llms)
+CARD_RE = re.compile(r'<a\s(?=[^>]*class="card\b)[^>]*href="([^"]+)"[^>]*>(.*?)</a>', re.S)
 
 
 def text(fragment: str) -> str:
