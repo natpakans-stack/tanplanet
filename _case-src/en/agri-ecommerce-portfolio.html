@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Commerce for Thai farmers — connecting farmers directly with consumers</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="E-Commerce for Thai farmers — connecting farmers directly with consumers">
+  <meta name="twitter:description" content="Portfolio: a farmer platform — an e-commerce platform that connects Thai farmers directly with consumers. Buyer / Seller / Affiliate / Admin, built in 3 months.">
+  <meta property="og:url" content="https://projects.tanplanet.work/agri-ecommerce-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.work/agri-ecommerce-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: a farmer platform — an e-commerce platform that connects Thai farmers directly with consumers. Buyer / Seller / Affiliate / Admin, built in 3 months.">
+  <meta property="og:title" content="E-Commerce for Thai farmers — connecting farmers directly with consumers">
+  <meta name="description" content="Portfolio: a farmer platform — an e-commerce platform that connects Thai farmers directly with consumers. Buyer / Seller / Affiliate / Admin, built in 3 months.">
+  <link rel="icon" type="image/png" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=64&height=64">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --accent: #126c62;
+      --accent-light: #ecfdf5;
+      --accent-dark: #0d5a52;
+      --accent-glow: rgba(18,108,98,0.12);
+      --gold: #c69b57;
+      --gold-light: #fef9ee;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #ef4444;
+      --red-light: #fef2f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #065f46 0%, #126c62 40%, #10b981 80%, #34d399 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(198,155,87,0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(16,185,129,0.2) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #126c62, #c69b57, #10b981);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #34d399;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .gold {
+      color: #fcd34d;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.88;
+      max-width: 560px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.8);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #065f46, #126c62);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.15;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.6;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Role Cards (4 roles) ===== */
+    .role-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .role-tab {
+      padding: 8px 20px;
+      border-radius: 50px;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text-secondary);
+    }
+    .role-tab:hover { border-color: var(--accent); color: var(--accent); }
+    .role-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .role-panels .role-panel { display: none; }
+    .role-panels .role-panel.active { display: block; }
+    .role-content {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+    }
+    .role-content h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .role-content h3 .emoji { font-size: 1.3rem; }
+    .role-features {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .role-features li {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      padding: 8px 12px;
+      background: var(--bg);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .role-features li::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.82rem;
+      flex-shrink: 0;
+    }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.scale::before { background: var(--accent-light); color: var(--accent); }
+    .hack-card.deadline::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.collab::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.ux::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 80px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(18,108,98,0.2); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--gold-light); color: #92651e; border: 1px solid rgba(198,155,87,0.3); }
+    .arch-layer.infra { background: #f1f5f9; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Closing ===== */
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(4,120,87,0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(4,120,87,0.95); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .role-features { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* mockup หน้าจอ (ข้อมูลตัวอย่าง) */
+    .mock-pair{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:28px 20px;background:linear-gradient(135deg,var(--accent-light),var(--gold-light));border-radius:var(--radius-lg);box-shadow:0 0 0 1px var(--border)}
+    .mock-phone{background:var(--surface);border:6px solid #1e293b;border-radius:28px;padding:14px 12px 12px;max-width:280px;width:100%;margin:0 auto;font-size:.78rem;color:var(--text);box-shadow:0 12px 32px rgba(0,0,0,.12)}
+    .mock-shot img{box-shadow:none;border-radius:0}
+    .mp-bar{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:.85rem;margin-bottom:10px}
+    .mp-bar .ico{width:16px;height:16px;color:var(--accent)}
+    .mp-step{font-size:.7rem;font-weight:600;color:var(--text-muted)}
+    .mp-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+    .mp-chips span{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:999px;border:1px solid var(--border);font-size:.68rem;color:var(--text-secondary)}
+    .mp-chips span.on{background:var(--accent);border-color:var(--accent);color:#fff}
+    .mp-chips .ico,.mp-info small .ico{width:11px;height:11px}
+    .mp-card{display:grid;grid-template-columns:64px minmax(0,1fr);gap:10px;padding:8px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px}
+    .mock-shot .mp-card img{width:64px;height:64px;object-fit:cover;border-radius:8px}
+    .mp-info b{display:block;font-size:.76rem;line-height:1.35}
+    .mp-info small{display:flex;align-items:center;gap:3px;color:var(--text-muted);font-size:.66rem;margin-top:2px}
+    .mp-row{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
+    .mp-row strong{color:var(--accent);font-size:.85rem}
+    .mp-otop{display:inline-flex;align-items:center;gap:3px;font-size:.62rem;font-weight:700;color:var(--gold);background:var(--gold-light);padding:1px 6px;border-radius:6px}
+    .mp-otop .ico{width:11px;height:11px}
+    .mp-steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:0 0 12px;padding:0;counter-reset:s}
+    .mp-steps li{counter-increment:s;text-align:center;font-size:.62rem;color:var(--text-muted);line-height:1.3;padding-top:4px;border-top:3px solid var(--border)}
+    .mp-steps li.done{border-color:var(--accent);color:var(--text-secondary)}
+    .mp-steps li.now{border-color:var(--accent);color:var(--accent);font-weight:700}
+    .mp-photo{position:relative;margin-bottom:10px}
+    .mock-shot .mp-photo img{width:100%;height:120px;object-fit:cover;border-radius:10px}
+    .mp-photo span{position:absolute;right:8px;bottom:8px;display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.92);padding:3px 8px;border-radius:999px;font-size:.66rem;font-weight:600}
+    .mp-photo .ico{width:12px;height:12px}
+    .mp-field{border:1px solid var(--border);border-radius:10px;padding:6px 10px;margin-bottom:10px}
+    .mp-field small{display:block;font-size:.62rem;color:var(--text-muted)}
+    .mp-field div{font-size:1.05rem;font-weight:700}
+    .mp-btn{background:var(--accent);color:#fff;text-align:center;font-weight:700;padding:10px;border-radius:10px;font-size:.85rem}
+    .mp-label{margin-top:10px;text-align:center;font-size:.66rem;font-weight:600;color:var(--text-muted);letter-spacing:.02em}
+    @media (max-width:639px){.mock-pair{grid-template-columns:1fr;padding:20px 16px}}
+
+    /* shot figures (รูปประกอบ) */
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:16px;align-items:start}
+    .shot-pair.even{grid-template-columns:1fr 1fr}
+    .shot-pair figcaption{grid-column:1/-1}
+    .shot.phone img{max-width:360px;margin:0 auto}
+    @media (max-width:639px){.shot-pair,.shot-pair.even{grid-template-columns:1fr}.shot-pair img+img{max-width:300px;margin:0 auto}}
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/agri-ecommerce-portfolio/">
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        E-Commerce Platform · 3 Months
+      </div>
+      <h1>Farmers selling direct to buyers<br><span class="accent">An e-commerce platform that connects Thai farmers with consumers</span></h1>
+      <p>A platform that connects farmers directly with consumers — Buyer, Seller, Affiliate and Admin, every role shipped in 3 months</p>
+      <div class="hero-tags">
+        <span class="hero-tag">UX/UI Design</span>
+        <span class="hero-tag">E-Commerce</span>
+        <span class="hero-tag">4 User Roles</span>
+        <span class="hero-tag">Responsive Web</span>
+        <span class="hero-tag">Figma</span>
+      </div>
+      <div class="cta-row">
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Empathize ===== -->
+    <section class="section-intro">
+      <h2>The problem</h2>
+      <p>Why do Thai farmers need a platform of their own?</p>
+    </section>
+
+    <div class="quote-block">
+      <p>Thai farmers grow good produce but can only sell it through middlemen. Consumers want fresh food straight from the farm but don't know where to buy it, and the existing platforms weren't designed for farm products.</p>
+      <div class="author">— Insight from research before the project started</div>
+    </div>
+
+    <figure class="shot">
+      <img src="img/farmer-field.jpg" width="1280" height="854" loading="lazy" alt="A farmer in a woven hat tending a vegetable plot">
+      <figcaption>Farmers grow good produce, but sales still go through middlemen · Photo: Evan Rally / Unsplash</figcaption>
+    </figure>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 22 16 8"/><path d="M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M7.47 8.53 9 7l1.53 1.53a3.5 3.5 0 0 1 0 4.94L9 15l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M11.47 4.53 13 3l1.53 1.53a3.5 3.5 0 0 1 0 4.94L13 11l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4Z"/><path d="M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/><path d="M15.47 13.47 17 15l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/><path d="M19.47 9.47 21 11l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L13 11l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/></svg>
+        <h3>Farmers can't reach online sales channels</h3>
+        <p>Platforms like Shopee and Lazada are too complex for farmers: you need polished photos, have to set up shipping and promotions yourself, and the commission is high.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        <h3>Consumers don't trust the quality</h3>
+        <p>Buying fruit and vegetables online, you don't know where they came from, whether they're fresh or safe. There's no quality certification people can rely on.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+        <h3>Middlemen take a large margin</h3>
+        <p>Vegetables that leave the farm at 20 baht reach the consumer at 80 baht. Farmers earn little, consumers pay a lot, and the system isn't fair.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Define + Ideate ===== -->
+    <section class="section-intro">
+      <h2>The solution</h2>
+      <p>Build an ecosystem where every party benefits</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg>
+        <h3>Direct-to-Consumer — cut out the middleman</h3>
+        <p>Farmers list their own products, set their own prices and ship straight to consumers. They keep the full amount, and consumers pay less.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+        <h3>Regional products + OTOP</h3>
+        <p>Products are grouped by region (North, Northeast, Central, East, West, South) plus OTOP goods, so consumers can easily find each area's local specialties.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+        <h3>Affiliate system — bring people in to help sell</h3>
+        <p>Anyone can be an affiliate: share a product link and earn a commission. It builds a sales network without anyone holding stock.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+        <h3>Admin dashboard — full control of the system</h3>
+        <p>Manage users, review products, view analytics and handle orders, so the team can run the platform efficiently.</p>
+      </div>
+    </div>
+
+    <figure class="shot">
+      <img src="img/farm-box.jpg" width="1280" height="960" loading="lazy" alt="Hands holding a cardboard box of shallots and fresh spring onions from the farm">
+      <figcaption>Direct-to-Consumer: produce is packed at the farm and shipped straight to consumers, with no middleman · Photo: Carl Tronders / Unsplash</figcaption>
+    </figure>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture ===== -->
+    <section class="section-intro">
+      <h2>Architecture Overview</h2>
+      <p>4 roles, 1 platform — designed so every party can work together</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Users: 4 Roles
+          <div class="arch-sub">
+            <span>Buyer</span>
+            <span>Seller</span>
+            <span>Affiliate</span>
+            <span>Admin</span>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer platform">
+          Farmer Platform
+          <div class="arch-sub">
+            <span>Product Catalog</span>
+            <span>Order Management</span>
+            <span>Payment</span>
+            <span>Commission</span>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer services">
+          Services
+          <div class="arch-sub">
+            <span>Regional Filter</span>
+            <span>OTOP Badge</span>
+            <span>Affiliate Tracking</span>
+            <span>Analytics</span>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer infra">
+          Infrastructure
+          <div class="arch-sub">
+            <span>AWS S3</span>
+            <span>Responsive Web</span>
+            <span>SEO</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <figure class="shot">
+      <img src="img/regional-market.jpg" width="1280" height="854" loading="lazy" alt="A fruit stall in a Thai market with oranges, mangoes and price tags">
+      <figcaption>Each region has its own specialties — the reason for the 6-region filter and the OTOP badge · Photo: Ting Chen / Unsplash</figcaption>
+    </figure>
+
+    <hr class="divider">
+
+    <!-- ===== 4 Roles Interactive ===== -->
+    <section class="section-intro">
+      <h2>What we built — 4 user roles</h2>
+      <p>Each role has its own flow and features</p>
+    </section>
+
+    <div class="role-tabs">
+      <button class="role-tab active" data-role="buyer">Buyer</button>
+      <button class="role-tab" data-role="seller">Seller</button>
+      <button class="role-tab" data-role="affiliate">Affiliate</button>
+      <button class="role-tab" data-role="admin">Admin</button>
+    </div>
+
+    <div class="role-panels">
+      <div class="role-panel active" id="buyer">
+        <div class="role-content">
+          <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg> Buyer</h3>
+          <ul class="role-features">
+            <li>Browse 18+ product categories</li>
+            <li>Search by 6 regions</li>
+            <li>Wishlist / Favorites</li>
+            <li>Shopping Cart + Checkout</li>
+            <li>Order Tracking</li>
+            <li>Review & Rating</li>
+            <li>OTOP Products Filter</li>
+            <li>Account Management</li>
+          </ul>
+        </div>
+      </div>
+      <div class="role-panel" id="seller">
+        <div class="role-content">
+          <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 22 16 8"/><path d="M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M7.47 8.53 9 7l1.53 1.53a3.5 3.5 0 0 1 0 4.94L9 15l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M11.47 4.53 13 3l1.53 1.53a3.5 3.5 0 0 1 0 4.94L13 11l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4Z"/><path d="M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/><path d="M15.47 13.47 17 15l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/><path d="M19.47 9.47 21 11l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L13 11l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/></svg> Seller — farmers and vendors</h3>
+          <ul class="role-features">
+            <li>Create a store profile</li>
+            <li>List products + manage inventory</li>
+            <li>Set prices + promotions</li>
+            <li>Manage orders</li>
+            <li>Sales dashboard</li>
+            <li>Tag region + OTOP</li>
+            <li>Manage shipping</li>
+            <li>Income reports</li>
+          </ul>
+        </div>
+      </div>
+      <div class="role-panel" id="affiliate">
+        <div class="role-content">
+          <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14"/><path d="M8 6v8"/></svg> Affiliate — referrers</h3>
+          <ul class="role-features">
+            <li>Sign up as an affiliate</li>
+            <li>Create referral links</li>
+            <li>Share products on social media</li>
+            <li>Commission dashboard</li>
+            <li>Track clicks and purchases</li>
+            <li>Withdraw commissions</li>
+          </ul>
+        </div>
+      </div>
+      <div class="role-panel" id="admin">
+        <div class="role-content">
+          <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg> Admin — system administrators</h3>
+          <ul class="role-features">
+            <li>Manage users across all roles</li>
+            <li>Review and approve products</li>
+            <li>Analytics Dashboard</li>
+            <li>Manage every order on the platform</li>
+            <li>Commission Management</li>
+            <li>Category & Banner Mgmt</li>
+            <li>Report & Export</li>
+            <li>System Settings</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <figure class="shot mock-shot">
+      <div class="mock-pair">
+        <div class="mock-phone" aria-hidden="true">
+          <div class="mp-bar"><span>Farm products</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></div>
+          <div class="mp-chips"><span class="on"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg> North</span><span>Northeast</span><span>Central</span><span>South</span></div>
+          <div class="mp-card">
+            <img src="img/veg-basket.jpg" width="600" height="600" loading="lazy" alt="">
+            <div class="mp-info"><b>Mixed farm vegetables, 1 basket</b><small><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg> Chiang Mai · shipped from the farm</small><div class="mp-row"><span class="mp-otop"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg> OTOP</span><strong>฿120</strong></div></div>
+          </div>
+          <div class="mp-card">
+            <img src="img/thai-veg-stall.jpg" width="600" height="600" loading="lazy" alt="">
+            <div class="mp-info"><b>Bitter gourd, cucumber, fresh chili</b><small><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg> Nakhon Pathom · picked this morning</small><div class="mp-row"><span></span><strong>฿85</strong></div></div>
+          </div>
+          <div class="mp-label">Buyer · shop by region</div>
+        </div>
+        <div class="mock-phone seller" aria-hidden="true">
+          <div class="mp-bar"><span>List a product</span><span class="mp-step">2 / 3</span></div>
+          <ol class="mp-steps"><li class="done">Register</li><li class="now">Photo + price</li><li>Get paid</li></ol>
+          <div class="mp-photo"><img src="img/thai-veg-stall.jpg" width="600" height="600" loading="lazy" alt=""><span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Retake</span></div>
+          <div class="mp-field"><small>Price (baht / kg)</small><div>85</div></div>
+          <div class="mp-btn">Next</div>
+          <div class="mp-label">Seller · 3 steps, large buttons</div>
+        </div>
+      </div>
+      <figcaption>Screen mockups of the designed flows (sample data): Buyer filters by region with OTOP badges · Seller lists a product in 3 steps · Product photos: Elias Morr, Ian Taylor / Unsplash</figcaption>
+    </figure>
+
+    <hr class="divider">
+
+    <!-- ===== Hack ===== -->
+    <section class="section-intro">
+      <h2>Working around the constraints</h2>
+      <p>3 months, 4 roles — nothing was easy</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/farmer-phone.jpg" width="1280" height="854" loading="lazy" alt="A farmer's hands holding a smartphone among crops">
+      <figcaption>The real users are farmers who are only just getting used to smartphones — the UI has to be simple enough to tap through one step at a time · Photo: Bernd Dittrich / Unsplash</figcaption>
+    </figure>
+
+    <div class="hack-grid">
+      <div class="hack-card scale" data-label="Scale">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg><span>4 roles = 4x the complexity</span></h3>
+        <p>Every feature had to be thought through from four points of view: what the buyer sees, how the seller manages it, how the affiliate tracks it, how the admin oversees it. A single screen could need four versions.</p>
+        <div class="highlight">Solved with a shared component library — the same components, with content adjusted per role</div>
+      </div>
+      <div class="hack-card deadline" data-label="Deadline">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/><path d="M6.38 18.7 4 21"/><path d="M17.64 18.67 20 21"/></svg><span>3 months to ship the whole platform</span></h3>
+        <p>The deadline was very tight. We had to prioritize, cut features that weren't essential, and focus on the core flow that makes the business actually work.</p>
+        <div class="highlight">Used the MoSCoW method — clear Must / Should / Could / Won't buckets, with Musts done first</div>
+      </div>
+      <div class="hack-card ux" data-label="UX Challenge">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 11 11 .9a1 1 0 0 1 .8 1.1l-.665 4.158a1 1 0 0 1-.988.842H20"/><path d="M16 18h-5"/><path d="M18 5a1 1 0 0 0-1 1v5.573"/><path d="M3 4h8.129a1 1 0 0 1 .99.863L13 11.246"/><path d="M4 11V4"/><path d="M7 15h.01"/><path d="M8 10.1V4"/><circle cx="18" cy="18" r="2"/><circle cx="7" cy="15" r="5"/></svg><span>A wide range of users — from farmers to admins</span></h3>
+        <p>Some farmers aren't comfortable with technology, so the UI had to be very simple, while admins needed a full set of power tools. Serving every group at once was hard.</p>
+        <div class="highlight">Designed the seller flow as step-by-step, one tap at a time, while admins get a dashboard and data tables</div>
+      </div>
+      <div class="hack-card collab" data-label="Collab">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>Keeping pace with dev sprints</span></h3>
+        <p>Design had to be at least one sprint ahead of development. Too late and the developers sit idle; too early and the work may need reworking later.</p>
+        <div class="highlight">Clear design handoffs plus a spec sheet for every screen cut down the back-and-forth</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Strategic Partners ===== -->
+    <section class="section-intro">
+      <h2>Strategic Partners</h2>
+      <p>Not built alone — the platform partnered with strong government agencies</p>
+    </section>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>What made the platform more than a "shopping app" — closer to "digital infrastructure for farmers" — was working with real government agencies, from the Ministry of Agriculture to Thailand Post, which handles logistics nationwide.</p>
+    </div>
+
+    <figure class="shot">
+      <img src="img/parcel-handover.jpg" width="1280" height="960" loading="lazy" alt="A hand passing a parcel to the recipient">
+      <figcaption>Logistics is half of agricultural e-commerce — fresh produce has to arrive fast, anywhere in the country · Photo: RoseBox / Unsplash</figcaption>
+    </figure>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg> </strong><br>
+        <strong>Ministry of Agriculture and Cooperatives</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Policy support + links to farmer groups</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9.5C2 7 4 5 6.5 5H18c2.2 0 4 1.8 4 4v8Z"/><polyline points="15,9 18,9 18,11"/><path d="M6.5 5C9 5 11 7 11 9.5V17a2 2 0 0 1-2 2"/><line x1="6" x2="7" y1="10" y2="10"/></svg> </strong><br>
+        <strong>Thailand Post</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Nationwide logistics for farm products</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 22 16 8"/><path d="M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M7.47 8.53 9 7l1.53 1.53a3.5 3.5 0 0 1 0 4.94L9 15l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M11.47 4.53 13 3l1.53 1.53a3.5 3.5 0 0 1 0 4.94L13 11l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4Z"/><path d="M11.47 17.47 13 19l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L5 19l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/><path d="M15.47 13.47 17 15l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L9 15l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/><path d="M19.47 9.47 21 11l-1.53 1.53a3.5 3.5 0 0 1-4.94 0L13 11l1.53-1.53a3.5 3.5 0 0 1 4.94 0Z"/></svg> </strong><br>
+        <strong>Department of Agricultural Extension</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Training + helping farmers sign up</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16.4 13.7A6.5 6.5 0 1 0 6.28 6.6c-1.1 3.13-.78 3.9-3.18 6.08A3 3 0 0 0 5 18c4 0 8.4-1.8 11.4-4.3"/><path d="m18.5 6 2.19 4.5a6.48 6.48 0 0 1-2.29 7.2C15.4 20.2 11 22 7 22a3 3 0 0 1-2.68-1.66L2.4 16.5"/><circle cx="12.5" cy="8.5" r="2.5"/></svg> </strong><br>
+        <strong>Department of Livestock Development</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Livestock products + quality standards</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.56-2.53-8.5-6Z"/><path d="M18 12v.5"/><path d="M16 17.93a9.77 9.77 0 0 1 0-11.86"/><path d="M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33"/><path d="M10.46 7.26C10.2 5.88 9.17 4.24 8 3h5.8a2 2 0 0 1 1.98 1.67l.23 1.4"/><path d="m16.01 17.93-.23 1.4A2 2 0 0 1 13.8 21H9.5a5.96 5.96 0 0 0 1.49-3.98"/></svg> </strong><br>
+        <strong>Department of Fisheries</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Fishery products + quality control</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg> </strong><br>
+        <strong>Cooperative Promotion Department</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Links to agricultural cooperatives across Thailand</p>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Why the partners mattered</strong>
+      <p>Many farmers don't have a good smartphone and don't know how to start selling online. With the Department of Agricultural Extension handling onboarding and Thailand Post handling logistics, the platform actually reached farmers. We didn't just build an app and wait — we went out to meet farmers where they are.</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Key Takeaways ===== -->
+    <section class="section-intro">
+      <h2>Key Takeaways</h2>
+      <p>What I learned from the farmer platform</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/field-team.jpg" width="1280" height="854" loading="lazy" alt="A group of farmers planting rice in a paddy surrounded by mountains">
+      <figcaption>The big lesson: going out to the fields to meet farmers worked better than online ads · Photo: Jagamohan Senapati / Unsplash</figcaption>
+    </figure>
+
+    <div class="learning-card">
+      <strong>Designing 4 roles at once is like chess — move one piece and every other piece is affected:</strong>
+      <p>One buyer order → the seller needs a notification → the affiliate needs their commission → the admin needs to track all of it. Designing page by page without thinking about the cross-role flow causes a lot of problems later. Draw the system flow first, then design each page.</p>
+    </div>
+    <div class="learning-card">
+      <strong>"You don't need to be good with technology, just follow along" — the sentence that changed the whole app's UX:</strong>
+      <p>The real users are older farmers who may have used a smartphone for only a few years. The first seller flow had 8 steps, small buttons and technical wording. User testing with real farmers showed it had to shrink to 3 steps: register → photograph and price → get paid. That's enough.</p>
+    </div>
+    <div class="learning-card">
+      <strong>Government partners are a shortcut to users digital marketing can't reach:</strong>
+      <p>Many farmers aren't on Facebook and never see ads. But once the Department of Agricultural Extension ran on-site training for the platform, sign-ups poured in. The lesson: not every product needs an online growth hack — sometimes going to the users in person is more powerful.</p>
+    </div>
+    <div class="learning-card">
+      <strong>The 3-month deadline forced choices — and that was the best thing that happened:</strong>
+      <p>At first I wanted to design everything — wishlists, reviews, chat, coupons, gamification... but 3 months wasn't enough, so we had to choose. The result was a core flow that worked first (order → pay → ship), with the rest added later. "Do less, but ship it" beats "do a lot, but never finish."</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">4</div>
+        <div class="label">User Roles</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">18+</div>
+        <div class="label">Product categories</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">6</div>
+        <div class="label">Regions across Thailand</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">3</div>
+        <div class="label">Months to ship</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <h2>Thai farmers, selling nationwide</h2>
+    <p>The farmer platform is more than e-commerce — it's an ecosystem designed so everyone benefits, from farmers to consumers.</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Figma</span>
+      <span class="stack-icon">E-Commerce</span>
+      <span class="stack-icon">Multi-Role</span>
+      <span class="stack-icon">Responsive</span>
+      <span class="stack-icon">Design System</span>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    // Back to top
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+    // Role tabs
+    var tabs=document.querySelectorAll('.role-tab');
+    var panels=document.querySelectorAll('.role-panel');
+    tabs.forEach(function(tab){
+      tab.addEventListener('click',function(){
+        tabs.forEach(function(t){t.classList.remove('active')});
+        panels.forEach(function(p){p.classList.remove('active')});
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.role).classList.add('active');
+      });
+    });
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Farmer Platform Portfolio",
+      "item": "https://projects.tanplanet.work/agri-ecommerce-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

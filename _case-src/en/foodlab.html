@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=64&height=64">
+    <link rel="apple-touch-icon" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=180&height=180">
+    <title>FoodLab — Template to Fine Dining | Portfolio</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="FoodLab — Template to Fine Dining">
+  <meta name="twitter:description" content="An experiment: turning a blank ThemeForest template into a fine dining restaurant site with AI, and what I learned by pushing the system">
+  <meta property="og:url" content="https://projects.tanplanet.work/foodlab/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.work/foodlab/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="An experiment: turning a blank ThemeForest template into a fine dining restaurant site with AI, and what I learned by pushing the system">
+  <meta property="og:title" content="FoodLab — Template to Fine Dining">
+    <meta name="description" content="An experiment: turning a blank ThemeForest template into a fine dining restaurant site with AI, and what I learned by pushing the system">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"></noscript>
+    <style>
+        :root {
+            --bg: #faf9f6;
+            --surface: #ffffff;
+            --text: #1a1a1a;
+            --text-secondary: #5c5c5c;
+            --accent: #c9a96e;
+            --accent-dark: #a68945;
+            --accent-light: #fdf8ef;
+            --purple: #7c3aed;
+            --purple-light: #f5f3ff;
+            --blue: #3b82f6;
+            --blue-light: #eff6ff;
+            --green: #059669;
+            --green-light: #ecfdf5;
+            --red: #ef4444;
+            --red-light: #fef2f2;
+            --border: #e8e4de;
+            --code-bg: #1e1e2e;
+            --code-text: #cdd6f4;
+            --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --max-w: 780px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'IBM Plex Sans Thai', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2319 50%, #1a1610 100%);
+            color: #ffffff;
+            padding: 80px 24px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 60% 40%, rgba(201,169,110,0.12) 0%, transparent 50%);
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #c9a96e, #e8d5a8, #c9a96e, #a68945);
+        }
+        .hero-inner {
+            position: relative;
+            max-width: var(--max-w);
+            margin: 0 auto;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(201,169,110,0.2);
+            backdrop-filter: blur(10px);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--accent);
+            border: 1px solid rgba(201,169,110,0.3);
+        }
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 2.6rem);
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 16px;
+        }
+        .hero h1 .gold { color: var(--accent); }
+        .hero p {
+            font-size: 1.05rem;
+            opacity: 0.85;
+            max-width: 580px;
+            margin: 0 auto 24px;
+        }
+        .hero-tags {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .hero-tags span {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(6px);
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* ===== CTA ===== */
+        .cta-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .cta-btn:hover { transform: translateY(-2px); }
+        .cta-primary {
+            background: var(--accent);
+            color: #1a1a1a;
+        }
+        .cta-primary:hover { box-shadow: 0 8px 24px rgba(201,169,110,0.4); }
+        .cta-secondary {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .cta-secondary:hover { background: rgba(255,255,255,0.15); }
+
+        /* ===== BACK NAV ===== */
+        .back-nav {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: rgba(26,26,26,0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .back-nav:hover { background: rgba(26,26,26,0.9); transform: translateY(-1px); }
+        .back-nav svg { flex-shrink: 0; }
+
+        /* ===== BACK TO TOP ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1000;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #1a1a1a;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+        }
+        .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-to-top:hover { background: var(--accent-dark); }
+
+        /* ===== ARTICLE ===== */
+        article {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+        .section-intro { margin-bottom: 24px; }
+        .section-intro h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .section-intro p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        hr.divider {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 48px 0;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        .card::before {
+            content: attr(data-label);
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--accent);
+            color: #1a1a1a;
+            padding: 2px 14px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .card.purple::before { background: var(--purple); color: white; }
+        .card.blue::before { background: var(--blue); color: white; }
+        .card.green::before { background: var(--green); color: white; }
+        .card.red::before { background: var(--red); color: white; }
+        .card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+        .card p, .card li {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+        .card ul { list-style: none; margin-top: 12px; }
+        .card ul li::before {
+            content: '▸ ';
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .highlight {
+            background: var(--accent-light);
+            border-left: 3px solid var(--accent);
+            padding: 12px 16px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--accent-dark);
+            font-weight: 500;
+        }
+
+        /* ===== BEFORE/AFTER ===== */
+        .compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .compare-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            box-shadow: var(--shadow);
+        }
+        .compare-box .label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .compare-box.before .label { color: var(--text-secondary); }
+        .compare-box.after .label { color: var(--accent-dark); }
+        .compare-box ul { list-style: none; }
+        .compare-box ul li {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            padding: 4px 0;
+            line-height: 1.6;
+        }
+        .compare-box.after ul li { color: var(--text); }
+
+        /* ===== INSIGHTS ===== */
+        .insight-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .insight-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            box-shadow: var(--shadow);
+        }
+        .insight-card .emoji { font-size: 1.6rem; margin-bottom: 8px; display: block; }
+        .insight-card h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .insight-card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ===== QUOTE ===== */
+        .quote-block {
+            background: linear-gradient(135deg, #1a1a1a, #2d2319);
+            color: #fff;
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .quote-block::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--accent);
+            position: absolute;
+            top: 8px;
+            left: 20px;
+            opacity: 0.5;
+            line-height: 1;
+        }
+        .quote-block p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            padding-left: 32px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        /* ===== LEARNING CARDS ===== */
+        .learning-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .learning-card strong { color: var(--text); }
+
+        /* ===== TECH STACK ===== */
+        .stack-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 16px 0;
+        }
+        .stack-pill {
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 50px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        /* ===== CLOSING ===== */
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 680px) {
+            .hero { padding: 60px 20px 40px; }
+            .hero h1 { font-size: 1.6rem; }
+            article { padding: 32px 16px; }
+            .compare { grid-template-columns: 1fr; }
+            .insight-grid { grid-template-columns: 1fr; }
+            .cta-row { flex-direction: column; align-items: center; }
+            .cta-btn { width: 100%; max-width: 280px; justify-content: center; }
+            .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+            .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+        }
+    
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* shot figures (รูปประกอบ) */
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:16px;align-items:start}
+    .shot-pair.even{grid-template-columns:1fr 1fr}
+    .shot-pair figcaption{grid-column:1/-1}
+    .shot-pair{margin:8px 0 32px}.shot-pair .shot{margin:0}.shot-cap{grid-column:1/-1;margin:-6px 0 0;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot.phone img{max-width:360px;margin:0 auto}
+    .section-intro .shot,.section-intro .shot-pair{margin-top:20px;margin-bottom:8px}
+    @media (max-width:639px){.shot-pair,.shot-pair.even{grid-template-columns:1fr}.shot-pair img+img,.shot-pair .shot+.shot img{max-width:300px;margin:0 auto}}
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/foodlab/">
+</head>
+<body>
+<header class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge">EXPERIMENT / POC</div>
+        <h1>FoodLab<br><span class="accent">Template to Fine Dining</span></h1>
+        <p>What happens when you take a blank ThemeForest template and make it your own? What do you gain, and what do you give up? Notes from pushing the system.</p>
+        <div class="hero-tags">
+            <span class="hero-tag">ThemeForest</span>
+            <span class="hero-tag">AI-Assisted</span>
+            <span class="hero-tag">Web Customization</span>
+            <span class="hero-tag">POC</span>
+        </div>
+    </div>
+</header>
+
+<article>
+
+    <!-- THE CHALLENGE -->
+    <section class="section-intro">
+        <h2>The Challenge</h2>
+        <p>The one question I wanted answered</p>
+    <figure class="shot"><img src="img/hero-desktop.jpg" width="1440" height="900" loading="lazy" alt="FoodLab home page on desktop: a fine dining plate with a headline and a table booking box"><figcaption>The FoodLab home page converted from the template: hero, opening hours and the booking form</figcaption></figure>
+    </section>
+
+    <div class="quote-block">
+        <p>If I buy a blank ThemeForest template and use AI to reshape it, will I end up with a site that is really "me"? Or just a site that is "good enough" but has no soul?</p>
+    </div>
+
+    <div class="learning-card note"><p><strong>Education Theme → Fine Dining Restaurant</strong></p><ul>
+            <li>Template: ThemeForest Education & Learning theme (HTML)</li>
+            <li>Goal: build "FoodLab", a fine dining restaurant site that feels upscale and trustworthy</li>
+            <li>Method: let AI customize the layout, content, colors and typography</li>
+            <li>Constraint: no writing code from scratch; the original template structure stays</li>
+        </ul></div>
+    <p>See the result in the <a href="https://natpakans-stack.github.io/Muniverse/Preview/poc/projects/foodlab/" target="_blank" rel="noopener">FoodLab live demo</a></p>
+
+    <hr class="divider">
+
+    <!-- BEFORE / AFTER -->
+    <section class="section-intro">
+        <h2>Before → After</h2>
+        <p>From an education template to a fine dining restaurant</p>
+    <figure class="shot"><img src="img/menu-desktop.jpg" width="1440" height="840" loading="lazy" alt="FoodLab featured menu section: three dish cards in a carousel with summary numbers"><figcaption>The "Featured menu" section: a card carousel that used to show courses now shows dishes</figcaption></figure>
+    </section>
+
+    <div class="ledger-wrap"><table class="ledger"><thead><tr><th>Before: the original template</th><th>After — FoodLab</th></tr></thead><tbody><tr><td>Education & Learning theme</td><td>Fine Dining Restaurant</td></tr><tr><td>Course listing page</td><td>Hero + Story + Menu + Chef</td></tr><tr><td>Blue and white, education style</td><td>Gold and black, luxury look</td></tr><tr><td>Layout built for an LMS</td><td>Scroll animation + Parallax</td></tr><tr><td>Plain typography</td><td>Thai + EN bilingual content</td></tr></tbody></table></div>
+
+    <div class="learning-card ok"><p><strong>Result: a working site with 9 sections</strong></p><ul>
+            <li>Hero: "The Art of Taste" with a booking CTA</li>
+            <li>Our Story: 15 years of FoodLab</li>
+            <li>Testimonials: guest reviews in a carousel</li>
+            <li>Chef Spotlight: the chefs and what inspires them</li>
+            <li>Menu: signature dishes with prices (฿2,200–฿6,500)</li>
+            <li>Reservation — Omakase & tasting menu</li>
+            <li>Blog: stories from the kitchen</li>
+            <li>Gallery: food and dining room photos</li>
+            <li>Contact: map and opening hours</li>
+        </ul></div>
+
+    <hr class="divider">
+
+    <!-- KEY INSIGHTS -->
+    <section class="section-intro">
+        <h2>Key Insights</h2>
+        <p>What the experiment showed</p>
+    <figure class="shot"><img src="img/gallery-desktop.jpg" width="1440" height="700" loading="lazy" alt="Gallery section on desktop: dining room and dish photos in a grid"><figcaption>Gallery on desktop</figcaption></figure>
+    <figure class="shot shot-phone"><img src="img/gallery-mobile.jpg" width="600" height="1301" loading="lazy" alt="The same gallery on mobile, stacked in a single column"><figcaption>Gallery on desktop vs mobile: the grid and responsive behavior came from the template almost untouched</figcaption></figure>
+    </section>
+
+    <div class="pain-grid">
+        <div class="pain-card">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
+            <h3>Layout really is faster</h3>
+            <p>Grid, responsive behavior and animation come for free. Nothing written from scratch.</p>
+        </div>
+        <div class="pain-card">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+            <h3>But you have to put yourself in</h3>
+            <p>The template gives you the skeleton, but the "soul" has to come from the designer: color, tone, content, all of it</p>
+        </div>
+        <div class="pain-card">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
+            <h3>You have to know your own work better</h3>
+            <p>Working with AI forces you to be clear about the vision, so you end up understanding your own brand better</p>
+        </div>
+        <div class="pain-card">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg>
+            <h3>New tools every day</h3>
+            <p>The process kept surfacing workflows, plugins and techniques I had never used before</p>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- THE HONEST TRUTH -->
+    <section class="section-intro">
+        <h2>The Honest Truth</h2>
+        <p>What I actually learned</p>
+    <figure class="shot"><img src="img/chef-story-desktop.jpg" width="1440" height="660" loading="lazy" alt="Chef section, headed &quot;Where innovation meets tradition&quot;, with a photo of the chef in the kitchen"><figcaption>The "Our Chefs" section: the layout came from the template, but the copy, photos and gold-and-cream palette all had to be decided by me</figcaption></figure>
+    </section>
+
+    <div class="hack-grid"><div class="hack-card"><h3><span>Faster on layout</span></h3><p>Grid, responsive breakpoints, scroll animation: the template provides all of it. Instead of writing all the CSS myself, I only adjust values.</p>
+        <div class="highlight"><strong>Result:</strong> a layout that normally takes 2–3 days took a few hours</div></div><div class="hack-card"><h3><span>But it takes more of "you" than before</span></h3><p>Templates make every layout look the same. The difference lives in the content, tone of voice, colors and images. So I ended up <strong>putting more of myself in than when I write from scratch</strong>, because the structure is already identical.</p></div><div class="hack-card"><h3><span>Being clear with AI = understanding your own work better</span></h3><p>Having to explain to AI "what should this look like" forces much clearer thinking. <strong>I learned more about myself as a designer</strong> and what visual identity I actually want.</p></div><div class="hack-card"><h3><span>New tools every day</span></h3><p>The template → customize-with-AI process led to new workflows such as CSS custom properties, scroll-driven animation and AI image generation. Something new to learn every day.</p></div></div>
+
+    <hr class="divider">
+
+    <!-- LEARNINGS -->
+    <section class="section-intro">
+        <h2>Takeaways</h2>
+        <p>Conclusions after the experiment</p>
+    <figure class="shot"><img src="img/reserve-desktop.jpg" width="1440" height="680" loading="lazy" alt="Booking section, &quot;Elevate every special meal&quot;, with a dark dining room photo"><figcaption>The booking section: the CTA and copy meant deciding what I want people to feel</figcaption></figure>
+    </section>
+
+    <div class="learning-card"><p><strong>A template is not a shortcut. It is a good starting point,</strong> but the final output still depends on design thinking, brand understanding and content strategy, same as before.</p></div>
+
+    <div class="learning-card"><p><strong>AI is good at execution, but direction has to come from a person.</strong> Saying "make it pretty" is not enough. You have to say "pretty in what way" to get the result you want.</p></div>
+
+    <div class="learning-card"><p><strong>Faster ≠ easier.</strong> Less time on code, more time on decisions. The net result is better work in about the same time.</p></div>
+
+    <div class="learning-card"><p><strong>Experiments like this are worth repeating.</strong> Every new workflow I try brings back a new perspective. None of them has been wasted time.</p></div>
+
+    <hr class="divider">
+
+    <!-- TECH STACK -->
+    <section class="section-intro">
+        <h2>Stack</h2>
+        <p>Tools used in this experiment</p>
+    <figure class="shot"><img src="img/blog-desktop.jpg" width="1440" height="780" loading="lazy" alt="Blog section, &quot;Stories from the kitchen&quot;, with article cards and gold cards in a masonry layout"><figcaption>The "Stories from the kitchen" section deployed on GitHub Pages: blog cards from the original template</figcaption></figure>
+    </section>
+
+    <div class="chips">
+        <span class="chip">ThemeForest Template</span>
+        <span class="chip">HTML/CSS/JS</span>
+        <span class="chip">AI-Assisted Customization</span>
+        <span class="chip">GitHub Pages</span>
+        <span class="chip">Scroll Animation</span>
+        <span class="chip">Responsive Design</span>
+    </div>
+
+</article>
+<div class="closing">
+    <h2>A template is only the starting point</h2>
+    <p>What makes a site feel like "you" is not the code. It is every decision about "what do I want people to feel".</p>
+</div>
+
+<!-- ===== BACK NAV + BACK TO TOP ===== -->
+<a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+</a>
+<button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+</button>
+<script>
+(function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+})();
+</script>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Foodlab",
+      "item": "https://projects.tanplanet.work/foodlab/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

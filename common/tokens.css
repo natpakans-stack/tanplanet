@@ -16,21 +16,25 @@
   --tp-text: #1f1f1f;               /* หัวข้อ */
   --tp-text-2: #3f3f46;             /* เนื้อหา */
   --tp-text-3: #6b6b6b;             /* รอง/คำบรรยาย */
-  --tp-text-4: #9a9a9a;             /* จางสุด: เลขลำดับ วันที่ */
-  /* แบรนด์ (ม่วง → ชมพู → ส้ม จากคำเน้นบนหน้าแรก) */
-  --tp-brand: #db2777;
-  --tp-brand-2: #7c3aed;
-  --tp-brand-3: #f97316;
-  --tp-brand-gradient: linear-gradient(90deg, var(--tp-brand-2), var(--tp-brand));
+  --tp-text-4: #767676;             /* จางสุด: เลขลำดับ วันที่ · 4.5:1 บนขาว (WCAG AA) */
+  /* แบรนด์หน้าบ้าน = ขาวดำ clean (แทน 27 พ.ย.: หน้าบ้านไม่มีสีม่วง/ชมพู) — ปุ่ม ป้าย เส้นเน้น ลิงก์ใช้ดำ/เทา */
+  --tp-brand: #1f1f1f;
+  --tp-brand-2: #3f3f46;
+  --tp-brand-3: #6b6b6b;
+  --tp-brand-gradient: linear-gradient(90deg, var(--tp-brand), var(--tp-brand));
+  /* สีไล่ของคำเน้นใน hero หน้าแรกเท่านั้น (landing) — ห้ามใช้ที่อื่น */
+  --tp-hero-1: #7c3aed;
+  --tp-hero-2: #db2777;
+  --tp-hero-3: #f97316;
   --tp-on-brand: #ffffff;
   /* เงา */
   --tp-shadow-sm: 0 1px 2px rgba(0, 0, 0, .06);
   --tp-shadow-md: 0 12px 32px rgba(0, 0, 0, .10);
   --tp-overlay: rgba(255, 255, 255, .9);
   /* เลย์เอาต์: ความกว้าง grid หลักของทั้งเว็บ (navbar · เนื้อหา · footer ใช้ค่าเดียวกัน) */
-  --tp-container: 1200px;
+  --tp-container: 1120px;
   /* ฟอนต์ */
-  --tp-font: Inter, "Google Sans", "IBM Plex Sans Thai", system-ui, sans-serif;
+  --tp-font: "Google Sans", Inter, "IBM Plex Sans Thai", system-ui, sans-serif;   /* Google Sans ก่อน: มีทั้งไทย+อังกฤษ → น้ำหนักเส้นเท่ากันในบรรทัดเดียว */
   --tp-font-display: "Google Sans", Inter, "IBM Plex Sans Thai", sans-serif;
 }
 

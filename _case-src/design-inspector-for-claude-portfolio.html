@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=64&height=64">
+  <link rel="apple-touch-icon" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=180&height=180">
+  <title>Design Inspector for Claude — Chrome Extension Portfolio</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Design Inspector for Claude — Chrome Extension Portfolio">
+  <meta name="twitter:description" content="Chrome Extension ที่ช่วย UX Designer inspect element แล้ว copy เป็น Markdown สำหรับ Claude AI ได้ทันที">
+  <meta property="og:url" content="https://projects.tanplanet.work/design-inspector-for-claude/">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="Chrome Extension ที่ช่วย UX Designer inspect element แล้ว copy เป็น Markdown สำหรับ Claude AI ได้ทันที">
+  <meta property="og:title" content="Design Inspector for Claude — Chrome Extension Portfolio">
+  <meta name="description" content="Chrome Extension ที่ช่วย UX Designer inspect element แล้ว copy เป็น Markdown สำหรับ Claude AI ได้ทันที">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"></noscript>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --text: #1a1a2e;
+      --text-secondary: #64748b;
+      --accent: #7aa2f7;
+      --accent-dark: #5b83d8;
+      --accent-light: #eef2ff;
+      --border: #e2e8f0;
+      --code-bg: #1e1e2e;
+      --code-text: #cdd6f4;
+      --tag-bg: #f1f5f9;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --max-w: 800px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(135deg, #1e1e2e 0%, #2d2b55 50%, #1e1e2e 100%);
+      color: #fff;
+      padding: 80px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at 30% 70%, rgba(122,162,247,0.1) 0%, transparent 50%);
+    }
+    .hero-inner { position: relative; max-width: var(--max-w); margin: 0 auto; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(122,162,247,0.2);
+      backdrop-filter: blur(10px);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: var(--accent);
+    }
+    .hero-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .hero-icon svg {
+      width: 56px;
+      height: 56px;
+    }
+    .hero h1 {
+      font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .hero .hero-sub {
+      font-size: 1.1rem;
+      font-weight: 600;
+      opacity: 0.95;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+    .hero p {
+      font-size: 1rem;
+      opacity: 0.75;
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ===== SECTIONS ===== */
+    .section { padding: 48px 24px; max-width: var(--max-w); margin: 0 auto; }
+    .section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section h2 .material-symbols-outlined {
+      color: var(--accent);
+      font-size: 1.6rem;
+    }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    /* ===== DT PROCESS ===== */
+    .dt-process {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .dt-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .dt-card-phase {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .dt-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .dt-card p, .dt-card ul {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+    .dt-card ul {
+      padding-left: 18px;
+    }
+    .dt-card ul li + li {
+      margin-top: 4px;
+    }
+
+    /* ===== FEATURE LIST ===== */
+    .feature-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .feature-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .feature-icon {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      background: var(--accent-light);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-dark);
+      font-size: 1.2rem;
+    }
+    .feature-text h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .feature-text p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    /* ===== CODE DEMO ===== */
+    .code-demo {
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      font-family: 'Fira Code', ui-monospace, monospace;
+      font-size: 0.82rem;
+      line-height: 1.8;
+      overflow-x: auto;
+      margin-top: 16px;
+      box-shadow: var(--shadow-md);
+    }
+    .code-demo .dim { opacity: 0.45; }
+    .code-demo .key { color: #cba6f7; }
+    .code-demo .val { color: #a6e3a1; }
+    .code-demo .str { color: #f9e2af; }
+    .code-demo .comment { color: #585b70; font-style: italic; }
+
+    /* ===== DECISION TABLE ===== */
+    .decision-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 0.88rem;
+    }
+    .decision-table th {
+      text-align: left;
+      font-weight: 700;
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--border);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--text-secondary);
+    }
+    .decision-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .decision-table tr:last-child td { border-bottom: none; }
+
+    /* ===== TAGS ===== */
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .tag {
+      display: inline-block;
+      background: var(--tag-bg);
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    /* ===== ITERATION ===== */
+    .iteration-list {
+      margin-top: 16px;
+    }
+    .iteration-item {
+      display: flex;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .iteration-item:last-child { border-bottom: none; }
+    .iteration-num {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      background: var(--accent-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-dark);
+    }
+    .iteration-text h3 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .iteration-text p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    /* ===== ARCH ===== */
+    .arch-diagram {
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: var(--radius);
+      padding: 24px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.78rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      margin-top: 16px;
+      text-align: center;
+    }
+    .arch-diagram .accent { color: var(--accent); }
+    .arch-diagram .dim { opacity: 0.5; }
+
+    /* ===== LEARNING ===== */
+    .learning-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+    .learning-card h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .learning-card p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    /* ===== Closing ===== */
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(122,162,247,0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(122,162,247,0.95); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      .hero { padding: 60px 20px 48px; }
+      .hero h1 { font-size: 1.5rem; }
+      .section { padding: 36px 20px; }
+      .dt-process { grid-template-columns: 1fr; }
+    }
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+  .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.5}.shot-pair .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;max-width:var(--shot-max,100%);margin:0 auto}@media (max-width:640px){.shot-pair .pair{grid-template-columns:1fr}}.shot-narrow img{max-width:min(100%,var(--shot-max,520px));margin:0 auto}
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/design-inspector-for-claude-portfolio/">
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">Chrome Extension</div>
+      <h1>Design Inspector for Claude<br><span class="accent">Inspect → Copy → Paste to Claude</span></h1>
+      <p><b>Inspect → Copy → Paste to Claude</b> — Chrome Extension ที่ช่วย UX Designer inspect element บนเว็บ แล้ว copy ข้อมูลเป็น Markdown สำหรับ Claude AI ได้ทันทีในคลิกเดียว</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Chrome Extension</span><span class="hero-tag">Manifest V3</span><span class="hero-tag">Shadow DOM</span><span class="hero-tag">Offscreen API</span><span class="hero-tag">Design Thinking</span><span class="hero-tag">AI Workflow</span>
+      </div>
+    </div>
+  </header>
+
+  <article>
+
+    <section class="section-intro">
+      <span class="eyebrow">Background</span>
+      <h2>ทุกครั้งที่จะบอก Claude ว่า "แก้ element นี้" ต้องเตรียมข้อมูลเองทั้งหมด</h2>
+      <p>ในฐานะ UX Designer ที่ใช้ Claude เป็น design assistant — ปัญหาที่เจอทุกวันคือ: เวลาจะบอก Claude ว่า "แก้ element นี้ให้หน่อย" ต้อง<strong>เปิด DevTools → หาข้อมูล → คัดลอก CSS → จัดรูปแบบ → วางใน prompt</strong> ทุกครั้ง</p>
+    </section>
+    <p>กระบวนการนี้เสีย 2-3 นาทีต่อ element และเกิดขึ้นซ้ำๆ วันละหลายสิบครั้ง — รวมแล้วเสียเวลามากกว่าที่คิด</p>
+    <figure class="shot"><img src="img/di-bg-unsplash.jpg" width="1200" height="800" loading="lazy" alt="หน้าจอเขียนโค้ดธีมมืดที่มี terminal และไฟล์โปรเจกต์"><figcaption>ก่อนมีเครื่องมือ — ต้องสลับไปมาระหว่าง DevTools, editor และ prompt ทุกครั้งที่จะเล่าว่า "แก้ element ไหน" · ภาพ: Bernd Dittrich / Unsplash</figcaption></figure>
+
+    <section class="section-intro">
+      <span class="eyebrow">Design Thinking Process</span>
+      <h2>จาก pain point ของตัวเอง สู่ extension ที่ใช้ทุกวัน</h2>
+      <p>ห้าขั้นของ Design Thinking ตั้งแต่สังเกต workflow ตัวเองจนถึงปรับจากการใช้งานจริง</p>
+    </section>
+    <figure class="shot shot-narrow" style="--shot-max:300px"><img src="img/di-popup.jpg" width="480" height="520" loading="lazy" alt="popup ของ extension: สถานะ Active ปุ่ม Disable และตัวเลือก Copy Sections"><figcaption>Popup ตัวจริง — เปิด/ปิด inspector และเลือกว่าจะ copy ส่วนไหน (Element &amp; Path · CSS Styles · Classname)</figcaption></figure>
+    <div class="flow-grid">
+      <div class="flow-step"><div class="step-num">01</div><h4>Empathize — เข้าใจ Pain Point</h4><p>สังเกต workflow ตัวเองเวลาทำงานกับ Claude · ขั้นตอนที่ช้าที่สุด = การเตรียมข้อมูล element ให้ Claude · ต้องสลับไปมาระหว่าง DevTools, code editor, Claude prompt</p></div>
+      <div class="flow-step"><div class="step-num">02</div><h4>Define — ปัญหาที่ชัดเจน</h4><p><strong>HMW:</strong> เราจะทำอย่างไรให้ designer สามารถส่งข้อมูล element ให้ Claude ได้ภายใน 1 คลิก โดยไม่ต้องเปิด DevTools?</p></div>
+      <div class="flow-step"><div class="step-num">03</div><h4>Ideate — สำรวจทางเลือก</h4><p>Bookmarklet — ง่ายแต่ไม่มี permission ที่จำเป็น · Chrome Extension — มี API ครบ, ใช้ได้ทุกเว็บ · ศึกษา Element Inspector extension เป็น reference</p></div>
+      <div class="flow-step"><div class="step-num">04</div><h4>Prototype — สร้างและทดสอบ</h4><p>v1: Hover inspect + detail panel · v2: เพิ่ม auto-copy Markdown on click · v3: เพิ่ม ⌘+C shortcut + toast feedback</p></div>
+      <div class="flow-step"><div class="step-num">05</div><h4>Test &amp; Iterate — ใช้จริง → ปรับปรุง</h4><p>Markdown ยาวเกิน → ย่อให้กระชับ ~200 tokens · Screenshot ทำให้ flow ช้า → ตัดออก เน้น text · Clipboard API ใน content script มีปัญหา → ใช้ offscreen document</p></div>
+    </div>
+
+    <section class="section-intro">
+      <span class="eyebrow">Features</span>
+      <h2>ชี้ · คลิก · ได้ Markdown พร้อมวาง</h2>
+      <p>สี่ฟีเจอร์หลักที่ทำให้ส่งข้อมูล element ให้ Claude ได้ในคลิกเดียว</p>
+    </section>
+    <figure class="shot"><img src="img/di-hover-c.jpg" width="1400" height="470" loading="lazy" alt="ชี้เมาส์ที่กล่องสถานะ รอชำระเงิน แล้วเห็น overlay สี box model และ tooltip บอก tag ขนาด และฟอนต์"><figcaption>Hover Inspect ของจริง — overlay สีแยก margin / padding / content + tooltip บอก tag, ขนาด, ฟอนต์ (หน้าเว็บตัวอย่าง)</figcaption></figure>
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 12.586 19 19"/><path d="M3.688 3.037a.497.497 0 0 0-.651.651l6.5 15.999a.501.501 0 0 0 .947-.062l1.569-6.083a2 2 0 0 1 1.448-1.479l6.124-1.579a.5.5 0 0 0 .063-.947z"/></svg><span><b>Hover Inspect</b> ชี้ element แล้วเห็น overlay สี box model (margin/padding/content) พร้อม tooltip แสดง tag, size, font</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg><span><b>Detail Panel</b> คลิกเลือก element → แสดง panel ด้านขวาพร้อม box model diagram, computed styles, HTML snippet, CSS variables</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span><b>Auto Copy Markdown</b> คลิกหรือกด ⌘+C → copy ข้อมูล element เป็น Markdown ลง clipboard ทันที พร้อมวางใน Claude prompt ได้เลย</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg><span><b>Visual Feedback</b> Flash highlight สีฟ้า + toast pill ลอยด้านล่าง บอกสถานะ copy สำเร็จหรือไม่</span></li>
+    </ul>
+
+    <section class="section-intro">
+      <span class="eyebrow">Output</span>
+      <h2>Output ที่ได้</h2>
+      <p>คลิก element เดียว ได้ข้อมูลครบ — Claude อ่านแล้วรู้ทันทีว่า element ไหน อยู่ไฟล์ไหน style อะไร:</p>
+    </section>
+    <figure class="shot"><img src="img/di-md.jpg" width="1600" height="334" loading="lazy" alt="Markdown ที่ extension copy ลง clipboard จริง วางในช่องพิมพ์พร้อมคำสั่งแก้ดีไซน์"><figcaption>Markdown ที่ได้จริงจากการคลิก 1 ครั้ง (วางต่อด้วยคำสั่งภาษาไทยได้ทันที)</figcaption></figure>
+    <div class="code-demo">
+      <span class="key">**Element:**</span> <span class="val">`div.vd-status-hero--warning`</span> <span class="dim">(844×132)</span><br>
+      <span class="key">**File:**</span> <span class="str">http://localhost/voucher-detail.html</span><br>
+      <span class="key">**Path:**</span> <span class="val">`div.real-content > div#status-hero > div.vd-status-hero`</span><br>
+      <span class="key">**Styles:**</span> <span class="dim">padding: 14px 16px | font: 400 16px/26px IBM Plex Sans Thai | bg: #FEF9EB | radius: 12px</span><br>
+      <span class="comment">```html</span><br>
+      <span class="dim">&lt;div class="vd-status-hero vd-status-hero--warning"&gt;</span><br>
+      <span class="dim">&nbsp;&nbsp;&lt;div class="vd-status-hero__title"&gt;รอชำระเงิน&lt;/div&gt;</span><br>
+      <span class="dim">&nbsp;&nbsp;...</span><br>
+      <span class="dim">&lt;/div&gt;</span><br>
+      <span class="comment">```</span>
+    </div>
+
+    <div class="learning-card note"><p>~200 tokens ต่อ element — กระชับพอให้ Claude เข้าใจ ไม่เปลือง context window</p></div>
+
+    <section class="section-intro">
+      <span class="eyebrow">Design Decisions</span>
+      <h2>ตัดสินใจอะไร และทำไม</h2>
+      <p>ห้าการตัดสินใจหลักที่ทำให้ extension ทำงานได้บนทุกเว็บโดยไม่พัง</p>
+    </section>
+    <figure class="shot"><img src="img/di-panel.jpg" width="1600" height="900" loading="lazy" alt="Detail panel ธีมมืดด้านขวาแสดง box model, layout, typography และปุ่ม Copy for Claude"><figcaption>Detail Panel ใน Shadow DOM ธีมมืด #1e1e2e — ไม่ชนกับ CSS ของเว็บที่ inspect</figcaption></figure>
+    <div class="ledger-wrap"><table class="ledger">
+      <thead><tr><th>Decision</th><th>Choice</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td><strong>UI Isolation</strong></td><td>Shadow DOM</td><td>ป้องกัน style ชนกับเว็บที่ inspect — ไม่ว่าเว็บจะใช้ CSS อะไรก็ไม่พัง</td></tr>
+        <tr><td><strong>Panel Theme</strong></td><td>Dark (#1e1e2e)</td><td>ลด visual conflict กับเว็บ + ดูเป็น dev tool ที่ designer คุ้นเคย</td></tr>
+        <tr><td><strong>Clipboard</strong></td><td>Offscreen Document</td><td>Content script ไม่มี clipboard permission → ส่งผ่าน background → offscreen ที่มี DOM เต็ม</td></tr>
+        <tr><td><strong>Output Format</strong></td><td>Compact Markdown</td><td>Claude อ่าน structured text ดีกว่ารูป — ประหยัด token, แก้ไขง่าย</td></tr>
+        <tr><td><strong>ตัด Screenshot</strong></td><td>Text-only</td><td>ทดลองแล้วพบว่า image clipboard ไม่ stable ข้าม browser — text เชื่อถือได้ 100%</td></tr>
+      </tbody>
+    </table></div>
+
+    <section class="section-intro">
+      <span class="eyebrow">Iteration Journey</span>
+      <h2>ห้ารอบของการปรับ จากใช้ได้ สู่ใช้ดี</h2>
+      <p>แต่ละรอบมาจากการใช้งานจริง — บางรอบเพิ่ม บางรอบตัดทิ้ง</p>
+    </section>
+    <figure class="shot"><img src="img/di-toast-c.jpg" width="1120" height="900" loading="lazy" alt="element ที่เลือกถูกไฮไลต์สีฟ้า และมี toast Copied to clipboard ลอยด้านล่าง"><figcaption>ผลของรอบ v3 — flash สีฟ้าที่ element + toast "Copied to clipboard" บอกสถานะทันที</figcaption></figure>
+    <div class="flow-grid">
+      <div class="flow-step"><div class="step-num">01</div><h4>v1.0 — Hover + Panel + Manual Copy</h4><p>Inspect element ได้ แต่ต้องกดปุ่ม copy เอง → ยังช้ากว่าที่ควร</p></div>
+      <div class="flow-step"><div class="step-num">02</div><h4>v1.0 + Screenshot — ตัดออก</h4><p>เพิ่ม auto-screenshot + capture highlight ของ element → พบว่า image clipboard ไม่ stable, ทำให้ flow ช้า, download ไฟล์ยุ่งยาก → ตัดออก</p></div>
+      <div class="flow-step"><div class="step-num">03</div><h4>Clipboard Fix — Offscreen Document</h4><p>navigator.clipboard ใน content script ไม่ทำงาน เพราะ user gesture หมดอายุหลัง async → แก้โดยส่ง copy ไป offscreen document ผ่าน background</p></div>
+      <div class="flow-step"><div class="step-num">04</div><h4>Markdown ย่อ — จาก verbose เป็น compact</h4><p>Markdown เดิมมี table + ASCII box model ≈400 tokens → ย่อเป็น 1-liner styles ≈200 tokens ประหยัด context 50%</p></div>
+      <div class="flow-step"><div class="step-num">05</div><h4>v1.1 — Cleanup &amp; Ship</h4><p>ลบ dead code 224 บรรทัด (screenshot.js, styles.css), ทำ error handling ให้สม่ำเสมอ, ลดจำนวนไฟล์จาก 7 เหลือ 5</p></div>
+    </div>
+
+    <section class="section-intro">
+      <span class="eyebrow">Architecture</span>
+      <h2>Content script → background → offscreen</h2>
+      <p>แยกหน้าที่เป็นสามชั้น เพื่อให้ copy ลง clipboard ได้จริงบนทุกเว็บ</p>
+    </section>
+    <figure class="shot"><img src="img/di-offscreen.jpg" width="1600" height="578" loading="lazy" alt="โค้ดจริงจาก background.js และ offscreen.js ที่ส่งต่อข้อความไป copy ใน offscreen document"><figcaption>โค้ดจริง — content script ส่งข้อความ → background → offscreen document ที่ copy ลง clipboard ได้</figcaption></figure>
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer">Content Scripts (injected per page)
+          <div class="arch-sub"><span>overlay.js — hover/click visual</span><span>panel.js — detail panel UI</span><span>markdown.js — generate output</span><span>inspector.js — controller/state</span></div>
+        </div>
+        <div class="arch-arrow">chrome.runtime.sendMessage</div>
+        <div class="arch-layer">background.js (service worker)
+          <div class="arch-sub"><span>route messages, manage offscreen</span></div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer">offscreen.js (clipboard access)
+          <div class="arch-sub"><span>execCommand('copy') → clipboard</span></div>
+        </div>
+      </div>
+    </div>
+    <p>Content scripts คุยกับ background ผ่าน <code>chrome.runtime.sendMessage</code> แล้ว background ส่งต่อให้ offscreen document เป็นคน copy</p>
+
+
+    <section class="section-intro">
+      <span class="eyebrow">Tech Stack</span>
+      <h2>Tech Stack</h2>
+      <p>Manifest V3 ล้วน ไม่มี framework</p>
+    </section>
+    <figure class="shot"><img src="img/di-manifest.jpg" width="1600" height="438" loading="lazy" alt="ไฟล์ manifest.json แบบ Manifest V3 พร้อมรายการ permissions"><figcaption>manifest.json (Manifest V3) — ขอ permission แค่ 5 ตัว · เบลอชื่อองค์กรออก</figcaption></figure>
+    <div class="chips"><span class="chip">Chrome Extension Manifest V3</span><span class="chip">Shadow DOM</span><span class="chip">Offscreen API</span><span class="chip">Content Scripts</span><span class="chip">Service Worker</span><span class="chip">Clipboard API</span><span class="chip">getComputedStyle()</span><span class="chip">CSS Variable Detection</span></div>
+
+    <section class="section-intro">
+      <span class="eyebrow">Learnings</span>
+      <h2>สิ่งที่ได้เรียนรู้</h2>
+      <p>สี่บทเรียนจากการทำเครื่องมือให้ตัวเองใช้</p>
+    </section>
+    <figure class="shot"><img src="img/di-learn-unsplash.jpg" width="1200" height="900" loading="lazy" alt="กระดาษสเก็ตช์ wireframe หน้าจอมือถือหลายแผ่นบนโต๊ะทำงาน"><figcaption>เครื่องมือที่ดีเริ่มจากสังเกต workflow ตัวเอง · ภาพ: Amélie Mourichon / Unsplash</figcaption></figure>
+    <div class="learning-card"><p><strong>Clipboard ≠ Simple:</strong> Content script ไม่มี clipboard permission โดยตรง — ต้องเข้าใจ user gesture lifecycle และใช้ offscreen document เป็น proxy</p></div>
+    <div class="learning-card"><p><strong>Less &gt; More:</strong> ฟีเจอร์ screenshot ดูดีบนกระดาษ แต่ใช้จริงแล้วช้าและไม่ stable — ตัดออกแล้วดีกว่า</p></div>
+    <div class="learning-card"><p><strong>Shadow DOM Isolation:</strong> ถ้าจะ inject UI เข้าหน้าเว็บ ต้องใช้ Shadow DOM ไม่งั้น CSS ของเว็บกับ extension จะชนกัน 100%</p></div>
+    <div class="learning-card"><p><strong>Design for AI Context:</strong> Output สำหรับ AI ต้องคิดเรื่อง token budget — ข้อมูลเยอะไม่ได้แปลว่าดี ต้อง compact + structured</p></div>
+
+  </article>
+
+  <div class="closing">
+    <h2>Design Inspector for Claude</h2>
+    <p>Design Inspector for Claude เกิดจากการสังเกต pain point ของตัวเอง แล้วลงมือแก้ปัญหาด้วย Design Thinking — ตั้งแต่ empathize, prototype, จนถึง iterate จากการใช้งานจริง</p>
+  </div>
+
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Design Inspector for Claude",
+      "item": "https://projects.tanplanet.work/design-inspector-for-claude-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

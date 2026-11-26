@@ -7022,3 +7022,196 @@ figcaption {
 
 /* grid หลักทั้งเว็บ = --tp-container (เดิม 893/1071) · navbar · เนื้อหา · footer ตรงแนวเดียวกัน */
 .container-default, .container-header, .container-footer { max-width: var(--tp-container, 1200px); }
+
+/* empty state ของหน้าหมวดบล็อก (เดิมเป็นกล่องเล็กข้อความเดียว) */
+.empty-state.w-dyn-empty { background: none; padding: 0; border: 0; }
+.empty-state .es { display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; max-width: none; margin: 0; box-sizing: border-box; padding: 48px 32px; border: 1px dashed var(--tp-border-strong); border-radius: 20px; background: var(--tp-surface-2); }
+.empty-state .es-icon { display: grid; place-items: center; width: 64px; height: 64px; margin-bottom: 20px; border-radius: 50%; background: var(--tp-surface); color: var(--tp-brand); box-shadow: var(--tp-shadow-sm); }
+.empty-state .es-icon svg { width: 28px; height: 28px; }
+.empty-state .es-title { margin: 0 0 8px; font-family: var(--tp-font-display); font-size: 20px; font-weight: 600; color: var(--tp-text); }
+.empty-state .es-text { margin: 0 0 24px; font-size: 15px; line-height: 1.7; color: var(--tp-text-3); }
+.empty-state .es-btn { display: inline-flex; align-items: center; height: 44px; padding: 0 22px; border-radius: 999px; background: var(--tp-text); color: var(--tp-on-brand); font-weight: 600; font-size: 14px; text-decoration: none; }
+.empty-state .es-btn:hover { background: var(--tp-text-2); }
+
+/* การ์ดบทความในรายการ: ปกซ้าย 16:10 · เนื้อหาขวา (มือถือ: ปกบน) */
+.blog-post-link.w-inline-block { display: grid; grid-template-columns: 220px minmax(0, 1fr); column-gap: 28px; align-items: start; }
+.blog-post-link > .bp-cover { grid-row: 1 / span 6; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 12px; background: var(--tp-surface-2); }
+.blog-post-link > :not(.bp-cover) { grid-column: 2; }
+@media (max-width: 767px) {
+  .blog-post-link.w-inline-block { grid-template-columns: minmax(0, 1fr); }
+  .blog-post-link > .bp-cover { grid-row: auto; margin-bottom: 16px; }
+  .blog-post-link > :not(.bp-cover) { grid-column: 1; }
+}
+
+/* หน้าบล็อก/หมวด (มีคอลัมน์หมวดหมู่): ปกวางในช่องว่างระหว่างคอลัมน์ ไม่บีบข้อความในคอลัมน์บทความ (แทนขอ 27 พ.ย.) */
+@media (min-width: 992px) {
+  .blog-right .blog-post-link.w-inline-block { display: block; position: relative; min-height: 162px; }
+  .blog-right .blog-post-link > .bp-cover { position: absolute; top: 4px; left: -300px; width: 260px; margin: 0; }
+}
+
+/* About › ประสบการณ์: เดิม space-between เหลือช่องกลาง 314px → grid 4:7 ช่องไฟ 64 */
+@media (min-width: 992px) {
+  .experience-wrapper, .experience-wrapper-2 { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); column-gap: 64px; }
+  .experience-wrapper > .split-content, .experience-wrapper-2 > .split-content { max-width: none; width: auto; margin: 0; }
+}
+
+/* จังหวะระยะระหว่าง section ทั้งเว็บ (ออดิท 27 พ.ย.: เดิม 165–429px ไม่เท่ากัน) — ช่องว่างจริง ~160 จอกว้าง · ~96 มือถือ */
+:root { --tp-section-y: 80px; }
+@media (max-width: 767px) { :root { --tp-section-y: 48px; } }
+.section { padding-bottom: var(--tp-section-y) !important; }
+.section + .section { padding-top: var(--tp-section-y) !important; }
+.footer .container-footer { margin-top: var(--tp-section-y); }
+/* ตัวที่ทำให้ท้าย section ว่างเกิน (วัดจากหน้าจริง) */
+.about-columns.w-row { display: none; }                         /* แถวว่างสูง 1px แต่มี margin ~100 */
+.experience-grid > :last-child { padding-bottom: 0; border-bottom: 0; }
+.card.contact-form { padding-bottom: 48px; }
+.blog-posts-grid.blog { margin-bottom: 0; }
+.empty-state.w-dyn-empty { margin-bottom: 0; }
+.ap-container.ap-grid { padding-bottom: 0; }
+.container-default:has(> .divider:only-child) + .section { padding-top: var(--tp-section-y) !important; }  /* มีเส้นคั่นระหว่าง section */
+.image.about-hero { margin-bottom: 0; }
+.blog-posts-grid > .w-dyn-item:last-child .blog-post-wrapper { padding-bottom: 0; margin-bottom: 0; border-bottom: 0; }
+.blog-post-newsletter:empty, [class*="blog-post-newslet"]:empty { display: none; }  /* กล่อง newsletter ว่างจาก template กิน 88px */
+/* หน้าแรก › บล็อก: ปกอยู่ช่องว่างระหว่างหัวข้อกับรายการ เหมือนหน้าบล็อก */
+@media (min-width: 992px) {
+  .blog-section-right .blog-post-link.w-inline-block { display: block; position: relative; min-height: 162px; }
+  .blog-section-right .blog-post-link > .bp-cover { position: absolute; top: 4px; left: -300px; width: 260px; margin: 0; }
+}
+
+/* หน้าบล็อก/หมวด: หมวดหมู่เป็นแถวชิปชิดซ้ายเหนือรายการ (แบบหน้าผลงาน) · รายการกว้างเต็ม · ปกซ้าย (แทน 27 พ.ย.) */
+.blog-wrapper { display: block !important; }
+.split-content.blog-left { width: auto !important; max-width: none !important; margin: 0 0 32px !important; position: static !important; }
+.split-content.blog-left > .title, .split-content.blog-left > h2 { display: none; }
+.split-content.blog-right { width: 100% !important; max-width: none !important; margin: 0 !important; }
+.blog-category-grid { display: flex !important; flex-wrap: wrap; gap: 8px; grid-template-columns: none !important; }
+.blog-category-item { margin: 0 !important; }
+.blog-category-item .all.w-condition-invisible, .blog-category-item .blog-category-text.all { display: none !important; }
+.blog-category-text { display: inline-flex !important; align-items: center; height: 36px; padding: 0 16px !important; margin: 0 !important; border: 1px solid var(--tp-border-strong); border-radius: 999px; background: var(--tp-surface); font-size: 14px; font-weight: 500; line-height: 1; color: var(--tp-text-3) !important; text-decoration: none; }
+.blog-category-text:hover { border-color: var(--tp-text); color: var(--tp-text) !important; }
+.blog-category-text.w--current { background: var(--tp-text); border-color: var(--tp-text); color: var(--tp-on-brand) !important; }
+@media (min-width: 768px) {
+  .blog-right .blog-post-link.w-inline-block { display: grid !important; grid-template-columns: 300px minmax(0, 1fr); column-gap: 40px; min-height: 0; position: static; }
+  .blog-right .blog-post-link > .bp-cover { position: static !important; grid-row: 1 / span 6; width: 100% !important; }
+}
+.blog-right .blog-posts-grid.blog { max-width: none; }
+@media (min-width: 768px) { .blog-right .blog-post-wrapper > :not(.blog-post-link) { margin-left: 340px; } }  /* แถววันที่/หมวดอยู่คอลัมน์ข้อความ ไม่ลอดใต้ปก */
+
+/* ช่องค้นหาบทความ (หน้าตาเดียวกับหน้าผลงาน) */
+.bs-search { position: relative; margin-bottom: 20px; }
+.bs-search svg { position: absolute; left: 18px; top: 50%; width: 20px; height: 20px; transform: translateY(-50%); color: var(--tp-text-4); pointer-events: none; }
+.bs-search input { width: 100%; height: 56px; padding: 0 20px 0 50px; border: 1px solid var(--tp-border-strong); border-radius: 16px; background: var(--tp-surface); font: inherit; font-size: 16px; color: var(--tp-text); box-shadow: var(--tp-shadow-sm); }
+.bs-search input:focus { outline: 2px solid var(--tp-text); outline-offset: 1px; }
+.blog-right mark { background: #fde68a; color: inherit; border-radius: 3px; padding: 0 1px; }
+.blog-right .w-dyn-item[hidden], .bs-empty[hidden] { display: none !important; }
+.bs-empty .es { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 48px 32px; border: 1px dashed var(--tp-border-strong); border-radius: 20px; background: var(--tp-surface-2); }
+/* การ์ดบทความ: ปกลอยซ้ายของทั้งการ์ด → วันที่/หมวดต่อท้ายคำโปรยทันที ไม่ถูกดันลงตามความสูงปก */
+@media (min-width: 768px) {
+  .blog-right .blog-post-wrapper { position: relative; padding-left: 340px; min-height: 188px; box-sizing: content-box; }
+  .blog-right .blog-post-link.w-inline-block { display: block !important; }
+  .blog-right .blog-post-link > .bp-cover { position: absolute !important; left: 0; top: 0; width: 300px !important; }
+  .blog-right .blog-post-wrapper > :not(.blog-post-link) { margin-left: 0; margin-top: 24px; }
+}
+
+/* หัวหน้าเพจชุดเดียวทั้งเว็บ (ออดิท 27 พ.ย.): ขอบบน 100 · หัวข้อ 48 · หัวข้อ→คำอธิบาย 12 · คำอธิบาย→เนื้อหา 32 · ค้นหา→ชิป 16 · ชิป→รายการ 32 */
+:root { --tp-page-top: 100px; }
+@media (max-width: 767px) { :root { --tp-page-top: 48px; } }
+.section.blog, .section.blog-category, .section.contact, .section.about-hero, .section.pj { padding-top: var(--tp-page-top) !important; }
+.title.blog, .title.category, .title.contact, .about-hero-content > h1 { font-size: 48px; line-height: 1.15; margin-bottom: 0; }
+@media (max-width: 767px) { .title.blog, .title.category, .title.contact, .about-hero-content > h1 { font-size: 36px; } }
+.category-title-wrapper { margin-bottom: 0; }
+.blog-title-wrapper, .blog-category-title-wrapper, .contact-title-wrapper { margin-bottom: 32px !important; max-width: 640px; }
+.blog-title-wrapper > p, .blog-category-title-wrapper > p, .contact-title-wrapper > p.paragraph { margin: 12px 0 0 !important; font-size: 17px; line-height: 1.7; }
+.bs-search { margin-bottom: 16px; }
+.split-content.blog-left { margin-bottom: 32px !important; }
+
+/* มาสคอตหัวแทนโผล่เหนือเส้น footer (แบบหน้า case study · common/closing.css) */
+.footer { margin-top: 48px; }
+.footer > .container-default:first-child { position: relative; }
+.footer > .container-default:first-child::before { content: ""; position: absolute; left: 50%; bottom: 0; width: 180px; height: 120px; transform: translateX(-50%); background: url("/hero/mascot.avif") center top / 180px auto no-repeat; pointer-events: none; }
+@media (max-width: 767px) { .footer > .container-default:first-child::before { width: 132px; height: 88px; background-size: 132px auto; } }
+/* มาสคอตย้ายไปเส้นล่าง (เหนือ ©) ตามที่แทนขอ */
+.footer > .container-default:first-child::before { content: none; }
+.container-footer .divider { position: relative; overflow: visible; margin-top: 136px; }
+.container-footer .divider::before { content: ""; position: absolute; left: 50%; bottom: 0; width: 180px; height: 120px; transform: translateX(-50%); background: url("/hero/mascot.avif") center top / 180px auto no-repeat; pointer-events: none; }
+@media (max-width: 767px) { .container-footer .divider { margin-top: 104px; } .container-footer .divider::before { width: 132px; height: 88px; background-size: 132px auto; } }
+
+/* dropdown หัวข้อในฟอร์มติดต่อ (contact-select.js) */
+.dd { position: relative; }
+.dd-native { position: absolute !important; inset: auto 0 0 0; width: 100%; height: 1px; opacity: 0; pointer-events: none; }
+.dd-btn { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 56px; padding: 0 18px; border: 1px solid var(--tp-border-strong); border-radius: 14px; background: var(--tp-surface); font: inherit; font-size: 16px; color: var(--tp-text); text-align: left; cursor: pointer; }
+.dd-btn.is-empty .dd-val { color: var(--tp-text-4); }
+.dd-btn svg { width: 18px; height: 18px; flex: none; color: var(--tp-text-3); transition: transform .2s; }
+.dd.is-open .dd-btn { border-color: var(--tp-text); }
+.dd.is-open .dd-btn svg { transform: rotate(180deg); }
+.dd-btn:focus-visible { outline: 2px solid var(--tp-text); outline-offset: 2px; }
+.dd.is-invalid .dd-btn { border-color: #dc2626; }
+.dd-list { position: absolute; z-index: 30; top: calc(100% + 6px); left: 0; right: 0; margin: 0; padding: 6px; list-style: none; background: var(--tp-surface); border: 1px solid var(--tp-border); border-radius: 14px; box-shadow: var(--tp-shadow-md); max-height: 280px; overflow: auto; }
+.dd-list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 10px; font-size: 15px; color: var(--tp-text-2); cursor: pointer; }
+.dd-list li svg { width: 16px; height: 16px; flex: none; opacity: 0; color: var(--tp-text); }
+.dd-list li:hover, .dd-list li.is-active { background: var(--tp-surface-2); color: var(--tp-text); }
+.dd-list li[aria-selected="true"] { font-weight: 600; color: var(--tp-text); }
+.dd-list li[aria-selected="true"] svg { opacity: 1; }
+/* ให้หน้าตาเหมือนช่องกรอกอื่นในฟอร์ม (เส้นใต้ ไม่มีกล่อง) */
+.dd-btn { min-height: 38px; height: 38px; padding: 0 0 15px; border: 0; border-bottom: 2px solid #bababa; border-radius: 0; background: transparent; color: #333; align-items: flex-start; }
+.dd-btn.is-empty .dd-val { color: #555454; }
+.dd.is-open .dd-btn, .dd-btn:hover { border-bottom-color: var(--tp-text); }
+.dd-btn:focus-visible { outline: none; border-bottom-color: var(--tp-text); }
+
+/* ฟอนต์ชุดเดียวทั้งเว็บ (แทน 27 พ.ย.: น้ำหนักแปลก) — เดิม Inter ก่อน → ไทยตกไป Google Sans คนละน้ำหนักกับละติน */
+body, p, li, a, span, div, label, input, textarea, select, button, blockquote, figcaption, td, th { font-family: var(--tp-font); }
+
+/* การ์ดบทความ (หน้าแรก + หน้าบล็อก) ชุดเดียว — ออดิท 27 พ.ย.: คำโปรย→วันที่ 20 · ท้ายการ์ด→เส้น 40 · เส้น→การ์ดถัดไป 40 */
+.blog-posts-grid { row-gap: 0 !important; grid-row-gap: 0 !important; }
+.blog-post-wrapper { padding-bottom: 40px !important; }
+.blog-posts-grid > .w-dyn-item + .w-dyn-item .blog-post-wrapper { padding-top: 40px; }
+.blog-post-link.w-inline-block { margin-bottom: 0 !important; }
+.blog-post-about-wrapper { margin-top: 20px !important; }
+@media (min-width: 768px) {
+  :is(.blog-right, .blog-section-right) .blog-post-wrapper { position: relative; padding-left: 340px; min-height: 188px; box-sizing: content-box; }
+  :is(.blog-right, .blog-section-right) .blog-post-link.w-inline-block { display: block !important; position: static !important; min-height: 0 !important; }
+  :is(.blog-right, .blog-section-right) .blog-post-link > .bp-cover { position: absolute !important; left: 0 !important; top: 0; width: 300px !important; margin: 0; }
+  .blog-posts-grid > .w-dyn-item + .w-dyn-item .blog-post-link > .bp-cover { top: 40px; }
+  :is(.blog-right, .blog-section-right) .blog-post-wrapper > :not(.blog-post-link) { margin-left: 0 !important; }
+}
+/* หน้าแรก: คอลัมน์รายการแคบ → ปกอยู่ในช่องว่างซ้าย (ข้อความใช้ความกว้างเต็มคอลัมน์) */
+@media (min-width: 992px) {
+  .blog-section-right .blog-post-wrapper { padding-left: 0 !important; min-height: 188px; }
+  .blog-section-right .blog-post-link > .bp-cover { left: -340px !important; }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .blog-section-right .blog-post-wrapper { padding-left: 0 !important; min-height: 0; }
+  .blog-section-right .blog-post-link > .bp-cover { position: static !important; display: block; margin-bottom: 16px; }
+}
+.pk-video { display: block; width: 100%; height: auto; border-radius: 12px; background: var(--tp-surface-2); }
+
+/* ขนาดเนื้อหาชุดเดียวทั้งเว็บ (แทน 27 พ.ย.: ไทยของ Google Sans ตัวเล็ก) — ย่อหน้า 17/1.75 เท่าบทความ · การ์ดเล็ก 16 */
+[class*="paragraph"] { font-size: 17px; line-height: 1.75; }
+.paragraph-14, .blog-category-text, .pj .card p { font-size: 16px; line-height: 1.7; }
+.paragraph-14 { font-size: 16px !important; line-height: 1.7 !important; }
+/* การ์ดผลงานหน้าแรก: สูงเท่ากันทั้งแถว */
+.portfolio-grid > .w-dyn-item { display: flex; }
+.portfolio-grid .card.portfolio-project { flex: 1; height: 100%; display: flex; flex-direction: column; }
+/* ท้ายเพจ → footer (แทน 27 พ.ย.: ช่องว่างเยอะ): section สุดท้าย 64 · เส้น footer → เนื้อหา footer 48 */
+.section:has(+ .footer), .section:has(+ footer) { padding-bottom: 64px !important; }
+.footer { margin-top: 0; }
+.footer .container-footer { margin-top: 48px; }
+@media (max-width: 767px) { .section:has(+ .footer), .section:has(+ footer) { padding-bottom: 48px !important; } .footer .container-footer { margin-top: 40px; } }
+.section.pj { padding-bottom: 64px !important; }                 /* หน้าผลงาน: มี <script> คั่นก่อน footer */
+article.ap, .ap .ap-grid { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+.section.blog-post, .section:has(> article.ap) { padding-bottom: 64px !important; }
+@media (max-width: 767px) { .section.pj, .section.blog-post, .section:has(> article.ap) { padding-bottom: 48px !important; } }
+/* contrast ≥ 4.5 (Lighthouse): เมนู · footer · ย่อหน้า ใช้ text-3 (5.3:1) แทนเทาจางของ Webflow */
+.nav-link, .footer-nav-link { color: var(--tp-text-3); }
+.nav-link:hover, .footer-nav-link:hover, .nav-link.w--current { color: var(--tp-text); }
+[class*="paragraph"], .company-experience-date-2 { color: var(--tp-text-3); }
+.small-print, .company-experience-list-item, .card-portfolio-project-client { color: var(--tp-text-3); }  /* เดิม #848484 = 3.7:1 */
+.company-experience-date, .company-experience-date-2 { color: var(--tp-text-3); }  /* เดิม #bababa = 1.9:1 */
+/* About › โปรเจกต์ในแต่ละบริษัท: ชิปพร้อมไอคอนเว็บ */
+.xp-projs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.xp-proj { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px 0 10px; border: 1px solid var(--tp-border-strong); border-radius: 999px; background: var(--tp-surface); font-size: 15px; font-weight: 500; line-height: 1; color: var(--tp-text) !important; text-decoration: none; }
+a.xp-proj:hover { border-color: var(--tp-text); }
+.xp-proj img { width: 18px; height: 18px; border-radius: 4px; }
+.xp-dot { width: 18px; height: 18px; border-radius: 4px; background: var(--tp-surface-3); }
+.company-experience-list-item a:not(.xp-proj) { color: var(--tp-text); text-decoration: underline; text-underline-offset: 3px; }
+.xp-ic { display: inline-block; width: 16px; height: 16px; margin: 0 5px 0 2px; border-radius: 4px; vertical-align: -2px; object-fit: cover; }  /* ไอคอนหน้าลิงก์ชื่อโปรเจกต์ในประสบการณ์ */
+.xp-lmwn { margin: 4px 0 0 0; } .xp-proj svg { color: var(--tp-text-2); }

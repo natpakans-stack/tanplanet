@@ -1,0 +1,614 @@
+<!DOCTYPE html><html data-wf-domain="www.tanplanet.work" data-wf-page="608d6278863727b47e80cb9c" data-wf-site="608d62778637273e1880cb8d" lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shotdeck: designing an AI short-video channel that doesn't look like AI</title>
+  <meta name="description" content="Portfolio: product thinking for an AI-produced explainer channel. What makes AI content look cheap, and how I designed the format, art direction and pipeline around a software background.">
+  <meta property="og:title" content="Shotdeck: designing an AI short-video channel that doesn't look like AI">
+  <meta property="og:description" content="Portfolio: product thinking for an AI-produced explainer channel. What makes AI content look cheap, and how I designed the format, art direction and pipeline around a software background.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Shotdeck: designing an AI short-video channel that doesn't look like AI">
+  <meta name="twitter:description" content="Portfolio: product thinking for an AI-produced explainer channel. What makes AI content look cheap, and how I designed the format, art direction and pipeline around a software background.">
+  <rect width='100' height='100' rx='24' fill='%230a0f1f'/><rect x='22' y='34' width='56' height='38' rx='6' fill='none' stroke='%23a78bfa' stroke-width='6'/><path d='M22 46h56' stroke='%23a78bfa' stroke-width='6'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  
+  
+  <script src="../../common/closing.js" defer></script>
+  <meta property="og:image" content="https://projects.tanplanet.work/pj/covers/shotdeck-portfolio-en-og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://projects.tanplanet.work/pj/covers/shotdeck-portfolio-en-og.jpg"><link rel="icon" type="image/png" href="https://myfolio.tanplanet.work/favicon.png"><link rel="apple-touch-icon" href="https://myfolio.tanplanet.work/apple-touch-icon.png"><link rel="canonical" href="https://projects.tanplanet.work/en/shotdeck-portfolio/"><meta property="og:url" content="https://projects.tanplanet.work/en/shotdeck-portfolio/"><meta property="og:locale" content="en_US"><link rel="alternate" hreflang="th" href="https://projects.tanplanet.work/shotdeck-portfolio/"><link rel="alternate" hreflang="en" href="https://projects.tanplanet.work/en/shotdeck-portfolio/"><link rel="alternate" hreflang="x-default" href="https://projects.tanplanet.work/shotdeck-portfolio/"><link rel="stylesheet" href="https://myfolio.tanplanet.work/tokens.css"/><link href="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/css/myfolio-tannie.webflow.shared.f00d552de.css?v=50" rel="stylesheet" type="text/css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap"><link rel="stylesheet" href="https://myfolio.tanplanet.work/blog/article.css"/><link rel="stylesheet" href="../../common/closing.css"><style>.cs *, .cs *::before, .cs *::after{ box-sizing: border-box; margin: 0; padding: 0; }
+.cs{
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #b45309;
+      --accent-light: #fef3c7;
+      --accent-dark: #78350f;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+.cs{
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+.cs .hero{
+      background: linear-gradient(135deg, #0a0f1f 0%, #121b36 40%, #3f2d12 78%, #78350f 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+.cs .hero::before{
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(251,191,36,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+@keyframes sway{
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+.cs .hero::after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #78350f, #f59e0b, #fde68a);
+    }
+.cs .hero-inner{
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+.cs .hero-mark{
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+.cs .hero-badge{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+.cs .hero-badge .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+@keyframes pulse-dot{
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+.cs .hero h1{
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+.cs .hero h1 .accent{ color: #fcd34d; }
+.cs .hero p{
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+.cs .hero-tags{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+.cs .hero-tag{
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+.cs .cta-row{
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+.cs .cta-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+.cs .cta-btn:hover{ transform: translateY(-2px); }
+.cs .cta-primary{
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+.cs .cta-primary:hover{ box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+.cs .cta-ghost{
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+.cs .cta-ghost:hover{ background: rgba(255,255,255,0.2); }
+.cs article{
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+.cs code{
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+.cs .dev-wrap{ display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.cs .dev-frame{
+      width: 348px;
+      max-width: 100%;
+      background: #1a1a1c;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 14px 40px rgba(10,15,31,0.35);
+    }
+.cs .dev-screen{
+      background: var(--navy);
+      border-radius: 6px;
+      overflow: hidden;
+      color: #f2f5ff;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+.cs .dev-hero{
+      background: #121b36;
+      padding: 12px 14px 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+.cs .dev-clock{ font-size: 2.4rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+.cs .dev-date{ color: #8492bc; font-size: 0.72rem; margin-top: 4px; }
+.cs .dev-hero-right{ text-align: right; font-size: 0.72rem; color: #8492bc; }
+.cs .dev-hero-right .t{ color: #f2f5ff; font-size: 1.05rem; font-weight: 600; }
+.cs .dev-list{ padding: 8px; display: flex; flex-direction: column; gap: 7px; }
+.cs .dev-card{
+      background: #161f3c;
+      border-radius: 8px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+.cs .dev-card .body{ flex: 1; min-width: 0; }
+.cs .dev-card .ttl{ color: #8492bc; font-size: 0.68rem; letter-spacing: 0.02em; }
+.cs .dev-card .val{ font-size: 0.95rem; font-weight: 600; }
+.cs .dev-card .sub{ color: #8492bc; font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cs .dev-card .up{ color: #4ade80; }
+.cs .dev-card .warn{ color: #fbbf24; }
+.cs .dev-card .down{ color: #f87171; }
+.cs .dev-blob{
+      width: 42px;
+      height: 34px;
+      border-radius: 6px;
+      background: #223056;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+.cs .dev-bar{ height: 5px; border-radius: 3px; background: #223056; margin-top: 6px; overflow: hidden; }
+.cs .dev-bar i{ display: block; height: 100%; background: #fbbf24; }
+.cs .dev-caption{ font-size: 0.8rem; color: var(--text-secondary); text-align: center; max-width: 420px; }
+.cs .back-nav{
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+.cs .back-nav:hover{ background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+.cs .back-nav svg{ flex-shrink: 0; }
+.cs .back-to-top{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+.cs .back-to-top.visible{ opacity: 1; visibility: visible; transform: translateY(0); }
+.cs .back-to-top:hover{ background: var(--accent-dark); }
+@media (max-width: 680px){.cs .hero{ padding: 80px 20px 56px; }
+.cs .hero h1{ font-size: 1.7rem; }
+.cs .back-nav{ top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+.cs .back-to-top{ bottom: 16px; right: 16px; width: 40px; height: 40px; }
+
+    }
+@media (prefers-reduced-motion: reduce){.cs *, .cs *::before, .cs *::after{ animation: none !important; transition: none !important; }
+
+    }
+.cs .ico{ width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+.cs .rung:last-child{ border-bottom: 0; }
+.cs .ledger--wide{ min-width: 780px; }
+.cs .ladder{ border-top: 1px solid var(--border); margin-top: 20px; }
+.cs .rung{
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+.cs .rung .cond{ display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+.cs .rung .cond .ico{ color: var(--text-muted); width: 15px; height: 15px; }
+.cs .rung .out{ font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+.cs .rung .note{ font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+.cs .rung.none .out{ color: var(--text-muted); }
+@media (min-width: 700px){.cs .rung{ grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+
+    }
+.cs .hero-mark .ico{ width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+.cs .hero-badge .ico{ width: 14px; height: 14px; }
+@media (max-width:640px){}
+
+</style><link rel="stylesheet" href="../../common/components.css?v=7"/><link rel="stylesheet" href="../../pj/case.css?v=12"/></head><body><div style="opacity:0" class="page-wrapper"><div data-collapse="medium" data-animation="default" data-duration="400" data-w-id="58db7844-5919-d71b-dd74-2323ed8dffe9" data-easing="ease" data-easing2="ease" role="banner" class="header w-nav"><div class="loader-wrapper"><div class="loader"></div></div><div class="container-header"><div class="split-content header-left"><a href="https://myfolio.tanplanet.work/" class="brand w-nav-brand"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><nav role="navigation" class="nav-menu w-nav-menu"><ul role="list" class="header-navigation"><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="nav-link">Home</a></li><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="nav-link">About</a></li><li class="nav-item-wrapper last"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a><a href="https://projects.tanplanet.work/en/" class="nav-link">Portfolio</a><a href="https://myfolio.tanplanet.work/en/contact" class="nav-link nav-contact">Contact</a></li></ul></nav></div><div class="split-content header-right"><a class="lang-switch" href="https://projects.tanplanet.work/shotdeck-portfolio/" hreflang="th" aria-label="TH EN – Switch to Thai"><span class="">TH</span> <span class="on">EN</span></a><div class="link-header-wrapper"><a data-w-id="a331bf6d-ae80-89ce-2301-aa6077024ef0" href="https://drive.google.com/file/d/1GjCCJ3XFU16-ceCq3MGVWRdezXm3GWxl/view?usp=sharing" target="_blank" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Resume</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="menu-button w-nav-button"><div class="menu-button-wrapper"><div class="menu-button-icon"><div class="menu-line-top"></div><div class="menu-line-middle"></div><div class="menu-line-bottom"></div></div></div></div></div></div><div class="container-default w-container"><div class="divider"></div></div></div><div class="section blog-post" role="main"><article class="ap cs-page" role="main"><div class="ap-band"><div class="ap-container"><header class="ap-head">
+<div class="ap-tags"><a href="https://projects.tanplanet.work/en/" class="ap-tag">Content</a><span class="ap-tag ap-tag--ghost">Projects</span></div>
+<h1 class="ap-title">Shotdeck</h1><p class="cs-sub">Product strategy for an AI-produced explainer channel: write what you won't do before what you will, measure cost from real tests before setting a budget, and set success criteria before there are numbers to rationalize</p>
+<p class="ap-meta"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><time datetime="2026-09-01">Sep 1, 2026</time></span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>8 min read</span></p>
+</header></div></div>
+<div class="ap-container ap-grid"><div class="ap-main">
+<figure class="ap-cover"><img src="../../pj/covers/shotdeck-portfolio-en.webp" alt="" width="1600" height="900" fetchpriority="high" decoding="async"></figure>
+<div class="ap-row"><aside class="ap-share" aria-label="Share this article"><span class="ap-share-title">SHARE</span><a href="https://www.facebook.com/sharer/sharer.php?u=https://projects.tanplanet.work/en/shotdeck-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a><a href="https://twitter.com/intent/tweet?url=https://projects.tanplanet.work/en/shotdeck-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on X"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.9 1.2h3.7l-8 9.1L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9Zm-1.3 19.4h2L6.5 3.2H4.3l13.3 17.4Z"/></svg></a><a href="https://social-plugins.line.me/lineit/share?url=https://projects.tanplanet.work/en/shotdeck-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LINE"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="3" width="21" height="18" rx="5.5" fill="currentColor"/><text x="12" y="15.2" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="7.2" font-weight="900" fill="#fff">LINE</text></svg></a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https://projects.tanplanet.work/en/shotdeck-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a><button type="button" class="ap-share-btn" data-tip-done="Copied" data-copy="https://projects.tanplanet.work/en/shotdeck-portfolio/" aria-label="Copy link"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button></aside><div class="ap-body"><div class="cs">
+<p class="cs-lead">The question wasn't &ldquo;how do I generate clips&rdquo; but &ldquo;why do most AI clips get scrolled past&rdquo;. This is product strategy work: defining the competition, choosing a format, locking visual rules and estimating cost per clip from real tests, all before the channel publishes a single clip.</p><div class="cs-chips"><span class="cs-chip">Product Strategy</span><span class="cs-chip">Art Direction</span><span class="cs-chip">Remotion</span><span class="cs-chip">Content Pipeline</span><span class="cs-chip">Unit Economics</span></div>
+<article>
+
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>The problem isn't that AI makes ugly images. It's that nobody writes it a script.</h2>
+      <p>Every platform's feed is full of content stamped out with the same tools, and people have learned to spot it and scroll past in the first second</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../shotdeck-portfolio/img/feed-scroll.jpg" width="1400" height="933" loading="lazy" alt="A phone in someone's hand, scrolling a short-video feed">
+      <figcaption>Viewers decide to scroll past within the first second &mdash; Photo: Priscilla Du Preez / Unsplash</figcaption>
+    </figure>
+
+    <div class="quote-block">
+      <p>The clip that sparked this idea didn't win because its visuals were better than anyone else's. It had one joke, one twist, and ended right away. Hundreds of thousands of views. What the market lacks isn't production capacity; it's the craft of writing.</p>
+      <div class="author">— An observation that became the starting hypothesis</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>
+        <h3>Volume without a script</h3>
+        <p>Many channels use AI to multiply clips, not to tell stories. The result is content that follows every rule of the formula except the one that makes people watch to the end.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+        <h3>Shipping the tool's default look</h3>
+        <p>No channel style of their own, just the default output of a model everyone uses. Viewers can't recognize the channel from its visuals and know immediately that it's generated.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <h3>Clips die within two days</h3>
+        <p>Trend-chasing content spikes fast and then it's over. You have to keep hunting for new topics, and it turns into a full-time job with no days off instead of side income.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg>
+        <h3>Thai narration is where generic tools break</h3>
+        <p>A tonal language makes generic synthetic voices get the rhythm and words wrong, especially technical terms and numbers, which happen to be the heart of explainer clips.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Redefining the advantage: not personality, but pipeline and taste</h2>
+      <p>The real goal is side income, without being on camera and without becoming the face of the channel. So the advantage has to come from somewhere else.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../shotdeck-portfolio/img/art-direction-grid.jpg" width="1560" height="890" loading="lazy" alt="Four stills from the same clip: a buried jar of money, a Siam-era market, a merchant's house and a ministry, all painted in the same Thai mural style">
+      <figcaption>Visual rules written like design tokens &mdash; four scenes from different parts of the story, instantly recognizable as the same clip</figcaption>
+    </figure>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg>
+        <h3>Can build a pipeline</h3>
+        <p>Script in &rarr; clip out as an automated line. Cost per clip is lower and more consistent than generating each clip by hand. Software people can do this; most creators can't.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+        <h3>Systematic art direction</h3>
+        <p>I wrote the channel's visual rules like design tokens. Every clip shares one look, so people recognize the channel from its visuals. That's the line between work that looks intentional and work that looks mass-produced.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        <h3>Product thinking</h3>
+        <p>Set a repeatable format, measure retention and iterate like UX work, instead of judging success by the views of a single clip</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="format">
+      <span class="eyebrow">Ideate</span>
+      <h2>What's locked, and what's deliberately left open</h2>
+      <p>Only decisions that affect cost and the channel's look are locked. The rest waits for the pilot clip to answer.</p>
+    </section>
+
+    <figure class="shot shot-pair">
+      <img src="../../shotdeck-portfolio/img/frame-cutout.jpg" width="960" height="540" loading="lazy" alt="A cut-out style frame: people and signs with cut edges pasted onto a paper background">
+      <img src="../../shotdeck-portfolio/img/frame-headlines.jpg" width="960" height="540" loading="lazy" alt="A cut-out style frame using an old newspaper page as the background">
+      <figcaption>The rule &ldquo;everything on screen must look cut out and pasted&rdquo; &mdash; real frames from a test clip assembled in Remotion</figcaption>
+    </figure>
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th>Topic</th><th class="num">Status</th><th>Reasoning</th></tr></thead>
+        <tbody>
+          <tr data-picked><td>Aspect ratio</td><td class="num">Locked</td><td>Vertical, because it matches how people watch and the platforms I'm targeting. It can still be re-rendered as horizontal from the same assets later.</td></tr>
+          <tr data-picked><td>Length</td><td class="num">Locked</td><td>Every clip is the same length as a channel rule. That makes retention genuinely comparable and forces the script to be sharp.</td></tr>
+          <tr data-picked><td>Topic criteria</td><td class="num">Locked</td><td>Only knowledge that will still hold up five years from now. The channel becomes a library that accumulates views from search, not a feed that has to chase trends.</td></tr>
+          <tr data-picked><td>Visual rules</td><td class="num">Locked</td><td>Everything on screen must look cut out and pasted: people, animals, objects and maps. Nothing photorealistic floating outside this visual language.</td></tr>
+          <tr><td>Narration</td><td class="num">Not locked</td><td>I plan to compare several real providers using a script with hard words and numbers before deciding. There's also a zero-cost option, narrating it myself, which may be best for the channel's identity too.</td></tr>
+          <tr><td>Channel name</td><td class="num">Not locked</td><td>Deliberately not naming it until the pipeline is proven, because a name chosen before you know what the channel is usually has to change later.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="learning-card note">
+      <strong>The finding that changed the cost of the whole project</strong>
+      <p>This format <strong>doesn't need full-clip video generation</strong>. Almost all of it is art-directed still images plus motion done in code, which is many times cheaper than generating video and gives full control over style. Real video is reserved for the opening shot or shots that truly need to impress.</p>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="cost">
+      <span class="eyebrow">Prototype &middot; Test</span>
+      <h2>Cost estimated from real tests, not from pricing pages</h2>
+      <p>Real generation tests showed that auto mode picked an expensive model on its own, which made my first estimate off from reality by several times</p>
+    </section>
+
+    <figure class="shot shot-pair">
+      <img src="../../shotdeck-portfolio/img/frame-countup.jpg" width="960" height="540" loading="lazy" alt="A count-up number frame made purely in code, with no generated image">
+      <img src="../../shotdeck-portfolio/img/frame-stats.jpg" width="960" height="540" loading="lazy" alt="A three-stat frame made purely in code">
+      <figcaption>Frames like this use no credits at all &mdash; the numbers and motion are written in code, leaving budget for the images that really need to impress</figcaption>
+    </figure>
+
+    <div class="hack-grid">
+      <div class="hack-card" data-label="Unit economics">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Auto mode picked an expensive model, so cost per clip shot up unnoticed</span></h3>
+        <p>In the first test I let the tool choose the model. The images were good, but the price per image was several times higher than it should have been. If I had calculated cost per clip from that round, I would have wrongly concluded the business model doesn't work.</p>
+        <div class="highlight"><strong>Fix:</strong> for real production, <strong>lock a budget model in place</strong> and recalculate cost from that price. Clips made entirely of stills then fit a monthly budget in the hundreds of baht, enough for about two clips a week comfortably &mdash; Lesson: unit cost has to be measured with the settings you'll actually use, not the defaults.</div>
+      </div>
+
+      <div class="hack-card" data-label="Sequencing">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>The thing I wanted to do first is the thing that should come last</span></h3>
+        <p>The urge at the start was to name the channel, make a logo and launch. Fun work, but it doesn't answer whether the formula can actually be repeated.</p>
+        <div class="highlight"><strong>Fix:</strong> lock the order: <strong>finish one pilot clip first</strong> to measure the real time and credits &rarr; make two more with the same template to see if the effort really drops &rarr; launch the channel only when three clips are ready to publish &mdash; a new channel with content looks more credible than an empty one with a nice logo.</div>
+      </div>
+
+      <div class="hack-card" data-label="Topic strategy">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Fast views or lasting views: it seemed like I had to choose</span></h3>
+        <p>Trending topics bring traffic fast but die fast. Evergreen topics last but grow slowly. Picking one side means giving up the other entirely.</p>
+        <div class="highlight"><strong>Fix:</strong> <strong>use trending news as the hook, but make the content evergreen knowledge</strong>. It gets traffic from the trend now and keeps being found in search for years. It also avoids locking the channel into a narrow topic.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>A production line designed so effort per clip keeps dropping</h2>
+      <p>The heavy work moves into the template, which is written once. Each following clip is just filling the template.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../shotdeck-portfolio/img/remotion-studio-template.jpg" width="1600" height="1000" loading="lazy" alt="Remotion Studio with the LongJar composition open, showing the buried money jar, the timeline, and each shot's props on the right">
+      <figcaption>The template written as code in Remotion Studio &mdash; a new clip means changing a shot's props, not re-editing from scratch</figcaption>
+    </figure>
+
+    <figure class="shot">
+      <img src="../../shotdeck-portfolio/img/storyboard-stills.jpg" width="1560" height="586" loading="lazy" alt="A six-still storyboard in story order: the money jar, the market, a lottery house, a boat, and an empty treasury">
+      <figcaption>The storyboard is made of stills &mdash; a unit you can control cost with, unlike thinking in seconds of video</figcaption>
+    </figure>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 21h8"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
+        <h4>Script and research</h4>
+        <p>AI helps find and draft, but a person checks every fact, because one mistake in an explainer clip costs the credibility of the whole channel</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+        <h4>Storyboard as stills</h4>
+        <p>Break the script into a set number of images per clip, a unit where cost is controllable, unlike thinking in seconds of video</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        <h4>Generate images by the channel's visual rules</h4>
+        <p>Every image must use the same cut-out language. An off-tone image gets regenerated or cut, never kept just to save credits.</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg>
+        <h4>Narration</h4>
+        <p>Compare several real providers with a script full of hard words, with a good fallback: narrating it myself, which costs nothing and sounds most natural</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></svg>
+        <h4>Assemble with a template written in code</h4>
+        <p>Every clip is the script and images dropped into the same template, then rendered. No manual editing. This is a real advantage for someone with a software background.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Success criteria set in advance, before any numbers exist</h2>
+      <p>Set now, because setting them after seeing results turns into rationalizing whatever numbers came in</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../shotdeck-portfolio/img/analyze-retention.jpg" width="1600" height="1000" loading="lazy" alt="The ShotDeck analytics page with cards for page followers, average watch time per reel and 28-day total views, with the numbers blurred">
+      <figcaption>The analytics page in ShotDeck in use today &mdash; it measures average watch time per clip against a target, not the views of one clip (page numbers blurred)</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg><span><b>Completion rate matters more than follower count</b> — the question is whether the joke or the content reaches the end, not how many people hit follow</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg><span><b>At least one clip where people talk about the content, not about it being made with AI</b> — if every comment is about the tools, the craft hasn't passed yet</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg><span><b>Measure whether the formula really repeats</b> — time each clip from script to finished render, and check whether the second and third clips really take less time</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg><span><b>The first income comes from affiliate links, not ads</b> — I set the expectation plainly that the first three months will be close to zero, so I don't quit halfway because of wrong expectations</span></li>
+    </ul>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">4</div><div class="label">Decisions locked, out of 6 that needed making</div></div>
+      <div class="metric-card"><div class="num">1</div><div class="label">Pilot clip that has to be finished before naming the channel</div></div>
+      <div class="metric-card"><div class="num">3</div><div class="label">Clips ready to publish before the channel launches</div></div>
+      <div class="metric-card"><div class="num">10</div><div class="label">Clips before revisiting the criteria and deciding whether to scale</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>What's deliberately out of scope</h2>
+      <p>This project wrote down what it &ldquo;won't do&rdquo; before starting, because this kind of work drifts off course very easily</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../shotdeck-portfolio/img/not-do-list.jpg" width="1400" height="932" loading="lazy" alt="A hand writing a list in a grid notebook">
+      <figcaption>Write down what you won't do before you start &mdash; Photo: Glenn Carstens-Peters / Unsplash</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg><span><b>No mass-producing low-quality clips every day</b> — volume is what the market already has too much of. Competing there is a game lost from the start.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg><span><b>No clickbait or shock content</b> — it gets views fast but destroys the reason people would come back to the channel</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg><span><b>No posting to every platform from day one</b> — start with one channel to prove the formula, then repost the same files later at almost no extra cost</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg><span><b>No topics that expire</b> — news, trends and match results are all cut, because they conflict with the goal of making something once and collecting results for a long time</span></li>
+    </ul>
+
+  </article>
+</div><section class="ap-author" aria-label="Author"><img class="ap-author-avatar" src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/688f5899cad39483c4e11c49_Profile_Webflow.webp" alt="" width="88" height="88" loading="lazy"><div class="ap-author-body"><p class="ap-author-name">Tan · Natpakan Sirirat</p><p class="ap-author-bio">Product Designer &amp; AI Builder — designing user experiences and building AI tools that actually work.</p><ul class="ap-author-links"><li><a href="https://www.linkedin.com/in/natpakan/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a></li><li><a href="https://www.facebook.com/tan.natpakan" target="_blank" rel="noopener" aria-label="Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a></li><li><a href="https://www.instagram.com/npkant/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a></li></ul></div></section><nav class="ap-pn" aria-label="Previous and next project"><a href="../club-revamp-portfolio/" class="ap-pn-item ap-pn-prev"><span class="ap-pn-label">← Previous project</span><span class="ap-pn-title">Premium Club Revamp</span></a><a href="../book-screenshot-portfolio/" class="ap-pn-item ap-pn-next"><span class="ap-pn-label">Next project →</span><span class="ap-pn-title">Book Screenshot</span></a></nav></div></div></div>
+<aside class="ap-side"><div class="ap-side-inner"><section class="ap-widget"><h2 class="ap-widget-title"><span>Latest projects</span></h2><ol class="ap-rank"><li><a href="../content-engine-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/content-engine-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">1</span></span><span class="ap-rank-title"><span class="ap-rank-t">Auto-publishing content engine</span></span></a></li><li><a href="../tans-tools-devpanel-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tans-tools-devpanel-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">2</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan’s Tools · DEV panel</span></span></a></li><li><a href="../android-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/android-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">3</span></span><span class="ap-rank-title"><span class="ap-rank-t">TX98 TV Box</span></span></a></li><li><a href="../tools-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tools-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">4</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan&#x27;s Tools</span></span></a></li><li><a href="../shotdeck-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/shotdeck-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">5</span></span><span class="ap-rank-title"><span class="ap-rank-t">shotdeck-box: a laptop that posts clips</span></span></a></li></ol></section></div></aside>
+</div><div class="ap-progress" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" class="ap-progress-track"/><circle cx="32" cy="32" r="28" class="ap-progress-bar" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg><span>0%</span></div></article><footer class="footer"><div class="container-default w-container"><div class="divider"></div></div><div class="container-footer"><div class="footer-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-logo-container w-inline-block"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" loading="lazy" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><ul role="list" class="footer-navigation"><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-nav-link">Home</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="footer-nav-link">About</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a></li><li class="footer-nav-item-wrapper"><a href="https://projects.tanplanet.work/en/" class="footer-nav-link">Portfolio</a></li><li class="footer-nav-item-wrapper last"><a href="https://projects.tanplanet.work/preset/" class="footer-nav-link footer-nav-design">Design</a></li></ul><a data-w-id="2afa9a01-05cf-ade4-4d79-909445ba12f2" href="https://myfolio.tanplanet.work/contact" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Contact Me</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="divider"></div><div class="small-print">© 2026 Natpakan Sirirat · All rights reserved.</div></div></footer></div><script src="https://myfolio.tanplanet.work/_ext/d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8__site%3D608d62778637273e1880cb8d.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.1a807f015b216e46.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.8870a749f76b548c.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.9641f8cc.4fd3e4280b7acaf7.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/header-autohide.js" defer></script><script src="https://myfolio.tanplanet.work/blog/article.js" defer></script><div class="cs cs-extras">
+
+  
+
+  
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  
+
+
+
+</div><script>try{
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  }catch(e){}</script><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Natpakan Sirirat — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"Shotdeck: strategy for an AI short-video channel","item":"https://projects.tanplanet.work/shotdeck-portfolio/"}
+  ]
+}
+</script></body></html>

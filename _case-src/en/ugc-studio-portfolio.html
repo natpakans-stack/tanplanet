@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UGC Studio — a pipeline that turns product photos into UGC videos (AI Director → Higgsfield → ElevenLabs → Remotion)</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="UGC Studio — a pipeline that turns product photos into UGC videos">
+  <meta name="twitter:description" content="Portfolio: an internal tool that turns product photos into UGC sales videos — AI acts as the director: it plans shots, writes a Thai script, generates footage, records the voiceover, then edits with keyword sync into an .mp4">
+  <meta property="og:url" content="https://projects.tanplanet.work/ugc-studio-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.work/ugc-studio-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: an internal tool that turns product photos into UGC sales videos — AI acts as the director: it plans shots, writes a Thai script, generates footage, records the voiceover, then edits with keyword sync into an .mp4">
+  <meta property="og:title" content="UGC Studio — a pipeline that turns product photos into UGC videos">
+  <meta name="description" content="Portfolio: an internal tool that turns product photos into UGC sales videos — AI acts as the director: it plans shots, writes a Thai script, generates footage, records the voiceover, then edits with keyword sync into an .mp4 · React 19 + Bun + Higgsfield + ElevenLabs + Remotion">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23e11d48'/><text x='50' y='62' text-anchor='middle' font-size='54'>🎞️</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #e11d48;
+      --accent-light: #ffe4e6;
+      --accent-dark: #9f1239;
+      --accent-glow: rgba(225,29,72,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #4c0519 0%, #9f1239 45%, #e11d48 80%, #fb7185 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(255,228,230,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(225,29,72,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #9f1239, #e11d48, #ffe4e6);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #fecdd3;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #881337, #9f1239);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(225,29,72,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #fb7185);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(225,29,72,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Studio UI Mockup ===== */
+    .studio-mock {
+      background: #17171c;
+      border: 1px solid #2a2a33;
+      border-radius: var(--radius-lg);
+      max-width: 560px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.18);
+      color: #ececf1;
+      font-size: 0.8rem;
+    }
+    .studio-topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-bottom: 1px solid #2a2a33;
+      background: #0e0e11;
+    }
+    .studio-topbar .slogo {
+      width: 20px; height: 20px; border-radius: 5px;
+      background: var(--accent); color: #fff;
+      display: grid; place-items: center; font-weight: 700; font-size: 0.72rem;
+    }
+    .studio-topbar .stitle { font-weight: 600; font-size: 0.82rem; }
+    .studio-topbar .ssub { margin-left: auto; color: #8b8b96; font-size: 0.68rem; }
+    .studio-cols { display: grid; grid-template-columns: 0.9fr 1.2fr 1fr; }
+    .studio-col { padding: 12px; border-right: 1px solid #2a2a33; }
+    .studio-col:last-child { border-right: none; }
+    .studio-col .ch {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px;
+      color: #8b8b96; margin-bottom: 10px;
+    }
+    .studio-col .ch b {
+      width: 15px; height: 15px; border-radius: 4px; background: #1f1f26;
+      color: var(--accent); display: grid; place-items: center; font-size: 0.6rem;
+    }
+    .studio-label { font-size: 0.64rem; color: #8b8b96; margin: 2px 0 6px; }
+    .studio-thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 8px; }
+    .studio-thumbs i { aspect-ratio: 1; border-radius: 6px; background: #1f1f26; border: 1px solid #2a2a33; display: block; }
+    .studio-chip {
+      display: inline-block; padding: 2px 8px; border-radius: 50px;
+      background: #1f1f26; border: 1px solid #2a2a33;
+      font-size: 0.66rem; color: #b7b7c0; margin: 0 4px 4px 0;
+    }
+    .studio-chip.on { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+    .studio-script {
+      background: #0c0c0f; border: 1px solid #2a2a33; border-radius: 8px;
+      padding: 10px; font-size: 0.7rem; line-height: 1.8; color: #d4d4dc;
+    }
+    .studio-script mark { background: var(--accent); color: #fff; padding: 0 4px; border-radius: 4px; }
+    .studio-gen {
+      margin-top: 10px; padding: 9px; border-radius: 8px;
+      background: var(--accent); color: #fff; text-align: center; font-weight: 700; font-size: 0.74rem;
+    }
+    .studio-frame {
+      margin-top: 10px; aspect-ratio: 9/16; max-height: 150px; border-radius: 8px;
+      background: linear-gradient(160deg, #1f1f26, #0c0c0f); border: 1px solid #2a2a33;
+      display: flex; align-items: flex-end; justify-content: center; padding: 8px;
+    }
+    .studio-frame span { font-size: 0.62rem; color: #8b8b96; }
+
+    /* ===== Closing ===== */
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(159,18,57,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(159,18,57,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .studio-cols { grid-template-columns: 1fr; }
+      .studio-col { border-right: none; border-bottom: 1px solid #2a2a33; }
+      .studio-col:last-child { border-bottom: none; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+  .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.5}.shot-pair .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;max-width:var(--shot-max,100%);margin:0 auto}@media (max-width:640px){.shot-pair .pair{grid-template-columns:1fr}}.shot-narrow img{max-width:min(100%,var(--shot-max,520px));margin:0 auto}
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/ugc-studio-portfolio/">
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Internal Tool &middot; AI Video Pipeline &middot; React + Bun
+      </div>
+      <h1>UGC Studio<br><span class="accent">Upload a product photo, get a UGC sales video, in one pipeline</span></h1>
+      <p>An internal tool that turns a product photo and a short brief into a vertical UGC video ready to post. AI plays the "director": it plans the shots, writes the Thai script, generates footage, records the voiceover, then edits so each <code>keyword</code> pops up right as it is spoken, automated end to end</p>
+      <div class="hero-tags">
+        <span class="hero-tag">React 19</span>
+        <span class="hero-tag">Bun (bundler + server)</span>
+        <span class="hero-tag">OpenAI GPT-4o</span>
+        <span class="hero-tag">Higgsfield</span>
+        <span class="hero-tag">ElevenLabs</span>
+        <span class="hero-tag">Remotion</span>
+        <span class="hero-tag">Shot Plan</span>
+        <span class="hero-tag">Keyword Sync</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">See how it works &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#stack">See the tech stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>The problem</h2>
+      <p>Why is a single UGC sales video so slow and expensive, when content needs a lot of testing?</p>
+    </section>
+    <figure class="shot"><img src="img/ugs-problem-unsplash.jpg" width="1200" height="800" loading="lazy" alt="A film crew with cameras, lights and monitors in a studio"><figcaption>The old way — every sales clip needs someone to shoot, someone to light, someone to edit · Photo: Jakob Owens / Unsplash</figcaption></figure>
+
+
+    <div class="quote-block">
+      <p>The team wanted many UGC sales videos to test content with, but every clip meant hiring a shoot and an editor, and each one took days. Production could never keep up with how many versions we wanted to try. The question: with only a "product photo" and a "short description", can we get a video ready to post in a few minutes?</p>
+      <div class="author">— The starting brief, before building UGC Studio</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+        <h3>Slow and expensive — a shoot and an edit for every clip</h3>
+        <p>Every sales video needs someone to shoot and someone to edit. One clip costs time and budget, and testing several content versions makes it even less worth it</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
+        <h3>The script has to finish right on time</h3>
+        <p>A vertical clip has to end in about 15–30 seconds. Writing a script that fits exactly, with no overrun and no dead air, takes many rounds of trial and error</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        <h3>Keywords have to pop up as they are spoken</h3>
+        <p>A good UGC video shows key words on screen "on the exact word" the presenter says. Syncing that by hand in an editor, one clip at a time, takes a long time</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
+        <h3>The AI tools don't talk to each other</h3>
+        <p>Images are generated in one place, voiceover in another, editing in a third. Each output has to be stitched together by hand, which is slow and error-prone</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+        <h3>Calling AI straight from the browser leaks the keys</h3>
+        <p>If the web page calls OpenAI / ElevenLabs directly, the API keys show up in the network tab. Even for an internal tool, that is not acceptable</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>The solution</h2>
+      <p>Let AI be the "director" for the whole line — plan → generate → voice → edit, automated on one page</p>
+    </section>
+    <figure class="shot shot-pair" style="--shot-max:560px"><div class="pair"><img src="img/ugs-in-product.jpg" width="540" height="960" loading="lazy" alt="Source product photo: a black matcha jar on a white background"><img src="img/ugs-out-frame.jpg" width="540" height="960" loading="lazy" alt="A frame from the generated video: an AI presenter holds the matcha jar in a kitchen, with the keyword &quot;creamy umami from Kyoto&quot; popping up on screen"></div><figcaption>Left: the uploaded product photo (test product) · Right: a frame from the video the pipeline generated on its own — AI presenter + popping keyword</figcaption></figure>
+
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
+        <h3>An AI Director writes the "shot plan"</h3>
+        <p>OpenAI breaks the brief into a JSON shot plan. Each shot defines its type (close-up / angle / presenter), duration, voiceover line and the <code>keyword</code> that pops up, and the schema is validated so nothing drifts</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 21h8"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
+        <h3>A Thai script that fits the time</h3>
+        <p>It calculates character count per second (spoken Thai is about 8 characters per second) so the AI writes lines that "finish right on time" for the set length, with no overrun and no dead air</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>
+        <h3>Automatic keyword sync from timestamps</h3>
+        <p>ElevenLabs returns a timestamp for "every character". A pointer walks the alignment to find the second each sentence starts and ends, so each keyword pops up exactly on beat</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <h3>Four AIs chained into one line</h3>
+        <p>OpenAI → Higgsfield → ElevenLabs → Remotion run back to back as one pipeline. Upload a photo, press Generate once, and get an .mp4, with no manual stitching</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>A Bun server keeps the keys on the backend</h3>
+        <p>Every API call goes through a Bun server that reads keys from <code>.env</code>, so the browser never sees a key. The server also runs the Higgsfield CLI and Remotion, which the browser can't do on its own</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>How it works — 4 steps</h2>
+      <p>From uploading a product photo to a UGC video ready to post</p>
+    </section>
+    <figure class="shot"><img src="img/ugs-how.jpg" width="1488" height="640" loading="lazy" alt="4 frames from a real output video: opening the lid, scooping the powder, pouring hot water, stirring. Each shot has a keyword in a different color"><figcaption>A real result — the shot plan splits into several shots, each with its own keyword popping up in time with the voiceover</figcaption></figure>
+
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+        <h4>Upload &amp; set up</h4>
+        <p>Upload a product photo + choose a presenter + type a brief/script + set size/length</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
+        <h4>AI plans &amp; generates</h4>
+        <p>OpenAI writes the shot plan → Higgsfield generates angle shots, then adds motion to turn them into clips</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>
+        <h4>Voice &amp; sync</h4>
+        <p>ElevenLabs records a Thai voiceover + timestamps → keywords are mapped to the moment they are spoken</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
+        <h4>Edit &amp; render</h4>
+        <p>Remotion assembles clips + audio + keywords → .mp4 (submit the job, then poll until done)</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>One page on localhost — React on the Bun bundler (no Vite) + a Bun server that hides the keys and drives the AI pipeline</p>
+    </section>
+    <figure class="shot"><img src="img/ugs-done.jpg" width="1600" height="1000" loading="lazy" alt="UGC Studio after a run finishes: the vertical video shows in the Output column with a button to open it in Remotion"><figcaption>The real UI after a run — the .mp4 from the pipeline + a button to open Remotion Studio to fine-tune the timing (running on localhost with sample data)</figcaption></figure>
+
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Frontend — React 19 (Bun bundler, no Vite) · 3 columns in the style of NotebookLM
+          <div class="arch-sub">
+            <span>Source</span>
+            <span>Script Editor</span>
+            <span>Output Settings</span>
+            <span>HMR</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Bun server (server.ts) — Bun.serve() + async job / poll
+          <div class="arch-sub">
+            <span>/api/generate</span>
+            <span>/api/status</span>
+            <span>/api/script</span>
+            <span>hides .env keys</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          AI Pipeline (orchestrator + pipeline) — plan → generate → voice → edit
+          <div class="arch-sub">
+            <span>OpenAI GPT-4o</span>
+            <span>Higgsfield CLI</span>
+            <span>ElevenLabs</span>
+            <span>Remotion</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Local job files (jobs/ per render) + Remotion render → mp4
+          <div class="arch-sub">
+            <span>shot plan JSON</span>
+            <span>voice.mp3</span>
+            <span>clip*.mp4</span>
+            <span>out/*.mp4</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Why this stack?</strong>
+      <p><strong>React + Bun bundler</strong> — I wanted components without installing Vite/Next; Bun ships bundling + HMR + CSS built in, and one command runs both frontend and backend &middot; <strong>A single Bun.serve()</strong> serves both the frontend and the API, so fewer moving parts &middot; <strong>async job + poll</strong> because generation takes minutes, and holding an HTTP request open gets cut by the idle timeout first &middot; <strong>Higgsfield CLI + Remotion render</strong> can't run in a browser, so a server has to shell out for them &middot; <strong>Keys live in <code>.env</code> on the backend</strong> and never reach the browser</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>What I built — 8 core capabilities</h2>
+      <p>The full loop, from planning shots to an .mp4 where keywords pop up on the exact word</p>
+    </section>
+    <figure class="shot shot-narrow" style="--shot-max:620px"><img src="img/ugs-script.jpg" width="925" height="1046" loading="lazy" alt="The Script column: a brief field for AI drafting, the Thai voiceover script, and a per-second audio timeline"><figcaption>The real Script column — AI drafts from the brief, counts script length against time, and splits the audio timeline into ~3-second segments</figcaption></figure>
+
+
+    <div class="module-grid">
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
+        <h3>AI Director (Shot Plan)</h3>
+        <p>OpenAI plans shots as JSON (type/duration/line/keyword) + <code>validatePlan()</code> guards against schema drift and keeps the total length equal to the sum of the shots</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 21h8"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
+        <h3>Thai Script Writer</h3>
+        <p><code>draftFullScript()</code> calculates characters per second so the AI drafts a Thai script that finishes right on time — clip length auto-syncs to the typed script</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        <h3>Angle Image Gen</h3>
+        <p>Higgsfield <code>nano_banana_2</code> generates multiple angles from a single product photo — with a prompt per shot type (close-up / flat-lay / hand holding the product)</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
+        <h3>Image → Video (i2v)</h3>
+        <p><code>seedance1_5</code> adds motion to turn angle shots into short clips — the motion prompt keeps movement subtle so the image doesn't morph out of shape</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>
+        <h3>Voice + Char Timestamp</h3>
+        <p>ElevenLabs <code>eleven_v3</code> records the Thai voiceover + returns a timestamp for every character (with-timestamps) — the key to keyword sync</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>
+        <h3>Keyword Sync Compositor</h3>
+        <p>Remotion cuts between shots along the timeline + pops keywords on screen while that sentence is spoken, with an opening hook and sfx</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>
+        <h3>3 Output Templates</h3>
+        <p>avatar (single-shot lip-sync presenter) / full / no-person + choice of aspect ratio 9:16 · 1:1 · 16:9 and resolution</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
+        <h3>Async Job + Poll</h3>
+        <p>Submitting a job returns a jobId right away, then the client polls status every 5 seconds until the mp4 is ready — and errors from external services are translated into messages users can understand</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Studio UI Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>The UI — a 3-column studio</h2>
+      <p>One page in the style of NotebookLM — left: upload photos/pick a presenter · middle: control the script + mark keywords · right: settings + Generate</p>
+    </section>
+    <figure class="shot"><img src="img/ugs-idle.jpg" width="1600" height="1000" loading="lazy" alt="UGC Studio in 3 columns: Source with product photo and avatar, Script with voiceover and timeline, Output with settings and the generate button"><figcaption>The real screen in 3 columns — Source · Script · Output (test product photo · the avatar is an AI presenter)</figcaption></figure>
+
+
+    <div class="studio-mock">
+      <div class="studio-topbar">
+        <span class="slogo">U</span>
+        <span class="stitle">UGC Studio</span>
+        <span class="ssub">React + Bun &middot; localhost</span>
+      </div>
+      <div class="studio-cols">
+        <div class="studio-col">
+          <div class="ch"><b>1</b> Source</div>
+          <div class="studio-label">Product photo</div>
+          <div class="studio-thumbs"><i></i><i></i><i></i></div>
+          <div class="studio-label">Presenter / Avatar</div>
+          <span class="studio-chip on">&#10003; Selected</span>
+          <span class="studio-chip">Reference video</span>
+        </div>
+        <div class="studio-col">
+          <div class="ch"><b>2</b> Script</div>
+          <div class="studio-label">Script (AI draft · mark keywords)</div>
+          <div class="studio-script">Let me review this serum. It leaves your skin <mark>clear</mark> and glowing, <mark>absorbs fast</mark> and isn't sticky, fades dark spots. <mark>Special discount</mark> today, order now</div>
+        </div>
+        <div class="studio-col">
+          <div class="ch"><b>3</b> Output</div>
+          <div class="studio-label">Size</div>
+          <span class="studio-chip on">9:16</span><span class="studio-chip">1:1</span><span class="studio-chip">16:9</span>
+          <div class="studio-label" style="margin-top:8px">Length · Template</div>
+          <span class="studio-chip">~20 s</span><span class="studio-chip on">no-person</span>
+          <div class="studio-gen"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><polygon points="6 3 20 12 6 21 6 3"/></svg> Generate Final Product</div>
+          <div class="studio-frame"><span>UGC .mp4 · keyword sync</span></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hacks for the hard parts</h2>
+      <p>6 problems I had to work out myself — chaining several AIs + managing long jobs on unstable external services</p>
+    </section>
+    <figure class="shot"><img src="img/ugs-hack.jpg" width="1112" height="640" loading="lazy" alt="3 frames from a smartwatch clip: the keywords heart-rate tracking, confidently waterproof, and long battery life pop up in time with the voice"><figcaption>Keyword sync from ElevenLabs timestamps — the text pops up with the sentence being spoken (frames from a test clip)</figcaption></figure>
+
+
+    <div class="hack-grid">
+      <div class="hack-card arch" data-label="Async Jobs">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg><span>Generation takes minutes — one HTTP request can't hold it</span></h3>
+        <p>Generating a full video takes several minutes. Holding a connection open for the result always gets cut by the idle timeout first</p>
+        <div class="highlight">Fix: separate "submit" from "wait for the result" — <code>/api/generate</code> returns a jobId right away and keeps status in an in-memory map, the client <code>poll</code>s <code>/api/status</code> every 5 seconds; a high idleTimeout is set only for the photo upload</div>
+      </div>
+
+      <div class="hack-card platform" data-label="Server-side">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span>Higgsfield CLI + Remotion render can't run in a browser</span></h3>
+        <p>Generating footage and rendering need CLI calls / spawned processes — things a web page can't do at all</p>
+        <div class="highlight">Fix: the Bun server <code>spawn</code>s the CLI + <code>bunx remotion render</code>, and pre-warms Remotion Studio (on a fixed port) so the Edit button can open a tab right after the render finishes</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Timestamp Sync">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>Keywords have to pop up "on the exact word" being spoken</span></h3>
+        <p>Knowing the text isn't enough — you need the second each sentence starts and ends in the real audio</p>
+        <div class="highlight">Fix: TTS every line as one chunk, then walk a character pointer over the alignment to find each line's start/end → show the keyword instead of the text; use the real audio length from <code>ffprobe</code> + a tail so a drawn-out last word isn't cut off</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Flaky API">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>External services fail now and then (429 / timeout / unreachable)</span></h3>
+        <p>Higgsfield is an external service with occasional blips — one failure used to break the entire render</p>
+        <div class="highlight">Fix: <code>withRetry()</code> with 3-step backoff wraps every external call + shots are generated in parallel with <code>Promise.all</code> (angle images + audio at the same time) + raw errors are translated into plain Thai messages users can understand</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Thai TTS">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.8 20v-4.1l1.9.2a2.3 2.3 0 0 0 2.164-2.1V8.3A5.37 5.37 0 0 0 2 8.25c0 2.8.656 3.054 1 4.55a5.77 5.77 0 0 1 .029 2.758L2 20"/><path d="M19.8 17.8a7.5 7.5 0 0 0 .003-10.603"/><path d="M17 15a3.5 3.5 0 0 0-.025-4.975"/></svg><span>The model mispronounces some Thai words</span></h3>
+        <p>English brand names and drawn-out words come out wrong in TTS — it sounds unnatural and undermines the clip's credibility</p>
+        <div class="highlight">Fix: <code>fixThaiPron()</code> corrects pronunciation in the script before voicing (timing is calculated from the corrected text, so characters always match the alignment) + choosing <code>eleven_v3</code>, the model with the best Thai support</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Scope Cut">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg><span>Lip-sync is the hardest and riskiest part</span></h3>
+        <p>Getting the presenter's mouth to match the audio exactly for the whole clip is a fragile bet that eats a lot of generation budget</p>
+        <div class="highlight">Fix: v1 deliberately "avoids" it — cut between product shots / hand-holding-product shots (when the product is on screen you can't see a mouth, so lip-sync doesn't matter), rely mainly on voiceover + keywords, and leave "analyzing a real reference" for v2. Lesson: cut the riskiest part first and prove the whole chain actually works</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Design decisions I made on purpose</h2>
+      <p>What I deliberately "didn't build" in the first round matters as much as what I did</p>
+    </section>
+    <figure class="shot"><img src="img/ugs-decision.jpg" width="1488" height="640" loading="lazy" alt="4 frames of hand-and-product shots, no faces, with keywords"><figcaption>Avoiding lip-sync in v1 — cutting to hand/product shots with no visible mouth, and letting the voiceover + keywords tell the story</figcaption></figure>
+
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>I scoped this tool small on purpose for v1. The goal was to prove the whole chain (photo → video → audio → edit) works from a real product photo first. It doesn't analyze references in depth yet and doesn't do full lip-sync, because a pipeline that connects end to end and outputs a real .mp4 is worth more than betting on the hardest part in round one</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></svg></strong><br>
+        <strong>AI as director, not just a form</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">OpenAI writes the shot plan, then dispatches the resources</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg></strong><br>
+        <strong>Avoid lip-sync in v1</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Cut to product shots instead — rely on voice + keywords</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></strong><br>
+        <strong>Keys stay on the backend</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Never call AI straight from the browser — always through the server</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/></svg></strong><br>
+        <strong>No Vite / Next</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Bun's built-in bundler means fewer dependencies to maintain</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge domains that got stronger</h2>
+      <p>5 areas where my skills actually moved up from this project</p>
+    </section>
+    <figure class="shot"><img src="img/ugs-know-unsplash.jpg" width="1200" height="800" loading="lazy" alt="A video editing timeline on screen"><figcaption>What used to be manual work in an editing timeline moved into code (Remotion) · Photo: Peter Stumpf / Unsplash</figcaption></figure>
+
+
+    <div class="learning-card">
+      <strong>1. AI Orchestration — chaining a multi-model pipeline into one line:</strong>
+      <p>Learned to chain LLM + image gen + i2v + voice + render across several models, use AI to write the "plan" (shot plan) and let a code loop dispatch the resources, validate AI output with a schema so it doesn't drift, and run jobs in parallel with <code>Promise.all</code>. Lesson: getting models to "talk to each other" through data you control is the core of an AI product</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Bun full-stack runtime — server + bundler in one:</strong>
+      <p>Used <code>Bun.serve()</code> to serve both the React frontend (bundle + HMR) and a REST API, spawn CLIs/subprocesses from the server, and handle multipart uploads — without relying on Vite/Next. Lesson: Bun makes a full-stack POC much lighter, with fewer moving parts to configure</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. Media pipeline &amp; timestamp sync — video/audio aren't black boxes:</strong>
+      <p>Understood char-level alignment from TTS → turning it into caption timing, used <code>ffprobe</code>/<code>ffmpeg</code> to get the real audio length, and assembled the timeline with Remotion (a code-based compositor). Lesson: audio and video are "data you can sync" once you know timestamps and the assembly tools</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Async job architecture — long jobs HTTP can't hold:</strong>
+      <p>Designed submit-then-poll: return a jobId right away, keep status on the server, the client polls until done, with retry/backoff for unstable external services, and raw errors translated into messages users understand. Lesson: long-running work has to separate "accepting the job" from "delivering the result" from the design stage</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Model selection &amp; prompt engineering in real work:</strong>
+      <p>Practiced matching models to the job (GPT-4o as director, eleven_v3 for Thai, nano_banana for angle shots, seedance for i2v) and understanding each one's limits (e.g. Thai TTS can't stress individual words via SSML → moved the emphasis to caption highlights instead). Lesson: every model has its strengths and quirks; you have to know how to pick and design workarounds</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">5</div>
+        <div class="label">Steps in the AI pipeline — plan→image→clip→audio→edit</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">3</div>
+        <div class="label">Columns on one page (Source · Script · Output)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">3</div>
+        <div class="label">Output templates (avatar / full / no-person)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">API keys leaked to the browser</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <h2>UGC Studio</h2>
+    <p>An internal tool that turns a product photo and a short brief into a vertical UGC sales video. AI acts as the director, from planning shots, writing the Thai script, generating footage and recording the voiceover to editing with keyword sync into an .mp4 ready to post. Built with React 19 + Bun + Remotion, chaining several AIs in one pipeline</p>
+    <div class="stack-icons">
+      <span class="stack-icon">React 19</span>
+      <span class="stack-icon">Bun</span>
+      <span class="stack-icon">TypeScript</span>
+      <span class="stack-icon">OpenAI GPT-4o</span>
+      <span class="stack-icon">Higgsfield</span>
+      <span class="stack-icon">ElevenLabs</span>
+      <span class="stack-icon">Remotion</span>
+      <span class="stack-icon">Async Job + Poll</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.work/">&#8592; Back to all projects</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "UGC Studio Portfolio",
+      "item": "https://projects.tanplanet.work/ugc-studio-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

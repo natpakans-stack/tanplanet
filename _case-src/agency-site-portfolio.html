@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เว็บเอเจนซี Digital Marketing — เว็บไซต์บริษัทเอเจนซีการตลาดดิจิทัล</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="เว็บเอเจนซี Digital Marketing — เว็บไซต์บริษัทเอเจนซีการตลาดดิจิทัล">
+  <meta name="twitter:description" content="Portfolio: เว็บเอเจนซี Digital Marketing Agency Website สร้างด้วย Webflow — Live Commerce, Influencer Marketing, Event Organization">
+  <meta property="og:url" content="https://projects.tanplanet.work/agency-site-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.work/agency-site-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: เว็บเอเจนซี Digital Marketing Agency Website สร้างด้วย Webflow — Live Commerce, Influencer Marketing, Event Organization">
+  <meta property="og:title" content="เว็บเอเจนซี Digital Marketing — เว็บไซต์บริษัทเอเจนซีการตลาดดิจิทัล">
+  <link rel="icon" type="image/png" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=64&height=64">
+  <link rel="apple-touch-icon" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=180&height=180">
+    <meta name="description" content="Portfolio: เว็บเอเจนซี Digital Marketing Agency Website สร้างด้วย Webflow — Live Commerce, Influencer Marketing, Event Organization">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap"></noscript>
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --accent: #e84c1e;
+            --accent-dark: #c43d14;
+            --accent-light: rgba(232, 76, 30, 0.12);
+            --bg: #f8f9fb;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a2e;
+            --text-secondary: #555770;
+            --text-tertiary: #8a8da0;
+            --border: #e8e9ee;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 32px rgba(0,0,0,0.1);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --max-w: 780px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ======================== BACK NAV ======================== */
+        .back-nav {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(232, 76, 30, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .back-nav:hover {
+            background: rgba(232, 76, 30, 0.95);
+            transform: translateX(-2px);
+        }
+        .back-nav svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* ======================== BACK TO TOP ======================== */
+        .back-to-top {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 100;
+            width: 48px;
+            height: 48px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(232, 76, 30, 0.35);
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .back-to-top:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+        .back-to-top svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* ======================== HERO ======================== */
+        .hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #e84c1e 100%);
+            color: #fff;
+            padding: 120px 24px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        .hero-inner {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(8px);
+            padding: 8px 20px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 28px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse-dot 2s ease infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .hero h1 {
+            font-size: 44px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        .hero h1 span {
+            display: block;
+            font-size: 20px;
+            font-weight: 500;
+            opacity: 0.8;
+            margin-top: 8px;
+            letter-spacing: 0;
+        }
+        .hero-tagline {
+            font-size: 18px;
+            opacity: 0.85;
+            max-width: 560px;
+            margin: 20px auto 32px;
+            line-height: 1.7;
+        }
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 36px;
+        }
+        .hero-tag {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.18);
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            color: var(--text-primary);
+            padding: 14px 32px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(0,0,0,0.2);
+        }
+        .hero-cta .arrow {
+            transition: transform 0.3s ease;
+        }
+        .hero-cta:hover .arrow {
+            transform: translateX(4px);
+        }
+
+        /* ======================== CONTENT SECTIONS ======================== */
+        .content {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section {
+            margin-top: 72px;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+        .section-label::before {
+            content: '';
+            width: 20px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .section h2 {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.35;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .section p, .section li {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .section p + p {
+            margin-top: 16px;
+        }
+
+        /* ======================== PROBLEM CARDS ======================== */
+        .problem-grid {
+            display: grid;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .problem-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent);
+            border-radius: 0 4px 4px 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .problem-card:hover {
+            border-color: rgba(232, 76, 30, 0.2);
+            box-shadow: var(--shadow-md);
+        }
+        .problem-card:hover::before {
+            opacity: 1;
+        }
+        .problem-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--accent-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+        .problem-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        .problem-card p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ======================== SOLUTION SECTION ======================== */
+        .solution-list {
+            list-style: none;
+            margin-top: 24px;
+            display: grid;
+            gap: 12px;
+        }
+        .solution-list li {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 20px 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: all 0.3s ease;
+        }
+        .solution-list li:hover {
+            border-color: rgba(232, 76, 30, 0.2);
+            box-shadow: var(--shadow-sm);
+        }
+        .solution-check {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+        }
+        .solution-check svg {
+            width: 13px;
+            height: 13px;
+            color: #fff;
+        }
+        .solution-text {
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        .solution-text strong {
+            color: var(--text-primary);
+        }
+
+        /* ======================== PROTOTYPE / BUILD SECTION ======================== */
+        .build-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .build-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .build-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .problem-icon svg { width: 22px; height: 22px; color: var(--accent); }
+        .build-emoji svg, .pricing-icon svg { width: 28px; height: 28px; color: var(--accent); display: inline-block; }
+        .build-emoji {
+            font-size: 32px;
+            margin-bottom: 14px;
+            display: block;
+        }
+        .build-card h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        .build-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ======================== PROCESS STEPS ======================== */
+        .process-steps {
+            margin-top: 32px;
+            position: relative;
+        }
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            left: 23px;
+            top: 32px;
+            bottom: 32px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), rgba(232,76,30,0.1));
+        }
+        .step {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            margin-bottom: 28px;
+            position: relative;
+        }
+        .step:last-child {
+            margin-bottom: 0;
+        }
+        .step-number {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(232,76,30,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        .step-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 20px 24px;
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+        .step-content:hover {
+            box-shadow: var(--shadow-sm);
+        }
+        .step-content h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+        .step-content p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ======================== PRICING PREVIEW ======================== */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .pricing-card.featured {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent);
+        }
+        .pricing-card.featured::after {
+            content: 'POPULAR';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: #fff;
+            padding: 4px 16px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .pricing-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        .pricing-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+        .pricing-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+        .pricing-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 12px 0;
+        }
+        .pricing-price span {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-tertiary);
+        }
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin-top: 16px;
+        }
+        .pricing-features li {
+            font-size: 14px;
+            color: var(--text-secondary);
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+        .pricing-features li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ======================== TAKEAWAYS ======================== */
+        .takeaway-list {
+            margin-top: 24px;
+            display: grid;
+            gap: 16px;
+        }
+        .takeaway {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .takeaway-num {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            background: var(--accent-light);
+            color: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .takeaway p {
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        .takeaway strong {
+            color: var(--text-primary);
+        }
+
+        /* ======================== STATS / METRICS ======================== */
+        .stats-section {
+            margin-top: 72px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: var(--radius);
+            padding: 28px 20px;
+            text-align: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 80px;
+            height: 80px;
+            background: rgba(232, 76, 30, 0.15);
+            border-radius: 50%;
+        }
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+            color: var(--accent);
+        }
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.8;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        /* ======================== TECH STACK ======================== */
+        .tech-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 24px;
+        }
+        .tech-badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+        .tech-badge:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        /* ======================== CLOSING / MASCOT ======================== */
+
+        .footer-note {
+            text-align: center;
+            padding: 24px;
+            font-size: 13px;
+            color: var(--text-tertiary);
+            border-top: 1px solid var(--border);
+            margin-top: 48px;
+        }
+
+        /* ======================== ANIMATIONS ======================== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes count-up {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .stat-card.animated .stat-number {
+            animation: count-up 0.5s ease forwards;
+        }
+
+        /* ======================== RESPONSIVE ======================== */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 100px 20px 60px;
+            }
+            .hero h1 {
+                font-size: 30px;
+            }
+            .hero h1 span {
+                font-size: 16px;
+            }
+            .hero-tagline {
+                font-size: 16px;
+            }
+            .section h2 {
+                font-size: 24px;
+            }
+            .build-grid {
+                grid-template-columns: 1fr;
+            }
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 360px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .pricing-card.featured::after {
+                top: -11px;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .process-steps::before {
+                left: 19px;
+            }
+            .step-number {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            .back-nav {
+                top: 12px;
+                left: 12px;
+                padding: 6px 14px;
+                font-size: 13px;
+            }
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 42px;
+                height: 42px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 26px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .stat-number {
+                font-size: 26px;
+            }
+        }
+    
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* shot figures (รูปประกอบ) */
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:16px;align-items:start}
+    .shot-pair.even{grid-template-columns:1fr 1fr}
+    .shot-pair figcaption{grid-column:1/-1}
+    .shot.phone img{max-width:360px;margin:0 auto}
+    @media (max-width:639px){.shot-pair,.shot-pair.even{grid-template-columns:1fr}.shot-pair img+img{max-width:300px;margin:0 auto}}
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/agency-site-portfolio/">
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <h1>เว็บเอเจนซี Digital Marketing<br><span class="accent">เว็บไซต์บริษัทเอเจนซีการตลาดดิจิทัล</span></h1>
+    <p>เพิ่มยอดขายออนไลน์ด้วย Live Commerce, Influencer &amp; Event ออกแบบเว็บไซต์ที่สื่อสารบริการได้ชัด ปิดการขายได้จริง</p>
+    <div class="hero-tags">
+      <span class="hero-tag">Webflow</span>
+      <span class="hero-tag">Live Commerce</span>
+      <span class="hero-tag">Influencer Marketing</span>
+      <span class="hero-tag">Event</span>
+      <span class="hero-tag">Content Production</span>
+    </div>
+  </div>
+</header>
+
+<article>
+
+  <section class="section-intro">
+    <span class="eyebrow">Empathize</span>
+    <h2>ปัญหาที่แบรนด์เจอจริงๆ</h2>
+    <p>ก่อนจะออกแบบอะไร ต้องเข้าใจก่อนว่าแบรนด์ E-commerce ในไทยกำลังเจอปัญหาอะไรบ้าง เราคุยกับทีม เว็บเอเจนซี แล้วพบ pain points หลักๆ 3 เรื่อง</p>
+  </section>
+  <div class="pain-grid"><div class="pain-card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg><h3>Live Selling ดูง่าย แต่ทำจริงยากกว่าที่คิด</h3><p>แบรนด์หลายเจ้าอยากทำ Live Commerce แต่ไม่มีพิธีกร ไม่มี studio ไม่รู้จะเริ่มจากตรงไหน ลองทำเองก็ไม่ได้ยอด ลงทุนไปเยอะแต่ผลตอบรับไม่ดี</p></div><div class="pain-card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><h3>หา Influencer เองเหมือนเดาสุ่ม</h3><p>ติดต่อ Influencer เอง เสี่ยงได้คนไม่ตรงกลุ่มเป้าหมาย follower อาจไม่ใช่ลูกค้าจริง จ่ายแพงแต่ยอดไม่มา เปรียบเทียบ ROI ก็ยาก</p></div><div class="pain-card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><h3>เว็บเก่าสื่อสารบริการไม่ชัด</h3><p>ลูกค้าเข้ามาแล้วไม่เข้าใจว่า เว็บเอเจนซี ทำอะไรได้บ้าง ราคาเท่าไหร่ ขั้นตอนยังไง ต้องทักมาถาม กว่าจะปิดจ็อบใช้เวลานาน</p></div></div>
+  <figure class="shot"><img src="img/services-overview.jpg" width="1440" height="934" loading="lazy" alt="ส่วนบริการบนเว็บจริง พื้นดำ การ์ด 4 บริการ Live Commerce, Influencer Review, Event Organizer และ Content Production"><figcaption>บริการ 4 อย่างที่เว็บต้องเล่าให้เข้าใจในไม่กี่วินาที — ส่วนบริการบนเว็บจริง</figcaption></figure>
+
+  <section class="section-intro">
+    <span class="eyebrow">Define + Ideate</span>
+    <h2>วิธีแก้ปัญหาด้วย Design</h2>
+    <p>จาก pain points ที่เจอ เราวาง strategy ในการออกแบบเว็บไซต์ให้ตอบโจทย์ทั้งเรื่อง branding และ conversion</p>
+  </section>
+  <figure class="shot shot-pair"><img src="img/services-hero-desktop.jpg" width="1440" height="864" loading="lazy" alt="หน้าบริการบนเดสก์ท็อป พื้นดำ หัวข้อใหญ่สีขาวและส้ม พร้อมปุ่มสนใจบริการ"><img src="img/services-hero-mobile.jpg" width="640" height="1387" loading="lazy" alt="หน้าบริการเดียวกันบนมือถือ"><figcaption>Hero ธีมดำ-ส้ม บอก value ในประโยคเดียว — เดสก์ท็อปและมือถือ (เบลอโลโก้ลูกค้า)</figcaption></figure>
+  <ul class="plain"><li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span><b>สื่อสาร Value Proposition ชัดเจน</b> ตั้งแต่ hero section ลูกค้าต้องรู้เลยว่า เว็บเอเจนซี ช่วยเพิ่มยอดขายผ่าน Live, Influencer, Event ได้ยังไง</span></li><li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span><b>Dark Theme + สีสดที่ Bold แต่ Professional</b> ใช้โทนดำ-น้ำเงินเข้มเป็นหลัก สลับสีแดงสดเป็น accent ให้ดู agency style น่าเชื่อถือแต่ไม่น่าเบื่อ</span></li><li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span><b>Pricing Packages ที่เปรียบเทียบง่าย</b> มี 3 แพ็กเกจชัดเจน ลูกค้าเห็นราคาแล้วตัดสินใจได้ทันที ลด friction ไม่ต้องทักมาถาม</span></li><li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span><b>Social Proof ที่แข็งแรง</b> Stat counters (461M+ revenue), client logos, testimonials จริง ทำให้ลูกค้าใหม่มั่นใจ</span></li><li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span><b>Process Flow 4 ขั้นตอน</b> ลูกค้าเห็น flow การทำงานชัดเจน ลดความกังวล เข้าใจว่าจ้างแล้วจะเกิดอะไรขึ้นบ้าง</span></li><li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span><b>Responsive Design ทุก Device</b> ลูกค้าส่วนใหญ่เปิดจากมือถือ ต้องดูดีและใช้งานง่ายทั้ง desktop และ mobile</span></li></ul>
+
+  <section class="section-intro">
+    <span class="eyebrow">Prototype + Test</span>
+    <h2>สิ่งที่สร้างขึ้นมาจริง</h2>
+    <p>เราใช้ Webflow เป็นเครื่องมือหลักในการ build เพราะ iterate ได้เร็ว ปรับ design แล้วเห็นผลทันที ไม่ต้องเขียน code จากศูนย์</p>
+  </section>
+  <figure class="shot"><img src="img/live-commerce-section.jpg" width="1440" height="880" loading="lazy" alt="ส่วนบริการไลฟ์ขายของ พื้นดำ ข้อความซ้าย ภาพไลฟ์สตูดิโอขวาในกรอบไล่สีส้ม"><figcaption>ส่วน Live Commerce บนเว็บจริง — dark theme + ภาพงานจริงในกรอบสีแบรนด์</figcaption></figure>
+  <div class="pain-grid"><div class="pain-card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg><h3>Dark Theme Design</h3><p>สีดำ-น้ำเงินเข้มเป็นพื้นหลัก สลับสีสดดึงดูดสายตา ให้ดู bold แต่ยังคงความ professional</p></div><div class="pain-card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg><h3>Animated Elements</h3><p>Hover effects, transition, stat counter animation ทำให้เว็บมีชีวิต ไม่ใช่แค่หน้า static</p></div><div class="pain-card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><h3>Pricing Comparison</h3><p>3 แพ็กเกจเปรียบเทียบข้างกัน ลูกค้าเลือกได้เลย ไม่ต้องอ่านยาว</p></div><div class="pain-card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg><h3>Testimonials + Logos</h3><p>Reviews จากลูกค้าจริง + โลโก้แบรนด์ที่เคยร่วมงาน สร้าง trust ตั้งแต่แรกเห็น</p></div></div>
+
+  <section class="section-intro">
+    <span class="eyebrow">Process</span>
+    <h2>Process ที่ออกแบบให้ลูกค้าเข้าใจง่าย</h2>
+    <p>เราออกแบบ 4-step process ให้ลูกค้าเห็นภาพว่าจ้าง เว็บเอเจนซี แล้วจะเกิดอะไรขึ้นบ้าง</p>
+  </section>
+  <div class="flow-grid"><div class="flow-step"><div class="step-num">01</div><h4>Brief &amp; Consult</h4><p>คุยกับทีม เว็บเอเจนซี เพื่อทำความเข้าใจสินค้า กลุ่มเป้าหมาย และเป้าหมายที่ต้องการ วางแผน campaign ร่วมกัน</p></div><div class="flow-step"><div class="step-num">02</div><h4>Strategy &amp; Planning</h4><p>วางกลยุทธ์ เลือก influencer/MC ที่เหมาะสม กำหนด timeline และ KPI ที่วัดผลได้</p></div><div class="flow-step"><div class="step-num">03</div><h4>Production &amp; Execution</h4><p>ลงมือทำจริง ไม่ว่าจะเป็นไลฟ์ ถ่าย content รีวิวสินค้า หรือจัดอีเวนต์ ทีม เว็บเอเจนซี ดูแลครบจบ</p></div><div class="flow-step"><div class="step-num">04</div><h4>Report &amp; Optimize</h4><p>สรุปผล วิเคราะห์ข้อมูล ปรับปรุงกลยุทธ์สำหรับ campaign ถัดไปให้ดียิ่งขึ้น</p></div></div>
+  <figure class="shot"><img src="img/process-steps.jpg" width="1440" height="900" loading="lazy" alt="ส่วนขั้นตอนการทำงาน 4 ขั้นบนเว็บจริง ภาพทีมงานทางซ้าย ลำดับขั้นทางขวา"><figcaption>4 ขั้นตอนบนเว็บจริง — ลูกค้าเห็นว่าจ้างแล้วจะเกิดอะไรต่อ</figcaption></figure>
+
+  <section class="section-intro">
+    <span class="eyebrow">Pricing</span>
+    <h2>Pricing Packages ที่ออกแบบ</h2>
+    <p>แสดงราคาชัดเจนบนเว็บ ลดการถาม-ตอบ ลูกค้าเปรียบเทียบแล้วตัดสินใจได้เลย</p>
+  </section>
+  <div class="ledger-wrap"><table class="ledger"><thead><tr><th>แพ็กเกจ</th><th>ราคาเริ่มต้น</th><th>สิ่งที่ได้</th></tr></thead><tbody><tr><td>Live Commerce</td><td>19,900+ บาท</td><td>พิธีกรมืออาชีพ · Studio + อุปกรณ์ครบ · วางแผน script · รายงานสรุปยอด</td></tr><tr data-picked><td>Influencer Review<span class="pick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg> แนะนำ</span></td><td>22,000+ บาท</td><td>คัดเลือก Influencer ตรงกลุ่ม · Brief + ดูแล content · Track performance · รายงาน ROI</td></tr><tr><td>Event Organization</td><td>19,900+ บาท</td><td>วางแผนอีเวนต์ A-Z · ทีมงานครบจบ · Venue + Setup · ถ่ายภาพ/วิดีโอ</td></tr></tbody></table></div>
+  <figure class="shot"><img src="img/pricing-packages.jpg" width="1180" height="1230" loading="lazy" alt="ตารางแพ็กเกจบนเว็บจริง 3 คอลัมน์ Influencer, Live และ Content พร้อมราคาเริ่มต้นและป้าย Most Popular"><figcaption>แพ็กเกจบนเว็บเวอร์ชันล่าสุด — ราคาเริ่มต้นชัด เลือกได้โดยไม่ต้องทักถาม</figcaption></figure>
+
+  <section class="section-intro">
+    <span class="eyebrow">Tech Stack</span>
+    <h2>เทคโนโลยีที่ใช้</h2>
+  </section>
+  <div class="chips"><span class="chip">Webflow</span><span class="chip">Custom CSS</span><span class="chip">Google Tag Manager</span><span class="chip">Responsive Design</span><span class="chip">SEO Optimization</span><span class="chip">Analytics Integration</span></div>
+  <figure class="shot shot-pair even"><img src="img/mobile-pricing.jpg" width="600" height="1301" loading="lazy" alt="หน้าแพ็กเกจบนมือถือ มีแท็บเลือกประเภทไลฟ์และการ์ดราคา"><img src="img/mobile-live.jpg" width="600" height="1301" loading="lazy" alt="หน้าบริการ Live Commerce บนมือถือ หัวข้อบนแถบส้ม"><figcaption>Responsive บนมือถือ — แท็บเลื่อนแนวนอนและการ์ดเต็มจอ</figcaption></figure>
+
+  <section class="section-intro">
+    <span class="eyebrow">Key Takeaways</span>
+    <h2>บทเรียนจากโปรเจกต์นี้</h2>
+  </section>
+  <div class="learning-card"><p><strong>เว็บ Agency ที่ดีต้อง "ว้าว" แล้วก็ "เข้าใจ" ภายใน 3 วินาที</strong> — ตอนแรกออกแบบ dark theme สวยมาก แต่ลูกค้าเข้ามาแล้วไม่รู้ว่าขายอะไร จนเพิ่ม stat counters + pricing ชัดๆ ลูกค้าเริ่มกดติดต่อเอง ไม่ต้องรอ salesman ตาม — สิ่งที่เจ๋งคือ Visual กับ Message ไม่ขัดกัน มันช่วยกันได้</p></div><div class="learning-card"><p><strong>"บอกราคาเลย" กล้าๆ หน่อย — lead quality ดีขึ้นทันที</strong> — หลาย agency ซ่อนราคาเพราะกลัวลูกค้าหนี แต่พอ เว็บเอเจนซี โชว์ราคาเริ่มต้น 19,900 บาทชัดเจนบนเว็บ กลับได้ผลตรงข้าม คนที่ทักมาคือคนพร้อมจ่ายจริง ไม่เสียเวลาคุยกับคนแค่ถามราคา — Pricing Transparency ไม่ได้ไล่ลูกค้า มัน filter ลูกค้าให้</p></div><div class="learning-card"><p><strong>ตัวเลข 461 ล้าน บนหน้าเว็บ ทำให้คนหยุดอ่าน</strong> — Social proof แบบ "เราทำให้ลูกค้าสร้างรายได้ 461M+" ทรงพลังกว่า "เราเก่ง เราเป็นมืออาชีพ" หลายเท่า ผสมกับ logo ลูกค้าจริง + testimonials = ลูกค้าใหม่ไม่ต้องคิดนาน รู้สึกว่า "เจ้านี้ทำได้จริง" — บทเรียนคือ ให้ผลงานพูดแทน อย่าพูดเอง</p></div><div class="learning-card"><p><strong>Webflow ทำให้ designer ส่งงาน production ได้เอง — เร็วกว่า dev cycle 3 เท่า</strong> — ปกติต้องออกแบบใน Figma แล้วส่ง dev build อีก 2-3 สัปดาห์ แต่ Webflow ให้ designer สร้าง responsive site จริงได้เลย เปลี่ยน copy, ปรับ layout, เพิ่ม animation ไม่ต้องรอใคร — สิ่งที่ได้คือ ownership ของงานตัวเอง ตั้งแต่ design ยัน deploy</p></div>
+
+  <section class="section-intro">
+    <span class="eyebrow">Metrics</span>
+    <h2>ตัวเลขที่พูดแทน</h2>
+    <p>ผลงานจริงที่ เว็บเอเจนซี สร้างให้ลูกค้า แสดงบนเว็บไซต์เป็น social proof</p>
+  </section>
+  <div class="metrics"><div class="metric-card"><div class="num">461M+</div><div class="label">Generated Revenue</div></div><div class="metric-card"><div class="num">155+</div><div class="label">Campaigns</div></div><div class="metric-card"><div class="num">16+</div><div class="label">Clients</div></div><div class="metric-card"><div class="num">5</div><div class="label">Testimonials</div></div></div>
+  <figure class="shot"><img src="img/social-proof-stats.jpg" width="1440" height="290" loading="lazy" alt="แถบตัวเลขสีส้มบนเว็บจริง ทีมงานมืออาชีพ ชั่วโมงไลฟ์ แบรนด์และโปรเจกต์ นักไลฟ์ในทีม"><figcaption>แถบตัวเลข social proof บนเว็บเวอร์ชันล่าสุด (ตัวเลขอัปเดตตามผลงาน)</figcaption></figure>
+
+</article>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
+
+<div class="closing">
+  <h2>เว็บที่ดีคือเว็บที่ปิดการขายได้</h2>
+  <p>เว็บเอเจนซี เป็นตัวอย่างว่าเว็บ agency ที่ดี ไม่ใช่แค่สวย แต่ต้องสื่อสารชัด มี social proof แข็งแรง และให้ลูกค้าตัดสินใจได้ทันที</p>
+</div>
+
+<script>
+  const backToTopBtn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => { backToTopBtn.classList.toggle('visible', window.scrollY > 300); });
+  backToTopBtn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "เว็บเอเจนซี",
+      "item": "https://projects.tanplanet.work/agency-site-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

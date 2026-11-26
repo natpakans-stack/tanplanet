@@ -17,14 +17,14 @@
 .ap-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
 .ap-tag { display: inline-flex; align-items: center; padding: 6px 11px; border-radius: 5px; background: var(--accent-color); color: var(--tp-on-brand); font-weight: 600; font-size: 12px; letter-spacing: .5px; text-transform: uppercase; line-height: 1.2; }
 .ap-tag:hover { color: var(--tp-on-brand); filter: brightness(1.08); }
-.ap-tag--ghost { background: transparent; color: var(--text-color); box-shadow: inset 0 0 0 1px var(--divider-color); }
+.ap-tag--ghost { background: var(--tp-surface); color: var(--tp-text-2); box-shadow: inset 0 0 0 1px var(--tp-border-strong); }  /* พื้นขาว ไม่จมไปกับแถบเทา */
 .ap-tag--ghost:hover { color: var(--primary-color); filter: none; }
 .ap-title { margin: 0 0 16px; color: var(--primary-color); font-family: "Google Sans", Inter, sans-serif; font-size: 34px; line-height: 1.35; font-weight: 600; text-wrap: balance; }
 .ap-meta { display: flex; flex-wrap: wrap; gap: 16px; margin: 0; font-size: 14px; color: var(--text-color); }
 .ap-meta span { display: inline-flex; align-items: center; gap: 6px; }
 
 /* ── เนื้อหา 850 + sidebar 300 · ปกคร่อมขอบล่างแถบ 50 ── */
-.ap-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 35px; margin-top: -50px; padding-bottom: 100px; }
+.ap-grid { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 35px; margin-top: -50px; padding-bottom: 100px; }
 .ap-main { min-width: 0; }
 .ap-cover { margin: 0 0 45px; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; background: var(--secondary-color); }
 .ap-cover > img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -89,7 +89,7 @@
 .ap-more-title { margin: 0 0 32px; text-align: center; font-family: "Google Sans", Inter, sans-serif; font-size: 24px; font-weight: 700; color: var(--primary-color); }
 .ap-more-title .hl-word { background: linear-gradient(90deg, var(--accent-secondary-color), var(--accent-color)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .ap-more-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 50px; }
-.ap-more-item { display: grid; grid-template-columns: 1fr 160px; gap: 20px; align-items: center; color: inherit; }
+.ap-more-item { display: grid; grid-template-columns: 1fr 160px; gap: 20px; align-items: start; color: inherit; }
 .ap-more-text { display: flex; flex-direction: column; gap: 10px; }
 .ap-more-name { font-size: 17px; font-weight: 700; line-height: 1.5; color: var(--primary-color); }
 .ap-more-item:hover .ap-more-name { color: var(--accent-color); }
@@ -106,10 +106,10 @@
 .ap-widget-title { display: flex; align-items: center; gap: 12px; margin: 0 0 24px; font-size: 15px; font-weight: 600; color: var(--primary-color); }
 .ap-widget-title::after { content: ''; flex: 1; height: 1px; background: var(--divider-color); }
 .ap-rank { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 22px; }
-.ap-rank-item { display: grid; grid-template-columns: 112px 1fr; gap: 16px; align-items: center; color: inherit; }
+.ap-rank-item { display: grid; grid-template-columns: 112px 1fr; gap: 16px; align-items: start; color: inherit; }
 .ap-rank-thumb { position: relative; width: 112px; aspect-ratio: 16 / 9; }
 .ap-rank-thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
-.ap-rank-no { position: absolute; top: -10px; left: -10px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-color); color: var(--tp-on-brand); font-size: 14px; font-weight: 700; border: 2px solid var(--tp-surface); }
+.ap-rank-no { position: absolute; top: -10px; left: -10px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-color); color: var(--tp-on-brand); font-size: 14px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; border: 2px solid var(--tp-surface); }
 .ap-rank-title { font-size: 15px; font-weight: 600; line-height: 1.5; color: var(--primary-color); }
 .ap-rank-item:hover .ap-rank-title, .ap-rank-item.is-current .ap-rank-title { color: var(--accent-color); }
 .ap-rank-now { display: block; margin-top: 4px; font-size: 13px; font-weight: 400; color: var(--text-color); }
@@ -124,7 +124,7 @@
 .ap-progress span { position: relative; font-size: 14px; font-weight: 600; color: var(--primary-color); }
 @media (prefers-reduced-motion: reduce) { .ap-share-btn, .ap-progress, .ap-progress-bar, .ap-pn-label .ic { transition: none; } }
 
-@media (max-width: 1199px) { .ap-grid { grid-template-columns: minmax(0, 1fr); } .ap-side { display: none; } }  /* แคบกว่า grid เต็ม: ไม่มีที่ให้ sidebar */
+@media (max-width: 1119px) { .ap-grid { grid-template-columns: minmax(0, 1fr); } .ap-side { display: none; } }  /* แคบกว่า grid เต็ม: ไม่มีที่ให้ sidebar */
 
 /* ≤ 991: คอลัมน์เดียว · แชร์เป็นแถวใต้ปก · sidebar ท้ายเนื้อหา */
 @media (max-width: 991px) {
@@ -155,13 +155,13 @@
 /* tooltip ตอน hover/focus — ใช้ aria-label · คอลัมน์แชร์ขึ้นทางขวา ที่อื่นขึ้นด้านบน */
 .ap :is(.ap-share-btn, .ap-author-links a) { position: relative; }
 .ap :is(.ap-share-btn, .ap-author-links a)::after {
-  content: attr(aria-label); position: absolute; z-index: 20; white-space: nowrap; pointer-events: none;
+  content: none; position: absolute; z-index: 20;   /* สร้างเฉพาะตอน hover/focus — ซ่อนด้วย opacity ยังกินพื้นที่ ทำหน้าล้นบนมือถือ */ white-space: nowrap; pointer-events: none;
   padding: 6px 10px; border-radius: 6px; background: var(--tp-text); color: var(--tp-on-brand);
   font: 500 12px/1.2 var(--tp-font); opacity: 0; transition: opacity .15s, transform .15s;
   left: calc(100% + 10px); top: 50%; transform: translate(-4px, -50%);
 }
 .ap-author-links a::after { left: 50%; top: auto; bottom: calc(100% + 8px); transform: translate(-50%, 4px); }
-.ap :is(.ap-share-btn, .ap-author-links a):is(:hover, :focus-visible)::after { opacity: 1; transform: translate(0, -50%); }
+.ap :is(.ap-share-btn, .ap-author-links a):is(:hover, :focus-visible)::after { content: attr(aria-label); opacity: 1; transform: translate(0, -50%); }
 .ap .ap-author-links a:is(:hover, :focus-visible)::after { transform: translate(-50%, 0); }
 .ap .ap-share-btn.ok::after { content: attr(data-tip-done); opacity: 1; transform: translate(0, -50%); }
 @media (max-width: 991px) {   /* แชร์เป็นแถวแนวนอน → tooltip ขึ้นด้านบน */
@@ -169,3 +169,29 @@
   .ap .ap-share-btn:is(:hover, :focus-visible, .ok)::after { transform: translate(-50%, 0); }
 }
 @media (prefers-reduced-motion: reduce) { .ap :is(.ap-share-btn, .ap-author-links a)::after { transition: none; } }
+
+/* หัวข้อใน sidebar ไม่เกิน 3 บรรทัด (หัวข้อไทยยาว · 2 บรรทัดตัดกลางประโยค) — "กำลังอ่านเรื่องนี้" อยู่นอกส่วนที่ตัด */
+.ap-rank-t { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* รูปในบทความกว้างเต็มคอลัมน์เท่ากันทุกรูป (เดิม Webflow "align-center" แคบ 406 ชิดซ้าย) · รูปแนวตั้งสูงไม่เกิน 620 แสดงทั้งรูปบนพื้นเทา */
+.ap .ap-content figure { width: 100% !important; max-width: 100% !important; margin-left: 0 !important; margin-right: 0 !important; }
+.ap .ap-content figure > div { width: 100% !important; max-width: 100% !important; }
+.ap .ap-content figure img { display: block; width: 100%; max-height: 620px; object-fit: contain; background: var(--tp-surface-2); border-radius: 12px; }
+
+@media (hover: none) { .ap :is(.ap-share-btn, .ap-author-links a):not(.ok)::after { content: none !important; } }  /* จอสัมผัสไม่มี hover */
+
+/* พื้นเบลอหลังรูป (ตั้ง --ap-bg จาก article.js) */
+.ap .ap-blurbox { position: relative; overflow: hidden; border-radius: 12px; isolation: isolate; }
+.ap .ap-blurbox::before { content: ""; position: absolute; inset: -48px; z-index: -1; background: var(--ap-bg) center / cover no-repeat; filter: blur(32px) saturate(1.2); transform: scale(1.1); }
+.ap .ap-content .ap-blurbox img { background: transparent; border-radius: 0; }
+/* ปกบทความ: แสดงรูปเต็มไม่ตัด · ที่เหลือเป็นรูปเดียวกันเบลอ */
+.ap-cover { position: relative; isolation: isolate; }
+.ap-cover::before { content: ""; position: absolute; inset: -48px; z-index: -1; background: var(--ap-bg) center / cover no-repeat; filter: blur(32px) saturate(1.2); }
+.ap-cover > img { object-fit: contain; }
+/* ไอคอนโซเชียลผู้เขียน: กล่องเท่ากัน 24×24 จัดกึ่งกลาง → แนวตรงกันทุกตัว */
+.ap-author-links { align-items: center; }
+.ap-author-links a { width: 24px; height: 24px; display: inline-flex !important; align-items: center; justify-content: center; }
+.ap-author-links a svg, .ap-author-links .ic-fill { width: 18px !important; height: 18px !important; display: block; }
+.ap-author-bio { font-size: 15px; line-height: 1.6; }
+.ap .ap-author-links a::after { line-height: 1.4; white-space: nowrap; z-index: 30; }  /* ลิงก์ตั้ง line-height:0 เพื่อจัดไอคอน → tooltip ต้องคืนค่า ไม่งั้นกล่องแบนทับไอคอน */
+.ap .ap-author-links a::after { left: 50%; top: auto; bottom: calc(100% + 8px); transform: translate(-50%, 4px); }  /* specificity เท่ากฎฐาน → tooltip ขึ้นด้านบนจริง (เดิม top:50% ชนกับ bottom → กล่องแบน) */

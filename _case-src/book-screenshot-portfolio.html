@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Screenshot — แคปหนังสือจากเว็บ viewer ทีละหน้า → PDF ไฟล์เดียว</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Book Screenshot — แคปหนังสือจากเว็บ viewer ทีละหน้า → PDF ไฟล์เดียว">
+  <meta name="twitter:description" content="Portfolio: Chrome extension (Manifest V3) แคปหน้าหนังสือจากภาพที่เห็นจริงบนจอ กด next เอง ตรวจหน้าซ้ำ 2 ชั้น แล้วเย็บเป็น PDF ในหน่วยความจำ — 4 โหมดเก็บ ไม่มีไลบรารี PDF ไม่แตะ DRM">
+  <meta property="og:url" content="https://projects.tanplanet.work/book-screenshot-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.work/book-screenshot-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="https://projects.tanplanet.work/book-screenshot-portfolio/og-image.png">
+  <meta property="og:description" content="Portfolio: Chrome extension (Manifest V3) แคปหน้าหนังสือจากภาพที่เห็นจริงบนจอ กด next เอง ตรวจหน้าซ้ำ 2 ชั้น แล้วเย็บเป็น PDF ในหน่วยความจำ — 4 โหมดเก็บ ไม่มีไลบรารี PDF ไม่แตะ DRM">
+  <meta property="og:title" content="Book Screenshot — แคปหนังสือจากเว็บ viewer ทีละหน้า → PDF ไฟล์เดียว">
+  <meta name="description" content="Portfolio: Chrome extension (Manifest V3) แคปหน้าหนังสือจากภาพที่เห็นจริงบนจอ กด next เอง ตรวจหน้าซ้ำ 2 ชั้น แล้วเย็บเป็น PDF ในหน่วยความจำ — 4 โหมดเก็บ ไม่มีไลบรารี PDF ไม่แตะ DRM">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%234c1d95'/><rect x='26' y='20' width='48' height='60' rx='5' fill='%23d8b4fe'/><rect x='26' y='20' width='11' height='60' fill='%23a78bfa'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #7c3aed;
+      --accent-light: #f3e8ff;
+      --accent-dark: #4c1d95;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #2e1065 0%, #4c1d95 42%, #6d28d9 78%, #8b5cf6 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(216,180,254,0.22) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(76,29,149,0.45) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #4c1d95, #8b5cf6, #ede9fe);
+    }
+    .hero-inner { position: relative; z-index: 2; max-width: var(--max-w); margin: 0 auto; }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #d8b4fe;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 { font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 700; line-height: 1.25; margin-bottom: 12px; }
+    .hero h1 .accent { color: #e9d5ff; }
+    .hero p { font-size: 1.05rem; opacity: 0.92; max-width: 580px; margin: 0 auto 24px; }
+    .hero-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 28px; }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary { background: #fff; color: var(--accent-dark); box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.28); }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .section-intro { padding: 56px 0 32px; }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .section-intro p { color: var(--text-secondary); font-size: 1rem; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 48px 0 0; }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #2e1065, #6d28d9);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block code { background: rgba(255,255,255,0.14); color: #e9d5ff; }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p { font-size: 1.05rem; line-height: 1.7; position: relative; z-index: 1; }
+    .quote-block .author { margin-top: 12px; font-size: 0.82rem; opacity: 0.78; }
+
+    /* ===== Pain / Solution Cards ===== */
+    .pain-grid, .solution-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .pain-card, .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .pain-card { border-left: 4px solid var(--red); }
+    .solution-card { border-left: 4px solid var(--accent); }
+    .pain-card .emoji, .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3, .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p, .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(124,58,237,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers { display: flex; flex-direction: column; gap: 12px; max-width: 560px; margin: 0 auto; }
+    .arch-layer { padding: 14px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(124,58,237,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow { text-align: center; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+    .arch-sub { display: flex; justify-content: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Extension Popup Mockup ===== */
+    .ext-mockup {
+      background: oklch(97.5% 0.008 300);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 400px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(46,16,101,0.14);
+      font-size: 0.82rem;
+      color: oklch(27% 0.02 300);
+      padding: 16px;
+    }
+    .ext-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .ext-step { margin-bottom: 14px; }
+    .ext-step-head {
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 600; font-size: 0.82rem; margin-bottom: 8px;
+    }
+    .ext-num {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: oklch(79% 0.13 300); color: oklch(22% 0.07 300);
+      font-size: 0.7rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .ext-field {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      background: oklch(99.2% 0.004 300);
+      border: 1px solid oklch(88% 0.014 300);
+      border-radius: 8px; padding: 7px 11px; margin-bottom: 6px;
+      font-size: 0.78rem;
+    }
+    .ext-field .k { color: oklch(51% 0.02 300); }
+    .ext-field .v { font-weight: 600; }
+    .ext-toggle { width: 32px; height: 18px; border-radius: 50px; background: oklch(79% 0.13 300); position: relative; flex-shrink: 0; }
+    .ext-toggle::after { content: ''; position: absolute; top: 2px; right: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+    .ext-crop {
+      display: flex; align-items: center; gap: 10px;
+      background: oklch(96.5% 0.03 300); border: 1.5px solid oklch(79% 0.13 300);
+      border-radius: 8px; padding: 8px 11px; margin-bottom: 6px; font-size: 0.76rem;
+    }
+    .ext-thumb { width: 44px; height: 32px; border-radius: 4px; background: linear-gradient(160deg,#ddd6fe,#a78bfa); flex-shrink: 0; }
+    .ext-start {
+      width: 100%; text-align: center; padding: 9px;
+      background: oklch(79% 0.13 300); color: oklch(22% 0.07 300);
+      border: 1px solid oklch(66% 0.18 300); border-radius: 8px;
+      font-weight: 700; font-size: 0.85rem; margin-top: 4px;
+    }
+    .ext-status { text-align: center; font-size: 0.74rem; color: oklch(52% 0.19 300); margin-top: 9px; }
+
+    /* ===== Closing ===== */
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(46,16,101,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(46,16,101,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-phone{max-width:360px;margin-left:auto;margin-right:auto}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;margin:8px 0 32px}.shot-pair .shot{margin:0}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}.shot-pair .shot{max-width:360px;margin:0 auto}}
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/book-screenshot-portfolio/">
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Chrome Extension &middot; Manifest V3 &middot; 4 โหมดเก็บ
+      </div>
+      <h1>Book Screenshot<br><span class="accent">แคปหนังสือจากเว็บ viewer ทีละหน้า → PDF ไฟล์เดียว</span></h1>
+      <p>Chrome extension ที่กด next เอง แคปเฉพาะภาพที่<strong>เห็นจริงบนจอ</strong> ตรวจหน้าซ้ำสองชั้น แล้วเย็บเป็น PDF ในหน่วยความจำ — ทำงานกับ reader ทุกทรง ตั้งแต่ epub.js ใน iframe ถึง Google Docs ที่วาดลง canvas</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Manifest V3</span>
+        <span class="hero-tag">Service Worker</span>
+        <span class="hero-tag">Offscreen Document</span>
+        <span class="hero-tag">captureVisibleTab</span>
+        <span class="hero-tag">PDF writer เขียนเอง</span>
+        <span class="hero-tag">OKLCH</span>
+        <span class="hero-tag">adb (Android)</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#scope">ขอบเขตที่ไม่ทำ</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>ปัญหาที่เจอ</h2>
+      <p>หนังสือที่อ่านผ่าน web viewer มักไม่มีปุ่มดาวน์โหลด — และการแคปเองทีละหน้าไม่ใช่แค่เหนื่อย มันได้ไฟล์ที่ใช้ไม่ได้</p>
+    </section>
+
+    <figure class="shot"><img src="img/problem-reading-laptop.jpg" width="1200" height="800" loading="lazy" alt="คนนั่งอ่านหนังสือผ่านหน้าเว็บบนแล็ปท็อป"><figcaption>หนังสือหลายเล่มอ่านได้แค่ผ่าน web viewer บนจอ ไม่มีปุ่มดาวน์โหลด · ภาพ: Annie Spratt / Unsplash</figcaption></figure>
+
+
+    <div class="quote-block">
+      <p>ลองแคปเองก่อนแล้ว ผลคือได้ภาพ 300 กว่าไฟล์กองบนเดสก์ท็อป ที่มีทั้งหน้าซ้ำและหน้าขาด เพราะกดลูกศรขวาแล้ว reader ไม่ได้เปลี่ยนหน้าจริงทุกครั้ง แล้วยังต้องมานั่งเรียงและรวมเป็น PDF เองอีก — งานที่ควรใช้เวลา 10 นาที กลายเป็นทั้งเย็น</p>
+      <div class="author">— โจทย์ตั้งต้น ก่อนเริ่มทำ Book Screenshot</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>reader อยู่ใน iframe แกะ DOM ไม่ได้</h3>
+        <p>Reader แบบ epub.js วางเนื้อหาไว้ใน iframe แบบ <code>blob:</code> / <code>srcdoc</code> ซึ่ง extension เข้าไปอ่านตรง ๆ ไม่ได้ — เครื่องมือที่ทำงานด้วยการดูดข้อความจาก DOM จึงใช้ไม่ได้เลย</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h3>กด next แล้วไม่ได้เปลี่ยนหน้าจริง</h3>
+        <p>บาง reader กดลูกศรขวา = เลื่อนลง 1 จอ ไม่ใช่ข้ามบท บางทีก็ยังโหลดไม่เสร็จ ผลคือแคปได้หน้าเดิมซ้ำ หรือกระโดดข้ามเนื้อหาไปโดยไม่รู้ตัว</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+        <h3>ภาพร้อยไฟล์ที่ต้องมารวมเอง</h3>
+        <p>แคปได้แล้วยังไม่จบ ต้องเรียงลำดับ ตัดขอบ บีบอัด แล้วรวมเป็น PDF — และระหว่างนั้นภาพต้นฉบับก็นอนอยู่บนดิสก์เต็มไปหมด</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        <h3>เอกสารยาวเป็นร้อยจอ = แท็บตาย</h3>
+        <p>เอกสารที่ต้องเลื่อนเก็บทีละจอ ถ้ากองภาพไว้ในหน่วยความจำรอเย็บทีเดียวตอนจบ RAM จะบวมจนแท็บตายก่อนได้ไฟล์</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg>
+        <h3>บางเล่มแตะไม่ได้เลย</h3>
+        <p>แอปห้องสมุดที่ติด DRM แคปได้แต่ภาพดำ ส่วน viewer บางเจ้าฝัง forensic watermark ที่มีอีเมลเจ้าของบัญชีติดไปทุกหน้า — สองกรณีนี้ไม่ใช่ปัญหาเทคนิค แต่เป็นเส้นที่ต้องหยุด</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>เลิกพยายามเข้าใจโครงสร้างของ reader — ไปทำงานที่ชั้นเดียวที่ reader ทุกตัวเหมือนกัน คือ "ภาพที่ปรากฏบนจอ"</p>
+    </section>
+
+    <figure class="shot"><img src="img/crop-overlay.jpg" width="1440" height="900" loading="lazy" alt="overlay เลือกพื้นที่ของ Book Screenshot ครอบหน้าหนังสือในหน้า reader พร้อมจุดจับ 4 มุมและปุ่มบันทึกพื้นที่"><figcaption>overlay เลือกพื้นที่ของจริง — ลากกรอบครอบเฉพาะเนื้อหา มีขนาดจริงกำกับ แล้วกดบันทึกพื้นที่ (หน้า reader ตัวอย่าง ข้อความ public domain)</figcaption></figure>
+
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        <h3>แคปจากสิ่งที่ตาเห็น ไม่ใช่จาก DOM</h3>
+        <p>ใช้ <code>captureVisibleTab</code> ถ่ายภาพจอเหมือนกดปุ่ม screenshot — reader จะเป็น iframe, canvas, epub.js หรืออะไรก็ตาม ก็เก็บได้เหมือนกันหมด เพราะทุกตัวจบลงที่ pixel บนจอเดียวกัน</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg>
+        <h3>ตรวจ "เปลี่ยนหน้าจริงไหม" ด้วยลายเซ็น 2 ระดับ</h3>
+        <p>ลายเซ็นระดับ <strong>จอ</strong> (ตำแหน่งเลื่อน + ข้อความ) ใช้ตอนปล่อยให้ reader เลื่อนเอง · ลายเซ็นระดับ <strong>บท</strong> (ข้อความล้วน) ใช้ตอนเราเลื่อนเอง — คนละโหมดต้องวัดคนละระดับ ไม่งั้นได้หน้าซ้ำทั้งบท</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"/><path d="M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"/><path d="M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1"/></svg>
+        <h3>4 โหมดเก็บ ครอบคลุมทุกทรงของหน้า</h3>
+        <p>หน้าเดียว · เลื่อนยาวแบบภาพต่อเนื่อง · เลื่อนยาวแบบแบ่งหน้าเท่ากัน · เอกสารยาวรวดเดียวที่ไม่มีปุ่มถัดไป (Google Docs / เว็บนิยายหน้าเดียว)</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>
+        <h3>PDF ประกอบในหน่วยความจำ ไม่มีไฟล์ตกค้าง</h3>
+        <p>ภาพทุกหน้าอยู่เป็น jpeg bytes ใน offscreen document แล้วเขียน PDF เองด้วย <code>DCTDecode</code> (ฝัง jpeg ตรง ๆ ไม่ต้องถอด-เข้ารหัสใหม่) — ได้ไฟล์เดียวจบ ไม่มีรูปหลงเหลือบนดิสก์</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
+        <h3>เลือกพื้นที่แล้วยืนยันด้วยตา</h3>
+        <p>ลากกรอบบนหน้าเว็บจริง ปรับด้วยจุดจับ 4 มุม กด <code>Shift</code> ล็อกจัตุรัส/ล็อกแกน แล้ว popup เด้งกลับมาโชว์การ์ด preview พร้อมขนาดจริง — เห็นก่อนเริ่มว่าตัดถูกไหม</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Flow ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน — 4 จังหวะ</h2>
+      <p>popup เป็น wizard แนวตั้ง ทำตามเลข 1 → 2 → 3 แล้วปล่อยให้มันเก็บเอง</p>
+    </section>
+
+    <figure class="shot"><img src="img/sidepanel-running.jpg" width="1440" height="900" loading="lazy" alt="Chrome เปิดหน้า reader ทางซ้าย และ side panel ของ Book Screenshot ทางขวาที่กำลังเก็บหน้า 12 พร้อม preview พื้นที่ crop"><figcaption>side panel กางข้างเว็บค้างไว้ตลอดรอบเก็บ — เห็น preview พื้นที่ที่เลือกและสถานะ "หน้า 12…" ระหว่างมันพลิกหน้าเอง</figcaption></figure>
+
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+        <h4>ตั้งค่าหนังสือ</h4>
+        <p>เลือกโหมดเก็บ ใส่ชื่อเรื่อง จำนวนหน้า (เว้นว่าง = เก็บจนจบเล่มเอง) และความละเอียด</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
+        <h4>เลือกพื้นที่</h4>
+        <p>ลากกรอบครอบเฉพาะเนื้อหา ตัดแถบเครื่องมือของ reader ทิ้ง แล้วดู preview ยืนยัน</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
+        <h4>ปล่อยให้เก็บ</h4>
+        <p>แคป → ตรวจว่าเปลี่ยนหน้าจริง → กด next → วนซ้ำ พร้อมสุ่มจังหวะพลิกหน้าเหมือนคนอ่าน</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        <h4>ได้ PDF</h4>
+        <p>เย็บทุกหน้าเป็นไฟล์เดียวพร้อมชื่อเรื่อง แล้วดาวน์โหลดอัตโนมัติ กดหยุดกลางคันก็ได้ไฟล์</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>Manifest V3 ล้วน ไม่มี backend ไม่มี build step ไม่มีไลบรารีสร้าง PDF</p>
+    </section>
+
+    <figure class="shot"><img src="img/code-manifest.jpg" width="1600" height="715" loading="lazy" alt="ไฟล์ manifest.json ของ Book Screenshot แสดง permission และ service worker, side panel"><figcaption>manifest.json จริง — MV3 ล้วน: service worker + side panel + offscreen ไม่มี backend</figcaption></figure>
+
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Popup — wizard 3 สเต็ป + overlay เลือก crop
+          <div class="arch-sub">
+            <span>Anuphan</span>
+            <span>Lucide</span>
+            <span>OKLCH tokens</span>
+            <span>base-select</span>
+            <span>crop preview</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Service Worker (background.js) — ตัวคุมรอบเก็บ
+          <div class="arch-sub">
+            <span>captureVisibleTab</span>
+            <span>goNext()</span>
+            <span>ตัวตรวจหน้าเบิ้ล</span>
+            <span>chrome.scripting</span>
+            <span>badge</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Offscreen Document — crop + เย็บ + เขียน PDF
+          <div class="arch-sub">
+            <span>OffscreenCanvas</span>
+            <span>createImageBitmap</span>
+            <span>DCTDecode</span>
+            <span>/Title UTF-16BE</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          สคริปต์ที่ฉีดเข้าไปรันในหน้าเว็บ
+          <div class="arch-sub">
+            <span>bsPageSig</span>
+            <span>bsDocProbe</span>
+            <span>bsDocGoPage</span>
+            <span>bsDocPageBand</span>
+            <span>ไต่ contentDocument</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>ทำไมต้องมี Offscreen Document?</strong>
+      <p>Service worker ใน MV3 ไม่มี DOM จึงใช้ <code>canvas</code> ไม่ได้เลย — แต่งานทั้งหมดที่นี่คือการตัดภาพ ย่อ และเย็บเป็นหน้า ซึ่งต้องใช้ canvas <strong>Offscreen Document</strong> คือหน้า HTML ที่ไม่มีใครเห็น ที่ extension เปิดไว้เป็นห้องทำงานภาพโดยเฉพาะ ทำให้ตัดภาพและประกอบ PDF ได้โดยไม่ต้องเปิดแท็บจริงให้ผู้ใช้เห็น</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
+      <p>ครบ loop ตั้งแต่เลือกพื้นที่ ถึงไฟล์ PDF ที่พร้อมอ่าน</p>
+    </section>
+
+    <figure class="shot shot-phone"><img src="img/panel-modes.jpg" width="760" height="1040" loading="lazy" alt="dropdown โหมดการเก็บใน side panel แสดง 5 ตัวเลือก"><figcaption>dropdown โหมดการเก็บ (วาดเองด้วย base-select ให้ใช้ฟอนต์ Anuphan) — เลือกให้ตรงทรงของหน้า</figcaption></figure>
+
+
+    <div class="module-grid">
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"/><path d="M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"/><path d="M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1"/></svg>
+        <h3>4 โหมดเก็บ</h3>
+        <p>หน้าเดียว / เลื่อนยาวต่อเนื่อง / เลื่อนยาวแบ่งหน้าเท่ากัน / เอกสารยาวรวดเดียวที่ไม่มีปุ่มถัดไป</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg>
+        <h3>ตัวตรวจหน้าเบิ้ล 2 ชั้น</h3>
+        <p>ชั้นแรกเทียบภาพหัวหน้าทุกไบต์ (ไม่มี false positive) ชั้นสองเทียบลายเซ็นข้อความ เผื่อภาพขยับนิดแต่เนื้อหาเดิม</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
+        <h3>goNext — กดจนกว่าจะเปลี่ยนจริง</h3>
+        <p>ไม่ใช่กดครั้งเดียวแล้วเชื่อ แต่กดซ้ำจนลายเซ็นเนื้อหาเปลี่ยน = ถึงบทใหม่จริง ไม่เปลี่ยนเลย = จบเล่ม</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        <h3>PDF writer เขียนเอง</h3>
+        <p>ไม่ใช้ไลบรารี — เขียน object ของ PDF ตรง ๆ ฝัง jpeg ด้วย <code>DCTDecode</code> และใส่ชื่อไทยผ่าน <code>/Title</code> แบบ UTF-16BE</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>
+        <h3>ทยอยเย็บ ระบาย RAM</h3>
+        <p>เอกสารยาวเย็บเป็นหน้า PDF ทุก 8 จอ แล้วปล่อย bitmap ทิ้ง — จำนวนบน badge คือหน้า PDF จริง ไม่ใช่จำนวนจอ</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
+        <h3>โหมด Google Docs</h3>
+        <p>อ่านขอบหน้ากระดาษจริงจาก DOM แล้วเลื่อนให้หัวหน้าชนขอบบน แคปทีเดียวได้ทั้งหน้า — ไม่มีแถบเทาคั่น ไม่ต้องเลือก crop</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
+        <h3>Crop overlay + preview</h3>
+        <p>จุดจับ 4 มุม ลากกลางเพื่อย้าย <code>Shift</code> ล็อกจัตุรัส/ล็อกแกน แล้วเด้งกลับมาโชว์ thumbnail พร้อมขนาดจริง</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h3>phone-capture.sh</h3>
+        <p>สคริปต์ทำงานเดียวกันบน Android ผ่าน <code>adb</code> — ปัดหน้า แคป บีบอัด รวมเป็น PDF พร้อมชื่อเรื่อง</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Popup Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>หน้าตา Popup</h2>
+      <p>ธีมกระดาษโทนม่วง OKLCH — ทุกอย่างจบในหน้าเดียว ไม่มีหน้าตั้งค่าซ่อน</p>
+    </section>
+
+    <div class="shot-pair"><figure class="shot"><img src="img/panel-idle.jpg" width="760" height="1280" loading="lazy" alt="side panel ของ Book Screenshot ตอนตั้งค่าเสร็จ ยังไม่ได้เลือกพื้นที่"><figcaption>ตั้งค่าเสร็จ — ยังไม่เลือกพื้นที่ = เก็บเต็มจอ</figcaption></figure><figure class="shot"><img src="img/panel-running.jpg" width="760" height="2054" loading="lazy" alt="side panel ของ Book Screenshot ระหว่างกำลังเก็บ มีการ์ด preview พื้นที่ crop ขนาด 1040 × 1436"><figcaption>ระหว่างเก็บ — การ์ด preview + ขนาดจริง ปุ่มเริ่มล็อกเป็น "กำลังเก็บ…"</figcaption></figure></div>
+
+    <hr class="divider">
+
+    <!-- ===== Hacks ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hack กับปัญหา</h2>
+      <p>7 โจทย์ที่เจอตอนใช้กับหนังสือจริง — เกือบทั้งหมดโผล่มาเป็นอาการ "บางเล่มได้ บางเล่มไม่ได้"</p>
+    </section>
+
+    <figure class="shot"><img src="img/code-clicknext.jpg" width="1400" height="1033" loading="lazy" alt="โค้ดฟังก์ชัน clickNext ใน background.js ที่ยิง keyboard event เข้าไปใน iframe"><figcaption>clickNext() ของจริง — ยิงลูกศรขวาทั้งข้างนอกและไต่ contentDocument เข้าไปถึงข้างใน iframe ต้นเหตุจริงของอาการหน้าเบิ้ล</figcaption></figure>
+
+
+    <div class="hack-grid">
+      <div class="hack-card platform" data-label="iframe">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>กดลูกศรขวาแล้วไม่มีอะไรเกิดขึ้น</span></h3>
+        <p>Reader แบบ epub.js วางเนื้อหาไว้ใน iframe แล้ว<strong>ดัก keyboard event ไว้ข้างในนั้น</strong> — ยิงคีย์ที่ document ข้างนอกจึงไม่มีผล นี่คือต้นเหตุจริงของอาการหน้าเบิ้ล</p>
+        <div class="highlight">แก้: ต้องยิงคีย์เข้าไปถึงข้างใน iframe ด้วย แต่ <code>chrome.scripting</code> เข้า iframe แบบ <code>blob:</code>/<code>srcdoc</code> ไม่ได้ → ต้องไต่ <code>contentDocument</code> จากหน้าแม่เอาเอง แล้ว dispatch event ลงไปตรง ๆ</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Zoom">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg><span>1 หน่วย scrollTop ไม่เท่ากับ 1 พิกเซลบนจอ</span></h3>
+        <p>Reader ที่ซูมด้วย CSS <code>transform</code> ทำให้กล่องดูใหญ่/เล็กกว่าขนาด layout จริง ถ้าเลื่อนตามตัวเลข layout ตรง ๆ จะเลื่อนเกิน (เนื้อหาขาด) หรือเลื่อนไม่พอ (เนื้อหาซ้ำ) แล้วแต่ระดับซูมของแต่ละเล่ม</p>
+        <div class="highlight">แก้: คำนวณอัตราส่วนระหว่างขนาดบนจอกับขนาด layout ก่อนทุกครั้ง แล้วแปลงระยะเลื่อนตามนั้น &mdash; นี่คือคำอธิบายของอาการกวนใจที่สุดคือ "บางเล่มได้ บางเล่มไม่ได้"</div>
+      </div>
+
+      <div class="hack-card arch" data-label="Lazy load">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>หน้าเว็บแอบขยับ scroll เองระหว่างรอ</span></h3>
+        <p>สั่งเลื่อนไป 1200 แล้วรอ delay — ระหว่างนั้น reader lazy-load เนื้อหาเพิ่มแล้วดึง scroll ขยับเอง พอถ่ายจริงจึงไม่ใช่ตำแหน่งที่สั่งไป การตัดส่วนซ้ำเลยผิดทั้งหมด</p>
+        <div class="highlight">แก้: <strong>วัดตำแหน่งจริงก่อนถ่ายทุกจอ</strong> แล้วคิดส่วนซ้ำจากค่าที่วัดได้ ไม่ใช่ค่าที่สั่งไป · และถ้าวัดแล้วตำแหน่งไม่ขยับจากรอบก่อนเลย = เว็บดึง scroll กลับ (scroll-snap / virtual list) ต้องยอมแพ้ ไม่ใช่วนถ่ายซ้ำที่เดิม</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Detection">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg><span>หน้าที่เป็นรูปล้วนมีข้อความ 0 ตัว</span></h3>
+        <p>ตอนแรกหากล่องเนื้อหาด้วยการนับจำนวนตัวอักษร — พอเจอหนังสือที่เป็นภาพสแกน กล่องเนื้อหามีข้อความ 0 ตัว จึงหาไม่เจอ แล้วตกไปเดาว่ากล่องไหนใหญ่สุด = จับผิดกล่องทุกครั้ง</p>
+        <div class="highlight">แก้: เปลี่ยนไปวัดจาก <strong>ขนาดบนจอ</strong> เป็นหลัก ไม่ใช่ปริมาณข้อความ · และลายเซ็นตรวจหน้าซ้ำก็เลิกมองแค่ "กล่องที่เลื่อนได้" เพราะหน้าที่เนื้อหาสั้นจนไม่ต้องเลื่อนจะได้ลายเซ็นว่าง = ปิดตัวตรวจทิ้งทั้งดุ้นโดยไม่รู้ตัว</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Memory">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="13" r="9"/><path d="M14.35 4.65 16.3 2.7a2.41 2.41 0 0 1 3.4 0l1.6 1.6a2.4 2.4 0 0 1 0 3.4l-1.95 1.95"/><path d="m22 2-1.5 1.5"/></svg><span>เอกสารร้อยจอทำแท็บตายก่อนได้ไฟล์</span></h3>
+        <p>เก็บ bitmap ทุกจอไว้รอเย็บทีเดียวตอนจบ พอเอกสารยาวจริง RAM บวมจนแท็บถูกฆ่า ได้ศูนย์</p>
+        <div class="highlight">แก้: ทยอยเย็บเป็นหน้า PDF ทุก 8 จอแล้วปล่อย bitmap ทิ้ง · แต่ต้อง<strong>ล็อกความสูงหน้าจากจอแรกของเล่มเท่านั้น</strong> เพราะถ้าวัดใหม่ทุกกลุ่ม จะไปวัดจอที่โดนตัดหัวส่วนซ้ำไปแล้ว ผลคือได้หน้าสูง 906 กับ 899 ปนกันในเล่มเดียว</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Paging">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>อ่าน ๆ อยู่แล้วเจอหน้าเปล่าคั่น</span></h3>
+        <p>เย็บกลางคันทุก 8 จอ แล้วเศษท้ายที่ยังไม่ครบ 1 หน้าถูกปิดเป็นหน้าไปเลย ผลคือได้หน้าว่างเกือบทั้งใบคั่นทุกครั้งที่เย็บ เหมือนหนังสือล่นหน้า</p>
+        <div class="highlight">แก้: แยก <code>final=false</code> (เย็บเพื่อระบาย RAM เท่านั้น) ออกจาก <code>final=true</code> (ปิดเล่มจริง) — เศษท้ายของรอบก่อนต้อง<strong>ยกไปต่อหัวรอบถัดไปเสมอ</strong> ไม่ใช่ปิดหน้าทิ้ง</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Timing">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg><span>Google Docs "นิ่งแล้ว" แต่ยังวาดไม่เสร็จ</span></h3>
+        <p>ตัวรอความนิ่งดูจาก scrollTop/scrollHeight ซึ่งคงที่แล้ว — แต่ Docs เรนเดอร์แบบ virtualized ยังวาดตัวหนังสือไม่เสร็จ ถ่ายตอนนั้นได้หน้าขาว</p>
+        <div class="highlight">แก้: เผื่อเวลาวาดเพิ่มเฉพาะโหมดที่ต้องการ แล้ว<strong>วัดตำแหน่งซ้ำอีกรอบหลังรอ</strong> เพราะถ้าเอกสารขยับเองระหว่างนั้น ค่าที่วัดไว้ก่อนหน้าจะเพี้ยนและตัดส่วนซ้ำผิด · บวกกับหน่วงขั้นต่ำ 700ms เพื่อไม่ชน quota ของ <code>captureVisibleTab</code> ที่ราว 2 ครั้ง/วินาที</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions / Scope ===== -->
+    <section class="section-intro" id="scope">
+      <span class="eyebrow">Define</span>
+      <h2>ขอบเขตที่ตั้งใจไม่ทำ</h2>
+      <p>ส่วนที่ตัดสินใจยากที่สุดของโปรเจกต์นี้ ไม่ใช่โค้ด แต่เป็นเส้นที่เลือกจะไม่ข้าม</p>
+    </section>
+
+    <figure class="shot"><img src="img/scope-library.jpg" width="1200" height="798" loading="lazy" alt="ทางเดินระหว่างชั้นหนังสือในห้องสมุด"><figcaption>เนื้อหาที่เจ้าของตั้งใจป้องกันไว้ ไม่ใช่โจทย์ของเครื่องมือนี้ · ภาพ: Zetong Li / Unsplash</figcaption></figure>
+
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>ระหว่างทางเจอสองกรณีที่หยุดแล้วไม่ทำต่อ — แอปห้องสมุดที่ตั้ง <code>FLAG_SECURE</code> ไว้ แคปออกมาได้แต่ภาพดำ นั่นคือเจ้าของเนื้อหาบอกชัดว่าไม่อนุญาต และ web viewer อีกเจ้าที่ layer เนื้อหากัน capture ไว้ พร้อมฝัง forensic watermark ที่มีอีเมลเจ้าของบัญชีติดไปทุกหน้า ทั้งสองกรณีมีทางเลี่ยงทางเทคนิค แต่การเลี่ยงมันคือการข้ามมาตรการที่เขาตั้งใจตั้งไว้ — เครื่องมือนี้จึงระบุไว้ตรง ๆ ว่าใช้กับเนื้อหาที่ไม่มี DRM เท่านั้น</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <svg class="ico" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--accent)"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg><br>
+        <strong>ไม่ข้าม DRM</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">เจอมาตรการป้องกันเมื่อไหร่ = หยุด ไม่หาทางอ้อม</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <svg class="ico" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--accent)"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg><br>
+        <strong>เก็บแค่ที่ตาเห็น</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">ไม่ถอดรหัส ไม่ดึงไฟล์ต้นฉบับจากเซิร์ฟเวอร์</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <svg class="ico" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--accent)"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg><br>
+        <strong>ไม่มีไฟล์ตกค้าง</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">ภาพอยู่ในหน่วยความจำจนกลายเป็น PDF แล้วหายไป</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <svg class="ico" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--accent)"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><br>
+        <strong>หน่วงขั้นต่ำเสมอ</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">700ms + สุ่มจังหวะ ไม่กระแทกทั้ง quota และเซิร์ฟเวอร์</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge Domain ที่แข็งขึ้น</h2>
+      <p>5 พื้นที่ความรู้ที่ระดับขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
+    </section>
+
+    <figure class="shot"><img src="img/code-buildpdf.jpg" width="1300" height="1135" loading="lazy" alt="โค้ดฟังก์ชัน buildPdf ใน offscreen.js ที่เขียนโครงสร้าง PDF เอง"><figcaption>buildPdf() ของจริง — Catalog / Pages / Page / XObject DCTDecode และ /Title แบบ UTF-16BE เขียนเองทุก object</figcaption></figure>
+
+
+    <div class="learning-card">
+      <strong>1. Chrome Extension MV3 — ครบทั้งสามบริบทที่คุยกัน:</strong>
+      <p>เข้าใจว่า popup, service worker และ offscreen document ต่างกันตรงไหน อันไหนมี DOM อันไหนตายเมื่อไหร่ และทำไมงานที่ต้องใช้ canvas ต้องย้ายไปอยู่ offscreen บวกกับข้อจำกัดของ <code>chrome.scripting</code> ที่เข้า iframe บางชนิดไม่ได้ บทเรียน: MV3 บังคับให้แยกให้ชัดว่าโค้ดแต่ละก้อน "รันอยู่ที่ไหน"</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Rendering ของเว็บจริง — virtualized, lazy-load, transform zoom:</strong>
+      <p>เจอครบว่าเว็บสมัยใหม่ไม่ได้วาดทุกอย่างไว้รอ มันวาดเฉพาะที่อยู่แถวจอ ขยับ scroll เอง และซูมด้วย transform จนพิกัดที่อ่านได้ไม่ตรงกับที่เห็น บทเรียน: อย่าเชื่อค่าที่สั่งไป ให้เชื่อค่าที่วัดได้ตอนจะใช้จริง</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. โครงสร้างไฟล์ PDF — เขียนเองได้โดยไม่ต้องมีไลบรารี:</strong>
+      <p>รู้ว่า PDF ขั้นต่ำต้องมี object อะไรบ้าง (Catalog / Pages / Page / Contents / XObject) การฝัง jpeg ด้วย <code>DCTDecode</code> ทำให้ไม่ต้องถอดและเข้ารหัสภาพใหม่ และ metadata ภาษาไทยต้องเป็น UTF-16BE hex string บทเรียน: ฟอร์แมตที่ดูน่ากลัวมักมีแกนกลางที่เล็กกว่าที่คิดมาก</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. งานที่ทำงานกับหน่วยความจำจำกัด — ต้องทยอย ไม่ใช่กอง:</strong>
+      <p>ฝึกออกแบบ pipeline แบบ streaming: เก็บเป็นกลุ่ม เย็บแล้วปล่อยทิ้ง เก็บเศษท้ายยกไปรอบหน้า ซึ่งเป็น pattern เดียวกับงาน batch processing ทั่วไป บทเรียน: ปัญหา "แท็บตาย" แก้ที่ลำดับการทำงาน ไม่ใช่ที่การบีบอัดให้เล็กลง</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. การตั้งขอบเขตของเครื่องมือ — บอกว่าไม่ทำอะไร ชัดพอ ๆ กับบอกว่าทำอะไร:</strong>
+      <p>การเจอ DRM แล้วเลือกหยุด ทำให้ต้องเขียนขอบเขตลงใน README ตรง ๆ ว่าใช้กับเนื้อหาแบบไหนได้ ซึ่งกลายเป็นส่วนที่ทำให้เครื่องมือนี้อธิบายง่ายและใช้อย่างสบายใจ บทเรียน: เครื่องมือที่ไม่มีขอบเขต ไม่ใช่เครื่องมือที่ทรงพลังกว่า มันคือเครื่องมือที่ไม่มีใครกล้าเอาไปใช้</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">4</div>
+        <div class="label">โหมดเก็บ ครอบคลุมทุกทรงของหน้า</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">2</div>
+        <div class="label">ชั้นของตัวตรวจหน้าซ้ำ</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">ไลบรารีสร้าง PDF</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">ไฟล์ภาพตกค้างบนดิสก์</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <h2>Book Screenshot</h2>
+    <p>Chrome extension (Manifest V3) ส่วนตัว ที่เปลี่ยนการนั่งกดแคปทีละหน้าสามร้อยครั้ง ให้เหลือแค่ตั้งค่าแล้วปล่อยไว้ — เขียน PDF เองโดยไม่พึ่งไลบรารี ภาพไม่ตกค้างบนดิสก์ ไม่มีอะไรออกนอกเครื่อง และใช้กับเนื้อหาที่ไม่มี DRM เท่านั้น</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Manifest V3</span>
+      <span class="stack-icon">Service Worker</span>
+      <span class="stack-icon">Offscreen Document</span>
+      <span class="stack-icon">captureVisibleTab</span>
+      <span class="stack-icon">OffscreenCanvas</span>
+      <span class="stack-icon">PDF / DCTDecode</span>
+      <span class="stack-icon">Anuphan</span>
+      <span class="stack-icon">Lucide</span>
+      <span class="stack-icon">adb</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Book Screenshot — แคปหนังสือ → PDF",
+      "item": "https://projects.tanplanet.work/book-screenshot-portfolio/"
+    }
+  ]
+}
+</script>
+
+</body>
+</html>

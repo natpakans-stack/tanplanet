@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium Club Revamp — writing down what not to do before designing</title>
+  <meta name="description" content="Portfolio: a website revamp for a premium club that started with a list of things to avoid, written before any design — one OKLCH design token file, a contrast checker every color must pass before use, and a demo-first approach">
+  <meta property="og:title" content="Premium Club Revamp — writing down what not to do before designing">
+  <meta property="og:description" content="Portfolio: a website revamp for a premium club that started with a list of things to avoid, written before any design — one OKLCH design token file, a contrast checker every color must pass before use, and a demo-first approach">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://projects.tanplanet.work/club-revamp-portfolio/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Premium Club Revamp — writing down what not to do before designing">
+  <meta name="twitter:description" content="Portfolio: a website revamp for a premium club that started with a list of things to avoid, written before any design — one OKLCH design token file, a contrast checker every color must pass before use, and a demo-first approach">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0f1f'/><path d='M30 28l40 44M70 28L30 72' stroke='%23ef4444' stroke-width='8' stroke-linecap='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #b45309;
+      --accent-light: #fef3c7;
+      --accent-dark: #78350f;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #0a0f1f 0%, #121b36 40%, #3f2d12 78%, #78350f 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(251,191,36,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #78350f, #f59e0b, #fde68a);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent { color: #fcd34d; }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro { padding: 56px 0 32px; }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .section-intro p { color: var(--text-secondary); font-size: 1rem; }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0a0f1f, #223056);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block code { background: rgba(255,255,255,0.14); color: #fcd34d; }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p { font-size: 1.05rem; line-height: 1.7; position: relative; z-index: 1; }
+    .quote-block .author { margin-top: 12px; font-size: 0.82rem; opacity: 0.78; }
+
+    /* ===== Pain / Solution Cards ===== */
+    .pain-grid, .solution-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .pain-card, .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .pain-card { border-left: 4px solid var(--red); }
+    .solution-card { border-left: 4px solid var(--accent); }
+    .pain-card .emoji, .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3, .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p, .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(180,83,9,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers { display: flex; flex-direction: column; gap: 12px; max-width: 560px; margin: 0 auto; }
+    .arch-layer { padding: 14px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(180,83,9,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: var(--navy); color: #cbd5e1; border: 1px solid #223056; }
+    .arch-arrow { text-align: center; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+    .arch-sub { display: flex; justify-content: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .arch-layer.infra .arch-sub span { background: rgba(255,255,255,0.10); }
+
+    /* ===== Device Mockup (320x480 @ scale) ===== */
+    .dev-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .dev-frame {
+      width: 348px;
+      max-width: 100%;
+      background: #1a1a1c;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 14px 40px rgba(10,15,31,0.35);
+    }
+    .dev-screen {
+      background: var(--navy);
+      border-radius: 6px;
+      overflow: hidden;
+      color: #f2f5ff;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+    .dev-hero {
+      background: #121b36;
+      padding: 12px 14px 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .dev-clock { font-size: 2.4rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+    .dev-date { color: #8492bc; font-size: 0.72rem; margin-top: 4px; }
+    .dev-hero-right { text-align: right; font-size: 0.72rem; color: #8492bc; }
+    .dev-hero-right .t { color: #f2f5ff; font-size: 1.05rem; font-weight: 600; }
+    .dev-list { padding: 8px; display: flex; flex-direction: column; gap: 7px; }
+    .dev-card {
+      background: #161f3c;
+      border-radius: 8px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dev-card .body { flex: 1; min-width: 0; }
+    .dev-card .ttl { color: #8492bc; font-size: 0.68rem; letter-spacing: 0.02em; }
+    .dev-card .val { font-size: 0.95rem; font-weight: 600; }
+    .dev-card .sub { color: #8492bc; font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dev-card .up { color: #4ade80; }
+    .dev-card .warn { color: #fbbf24; }
+    .dev-card .down { color: #f87171; }
+    .dev-blob {
+      width: 42px;
+      height: 34px;
+      border-radius: 6px;
+      background: #223056;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .dev-bar { height: 5px; border-radius: 3px; background: #223056; margin-top: 6px; overflow: hidden; }
+    .dev-bar i { display: block; height: 100%; background: #fbbf24; }
+    .dev-caption { font-size: 0.8rem; color: var(--text-secondary); text-align: center; max-width: 420px; }
+
+    /* ===== Closing ===== */
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* ============================================================
+       ภาพประกอบ — ภาพหน้าจอจริงจากเว็บสาธิต + แผงที่สร้างด้วย HTML
+       ============================================================ */
+    .shot { margin: 28px 0 0; }
+    .shot img {
+      display: block; width: 100%; height: auto;
+      border-radius: var(--radius);
+      box-shadow: 0 0 0 1px var(--border), 0 12px 32px rgba(28,25,23,0.10);
+      background: var(--navy);
+    }
+    .shot figcaption {
+      margin-top: 12px; text-align: center;
+      font-size: 0.84rem; line-height: 1.65; color: var(--text-secondary);
+      text-wrap: pretty;
+    }
+    /* ภาพที่ควรกว้างกว่าคอลัมน์อ่าน */
+    .shot.wide { width: min(1040px, calc(100vw - 48px)); position: relative; left: 50%; transform: translateX(-50%); }
+
+    /* เดสก์ท็อป + มือถือวางคู่กัน (อัตราส่วนคำนวณให้สูงเท่ากัน) */
+    .shot-pair { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.48fr); gap: 20px; align-items: end; }
+    .phone { background: #1a1a1c; border-radius: 26px; padding: 7px; box-shadow: 0 14px 36px rgba(10,15,31,0.30); }
+    .phone img { border-radius: 20px; box-shadow: none; }
+
+    /* สามความกว้าง วางเรียงให้สูงเท่ากัน */
+    .shot-widths { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.75fr) minmax(0, 0.461fr); gap: 16px; align-items: end; }
+    .shot-widths > div { min-width: 0; }
+    .shot-widths .w {
+      display: block; margin-top: 8px; text-align: center;
+      font-family: var(--mono); font-size: 0.74rem; color: var(--text-secondary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ภาพในพื้นที่ hero (พื้นเข้ม) */
+    .hero-shots { position: relative; z-index: 2; margin: 52px auto 0; max-width: 1000px; }
+    .hero-shots img { box-shadow: 0 0 0 1px rgba(255,255,255,0.14), 0 24px 60px rgba(0,0,0,0.45); }
+    .hero-shots .phone { background: #000; box-shadow: 0 0 0 1px rgba(255,255,255,0.16), 0 24px 60px rgba(0,0,0,0.5); }
+    .hero-shots figcaption { color: rgba(255,255,255,0.78); }
+
+    /* แผง "ห้าม / ทำแทน" — ตัวอย่างนามธรรมวาดด้วย CSS ไม่ใช่ภาพ UI สมมติ */
+    .dont-do { margin-top: 28px; border-top: 1px solid var(--border); }
+    .dd-row {
+      display: grid; grid-template-columns: 110px minmax(0, 1fr) minmax(0, 1fr);
+      gap: 0 20px; padding: 20px 0; border-bottom: 1px solid var(--border); align-items: start;
+    }
+    .dd-row > .topic { font-weight: 600; font-size: 0.92rem; padding-top: 2px; }
+    .dd-cell { min-width: 0; }
+    .dd-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+    .dd-tag .ico { width: 14px; height: 14px; }
+    .dd-cell.no .dd-tag { color: var(--red); }
+    .dd-cell.yes .dd-tag { color: var(--emerald-dark); }
+    .dd-cell p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin-top: 8px; }
+    .spec {
+      height: 92px; border-radius: 8px; overflow: hidden; position: relative;
+      border: 1px solid var(--border); background: var(--surface);
+    }
+    .dd-cell.no .spec { opacity: 0.9; }
+    /* เลย์เอาต์ */
+    .spec-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 14px; height: 100%; }
+    .spec-cards i { border-radius: 10px; background: #e7e5e4; box-shadow: 0 4px 10px rgba(0,0,0,0.12); }
+    .spec-asym { display: grid; grid-template-columns: 1.7fr 1fr; gap: 14px; padding: 14px 16px; height: 100%; background: #0b0b0d; border-color: #0b0b0d; }
+    .spec-asym .a { background: #2a2a30; }
+    .spec-asym .b { display: flex; flex-direction: column; gap: 6px; padding-top: 22px; }
+    .spec-asym .b i { height: 3px; background: #4a4a52; }
+    .spec-asym .b i:first-child { width: 60%; background: #e4002d; }
+    /* ตัวอักษร */
+    .spec-type { display: flex; flex-direction: column; justify-content: center; padding: 0 16px; height: 100%; line-height: 1.15; }
+    .spec-type.bold b { font-family: var(--font); font-weight: 700; font-size: 1.15rem; color: #111; }
+    .spec-type.bold b + b { font-size: 1rem; }
+    .spec-type.light { background: #0b0b0d; border-color: #0b0b0d; }
+    .spec-type.light .s { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: 1.5rem; color: #f4efe6; letter-spacing: -0.01em; }
+    .spec-type.light .s em { color: #ff3355; }
+    .spec-type.light .c { font-size: 0.6rem; letter-spacing: 0.24em; color: #b9b7b2; margin-top: 6px; font-weight: 300; }
+    /* สี */
+    .spec-grad { background: linear-gradient(135deg, #7c3aed, #3b82f6 60%, #22d3ee); display: flex; align-items: center; justify-content: center; }
+    .spec-grad i { width: 60%; height: 48px; border-radius: 14px; background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.45); backdrop-filter: blur(6px); }
+    .spec-mark { background: #0b0b0d; border-color: #0b0b0d; }
+    .spec-mark::before { content: ''; position: absolute; width: 2px; height: 140%; background: #e4002d; right: 30%; top: -20%; transform: rotate(32deg); }
+    .spec-mark i { position: absolute; left: 16px; bottom: 18px; width: 40%; height: 3px; background: #4a4a52; }
+
+    /* แผง token จริงจาก tokens.css + ผลตัวตรวจคอนทราสต์ */
+    .tokens-panel { margin-top: 28px; background: #0b0b0d; border-radius: var(--radius-lg); padding: 24px; color: #f5f4f2; }
+    .swatches { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+    .sw { border-radius: 8px; min-height: 108px; padding: 10px; display: flex; flex-direction: column; justify-content: flex-end; border: 1px solid #2e2e34; }
+    .sw b { font-family: var(--mono); font-size: 0.74rem; font-weight: 600; }
+    .sw code { background: none; color: inherit; padding: 0; font-size: 0.68rem; opacity: 0.86; overflow-wrap: anywhere; }
+    .sw.dark { color: #f5f4f2; }
+    .sw.light { color: #1a1a1c; }
+    .checker { margin-top: 20px; border-top: 1px solid #2e2e34; padding-top: 16px; font-family: var(--mono), var(--font); font-size: 0.76rem; line-height: 1.85; color: #b9b7b2; overflow-x: auto; }
+    .checker div { white-space: pre; }
+    .checker .cmd { color: #8a8a90; }
+    .checker .pass { color: #7fcf9e; }
+    .checker .all { color: #f5f4f2; font-weight: 600; }
+    .tokens-panel figcaption { color: #b9b7b2; }
+
+    @media (max-width: 640px) {
+      .shot.wide { width: auto; left: auto; transform: none; }
+      .shot-pair { grid-template-columns: 1fr; }
+      .shot-pair .phone { width: 62%; max-width: 240px; margin: 0 auto; }
+      .shot-widths { grid-template-columns: minmax(0, 0.75fr) minmax(0, 0.461fr); }
+      .shot-widths > div:first-child { grid-column: 1 / -1; }
+      .dd-row { grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+      .dd-row > .topic { grid-column: 1 / -1; }
+      .swatches { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .tokens-panel { padding: 18px; }
+      .checker { font-size: 0.62rem; }
+      .spec-type { padding: 0 12px; }
+      .spec-type.bold b { font-size: 0.8rem; }
+      .spec-type.bold b + b { font-size: 0.74rem; }
+      .spec-type.light .s { font-size: 1.15rem; }
+      .spec-type.light .c { font-size: 0.5rem; letter-spacing: 0.16em; }
+    }
+  </style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/club-revamp-portfolio/">
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z"/><path d="m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18"/><path d="m2.3 2.3 7.286 7.286"/><circle cx="11" cy="11" r="2"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        UX/UI &middot; Design System &middot; Next.js + Tailwind
+      </div>
+      <h1>Premium Club Revamp<br><span class="accent">Write down what not to do before you start designing</span></h1>
+      <p>A website revamp for a premium club where the biggest risk wasn't missing the deadline. It was <strong>the work coming out looking like a template</strong>. The answer was to write a clear list of things to avoid before opening the first file, then use it to check every page and every slide.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Design System</span>
+        <span class="hero-tag">OKLCH Tokens</span>
+        <span class="hero-tag">Next.js</span>
+        <span class="hero-tag">Tailwind</span>
+        <span class="hero-tag">WCAG AA</span>
+        <span class="hero-tag">Editorial Layout</span>
+        <span class="hero-tag">Mobile First</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#rules">See the don'ts list &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#system">Design system</a>
+      </div>
+    </div>
+    <figure class="shot hero-shots">
+      <div class="shot-pair">
+        <img src="img/hero-desktop.jpg" width="1440" height="900" alt="ALPHA X demo site home page on desktop: black background, serif headline Wealth with Passion with the word Passion in brand red, a sports car in dim red light behind it">
+        <div class="phone"><img src="img/hero-mobile.jpg" width="509" height="1076" alt="The same home page on a 393-pixel-wide phone: headline and buttons stacked in a single column, full-width cream primary button"></div>
+      </div>
+      <figcaption>Home page of the working demo site — the brand typeface, a light serif, and the logo red used as the only accent</figcaption>
+    </figure>
+  </header>
+
+  <article>
+
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>The biggest risk on this project: &ldquo;you can tell nobody really cared&rdquo;</h2>
+      <p>For a brand at this level, work that looks like a template isn't just unattractive. It says we don't understand who the client is.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/club-editorial.jpg" width="1440" height="900" loading="lazy" alt="ALPHA X Club page of the demo site on desktop: cream background, thin red uppercase label ALPHA X CLUB ISSUE 01 and a large serif headline A life well considered. set flush left, with the whole right side left empty">
+      <figcaption>The Club page of the real demo site &mdash; this audience is used to magazines, not off-the-shelf landing pages. One headline, lots of white space, and red only on one small label</figcaption>
+    </figure>
+
+    <div class="quote-block">
+      <p>If you saw this on a designer portfolio site, would you believe a studio made it? That single question was the pass/fail check for every page and every slide. Whenever the answer was no, it meant fix it, not explain it.</p>
+      <div class="author">— the last QA check before handing off</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+        <h3>The same rhythm on every page</h3>
+        <p>Three equal cards centered on screen, repeated on every slide and every section. It's the first thing viewers notice: the work wasn't designed page by page, it was poured into the same frame.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg>
+        <h3>Every heading equally heavy and bold</h3>
+        <p>When every heading gets the same emphasis, nothing is emphasized. The eye doesn't know where to start, and the page instantly looks like everything else.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>
+        <h3>Effects everyone uses</h3>
+        <p>Purple-to-blue gradients, frosted glass, rounded corners on every box, default shadows, and icons scattered across the page. None of these is wrong on its own, but together they're the signature of work built from defaults.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        <h3>Walls of text with no rhythm</h3>
+        <p>Long paragraphs back to back with nothing pulled out for emphasis. Good content doesn't get read past the first paragraph, and slides end up looking more like documents than a presentation.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="rules">
+      <span class="eyebrow">Define</span>
+      <h2>The don'ts list is written before designing, not during review</h2>
+      <p>Rules written in advance are easy to apply because there's no work yet to feel attached to. Rules invented during review tend to become reasons to keep what's already been made.</p>
+    </section>
+
+    <figure class="shot" role="group" aria-labelledby="dd-cap">
+      <div class="dont-do">
+        <div class="dd-row">
+          <div class="topic">Layout</div>
+          <div class="dd-cell no">
+            <span class="dd-tag"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Don't</span>
+            <div class="spec"><div class="spec-cards" aria-hidden="true"><i></i><i></i><i></i></div></div>
+            <p>Three equal cards, rounded corners, default shadows, centered and repeated on every page</p>
+          </div>
+          <div class="dd-cell yes">
+            <span class="dd-tag"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Instead</span>
+            <div class="spec spec-asym" aria-hidden="true"><div class="a"></div><div class="b"><i></i><i></i><i></i></div></div>
+            <p>Split the screen into large unequal proportions and let the empty space do the work</p>
+          </div>
+        </div>
+        <div class="dd-row">
+          <div class="topic">Typography</div>
+          <div class="dd-cell no">
+            <span class="dd-tag"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Don't</span>
+            <div class="spec spec-type bold" aria-hidden="true"><b>WEALTH WITH PASSION</b><b>Every heading heavy and bold</b></div>
+            <p>Every heading equally bold, so nothing stands out</p>
+          </div>
+          <div class="dd-cell yes">
+            <span class="dd-tag"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Instead</span>
+            <div class="spec spec-type light" aria-hidden="true"><span class="s">Wealth with <em>Passion</em></span><span class="c">PRIVATE FINANCIAL SOLUTIONS</span></div>
+            <p>A light serif paired with thin, widely spaced uppercase</p>
+          </div>
+        </div>
+        <div class="dd-row">
+          <div class="topic">Color and surface</div>
+          <div class="dd-cell no">
+            <span class="dd-tag"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Don't</span>
+            <div class="spec spec-grad" aria-hidden="true"><i></i></div>
+            <p>Purple-to-blue gradients and frosted glass boxes</p>
+          </div>
+          <div class="dd-cell yes">
+            <span class="dd-tag"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Instead</span>
+            <div class="spec spec-mark" aria-hidden="true"><i></i></div>
+            <p>The brand's black background, with the logo red used as a single accent line</p>
+          </div>
+        </div>
+      </div>
+      <figcaption id="dd-cap">The three rules from the don'ts list with the most visible effect. Each comes with &ldquo;what to do instead&rdquo;. The table below is the full list.</figcaption>
+    </figure>
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th>Area</th><th class="num">Rule</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>Icons</td><td class="num">One set only</td><td>One line icon set across the whole project. No emoji, and no hand-drawn icons mixed in, because mismatched stroke weights are noticeable right away even when viewers can't say what's wrong.</td></tr>
+          <tr><td>Layout</td><td class="num">Asymmetric</td><td>Split the screen into clearly large proportions and let empty space work. Don't chop the screen into lots of small cards, and don't use the same rhythm on two pages in a row.</td></tr>
+          <tr><td>Typography</td><td class="num">Control the weight</td><td>Use the brand typeface with a light serif. No heavy bold on every heading. Contrast should come from size and style, not weight alone.</td></tr>
+          <tr><td>Imagery</td><td class="num">Art-directed</td><td>Every image is graded to the same color set, with grain and imperfect light. Any image that looks obviously synthetic gets redone or cut, never kept just because it took effort.</td></tr>
+          <tr><td>Copy</td><td class="num">No stock phrases</td><td>Short, confident sentences. No words like &ldquo;elevate&rdquo;, &ldquo;unlock&rdquo; or &ldquo;seamless&rdquo;, and no exclamation marks, because they signal the copy wasn't written for this brand specifically.</td></tr>
+          <tr data-picked><td>Signs of craft</td><td class="num">Required</td><td>Add what templates don't have: graphic motifs drawn from the logo, patterns taken from the brand's print work, and a page numbering system. These are what make the work look like someone thought about it.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="system">
+      <span class="eyebrow">Prototype</span>
+      <h2>A design system that enforces itself, not just a guideline document</h2>
+      <p>Rules that live only in people's heads always slip when the work is rushed, so as many as possible were moved into files that can be checked.</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+        <h3>One token file, shared everywhere</h3>
+        <p>Colors, type and spacing are declared in one place, and both the demo site and the presentation pull from the same set. A color that isn't in this file is a color you can't use.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg>
+        <h3>A contrast checker every color must pass first</h3>
+        <p>A script checks every color pair in the system, and it has to report all pass before the tokens can be used. Readability doesn't depend on whoever happens to remember that day.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg>
+        <h3>Fonts are kept inside the project</h3>
+        <p>No reliance on external font services, because a page that opens during a presentation without its fonts is a page that breaks at the most important moment.</p>
+      </div>
+    </div>
+
+    <figure class="shot tokens-panel" aria-labelledby="tk-cap">
+      <div class="swatches">
+        <div class="sw dark" style="background:#0b0b0d;background:oklch(16% 0.004 285)"><b>--ax-black</b><code>oklch(16% 0.004 285)</code></div>
+        <div class="sw dark" style="background:#16161a;background:oklch(21% 0.006 285)"><b>--ax-ink</b><code>oklch(21% 0.006 285)</code></div>
+        <div class="sw dark" style="background:#e4002d;background:oklch(57% 0.24 23)"><b>--ax-red</b><code>oklch(57% 0.24 23)</code></div>
+        <div class="sw light" style="background:#c9a24b;background:oklch(72% 0.10 84)"><b>--ax-gold</b><code>oklch(72% 0.10 84)</code></div>
+        <div class="sw light" style="background:#f4efe6;background:oklch(95% 0.012 85)"><b>--ax-cream</b><code>oklch(95% 0.012 85)</code></div>
+      </div>
+      <div class="checker">
+        <div class="cmd">$ python3 check-contrast.py</div>
+        <div><span class="pass">PASS</span>  17.80:1  (needs ≥4.5)  text on bg</div>
+        <div><span class="pass">PASS</span>   5.33:1  (needs ≥4.5)  text-3 on bg</div>
+        <div><span class="pass">PASS</span>  15.64:1  (needs ≥4.5)  cta-text on cta-bg</div>
+        <div><span class="pass">PASS</span>   7.78:1  (needs ≥4.5)  gold on bg (label)</div>
+        <div><span class="pass">PASS</span>   3.96:1  (needs ≥3.0)  red on bg (accent txt)</div>
+        <div><span class="pass">PASS</span>   6.55:1  (needs ≥4.5)  lt red-deep on cream</div>
+        <div class="cmd">… 11 more pairs</div>
+        <div class="all">ALL PASS ✓</div>
+      </div>
+      <figcaption id="tk-cap">The five main colors from the project's real token file (OKLCH values as in the file) and the output of the contrast script for 17 pairs. It has to show ALL PASS before the tokens can be used.</figcaption>
+    </figure>
+
+    <div class="learning-card note">
+      <strong>Choosing OKLCH for the color system</strong>
+      <p>It lets you change a color's lightness without its hue drifting, which matters a lot for dark work with a single accent. When the accent has to be lightened to pass contrast, it doesn't turn into a different color.</p>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>Changing the order &mdash; build the working thing first, then the presentation</h2>
+      <p>The original plan was to make the presentation first and the website demo after, but the order changed partway through for clear reasons.</p>
+    </section>
+
+    <figure class="shot wide">
+      <div class="shot-pair">
+        <img src="img/demo-values-desktop.jpg" width="1440" height="900" loading="lazy" alt="The Alpha X Standard section on desktop: a large serif headline on the left with a car in deep shadow, a three-item list with red numbers on the right, and a red diagonal line taken from the X in the logo">
+        <div class="phone"><img src="img/demo-values-mobile.jpg" width="509" height="1104" loading="lazy" alt="The same section on mobile: headline, image and list stacked in one column, with the red diagonal still in the top corner"></div>
+      </div>
+      <figcaption>Screenshots from the real demo site, not mockups — the asymmetric layout and the red diagonal taken from the logo's X are the &ldquo;signs of craft&rdquo; that templates don't have</figcaption>
+    </figure>
+
+    <div class="hack-grid">
+
+      <div class="hack-card" data-label="Sequencing">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Mockups in slides can't prove the real thing can be built</span></h3>
+        <p>A presentation full of nice mockups only shows that we can draw. It doesn't show the real site will turn out that way, and viewers who've seen a lot of this kind of work can tell.</p>
+        <div class="highlight"><strong>Fix:</strong> <strong>finish a working demo site first</strong>, then put screenshots of the real thing into the slides. A side benefit is that it proves the proposed tech stack along the way, because the demo is built with the same stack being proposed.</div>
+      </div>
+
+      <div class="hack-card" data-label="Accessibility">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>The brand accent failed contrast in many places at once</span></h3>
+        <p>The accent taken from the logo looks good on dark backgrounds, but on small text its contrast doesn't meet the threshold, and the same problem was spread across many spots in the work.</p>
+        <div class="highlight"><strong>Fix:</strong> rather than fixing each spot one by one, <strong>fix it in the token and let the change spread through the whole project</strong>. Because the color system allows lightness changes without the hue drifting, the color still reads as the brand's. Everything was fixed together in one pass.</div>
+      </div>
+
+      <div class="hack-card" data-label="Craft">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Every page followed the rules, but together it still looked flat</span></h3>
+        <p>Every don't was followed and nothing was wrong, but the result had no personality, because a don'ts list can only say what to avoid, not what must be there.</p>
+        <div class="highlight"><strong>Fix:</strong> add positive rules alongside it — <strong>every page must have at least one point of emphasis</strong>, whether a large number, a word pulled out in serif, or a single accent color, and paragraphs must not run longer than two or three lines &mdash; don'ts alone give you safe work, not good work.</div>
+      </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Test</span>
+      <h2>Review page by page against criteria, not by overall feel</h2>
+      <p>A per-page status table, where every page is judged on its own as passed or not yet, with what needs fixing noted.</p>
+    </section>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/></svg><span><b>Per-page status table</b> — passed / in review / not reviewed, with notes on which pages were fully redesigned and what changed</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg><span><b>Contrast fixed as a batch</b>, not spot by spot whenever someone happened to notice, because problems coming from the same token always come back if you only fix the symptoms</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span><b>Always check three widths</b> — design from the small screen first and scale up, not design for large screens and squeeze down</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg><span><b>The final check is a single question</b> — if you saw this where designers post their work, would you believe a studio made it? If you can't say yes without hesitation, it hasn't passed.</span></li>
+    </ul>
+
+    <figure class="shot wide">
+      <div class="shot-widths">
+        <div><img src="img/review-1440.jpg" width="1440" height="900" loading="lazy" alt="Our Expertise section at 1440 pixels wide: headline on the left, description on the right, three images in one row"><span class="w">1440</span></div>
+        <div><img src="img/review-768.jpg" width="768" height="1024" loading="lazy" alt="The same section at 768 pixels: image and text paired item by item"><span class="w">768</span></div>
+        <div><img src="img/review-393.jpg" width="509" height="1104" loading="lazy" alt="The same section at 393 pixels: everything stacked in a single column"><span class="w">393</span></div>
+      </div>
+      <figcaption>The same section at three widths — a page only counts as passing when it passes all three, and each size is recomposed, not just scaled down</figcaption>
+    </figure>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">1</div><div class="label">token file shared by the demo site and the presentation</div></div>
+      <div class="metric-card"><div class="num">12</div><div class="label">contrast issues fixed at once by changing the token</div></div>
+      <div class="metric-card"><div class="num">3</div><div class="label">widths every page must pass</div></div>
+      <div class="metric-card"><div class="num">0</div><div class="label">emoji and off-set icons that slipped into the work</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>What carries over to other projects</h2>
+      <p>This way of working isn't tied to any one brand, and it has already been reused on the next project.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/accent-moment.jpg" width="1440" height="900" loading="lazy" alt="Limitless Opulence section of the demo site: a large centered serif headline with a two-line description, and below it a silver sports car on black with its reflection">
+      <figcaption>An example of a &ldquo;positive rule&rdquo; in the demo site &mdash; the whole section has a single point of emphasis: a serif headline and one full-width image. No cards, no icons</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg><span><b>Write the don'ts list before starting</b> — the cheapest tool for keeping work from sliding toward defaults, and a shared language when discussing why something needs to change</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg><span><b>Move rules into files that can be checked</b> — contrast checked by a script and contrast that relies on memory give very different results when the work is rushed</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4.1 12 6"/><path d="m5.1 8-2.9-.8"/><path d="m6 12-1.9 2"/><path d="M7.2 2.2 8 5.1"/><path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"/></svg><span><b>Build the working thing before the documents</b> — you get credibility and proof of the technical proposal in the same piece of work</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg><span><b>Don'ts give you safe work, positive rules give you good work</b> — you need both. With only don'ts you get work where nothing is wrong but nothing is memorable either</span></li>
+    </ul>
+
+  </article>
+
+  <div class="closing">
+
+    <h2>Premium Club Revamp</h2>
+    <p>A design project that started by admitting the real risk was the work looking like something anyone could make, then built the whole process to prevent exactly that — write the don'ts before starting, move rules into files that can be checked, and build the real thing before the documents.</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Next.js</span>
+      <span class="stack-icon">Tailwind</span>
+      <span class="stack-icon">OKLCH</span>
+      <span class="stack-icon">Design Tokens</span>
+      <span class="stack-icon">WCAG AA</span>
+      <span class="stack-icon">Self-hosted fonts</span>
+      <span class="stack-icon">Mobile First</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.work/">&#8592; Back to all projects</a>
+    </div>
+  </div>
+
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Natpakan Sirirat — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"Premium Club Revamp — Design System &amp; Anti-template","item":"https://projects.tanplanet.work/club-revamp-portfolio/"}
+  ]
+}
+</script>
+
+</body>
+</html>

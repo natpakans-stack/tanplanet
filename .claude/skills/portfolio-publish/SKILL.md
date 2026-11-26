@@ -18,6 +18,11 @@ description: เขียนหน้า case study ของโปรเจก�
 ถ้าไม่แน่ใจข้อไหน ให้ตัดออกก่อน แล้วถามแทนตอนสรุป
 **ข้อยกเว้น (แทนอนุญาต 26 พ.ย. 2026):** งาน UX/UI รุ่นก่อนที่ย้ายมาจาก myfolio (NocNoc, Kollab, Siriraj NCDs, Pukao/Krungsri, Jump/Wongnai, LINE MAN Mart) ใส่ชื่อลูกค้า/บริษัทได้ — เปิดเผยบน myfolio มาตั้งแต่แรก
 
+## 2.5 คอมโพเนนต์ชุดเดียว (แทนสั่ง 27 พ.ย. 2026)
+- เนื้อหา case study ใช้คอมโพเนนต์จาก `common/components.css` เท่านั้น — ดูรายการ + ตัวอย่างที่ `/preset/` (สร้างด้วย `python3 tools/gen-preset.py`)
+- ขาดอะไร → เพิ่มใน components.css + ITEMS ของ gen-preset.py ก่อน แล้วค่อยใช้ · ห้ามประดิษฐ์ quote/การ์ด/ตาราง/ป้ายสีใหม่ในหน้า
+- เขียนต้นฉบับที่ `_case-src/<slug>.html` แล้วรัน `python3 tools/case-to-article.py <slug>` → หน้าจริงอยู่ในเลย์เอาต์บทความ myfolio
+
 ## 3. เขียนหน้า `<slug>-portfolio/index.html` — แพทเทิร์นเดิมเป๊ะ ห้ามดีไซน์ใหม่
 - ก๊อปทั้ง `<head>`/`<style>` + โครง body จาก `ring-bot-billing-portfolio/index.html`
   hero (hero-mark ไอคอน, hero-badge, h1 + `<span class="accent">`, p, hero-tags, cta-row) → section-intro ตาม eyebrow Empathize · Define / Ideate / Prototype / Test & Iterate → pain-grid, ledger (ทางเลือก + `data-picked`), arch-diagram, flow-grid, hack-grid, plain, metrics → closing → back-nav + back-to-top + JSON-LD BreadcrumbList
@@ -35,7 +40,8 @@ description: เขียนหน้า case study ของโปรเจก�
 - วางเป็น **การ์ดแรก** ใน `#projectsGrid` (เรียงตาม DOM) · `data-added="YYYY-MM-DD"` (วันนี้ → ขึ้นป้าย New เอง)
 - markup เหมือนการ์ดข้าง ๆ: card-visual + badge-new + icon · card-type · h3 · p · card-tags · card-footer "Case Study — …"
 - `data-category` ใช้ค่าที่มีอยู่: web-app / automation / design-thinking / tooling / content
-- เพิ่ม JSON-LD ListItem (position ถัดไป + `numberOfItems`)
+- เพิ่ม JSON-LD ListItem ใน `pj/jsonld.json` (position ถัดไป + `numberOfItems`)
+- รัน `python3 tools/gen-myfolio-projects.py` → สร้าง `index.html` + `en/index.html` ใหม่ในเทมเพลต myfolio (การ์ด · JSON-LD · ลิงก์เมนู) — ห้ามแก้เปลือกหน้าใน index.html ตรง ๆ
 - รัน `python3 tools/gen-seo.py` → อัปเดต sitemap.xml + llms.txt จากการ์ด
 
 ## 5. ตรวจก่อน push

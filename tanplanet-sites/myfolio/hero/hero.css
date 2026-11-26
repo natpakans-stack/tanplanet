@@ -2,7 +2,7 @@
    section สูง 2 จอ · ชั้นใน sticky 1 จอ · การ์ดกระจายออกจากกลางจอตามระยะเลื่อน (hero.js) */
 /* hero เริ่มที่ขอบบนจอ (ซ้อนใต้ navbar แบบต้นแบบ) — ไม่งั้น sticky เริ่มช้าไปเท่าความสูง navbar */
 .fh { position: relative; height: 200vh; margin-top: calc(-1 * var(--hdr, 96px)); }
-.header.w-nav { position: relative; z-index: 10; }
+.header.w-nav { position: sticky; top: 0; z-index: 1000; }   /* ต้อง sticky (เดิม relative ทับไว้ → หน้าแรก navbar ไม่ตามลงมาเป็นแคปซูล) */
 .fh-stage { position: sticky; top: 0; height: 100vh; overflow: hidden; }
 .fh-center {
   position: absolute; inset: 0; display: flex; flex-direction: column;
@@ -80,15 +80,15 @@
 .fh-accent {
   display: inline-block; margin: 0 .18em; font-family: Sriracha, "Google Sans", cursive; font-style: normal; font-weight: 400;
   font-size: 1.08em; color: var(--tp-text); transform-origin: 50% 60%;
-  position: relative; clip-path: inset(-20% 100% -60% 0); animation: fh-write .9s cubic-bezier(.4,0,.2,1) .35s forwards, fh-idle 1.8s steps(1) 1.3s infinite;
+  position: relative; clip-path: inset(-30% 100% -60% -12%); animation: fh-write .9s cubic-bezier(.4,0,.2,1) .35s forwards, fh-idle 1.8s steps(1) 1.3s infinite;
 }
-@keyframes fh-write { to { clip-path: inset(-20% -2% -60% 0); } }
+@keyframes fh-write { to { clip-path: inset(-30% -12% -60% -12%); } }  /* เผื่อหางตัวเขียน (b/d) ที่ยื่นเกินกล่องคำ */
 @keyframes fh-idle { 0% { rotate: -1.2deg; } 33% { rotate: .8deg; translate: 0 -1px; } 66% { rotate: -.4deg; translate: 0 1px; } }
 @media (prefers-reduced-motion: reduce) { .fh-accent { animation: none; clip-path: none; } }
 .nw { white-space: nowrap; }
 
 /* ไล่สีคำเน้น + เส้นใต้ลายมือ (path วาดเอง) ลากตามหลังคำที่เขียนเสร็จ */
-.fh-grad { background: linear-gradient(90deg, var(--tp-brand-2), var(--tp-brand) 50%, var(--tp-text) 92%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.fh-grad { padding: 0 .14em; margin: 0 -.14em; background: linear-gradient(90deg, var(--tp-hero-1), var(--tp-hero-2) 50%, var(--tp-text) 92%); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .fh-ul { position: absolute; left: -2%; bottom: -.12em; width: 104%; height: .32em; overflow: visible; }
 .fh-ul path { fill: none; stroke: url(#fhg); stroke-width: 5; stroke-linecap: round; vector-effect: non-scaling-stroke;
   stroke-dasharray: 1; stroke-dashoffset: 1; animation: fh-ul .6s cubic-bezier(.4,0,.2,1) 1.15s forwards; }
@@ -116,3 +116,12 @@
 
 
 @media (max-width: 520px) { .nw { white-space: normal; } }  /* จอแคบมาก: ปล่อยให้ตัดบรรทัดได้ ดีกว่าล้นขอบ */
+
+/* section Projects หน้าแรก: 3 คอลัมน์ (แทนขอ 27 พ.ย.) · การ์ดแคบลง → ลดขนาดตัวหนังสือ/ระยะ */
+.section .portfolio-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 24px; row-gap: 24px; }
+.portfolio-grid .card.portfolio-project .title.card-portfolio-project { font-size: 20px; line-height: 1.4; }
+.portfolio-grid .card.portfolio-project .paragraph-14 { font-size: 15px; line-height: 1.7; }
+@media (max-width: 991px) { .section .portfolio-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .section .portfolio-grid { grid-template-columns: minmax(0, 1fr); } }
+.fh-card img { aspect-ratio: 16 / 9; object-position: center; }  /* ปกจาก engine 16:9 — เห็นทั้งใบ */
+.fh-card .fh-ava svg { width: 55%; height: 55%; color: #fff; stroke: #fff; fill: none; }  /* ไอคอนจากการ์ดผลงาน (stroke) */

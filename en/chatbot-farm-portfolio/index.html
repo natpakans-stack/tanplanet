@@ -1,0 +1,907 @@
+<!DOCTYPE html><html data-wf-domain="www.tanplanet.work" data-wf-page="608d6278863727b47e80cb9c" data-wf-site="608d62778637273e1880cb8d" lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luk Jiab: a LINE bot that logs feeding on a pullet farm</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Luk Jiab: a LINE bot that logs feeding on a pullet farm">
+  <meta name="twitter:description" content="Portfolio: a LINE chatbot for a pullet farm. Reminds workers about 3 meals a day, logs feeding, and reports into Google Sheets automatically. Next.js 16 + LIFF + Vercel">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="Portfolio: a LINE chatbot for a pullet farm. Reminds workers about 3 meals a day, logs feeding, and reports into Google Sheets automatically. Next.js 16 + LIFF + Vercel">
+  <meta property="og:title" content="Luk Jiab: a LINE bot that logs feeding on a pullet farm">
+  <meta name="description" content="Portfolio: a LINE chatbot for a pullet farm. Reminds workers about 3 meals a day, logs feeding, and reports into Google Sheets automatically. Next.js 16 + LIFF + Vercel">
+  <circle cx='50' cy='50' r='48' fill='%23B07710'/><text x='50' y='62' text-anchor='middle' font-size='58'>🐥</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  
+  
+  <script src="../../common/closing.js" defer></script>
+  <meta property="og:image" content="https://projects.tanplanet.work/pj/covers/chatbot-farm-portfolio-en-og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://projects.tanplanet.work/pj/covers/chatbot-farm-portfolio-en-og.jpg"><link rel="icon" type="image/png" href="https://myfolio.tanplanet.work/favicon.png"><link rel="apple-touch-icon" href="https://myfolio.tanplanet.work/apple-touch-icon.png"><link rel="canonical" href="https://projects.tanplanet.work/en/chatbot-farm-portfolio/"><meta property="og:url" content="https://projects.tanplanet.work/en/chatbot-farm-portfolio/"><meta property="og:locale" content="en_US"><link rel="alternate" hreflang="th" href="https://projects.tanplanet.work/chatbot-farm-portfolio/"><link rel="alternate" hreflang="en" href="https://projects.tanplanet.work/en/chatbot-farm-portfolio/"><link rel="alternate" hreflang="x-default" href="https://projects.tanplanet.work/chatbot-farm-portfolio/"><link rel="stylesheet" href="https://myfolio.tanplanet.work/tokens.css"/><link href="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/css/myfolio-tannie.webflow.shared.f00d552de.css?v=50" rel="stylesheet" type="text/css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap"><link rel="stylesheet" href="https://myfolio.tanplanet.work/blog/article.css"/><link rel="stylesheet" href="../../common/closing.css"><style>.cs *, .cs *::before, .cs *::after{ box-sizing: border-box; margin: 0; padding: 0; }
+.cs{
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #B07710;
+      --accent-light: #fef3c7;
+      --accent-dark: #78350f;
+      --accent-glow: rgba(176,119,16,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+.cs{
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+.cs .hero{
+      background: linear-gradient(135deg, #78350f 0%, #B07710 45%, #d97706 80%, #f59e0b 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+.cs .hero::before{
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(254,243,199,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(176,119,16,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+@keyframes sway{
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+.cs .hero::after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #B07710, #f59e0b, #fef3c7);
+    }
+.cs .hero-inner{
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+.cs .hero-mark{
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+.cs .hero-badge{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+.cs .hero-badge .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+@keyframes pulse-dot{
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+.cs .hero h1{
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+.cs .hero h1 .accent{
+      color: #fef3c7;
+    }
+.cs .hero p{
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+.cs .hero-tags{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+.cs .hero-tag{
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+.cs .cta-row{
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+.cs .cta-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+.cs .cta-btn:hover{ transform: translateY(-2px); }
+.cs .cta-primary{
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+.cs .cta-primary:hover{ box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+.cs .cta-ghost{
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+.cs .cta-ghost:hover{ background: rgba(255,255,255,0.2); }
+.cs article{
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+.cs code{
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+.cs .chat-mockup{
+      background: #8cabd9;
+      border-radius: var(--radius-lg);
+      padding: 24px 16px;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+.cs .chat-bubble{
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      position: relative;
+    }
+.cs .chat-bubble.bot::before{
+      content: '';
+      background: #fff8e6 url(/chatbot-farm-portfolio/img/chick.png) center/80% no-repeat;
+      position: absolute;
+      left: -34px;
+      top: 0;
+      width: 28px;
+      height: 28px;
+      background-color: #fff8e6;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+    }
+.cs .chat-bubble.bot{ margin-left: 38px; }
+.cs .chat-bubble.user{
+      background: #b8e072;
+      margin-left: auto;
+      margin-right: 0;
+      max-width: 70%;
+    }
+.cs .chat-bubble .label{
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+.cs .chat-bubble h4{
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+.cs .chat-bubble p{
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+.cs .chat-bubble .bubble-btn{
+      display: block;
+      margin-top: 10px;
+      padding: 8px 14px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-align: center;
+    }
+.cs .chat-bubble .houses{
+      display: flex;
+      gap: 14px;
+      margin: 8px 0;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+.cs .liff-mockup{
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 320px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+    }
+.cs .liff-header{
+      background: var(--accent);
+      color: #fff;
+      padding: 14px 18px;
+    }
+.cs .liff-header h4{ font-size: 0.95rem; font-weight: 700; }
+.cs .liff-header .sub{ font-size: 0.74rem; opacity: 0.85; margin-top: 2px; }
+.cs .liff-body{ padding: 16px; }
+.cs .liff-table{
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      border: 1px solid var(--accent-light);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+.cs .liff-table th{
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 8px 6px;
+      font-weight: 600;
+      text-align: left;
+    }
+.cs .liff-table th:not(:first-child){ text-align: center; }
+.cs .liff-table td{
+      padding: 8px 6px;
+      border-top: 1px solid var(--accent-light);
+    }
+.cs .liff-table td:first-child{ font-weight: 500; }
+.cs .liff-table .input-cell{
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 8px;
+      text-align: center;
+      font-family: 'SF Mono', monospace;
+      color: var(--text);
+      display: inline-block;
+      min-width: 50px;
+    }
+.cs .liff-total{
+      margin-top: 12px;
+      padding: 8px 12px;
+      background: #fffaeb;
+      border-radius: 6px;
+      font-size: 0.84rem;
+      color: var(--accent-dark);
+      text-align: right;
+      font-weight: 600;
+    }
+.cs .liff-cta{
+      margin-top: 12px;
+      padding: 11px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+.cs .back-nav{
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(120,53,15,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+.cs .back-nav:hover{ background: rgba(120,53,15,0.96); transform: translateY(-1px); }
+.cs .back-nav svg{ flex-shrink: 0; }
+.cs .back-to-top{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+.cs .back-to-top.visible{ opacity: 1; visibility: visible; transform: translateY(0); }
+.cs .back-to-top:hover{ background: var(--accent-dark); }
+@media (max-width: 680px){.cs .hero{ padding: 80px 20px 56px; }
+.cs .hero h1{ font-size: 1.7rem; }
+.cs .back-nav{ top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+.cs .back-to-top{ bottom: 16px; right: 16px; width: 40px; height: 40px; }
+
+    }
+.cs .ico{ width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+.cs .rung:last-child{ border-bottom: 0; }
+.cs .ledger--wide{ min-width: 780px; }
+.cs .ladder{ border-top: 1px solid var(--border); margin-top: 20px; }
+.cs .rung{
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+.cs .rung .cond{ display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+.cs .rung .cond .ico{ color: var(--text-muted); width: 15px; height: 15px; }
+.cs .rung .out{ font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+.cs .rung .note{ font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+.cs .rung.none .out{ color: var(--text-muted); }
+@media (min-width: 700px){.cs .rung{ grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+
+    }
+.cs .hero-mark .ico{ width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
+.cs .hero-badge .ico{ width: 14px; height: 14px; }
+@media (max-width:640px){}
+
+</style><link rel="stylesheet" href="../../common/components.css?v=7"/><link rel="stylesheet" href="../../pj/case.css?v=12"/></head><body><div style="opacity:0" class="page-wrapper"><div data-collapse="medium" data-animation="default" data-duration="400" data-w-id="58db7844-5919-d71b-dd74-2323ed8dffe9" data-easing="ease" data-easing2="ease" role="banner" class="header w-nav"><div class="loader-wrapper"><div class="loader"></div></div><div class="container-header"><div class="split-content header-left"><a href="https://myfolio.tanplanet.work/" class="brand w-nav-brand"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><nav role="navigation" class="nav-menu w-nav-menu"><ul role="list" class="header-navigation"><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="nav-link">Home</a></li><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="nav-link">About</a></li><li class="nav-item-wrapper last"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a><a href="https://projects.tanplanet.work/en/" class="nav-link">Portfolio</a><a href="https://myfolio.tanplanet.work/en/contact" class="nav-link nav-contact">Contact</a></li></ul></nav></div><div class="split-content header-right"><a class="lang-switch" href="https://projects.tanplanet.work/chatbot-farm-portfolio/" hreflang="th" aria-label="TH EN – Switch to Thai"><span class="">TH</span> <span class="on">EN</span></a><div class="link-header-wrapper"><a data-w-id="a331bf6d-ae80-89ce-2301-aa6077024ef0" href="https://drive.google.com/file/d/1GjCCJ3XFU16-ceCq3MGVWRdezXm3GWxl/view?usp=sharing" target="_blank" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Resume</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="menu-button w-nav-button"><div class="menu-button-wrapper"><div class="menu-button-icon"><div class="menu-line-top"></div><div class="menu-line-middle"></div><div class="menu-line-bottom"></div></div></div></div></div></div><div class="container-default w-container"><div class="divider"></div></div></div><div class="section blog-post" role="main"><article class="ap cs-page" role="main"><div class="ap-band"><div class="ap-container"><header class="ap-head">
+<div class="ap-tags"><a href="https://projects.tanplanet.work/en/" class="ap-tag">Automation</a><span class="ap-tag ap-tag--ghost">Projects</span></div>
+<h1 class="ap-title">Luk Jiab · Chicken Farm Bot</h1><p class="cs-sub">A LINE chatbot for a pullet farm that closes the whole loop: the owner plans, the bot reminds workers in the LINE group, workers report through LIFF, and everything is stored in a Google Sheet. Built with Next.js 16 + LINE Messaging API + LIFF + Vercel in a single session.</p>
+<p class="ap-meta"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><time datetime="2026-05-24">May 24, 2026</time></span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>12 min read</span></p>
+</header></div></div>
+<div class="ap-container ap-grid"><div class="ap-main">
+<figure class="ap-cover"><img src="../../pj/covers/chatbot-farm-portfolio-en.webp" alt="" width="1600" height="900" fetchpriority="high" decoding="async"></figure>
+<div class="ap-row"><aside class="ap-share" aria-label="Share this article"><span class="ap-share-title">SHARE</span><a href="https://www.facebook.com/sharer/sharer.php?u=https://projects.tanplanet.work/en/chatbot-farm-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a><a href="https://twitter.com/intent/tweet?url=https://projects.tanplanet.work/en/chatbot-farm-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on X"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.9 1.2h3.7l-8 9.1L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9Zm-1.3 19.4h2L6.5 3.2H4.3l13.3 17.4Z"/></svg></a><a href="https://social-plugins.line.me/lineit/share?url=https://projects.tanplanet.work/en/chatbot-farm-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LINE"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="3" width="21" height="18" rx="5.5" fill="currentColor"/><text x="12" y="15.2" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="7.2" font-weight="900" fill="#fff">LINE</text></svg></a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https://projects.tanplanet.work/en/chatbot-farm-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a><button type="button" class="ap-share-btn" data-tip-done="Copied" data-copy="https://projects.tanplanet.work/en/chatbot-farm-portfolio/" aria-label="Copy link"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button></aside><div class="ap-body"><div class="cs">
+<p class="cs-lead">A LINE chatbot for a pullet farm. The owner plans 3 meals a day, the bot reminds workers in the group chat on time, workers report through a LIFF form, and everything lands in Google Sheets automatically.</p><div class="cs-chips"><span class="cs-chip">Next.js 16</span><span class="cs-chip">React 19</span><span class="cs-chip">TypeScript</span><span class="cs-chip">LINE Messaging API</span><span class="cs-chip">LIFF</span><span class="cs-chip">Google Sheets API</span><span class="cs-chip">Vercel</span><span class="cs-chip">cron-job.org</span></div>
+<article>
+
+    <!-- ===== Problem ===== -->
+    <section class="section-intro">
+      <h2>The problem</h2>
+      <p>Why does feeding on a pullet farm need a system?</p>
+    </section>
+    <figure class="shot"><img src="../../chatbot-farm-portfolio/img/cf-problem-unsplash.jpg" width="1200" height="675" loading="lazy" alt="A crowd of brown hens eating from a feeder"><figcaption>Daily farm work: several meals, several barns, and every one has to be recorded · Photo: Arisa Chattasa / Unsplash</figcaption></figure>
+
+
+    <div class="quote-block">
+      <p>A pullet farm has to feed on time, 3 meals a day, every day. If a worker forgets, the birds go hungry and the owner doesn't know until they visit the farm. Reports like "how many sacks today, how many died, how many sick" end up partly on paper and partly in LINE chat, then get lost and can't be combined.</p>
+      <div class="author">— Insight from a real farm owner, before Luk Jiab was built</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3 2 6"/><path d="m22 6-3-3"/><path d="M6.38 18.7 4 21"/><path d="M17.64 18.67 20 21"/></svg>
+        <h3>Feeding times must be exact, but are easy to forget</h3>
+        <p>Pullets need to eat at 06:00 / 10:00 / 16:00 every day. If a meal slips by an hour, laying production drops and the birds get stressed. Workers find it hard to remember, especially on days off or when they're newly hired.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg>
+        <h3>Reports are scattered across notebooks, chats and paper</h3>
+        <p>"How many sacks today?" "How many died in which barn?" Some people type it in chat, some write it in a notebook. When it's time for a monthly summary, nothing can be found and meals can't be compared.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        <h3>The owner can't see what's happening in real time</h3>
+        <p>A worker may say they've fed the birds when they haven't, or a meal wasn't finished and nobody said so. The owner finds out at the farm or the next day, which is too late.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3>Workers don't want a new app</h3>
+        <p>Farm workers know LINE well but don't want to download a special app. They install it, forget the password, forget how it works. The UX has to live where they already are.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+        <h3>The owner wants a spreadsheet, not a deep dashboard</h3>
+        <p>The farm owner wants raw data they can edit and send straight to the accountant or vet. No complicated admin panel.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution ===== -->
+    <section class="section-intro">
+      <h2>The solution</h2>
+      <p>Put the bot in the LINE group workers already use: reminders on schedule, input through forms, storage in a Sheet</p>
+    </section>
+    <figure class="shot"><img src="../../chatbot-farm-portfolio/img/cf-richmenu.jpg" width="1250" height="843" loading="lazy" alt="The 6-button rich menu in LINE: plan feed, plan mixing, view report, submit report, log mixing, check quota"><figcaption>The bot's real rich menu: every task starts from a button in the LINE chat workers already use</figcaption></figure>
+
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+        <h3>The bot reminds the LINE group at every meal</h3>
+        <p>The "Luk Jiab" bot joins the farm group workers are already in. At 05:45 it sends a bubble with the number of sacks the owner planned; at 08:00 it sends a bubble asking for the report. Three meals a day.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h3>Fill in forms right inside LINE, no app to download</h3>
+        <p>Built with LIFF (LINE Front-end Framework): tap a button in the bubble and the form opens inside LINE. No sign-up, no login, nothing extra to install.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        <h3>Google Sheet as the source of truth</h3>
+        <p>Every plan, report and log is appended to a Google Sheet. The owner can open it, filter, sort and export to Excel without learning a new system.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        <h3>A confirmation dialog to prevent mistakes</h3>
+        <p>Before any form is submitted, a modal summarizes everything (6 values + date + total) and asks for confirmation, because typos are easy on a phone and hard to fix later in the Sheet.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        <h3>The menu only appears for the word "main menu"</h3>
+        <p>The bot sits in a group where workers chat normally, so replying to every message would be annoying. The keyword "main menu" is the only trigger, so the bot stays quiet like any other group member.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== User Flow ===== -->
+    <section class="section-intro">
+      <h2>User Flow</h2>
+      <p>A day with Luk Jiab: the owner plans at night, the bot runs on its own all day</p>
+    </section>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="../../chatbot-farm-portfolio/img/cf-chat-morning.jpg" width="786" height="1436" loading="lazy" alt="LINE group chat: the bot posts the breakfast feeding plan, records the start time and reminds workers to report"><figcaption>The morning flow in the group: plan → tap start → report reminder (rendered from the bot's real Flex JSON · the chat frame is a mockup)</figcaption></figure>
+
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+        <h4>Owner plans</h4>
+        <p>At night the owner fills in 3 meals × 2 barns for the next day</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+        <h4>Bot reminds workers</h4>
+        <p>At 05:45 it sends a bubble with the number of sacks and a "Start feeding" button</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg>
+        <h4>Workers report</h4>
+        <p>At 08:00 the bot sends a report bubble → the worker taps it → fills in 6 fields</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        <h4>Stored in the Sheet</h4>
+        <p>Data goes into the Sheet immediately, with duration/delay calculated automatically</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>A stack chosen so one person can run the whole system: no database to manage, no admin UI to build</p>
+    </section>
+    <figure class="shot"><img src="../../chatbot-farm-portfolio/img/cf-scheduler.jpg" width="1600" height="482" loading="lazy" alt="Scheduler code that reads Thai time and the schedule from Google Sheets, then pushes to the group"><figcaption>Real code: an external cron calls the endpoint every minute, which compares Thai time with the schedule in Google Sheets and pushes to the group</figcaption></figure>
+
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Workers &amp; owner — LINE app
+          <div class="arch-sub">
+            <span>Group Chat</span>
+            <span>1-on-1 Chat</span>
+            <span>LIFF Forms</span>
+            <span>Flex Carousel</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          LINE Messaging API + Webhook
+          <div class="arch-sub">
+            <span>follow / join</span>
+            <span>message</span>
+            <span>postback</span>
+            <span>pushMessage</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Next.js 16 (App Router) — Vercel
+          <div class="arch-sub">
+            <span>/api/webhook</span>
+            <span>/api/scheduler</span>
+            <span>/api/feeding-plan</span>
+            <span>/api/worker-report</span>
+            <span>/api/feed-mixing</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Google Sheets (Source of Truth) + cron-job.org
+          <div class="arch-sub">
+            <span>users</span>
+            <span>groups</span>
+            <span>schedules</span>
+            <span>feeding_plan</span>
+            <span>feeding_report</span>
+            <span>reminder_log</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Why this stack?</strong>
+      <p><strong>LINE LIFF</strong> opens forms inside LINE, with no app to download and no extra login &middot; <strong>Google Sheets API</strong> is a database the owner can open natively, so no separate admin UI is needed &middot; <strong>Vercel Hobby</strong> is free and deploys automatically on git push &middot; <strong>cron-job.org</strong> is free and fires every minute (Vercel Hobby cron is limited to 2 jobs/day, which isn't enough). The endpoint checks the time itself and covers all 6 trigger times a day.</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <h2>What I built: 8 core features</h2>
+      <p>The full loop, from planning to stored data</p>
+    </section>
+    <figure class="shot shot-pair" style="--shot-max:560px"><div class="pair"><img src="../../chatbot-farm-portfolio/img/cf-mp.jpg" width="600" height="1298" loading="lazy" alt="LIFF mixing-plan form: a 7-day calendar, feed formula and target number of sacks"><img src="../../chatbot-farm-portfolio/img/cf-fm.jpg" width="600" height="1298" loading="lazy" alt="LIFF mixing-log form: date, formula, amount mixed and notes"></div><figcaption>Two more real LIFF forms: mixing plan (owner) · mixing log (worker) · sample data</figcaption></figure>
+
+
+    <div class="module-grid">
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8"/><path d="M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7"/><path d="m2.1 21.8 6.4-6.3"/><path d="m19 5-7 7"/></svg>
+        <h3>Plan 3 meals (owner)</h3>
+        <p>A grid table of 3 meals × 2 barns, all visible in one viewport, with a running total and a confirm dialog before saving 6 rows</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/></svg>
+        <h3>Submit report (worker)</h3>
+        <p>6 fields (sacks/dead/sick × 2 barns) + a note. Duration and delay against the target time are calculated automatically.</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/></svg>
+        <h3>Log feed mixing</h3>
+        <p>Formula + amount mixed + notes, logged in a separate tab to track stock</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        <h3>View report (owner)</h3>
+        <p>A card that opens the Google Sheet directly, so the owner can see raw data and filter, sort or export right away</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9.5C2 7 4 5 6.5 5H18c2.2 0 4 1.8 4 4v8Z"/><polyline points="15,9 18,9 18,11"/><path d="M6.5 5C9 5 11 7 11 9.5V17a2 2 0 0 1-2 2"/><line x1="6" x2="7" y1="10" y2="10"/></svg>
+        <h3>Carousel Menu</h3>
+        <p>A Flex carousel of 4 cards ordered owner-first (plan → mix → view report → submit), triggered by the keyword "main menu"</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+        <h3>Instruction &amp; Report Bubble</h3>
+        <p>Two kinds of Flex bubble: instruction (with sack counts + a start button) and report reminder (a button that opens the LIFF form)</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <h3>Scheduler + Dedup</h3>
+        <p>An endpoint checks Bangkok time every minute, sends bubbles on schedule, and uses reminder_log to prevent double sends</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+        <h3>Group Chat Support</h3>
+        <p>The bot can join LINE groups: it registers the groupId automatically on join and pushes to the group instead of looping over users</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Conversation Mockup ===== -->
+    <section class="section-intro">
+      <h2>What it looks like in the LINE group</h2>
+      <p>The morning flow: the bot sends the instruction → a worker taps start</p>
+    </section>
+    <figure class="shot shot-narrow" style="--shot-max:380px"><img src="../../chatbot-farm-portfolio/img/cf-chat-mixing.jpg" width="786" height="1226" loading="lazy" alt="LINE group chat: the bot reminds workers to mix formula A, target 16 sacks, plus this month's message quota card"><figcaption>The mixing reminder bubble + the message quota card (real Flex JSON · sample numbers)</figcaption></figure>
+
+
+    <div class="chat-mockup">
+      <div class="chat-bubble bot">
+        <div class="label">Luk Jiab &middot; 05:45</div>
+        <h4>Breakfast feeding is coming up</h4>
+        <div class="houses">
+          <div>Barn 1: <strong style="color:#78350f;">3.5</strong> sacks</div>
+          <div>Barn 2: <strong style="color:#78350f;">3.0</strong> sacks</div>
+        </div>
+        <div class="bubble-btn">Start breakfast feeding</div>
+      </div>
+      <div class="chat-bubble user">
+        <p>Tapped "Start feeding" &gt;</p>
+      </div>
+      <div class="chat-bubble bot">
+        <div class="label">Luk Jiab &middot; 05:48</div>
+        <p>Breakfast start time recorded. You can start feeding now.<br>When you're done, tap "Submit report" in the bubble I'll send you.</p>
+      </div>
+      <div class="chat-bubble bot" style="margin-top: 16px;">
+        <div class="label">Luk Jiab &middot; 08:00</div>
+        <h4>Time to submit the breakfast report</h4>
+        <p style="font-size:0.82rem;">Enter the actual feed used and the dead/sick birds for each barn</p>
+        <div class="bubble-btn">Submit report</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== LIFF Form Mockup ===== -->
+    <section class="section-intro">
+      <h2>What the LIFF forms look like</h2>
+      <p>Plan 3 meals on a single screen (LIFF Tall size, limited viewport)</p>
+    </section>
+    <figure class="shot shot-pair" style="--shot-max:560px"><div class="pair"><img src="../../chatbot-farm-portfolio/img/cf-fp.jpg" width="600" height="1298" loading="lazy" alt="LIFF feed-plan form: a week calendar showing which days are planned, and a 3 meals × 2 barns table totaling 16.5 sacks"><img src="../../chatbot-farm-portfolio/img/cf-wr.jpg" width="600" height="1298" loading="lazy" alt="LIFF feeding report form for workers: actual feed, dead and sick birds, split by barn 1 and barn 2"></div><figcaption>The real forms (running from code in mock mode). Left: the owner plans feed · Right: a worker reports</figcaption></figure>
+
+
+    <div class="liff-mockup">
+      <div class="liff-header">
+        <h4><img src="../../chatbot-farm-portfolio/img/chick.png" width="22" height="22" alt="" style="vertical-align:-5px;border-radius:50%"> Luk Jiab</h4>
+        <div class="sub">Plan feed for each meal</div>
+      </div>
+      <div class="liff-body">
+        <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:8px;">Date to send reminders</div>
+        <div style="padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:0.88rem; margin-bottom:14px;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg> May 25, 2026 (tomorrow)</div>
+        <table class="liff-table">
+          <thead>
+            <tr><th>Meal</th><th>Barn 1</th><th>Barn 2</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Morning</td><td><span class="input-cell">3.5</span></td><td><span class="input-cell">3.0</span></td></tr>
+            <tr><td>Midday</td><td><span class="input-cell">2.5</span></td><td><span class="input-cell">2.0</span></td></tr>
+            <tr><td>Evening</td><td><span class="input-cell">3.0</span></td><td><span class="input-cell">2.5</span></td></tr>
+          </tbody>
+        </table>
+        <div class="liff-total">Total for the day <strong>16.5</strong> sacks</div>
+        <div class="liff-cta">Save plan</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack ===== -->
+    <section class="section-intro">
+      <h2>Hacking the problems</h2>
+      <p>6 problems I had to solve myself: design constraints + LINE platform limits + serverless quirks</p>
+    </section>
+    <figure class="shot"><img src="../../chatbot-farm-portfolio/img/cf-hack.jpg" width="1600" height="450" loading="lazy" alt="Real code: the main-menu keyword as the only trigger, and a function that formats timestamps in readable Thai time"><figcaption>Two pieces of real code: the bot only responds to "main menu", and timestamps are stored in Thai time the owner can read in the Sheet</figcaption></figure>
+
+
+    <div class="hack-grid">
+      <div class="hack-card ux" data-label="UX">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg><span>LIFF Tall size: 6 fields in 1 viewport</span></h3>
+        <p>I chose LIFF size Tall (~675px usable), but the owner has to fill in 3 meals × 2 barns = 6 fields at once. With a lot of scrolling, the keyboard covers the bottom rows.</p>
+        <div class="highlight">Fix: a grid table layout (3 rows × 2 cols) instead of 6 separate inputs. It uses less than half the vertical space, shows the whole day at a glance, and has a total cell at the bottom that updates in real time.</div>
+      </div>
+
+      <div class="hack-card platform" data-label="LINE Platform">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>A bot in a group that replies to everything = noise</span></h3>
+        <p>The bot sits in a group where workers chat normally. Replying to every text message ("hello", "when?", and so on) would instantly become spam.</p>
+        <div class="highlight">Fix: in the webhook handler, check <code>event.message.text.trim() === "เมนูหลัก"</code> (the Thai for "main menu") as the only trigger. For any other message the bot stays completely silent, so it behaves like a normal group member that only speaks when called.</div>
+      </div>
+
+      <div class="hack-card arch" data-label="LINE Limit">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span>Push to the group, not a loop over users</span></h3>
+        <p>Workers in the group never added the bot 1-on-1 → LINE blocks <code>pushMessage</code> to their <code>userId</code> → the scheduler can't send bubbles to everyone.</p>
+        <div class="highlight">Fix: change the design. The webhook handles the <code>join</code> event and saves the <code>groupId</code> to the sheet tab <code>groups</code> → the scheduler pushes to the <code>groupId</code> (sent once, everyone in the group sees it). Postbacks still capture the <code>userId</code> of whoever tapped. This gives both broadcast efficiency and member identification.</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Data Quality">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg><span>Timestamps hard to read in the Sheet</span></h3>
+        <p>At first timestamps were stored as ISO UTC (<code>2026-05-24T06:55:38.824Z</code>). The owner couldn't read them and had to add 7 hours every time.</p>
+        <div class="highlight">Fix: <code>formatBangkokTimestamp()</code> uses <code>Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Bangkok" })</code> to produce <code>YYYY-MM-DD HH:mm:ss</code> in Thai time the owner understands immediately, + <code>parseBangkokTimestamp()</code> converts it back to a Date for duration/delay calculations, + an idempotent migration script converts old data to the new format.</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Scheduler">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg><span>Vercel Hobby cron is limited to 2 jobs/day</span></h3>
+        <p>I needed 6 triggers a day (5:45 / 8:00 / 9:45 / 11:00 / 15:45 / 18:00). The Vercel Hobby plan only allows 2 cron jobs a day.</p>
+        <div class="highlight">Fix: the scheduler endpoint checks the time itself (<code>bangkokNow().time</code>) → <code>cron-job.org</code> (free, can fire every minute) calls it 1,440 times a day → the endpoint returns <code>due=0</code> whenever it isn't time (95% of calls). No LINE quota is wasted, and new schedules can be added later without touching the cron config.</div>
+      </div>
+
+      <div class="hack-card perf" data-label="DX">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Next.js 16 Turbopack + bun froze the machine</span></h3>
+        <p>During development, <code>bun dev</code> (Turbopack by default) + ngrok + incoming traffic → the MacBook froze with a kernel panic and needed a forced reboot, twice in a row.</p>
+        <div class="highlight">Fix: switch to <code>next dev --webpack</code> (still supported in Next.js 16). It runs stable at 2.3GB RSS. Turbopack stays in a backup script, <code>dev:turbo</code>, to try again after a future Next.js upgrade. Lesson: new tech always needs a fallback path.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design System Notes ===== -->
+    <section class="section-intro">
+      <h2>Design decisions to discuss with the client</h2>
+      <p>UX trade-offs that aren't in any playbook: they need explaining and deciding together</p>
+    </section>
+    <figure class="shot shot-pair" style="--shot-max:560px"><div class="pair"><img src="../../chatbot-farm-portfolio/img/cf-fp-confirm.jpg" width="600" height="1300" loading="lazy" alt="The confirmation box before saving a plan, summarizing the 3 meals × 2 barns table, totaling 16.5 sacks"><img src="../../chatbot-farm-portfolio/img/cf-fp-ok.jpg" width="600" height="1300" loading="lazy" alt="The success screen: the Luk Jiab mascot, a summary of sacks per meal, and a button back to LINE"></div><figcaption>Confirm dialog before saving → success screen with a summary (reused across all 3 forms)</figcaption></figure>
+
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>Every MVP has many trade-offs. Reply to every message or only a keyword? Native date picker or custom? Does the owner mark the group manually or is it auto-detected? There are several "right" answers. My job is to lay out the options, explain the trade-off of each, and not choose on the client's behalf.</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></strong><br>
+        <strong>Confirm Dialog</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">A reusable component across all 3 forms: summarize the data before saving</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></strong><br>
+        <strong>Keyword Trigger</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Only "main menu": quiet in the group, no noise</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></strong><br>
+        <strong>Tomorrow Prefill</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Date defaults to today + 1, because the owner plans at night</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></strong><br>
+        <strong>Sheet Card</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">"View report" = open the Google Sheet directly, no dashboard built</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Key Takeaways ===== -->
+    <section class="section-intro">
+      <h2>What I took away from this project</h2>
+      <p>5 lessons from building Luk Jiab, from requirements to production</p>
+    </section>
+    <figure class="shot"><img src="../../chatbot-farm-portfolio/img/cf-learn-unsplash.jpg" width="1200" height="750" loading="lazy" alt="Brown hens eating from a feeder on the grass"><figcaption>The best tool for field work lives in the app people already use · Photo: Lucas / Unsplash</figcaption></figure>
+
+
+    <div class="learning-card">
+      <strong>1. Design for "where the user already is", not pulling users into your system:</strong>
+      <p>Farm workers already use LINE. Choosing LIFF over a separate mobile app meant zero adoption friction: nothing to download, no sign-up, no new UI to learn. Lesson: picking a platform the user knows matters more than picking a stack the developer knows.</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. The source of truth doesn't have to be a database:</strong>
+      <p>Google Sheets is "a database the owner can open, filter, export and share". For a low-traffic MVP whose owner is already a spreadsheet power user, Sheets beats PostgreSQL on every count: no admin UI to build, no migrations to think about, no hosting to pay for. Lesson: choose storage for the owner, not by convention.</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. Confirmation dialogs are an undervalued UX safety net:</strong>
+      <p>A form that writes 6 rows to the Sheet at once → a mistake has to be fixed in the Sheet by hand, which is painful. Every Luk Jiab form has a ConfirmDialog that summarizes all values before saving. It adds 2 seconds but cuts errors a lot. Lesson: friction in the right place is a feature, not a bug.</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Platform constraints can force better design:</strong>
+      <p>LIFF Tall size limits the viewport → it forced a 3×2 grid instead of 6 stacked inputs → the overview is much better. With more space I might have defaulted to a long, scrolling stacked layout. Lesson: a constraint is a design partner, not an obstacle.</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Decisions can be revisited; it doesn't have to be perfect the first time:</strong>
+      <p>During the session I switched ISO timestamps → Bangkok format (with a migration), Turbopack → webpack after the freeze, the menu trigger from always-respond → keyword, and added group support after the MVP. Every change was documented and committed as a checkpoint. Lesson: build fast and iterate fast rather than plan for a long time.</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">6</div>
+        <div class="label">Google Sheet tabs — source of truth</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">3</div>
+        <div class="label">LIFF Forms — Owner + Worker</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">6×</div>
+        <div class="label">Reminders per day: instruction + report</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">Apps the user has to download</div>
+      </div>
+    </div>
+
+  </article>
+</div><section class="ap-author" aria-label="Author"><img class="ap-author-avatar" src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/688f5899cad39483c4e11c49_Profile_Webflow.webp" alt="" width="88" height="88" loading="lazy"><div class="ap-author-body"><p class="ap-author-name">Tan · Natpakan Sirirat</p><p class="ap-author-bio">Product Designer &amp; AI Builder — designing user experiences and building AI tools that actually work.</p><ul class="ap-author-links"><li><a href="https://www.linkedin.com/in/natpakan/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a></li><li><a href="https://www.facebook.com/tan.natpakan" target="_blank" rel="noopener" aria-label="Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a></li><li><a href="https://www.instagram.com/npkant/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a></li></ul></div></section><nav class="ap-pn" aria-label="Previous and next project"><a href="../host-monitor-portfolio/" class="ap-pn-item ap-pn-prev"><span class="ap-pn-label">← Previous project</span><span class="ap-pn-title">Live Commerce Host Monitor</span></a><a href="../hangun-portfolio/" class="ap-pn-item ap-pn-next"><span class="ap-pn-label">Next project →</span><span class="ap-pn-title">HanGun — Trip Bill Splitter</span></a></nav></div></div></div>
+<aside class="ap-side"><div class="ap-side-inner"><section class="ap-widget"><h2 class="ap-widget-title"><span>Latest projects</span></h2><ol class="ap-rank"><li><a href="../content-engine-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/content-engine-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">1</span></span><span class="ap-rank-title"><span class="ap-rank-t">Auto-publishing content engine</span></span></a></li><li><a href="../tans-tools-devpanel-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tans-tools-devpanel-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">2</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan’s Tools · DEV panel</span></span></a></li><li><a href="../android-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/android-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">3</span></span><span class="ap-rank-title"><span class="ap-rank-t">TX98 TV Box</span></span></a></li><li><a href="../tools-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tools-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">4</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan&#x27;s Tools</span></span></a></li><li><a href="../shotdeck-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/shotdeck-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">5</span></span><span class="ap-rank-title"><span class="ap-rank-t">shotdeck-box: a laptop that posts clips</span></span></a></li></ol></section></div></aside>
+</div><div class="ap-progress" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" class="ap-progress-track"/><circle cx="32" cy="32" r="28" class="ap-progress-bar" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg><span>0%</span></div></article><footer class="footer"><div class="container-default w-container"><div class="divider"></div></div><div class="container-footer"><div class="footer-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-logo-container w-inline-block"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" loading="lazy" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><ul role="list" class="footer-navigation"><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-nav-link">Home</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="footer-nav-link">About</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a></li><li class="footer-nav-item-wrapper"><a href="https://projects.tanplanet.work/en/" class="footer-nav-link">Portfolio</a></li><li class="footer-nav-item-wrapper last"><a href="https://projects.tanplanet.work/preset/" class="footer-nav-link footer-nav-design">Design</a></li></ul><a data-w-id="2afa9a01-05cf-ade4-4d79-909445ba12f2" href="https://myfolio.tanplanet.work/contact" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Contact Me</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="divider"></div><div class="small-print">© 2026 Natpakan Sirirat · All rights reserved.</div></div></footer></div><script src="https://myfolio.tanplanet.work/_ext/d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8__site%3D608d62778637273e1880cb8d.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.1a807f015b216e46.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.8870a749f76b548c.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.9641f8cc.4fd3e4280b7acaf7.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/header-autohide.js" defer></script><script src="https://myfolio.tanplanet.work/blog/article.js" defer></script><div class="cs cs-extras">
+
+  <!-- ===== Closing ===== -->
+  
+
+  <!-- ===== Fixed UI ===== -->
+  
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  
+
+
+</div><script>try{
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  }catch(e){}</script><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Luk Jiab (Chicken Farm Bot) Portfolio",
+      "item": "https://projects.tanplanet.work/chatbot-farm-portfolio/"
+    }
+  ]
+}
+</script></body></html>

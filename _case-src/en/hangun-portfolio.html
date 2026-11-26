@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HanGun — A trip bill splitter for friends</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HanGun — A trip bill splitter for friends">
+  <meta name="twitter:description" content="Portfolio: HanGun — a full-stack trip bill splitter built with Next.js 16 + Supabase. No login, plus a Transfer Matrix that nets out debts so the group makes as few transfers as possible.">
+  <meta property="og:url" content="https://projects.tanplanet.work/hangun-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.work/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: HanGun — a full-stack trip bill splitter built with Next.js 16 + Supabase. No login, plus a Transfer Matrix that nets out debts so the group makes as few transfers as possible.">
+  <meta property="og:title" content="HanGun — A trip bill splitter for friends">
+  <meta name="description" content="Portfolio: HanGun — a full-stack trip bill splitter built with Next.js 16 + Supabase. No login, plus a Transfer Matrix that nets out debts so the group makes as few transfers as possible.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%234F46E5'/><text x='50' y='50' dy='.35em' text-anchor='middle' font-size='62' fill='white' font-family='sans-serif'>&#247;</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --accent: #4F46E5;
+      --accent-light: #eef2ff;
+      --accent-dark: #3730a3;
+      --accent-glow: rgba(79,70,229,0.12);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 38%, #4338ca 78%, #6366f1 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(16,185,129,0.18) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(99,102,241,0.28) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #4F46E5, #10b981, #6366f1);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      background: #fff;
+      color: var(--accent);
+      font-size: 2.4rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #34d399;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #6ee7b7;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.88;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.85);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.18); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #1e1b4b, #3730a3);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.15;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.7;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(79,70,229,0.1);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.algo::before { background: var(--accent-light); color: var(--accent); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.responsive::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.automation::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card.precision::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--emerald));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(79,70,229,0.2); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f1f5f9; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Closing ===== */
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(30,27,75,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(30,27,75,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot.phone{max-width:360px;margin-left:auto;margin-right:auto}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;margin:8px 0 32px}.shot-pair .shot{margin:0}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}.shot-pair .shot{max-width:360px;margin:0 auto}}
+  </style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/hangun-portfolio/">
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="6" r="1"/><line x1="5" x2="19" y1="12" y2="12"/><circle cx="12" cy="18" r="1"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Full-Stack Web App &middot; No-login &middot; Mobile-first
+      </div>
+      <h1>HanGun — Trip Bill Splitter<br><span class="accent">Split trip bills and see who pays whom</span></h1>
+      <p>A bill splitter for trips with friends: create a Project, have friends scan a QR code to join, log expenses, and the app tells you exactly who owes whom and how much, with debts netted out so everyone makes as few transfers as possible.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Next.js 16</span>
+        <span class="hero-tag">React 19</span>
+        <span class="hero-tag">TypeScript</span>
+        <span class="hero-tag">Supabase</span>
+        <span class="hero-tag">Server Actions</span>
+        <span class="hero-tag">No-login Auth</span>
+        <span class="hero-tag">Mobile-first</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="https://tanplanet.work/hangun" target="_blank" rel="noopener">
+          Open the live app &#8599;
+        </a>
+        <a class="cta-btn cta-ghost" href="#stack">See the tech stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem ===== -->
+    <section class="section-intro">
+      <h2>The problem</h2>
+      <p>Why is splitting a trip bill a headache every time?</p>
+    </section>
+
+    <figure class="shot phone"><img src="img/raw-matrix-mobile.jpg" width="786" height="1704" loading="lazy" alt="Raw balance table showing who owes whom among 4 members, with numbers spread across the whole grid"><figcaption>Without netting, 4 people end up transferring money in almost every cell (the app’s &ldquo;raw&rdquo; view · sample data)</figcaption></figure>
+
+    <div class="quote-block">
+      <p>The trip is over but the bill isn’t. One person paid for the stay, another for the car, another for dinner. Not everyone came to every meal, some people didn’t drink. In the end someone does the math in the group chat, and the transfers still go back and forth.</p>
+      <div class="author">— Insight from a real trip, before I started building HanGun</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/><path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 16 6 6"/><circle cx="16" cy="9" r="2.9"/><circle cx="6" cy="5" r="3"/></svg>
+        <h3>After the trip, nobody remembers who paid for what</h3>
+        <p>Expenses live in each person’s head with no shared record. When it’s time to settle up, nobody can recall who paid what or how much.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
+        <h3>Splits aren’t even, and manual math goes wrong</h3>
+        <p>Some meals had fewer people, some people skipped the drinks, some bills were one person’s own debt. A flat even split doesn’t work; each item has to be worked out separately.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h3>The math is done, but the transfers are a mess</h3>
+        <p>A owes B, B owes C, C owes A — after netting, a few transfers would settle everything, but nobody does that calculation.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14"/><path d="M8 6v8"/></svg>
+        <h3>Chasing money in chat, with no proof</h3>
+        <p>Who has paid and who hasn’t? You scroll back through the group chat looking for slips, and the outstanding amounts are never clearly updated.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h3>Most bill-splitting apps require an account</h3>
+        <p>To get everyone in, each friend has to download the app, sign up and verify an email. Many give up at that step.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution ===== -->
+    <section class="section-intro">
+      <h2>The solution</h2>
+      <p>One link, one QR code — join instantly with no sign-up, and let the app do the math</p>
+    </section>
+
+    <figure class="shot"><img src="img/summary-desktop.jpg" width="1440" height="470" loading="lazy" alt="Summary screen on a large display: per-person balances on the left, netted transfers reduced to 3 on the right"><figcaption>After netting, only 3 transfers are left, rounded for easy transfers · sample data</figcaption></figure>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        <h3>One Project, one shared QR — join in 10 seconds</h3>
+        <p>The owner creates a Project and gets a QR code and link. Friends scan it, enter a name, and they’re in. No login page, no email to verify.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg>
+        <h3>Three split modes in one place</h3>
+        <p>Equal split / custom per person / personal debt — covers every kind of bill on a real trip. Leftover satang are distributed so totals always add up to the baht.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></svg>
+        <h3>Transfer Matrix with automatic debt netting</h3>
+        <p>Switch between “raw” and “netted” views. The app reduces debts to the fewest transfers that still settle everyone.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+        <h3>Everyone has a payment QR in their profile</h3>
+        <p>When joining, each person uploads their own PromptPay QR. When you need to pay someone back, tap their name and their QR is right there to scan.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        <h3>A “Paid” button + automatic slip reading</h3>
+        <p>After transferring, tap to confirm and attach the slip. The app reads the QR code on the slip as proof, and the outstanding amount disappears from the screen right away.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== User Flow ===== -->
+    <section class="section-intro">
+      <h2>User Flow</h2>
+      <p>4 steps — from opening the app for the first time to fully settled</p>
+    </section>
+
+    <div class="shot-pair"><figure class="shot"><img src="img/invite-qr-mobile.jpg" width="786" height="1704" loading="lazy" alt="Invite dialog showing the QR code and join link for the Project"><figcaption>1. The owner opens the invite QR</figcaption></figure><figure class="shot"><img src="img/join-mobile.jpg" width="786" height="1160" loading="lazy" alt="Join Project screen asking for a name, profile photo and payment QR upload"><figcaption>2. Friends scan, then enter a name + payment QR — no sign-up</figcaption></figure></div>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+        <h4>Create a Project</h4>
+        <p>Name the trip, set up a profile + upload a payment QR</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h4>Invite friends</h4>
+        <p>Share the QR/link; friends scan and join on their own</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 16H8"/><path d="M14 8H8"/><path d="M16 12H8"/><path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"/></svg>
+        <h4>Log bills</h4>
+        <p>Anyone can add an expense and pick a split mode</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        <h4>Transfer + settle</h4>
+        <p>See who to pay, scan to pay, tap “Paid”</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>Next.js 16 + Supabase — a stack one person can run end to end</p>
+    </section>
+
+    <figure class="shot"><img src="img/expenses-desktop.jpg" width="1440" height="780" loading="lazy" alt="Desktop expense list with a left sidebar menu and a trip total card"><figcaption>The live app (Next.js + Supabase) on a large screen. On mobile the menu is a bottom bar; on large screens it becomes a sidebar · sample data</figcaption></figure>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Frontend — Next.js App Router
+          <div class="arch-sub">
+            <span>React 19</span>
+            <span>TypeScript</span>
+            <span>Turbopack</span>
+            <span>Client Components</span>
+            <span>CSS Design Tokens</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Server Actions — a single data layer
+          <div class="arch-sub">
+            <span>createProject</span>
+            <span>joinProject</span>
+            <span>saveExpense</span>
+            <span>addSettlement</span>
+            <span>revalidatePath</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          lib/engine.ts — Pure Calculation
+          <div class="arch-sub">
+            <span>splitEqual</span>
+            <span>rawDebts</span>
+            <span>simplifyDebts</span>
+            <span>outstandingTransfers</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Infrastructure
+          <div class="arch-sub">
+            <span>PostgreSQL (Supabase)</span>
+            <span>Supabase Storage</span>
+            <span>Vercel</span>
+            <span>GitHub</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Why this stack?</strong>
+      <p><strong>Next.js Server Actions</strong> remove the REST API layer entirely — mutations are plain TypeScript functions the client can call directly &middot; <strong>Supabase</strong> puts Postgres + Storage for profile photos/QR codes in one place, with no backend to set up &middot; <strong>Vercel</strong> deploys on git push. The result is a full-stack app that one person can build and maintain, from the database to production.</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <h2>What I built — 8 core features</h2>
+      <p>The full loop, from creating a trip to everyone being settled</p>
+    </section>
+
+    <div class="shot-pair"><figure class="shot"><img src="img/add-expense-mobile.jpg" width="786" height="1704" loading="lazy" alt="Add expense form: category, name, amount, payer and split method"><figcaption>Add an expense — equal split / custom / personal debt</figcaption></figure><figure class="shot"><img src="img/settle-mobile.jpg" width="786" height="1704" loading="lazy" alt="Payment confirmation dialog showing the recipient’s payment QR and a slip upload field"><figcaption>Tap &ldquo;Pay&rdquo; → scan your friend’s QR, attach the slip, and the balance is deducted (the QR in the image is a sample)</figcaption></figure></div>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/><path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11c-.11.7-.72 1.22-1.43 1.22H17"/><path d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98C9.52 4.9 9 5.52 9 6.23V7"/><path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"/></svg>
+        <h3>Create &amp; join a Project</h3>
+        <p>Start a trip and get a QR/link; friends scan to join themselves — no login anywhere</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <h3>Profile + payment QR</h3>
+        <p>Everyone sets a name and photo and uploads a PromptPay QR (required), so friends can scan to pay them back</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 16H8"/><path d="M14 8H8"/><path d="M16 12H8"/><path d="M4 3a1 1 0 0 1 1-1 1.3 1.3 0 0 1 .7.2l.933.6a1.3 1.3 0 0 0 1.4 0l.934-.6a1.3 1.3 0 0 1 1.4 0l.933.6a1.3 1.3 0 0 0 1.4 0l.933-.6a1.3 1.3 0 0 1 1.4 0l.934.6a1.3 1.3 0 0 0 1.4 0l.933-.6A1.3 1.3 0 0 1 19 2a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1 1.3 1.3 0 0 1-.7-.2l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.934.6a1.3 1.3 0 0 1-1.4 0l-.933-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-1.4 0l-.934-.6a1.3 1.3 0 0 0-1.4 0l-.933.6a1.3 1.3 0 0 1-.7.2 1 1 0 0 1-1-1z"/></svg>
+        <h3>Expense logging in 3 modes</h3>
+        <p>Equal split / custom per person / personal debt — with categories + slip photos</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        <h3>Per-person summary</h3>
+        <p>Each person sees clearly how much they paid, how much they owe, and whether their net balance is negative or positive</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></svg>
+        <h3>Transfer Matrix</h3>
+        <p>A who-pays-whom table that switches between raw and netted views, with a shortcut to pay</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        <h3>Paid (Settle)</h3>
+        <p>Confirm a transfer and attach a slip; the outstanding amount is removed from the calculation immediately</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        <h3>Slip QR reading</h3>
+        <p>Upload a slip and the app scans the QR in the image with jsQR, pulling the transfer reference number as proof</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+        <h3>Project owner permissions</h3>
+        <p>The owner can remove members or delete the whole Project, verified with a secret owner token stored on the device</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack ===== -->
+    <section class="section-intro">
+      <h2>Hacking the problems</h2>
+      <p>6 technical problems I had to solve myself, with no playbook</p>
+    </section>
+
+    <figure class="shot phone"><img src="img/me-tab-mobile.jpg" width="786" height="1704" loading="lazy" alt="My tab: the amount I still need to transfer, buttons to pay friends, and related expenses with my share"><figcaption>The &ldquo;Mine&rdquo; tab — knows who you are without login, and shows only the amounts you need to handle</figcaption></figure>
+
+    <div class="hack-grid">
+      <div class="hack-card algo" data-label="Algorithm">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></svg><span>Netting debts down to the fewest transfers</span></h3>
+        <p>Showing raw debts means every pair that owes each other has to transfer — A→B, B→C, C→A. It’s messy and costs more transfer fees than needed.</p>
+        <div class="highlight">Fix: <code>simplifyDebts()</code> uses greedy min-cash-flow — it pairs the person with the largest positive balance with the person with the largest negative balance, one pair at a time, until all debts are cleared. That leaves the fewest transfers that still settle everyone.</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Precision">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.744 17.736a6 6 0 1 1-7.48-7.48"/><path d="M15 6h1v4"/><path d="m6.134 14.768.866-.5 2 3.464"/><circle cx="16" cy="8" r="6"/></svg><span>Splitting must not lose satang</span></h3>
+        <p>100 baht / 3 people = 33.33 × 3 = 99.99 — one satang goes missing, the total no longer matches the bill, and across many items the error adds up.</p>
+        <div class="highlight">Fix: a satang-exact <code>splitEqual()</code> — it works in whole satang, then hands out the remainder one satang at a time to the first people. The shares always add up exactly to the bill.</div>
+      </div>
+
+      <div class="hack-card arch" data-label="Architecture">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>No login, but the app still needs to know who’s who</span></h3>
+        <p>With no accounts, how do you tell the owner apart from regular members, and remember who this device belongs to?</p>
+        <div class="highlight">Fix: two tokens — <code>join_code</code> is a public token in the QR/link so anyone can join, while <code>owner_token</code> is a secret kept only in the owner’s localStorage. Member identity is tied to the device via localStorage, so reopening the site takes you straight back to your trip.</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Performance">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></svg><span>Phone photos hit the 1MB Server Action limit</span></h3>
+        <p>When friends join, profile photos/QR images from phone cameras are often 3–8MB — over the Server Action body limit, so it errors out immediately.</p>
+        <div class="highlight">Fix: <code>compressImage()</code> shrinks images on the client with canvas before upload (3.1MB &rarr; ~98KB), swaps the file in the input via <code>DataTransfer</code>, and raises <code>bodySizeLimit</code> to 8MB for headroom.</div>
+      </div>
+
+      <div class="hack-card automation" data-label="Automation">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 16 1.5 1.5"/><path d="m14 8-1.5-1.5"/><path d="M15 2c-1.798 1.998-2.518 3.995-2.807 5.993"/><path d="m16.5 10.5 1 1"/><path d="m17 6-2.891-2.891"/><path d="M2 15c6.667-6 13.333 0 20-6"/><path d="m20 9 .891.891"/><path d="M3.109 14.109 4 15"/><path d="m6.5 12.5 1 1"/><path d="m7 18 2.891 2.891"/><path d="M9 22c1.798-1.998 2.518-3.995 2.807-5.993"/></svg><span>Reading the QR on transfer slips automatically</span></h3>
+        <p>I wanted slips to be verifiable proof, not just any image someone happens to attach.</p>
+        <div class="highlight">Fix: when the user picks a slip, the QR in the image is decoded with <code>jsQR</code> on a canvas (reading the sharp original file before compression), and the transfer reference number is stored with the settlement.</div>
+      </div>
+
+      <div class="hack-card responsive" data-label="Responsive">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span>Mobile-first, done wrong and then fixed</span></h3>
+        <p>I put the main layout inside a <code>min-width</code> media query — desktop looked fine, but on mobile content hit the screen edges and the tab bar didn’t stick to the bottom.</p>
+        <div class="highlight">Fix: moved the main layout/padding into base rules (designed at 390px first), then used media queries to scale up to 768 / 1440. Lesson: mobile-first has to actually start in the base styles, not just in name.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Prototype to Production ===== -->
+    <section class="section-intro">
+      <h2>From prototype to production</h2>
+      <p>It started as a single HTML file — proving the flow before investing in the real stack</p>
+    </section>
+
+    <div class="shot-pair"><figure class="shot"><img src="img/prototype-trip-mobile.jpg" width="786" height="1704" loading="lazy" alt="Single-file HTML prototype showing the trip expense list"><figcaption>Prototype — a single HTML file, stored in localStorage</figcaption></figure><figure class="shot"><img src="img/production-expenses-mobile.jpg" width="786" height="1704" loading="lazy" alt="The live app on mobile: expense list with a bottom menu bar"><figcaption>Production — Next.js + Supabase, shared by multiple people</figcaption></figure></div>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>HanGun didn’t start with Next.js. It started as a single HTML file running React from a CDN, to test whether the user flow and the Transfer Matrix calculation actually worked. Once I was confident the problem was right, I rebuilt it as a full-stack app.</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#129514;</strong><br>
+        <strong>Prototype First</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">A single HTML file to test the flow + calculation</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128104;&#8205;&#128187;</strong><br>
+        <strong>Solo Build</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Designed, coded and deployed solo</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#129302;</strong><br>
+        <strong>AI-Augmented</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Built with Claude Code from design to deploy</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;">&#128640;</strong><br>
+        <strong>Live in Production</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Live at tanplanet.work/hangun</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Key Takeaways ===== -->
+    <section class="section-intro">
+      <h2>What I took away from this project</h2>
+      <p>4 lessons from building HanGun, from start to production</p>
+    </section>
+
+    <figure class="shot phone"><img src="img/home-mobile.jpg" width="786" height="1150" loading="lazy" alt="HanGun home screen showing the Projects this device has joined and a button to create a new Project"><figcaption>No login page — the device remembers which Project you’re in and as whom</figcaption></figure>
+
+    <div class="learning-card">
+      <strong>1. Prototype before production — get the problem right before investing:</strong>
+      <p>Starting with a single HTML file showed early that a “raw vs netted” Transfer Matrix was what users actually wanted. Jumping straight into Next.js + a database would have meant spending time on infrastructure before knowing if the problem was right.</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Separate logic from UI — an engine you can trust:</strong>
+      <p><code>lib/engine.ts</code> is all pure functions, tied to neither React nor the database — the same input always gives the same output. That makes the splitting and netting logic easy to test and trust. The UI just calls it, so money correctness never gets mixed up with display concerns.</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. Reducing friction = removing steps, not adding features:</strong>
+      <p>The real problem was “how do I get every friend to join?” The answer wasn’t a better account system but a no-login model: scan the QR and you’re in. Good UX is often about cutting what isn’t needed.</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Mobile-first has to start in the base styles:</strong>
+      <p>The responsive bug made it clear that “mobile-first” isn’t just a phrase. Putting the main layout inside a <code>min-width</code> media query means designing desktop-first without realizing it. Get the base layout right at 390px first, then scale up.</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">Login pages — join via QR</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">3</div>
+        <div class="label">Split modes</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">5</div>
+        <div class="label">Database tables</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">100%</div>
+        <div class="label">Server Actions — no separate REST API</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <h2>HanGun</h2>
+    <p>A trip bill splitter that covers the full loop: create a Project, scan a QR to join, log bills, and see exactly who pays whom, with debts netted to the fewest transfers. Built as a full-stack app with Next.js 16 + Supabase.</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Next.js 16</span>
+      <span class="stack-icon">React 19</span>
+      <span class="stack-icon">TypeScript</span>
+      <span class="stack-icon">Server Actions</span>
+      <span class="stack-icon">Supabase</span>
+      <span class="stack-icon">PostgreSQL</span>
+      <span class="stack-icon">Supabase Storage</span>
+      <span class="stack-icon">jsQR</span>
+      <span class="stack-icon">Vercel</span>
+    </div>
+    <div class="links">
+      <a href="https://tanplanet.work/hangun" target="_blank" rel="noopener">Open the live app &#8599;</a>
+      <a href="https://projects.tanplanet.work/">&#8592; Back to all projects</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "HanGun Portfolio",
+      "item": "https://projects.tanplanet.work/hangun-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

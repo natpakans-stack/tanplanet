@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>shotdeck-box — a used laptop that edits and posts clips all night</title>
+  <meta name="description" content="Portfolio: a 2017 laptop turned into an always-on Ubuntu server at home. It makes short clips, renders them and posts to 5 platforms on a schedule, repairs itself in 3 layers, and takes orders from my phone anywhere.">
+  <link rel="canonical" href="https://projects.tanplanet.work/shotdeck-box-portfolio/">
+  <meta property="og:title" content="shotdeck-box — a used laptop that edits and posts clips all night">
+  <meta property="og:description" content="Portfolio: a 2017 laptop turned into an always-on Ubuntu server at home. It makes short clips, renders them and posts to 5 platforms on a schedule, repairs itself in 3 layers, and takes orders from my phone anywhere.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://projects.tanplanet.work/shotdeck-box-portfolio/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="shotdeck-box — a used laptop that edits and posts clips all night">
+  <meta name="twitter:description" content="Portfolio: a 2017 laptop turned into an always-on Ubuntu server at home. It makes short clips, renders them and posts to 5 platforms on a schedule, repairs itself in 3 layers, and takes orders from my phone anywhere.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0f1f'/><rect x='20' y='24' width='60' height='22' rx='6' fill='none' stroke='%2334d399' stroke-width='6'/><rect x='20' y='54' width='60' height='22' rx='6' fill='none' stroke='%2334d399' stroke-width='6'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #047857;
+      --accent-light: #dcfce7;
+      --accent-dark: #14532d;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #0a0f1f 0%, #0f1d33 42%, #0b3b35 78%, #065f46 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(52,211,153,0.18) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #065f46, #10b981, #a7f3d0);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent { color: #86efac; }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro { padding: 56px 0 32px; }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .section-intro p { color: var(--text-secondary); font-size: 1rem; }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0a0f1f, #223056);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block code { background: rgba(255,255,255,0.14); color: #86efac; }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p { font-size: 1.05rem; line-height: 1.7; position: relative; z-index: 1; }
+    .quote-block .author { margin-top: 12px; font-size: 0.82rem; opacity: 0.78; }
+
+    /* ===== Pain / Solution Cards ===== */
+    .pain-grid, .solution-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .pain-card, .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .pain-card { border-left: 4px solid var(--red); }
+    .solution-card { border-left: 4px solid var(--accent); }
+    .pain-card .emoji, .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3, .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p, .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(4,120,87,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #10b981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers { display: flex; flex-direction: column; gap: 12px; max-width: 560px; margin: 0 auto; }
+    .arch-layer { padding: 14px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(4,120,87,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: var(--navy); color: #cbd5e1; border: 1px solid #223056; }
+    .arch-arrow { text-align: center; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+    .arch-sub { display: flex; justify-content: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .arch-layer.infra .arch-sub span { background: rgba(255,255,255,0.10); }
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+      .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.shot-pair figcaption{grid-column:1/-1}.shot-phone{max-width:360px;margin-left:auto;margin-right:auto}.shot-pair.shot-phone{max-width:620px}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
+    .shot-narrow{max-width:640px;margin-left:auto;margin-right:auto}
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Ubuntu 24.04 &middot; systemd &middot; Tailscale &middot; Remotion
+      </div>
+      <h1>shotdeck-box: a laptop that posts clips<br><span class="accent">A used laptop that edits and posts clips all night</span></h1>
+      <p>A 2017 laptop sits at home in Bangkok, always on. It makes short clips, renders them, checks them, and posts to 5 platforms on its own schedule. I can give it orders from my phone anywhere, and travel without the work stopping.</p>
+      <p><strong>115 clips scheduled and posted in the first 3 weeks</strong>, with 289 more queued through the end of the year</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Ubuntu Server</span>
+        <span class="hero-tag">systemd timers</span>
+        <span class="hero-tag">Tailscale</span>
+        <span class="hero-tag">Remotion</span>
+        <span class="hero-tag">faster-whisper</span>
+        <span class="hero-tag">Claude Code</span>
+        <span class="hero-tag">Bun</span>
+        <span class="hero-tag">adb</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">See how it works &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#hacks">Problems I actually hit</a>
+      </div>
+    </div>
+  </header>
+
+  <article>
+
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>Most of clip work isn't editing</h2>
+      <p>One short sales clip comes with a dozen surrounding tasks, and many of them have to happen at 3 a.m.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/dashboard.jpg" width="1600" height="778" loading="lazy" alt="ShotDeck web app home on the box: clip format menu, cards for streak length, days missed and the next queue; page stats cards are blurred">
+      <figcaption>ShotDeck home, filled in by the system every day &mdash; editing is just one of dozens of tasks (page and revenue numbers blurred)</figcaption>
+    </figure>
+
+    <div class="quote-block">
+      <p>I only want to be in the editing step. The system handles the rest: voiceover, rendering, checks, scheduling, posting, replying to comments, and a summary to read in the morning.</p>
+      <div class="author">— The starting brief</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z"/><path d="M20.054 15.987H3.946"/></svg>
+        <h3>Everything was tied to my work Mac</h3>
+        <p>Before the move, 12 scheduled jobs ran on the Mac. Close the lid or take it out of the house, and the night jobs didn't happen.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <h3>Jobs that run while nobody is awake</h3>
+        <p>Product clips at 3 a.m., backups at 4 a.m., comment replies at 11:30 p.m. If something broke halfway, nobody saw it until morning.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+        <h3>No control once I left the house</h3>
+        <p>I wanted to travel without the channels going quiet, but everything lived on a machine at home, and opening ports straight to the internet isn't safe.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
+        <h3>Posting to 5 platforms by hand, every day</h3>
+        <p>Each one uploads differently, some only accept posts from a phone, and links have to go in a pinned comment. Doing it by hand every day is slow and easy to get wrong.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>A dedicated machine at home beats renting cloud and beats keeping the Mac awake</h2>
+      <p>The real constraints: it needs a GPU, a browser that stays logged in, and a port for a real Android phone.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/box-specs.jpg" width="1600" height="702" loading="lazy" alt="Terminal showing the machine specs: i7-7700HQ, GTX 1050 Ti 4GB, 15Gi RAM, 3 disks and 2 weeks of uptime">
+      <figcaption>Real specs of the 2017 laptop used as the server &mdash; up for more than 2 weeks straight</figcaption>
+    </figure>
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th>Option</th><th>What you get</th><th class="num">Cost</th><th>Why rejected / chosen</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Rent a cloud VPS</td>
+            <td>Always on, no hardware to maintain</td>
+            <td class="num">Monthly</td>
+            <td>GPU machines cost too much for this job, and you can't plug in a real Android phone over USB to post</td>
+          </tr>
+          <tr>
+            <td>Keep the Mac awake</td>
+            <td>Nothing new to set up</td>
+            <td class="num">None</td>
+            <td>The Mac is my work machine and leaves the house, so night jobs depended on whether it was home that day</td>
+          </tr>
+          <tr data-picked>
+            <td>A used laptop as a home server<span class="pick"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Chosen</span></td>
+            <td>GPU, several disks, phone plugs in</td>
+            <td class="num">One-time purchase</td>
+            <td>An i7-7700HQ, 16GB RAM and GTX 1050 Ti are enough for rendering and transcription. It can stay on at home all day, and the Mac goes back to being just a work machine</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="learning-card note">
+      <strong>One rule since Sep 30</strong>
+      <p><strong>All work happens on this machine over ssh.</strong> No editing a copy on the Mac and pushing it up later. With two copies of the code, sooner or later you lose track of which one is real. On Sep 29 I moved the 12 jobs off the Mac, and on Oct 6 the other always-on services followed, such as the backend for the ESP32 display on my desk, so the Mac could actually sleep.</p>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>One machine, four layers</h2>
+      <p>The top layer is where I give orders, the bottom is where the files live. Every layer talks over a private network, with no ports open straight to the internet.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/box-services.jpg" width="1600" height="510" loading="lazy" alt="Terminal showing the long-running services: web app, Claude Code in tmux, virtual display, scrcpy and VNC">
+      <figcaption>Services running on the real machine; each layer in the diagram is its own systemd service</figcaption>
+    </figure>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          iPhone and Mac &mdash; from anywhere
+          <div class="arch-sub"><span>Mobile web app</span><span>Web terminal</span><span>Type box on the Mac</span><span>Telegram</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          shotdeck-box &mdash; Ubuntu 24.04
+          <div class="arch-sub"><span>systemd user timers</span><span>Bun server + SSE</span><span>Claude Code in tmux</span><span>Remotion</span><span>faster-whisper on GPU</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Posting channels
+          <div class="arch-sub"><span>Logged-in Chrome on a virtual display</span><span>APIs only where safe</span><span>Android phone via adb</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Three disks
+          <div class="arch-sub"><span>SSD for work in progress</span><span>HDD for nightly backups</span><span>1 TB archive of posted clips</span></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="remote">
+      <span class="eyebrow">Prototype</span>
+      <h2>Control from anywhere without exposing the machine</h2>
+      <p>Tailscale is the backbone, and SSH accepts keys only. The rest is screens designed to actually work on a phone.</p>
+    </section>
+
+    <figure class="shot shot-pair shot-phone">
+      <img src="img/mobile-trip.jpg" width="640" height="1387" loading="lazy" alt="ShotDeck mobile web app, travel mode: pick the dates you're away, then queue everything in advance">
+      <img src="img/mobile-home.jpg" width="640" height="1387" loading="lazy" alt="ShotDeck mobile web app home with status cards; page stats are blurred">
+      <figcaption>The mobile web app &mdash; travel mode queues the whole trip in advance (page and revenue numbers blurred)</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg><span><b>Type <code>box</code> on the Mac</b> to ssh into a tmux session where Claude Code is waiting. Close the window and come back later; nothing is lost.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span><b>A web app for iPhone</b> A Bun server pushes live status over SSE. Bottom sheets instead of stacked windows, usable with one thumb, reachable only on the private network.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><span><b>A web terminal</b> ttyd connects to the tmux where Claude runs, so when I'm out I can type plain-language instructions from my phone.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span><b>A hidden virtual display</b> The bot's Chrome runs logged in on Xvfb, because platforms detect headless mode. When I want to see what it's doing, I open it over VNC.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg><span><b>View-only Android screen</b> scrcpy mirrors the phone so I can check how far a mobile post has got, without accidentally tapping anything.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span><b>Only one public entry point</b> Tailscale Funnel exposes a single HTTPS endpoint guarded by a key, because some devices, like the ESP32 display, aren't on the private network.</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>Voiceover clips &mdash; I edit, the machine does the rest</h2>
+      <p>Clips with a voiceover still need a person to decide on the visuals. I do that part; every step after it runs by itself through to posting.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/remotion-studio-voice.jpg" width="1600" height="1000" loading="lazy" alt="Remotion Studio on the box with a 56-second vertical 1080x1920 voiceover clip and Thai subtitles over the footage">
+      <figcaption>Laying out a voiceover clip in Remotion Studio on the box &mdash; previewable from a phone, not rendered until I say so</figcaption>
+    </figure>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></svg>
+        <h4>Write the script, drop the footage on the Mac</h4>
+        <p>Files sync to the box with rsync, no uploading through a web page</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+        <h4>Thai voiceover line by line, then transcribed back to check</h4>
+        <p>faster-whisper large-v3 on the GPU transcribes it for comparison with the script, a pronunciation dictionary fixes readings, and every line is leveled to −16 LUFS</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        <h4>Lay out in Remotion Studio</h4>
+        <p>Preview only; nothing renders until I say it's good</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        <h4>Render</h4>
+        <p>A ~73-second clip takes about 8 minutes. Upgrading Remotion made renders 15–21% faster</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        <h4>Check before release</h4>
+        <p>preflight checks the file, audio and dimensions before it enters the queue</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">06</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
+        <h4>Schedule and post automatically</h4>
+        <p>Fixed slots: 18:30 on weekdays, 12:30 on weekends</p>
+      </div>
+    </div>
+
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>Product clips &mdash; no human touch from start to post</h2>
+      <p>These clips have no voiceover, so people can be removed entirely, with automated checks instead of human eyes.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/product-catalog.jpg" width="1600" height="1000" loading="lazy" alt="Affiliate products page in ShotDeck: the next 7 days of queue on the left, the Shopee product catalog with images on the right">
+      <figcaption>Affiliate products page &mdash; the system queues the next 7 days of product clips from the catalog</figcaption>
+    </figure>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg>
+        <h4>Pick products</h4>
+        <p>Ranked from an affiliate catalog of about 2,450 items</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
+        <h4>Remove the product photo background</h4>
+        <p>rembg cuts out just the product</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        <h4>AI draws the scene</h4>
+        <p>Uses the weekly quota of a plan I already pay for, no extra API cost</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h4>Rotate clip formulas</h4>
+        <p>Cycles through 5 formulas so the feed doesn't look the same every day, assembled from Remotion templates</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+        <h4>Automated motion checks</h4>
+        <p>Detects flicker and checks that text stays inside each platform's safe area</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">06</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
+        <h4>Post without waiting for approval</h4>
+        <p>Pass the checks and it posts; fail and it doesn't</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="schedule">
+      <span class="eyebrow">Prototype</span>
+      <h2>A day in the machine's life</h2>
+      <p>Every job is its own systemd user timer, so one failure doesn't drag the others down</p>
+    </section>
+
+    <figure class="shot shot-narrow">
+      <img src="img/box-timers.jpg" width="1600" height="1321" loading="lazy" alt="Output of systemctl --user list-timers showing 24 shotdeck timers with their next run times">
+      <figcaption>Real timers on the machine &mdash; one per job, so one failure doesn't take down the rest</figcaption>
+    </figure>
+
+    <div class="ladder">
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/></svg><span>Automated product clips</span></div><div class="out">03:00</div><div class="note">From picking products to the posting queue</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg><span>Back up to HDD</span></div><div class="out">04:00</div><div class="note">Nightly rsync; deleted files are kept for another 14 days</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></svg><span>Analyze reference clips and archive them</span></div><div class="out">04:40</div><div class="note">Works out what each sample clip does, then moves it to the archive disk</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span>Reach report</span></div><div class="out">08:00</div><div class="note">A summary to read in the morning</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><span>Reply to comments</span></div><div class="out">12:00 · 22:00 · 23:30</div><div class="note">Claude drafts replies based on that clip's context</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg><span>Learn from stats</span></div><div class="out">19:30</div><div class="note">Pulls out what worked and what didn't, and writes it up as lessons for the next round</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>Plan tomorrow, ask for approval</span></div><div class="out">20:00</div><div class="note">Sends topics to Telegram with buttons; 15 minutes of silence counts as approval</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg><span>Queue posts</span></div><div class="out">21:00</div><div class="note">Books the next day's posting slots</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><span>Full-system check</span></div><div class="out">22:30</div><div class="note">Checks that everything marked as posted was really posted</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg><span>Daily report</span></div><div class="out">23:45</div><div class="note">Summary to Telegram</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>Weekly stats and a Remotion release summary</span></div><div class="out">Sun · Mon</div><div class="note">Reports what's new but doesn't upgrade itself</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="posting">
+      <span class="eyebrow">Prototype</span>
+      <h2>Posting to 5 platforms, each a different way</h2>
+      <p>Not the slickest method, but the one each platform doesn't penalize.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/post-calendar.jpg" width="1600" height="1000" loading="lazy" alt="ShotDeck posting calendar with a dot for each clip posted per day in October 2026">
+      <figcaption>Posting calendar &mdash; each dot is a clip posted or a slot already booked</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg><span><b>Facebook Reels</b> via the API or the browser post composer; Instagram uses the composer only</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span><b>YouTube Shorts through the browser</b> Not the API, because clips uploaded by an app that hasn't passed audit get locked to private</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span><b>TikTok and Shopee Video through a real Android phone</b> Driven by adb over a powered USB hub, so the phone doesn't run out of battery overnight</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span><b>Affiliate links go in the pinned first comment</b> never in the post itself</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><span><b>Several guards against double posts</b> Before trying a fallback, the system opens the real page to see whether the clip is already up, instead of trusting the status it remembers</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="heal">
+      <span class="eyebrow">Test</span>
+      <h2>Three layers of self-repair before it wakes me</h2>
+      <p>When I'm away, every alert means stopping my trip, so alerts reach me as late as possible.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/activity-log.jpg" width="1600" height="1000" loading="lazy" alt="ShotDeck log page listing what the system did on its own, with times and success status">
+      <figcaption>A log of everything the system does on its own &mdash; who triggered it, what it did, whether it worked; 4,000 entries of history</figcaption>
+    </figure>
+
+    <div class="ladder">
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>Layer 1 &middot; scripts for known failures</span></div><div class="out">Every 5 min</div><div class="note">Reads the error code and applies the known fix, such as restarting Xvfb, rerunning the job or re-rendering</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg><span>Layer 2 &middot; hand the symptoms to Claude on the box</span></div><div class="out">Max 6 times/day</div><div class="note">Pastes the error into the tmux where Claude runs and lets it trace the cause. The cap stops it from looping on fixes forever</div></div>
+      <div class="rung"><div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><span>Layer 3 &middot; Telegram me</span></div><div class="out">When the first two fail</div><div class="note">Reaching this point means it's genuinely new and a person should look</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="hacks">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Problems I hit with the real thing running</h2>
+      <p>Almost none of these happen on a Mac, and nobody warned me about them.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/box-lid-fix.jpg" width="1600" height="534" loading="lazy" alt="Terminal showing 300,957 Suspending lines in the previous boot, plus HandleLidSwitch=ignore and a masked sleep.target">
+      <figcaption>300,957 &ldquo;Suspending&rdquo; lines from the previous boot, and the settings that stopped it sleeping when the lid closes</figcaption>
+    </figure>
+
+    <div class="hack-grid">
+
+      <div class="hack-card" data-label="Install">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>The BIOS refused almost every USB stick, and after installing it showed No Bootable Device</span></h3>
+        <p>Flash drives written the usual way didn't show up in the boot menu. Once the install did go through, the machine couldn't find the new system on reboot.</p>
+        <div class="highlight"><strong>Fix:</strong> a <strong>FAT32 MBR flash drive with the ISO extracted straight onto it</strong>, then <strong>adding shimx64.efi as a trusted file</strong> in the BIOS. Only then would it boot into Ubuntu.</div>
+      </div>
+
+      <div class="hack-card" data-label="Power">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Closing the lid put it in a sleep-wake loop, leaving 300,000 "Suspending…" lines in the log</span></h3>
+        <p>Laptops are set to sleep when the lid closes, so a machine meant to stay on kept trying to sleep all night.</p>
+        <div class="highlight"><strong>Fix:</strong> set <strong>logind to ignore the lid switch</strong>. Now it can sit closed without sleeping.</div>
+      </div>
+
+      <div class="hack-card" data-label="Linux">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>The first night 5 of 6 posts failed because select-all used the wrong OS shortcut</span></h3>
+        <p>The script was written on a Mac and cleared text fields with <code>Meta+A</code>. On Linux that doesn't select all, so old text stayed in the field.</p>
+        <div class="highlight"><strong>Fix:</strong> switched to <code>ControlOrMeta+A</code> so it uses the right key for whichever OS it runs on. <strong>The same script now runs on both machines.</strong></div>
+      </div>
+
+      <div class="hack-card" data-label="Memory">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>rembg used 8.9 GB of memory and crashed the pre-dawn jobs</span></h3>
+        <p>It reloaded the model for every image. With 16GB of RAM, nothing was left for the jobs running alongside it.</p>
+        <div class="highlight"><strong>Fix:</strong> <strong>one session kept open and reused</strong>. Peak memory dropped to <strong>0.82 GB</strong>.</div>
+      </div>
+
+      <div class="hack-card" data-label="Browser">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Platforms detected headless Chrome</span></h3>
+        <p>A browser without a real display leaves different traces from a normal user, so posting through the website failed.</p>
+        <div class="highlight"><strong>Fix:</strong> run <strong>full Chrome on an Xvfb virtual display</strong>, kept logged in, and view it over VNC when needed.</div>
+      </div>
+
+      <div class="hack-card" data-label="Network">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Tailscale Funnel didn't send the header that marks a request as coming through Funnel</span></h3>
+        <p>The public endpoint was meant to check that requests came through Funnel, but that header never reached the server.</p>
+        <div class="highlight"><strong>Fix:</strong> <strong>check that the Host is the .ts.net domain</strong>, together with the key, so requests from anywhere else are rejected.</div>
+      </div>
+
+      <div class="hack-card" data-label="GPU">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>The GPU sat idle for days after the move</span></h3>
+        <p>I chose a machine with a graphics card, but the early jobs only used the CPU, so the card was paid for and unused.</p>
+        <div class="highlight"><strong>Fix:</strong> moved <strong>the voiceover check transcription</strong> to faster-whisper large-v3 on the GPU, for a more accurate audio check without a long wait.</div>
+      </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Test</span>
+      <h2>The numbers that show it's worth it</h2>
+      <p>115 clips in the first 3 weeks: 38 automated product clips, 21 voiceover clips, 42 still/info cards and 14 comparison clips</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/content-all.jpg" width="1600" height="1000" loading="lazy" alt="ShotDeck all-content page: 267 items in the system, 47 scripted, 46 voiced, 127 rendered, with the queue list">
+      <figcaption>All-content page &mdash; numbers read from the real files, not typed in by hand</figcaption>
+    </figure>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">115</div><div class="label">clips in the first 3 weeks (Sep 29 – Oct 20)</div></div>
+      <div class="metric-card"><div class="num">289</div><div class="label">clips queued through year-end</div></div>
+      <div class="metric-card"><div class="num">38</div><div class="label">automated product clips in the first 3 weeks</div></div>
+      <div class="metric-card"><div class="num">21</div><div class="label">voiceover clips in the first 3 weeks</div></div>
+      <div class="metric-card"><div class="num">12</div><div class="label">scheduled jobs moved off the Mac</div></div>
+      <div class="metric-card"><div class="num">5</div><div class="label">platforms posted to on schedule</div></div>
+      <div class="metric-card"><div class="num">0.82</div><div class="label">GB peak rembg memory, down from 8.9</div></div>
+      <div class="metric-card"><div class="num">0</div><div class="label">baht spent on extra image-generation API</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Lines I chose not to cross</h2>
+      <p>A system that runs all night unwatched needs lines it won't cross on its own.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/night-desk.jpg" width="1400" height="933" loading="lazy" alt="A desk at night: laptop screen off, lamp on, city view through the window">
+      <figcaption>A system that works all night unwatched needs lines it won't cross &mdash; photo: Avtar Singh / Unsplash</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg><span><b>No automatic Remotion upgrades</b> Every Monday it summarizes what's in the new version, and I decide when to upgrade, because every template depends on it</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg><span><b>Voiceover clips don't render until I say so</b> Remotion Studio is for previews. A render ties up the machine for almost 10 minutes and shouldn't be spent on a clip that isn't approved</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span><b>No links in the post body</b> Links go only in the pinned first comment</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span><b>No APIs that get clips locked</b> YouTube posts go through the browser instead, even though it needs more upkeep</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg><span><b>Claude gets at most 6 repair attempts a day</b> The cap stops it looping on the same problem all night; past that, a person decides</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg><span><b>No editing copies on the Mac</b> Everything is edited on the real machine over ssh; there is only one real copy</span></li>
+    </ul>
+
+  </article>
+
+  <div class="closing">
+    <h2>shotdeck-box</h2>
+    <p>One old laptop that leaves me with only the editing. Voiceover, rendering, checks, posting, comment replies and self-repair carry on by themselves while I sleep or travel.</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Ubuntu 24.04</span>
+      <span class="stack-icon">systemd timers</span>
+      <span class="stack-icon">Tailscale</span>
+      <span class="stack-icon">Bun + SSE</span>
+      <span class="stack-icon">Claude Code</span>
+      <span class="stack-icon">tmux · ttyd</span>
+      <span class="stack-icon">Remotion</span>
+      <span class="stack-icon">faster-whisper</span>
+      <span class="stack-icon">rembg</span>
+      <span class="stack-icon">Xvfb · VNC</span>
+      <span class="stack-icon">adb · scrcpy</span>
+      <span class="stack-icon">Telegram Bot</span>
+      <span class="stack-icon">rsync</span>
+    </div>
+  </div>
+
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Natpakan Sirirat — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"shotdeck-box — a home server that makes and posts clips","item":"https://projects.tanplanet.work/shotdeck-box-portfolio/"}
+  ]
+}
+</script>
+
+</body>
+</html>

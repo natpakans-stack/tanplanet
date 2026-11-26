@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Re-broadcast Control Room — re-airing recorded clips as live commerce streams</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Re-broadcast Control Room — re-airing recorded clips as live commerce streams">
+  <meta name="twitter:description" content="Portfolio: a desktop app that packs a Go backend, an ffmpeg streaming engine and a React SPA into one Electron app — re-airs clips over RTMP with overlays and live chat, through a browser oracle">
+  <meta property="og:url" content="https://projects.tanplanet.work/live-rebroadcast-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.work/live-rebroadcast-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: a desktop app that packs a Go backend, an ffmpeg streaming engine and a React SPA into one Electron app — re-airs clips over RTMP with overlays and live chat, through a browser oracle">
+  <meta property="og:title" content="Re-broadcast Control Room — re-airing recorded clips as live commerce streams">
+  <meta name="description" content="Portfolio: a desktop app that packs a Go backend, an ffmpeg streaming engine and a React SPA into one Electron app — re-airs clips over RTMP with overlays and live chat, through a browser oracle">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23c2410c'/><text x='50' y='62' text-anchor='middle' font-size='54'>🔁</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #c2410c;
+      --accent-light: #ffedd5;
+      --accent-dark: #7c2d12;
+      --accent-glow: rgba(194,65,12,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #431407 0%, #7c2d12 40%, #c2410c 80%, #ea580c 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(255,237,213,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(194,65,12,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #c2410c, #ea580c, #ffedd5);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #fed7aa;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #7c2d12, #c2410c);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(194,65,12,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #ea580c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(194,65,12,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Console Mockup ===== */
+    .ext-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 480px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+    .ext-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      align-items: center;
+    }
+    .ext-bar .ext-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    .ext-bar .ext-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 1px 9px;
+      font-size: 0.72rem;
+    }
+    .ext-yt {
+      margin: 12px;
+      padding: 10px 12px;
+      border: 1px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 8px;
+    }
+    .ext-yt b { color: #c00; }
+    .ext-yt .u { color: var(--text-muted); font-size: 0.72rem; word-break: break-all; margin: 3px 0 8px; font-family: 'SF Mono', monospace; }
+    .ext-yt .chip { display: inline-block; border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 3px 8px; font-size: 0.72rem; margin-right: 5px; color: var(--text-secondary); }
+    .ext-table { width: 100%; border-collapse: collapse; }
+    .ext-table th {
+      text-align: left; padding: 8px 12px; font-size: 0.68rem; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--border);
+    }
+    .ext-table td { padding: 9px 12px; border-bottom: 1px solid #f2f2f1; vertical-align: top; }
+    .ext-table .kind { font-weight: 700; white-space: nowrap; }
+    .ext-table .kind.master { color: #1e6b2e; }
+    .ext-table .kind.variant { color: #8a7a12; }
+    .ext-table .kind.file { color: var(--accent); }
+    .ext-table .q { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .ext-table .info { color: var(--text-secondary); font-size: 0.76rem; }
+    .ext-table .chip { display: inline-block; border: 1px solid var(--border); background: #fafafa; border-radius: 5px; padding: 1px 7px; font-size: 0.68rem; color: var(--text-secondary); font-family: 'SF Mono', monospace; }
+    .ext-cmd {
+      margin: 0 12px 12px;
+      padding: 10px 12px;
+      background: #0f172a;
+      color: #fed7aa;
+      border-radius: 8px;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      font-size: 0.72rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .ext-cmd .flag { color: #fde047; }
+    .ext-cmd .cmt { color: #64748b; }
+
+    /* ===== Closing ===== */
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(124,45,18,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(124,45,18,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* figures (case-study images) */
+    .shot{margin:8px 0 32px}
+    .shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}
+    .shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.6}
+    .shot.narrow img{max-width:360px;margin:0 auto}
+    .shot.mid img{max-width:460px;margin:0 auto}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin:8px 0 32px}
+    .shot-pair .shot{margin:0}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
+    .ico-i{width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex:none}
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/live-rebroadcast-portfolio/">
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Desktop App &middot; Electron + Go &middot; ffmpeg Streaming Engine
+      </div>
+      <h1>Re-broadcast Control Room<br><span class="accent">Re-airing recorded clips as live commerce streams</span></h1>
+      <p>A desktop app that packs a <code>Go backend</code> + <code>ffmpeg engine</code> + React SPA into a single app. It loops recorded clips out over RTMP as a live stream, with clock/text overlays, live chat, product pinning and multi-account control from one screen, and the data never leaves the machine.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Electron</span>
+        <span class="hero-tag">Go 1.26</span>
+        <span class="hero-tag">chi + sqlc</span>
+        <span class="hero-tag">ffmpeg / RTMP</span>
+        <span class="hero-tag">SQLite</span>
+        <span class="hero-tag">React 19 + Vite</span>
+        <span class="hero-tag">SSE</span>
+        <span class="hero-tag">Zitadel OIDC</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">See how it works &#8595;</a> <a class="cta-btn cta-ghost" href="#stack">See the tech stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>The problem</h2>
+      <p>Live sellers need to be on air almost all the time, but talking live day and night is a path to burnout</p>
+    </section>
+
+    <figure class="shot"><img src="img/clip-library.jpg" width="1550" height="1000" loading="lazy" decoding="async" alt="A video library with 3 product clips"><figcaption>The library of recorded clips: raw material for re-airing (demo data)</figcaption></figure>
+
+
+    <div class="quote-block">
+      <p>Shops that sell through live streams need to stay "on screen" as long as possible to make sales, but nobody can talk live all day, especially on the night shift. The usual setup is OBS + scripts + several VMs wired together by hand. It's fragile and often breaks mid-stream, and with several accounts or rooms at once it gets out of control. The brief: one control room that loops "recorded clips" out as a stable live stream.</p>
+      <div class="author">— The starting brief, before building the re-broadcast app</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+        <h3>Nobody can stream live all day</h3>
+        <p>Sales are tied to airtime, but people have limits, especially late at night. Recorded clips need to be re-aired in a way that still feels close to a real live stream for viewers.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
+        <h3>Tooling = hand-wired, fragile, easy to break</h3>
+        <p>OBS + scripts + several VMs wired together, with no central control. When the stream drops, someone has to sit and restart it. No built-in auto-restart or keep-alive.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+        <h3>Many accounts and rooms, no single place to control them</h3>
+        <p>Agencies run several brands at once, and each account needs its own identity and network egress. There was no single screen showing the status of every room.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
+        <h3>Audio dropping out or going silent mid-stream</h3>
+        <p>Some looped files have audio shorter than the video, or long silences in the middle, so the stream airs silence without anyone noticing and loses customers for nothing</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+        <h3>Some actions the server can't call on its own</h3>
+        <p>Things like chat, product pinning and reading live sales need a "request signature" generated by the platform's JS in a logged-in web page. The backend can't send them directly.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>The solution</h2>
+      <p>Bring every piece that used to be wired by hand into one desktop app — open it and it works, no server to set up</p>
+    </section>
+
+    <figure class="shot mid"><img src="img/auto-restart.jpg" width="1040" height="700" loading="lazy" decoding="async" alt="Settings for automatically ending and restarting the live stream"><figcaption>Auto end/restart — streams loop without anyone watching</figcaption></figure>
+
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2-5 5-5-5"/><rect width="20" height="15" x="2" y="7" rx="2"/></svg>
+        <h3>A local re-air engine</h3>
+        <p>ffmpeg pushes clips over RTMP with <code>-c copy</code> at native frame rate (no re-encoding unless needed) + keep-alive pings to the room + auto-stop/auto-restart when the stream stalls</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/></svg>
+        <h3>Everything packed into one app</h3>
+        <p>Electron wraps the Go backend (spawned as a loopback sidecar), static ffmpeg and the React SPA in one package. Users don't install Docker, Go or Node; install and it runs.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 11h.01"/><path d="M14 6h.01"/><path d="M18 6h.01"/><path d="M6.5 13.1h.01"/><path d="M22 5c0 9-4 12-6 12s-6-3-6-12c0-2 2-3 6-3s6 1 6 3"/><path d="M17.4 9.9c-.8.8-2 .8-2.8 0"/><path d="M10.1 7.1C9 7.2 7.7 7.7 6 8.6c-3.5 2-4.7 3.9-3.7 5.6 4.5 7.8 9.5 8.4 11.2 7.4.9-.5 1.9-2.1 1.9-4.7"/><path d="M9.1 16.5c.3-1.1 1.4-1.7 2.4-1.4"/></svg>
+        <h3>A command center for every room</h3>
+        <p>A single React console shows every session: start/stop the stream, switch clips, set overlays, watch chat and live sales, clearly separated by account</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>
+        <h3>Built-in audio dropout guard</h3>
+        <p>A pre-flight ffprobe check on each file (short audio / no audio) before going live + monitoring for long silences on air, so silence never goes out</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg>
+        <h3>A browser oracle as the "signer"</h3>
+        <p>A hidden, logged-in window sends requests from inside the web page so the platform's own JS adds the signature. This unlocks chat, product pinning and GMV that the server can't sign itself.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>How it works — 4 steps</h2>
+      <p>From picking a clip to looping it out live with chat and live sales</p>
+    </section>
+
+    <figure class="shot mid"><img src="img/setup-basket.jpg" width="1040" height="560" loading="lazy" decoding="async" alt="Step 4 of 6 in adding a live account: choosing products to pin"><figcaption>A 6-step wizard — the step for choosing the product set to pin</figcaption></figure>
+
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
+        <h4>Prepare the session</h4>
+        <p>Pick clips + set overlay / proxy / the product set to pin</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2-5 5-5-5"/><rect width="20" height="15" x="2" y="7" rx="2"/></svg>
+        <h4>Go live</h4>
+        <p>The backend opens the room + ffmpeg pushes RTMP + keep-alive pings</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg>
+        <h4>Oracle listens live</h4>
+        <p>The hidden window decodes chat/GMV → backend → SSE → console</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg>
+        <h4>Watch + loop</h4>
+        <p>Audio dropout monitoring + auto-restart keep the stream going to the end</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>One family of processes on the seller's machine — no cloud app server, no per-shop infrastructure</p>
+    </section>
+
+    <figure class="shot"><img src="img/system-logs.jpg" width="1520" height="760" loading="lazy" decoding="async" alt="The system activity log, showing time, action and reference ID"><figcaption>Workspace activity log (operator names blurred)</figcaption></figure>
+
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          React SPA Console (Vite + Tailwind v4 + shadcn/ui)
+          <div class="arch-sub">
+            <span>control-room</span>
+            <span>session-detail</span>
+            <span>overlay / basket</span>
+            <span>chat + GMV panel</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Electron main — spawn sidecar + oracle
+          <div class="arch-sub">
+            <span>wait /healthz</span>
+            <span>first-party OIDC loopback</span>
+            <span>partitioned windows</span>
+            <span>bundle ffmpeg</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Go backend (chi + sqlc) — re-air engine + SSE broker
+          <div class="arch-sub">
+            <span>sessions / media</span>
+            <span>overlay / basket</span>
+            <span>gmv / chatreply</span>
+            <span>vault / egress</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          SQLite (file:) + ffmpeg (RTMP) + object store + Zitadel OIDC
+          <div class="arch-sub">
+            <span>goose migrations</span>
+            <span>-c copy push</span>
+            <span>video clips (S3)</span>
+            <span>workspace_id tenancy</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Why this stack?</strong>
+      <p><strong>Electron wrapping a Go sidecar</strong> — packs backend + ffmpeg + SPA into one app with zero setup for users, and the window opens on the backend's origin so the OIDC login flow is first-party &middot; <strong>SQLite (<code>file:</code> DSN)</strong> — desktop mode runs self-contained, migrates on start, no DB server &middot; <strong>Go (chi + sqlc)</strong> — production shape: no ORM, no inline SQL, multi-tenant with <code>workspace_id</code> from day one &middot; <strong>React 19 + Vite + Tailwind v4</strong> — a console the backend serves itself on the same origin</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>What I built — 8 core capabilities</h2>
+      <p>Taken from a proven POC, then ported to behave the same on a Go / React / Electron stack</p>
+    </section>
+
+    <figure class="shot"><img src="img/overlay-clock.jpg" width="1600" height="1300" loading="lazy" decoding="async" alt="Overlay settings page: an LED-style digital clock and text over the clip"><figcaption>Overlay Compositor: LED clock + text with adjustable position, color and angle</figcaption></figure>
+
+
+    <div class="module-grid">
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2-5 5-5-5"/><rect width="20" height="15" x="2" y="7" rx="2"/></svg>
+        <h3>Re-air Engine</h3>
+        <p>ffmpeg pushes RTMP with <code>-c copy</code> at native rate + keep-alive pings + auto-stop/restart — the core that loops clips out as a live stream</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <h3>Overlay Compositor</h3>
+        <p>LED clock / text over the video with <code>filter_complex</code> + live repositioning via ZMQ — re-encodes only sessions that have an overlay</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>
+        <h3>Audio-Drop Guard</h3>
+        <p>Pre-flight ffprobe catches <code>NO_AUDIO</code>/<code>AUDIO_SHORT</code> + runtime <code>silencedetect</code> — no silent airtime</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg>
+        <h3>Browser Oracle</h3>
+        <p>A hidden partitioned window per account runs preloaded <code>executeJavaScript</code> so the web page signs requests itself — the shared base that chat, basket and GMV all use</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg>
+        <h3>Realtime Chat</h3>
+        <p>The oracle decodes live comments/viewers → <code>/ingest/chat</code> → SSE broker fan-out → console panel (dedup by msgId)</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 21h8"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
+        <h3>Manual Reply</h3>
+        <p>Replies typed in the UI → in-memory queue → the oracle sends <code>message/chat</code> from the web page → shown only once actually delivered (not optimistic)</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        <h3>Product Pin (basket)</h3>
+        <p>Prepare product sets (<code>product_sets</code>) → go live → pin queue + afterLive hook → the oracle pins automatically, with a "Pinned X/X" status</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        <h3>Per-Account Egress</h3>
+        <p>Network egress per account (utls fingerprint + SOCKS5/HTTP CONNECT) — each identity's traffic is clearly separated</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Console Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>The Session Console</h2>
+      <p>Open a clip → go live → see chat, viewers, sales and overlays together on one screen</p>
+    </section>
+
+    <figure class="shot"><img src="img/session-console.jpg" width="1570" height="1091" loading="lazy" decoding="async" alt="A session page during a live stream, showing keep-alive, products in the stream, live chat and the event log"><figcaption>Session console: keep-alive · products in the stream · live chat · event log</figcaption></figure>
+
+
+    <div class="ext-mockup">
+      <div class="ext-bar">
+        <span class="ext-btn">&#9654; Go Live</span> <span class="ext-btn">Overlay</span> <span class="ext-btn">Basket</span>
+        <span class="ext-badge"><svg class="ico-i" style="color:#e11d48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="currentColor" stroke="none"/></svg> LIVE</span>
+      </div>
+      <div class="ext-yt">
+        <div><b><svg class="ico-i" style="color:#e11d48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="6" fill="currentColor" stroke="none"/></svg> Live now</b> — re-airing a recorded clip &middot; uptime 01:12:40</div>
+        <div class="u">clip: promo-spring-set.mp4 &middot; -c copy &middot; native-rate</div>
+        <span class="chip"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> 1,284 viewers</span>
+        <span class="chip"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg> Pinned 6/6</span>
+        <span class="chip"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg> audio ok</span>
+      </div>
+      <table class="ext-table">
+        <thead>
+          <tr><th>Channel</th><th>Live</th><th>Details</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="kind master">Chat</span></td>
+            <td class="q">SSE</td>
+            <td class="info"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> 42 messages/min &middot; live replies</td>
+            <td><span class="chip">reply</span></td>
+          </tr>
+          <tr>
+            <td><span class="kind variant">GMV</span></td>
+            <td class="q">poll 45s</td>
+            <td class="info"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg> Live sales &middot; top 5 SKUs</td>
+            <td><span class="chip">panel</span></td>
+          </tr>
+          <tr>
+            <td><span class="kind file">Overlay</span></td>
+            <td class="q">on</td>
+            <td class="info"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Clock + text &middot; ZMQ move</td>
+            <td><span class="chip">edit</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="ext-cmd"><span class="cmt"># re-air engine — stream-copy, no re-encode</span><br>ffmpeg <span class="flag">-re</span> -i clip.mp4 <span class="flag">-c copy</span> <span class="flag">-f</span> flv 'rtmp://live.&hellip;/app/&lt;stream-key&gt;'</div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hacks and problems</h2>
+      <p>6 engineering problems I had to solve myself — desktop runtime + media core + browser automation</p>
+    </section>
+
+    <figure class="shot"><img src="img/chat-reply.jpg" width="1600" height="690" loading="lazy" decoding="async" alt="The Q&amp;A tab for setting up keyword auto-replies"><figcaption>Keyword-based chat auto-replies — actually sent through the browser oracle</figcaption></figure>
+
+
+    <div class="hack-grid">
+      <div class="hack-card platform" data-label="Desktop Runtime">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/></svg><span>Combining 3 processes into one easy-to-install app</span></h3>
+        <p>The Go backend, ffmpeg and the SPA are separate runtimes. Sellers can't be asked to install each one, so they have to be packaged together with a smooth lifecycle.</p>
+        <div class="highlight">Fix: Electron main <code>spawn</code>s the Go binary as a sidecar (loopback) and waits for <code>/healthz</code> 200 before opening the BrowserWindow on the backend's origin, so the OIDC login → callback → cookie flow is entirely first-party · static ffmpeg ships inside the package (electron-builder)</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Media Core">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>Overlays vs. the "no re-encode" rule</span></h3>
+        <p>The re-air core is locked to <code>-c copy</code> (invariant: no re-encode = constant quality and CPU), but drawing a clock or text has to go through <code>filter_complex</code>, which means re-encoding</p>
+        <div class="highlight">Fix: enable a re-encode branch (<code>libx264</code> + filtergraph) <strong>only for sessions with an overlay</strong> — sessions without one stay exactly <code>-c copy</code> · a deliberately narrow decision at the media-core level</div>
+      </div>
+
+      <div class="hack-card arch" data-label="Concurrency">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg><span>A silence detector can't go into a stream-copy</span></h3>
+        <p><code>silencedetect</code> is an audio filter (<code>-af</code>), but the main push is <code>-c copy</code> — adding <code>-af</code> directly breaks stream-copy</p>
+        <div class="highlight">Fix: run a <strong>second ffmpeg in parallel</strong> (<code>-af silencedetect -f null -</code>) as a co-goroutine that decodes only the audio and discards it — the main push stays <code>-c copy</code> and the video is untouched · stderr is scanned live instead of reading the whole log file</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Signing">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4V2"/><path d="M15 16v-2"/><path d="M8 9h2"/><path d="M20 9h2"/><path d="M17.8 11.8 19 13"/><path d="M15 9h.01"/><path d="M17.8 6.2 19 5"/><path d="m3 21 9-9"/><path d="M12.2 6.2 11 5"/></svg><span>Some actions need a signature from a logged-in web page</span></h3>
+        <p>Chat, product pinning and GMV need a request signature generated by the platform's JS in a logged-in page — Go can't sign them itself</p>
+        <div class="highlight">Fix: a browser oracle — a hidden BrowserWindow per account (<code>session.fromPartition</code>) takes jobs from the backend over validated IPC (sender id + size cap), then calls a preloaded <code>executeJavaScript</code> function (no string-interpolating logic into the remote page) so the web page fetches and signs itself → returns the result</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Transient State">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M15 8V2"/><path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"/><path d="M9 8V2"/></svg><span>Chat and GMV are live data — not every item belongs in the DB</span></h3>
+        <p>Comments and live sales stream in very fast. Writing every event to the DB = a bottleneck, and there's no need for history across restarts</p>
+        <div class="highlight">Fix: an SSE broker as the live transport — chat/GMV/pin are <strong>ephemeral</strong> (in-memory queue, fan-out over SSE) and never touch the DB · only what really needs to persist (product_sets, overlay config, accounts) is stored, through migrations</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Security">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Per-account credentials must never leak</span></h3>
+        <p>Each identity's cookies and credentials are the most sensitive secrets — the moment they're stored in plaintext or logged, it's over</p>
+        <div class="highlight">Fix: vault envelope encryption (AES-256 via the OS keychain) for every secret · only the <code>length</code> is logged, never the value · desktop↔backend uses a per-machine key (constant-time bearer, loopback only) instead of a hardcoded static key</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Deliberate design decisions</h2>
+      <p>A deliberately "narrow" scope — so it's implemented correctly and easy to maintain</p>
+    </section>
+
+    <figure class="shot mid"><img src="img/proxy-egress.jpg" width="1060" height="620" loading="lazy" decoding="async" alt="The proxy settings step for a live account"><figcaption>A proxy per account — separate network egress for each identity</figcaption></figure>
+
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>The whole system runs on the seller's machine: no central app server, credentials never leave the machine, re-encoding only when there's actually an overlay, and only what must survive a restart goes into the DB. A sharp scope from the start let every feature build on the same re-air core without bloating or slowing it.</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></strong><br>
+        <strong>Desktop-local</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Runs on the seller's machine; data and credentials stay off the cloud</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><path d="m17 2-5 5-5-5"/></svg></strong><br>
+        <strong>-c copy invariant</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Re-encode only for sessions with an overlay</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></strong><br>
+        <strong>Transient by default</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Chat/GMV are live; persist only what needs history</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></strong><br>
+        <strong>Every secret in the vault</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Envelope encryption + log only the length, never the value</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge domains that got stronger</h2>
+      <p>5 areas where my level really moved up from this project</p>
+    </section>
+
+    <figure class="shot"><img src="img/live-history.jpg" width="1600" height="400" loading="lazy" decoding="async" alt="A table summarizing past live streams"><figcaption>Past live stream summary — viewers, sales and chat per stream (account names blurred)</figcaption></figure>
+
+
+    <div class="learning-card">
+      <strong>1. Desktop app architecture (Electron + native sidecar) — from pure web to a real desktop app:</strong>
+      <p>Packaging a native backend as a sidecar, managing its lifecycle (spawn → wait for <code>/healthz</code> → teardown), making OIDC login first-party through a loopback origin, and bundling per-target binaries with electron-builder (dmg/nsis). Lesson: "one app and done" for the user = several runtimes behind the scenes that have to be assembled smoothly.</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Real-time media / ffmpeg engineering — understanding what every stage of the pipeline does:</strong>
+      <p>RTMP push with stream-copy vs re-encode, writing <code>filter_complex</code> overlays, live repositioning via ZMQ, and silence detection with a parallel <code>silencedetect</code> that never touches the main push. Lesson: streaming isn't a black box — knowing when to copy and when to re-encode is how you control both CPU and quality.</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. A production-shaped Go backend — a structure that's actually maintainable:</strong>
+      <p>chi + sqlc (no ORM, no inline SQL — enforced by tests), goose migrations embedded in the binary, multi-tenant with <code>workspace_id</code> on every query, and an SSE broker for live fan-out. Lesson: setting structural rules (tenant guard, no inline SQL) from day one lets the system grow without breaking.</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Browser automation / signing oracle — work the server can't do itself:</strong>
+      <p>A partitioned session per account, <code>executeJavaScript</code> calling preloaded functions (no string interpolation into the remote page), and validated IPC (sender id + size cap), along with understanding the tradeoffs of <code>contextIsolation:false</code>. Lesson: safe automation means strictly isolating untrusted contexts and talking only through channels you can verify.</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Secure by default & scoping — "narrow" is good design:</strong>
+      <p>Envelope encryption for every secret, a per-machine key instead of a static backdoor, logging only lengths, and deciding what persists and what's transient at design time. Lesson: good security starts with safe defaults and a sharp scope, not something patched on later.</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">8</div>
+        <div class="label">Core features ported from the POC</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">40</div>
+        <div class="label">Go internal packages (~26k lines)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">3&#8594;1</div>
+        <div class="label">processes (Go + ffmpeg + SPA) in one app</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">servers per shop — the desktop app is self-contained</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <h2>The re-broadcast app</h2>
+    <p>A desktop control room for live commerce that packs a Go backend, an ffmpeg engine and a React SPA into one easy-to-install app. It loops recorded clips out as a stable live stream, with overlays, live chat and automatic product pinning through a browser oracle, and the data never leaves the user's machine.</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Electron</span>
+      <span class="stack-icon">Go 1.26</span>
+      <span class="stack-icon">chi + sqlc</span>
+      <span class="stack-icon">ffmpeg / RTMP</span>
+      <span class="stack-icon">SQLite</span>
+      <span class="stack-icon">React 19 + Vite</span>
+      <span class="stack-icon">Tailwind v4</span>
+      <span class="stack-icon">SSE</span>
+      <span class="stack-icon">Zitadel OIDC</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.work/">&#8592; Back to all projects</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Re-broadcast app Portfolio",
+      "item": "https://projects.tanplanet.work/live-rebroadcast-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

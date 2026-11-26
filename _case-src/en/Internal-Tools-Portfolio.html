@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital OS for a group of companies — one place for every company's internal tools</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Digital OS for a group of companies — one place for every company's internal tools">
+  <meta name="twitter:description" content="Portfolio: Digital OS — an internal portal that brings 8 departments into one system for the Real Factory group of companies">
+  <meta property="og:url" content="https://projects.tanplanet.work/Internal-Tools-Portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.work/Internal-Tools-Portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: Digital OS — an internal portal that brings 8 departments into one system for the Real Factory group of companies">
+  <meta property="og:title" content="Digital OS for a group of companies — one place for every company's internal tools">
+  <meta name="description" content="Portfolio: Digital OS — an internal portal that brings 8 departments into one system for the Real Factory group of companies">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --accent: #1e40af;
+      --accent-light: #eff6ff;
+      --accent-dark: #1e3a8a;
+      --accent-glow: rgba(30,64,175,0.12);
+      --gold: #c69b57;
+      --gold-light: #fef9ee;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #ef4444;
+      --red-light: #fef2f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 40%, #1e40af 80%, #3b82f6 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(198,155,87,0.18) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(59,130,246,0.22) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #1e40af, #c69b57, #3b82f6);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #60a5fa;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .gold {
+      color: #fcd34d;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.88;
+      max-width: 560px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.85);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.15;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.7;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards (8 modules) ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30,64,175,0.08);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.scale::before { background: var(--accent-light); color: var(--accent); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.process::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.brand::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.visibility::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card.consistency::before { background: var(--gold-light); color: #92651e; }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(30,64,175,0.2); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--gold-light); color: #92651e; border: 1px solid rgba(198,155,87,0.3); }
+    .arch-layer.infra { background: #f1f5f9; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Closing ===== */
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(15,23,42,0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(15,23,42,0.95); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/tokens/fonts unchanged
+       Only reworks components that were repeated "white card + color bar + emoji"
+       Replaced with thin-divider lists + lucide icons
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* figures (case-study images) */
+    .shot{margin:8px 0 32px}
+    .shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}
+    .shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.6}
+    .shot.narrow img{max-width:360px;margin:0 auto}
+    .shot.mid img{max-width:460px;margin:0 auto}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin:8px 0 32px}
+    .shot-pair .shot{margin:0}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
+    .ico-i{width:1em;height:1em;display:inline-block;vertical-align:-0.14em;flex:none}
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/Internal-Tools-Portfolio/">
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Internal Portal · Digital OS · 8 Modules
+      </div>
+      <h1>Digital OS for a group of companies<br><span class="accent">One place for every company's internal tools</span></h1>
+      <p>An internal portal that brings Real Factory's 8 departments into one system — from documents scattered across Excel, LINE and email to a single source of truth</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Internal Portal</span>
+        <span class="hero-tag">8 Modules</span>
+        <span class="hero-tag">RBAC 18 Roles</span>
+        <span class="hero-tag">Vue 3 + TypeScript</span>
+        <span class="hero-tag">Design System</span>
+        <span class="hero-tag">Multi-Tenant</span>
+        <span class="hero-tag">i18n TH/EN</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Empathize ===== -->
+    <section class="section-intro">
+      <h2>The problem</h2>
+      <p>Why does a group of companies need its own Digital OS?</p>
+    </section>
+
+    <figure class="shot"><img src="img/before-after.jpg" width="1600" height="832" loading="lazy" decoding="async" alt="Before and after diagram: tools scattered across many channels, merged into one portal with 8 modules"><figcaption>Before → after: from spreadsheets, chat, forms, email and print-sign-scan to a single portal (illustrative diagram)</figcaption></figure>
+
+
+    <div class="quote-block">
+      <p>8 departments each used their own set of tools — purchase requests in Excel, expense claims in LINE, accommodation bookings in Google Forms, flight tickets over email. The approval cycle took 3–5 days per document and nobody could see the big picture. Management didn't even know whose desk a request was stuck on.</p>
+      <div class="author">— Insight from stakeholder interviews before the project started</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
+        <h3>8 departments on separate tools, no one sees the whole picture</h3>
+        <p>Purchase requests in Excel, expense claims in LINE, bookings in Google Forms, flight tickets over email — no single source of truth, no way to tell which stage a document is at</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>
+        <h3>A 3–5 day approval cycle per document</h3>
+        <p>Documents had to be printed → signed → scanned → passed on. Management couldn't see who was holding things up, and overdue items went unresolved — affecting plans across the whole company</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        <h3>No audit trail — nothing to trace back</h3>
+        <p>Who approved, who rejected and why, whether spending went over budget — none of it was recorded. Every audit turned into a document hunt</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        <h3>Every PDF made by hand</h3>
+        <p>Open Word, fill in the numbers → export PDF → print → sign with a pen → scan it back — slow, error-prone, with no standard layout</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>15+ user roles with different permissions</h3>
+        <p>Role checks hardcoded across the codebase — adding a single new role meant editing every page. Not maintainable as the company grows</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Define + Ideate ===== -->
+    <section class="section-intro">
+      <h2>The solution</h2>
+      <p>One portal — a Digital OS pattern that serves every department at once</p>
+    </section>
+
+    <figure class="shot"><img src="img/pr-approval-chain.jpg" width="880" height="580" loading="lazy" decoding="async" alt="Purchase request detail page showing approval status step by step"><figcaption>A real PR detail page: the approval chain follows the amount, so you can see at a glance which step it's waiting on (approver names blurred)</figcaption></figure>
+
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        <h3>One portal for every request type</h3>
+        <p>PR/PO, expenses, bookings, HR requests — all in one portal, one source of truth. Users log in once and see all of their own tasks</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3>A configurable approval engine</h3>
+        <p>One central state machine handles chains like M3→E1→E2→E3→CEO based on amount — each doc type and department configures its own, no new code needed</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
+        <h3>Real-time status via Socket.io</h3>
+        <p>Requesters see right away who has their request, and management sees an "overdue" dashboard in real time — follow-ups in LINE dropped by more than 80%</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"/><path d="M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"/><path d="M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1"/></svg>
+        <h3>A reusable document PDF component</h3>
+        <p>Voucher + signature block + attachment index = shared components that work for every doc type, no duplicated layouts</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+        <h3>RBAC with 18 roles and separate approval levels</h3>
+        <p>M3/E1/E2/E3, Finance Lv1/Head, Acc Lv1/Head, Procurement Manager + Reviewer and more — mirrors the real org chart, configured through a permissions matrix</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        <h3>Bilingual TH/EN i18n from day one</h3>
+        <p>Every string goes through the <code>useLocale</code> composable with a type-safe LocaleKey, ready for expansion abroad without a refactor</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture ===== -->
+    <section class="section-intro">
+      <h2>Architecture Overview</h2>
+      <p>Vue 3 + Express + Prisma — Modern stack, shared types, single source of truth</p>
+    </section>
+
+    <figure class="shot"><img src="img/portal-dashboard.jpg" width="1440" height="850" loading="lazy" decoding="async" alt="Portal dashboard with shortcuts to create documents, announcements and a document tracking table"><figcaption>Frontend — Portal SPA (Vue 3 + PrimeVue + Tailwind): the home dashboard (logo hidden, names blurred)</figcaption></figure>
+
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Frontend — Portal SPA
+          <div class="arch-sub">
+            <span>Vue 3.5</span>
+            <span>Vite 8</span>
+            <span>TypeScript</span>
+            <span>PrimeVue 4</span>
+            <span>Tailwind v4</span>
+            <span>Pinia 3</span>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer platform">
+          @portal/shared — Zod Schemas
+          <div class="arch-sub">
+            <span>Validation</span>
+            <span>Types</span>
+            <span>Single Source of Truth</span>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer services">
+          Backend API
+          <div class="arch-sub">
+            <span>Express 5</span>
+            <span>Prisma 6</span>
+            <span>JWT + Google OAuth</span>
+            <span>Socket.io</span>
+            <span>Pino Logger</span>
+          </div>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-layer infra">
+          Infrastructure
+          <div class="arch-sub">
+            <span>PostgreSQL (Supabase)</span>
+            <span>Supabase Storage</span>
+            <span>Docker</span>
+            <span>Railway / AWS ECS</span>
+            <span>GitHub Actions</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== 8 Modules ===== -->
+    <section class="section-intro">
+      <h2>What I built — 8 modules</h2>
+      <p>Phase 1 MVP — Core Platform + 7 Functional Modules</p>
+    </section>
+
+    <div class="shot-pair"><figure class="shot"><img src="img/expense-list.jpg" width="1100" height="540" loading="lazy" decoding="async" alt="Table of expense claims across types: Petty Cash, Reimbursement, Advance, Credit Card, Travel"><figcaption>Expense Suite — 5 sub-flows in one table</figcaption></figure><figure class="shot"><img src="img/think-tank.jpg" width="1080" height="720" loading="lazy" decoding="async" alt="Think Tank activity page with individual and department rankings"><figcaption>Think Tank — individual and department leaderboards (names blurred)</figcaption></figure></div>
+
+
+    <div class="module-grid">
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+        <h3>PR / Procurement</h3>
+        <p>Purchase Request + PO with approval chain (M3→E1→E2→E3→CEO by amount) + supplier comparison</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+        <h3>Expense Suite</h3>
+        <p>Petty Cash, Reimbursement, Advance + Clear, Credit Card OCR, Travel — 5 sub-flows + WHT 1/2/3/5%</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 22v-6.57"/><path d="M12 11h.01"/><path d="M12 7h.01"/><path d="M14 15.43V22"/><path d="M15 16a5 5 0 0 0-6 0"/><path d="M16 11h.01"/><path d="M16 7h.01"/><path d="M8 11h.01"/><path d="M8 7h.01"/><rect x="4" y="2" width="16" height="20" rx="2"/></svg>
+        <h3>Booking</h3>
+        <p>Accommodation (HR confirms from the company voucher pool) + flight tickets (HR attaches the e-ticket)</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>
+        <h3>HR</h3>
+        <p>Employee Directory, Vehicle Registry, Course Library, Form Templates, Announcements</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
+        <h3>Think Tank</h3>
+        <p>Engagement activities + leaderboard + scoring by C-level, with result reports</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg>
+        <h3>Legal</h3>
+        <p>Knowledge Base + AI Chat (Phase 1: Legal Admin only) — collects contracts and internal legal references</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        <h3>C-Level Dashboard</h3>
+        <p>Pending approvals, Budget vs Actual, Approval Bottleneck, Department Ranking, Spending Trend</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3>Admin</h3>
+        <p>Permissions Matrix (18 roles × all routes), workflow config, system settings — change permissions without a deploy</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack ===== -->
+    <section class="section-intro">
+      <h2>Hacks for hard problems</h2>
+      <p>6 challenges that weren't in any playbook — I had to work out the workarounds myself</p>
+    </section>
+
+    <figure class="shot"><img src="img/expense-approval-roles.jpg" width="880" height="700" loading="lazy" decoding="async" alt="Expense claim approval status passing Acc Lv1, Head Acc, Finance Lv1 and Head of Finance"><figcaption>How the roles actually split: department head → Acc Lv1 → Head Acc → Finance Lv1 → Head of Finance (approver names blurred)</figcaption></figure>
+
+
+    <div class="hack-grid">
+      <div class="hack-card scale" data-label="Scale">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>RBAC: splitting 11 roles into 18</span></h3>
+        <p>The PRD specified 15 roles, but the codebase had collapsed them into 11 → approval thresholds didn't match the real org chart. People who should see a document couldn't, and people who shouldn't could</p>
+        <div class="highlight">Fix: split manager → m3/e1/e2/e3, Finance → Lv1/Head, Acc → Lv1/Head, Procurement Manager + added Reviewer + a per-role tab filter + backward-compatible normalization of legacy roles through a mapping function</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Performance">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>Document PDFs that scale to 8 doc types</span></h3>
+        <p>8 doc types × signature block × attachment index × a need for real PDF merging (text-selectable) — duplicating the layout per doc would be a maintenance nightmare</p>
+        <div class="highlight">Fix: shared components in <code>components/document/*</code> (SignatureBlock, AttachmentIndex, AttachmentPage) + pdf-lib to merge real PDF bytes at the end + html2canvas for image-only attachments — one abstraction for every doc</div>
+      </div>
+
+      <div class="hack-card process" data-label="Process">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span>Project-wide i18n in one sprint</span></h3>
+        <p>~50 views, 1,000+ strings, and strict TH/EN parity (a missing key on either side breaks the build) — no way to do it by hand alone in time</p>
+        <div class="highlight">Fix: a handwritten <code>useLocale</code> composable (zero dependencies, type-safe via a LocaleKey union) + batches delegated to 10 subagents + an automatic type-check on every batch before commit → TH/EN parity enforced by TypeScript, not discipline</div>
+      </div>
+
+      <div class="hack-card brand" data-label="Brand">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg><span>A login page that fought dark mode</span></h3>
+        <p>The app supports dark mode everywhere, but the login page is a brand experience that has to stay white with a dark brand panel — the token cascade kept flipping its colors when dark mode was on</p>
+        <div class="highlight">Fix: a <code>.login-light-scope</code> pattern that locks token values inside a CSS scope; the brand panel hardcodes <code>#231F20</code> + an <code>!important</code> rule to block cascade overrides; SplashScreen reuses the same pattern</div>
+      </div>
+
+      <div class="hack-card visibility" data-label="Visibility">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg><span>Approval Bottleneck Real-time</span></h3>
+        <p>C-level wanted to see whose desk a request was on, which step of the chain, and for how long — and refreshing the page wasn't fast enough</p>
+        <div class="highlight">Fix: Socket.io broadcasts every approve/reject event to the company's channel; a dashboard chart of items "pending >24 hrs" sorted by time + drill-down to the approver's name + one click to send a LINE notification directly</div>
+      </div>
+
+      <div class="hack-card consistency" data-label="Consistency">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg><span>100% design tokens — stopping drift before it starts</span></h3>
+        <p>Tailwind v4 + PrimeVue Aura theme + custom tokens — 3 layers that can override each other. Without rules, hardcoded hex values keep sneaking in</p>
+        <div class="highlight">Fix: audited hardcoded hex values → swapped them for CSS variables; token definitions in <code>design-tokens.css</code> as the single source of truth; dark mode flips via <code>:root.dark-mode</code> overrides — no Tailwind dark: variants needed</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Strategic Partners ===== -->
+    <section class="section-intro">
+      <h2>Stakeholders & Build Period</h2>
+      <p>An internal product — co-designed with the real team in every department</p>
+    </section>
+
+    <figure class="shot"><img src="img/announcements.jpg" width="860" height="740" loading="lazy" decoding="async" alt="Announcements page combining posts from the company, HR, IT, Finance and Safety"><figcaption>Announcements from several departments in one feed — every department is both a user and a co-designer</figcaption></figure>
+
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>Digital OS wasn't designed from an ivory tower — every flow went through workshops with the actual HR, Finance, Accounting, Procurement, Legal and C-level teams, and every approval threshold comes from Real Factory's actual policy</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></svg> </strong><br>
+        <strong>Real Factory Group</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Client + production team — stakeholders from 8 departments</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg></strong><br>
+        <strong>Build Period</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">6 weeks — Phase 1 MVP (Core + 7 modules)</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg> </strong><br>
+        <strong>Team Composition</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">TechLead, PM×2, BA, UX/UI — cross-functional small team</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg> </strong><br>
+        <strong>AI-Augmented Workflow</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">BMAD framework + Claude subagents for i18n and create-story</p>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Why does co-design matter for internal tools?</strong>
+      <p>Internal users can't leave — if it's mandated, they have to use it. But if the design misses their real pain points, they'll find a workaround and go back to Excel. Co-design means every approval rule, every field and every label comes from real domain experts, not assumptions</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Key Takeaways ===== -->
+    <section class="section-intro">
+      <h2>Key Takeaways</h2>
+      <p>4 design thinking lessons from Digital OS</p>
+    </section>
+
+    <figure class="shot"><img src="img/requests-list.jpg" width="1100" height="560" loading="lazy" decoding="async" alt="Document tracking page showing number, type, details, amount and status"><figcaption>Document tracking — every doc type uses the same table and status badges (composition instead of duplication)</figcaption></figure>
+
+
+    <div class="learning-card">
+      <strong>Empathy first — splitting into 18 roles brought the approval flow close to the real org chart:</strong>
+      <p>At first I used the 11 roles the codebase already had. When I tested with the actual Head of Finance, he said, "I'm not Lv1, I'm the Head — why do I see the same documents as Lv1?" That's when I realized roles have to reflect the real hierarchy, not be reduced to make things easier for developers. In the end I split them into 18 roles, and approvals now match company policy exactly</p>
+    </div>
+    <div class="learning-card">
+      <strong>Single Source of Truth — design tokens + Zod schemas + DEPARTMENT_LABELS:</strong>
+      <p>If one constant lives in 3 places, it will drift — not "if" but "when". Digital OS forces every type, every validation and every label to come from a single source → the frontend and backend can't fall out of sync, and tokens and components can't contradict each other</p>
+    </div>
+    <div class="learning-card">
+      <strong>Scale by composition — 4 shared components cover 8 doc types:</strong>
+      <p>SignatureBlock + AttachmentIndex + AttachmentPage + DocumentLayout — just 4 components with one prop interface generate 8 doc types (PR, PO, Petty Cash, Reimbursement, Advance, Clear, Travel, Booking). Duplicating per doc would mean 8× the maintenance — composition beats duplication every time</p>
+    </div>
+    <div class="learning-card">
+      <strong>Subagent workflow — 1,000+ i18n strings done in one day:</strong>
+      <p>Translating file by file, string by string, is a nightmare — so I ran 10 Claude subagents in parallel, each taking a batch of views, with an automatic type-check guard before commit. If a key is missing, TypeScript fails immediately — no reliance on human discipline. The point is to design guards a machine can check, not a checklist in Notion</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">8</div>
+        <div class="label">Modules</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">18</div>
+        <div class="label">User Roles (RBAC)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">2</div>
+        <div class="label">Languages (TH/EN)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">6w</div>
+        <div class="label">Phase 1 MVP</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <h2>Digital OS</h2>
+    <p>Digital OS brings 8 departments into one system — designed to scale in user count, role hierarchy and international markets, with a design system, RBAC and bilingual i18n from day one</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Vue 3</span>
+      <span class="stack-icon">TypeScript</span>
+      <span class="stack-icon">PrimeVue</span>
+      <span class="stack-icon">Tailwind v4</span>
+      <span class="stack-icon">Express 5</span>
+      <span class="stack-icon">Prisma</span>
+      <span class="stack-icon">PostgreSQL</span>
+      <span class="stack-icon">Socket.io</span>
+      <span class="stack-icon">Design System</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.work/">&#8592; All Projects</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Digital OS Portfolio",
+      "item": "https://projects.tanplanet.work/Internal-Tools-Portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

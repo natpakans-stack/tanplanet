@@ -1,0 +1,32 @@
+/* หน้า case study ในเลย์เอาต์บทความ myfolio (tools/case-to-article.py)
+   ไฟล์นี้ = ตัวต่อระหว่างเปลือกบทความกับเนื้อหาเท่านั้น · หน้าตาคอมโพเนนต์เนื้อหาอยู่ที่ common/components.css ที่เดียว */
+.cs-page .cs-sub { margin: 12px 0 0; max-width: 760px; font-size: 18px; line-height: 1.7; color: var(--tp-text-3); }
+.cs-page .cs-cover { display: grid; place-items: center; aspect-ratio: 16 / 7; margin: 0 0 45px; border-radius: 16px; background: var(--tp-surface-2); color: var(--tp-text); }
+.cs-page .cs-cover svg { width: 96px; height: 96px; stroke-width: 1.2; }
+.cs-page .cs-thumb { display: grid !important; place-items: center; background: var(--tp-surface-2); color: var(--tp-text); }
+.cs-page .cs-thumb svg { width: 28px; height: 28px; }
+.cs-page :is(.cs-cover, .cs-thumb).card--magenta { background: linear-gradient(135deg, #fdf2f8, #fce7f3); }
+.cs-page :is(.cs-cover, .cs-thumb).card--blue { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+.cs-page :is(.cs-cover, .cs-thumb).card--cyan { background: linear-gradient(135deg, #ecfeff, #cffafe); }
+.cs-page :is(.cs-cover, .cs-thumb).card--green { background: linear-gradient(135deg, #ecfdf5, #d1fae5); }
+.cs-page :is(.cs-cover, .cs-thumb).card--orange { background: linear-gradient(135deg, #fff7ed, #ffedd5); }
+.cs-page :is(.cs-cover, .cs-thumb).card--purple { background: linear-gradient(135deg, #f5f3ff, #ede9fe); }
+.cs-page :is(.cs-cover, .cs-thumb).card--yellow { background: linear-gradient(135deg, #fefce8, #fef9c3); }
+.cs-page :is(.cs-cover, .cs-thumb).card--red { background: linear-gradient(135deg, #fef2f2, #fee2e2); }
+.cs-page :is(.cs-cover, .cs-thumb).card--gold { background: linear-gradient(135deg, #fdf8ef, #f5e6c8); }
+.cs-page .ap-row > *, .cs-page .ap-body, .cs-page .ap-main, .cs { min-width: 0; max-width: 100%; }
+.cs { padding: 0; background: none; }
+.cs > article { max-width: none; margin: 0; padding: 0; background: none; }
+.cs .cs-lead { margin: 0 0 16px; font-size: 18px; line-height: 1.8; color: var(--tp-text-2); }
+.cs .cs-chips { margin: 0 0 40px; }
+.cs pre { white-space: pre-wrap; word-break: break-word; }
+.cs img { max-width: 100%; height: auto; }
+.cs a:not([class]) { color: var(--tp-text); text-decoration: underline; text-underline-offset: 3px; }
+.cs .back-to-top { background: var(--tp-text) !important; color: var(--tp-on-brand) !important; }
+/* จังหวะ section: เนื้อหา ↔ 56 ↔ เส้น ↔ 56 ↔ หัวช่วง ↔ 24 ↔ เนื้อหา */
+.cs > article > section { margin: 56px 0 0; padding: 56px 0 24px; border-top: 1px solid var(--tp-border); }
+.cs > article > section:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.cs > article > hr.divider { display: none; }
+.cs-page .ap-pn-next, .cs-page .ap-pn-next .ap-pn-title { text-align: left; }
+.cs-page .ap-pn-next { margin-left: auto; }
+article.ap.cs-page { margin-bottom: 64px !important; }  /* case study: ก่อนหน้า/ถัดไป → เส้น footer 64 เท่าหน้าอื่น */

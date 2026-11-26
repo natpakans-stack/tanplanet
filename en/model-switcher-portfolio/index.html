@@ -1,0 +1,871 @@
+<!DOCTYPE html><html data-wf-domain="www.tanplanet.work" data-wf-page="608d6278863727b47e80cb9c" data-wf-site="608d62778637273e1880cb8d" lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Shift — switch Claude Code models with a gear stick (VS Code extension)</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Model Shift — switch Claude Code models with a gear stick (VS Code extension)">
+  <meta name="twitter:description" content="Portfolio: a VS Code extension with an H-pattern gear stick for switching Claude Code models. It sends /model to the terminal, syncs the real state from the transcript, and has a switch to mute task-done sounds.">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="Portfolio: a VS Code extension with an H-pattern gear stick for switching Claude Code models. It sends /model to the terminal, syncs the real state from the transcript, and has a switch to mute task-done sounds.">
+  <meta property="og:title" content="Model Shift — switch Claude Code models with a gear stick (VS Code extension)">
+  <meta name="description" content="Portfolio: a VS Code extension with an H-pattern gear stick for switching Claude Code models. It sends /model to the terminal, syncs the real state from the transcript, and has a switch to mute task-done sounds.">
+  <circle cx='50' cy='50' r='48' fill='%23a21caf'/><text x='50' y='62' text-anchor='middle' font-size='54'>🔀</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  
+  
+  <script src="../../common/closing.js" defer></script>
+  <meta property="og:image" content="https://projects.tanplanet.work/pj/covers/model-switcher-portfolio-en-og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://projects.tanplanet.work/pj/covers/model-switcher-portfolio-en-og.jpg"><link rel="icon" type="image/png" href="https://myfolio.tanplanet.work/favicon.png"><link rel="apple-touch-icon" href="https://myfolio.tanplanet.work/apple-touch-icon.png"><link rel="canonical" href="https://projects.tanplanet.work/en/model-switcher-portfolio/"><meta property="og:url" content="https://projects.tanplanet.work/en/model-switcher-portfolio/"><meta property="og:locale" content="en_US"><link rel="alternate" hreflang="th" href="https://projects.tanplanet.work/model-switcher-portfolio/"><link rel="alternate" hreflang="en" href="https://projects.tanplanet.work/en/model-switcher-portfolio/"><link rel="alternate" hreflang="x-default" href="https://projects.tanplanet.work/model-switcher-portfolio/"><link rel="stylesheet" href="https://myfolio.tanplanet.work/tokens.css"/><link href="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/css/myfolio-tannie.webflow.shared.f00d552de.css?v=50" rel="stylesheet" type="text/css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap"><link rel="stylesheet" href="https://myfolio.tanplanet.work/blog/article.css"/><link rel="stylesheet" href="../../common/closing.css"><style>.cs *, .cs *::before, .cs *::after{ box-sizing: border-box; margin: 0; padding: 0; }
+.cs{
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #a21caf;
+      --accent-light: #fae8ff;
+      --accent-dark: #701a75;
+      --accent-glow: rgba(162,28,175,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+.cs{
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+.cs .hero{
+      background: linear-gradient(135deg, #4a044e 0%, #701a75 45%, #a21caf 80%, #d946ef 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+.cs .hero::before{
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(250,232,255,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(162,28,175,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+@keyframes sway{
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+.cs .hero::after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #a21caf, #d946ef, #fae8ff);
+    }
+.cs .hero-inner{
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+.cs .hero-mark{
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+.cs .hero-badge{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+.cs .hero-badge .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+@keyframes pulse-dot{
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+.cs .hero h1{
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+.cs .hero h1 .accent{
+      color: #f0abfc;
+    }
+.cs .hero p{
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+.cs .hero-tags{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+.cs .hero-tag{
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+.cs .cta-row{
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+.cs .cta-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+.cs .cta-btn:hover{ transform: translateY(-2px); }
+.cs .cta-primary{
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+.cs .cta-primary:hover{ box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+.cs .cta-ghost{
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+.cs .cta-ghost:hover{ background: rgba(255,255,255,0.2); }
+.cs article{
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+.cs code{
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+.cs .ext-mockup{
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 440px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+.cs .ext-bar{
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      align-items: center;
+    }
+.cs .ext-bar .ext-btn{
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+.cs .ext-bar .ext-badge{
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 1px 9px;
+      font-size: 0.72rem;
+    }
+.cs .ext-yt{
+      margin: 12px;
+      padding: 10px 12px;
+      border: 1px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 8px;
+    }
+.cs .ext-yt b{ color: #c00; }
+.cs .ext-yt .u{ color: var(--text-muted); font-size: 0.72rem; word-break: break-all; margin: 3px 0 8px; font-family: 'SF Mono', monospace; }
+.cs .ext-table{ width: 100%; border-collapse: collapse; }
+.cs .ext-table th{
+      text-align: left; padding: 8px 12px; font-size: 0.68rem; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--border);
+    }
+.cs .ext-table td{ padding: 9px 12px; border-bottom: 1px solid #f2f2f1; vertical-align: top; }
+.cs .ext-table .kind{ font-weight: 700; white-space: nowrap; }
+.cs .ext-table .kind.master{ color: #1e6b2e; }
+.cs .ext-table .kind.variant{ color: #8a7a12; }
+.cs .ext-table .kind.file{ color: var(--accent); }
+.cs .ext-table .q{ white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+.cs .ext-table .info{ color: var(--text-secondary); font-size: 0.76rem; }
+.cs .ext-cmd{
+      margin: 0 12px 12px;
+      padding: 10px 12px;
+      background: #0f172a;
+      color: #a5f3fc;
+      border-radius: 8px;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      font-size: 0.72rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+.cs .ext-cmd .flag{ color: #fde047; }
+.cs .ext-cmd .cmt{ color: #64748b; }
+.cs .gear-panel{
+      max-width: 440px;
+      margin: 0 auto;
+      background: linear-gradient(160deg, #241a29, #14101a);
+      border: 1px solid #3b2a42;
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+      color: #f0abfc;
+      font-size: 0.82rem;
+    }
+.cs .gear-panel .gp-head{
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      letter-spacing: 0.18em; font-weight: 700; color: #f5d0fe;
+      text-transform: uppercase; font-size: 0.82rem; margin-bottom: 16px;
+    }
+.cs .gear-panel .gp-readout{
+      display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center;
+      background: #0f0b14; border: 1px solid #2e2036; border-radius: 10px;
+      padding: 12px 14px; margin-bottom: 16px;
+    }
+.cs .gear-panel .gp-gauge{ text-align: center; }
+.cs .gear-panel .gp-gauge svg{ width: 92px; height: 52px; overflow: visible; }
+.cs .gear-panel .gp-gauge .cap{ font-size: 8px; letter-spacing: 0.12em; color: #7c5a86; margin-top: 2px; }
+.cs .gear-panel .gp-cmd{ font-family: 'SF Mono', ui-monospace, Menlo, monospace; font-size: 0.72rem; color: #c084fc; }
+.cs .gear-panel .gp-name-row{ display: flex; align-items: baseline; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+.cs .gear-panel .gp-num{ font-size: 1.9rem; font-weight: 700; color: #fbbf24; line-height: 1; }
+.cs .gear-panel .gp-name{ font-size: 1rem; font-weight: 700; color: #f5d0fe; letter-spacing: 0.05em; }
+.cs .gear-panel .gp-gate{
+      background: #0d0912; border: 1px solid #2e2036; border-radius: 12px;
+      padding: 16px; display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; position: relative;
+    }
+.cs .gear-panel .gp-cell{
+      border: 1px solid #35263d; border-radius: 8px; background: #17101d;
+      padding: 12px 8px; text-align: center;
+    }
+.cs .gear-panel .gp-cell .g{ display: block; font-size: 0.7rem; color: #8a6d94; font-weight: 700; }
+.cs .gear-panel .gp-cell .m{ display: block; font-size: 0.78rem; color: #d8b4fe; font-weight: 600; margin-top: 2px; }
+.cs .gear-panel .gp-cell.active{
+      border-color: #fbbf24; background: linear-gradient(160deg, #3a2a12, #2a1e0c);
+      box-shadow: 0 0 0 1px rgba(251,191,36,0.4), 0 0 18px rgba(251,191,36,0.25);
+    }
+.cs .gear-panel .gp-cell.active .g{ color: #fcd34d; }
+.cs .gear-panel .gp-cell.active .m{ color: #fde68a; }
+.cs .gear-panel .gp-mute{
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 16px; padding: 12px 14px; background: #0f0b14;
+      border: 1px solid #2e2036; border-radius: 10px;
+    }
+.cs .gear-panel .gp-mute .lab{ color: #d8b4fe; font-size: 0.8rem; }
+.cs .gear-panel .gp-sw{
+      width: 46px; height: 26px; border-radius: 50px; background: #a21caf;
+      position: relative; flex-shrink: 0;
+    }
+.cs .gear-panel .gp-sw .knob{
+      position: absolute; top: 3px; right: 3px; width: 20px; height: 20px;
+      border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+.cs .gear-panel .gp-sw .on{ position: absolute; left: 8px; top: 5px; font-size: 0.62rem; color: rgba(255,255,255,0.85); font-weight: 700; }
+.cs .back-nav{
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(112,26,117,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+.cs .back-nav:hover{ background: rgba(112,26,117,0.96); transform: translateY(-1px); }
+.cs .back-nav svg{ flex-shrink: 0; }
+.cs .back-to-top{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+.cs .back-to-top.visible{ opacity: 1; visibility: visible; transform: translateY(0); }
+.cs .back-to-top:hover{ background: var(--accent-dark); }
+@media (max-width: 680px){.cs .hero{ padding: 80px 20px 56px; }
+.cs .hero h1{ font-size: 1.7rem; }
+.cs .back-nav{ top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+.cs .back-to-top{ bottom: 16px; right: 16px; width: 40px; height: 40px; }
+
+    }
+.cs .ico{ width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+.cs .rung:last-child{ border-bottom: 0; }
+.cs .ledger--wide{ min-width: 780px; }
+.cs .ladder{ border-top: 1px solid var(--border); margin-top: 20px; }
+.cs .rung{
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+.cs .rung .cond{ display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+.cs .rung .cond .ico{ color: var(--text-muted); width: 15px; height: 15px; }
+.cs .rung .out{ font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+.cs .rung .note{ font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+.cs .rung.none .out{ color: var(--text-muted); }
+@media (min-width: 700px){.cs .rung{ grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+
+    }
+.cs .hero-mark .ico{ width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
+.cs .hero-badge .ico{ width: 14px; height: 14px; }
+@media (max-width:640px){}
+
+</style><link rel="stylesheet" href="../../common/components.css?v=7"/><link rel="stylesheet" href="../../pj/case.css?v=12"/></head><body><div style="opacity:0" class="page-wrapper"><div data-collapse="medium" data-animation="default" data-duration="400" data-w-id="58db7844-5919-d71b-dd74-2323ed8dffe9" data-easing="ease" data-easing2="ease" role="banner" class="header w-nav"><div class="loader-wrapper"><div class="loader"></div></div><div class="container-header"><div class="split-content header-left"><a href="https://myfolio.tanplanet.work/" class="brand w-nav-brand"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><nav role="navigation" class="nav-menu w-nav-menu"><ul role="list" class="header-navigation"><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="nav-link">Home</a></li><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="nav-link">About</a></li><li class="nav-item-wrapper last"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a><a href="https://projects.tanplanet.work/en/" class="nav-link">Portfolio</a><a href="https://myfolio.tanplanet.work/en/contact" class="nav-link nav-contact">Contact</a></li></ul></nav></div><div class="split-content header-right"><a class="lang-switch" href="https://projects.tanplanet.work/model-switcher-portfolio/" hreflang="th" aria-label="TH EN – Switch to Thai"><span class="">TH</span> <span class="on">EN</span></a><div class="link-header-wrapper"><a data-w-id="a331bf6d-ae80-89ce-2301-aa6077024ef0" href="https://drive.google.com/file/d/1GjCCJ3XFU16-ceCq3MGVWRdezXm3GWxl/view?usp=sharing" target="_blank" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Resume</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="menu-button w-nav-button"><div class="menu-button-wrapper"><div class="menu-button-icon"><div class="menu-line-top"></div><div class="menu-line-middle"></div><div class="menu-line-bottom"></div></div></div></div></div></div><div class="container-default w-container"><div class="divider"></div></div></div><div class="section blog-post" role="main"><article class="ap cs-page" role="main"><div class="ap-band"><div class="ap-container"><header class="ap-head">
+<div class="ap-tags"><a href="https://projects.tanplanet.work/en/" class="ap-tag">Tooling</a><span class="ap-tag ap-tag--ghost">Projects</span></div>
+<h1 class="ap-title">Model Shift</h1><p class="cs-sub">A VS Code / Cursor extension that turns typing <code>/model</code> into shifting a gear stick: switch Claude Code models instantly, see the state visually, and mute task-done sounds with one switch. Built with vanilla JS + Bun, no npm dependencies, and no data leaves the machine.</p>
+<p class="ap-meta"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><time datetime="2026-07-11">Jul 11, 2026</time></span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>11 min read</span></p>
+</header></div></div>
+<div class="ap-container ap-grid"><div class="ap-main">
+<figure class="ap-cover"><img src="../../pj/covers/model-switcher-portfolio-en.webp" alt="" width="1600" height="900" fetchpriority="high" decoding="async"></figure>
+<div class="ap-row"><aside class="ap-share" aria-label="Share this article"><span class="ap-share-title">SHARE</span><a href="https://www.facebook.com/sharer/sharer.php?u=https://projects.tanplanet.work/en/model-switcher-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a><a href="https://twitter.com/intent/tweet?url=https://projects.tanplanet.work/en/model-switcher-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on X"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.9 1.2h3.7l-8 9.1L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9Zm-1.3 19.4h2L6.5 3.2H4.3l13.3 17.4Z"/></svg></a><a href="https://social-plugins.line.me/lineit/share?url=https://projects.tanplanet.work/en/model-switcher-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LINE"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="3" width="21" height="18" rx="5.5" fill="currentColor"/><text x="12" y="15.2" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="7.2" font-weight="900" fill="#fff">LINE</text></svg></a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https://projects.tanplanet.work/en/model-switcher-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a><button type="button" class="ap-share-btn" data-tip-done="Copied" data-copy="https://projects.tanplanet.work/en/model-switcher-portfolio/" aria-label="Copy link"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button></aside><div class="ap-body"><div class="cs">
+<p class="cs-lead">A VS Code / Cursor extension that takes typing <code>/model</code> out into a separate panel shaped like a car gear stick (H-pattern). Shift to switch models instantly while talking to Claude Code, with the real state synced from the transcript and one switch to mute or unmute task-done sounds.</p><div class="cs-chips"><span class="cs-chip">VS Code Extension API</span><span class="cs-chip">Webview</span><span class="cs-chip">Bun.serve</span><span class="cs-chip">tmux</span><span class="cs-chip">Shell hooks</span><span class="cs-chip">TTS</span><span class="cs-chip">Web Audio</span><span class="cs-chip">Vanilla JS</span></div>
+<article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>The problem</h2>
+      <p>Why is switching models back and forth while working with Claude Code more annoying than it should be?</p>
+    </section>
+    <figure class="shot"><img src="../../model-switcher-portfolio/img/ms-problem.jpg" width="1600" height="530" loading="lazy" alt="Claude Code in a terminal, where the user has to type /model and the flag name mid-conversation"><figcaption>Before Model Shift: switching models meant typing <code>/model</code> and remembering the flag name mid-conversation (terminal mockup)</figcaption></figure>
+
+
+    <div class="quote-block">
+      <p>Claude Code can switch models with <code>/model &lt;name&gt;</code>, but you have to type it and remember the flag name (<code>sonnet[1m]</code>, <code>fable</code>) every time. The list keeps growing (Haiku / Sonnet / Sonnet 1M / Opus / Fable), and I switch often to balance cost, quality and speed. Typing commands mid-conversation breaks the flow, and the state ("which model is active, how much context is left") is plain text with nothing visual.</p>
+      <div class="author">— The starting brief, before building Model Shift</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg>
+        <h3>Typing <code>/model</code> every time is slow, and you have to remember flags</h3>
+        <p>Flag names don't match the names you see (<code>sonnet[1m]</code>, <code>fable</code>) and change between Claude Code versions. Get one wrong and the switch fails, so you type it again.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>
+        <h3>More models means more switching</h3>
+        <p>Haiku / Sonnet / Sonnet 1M / Opus / Fable: light tasks get the cheap model, hard ones move up. Switching back and forth to balance cost and quality happens many times per session.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg>
+        <h3>I wanted to switch from a separate panel, not the input area</h3>
+        <p>Typing a command in the middle of a prompt breaks the flow. I wanted a control "outside" the TUI that switches with one click without leaving the conversation.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+        <h3>No visual state</h3>
+        <p>Which model is active? Is the context almost full? It's all text. I wanted a car-dashboard readout you understand at a glance.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>
+        <h3>Task-done sounds are hard to silence in meetings</h3>
+        <p>I set up sounds for when a task finishes, but they need to go quiet fast when a meeting starts. Editing config or restarting claude is too slow.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>The solution</h2>
+      <p>Turn the typed command into a gear stick: one shift = one model switch, with the state shown visually like a car dashboard</p>
+    </section>
+    <figure class="shot shot-narrow" style="--shot-max:480px"><img src="../../model-switcher-portfolio/img/ms-solution.jpg" width="1600" height="1260" loading="lazy" alt="The real Model Shift panel: 5H/7D quota bars, the current gear, a VU meter, a context gauge and the H-pattern gear stick"><figcaption>The real panel (rendered from the extension's webview): quota, current gear, context gauge and gear stick on one screen</figcaption></figure>
+
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3>An H-pattern gear stick in its own panel</h3>
+        <p>A panel in the activity bar shaped like a 6-position car gear stick. Drag the knob or click a label to switch models instantly without interrupting your prompt.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+        <h3>Send <code>/model</code> straight into the terminal</h3>
+        <p>Claude Code has no API for switching from outside, so the control sends <code>terminal.sendText("/model opus")</code> into the integrated terminal where claude is running (the web surface uses <code>tmux send-keys</code>)</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+        <h3>Show the state visually</h3>
+        <p>The current gear + a VU meter (model strength) + a fuel-style E&rarr;F context gauge: one glance tells you which model is active and whether the context is nearly full</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h3>Sync the real model from the transcript</h3>
+        <p>Polls the session <code>*.jsonl</code> file, reads the actual <code>message.model</code> and quietly moves the gear to match, so the UI stays in sync even if the user types <code>/model</code> manually</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
+        <h3>One switch to mute sounds</h3>
+        <p>The switch runs <code>touch</code>/<code>rm</code> on a <code>.tts-muted</code> flag file that the TTS hooks check. All sounds go quiet or come back at once, with no claude restart, in time for a meeting.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>How it works, in 4 steps</h2>
+      <p>From opening the panel to the model actually switching in the conversation</p>
+    </section>
+    <figure class="shot"><img src="../../model-switcher-portfolio/img/ms-how.jpg" width="1600" height="942" loading="lazy" alt="A VS Code window with the Model Shift panel in the sidebar and a terminal receiving the /model opus command sent by the panel"><figcaption>Shift into gear 4 → the panel sends <code>/model opus</code> to the integrated terminal where claude runs (real panel · the VS Code window and terminal are a mockup)</figcaption></figure>
+
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+        <h4>Open the panel</h4>
+        <p>Click the gear icon in the activity bar → the H-pattern gear stick panel appears in the sidebar</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+        <h4>Shift gear</h4>
+        <p>Drag the knob / click a label → <code>sendText("/model opus")</code> goes into the terminal, with a ka-chunk sound</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h4>Panel sync</h4>
+        <p>Polls the transcript every 5 seconds, reads the real model and tokens → moves the gear and updates the context gauge</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
+        <h4>Flip the sound switch</h4>
+        <p>touch/rm <code>.tts-muted</code> → task-done sounds mute or unmute instantly, no restart</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>Two surfaces on the same mechanism: zero npm dependencies, no data leaves the machine</p>
+    </section>
+    <figure class="shot shot-narrow" style="--shot-max:620px"><img src="../../model-switcher-portfolio/img/ms-web.jpg" width="1600" height="1120" loading="lazy" alt="The localhost web version of Model Shift using Bun.serve and tmux send-keys"><figcaption>Surface 2: a localhost web page (Bun.serve) for people who run claude in a plain terminal, controlled via <code>tmux send-keys</code></figcaption></figure>
+
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Claude Code user: shifts gear / flips the sound switch
+          <div class="arch-sub">
+            <span>Surface A: VS Code webview</span> <span>Surface B: Web panel</span> <span>H-pattern gear stick</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Extension core (extension.js + webview) — sendText / poll / fs
+          <div class="arch-sub">
+            <span>activeTerminal.sendText()</span>
+            <span>poll *.jsonl</span>
+            <span>GEARS[]</span>
+            <span>injection guard</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Claude Code terminal + TTS hooks (Stop &rarr; speak-done.sh)
+          <div class="arch-sub">
+            <span>/model &lt;name&gt;</span>
+            <span>tmux send-keys (B)</span>
+            <span>tts-lib.sh</span>
+            <span>gpt-4o-mini-tts / say</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          ~/.claude: transcript (read-only) + flag + cache
+          <div class="arch-sub">
+            <span>projects/*.jsonl</span>
+            <span>hooks/.tts-muted</span>
+            <span>.tts-cache/*.mp3</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Why this stack?</strong>
+      <p><strong>VS Code Extension API</strong> puts the control genuinely "outside" the TUI, and <code>sendText</code> sends <code>/model</code> into the integrated terminal without needing an API Claude Code doesn't have &middot; <strong>Bun.serve + tmux</strong> is a fallback surface for plain-terminal users &mdash; native, no express &middot; <strong>A flag file</strong> (<code>.tts-muted</code>) mutes every hook from one place without a restart &middot; <strong>Plain vanilla JS + zero npm dependencies</strong> &mdash; as a designer I can edit the UI in one file, with no build step</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>What I built: 8 core capabilities</h2>
+      <p>Everything from shifting gear and sending the command to the task-done sound</p>
+    </section>
+    <figure class="shot shot-narrow" style="--shot-max:560px"><img src="../../model-switcher-portfolio/img/ms-readout.jpg" width="1520" height="532" loading="lazy" alt="Panel header: 5-hour and 7-day quota bars, gear 2 Sonnet, a VU meter and a context gauge at 63%"><figcaption>A car-dashboard readout: 5H/7D quota bars, a VU meter for model strength and an E→F context gauge</figcaption></figure>
+
+
+    <div class="module-grid">
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3>H-Pattern Gear Shifter</h3>
+        <p>A 6-position gear stick (1–5 + R). Drag the knob and it snaps to the nearest gear, or click a label directly. It feels like shifting a real car.</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+        <h3>Model Switcher</h3>
+        <p>Sends <code>sendText("/model &lt;name&gt;")</code> into the integrated terminal (surface B uses <code>tmux send-keys</code>), so you switch models without typing</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h3>Real-Model Sync</h3>
+        <p>Polls <code>*.jsonl</code> every 5 seconds, reads the real <code>message.model</code> → quietly moves the gear to match, so the UI never drifts out of sync</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"/><path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"/><path d="M2 21h13"/><path d="M3 9h11"/></svg>
+        <h3>Context Gauge</h3>
+        <p>A fuel gauge E&rarr;F calculated from <code>input + cache_read + cache_creation</code> of the latest message against a 200K window</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        <h3>VU Meter</h3>
+        <p>The bars show how "strong" the model is, based on an rpm value mapped to each gear, so you can tell whether you're on a light or heavy model</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/></svg>
+        <h3>Ka-chunk Sound</h3>
+        <p>The click when you change gear is generated live with Web Audio (<code>clack()</code>). No audio files, just the feel of a gear stick.</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg>
+        <h3>17 task-done voice personas</h3>
+        <p>A Stop hook picks 1 of 17 personas at random each time a task finishes (news anchor / robot / butler, and so on) via TTS, with a <code>say</code> fallback</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
+        <h3>Mute Switch</h3>
+        <p>A switch in the panel runs touch/rm on the <code>.tts-muted</code> file the hooks check, muting or unmuting every sound instantly without restarting claude</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Gear Panel Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>The panel</h2>
+      <p>Click the gear icon in the activity bar → see the current gear, context gauge and sound switch on one screen</p>
+    </section>
+    <figure class="shot shot-narrow" style="--shot-max:640px"><img src="../../model-switcher-portfolio/img/ms-pair.jpg" width="1600" height="1084" loading="lazy" alt="Two panel states side by side: gear 1 Haiku with low context, and gear 4 Opus at 86% context with a red gauge and sound muted"><figcaption>Two real states: left, Haiku on a light task · right, Opus with the context nearly full, the gauge red and the sound switch muted</figcaption></figure>
+
+
+    <div class="gear-panel">
+      <div class="gp-head"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> Model Shift</div>
+      <div class="gp-readout">
+        <div class="gp-gauge">
+          <svg viewBox="0 0 92 52">
+            <path d="M8 48 A38 38 0 0 1 84 48" fill="none" stroke="#3b2a42" stroke-width="5" stroke-linecap="round"/>
+            <path d="M8 48 A38 38 0 0 1 58 15" fill="none" stroke="#a21caf" stroke-width="5" stroke-linecap="round"/>
+            <g transform="rotate(28 46 48)"><rect x="45" y="16" width="2" height="34" rx="1" fill="#fbbf24"/></g>
+            <circle cx="46" cy="48" r="3" fill="#f5d0fe"/>
+          </svg>
+          <div class="cap">CONTEXT &middot; TOKENS &times;1000</div>
+        </div>
+        <div>
+          <div class="gp-cmd">/model opus</div>
+          <div class="gp-name-row"><span class="gp-num">4</span><span class="gp-name">OPUS</span></div>
+        </div>
+      </div>
+      <div class="gp-gate">
+        <div class="gp-cell"><span class="g">1</span><span class="m">HAIKU</span></div>
+        <div class="gp-cell"><span class="g">3</span><span class="m">SONNET 1M</span></div>
+        <div class="gp-cell"><span class="g">5</span><span class="m">FABLE</span></div>
+        <div class="gp-cell"><span class="g">2</span><span class="m">SONNET</span></div>
+        <div class="gp-cell active"><span class="g">4</span><span class="m">OPUS</span></div>
+        <div class="gp-cell"><span class="g">R</span><span class="m">DEFAULT</span></div>
+      </div>
+      <div class="gp-mute">
+        <span class="lab"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg> Task-done sounds</span> <span class="gp-sw"><span class="on">ON</span><span class="knob"></span></span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hacking the problems</h2>
+      <p>6 problems I had to solve myself: tooling limits and building commands safely</p>
+    </section>
+    <figure class="shot"><img src="../../model-switcher-portfolio/img/ms-code.jpg" width="1600" height="686" loading="lazy" alt="Two real code snippets: the regex that blocks injection before sendText, and the line in tts-lib.sh that checks the .tts-muted file"><figcaption>Real code from extension.js and tts-lib.sh: whitelisting model names before sending them to the terminal, and muting everything with a single flag file</figcaption></figure>
+
+
+    <div class="hack-grid">
+      <div class="hack-card arch" data-label="No API">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg><span>Claude Code has no API for switching models from outside</span></h3>
+        <p>I wanted a button to switch models, but there is no endpoint or SDK to call. How do you control it from a separate panel?</p>
+        <div class="highlight">Fix: the control lives "outside" the TUI and sends <code>/model &lt;name&gt; + Enter</code> into the terminal where claude runs. The main surface uses VS Code's <code>activeTerminal.sendText()</code> (no tmux needed); the fallback surface uses <code>tmux send-keys</code> for plain-terminal users.</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Injection">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span>Sending model names into a shell/terminal risks injection</span></h3>
+        <p>Values concatenated into a <code>send-keys</code> / <code>sendText</code> command could smuggle in other commands if they aren't checked first.</p>
+        <div class="highlight">Fix: whitelist with the regex <code>^[\w\[\]-]+$</code> before every send (on both surfaces), allowing only a–z 0–9 <code>[</code> <code>]</code> <code>-</code>. The web side also uses <code>Bun.$</code> interpolation, which escapes automatically and passes the value as a single arg.</div>
+      </div>
+
+      <div class="hack-card platform" data-label="One-way Sync">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>The UI was one-way and didn't know the real model</span></h3>
+        <p>It could set the model, but if the user typed <code>/model</code> in the conversation, the gear on the panel fell out of sync with reality.</p>
+        <div class="highlight">Fix: every 5 seconds, poll the last 128KB of the most recently modified <code>*.jsonl</code>, read <code>message.model</code> → quietly move the gear (no repeat <code>/model</code>, no sound). After a manual shift, sync pauses for 30 seconds so a not-yet-updated transcript doesn't pull the gear back.</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Feel">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg><span>The gear stick had to feel real</span></h3>
+        <p>A plain button would be no different from the built-in <code>/model</code> picker. It needed the "feel" of shifting gears.</p>
+        <div class="highlight">Fix: drag the knob with the mouse and it snaps to the nearest gear by distance (<code>(g.x-px)&sup2;+(g.y-py)&sup2;</code>), with a ka-chunk sound generated live by Web Audio on each shift. The visual layer sits on top of the existing logic without touching the command mechanism.</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Mute">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg><span>Sound had to be quick to mute, without a restart</span></h3>
+        <p>Task-done sounds come from several hooks that run separately. How do you silence all of them quickly for a meeting?</p>
+        <div class="highlight">Fix: every hook sources a shared <code>tts-lib.sh</code>, with a guard <code>[ -f ~/.claude/hooks/.tts-muted ] &amp;&amp; return 0</code> at the top of the speak function. The switch only touches/removes the flag file, so everything mutes or unmutes at once without restarting claude.</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Cost / Cache">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg><span>Calling the TTS API every time was expensive and slow</span></h3>
+        <p>Generating new audio each time a task finishes costs money, needs a connection and adds delay, and each persona played at a different volume.</p>
+        <div class="highlight">Fix: a per-persona cache keyed by <code>md5(voice+instructions+text)</code>. If the file exists, it just runs <code>afplay</code> (0 API calls, $0); if not, it generates once and saves. Every clip is normalized with <code>ffmpeg loudnorm</code> to <strong>-16 LUFS</strong> so they play at the same volume (without ffmpeg it skips this step and still works).</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Deliberate design decisions</h2>
+      <p>What I chose not to build matters as much as what I built</p>
+    </section>
+    <figure class="shot"><img src="../../model-switcher-portfolio/img/ms-gear-unsplash.jpg" width="1400" height="933" loading="lazy" alt="A 5-speed H-pattern car gear knob with reverse"><figcaption>UI inspiration: the H-pattern gear stick, which everyone knows how to use without a manual · Photo: Alok Sharma / Unsplash</figcaption></figure>
+
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>This tool does one job: switch models faster and show the state visually. It doesn't replace Claude Code's built-in <code>/model</code> picker (its value is "faster, visual, no flags to remember"), the sync only reads from the transcript and never writes back, and no data leaves the machine. A clear scope from the start meant a direct implementation that's easy to maintain.</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg></strong><br>
+        <strong>Sends the command, doesn't replace the picker</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Its value is speed and visibility, not filling a missing feature</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></strong><br>
+        <strong>Read-only sync</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Reads the transcript for display, never writes back or touches the session</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg></strong><br>
+        <strong>Mute = one flag file</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Controls every hook with a single file, no restart needed</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg></strong><br>
+        <strong>Zero npm dependency</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Vanilla JS + Bun: edit the UI in one file, no build step</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge domains that got stronger</h2>
+      <p>5 areas where my skills actually moved up through this project</p>
+    </section>
+    <figure class="shot"><img src="../../model-switcher-portfolio/img/ms-jsonl.jpg" width="1600" height="542" loading="lazy" alt="Sample structure of an assistant line in a Claude Code transcript jsonl file: model and usage tokens"><figcaption>What I had to learn to read: <code>message.model</code> and token usage in the <code>*.jsonl</code> transcript (sample values)</figcaption></figure>
+
+
+    <div class="learning-card">
+      <strong>1. VS Code extension development: from "using extensions" to "writing one":</strong>
+      <p>I learned activity bar view containers and webview providers, messaging between the extension host and the webview, using <code>vscode.window.activeTerminal.sendText()</code> to send commands to the terminal, reading and writing files with <code>fs</code>, and packaging a <code>.vsix</code> to install permanently in Cursor. From zero to a complete, working extension. Lesson: a webview is just HTML/JS, but you have to think the host↔view boundary through.</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Terminal automation without an API: sending commands across boundaries:</strong>
+      <p>I learned that when a tool has no API for outside control, you can still integrate by "typing" commands into the terminal. <code>sendText</code> (VS Code) and <code>tmux send-keys</code> are two patterns of the same idea. Lesson: automation doesn't always have to wait for an official API, but you have to accept that it's one-way and design a separate sync.</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. Claude Code internals: reading every field of the transcript:</strong>
+      <p>I learned the structure of session <code>*.jsonl</code> files: <code>message.model</code> gives the actual model, token usage is split into <code>input / cache_read / cache_creation</code>, and the Stop hook fires when a task finishes. I used these for both the gear sync and the context gauge. Lesson: Claude Code's state can be read from files, if you know where to look.</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Shell / audio pipeline: building a sound system with controlled cost:</strong>
+      <p>I wrote bash hooks that source a shared library, connected OpenAI TTS (<code>gpt-4o-mini-tts</code>) with an offline fallback (<code>say</code>), cached by <code>md5</code> hash to avoid repeat API calls, and normalized loudness with <code>ffmpeg loudnorm</code> → -16 LUFS. Lesson: caching plus a fallback lets a feature that depends on an external API degrade gracefully and cheaply.</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Injection-safe command building: untrusted input must be sanitized:</strong>
+      <p>I practiced whitelisting with regex before using values to build shell/terminal commands, and used <code>Bun.$</code>, which escapes automatically, instead of concatenating strings. Lesson: every place input flows into a command is a place to think about injection, and the right validate + escape pattern prevents it.</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">2</div>
+        <div class="label">surface — VS Code extension + Web/tmux</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">6</div>
+        <div class="label">Models on the gear stick (1–5 + R)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">17</div>
+        <div class="label">Task-done voice personas (random)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">npm dependency</div>
+      </div>
+    </div>
+
+  </article>
+</div><section class="ap-author" aria-label="Author"><img class="ap-author-avatar" src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/688f5899cad39483c4e11c49_Profile_Webflow.webp" alt="" width="88" height="88" loading="lazy"><div class="ap-author-body"><p class="ap-author-name">Tan · Natpakan Sirirat</p><p class="ap-author-bio">Product Designer &amp; AI Builder — designing user experiences and building AI tools that actually work.</p><ul class="ap-author-links"><li><a href="https://www.linkedin.com/in/natpakan/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a></li><li><a href="https://www.facebook.com/tan.natpakan" target="_blank" rel="noopener" aria-label="Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a></li><li><a href="https://www.instagram.com/npkant/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a></li></ul></div></section><nav class="ap-pn" aria-label="Previous and next project"><a href="../ugc-extension-portfolio/" class="ap-pn-item ap-pn-prev"><span class="ap-pn-label">← Previous project</span><span class="ap-pn-title">UGC Video-Prompt Studio</span></a><a href="../ugc-studio-portfolio/" class="ap-pn-item ap-pn-next"><span class="ap-pn-label">Next project →</span><span class="ap-pn-title">UGC Studio</span></a></nav></div></div></div>
+<aside class="ap-side"><div class="ap-side-inner"><section class="ap-widget"><h2 class="ap-widget-title"><span>Latest projects</span></h2><ol class="ap-rank"><li><a href="../content-engine-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/content-engine-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">1</span></span><span class="ap-rank-title"><span class="ap-rank-t">Auto-publishing content engine</span></span></a></li><li><a href="../tans-tools-devpanel-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tans-tools-devpanel-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">2</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan’s Tools · DEV panel</span></span></a></li><li><a href="../android-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/android-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">3</span></span><span class="ap-rank-title"><span class="ap-rank-t">TX98 TV Box</span></span></a></li><li><a href="../tools-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tools-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">4</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan&#x27;s Tools</span></span></a></li><li><a href="../shotdeck-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/shotdeck-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">5</span></span><span class="ap-rank-title"><span class="ap-rank-t">shotdeck-box: a laptop that posts clips</span></span></a></li></ol></section></div></aside>
+</div><div class="ap-progress" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" class="ap-progress-track"/><circle cx="32" cy="32" r="28" class="ap-progress-bar" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg><span>0%</span></div></article><footer class="footer"><div class="container-default w-container"><div class="divider"></div></div><div class="container-footer"><div class="footer-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-logo-container w-inline-block"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" loading="lazy" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><ul role="list" class="footer-navigation"><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-nav-link">Home</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="footer-nav-link">About</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a></li><li class="footer-nav-item-wrapper"><a href="https://projects.tanplanet.work/en/" class="footer-nav-link">Portfolio</a></li><li class="footer-nav-item-wrapper last"><a href="https://projects.tanplanet.work/preset/" class="footer-nav-link footer-nav-design">Design</a></li></ul><a data-w-id="2afa9a01-05cf-ade4-4d79-909445ba12f2" href="https://myfolio.tanplanet.work/contact" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Contact Me</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="divider"></div><div class="small-print">© 2026 Natpakan Sirirat · All rights reserved.</div></div></footer></div><script src="https://myfolio.tanplanet.work/_ext/d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8__site%3D608d62778637273e1880cb8d.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.1a807f015b216e46.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.8870a749f76b548c.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.9641f8cc.4fd3e4280b7acaf7.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/header-autohide.js" defer></script><script src="https://myfolio.tanplanet.work/blog/article.js" defer></script><div class="cs cs-extras">
+
+  <!-- ===== Closing ===== -->
+  
+
+  <!-- ===== Fixed UI ===== -->
+  
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  
+
+
+</div><script>try{
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  }catch(e){}</script><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "ModelSwitcher Portfolio",
+      "item": "https://projects.tanplanet.work/model-switcher-portfolio/"
+    }
+  ]
+}
+</script></body></html>

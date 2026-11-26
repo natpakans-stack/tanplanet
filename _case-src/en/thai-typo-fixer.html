@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=64&height=64">
+    <link rel="apple-touch-icon" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=180&height=180">
+    <title>Thai Typo Fixer — fixing text typed in the wrong keyboard layout | Portfolio</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Thai Typo Fixer — fixing text typed in the wrong keyboard layout">
+  <meta name="twitter:description" content="A tool that converts text typed in the wrong layout. Forgot to switch TH↔EN? Fix it instantly, with Auto Detect">
+  <meta property="og:url" content="https://projects.tanplanet.work/thai-typo-fixer/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.work/thai-typo-fixer/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="A tool that converts text typed in the wrong layout. Forgot to switch TH↔EN? Fix it instantly, with Auto Detect">
+  <meta property="og:title" content="Thai Typo Fixer — fixing text typed in the wrong keyboard layout">
+  <meta name="description" content="A tool that converts text typed in the wrong layout. Forgot to switch TH↔EN? Fix it instantly, with Auto Detect">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap"></noscript>
+    <style>
+        :root {
+            --bg: #f8f9fb;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #475569;
+            --accent: #7c3aed;
+            --accent-dark: #5b21b6;
+            --accent-light: #f5f3ff;
+            --green: #10b981;
+            --green-light: #e8faf0;
+            --orange: #f59e0b;
+            --orange-light: #fffbeb;
+            --red: #dc2626;
+            --red-light: #fee2e2;
+            --blue: #3b82f6;
+            --blue-light: #eff6ff;
+            --border: #e2e8f0;
+            --code-bg: #1e1e2e;
+            --code-text: #cdd6f4;
+            --tag-bg: #f1f5f9;
+            --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --max-w: 780px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, #5b21b6 0%, #7c3aed 50%, #a78bfa 100%);
+            color: #ffffff;
+            padding: 80px 24px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.06) 0%, transparent 50%);
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #7c3aed, #3b82f6, #10b981, #f59e0b);
+        }
+        .hero-inner {
+            position: relative;
+            max-width: var(--max-w);
+            margin: 0 auto;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 2.6rem);
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 16px;
+        }
+        .hero h1 .emoji { font-size: clamp(2rem, 5.5vw, 3rem); }
+        .hero p {
+            font-size: 1.05rem;
+            opacity: 0.9;
+            max-width: 580px;
+            margin: 0 auto 24px;
+        }
+        .hero-tags {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .hero-tags span {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(6px);
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* ===== ARTICLE ===== */
+        article {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+        .section-intro { margin-bottom: 24px; }
+        .section-intro h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .section-intro p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        hr.divider {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 48px 0;
+        }
+
+        /* ===== DESIGN THINKING CARDS ===== */
+        .dt-step {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        .dt-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 2px 14px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .dt-step h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            margin-top: 8px;
+        }
+        .dt-step p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+        .dt-step .highlight {
+            background: var(--accent-light);
+            border-left: 3px solid var(--accent);
+            padding: 12px 16px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--accent-dark);
+            font-weight: 500;
+        }
+
+        /* ===== TYPO DEMO ===== */
+        .typo-demo {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px 24px;
+            margin: 24px 0;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+        .typo-demo .demo-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+        .typo-input {
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--red);
+            background: var(--red-light);
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            display: inline-block;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+        .typo-arrow {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+            display: block;
+        }
+        .typo-output {
+            font-size: clamp(1.4rem, 4vw, 2.2rem);
+            font-weight: 700;
+            color: var(--green);
+            background: var(--green-light);
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            display: inline-block;
+        }
+        .typo-shortcut {
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px; flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .typo-shortcut kbd {
+            background: var(--tag-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 3px 10px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.82rem;
+            font-weight: 600;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+        }
+
+        /* ===== ARCHITECTURE DIAGRAM ===== */
+        .arch-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 24px 0;
+        }
+        .arch-node {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .arch-node .node-icon {
+            font-size: 1.6rem;
+            margin-bottom: 6px;
+        }
+        .arch-node .node-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+        .arch-node .node-desc {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+        .arch-node.highlight-node {
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+        .arch-arrow {
+            text-align: center;
+            padding: 4px 0;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+        @media (min-width: 600px) {
+            .arch-flow.horizontal {
+                display: grid;
+                grid-template-columns: 1fr auto 1fr auto 1fr;
+                align-items: center;
+                gap: 0;
+            }
+            .arch-flow.horizontal .arch-arrow { padding: 0 4px; }
+        }
+
+        /* ===== KEYBOARD MAP ===== */
+        .keyboard-map {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin: 24px 0;
+            box-shadow: var(--shadow);
+        }
+        .keyboard-map h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .key-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        .key-pair {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .key-en, .key-th {
+            width: 48px;
+            height: 44px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .key-en {
+            background: var(--red-light);
+            color: var(--red);
+            border: 1px solid #fca5a5;
+        }
+        .key-th {
+            background: var(--green-light);
+            color: var(--green);
+            border: 1px solid #6ee7b7;
+        }
+        .key-arrow {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== LEARNING ALGO VISUAL ===== */
+        .learning-visual {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin: 24px 0;
+            box-shadow: var(--shadow);
+        }
+        .learning-visual h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .learn-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 8px;
+            font-size: 0.88rem;
+        }
+        .learn-step .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .learn-step .step-text {
+            color: var(--text-secondary);
+        }
+        .learn-step .step-text strong {
+            color: var(--text);
+        }
+        .learn-step.active {
+            background: var(--accent-light);
+            border: 1px solid #c4b5fd;
+        }
+        .count-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            padding: 16px;
+            background: var(--tag-bg);
+            border-radius: var(--radius-sm);
+        }
+        .count-bar .bar-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            min-width: 80px;
+        }
+        .count-bar .bar-track {
+            flex: 1;
+            height: 24px;
+            background: #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        .count-bar .bar-fill {
+            height: 100%;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: white;
+            transition: width 0.6s ease;
+        }
+        .count-bar .bar-fill.low { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+        .count-bar .bar-fill.ready { background: linear-gradient(90deg, #10b981, #059669); }
+        .count-bar .bar-threshold {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        /* ===== FEATURE CARDS ===== */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        .feature-card .feat-icon { font-size: 2.4rem; margin-bottom: 10px; }
+        .feature-card .feat-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+        .feature-card .feat-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .feature-card.phase1 { border-top: 3px solid var(--accent); }
+        .feature-card.phase2 { border-top: 3px solid var(--blue); }
+        .feature-card.phase3 { border-top: 3px solid var(--orange); }
+
+        /* ===== APP LIST ===== */
+        .app-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 24px 0;
+        }
+        .app-chip {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            box-shadow: var(--shadow);
+        }
+
+        /* ===== CODE BLOCK ===== */
+        .code-block {
+            position: relative;
+            background: var(--code-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: var(--shadow-md);
+        }
+        .code-header {
+            background: #313244;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .code-header .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .code-header .dot.r { background: #f38ba8; }
+        .code-header .dot.y { background: #f9e2af; }
+        .code-header .dot.g { background: #a6e3a1; }
+        .code-header .filename {
+            color: #bac2de;
+            font-size: 0.8rem;
+            margin-left: auto;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+        }
+        .code-body {
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+            font-size: 0.82rem;
+            white-space: pre;
+            line-height: 1.7;
+            color: var(--code-text);
+        }
+        .code-body .kw { color: #cba6f7; }
+        .code-body .str { color: #a6e3a1; }
+        .code-body .num { color: #fab387; }
+        .code-body .cm { color: #6c7086; }
+        .code-body .fn { color: #89b4fa; }
+        .code-body .op { color: #89dceb; }
+
+        /* ===== METRICS ===== */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .metric-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        .metric-card .num {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .metric-card .num.green { color: var(--green); }
+        .metric-card .num.orange { color: var(--orange); }
+        .metric-card .num.blue { color: var(--blue); }
+        .metric-card .label {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* ===== ROADMAP ===== */
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+            margin: 24px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--surface);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+        .timeline-item.future::before {
+            background: var(--border);
+            box-shadow: 0 0 0 2px var(--border);
+        }
+        .timeline-item .tl-date {
+            font-size: 0.78rem;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .timeline-item.future .tl-date {
+            color: var(--text-secondary);
+        }
+        .timeline-item .tl-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .timeline-item .tl-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ===== LEARNING CARDS ===== */
+        .learning-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        .learning-card strong {
+            color: var(--text);
+        }
+
+        /* ===== CLOSING ===== */
+
+        /* ===== BACK NAV ===== */
+        .back-nav {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 1000;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: rgba(91,33,182,0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .back-nav:hover { background: rgba(91,33,182,0.95); transform: translateY(-1px); }
+        .back-nav svg { flex-shrink: 0; }
+
+        /* ===== BACK TO TOP ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1000;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+        }
+        .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-to-top:hover { background: var(--accent-dark); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .hero { padding: 60px 20px 48px; }
+            article { padding: 32px 16px; }
+            .dt-step { padding: 24px 18px; }
+            .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+            .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+            .key-en, .key-th { width: 40px; height: 38px; font-size: 0.88rem; }
+        }
+    
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+  .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.5}.shot-pair .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;max-width:var(--shot-max,100%);margin:0 auto}@media (max-width:640px){.shot-pair .pair{grid-template-columns:1fr}}.shot-narrow img{max-width:min(100%,var(--shot-max,520px));margin:0 auto}
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/thai-typo-fixer/">
+</head>
+<body>
+
+<header class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge">Concept / macOS Utility</div>
+        <h1>Thai Typo Fixer<br><span class="accent">For when you forget to switch the keyboard language</span></h1>
+        <p>A fix for something Thai users run into every day: forgetting to switch the input language and typing a whole sentence in the wrong layout. One shortcut converts it back to Thai.</p>
+        <div class="hero-tags">
+            <span class="hero-tag">Python</span>
+            <span class="hero-tag">Swift</span>
+            <span class="hero-tag">macOS Accessibility API</span>
+            <span class="hero-tag">pynput</span>
+            <span class="hero-tag">Kedmanee Layout</span>
+            <span class="hero-tag">Self-Learning</span>
+        </div>
+    </div>
+</header>
+
+<article>
+
+    <!-- ===== LIVE DEMO ===== -->
+    <section class="section-intro">
+        <h2>First — see what happens</h2>
+        <p>Everyone has done this...</p>
+    </section>
+    <figure class="shot shot-pair"><img src="img/tt-before.jpg" width="1600" height="890" loading="lazy" alt="A chat window with the text l;ylfu8iy[ selected in the input box, and a hint to press Control Shift T"><img src="img/tt-after.jpg" width="1600" height="890" loading="lazy" alt="After conversion the input box reads สวัสดีครับ (&quot;hello&quot;), with a note that the pair was remembered, 1 of 3 times"><figcaption>Concept images — left: forgot to switch layouts, select the text and press the shortcut · right: Thai text right away (converted with the real Kedmanee mapping)</figcaption></figure>
+
+
+    <div class="typo-demo">
+        <div class="demo-label">Meant to type "สวัสดีครับ" ("hello") but forgot to switch the layout</div>
+        <div class="typo-input">l;ylfu8iy[</div>
+        <span class="typo-arrow">&#11015;</span>
+        <div class="typo-output">สวัสดีครับ</div>
+        <div class="typo-shortcut">
+            Press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>T</kbd> to convert instantly
+        </div>
+    </div>
+
+    <div class="typo-demo">
+        <div class="demo-label">Or "ทดสอบ" ("test")</div>
+        <div class="typo-input">mflv[</div>
+        <span class="typo-arrow">&#11015;</span>
+        <div class="typo-output">ทดสอบ</div>
+        <div class="typo-shortcut">
+            Works in any app — <kbd>Browser</kbd> <kbd>Slack</kbd> <kbd>LINE</kbd> <kbd>VS Code</kbd>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== DESIGN THINKING ===== -->
+    <section class="section-intro">
+        <h2>Design Thinking Process</h2>
+        <p>From a small daily annoyance to a tool idea for every Thai user</p>
+    </section>
+    <figure class="shot"><img src="img/tt-dt-unsplash.jpg" width="1200" height="750" loading="lazy" alt="Hands typing on a keyboard in front of a computer screen"><figcaption>The mistake happens in the fingers, not the head — the fingers hit the right keys, just in the wrong language · Photo: Ilya Pavlov / Unsplash</figcaption></figure>
+
+
+    <div class="hack-grid"><div class="hack-card">
+        <h3><span>Empathize · Everyone has been there — half a sentence in before realizing the layout is wrong</span></h3>
+        <p>Thai users type two languages on the same keyboard and switch dozens of times a day. Sometimes 10-20 characters go by before you notice you're still in English mode, and then you have to delete everything and retype it. It wastes time and it's very frustrating.</p>
+        <div class="highlight"><strong>Pain point:</strong> every time you forget to switch, it's delete → switch layout → retype everything = lost time + lost patience</div></div><div class="hack-card">
+        <h3><span>Define · "Why delete and retype when my fingers already hit the right keys?"</span></h3>
+        <p>The characters that come out <strong>match the Kedmanee keyboard positions one for one</strong>. For example, the <code>l</code> key sits in the same spot as <code>ส</code>. So just "converting" the text back gives the intended Thai, with no retyping.</p>
+        <div class="highlight"><strong>HMW:</strong> How might we convert text typed in the wrong layout back to what the user meant to type, with a single key press?</div></div><div class="hack-card">
+        <h3><span>Ideate · Mapping Table + Self-Learning Dictionary</span></h3>
+        <p>The core idea has two parts:</p>
+        <p>
+            &#8226; <strong>Keyboard Mapping</strong> — a 1:1 lookup table from EN key → TH character (Kedmanee layout)<br> &#8226; <strong>Learning Engine</strong> — remembers pairs it has converted and gets better with use. Once a pair has been converted &#8805;3 times, it auto-replaces without the shortcut
+        </p>
+        <div class="highlight"><strong>Key idea:</strong> a system that "gets smarter the more you use it" — it learns from real behavior, with nothing to configure</div></div><div class="hack-card">
+        <h3><span>Prototype · Lean prototype — Python first, Swift later</span></h3>
+        <p>I started with a Python prototype because it's fast to build:</p>
+        <p>
+            &#8226; <strong>pynput</strong> — catches the hotkey (Ctrl+Shift+T) system-wide<br> &#8226; <strong>pyperclip</strong> — captures text through the clipboard (select → copy → convert → paste)<br> &#8226; <strong>JSON file</strong> — a simple dictionary stored in ~/Library/Application Support/ThaiTypoFix/
+        </p>
+        <div class="highlight"><strong>Strategy:</strong> get the Python prototype working for real first, then port it to a Swift menu bar app for production</div></div><div class="hack-card">
+        <h3><span>Test · Using it myself every day — the best dogfooding</span></h3>
+        <p>Tested by using it in real work — chat, writing code, answering email — to check whether it captures text correctly in every app, whether the dictionary learns fast enough, and whether the shortcut clashes with other apps</p>
+        <div class="highlight"><strong>Validation:</strong> if I use it every day and feel I "can't do without it" = pass</div></div></div>
+
+    <hr class="divider">
+
+    <!-- ===== KEYBOARD MAPPING ===== -->
+    <section class="section-intro">
+        <h2>Keyboard mapping — the heart of the system</h2>
+        <p>EN key → TH character on the Kedmanee layout (1:1 mapping)</p>
+    </section>
+    <figure class="shot"><img src="img/tt-keyboard.jpg" width="1600" height="552" loading="lazy" alt="A keyboard diagram where each key shows its English and Kedmanee Thai character, highlighting the keys used to type สวัสดีครับ with the press order"><figcaption>The 1:1 Kedmanee layout — purple keys are the ones pressed to type "สวัสดีครับ"; the numbers are the press order</figcaption></figure>
+
+
+    <div class="keyboard-map">
+        <h4><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg> Example: l;ylfu8iy[ → สวัสดีครับ</h4>
+        <div class="key-grid">
+            <div class="key-pair">
+                <div class="key-en">l</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ส</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">;</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ว</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">y</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ั</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">l</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ส</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">f</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ด</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">u</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ี</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">8</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ค</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">i</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ร</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">y</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">ั</div>
+            </div>
+            <div class="key-pair">
+                <div class="key-en">[</div>
+                <div class="key-arrow">&#8595;</div>
+                <div class="key-th">บ</div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== SYSTEM ARCHITECTURE ===== -->
+    <section class="section-intro">
+        <h2>System Architecture</h2>
+        <p>Data flow from the shortcut press to the Thai text</p>
+    </section>
+    <figure class="shot"><img src="img/tt-menubar.jpg" width="1520" height="760" loading="lazy" alt="The macOS menu bar with the Thai Typo Fixer menu open: convert selected text, 24 remembered words, and Auto-replace"><figcaption>Concept image of the Swift menu bar app — every step in the diagram below runs behind this small icon</figcaption></figure>
+
+
+    <div class="flow-grid"><div class="flow-step"><div class="step-num">01</div><h4>Shortcut Listener</h4><p>Catch Ctrl+Shift+T system-wide</p></div><div class="flow-step"><div class="step-num">02</div><h4>Text Capture</h4><p>Copy the selected text through the clipboard</p></div><div class="flow-step"><div class="step-num">03</div><h4>Mapping Engine</h4><p>Check the dictionary first → if not found, use the Kedmanee mapping</p></div><div class="flow-step"><div class="step-num">04</div><h4>Text Replace</h4><p>Paste the Thai text in its place</p></div><div class="flow-step"><div class="step-num">05</div><h4>Learning Engine</h4><p>Save the EN→TH pair to dictionary.json</p></div></div>
+
+    <hr class="divider">
+
+    <!-- ===== LEARNING ALGORITHM ===== -->
+    <section class="section-intro">
+        <h2>Self-Learning Dictionary</h2>
+        <p>A system that improves with use — learning from real user behavior</p>
+    </section>
+    <figure class="shot"><img src="img/tt-learned.jpg" width="1600" height="628" loading="lazy" alt="A table of remembered words showing English and Thai pairs, a count bar, and auto or manual status"><figcaption>Concept image — words converted 3 times switch to auto-replace (pairs converted with the real mapping)</figcaption></figure>
+
+
+    <p><b>How it learns</b></p><div class="flow-grid"><div class="flow-step"><div class="step-num">01</div><p>The user types <strong>mflv[</strong> and presses the convert shortcut</p></div><div class="flow-step"><div class="step-num">02</div><p>The system converts it to <strong>ทดสอบ</strong> ("test") → saves the pair to the dictionary (count = 1)</p></div><div class="flow-step"><div class="step-num">03</div><p>Used again → <strong>count += 1</strong>, more confidence</p></div><div class="flow-step"><div class="step-num">04</div><p>Once <strong>count &#8805; 3</strong> → auto-replace, no shortcut needed</p></div></div>
+<div class="ledger-wrap"><table class="ledger"><thead><tr><th>Times used</th><th>Confidence</th><th>Mode</th></tr></thead><tbody><tr><td>count = 1</td><td>1/3</td><td>Manual</td></tr><tr><td>count = 2</td><td>2/3</td><td>Manual</td></tr><tr data-picked><td>count = 3</td><td>3/3 &#10003;</td><td>Auto!</td></tr></tbody></table></div>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span class="dot r"></span>
+            <span class="dot y"></span>
+            <span class="dot g"></span>
+            <span class="filename">dictionary.json</span>
+        </div>
+        <div class="code-body">
+{ <span class="str">"mflv["</span>: { <span class="fn">"value"</span>: <span class="str">"ทดสอบ"</span>, <span class="fn">"count"</span>: <span class="num">5</span> }, <span class="str">"l;ylfu8iy["</span>: { <span class="fn">"value"</span>: <span class="str">"สวัสดีครับ"</span>, <span class="fn">"count"</span>: <span class="num">12</span> } }
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== WORKS EVERYWHERE ===== -->
+    <section class="section-intro">
+        <h2>Works anywhere on macOS</h2>
+        <p>Runs system-wide — press the shortcut in any app to convert</p>
+    </section>
+    <figure class="shot"><img src="img/tt-apps-unsplash.jpg" width="1200" height="750" loading="lazy" alt="A person working on a MacBook at a desk"><figcaption>Works at the system level, not tied to any app · Photo: Glenn Carstens-Peters / Unsplash</figcaption></figure>
+
+
+    <div class="chips">
+        <span class="chip">Safari / Chrome</span>
+        <span class="chip">Slack</span>
+        <span class="chip">LINE</span>
+        <span class="chip">Notion</span>
+        <span class="chip">VS Code</span>
+        <span class="chip">Terminal</span>
+        <span class="chip">Word / Pages</span>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== ROADMAP ===== -->
+    <section class="section-intro">
+        <h2>Roadmap</h2>
+        <p>A 3-phase roadmap — from simple conversion to context-aware AI</p>
+    </section>
+    <figure class="shot"><img src="img/tt-suggest.jpg" width="1600" height="544" loading="lazy" alt="A suggestion box above the text mflv[ saying it looks like the wrong layout, convert to ทดสอบ, with a convert button"><figcaption>Phase 2 concept — the system guesses the layout is wrong and offers a conversion you accept with Tab</figcaption></figure>
+
+
+    <div class="pain-grid"><div class="pain-card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg><h3>Phase 1 — Core</h3><p>Keyboard mapping + Shortcut trigger + Dictionary learning</p></div><div class="pain-card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/></svg><h3>Phase 2 — Smart</h3><p>Auto-detection + Pattern learning + Thai spell check</p></div><div class="pain-card"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/></svg><h3>Phase 3 — AI</h3><p>AI typo prediction + Context-aware correction</p></div></div>
+
+    <div class="flow-grid"><div class="flow-step"><div class="step-num">01</div><h4>Phase 1 — MVP: Keyboard Layout Conversion</h4><p>Kedmanee mapping table + hotkey trigger + clipboard-based text capture + a JSON dictionary that learns from use</p></div><div class="flow-step"><div class="step-num">02</div><h4>Phase 2 — Smart Detection: knows on its own when the layout is wrong</h4><p>Analyzes the pattern of typed text — if it finds EN characters that aren't English words, it suggests converting automatically + Thai spell checking</p></div><div class="flow-step"><div class="step-num">03</div><h4>Phase 3 — AI-powered: understands context, predicts ahead</h4><p>Uses AI to predict that the user is typing in the wrong layout before they finish, and corrects based on sentence context</p></div></div>
+
+    <hr class="divider">
+
+    <!-- ===== METRICS ===== -->
+    <section class="section-intro">
+        <h2>Target Metrics</h2>
+        <p>Performance targets</p>
+    </section>
+    <figure class="shot"><img src="img/tt-metrics-unsplash.jpg" width="1200" height="750" loading="lazy" alt="Close-up of backlit keyboard keys in the dark"><figcaption>The goal is to be fast enough that you don't feel a tool in between · Photo: Sam Albury / Unsplash</figcaption></figure>
+
+
+    <div class="metrics">
+        <div class="metric-card">
+            <div class="num">&lt;50ms</div>
+            <div class="label">Conversion Latency</div>
+        </div>
+        <div class="metric-card">
+            <div class="num">&lt;50MB</div>
+            <div class="label">Memory Usage</div>
+        </div>
+        <div class="metric-card">
+            <div class="num">&#8805;3</div>
+            <div class="label">Auto-replace Threshold</div>
+        </div>
+        <div class="metric-card">
+            <div class="num">100%</div>
+            <div class="label">Kedmanee Coverage</div>
+        </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== LEARNINGS ===== -->
+    <section class="section-intro">
+        <h2>Key Takeaways</h2>
+        <p>What I learned from thinking this project through</p>
+    </section>
+    <figure class="shot"><img src="img/tt-learn-unsplash.jpg" width="1200" height="750" loading="lazy" alt="Hands typing on a silver laptop"><figcaption>A small problem you hit every day is the most worthwhile brief · Photo: Mimi Thian / Unsplash</figcaption></figure>
+
+
+    <div class="learning-card"><p><strong>Small problems everyone has gotten used to = good opportunities.</strong> Forgetting to switch layouts happens to Thai users every day, but nobody thinks it "can be fixed" because deleting and retyping feels normal. Looking at small problems people accept as normal is where valuable tools come from.</p></div>
+
+    <div class="learning-card"><p><strong>A 1:1 mapping made a hard-looking problem easy.</strong> At first I thought it would need complex NLP or ML, but on closer analysis the Kedmanee layout is a straight 1:1 mapping, so a lookup table converts 100% of it. The lesson: understand the problem deeply before thinking about the solution.</p></div>
+
+    <div class="learning-card"><p><strong>Self-learning doesn't have to be complicated.</strong> The learning algorithm is just "count the times". Very simple, but effective, because people's repeated typing patterns are a clear signal. No neural network needed to build something that gets better with use.</p></div>
+
+    <div class="learning-card"><p><strong>Always prototype before production.</strong> The Python prototype let me validate the idea quickly without first learning Swift and the whole Accessibility API. If the prototype works well, then it's worth investing time in a native app.</p></div>
+
+</article>
+
+<div class="closing">
+    <h2>Typed in the wrong layout? No need to delete.</h2>
+    <p>This project came from a small frustration I hit every day: forgetting to switch layouts and having to delete everything. If one key press can convert it back, life gets a lot easier.</p>
+</div>
+
+<button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+</button>
+<script>
+(function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Thai Typo Fixer",
+      "item": "https://projects.tanplanet.work/thai-typo-fixer/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TX98 TV Box: removing malware and designing a home screen for the family</title>
+  <meta name="description" content="Portfolio: removing malware from an Android TV box over ADB without root, then designing a new Thai launcher that opens the home Xiaomi camera stream full screen on the TV, plus Premier League data built for the remote">
+  <link rel="canonical" href="https://projects.tanplanet.work/android-box-portfolio/">
+  <meta property="og:title" content="TX98 TV Box: removing malware and designing a home screen for the family">
+  <meta property="og:description" content="Portfolio: removing malware from an Android TV box over ADB without root, then designing a new Thai launcher that opens the home Xiaomi camera stream full screen on the TV, plus Premier League data built for the remote">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://projects.tanplanet.work/android-box-portfolio/">
+  <meta property="og:image" content="https://projects.tanplanet.work/android-box-portfolio/linkedin-cover-3x4.png">
+  <meta property="og:image:width" content="1086">
+  <meta property="og:image:height" content="1448">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TX98 TV Box: removing malware and designing a home screen for the family">
+  <meta name="twitter:description" content="Portfolio: removing malware from an Android TV box over ADB without root, then designing a new Thai launcher that opens the home Xiaomi camera stream full screen on the TV, plus Premier League data built for the remote">
+  <meta name="twitter:image" content="https://projects.tanplanet.work/android-box-portfolio/linkedin-cover-3x4.png">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0f1f'/><rect x='14' y='34' width='72' height='48' rx='8' fill='none' stroke='%2334d399' stroke-width='6'/><path d='M36 18 50 34 64 18' fill='none' stroke='%2334d399' stroke-width='6' stroke-linecap='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #047857;
+      --accent-light: #dcfce7;
+      --accent-dark: #14532d;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #0a0f1f 0%, #0f1d33 42%, #0b3b35 78%, #065f46 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(52,211,153,0.18) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #065f46, #10b981, #a7f3d0);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent { color: #86efac; }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro { padding: 56px 0 32px; }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .section-intro p { color: var(--text-secondary); font-size: 1rem; }
+    .section-intro p + p { margin-top: 12px; }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0a0f1f, #223056);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block code { background: rgba(255,255,255,0.14); color: #86efac; }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p { font-size: 1.05rem; line-height: 1.7; position: relative; z-index: 1; }
+    .quote-block .author { margin-top: 12px; font-size: 0.82rem; opacity: 0.78; }
+
+    /* ===== Pain / Solution Cards ===== */
+    .pain-grid, .solution-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .pain-card, .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .pain-card { border-left: 4px solid var(--red); }
+    .solution-card { border-left: 4px solid var(--accent); }
+    .pain-card .emoji, .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3, .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p, .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(4,120,87,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #10b981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers { display: flex; flex-direction: column; gap: 12px; max-width: 560px; margin: 0 auto; }
+    .arch-layer { padding: 14px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(4,120,87,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: var(--navy); color: #cbd5e1; border: 1px solid #223056; }
+    .arch-arrow { text-align: center; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+    .arch-sub { display: flex; justify-content: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .arch-layer.infra .arch-sub span { background: rgba(255,255,255,0.10); }
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+      .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.shot-pair figcaption{grid-column:1/-1}.shot-phone{max-width:360px;margin-left:auto;margin-right:auto}.shot-pair.shot-phone{max-width:620px}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
+    .shot-narrow{max-width:640px;margin-left:auto;margin-right:auto}
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        ADB over Wi-Fi &middot; Claude Code &middot; Android launcher
+      </div>
+      <h1>TX98 TV Box<br><span class="accent">From a stock home screen to a TV designed for this household</span></h1>
+      <p>It started with removing what was unsafe from an Android TV box, then designing a new experience that opens straight to YouTube, Netflix, the front door camera and the football data the family wants to see</p>
+      <p><strong>Everything done over ADB from a Mac. No root, no reflashing, and every step can be undone.</strong></p>
+      <div class="hero-tags">
+        <span class="hero-tag">ADB</span>
+        <span class="hero-tag">Android 10</span>
+        <span class="hero-tag">CleanYourTV launcher</span>
+        <span class="hero-tag">Gradle</span>
+        <span class="hero-tag">Python + Pillow</span>
+        <span class="hero-tag">Claude Code</span>
+        <span class="hero-tag">Malware analysis</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#malware">See what was on the box &#8595;</a> <a class="cta-btn cta-ghost" href="#design">The new home screen</a>
+      </div>
+    </div>
+  </header>
+
+  <article>
+
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>The family uses a handful of things, but the screen offers dozens</h2>
+      <p>Ever opened Netflix to watch one film and spent 20–30 minutes scrolling through options before picking something? That is almost half a movie gone. The problem is not a lack of things to watch. There is so much that choosing becomes a chore of its own.</p>
+      <p>This TV box's home screen worked the same way. The family turns it on to watch YouTube or Netflix or to check the front door camera, but first they get past ads, apps nobody uses and close to ten options before reaching what they want. More options did not make it more useful. It added time and hesitation every time the TV came on.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/00-before-home.jpg" width="1280" height="720" loading="lazy" alt="The original TX98 home screen: a Google Play banner on top and nearly 12 preinstalled apps such as prime video, Downloader, MX Player and AirScreen">
+      <figcaption>The home screen as it arrived &mdash; only a few of these apps were ever used</figcaption>
+    </figure>
+
+    <div class="quote-block">
+      <p>I just want the 3–4 things we actually use: open YouTube, watch Netflix or check the front door camera right away, and a box that doesn't lag</p>
+      <div class="author">— The starting brief</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <h3>Press the remote, then wait</h3>
+        <p>Every app switch froze for several seconds. Getting to the front door camera meant waiting through several steps.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg>
+        <h3>Storage 95% full</h3>
+        <p>About 200 MB left, even though almost nothing had been installed by us</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        <h3>The home screen wasn't ours</h3>
+        <p>The top half was a movie promo banner and the bottom row was apps the shop had installed. Removing them from the menu didn't get rid of them all.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg>
+        <h3>No idea what came preinstalled</h3>
+        <p>The shop had filled the box with apps and nobody knew what each one did, until I looked at where they were connecting to</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>The specs on the box and the specs in the system don't match</h2>
+      <p>Before removing anything, I needed to know what this device really was. The answer was in the system properties, read over ADB.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/specs-real.jpg" width="1600" height="550" loading="lazy" alt="Terminal showing getprop: release 15.0 but SDK 29, hardware sun50iw9p1, meminfo 16777216 kB while free -m reports a total of 970 MB">
+      <figcaption>The device reports itself as Android 15 with 16 GB of RAM &mdash; what the system actually runs on is Android 10 with less than 1 GB of RAM</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span><b>Android 15 → really Android 10</b> Only the version label was changed. The SDK is still 29, so every app behaves as on Android 10.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg><span><b>16 GB RAM → really about 1 GB</b> The number in /proc/meminfo was edited, but the free command still counts the real memory: 970 MB</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span><b>Allwinner H313 chip, 720p output</b> and a userdebug build, which should never ship on a consumer device</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Information Design &middot; TV UX</span>
+      <h2>Football data at two levels, without crowding the home screen</h2>
+      <p>The home screen answers the quick questions: who plays today, at what time, and what the latest standings are. The full data is one click deeper. That gives both speed and detail without cramming everything onto one screen.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/football-home-netflix.png" width="1280" height="720" loading="lazy" alt="Thai-language Android TV home screen showing the time, Premier League fixtures, the league table and a row with YouTube, Netflix and the front door camera">
+      <figcaption>The glance view on the home screen: fixtures, kick-off times and standings, so you know what you need before deciding to open the detail page</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg><span><b>Ordered by the task</b> Kick-off times stand out over secondary details, the date appears once, and team names are readable from the sofa</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v16H4zM14 4h6v16h-6z"/></svg><span><b>One system, two levels of data</b> Home is a glance view. The Detail page uses two equal columns for fixtures and the league table.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg><span><b>Designed for the remote</b> Every state has to show what is selected, without relying on a mouse or touch</span></li>
+    </ul>
+
+    <section class="section-intro">
+      <span class="eyebrow">Detail &middot; D-pad</span>
+      <h2>A full two-column page, without forcing tab switches</h2>
+      <p>Fixtures on the left, league table on the right, at equal widths. Users see both at once and can scroll each column with the D-pad right away.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/football-detail-approved.png" width="1280" height="720" loading="lazy" alt="Thai-language Premier League detail page in two columns: fixtures on the left and the league table with team crests on the right">
+      <figcaption>The approved Detail page: a clear focus state, Thai team names, aligned crests and qualification bars flush with the table edge</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg><span><b>A table readable from TV distance</b> 3dp color bars mark the Champions League, European and relegation zones, with 10dp of space before the position number</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span><b>Kick-off time comes first</b> Team names drop to 14sp, while times use Medium weight so the eye finds the essential information first</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span><b>Load each crest once</b> The crest URL is the key, with a memory cache, a disk cache and merged requests for the same team. Even when API standings change, images don't need to reload.</span></li>
+    </ul>
+
+    <section class="section-intro">
+      <span class="eyebrow">Results &middot; Highlights</span>
+      <h2>Wake up to last night's results, then open the highlights</h2>
+      <p>The old page only showed the next fixtures, even though the first thing the family wants in the morning is last night's results. Results now appear before fixtures, and matches that Monomax Sports has posted clips for get a "Highlights" badge straddling the card edge. Press OK and the clip opens in the YouTube app.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/football-highlights.png" width="1280" height="720" loading="lazy" alt="Premier League detail page showing five results from Saturday, October 24. Every match has a red highlights badge straddling the top edge of its card, the first row has a white focus ring, and there is a back button in the top right">
+      <figcaption>Results from the last 3 days sit at the top, the highlights badge shows the row is pressable, and the back button is now a real focusable button</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 5 3.5-5 3.5z"/></svg><span><b>One row, one action</b> A finished match can only do one thing: open the highlights. So the badge says both that a clip exists and that the row is pressable. No separate button needed.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h10M4 17h6"/></svg><span><b>Matching clips by title</b> Monomax names clips with one pattern (home team vs away team + Buddhist-era date). A Worker reads the highlights playlist every 10 minutes, using 1 unit of YouTube quota per check. Clips usually appear 45–60 minutes after full time.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg><span><b>Nothing kept long-term</b> Nobody goes back to last week's highlights. Every item on the Worker expires on its own after 4 days, and the box keeps only a few KB of JSON that gets overwritten each round.</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="malware">
+      <span class="eyebrow">Define</span>
+      <h2>The box was selling the home internet connection from day one</h2>
+      <p>The process list showed five oddly named programs from the same family, all holding connections to overseas servers on the same port</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/malware-tunnel.jpg" width="1600" height="630" loading="lazy" alt="Terminal showing the sfsz process family, including st_plugin_tunnel, with 3 connections to Alibaba Cloud US and Zenlayer on port 9123, IPs hidden">
+      <figcaption>Evidence before the fix &mdash; st_plugin_tunnel relayed other people's traffic through the home connection (IPs hidden, full values kept in an internal log)</figcaption>
+    </figure>
+
+    <p>Boxes like this are used as a <b>residential proxy</b>: outsiders pay a middleman to route traffic through our home IP, so target sites see a regular user and don't block it. For the household, that means slower internet, an IP that may get blacklisted, and other people's activity that traces back to our home. The behavior matches networks like BadBox 2.0 / Vo1d reported on cheap Allwinner boxes.</p>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Layer 1 &mdash; baked into the firmware (/system)
+          <div class="arch-sub"><span>netservice disguised as a system service</span><span>An "app store" that silently installs apps</span><span>DNS-over-HTTPS to bypass the home filter</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Layer 2 &mdash; installers downloaded later
+          <div class="arch-sub"><span>6 apps with install rights that start at boot</span><span>Still installing new apps up to the month I checked</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Layer 3 &mdash; the money maker
+          <div class="arch-sub"><span>sfsz &rarr; st_plugin_tunnel</span><span>Outbound on port 9123</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Remote command system
+          <div class="arch-sub"><span>CDM with iperf3 to measure connection speed</span><span>Picks homes with connections fast enough to sell</span></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>Disabling over ADB beats reflashing or resetting</h2>
+      <p>The constraint: no clean firmware exists for this model, and the malware's source lives in a partition the user can't overwrite</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/01-after-batch1.jpg" width="1280" height="720" loading="lazy" alt="Google TV home screen after the first batch was disabled: the apps are still there, but the malware processes have stopped">
+      <figcaption>After the first batch, the box looks the same, but the tunnel has stopped and there are no connections left on port 9123</figcaption>
+    </figure>
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th>Option</th><th>What you get</th><th class="num">Risk</th><th>Why rejected / chosen</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Factory reset</td>
+            <td>The box goes back to day one</td>
+            <td class="num">Low</td>
+            <td>The first malware layer lives in the firmware. A reset brings it back with the system, and it downloads the rest again.</td>
+          </tr>
+          <tr>
+            <td>Flash new firmware</td>
+            <td>Truly clean</td>
+            <td class="num">High</td>
+            <td>There is no official firmware for this model, the builds shared online have unknown origins, and a mistake could leave the box unable to boot</td>
+          </tr>
+          <tr data-picked>
+            <td>Disable and uninstall over ADB + new home screen<span class="pick"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Chosen</span></td>
+            <td>Only the apps in use remain, malware stops running</td>
+            <td class="num">Low</td>
+            <td>Follows the approach of the open-source project CleanYourTV. Every command can be reversed with <code>restore.sh</code>. The downside is that a factory reset means running it again.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Order matters more than count</strong>
+      <p><strong>Disable the installers first, then the workers.</strong> If you remove the workers first, the system installer downloads them again within minutes. Before every step, back up the app list and all system settings.</p>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>Clean in batches, check after every batch</h2>
+      <p>One group at a time, with a screenshot and a connection check after each batch. If something breaks, you know exactly which batch caused it.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/03-after-debloat-home.jpg" width="1280" height="720" loading="lazy" alt="Google TV home screen after cleanup: the favorite apps row has only YouTube and Google Play Store">
+      <figcaption>After uninstalling unused apps, the favorites row has only what is needed &mdash; but the Google TV home screen is still full of ads</figcaption>
+    </figure>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+        <h4>Back up everything</h4>
+        <p>App list, system settings and device settings, saved before touching anything</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg>
+        <h4>Disable the installers first</h4>
+        <p>Use <code>pm disable-user</code>, which can be reversed, then disable the workers</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+        <h4>Confirm they really stopped</h4>
+        <p>Check processes and connections again. Don't trust a command just because it answered Success.</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+        <h4>Uninstall 23 apps</h4>
+        <p>11 unused apps and 12 malware apps outside the firmware</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        <h4>Make the box lighter</h4>
+        <p>Disable 10 more unused system apps and halve the animation speed</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">06</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        <h4>Write a way back</h4>
+        <p><code>restore.sh</code> re-enables everything that was disabled in one command</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="design">
+      <span class="eyebrow">Prototype &middot; Observe &middot; Iterate</span>
+      <h2>A home screen based on how the family actually uses the TV</h2>
+      <p>Instead of starting from a feature list, I started from what the family actually opens. That left three main paths: YouTube, Netflix and the front door camera, with football data as a glance view before entering any app.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/football-home-netflix.png" width="1280" height="720" loading="lazy" alt="New home screen with YouTube, Netflix, the front door camera and Premier League data">
+      <figcaption>The latest home screen: everything used regularly is no more than two presses from the first button</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg><span><b>One row, 3 tiles</b> Sorted by how often they're used. Every app is at most two presses right of the first button.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span><b>The camera is a direct destination</b> No opening a phone app and hunting for the device. One press from Home goes straight to the front door view, full screen.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><span><b>The old home screen is disabled only after verification</b> The install script first checks that the Home button really points to the new screen. If not, it leaves the old launcher alone, so the TV never gets stuck on a black screen.</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Custom Camera Viewer</span>
+      <h2>Home camera feed straight on the TV</h2>
+      <p>Rather than forcing a phone APK onto the TV, I pulled the stream from the Xiaomi camera the family used to watch in Mi Home, served it as a local web stream inside the box, and built a viewer made for the TV. One press from Home shows the front door full screen.</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">Xiaomi camera on the home network</div>
+        <div class="arch-arrow">&#8595;</div>
+        <div class="arch-layer platform">Local stream on the Android box</div>
+        <div class="arch-arrow">&#8595;</div>
+        <div class="arch-layer infra">Full-screen viewer designed for the TV remote</div>
+      </div>
+    </div>
+
+    <figure class="shot">
+      <img src="img/front-camera-viewer.png" width="1280" height="720" loading="lazy" alt="Live feed from the Xiaomi front door camera, full screen on the Android TV box">
+      <figcaption>The front door camera in the viewer app built for the TV. Press it on Home and it goes straight to full screen.</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg><span><b>A shorter path than the phone app</b> The device list, menus and status screens that aren't needed on a TV are gone. What's left is the picture you want to see.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg><span><b>Designed around the box's limits</b> The old WebView can't play H.265 streams, so a hardware-decoding player is used instead to keep video smooth on less than 1 GB of real RAM</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg><span><b>Stays on the home network</b> The stream relay and player both run on the box, so opening the camera never routes the user through an outside service or website</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="hacks">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Problems along the way</h2>
+      <p>Most of them only showed up when testing on the real device</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/football-detail-approved.png" width="1280" height="720" loading="lazy" alt="Football detail page with the fixtures column selected and the league table on the right">
+      <figcaption>Testing on the real TV meant several rounds of adjusting hierarchy, alignment and focus states before it read well from the sofa</figcaption>
+    </figure>
+
+    <div class="hack-grid">
+
+      <div class="hack-card" data-label="Reinstall">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>The malware came back after removal</span></h3>
+        <p>The installer in the firmware could install apps silently and started itself at boot</p>
+        <div class="highlight"><strong>Fix:</strong> <strong>always shut off the source first</strong>, then disable and uninstall what it had downloaded. No unknown apps have appeared since.</div>
+      </div>
+
+      <div class="hack-card" data-label="Launcher">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Two columns looked equal but felt unbalanced in use</span></h3>
+        <p>Team names, crests and numbers took up different amounts of space on each side, so even with equal-width containers the layout looked lopsided</p>
+        <div class="highlight"><strong>Fix:</strong> define a shared column system and alignment rules, then test with real data that has both short and long names</div>
+      </div>
+
+      <div class="hack-card" data-label="Alignment">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>A TV has no cursor to show what is selected</span></h3>
+        <p>A table that looked clear on a computer became confusing when controlled with a D-pad from across the room</p>
+        <div class="highlight"><strong>Fix:</strong> make the focus state part of the design system: column headers, the active line and scrolling within each side</div>
+      </div>
+
+      <div class="hack-card" data-label="API">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Mornings still showed yesterday's match as "Live"</span></h3>
+        <p>The football API answers from several servers, and about half still had yesterday's data cached. Results flipped back and forth: one request said full time, the next said still playing.</p>
+        <div class="highlight"><strong>Fix:</strong> the Worker remembers the latest version of each match and refuses to serve an older one. The app also ignores a "live" status more than 3 hours after kick-off.</div>
+      </div>
+
+      <div class="hack-card" data-label="Icon">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>The league table showed numbers but not what they meant</span></h3>
+        <p>Position alone doesn't tell you whether a team is heading for Europe or at risk of relegation</p>
+        <div class="highlight"><strong>Fix:</strong> add qualification zones along the table edge and a legend for the Champions League, European places and the relegation zone</div>
+      </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Test</span>
+      <h2>Before and after</h2>
+      <p>Measured on the real device over ADB, before starting and after finishing</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/football-home-netflix.png" width="1280" height="720" loading="lazy" alt="Final home screen with YouTube, Netflix, the front door camera and football data">
+      <figcaption>The final home screen: three main apps, football data and the front door camera, all in one system</figcaption>
+    </figure>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">3</div><div class="label">Apps on the home screen, down from nearly 12</div></div>
+      <div class="metric-card"><div class="num">23</div><div class="label">Apps uninstalled (12 of them malware)</div></div>
+      <div class="metric-card"><div class="num">16</div><div class="label">System apps disabled, reversibly</div></div>
+      <div class="metric-card"><div class="num">50%</div><div class="label">Storage used, down from 95%</div></div>
+      <div class="metric-card"><div class="num">2.2×</div><div class="label">Free RAM 163 &rarr; 364 MB</div></div>
+      <div class="metric-card"><div class="num">0</div><div class="label">Malware connections remaining</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>What I deliberately didn't do</h2>
+      <p>The whole family uses this box, so everything had to be reversible</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/restore.jpg" width="1600" height="390" loading="lazy" alt="Terminal showing restore.sh: it loops through every package in disabled.txt, re-enables it with pm enable, then uninstalls the new home screen. disabled.txt lists 16 entries">
+      <figcaption>Every disabled app is recorded, 16 in total &mdash; to get the original box back, run one command</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span><b>No root, no flashing</b> No step risks leaving the box unable to boot</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg><span><b>System apps are disabled, not deleted</b> Every disabled app is on the list and can be re-enabled with <code>restore.sh</code></span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg><span><b>Static malware analysis only</b> Files were pulled off to read the code and inspect connections. Nothing was installed or run on another device.</span></li>
+    </ul>
+
+  </article>
+
+  <div class="closing">
+    <h2>TX98 TV Box</h2>
+    <p>From a cheap box that lied about its specs and secretly sold the home connection, to a TV that opens to the 3 buttons the family actually uses. No root, and every step can be undone.</p>
+    <div class="stack-icons">
+      <span class="stack-icon">ADB over Wi-Fi</span>
+      <span class="stack-icon">Android 10</span>
+      <span class="stack-icon">CleanYourTV</span>
+      <span class="stack-icon">Gradle · JDK 17</span>
+      <span class="stack-icon">Python · Pillow</span>
+      <span class="stack-icon">aapt2</span>
+      <span class="stack-icon">Claude Code</span>
+    </div>
+  </div>
+
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Natpakan Sirirat — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"TX98 TV Box: removing factory malware and building a new home screen","item":"https://projects.tanplanet.work/android-box-portfolio/"}
+  ]
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MP4/M3U8 Sniffer — a Chrome extension that catches video links for yt-dlp</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MP4/M3U8 Sniffer — a Chrome extension that catches video links for yt-dlp">
+  <meta name="twitter:description" content="Portfolio: a Chrome extension (Manifest V3) that catches media streams on a page, tells HLS master and variant playlists apart, keeps the real request headers and builds a yt-dlp command you can paste and run.">
+  <meta property="og:url" content="https://projects.tanplanet.work/media-sniffer-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.work/media-sniffer-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: a Chrome extension (Manifest V3) that catches media streams on a page, tells HLS master and variant playlists apart, keeps the real request headers and builds a yt-dlp command you can paste and run.">
+  <meta property="og:title" content="MP4/M3U8 Sniffer — a Chrome extension that catches video links for yt-dlp">
+  <meta name="description" content="Portfolio: a Chrome extension (Manifest V3) that catches media streams on a page, tells HLS master and variant playlists apart, keeps the real request headers and builds a yt-dlp command you can paste and run.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%230e7490'/><text x='50' y='62' text-anchor='middle' font-size='54'>🎬</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #0e7490;
+      --accent-light: #cffafe;
+      --accent-dark: #164e63;
+      --accent-glow: rgba(14,116,144,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #083344 0%, #0e7490 45%, #0891b2 80%, #06b6d4 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(207,250,254,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(14,116,144,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #0e7490, #06b6d4, #cffafe);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #a5f3fc;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #164e63, #0e7490);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(6,182,212,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(14,116,144,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Extension Popup Mockup ===== */
+    .ext-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 440px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+    .ext-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      align-items: center;
+    }
+    .ext-bar .ext-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    .ext-bar .ext-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 1px 9px;
+      font-size: 0.72rem;
+    }
+    .ext-yt {
+      margin: 12px;
+      padding: 10px 12px;
+      border: 1px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 8px;
+    }
+    .ext-yt b { color: #c00; }
+    .ext-yt .u { color: var(--text-muted); font-size: 0.72rem; word-break: break-all; margin: 3px 0 8px; font-family: 'SF Mono', monospace; }
+    .ext-yt .chip { display: inline-block; border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 3px 8px; font-size: 0.72rem; margin-right: 5px; color: var(--text-secondary); }
+    .ext-table { width: 100%; border-collapse: collapse; }
+    .ext-table th {
+      text-align: left; padding: 8px 12px; font-size: 0.68rem; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--border);
+    }
+    .ext-table td { padding: 9px 12px; border-bottom: 1px solid #f2f2f1; vertical-align: top; }
+    .ext-table .kind { font-weight: 700; white-space: nowrap; }
+    .ext-table .kind.master { color: #1e6b2e; }
+    .ext-table .kind.variant { color: #8a7a12; }
+    .ext-table .kind.file { color: var(--accent); }
+    .ext-table .q { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .ext-table .info { color: var(--text-secondary); font-size: 0.76rem; }
+    .ext-table .chip { display: inline-block; border: 1px solid var(--border); background: #fafafa; border-radius: 5px; padding: 1px 7px; font-size: 0.68rem; color: var(--text-secondary); font-family: 'SF Mono', monospace; }
+    .ext-cmd {
+      margin: 0 12px 12px;
+      padding: 10px 12px;
+      background: #0f172a;
+      color: #a5f3fc;
+      border-radius: 8px;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      font-size: 0.72rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .ext-cmd .flag { color: #fde047; }
+    .ext-cmd .cmt { color: #64748b; }
+
+    /* ===== Closing ===== */
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(22,78,99,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(22,78,99,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-narrow img{max-width:420px;margin:0 auto}
+    .shot-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}.shot-pair .shot{margin:0}
+    @media (max-width:640px){.shot-pair{grid-template-columns:1fr}}
+    .dd-ico{width:28px;height:28px;color:var(--accent);display:inline-block}
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/media-sniffer-portfolio/">
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Chrome Extension &middot; Manifest V3 &middot; HLS / DASH
+      </div>
+      <h1>MP4/M3U8 Sniffer<br><span class="accent">Catch the video links on a page and turn them into a ready-to-run yt-dlp command</span></h1>
+      <p>A Chrome extension (Manifest V3) that catches every media stream a page is playing, tells HLS master and variant playlists apart, keeps the real headers the browser sent (Referer / Cookie), and assembles a <code>yt-dlp</code> command you can paste and run right away.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Manifest V3</span>
+        <span class="hero-tag">Service Worker</span>
+        <span class="hero-tag">webRequest API</span>
+        <span class="hero-tag">HLS (m3u8)</span>
+        <span class="hero-tag">DASH (mpd)</span>
+        <span class="hero-tag">yt-dlp</span>
+        <span class="hero-tag">Session Storage</span>
+        <span class="hero-tag">Vanilla JS</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">See how it works &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#stack">See the tech stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>The problem</h2>
+      <p>Why does saving a video you already have access to for offline viewing get harder every year?</p>
+    </section>
+    <figure class="shot"><img src="img/m3u8-master.jpg" width="1400" height="834" loading="lazy" alt="A raw m3u8 master playlist full of EXT-X-STREAM-INF tags, BANDWIDTH and RESOLUTION values, and variant links"><figcaption>Open a .m3u8 file directly and this is what you get — you have to read the tags yourself to see that 1080p and 720p are available (Mux public test stream)</figcaption></figure>
+
+    <div class="quote-block">
+      <p>Sites no longer embed a plain <code>.mp4</code> file. They play HLS, which cuts the video into thousands of small segments (<code>.ts</code> / <code>.m4s</code>) controlled by a <code>.m3u8</code> playlist. To save one for offline viewing you open DevTools → Network, hunt for the m3u8, then copy the Referer and Cookie into yt-dlp by hand. Doing that every time is slow and easy to get wrong.</p>
+      <div class="author">— The starting brief for MP4/M3U8 Sniffer</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        <h3>Finding media URLs in DevTools is tedious</h3>
+        <p>The Network tab has hundreds of requests. You filter for <code>.m3u8</code>/<code>.mp4</code> yourself, and you still can't tell which one is the master playlist (the quality options) and which is the variant you actually need to download.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>Downloading directly returns 403 because headers are missing</h3>
+        <p>Pasting the URL into yt-dlp on its own often gets a 403, because the server checks the <code>Referer</code> / <code>Origin</code> / <code>Cookie</code> the browser sent during playback. DevTools usually hides those headers.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
+        <h3>No way to tell how many qualities a stream has, or whether it's encrypted</h3>
+        <p>Reading an m3u8 yourself means knowing tags like <code>#EXT-X-STREAM-INF</code> and <code>#EXT-X-KEY</code>. Most people can't tell whether 1080p/720p is available or whether the segments are AES-128 encrypted.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>
+        <h3>Sniffing YouTube directly is unreliable</h3>
+        <p>YouTube serves streams from <code>googlevideo.com</code> with tokens that expire quickly, and splits video and audio into separate tracks. A captured link usually won't download, so it needs a different approach.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        <h3>Media from old pages mixed with the new one</h3>
+        <p>With several sites open in different tabs, media gets mixed together. You can't tell which link came from the page you're looking at, so you end up guessing.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>The solution</h2>
+      <p>Let the extension do all the boring parts — catch, parse, build the command — so all that's left is "copy → paste → Enter"</p>
+    </section>
+    <figure class="shot"><img src="img/browser-popup.jpg" width="1600" height="975" loading="lazy" alt="A page playing an HLS video with the Sniffer popup open at the top right, listing the captured master and variants; the icon shows a badge with the number 3"><figcaption>Open a page that plays video (the hls.js demo) and click the icon — the actual popup lists every stream it caught, with URL / cmd / download buttons</figcaption></figure>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
+        <h3>Catches media automatically at the network layer</h3>
+        <p>The service worker listens to <code>webRequest</code>. Any request matching <code>.m3u8/.mpd/.mp4/.ts/.m4s</code>, or with type = media, is stored immediately. No DevTools, no manual filtering.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
+        <h3>Parses the real m3u8 and tells you which one to download</h3>
+        <p>It fetches the playlist and parses it: which one is the master, which qualities it offers (1080p/720p), how many segments each variant has, how long it runs, and whether it's AES-128 encrypted — summarized in an easy-to-read table.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+        <h3>Builds the yt-dlp command with the real headers</h3>
+        <p>It keeps the <code>Referer/Origin/Cookie/User-Agent</code> the browser actually sent and assembles a safely shell-quoted <code>yt-dlp --referer ... --add-header ...</code> command. One click copies it.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
+        <h3>YouTube = download from the page URL</h3>
+        <p>It detects YouTube watch/shorts/live pages and offers a yt-dlp command built from the page URL itself (far more reliable than sniffing googlevideo), stripping <code>&amp;list=</code> so it doesn't pull the whole playlist.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg>
+        <h3>Media kept strictly per tab</h3>
+        <p>Every item is tied to a <code>tabId</code>. The popup only shows media from the page you're on; navigating away or closing the tab clears the old items automatically, and the badge counts per tab.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>How it works — 4 steps</h2>
+      <p>From opening a page to a command ready to download</p>
+    </section>
+    <figure class="shot shot-narrow"><img src="img/popup-sniff.jpg" width="840" height="912" loading="lazy" alt="The popup groups streams by type: a master with its quality list, variants with segment count and duration, an AES-128 encrypted variant, and MP4 files with thumbnails"><figcaption>Step 3 for real: it parses the m3u8 and tells you which is the master and which are variants, how many segments, how long, and whether it's AES-128 encrypted (the links shown are public test streams)</figcaption></figure>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        <h4>Open the page</h4>
+        <p>The video starts playing and the browser sends requests for the m3u8 and segments</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
+        <h4>The service worker catches them</h4>
+        <p>Captures the URL and the real headers, ties them to the tabId and updates the badge count</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
+        <h4>Open the popup → parse</h4>
+        <p>Fetches the m3u8 and parses it into master/variant, qualities and encryption</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+        <h4>Copy the command</h4>
+        <p>Press the yt-dlp button → copy the command with headers and paste it into a terminal</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>Pure Manifest V3 — no backend, no build step, nothing leaves the machine</p>
+    </section>
+    <figure class="shot"><img src="img/code-webrequest.jpg" width="1400" height="1033" loading="lazy" alt="background.js code for webRequest.onSendHeaders, capturing requests per tabId and requesting extraHeaders"><figcaption>The heart of the service worker — listen to onSendHeaders with "extraHeaders", tie every item to a tabId, then update the badge (actual code from background.js)</figcaption></figure>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          The page playing the video (any origin)
+          <div class="arch-sub">
+            <span>HLS .m3u8</span>
+            <span>DASH .mpd</span>
+            <span>.mp4 / .ts / .m4s</span>
+            <span>YouTube watch/shorts</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Service Worker (background.js) — webRequest
+          <div class="arch-sub">
+            <span>onSendHeaders</span>
+            <span>onBeforeRequest</span>
+            <span>extraHeaders</span>
+            <span>setBadgeText</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Popup (popup.js) — classifier + command builder
+          <div class="arch-sub">
+            <span>parseM3u8()</span>
+            <span>analyze()</span>
+            <span>buildCmd()</span>
+            <span>ytCard()</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          chrome.storage.session (per-tab, in-memory) + clipboard
+          <div class="arch-sub">
+            <span>items[]</span>
+            <span>tabId binding</span>
+            <span>onChanged → render</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Why this stack?</strong>
+      <p><strong>Manifest V3 + Service Worker</strong> is the new standard Chrome requires — event-driven, no background page sitting in RAM &middot; <strong>chrome.storage.session</strong> lives in memory and is cleared when the browser closes — right for temporary data that shouldn't stay on disk &middot; <strong>host_permissions <code>&lt;all_urls&gt;</code></strong> lets the popup fetch the m3u8 for parsing without hitting CORS &middot; <strong>Plain vanilla JS</strong> — no build step, loads unpacked as is, the whole extension is about 4 files</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>What I built — 8 core capabilities</h2>
+      <p>The full loop, from catching network traffic to a command ready to download</p>
+    </section>
+    <figure class="shot shot-narrow"><img src="img/popup-youtube.jpg" width="840" height="506" loading="lazy" alt="The YouTube card in the popup, showing the clip title, a Download button, a 1080p button and a copy-command button"><figcaption>YouTube Smart Card — on a watch page you can download straight from the page URL, no googlevideo sniffing needed (&amp;list= is stripped automatically)</figcaption></figure>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
+        <h3>Media Sniffer</h3>
+        <p>Catches <code>.m3u8/.mpd/.mp4/.ts/.m4s</code> plus requests with type = media from webRequest — covering HLS, DASH and direct files</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>Real Header Capture</h3>
+        <p>Uses <code>extraHeaders</code> to read the Referer/Origin/Cookie/User-Agent that are normally hidden — the key to getting past 403</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
+        <h3>HLS Classifier</h3>
+        <p>Fetches and actually parses the m3u8 — master (with variants + audio/subs) vs variant (segment count + duration + AES)</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>
+        <h3>Quality Resolver</h3>
+        <p>Reads <code>RESOLUTION</code>/<code>BANDWIDTH</code> from the master and maps each variant to its label, such as 1080p/720p</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+        <h3>yt-dlp Command Builder</h3>
+        <p>Builds the command with headers and safe shell quoting (handles single quotes, spaces and semicolons in cookies)</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
+        <h3>YouTube Smart Card</h3>
+        <p>Detects watch/shorts/live pages → offers two download commands from the page URL (best / 1080p) with the playlist parameter removed</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg>
+        <h3>Per-Tab Badge &amp; Cleanup</h3>
+        <p>Counts media per tab on the icon and clears it on navigation (main_frame) or when the tab closes — nothing stale left behind</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+        <h3>Copy All / Rescan / Clear</h3>
+        <p>Copy every URL at once, reload the tab to catch a fresh round, clear only the current tab — all controlled from one header</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Extension Popup Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>The popup</h2>
+      <p>Open a page with video → click the icon → see everything on one screen</p>
+    </section>
+
+    <div class="shot-pair">
+    <figure class="shot shot-narrow"><img src="img/popup-queue.jpg" width="840" height="842" loading="lazy" alt="The popup with a destination project and scene picker, a YouTube card, and a download queue of four jobs with progress bars, speed, and pause, resume and open-folder buttons"><figcaption>Download queue: % bar · speed · ETA · pause / resume — pick the destination scene from the top bar (project and file names are examples)</figcaption></figure>
+    <figure class="shot shot-narrow"><img src="img/popup-sniff.jpg" width="840" height="912" loading="lazy" alt="The popup listing captured streams: Master, Variant, AES-128 and MP4 files"><figcaption>The stream list — every row has URL / cmd / download buttons</figcaption></figure>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hacks and problems</h2>
+      <p>6 problems I had to work out myself — Chrome extension API quirks and streaming internals</p>
+    </section>
+    <figure class="shot"><img src="img/terminal-cmd.jpg" width="1400" height="362" loading="lazy" alt="The yt-dlp command the popup builds, with --referer and several --add-header flags; a Cookie value containing a single quote is escaped as quote-backslash-quote"><figcaption>The command the cmd button copies — a Cookie containing ;, spaces and ' is wrapped in single quotes and escaped the POSIX way, so it pastes into a terminal without breaking (header values shown are examples)</figcaption></figure>
+
+    <div class="hack-grid">
+      <div class="hack-card precision" data-label="Browser API">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Cookie / Referer are hidden from webRequest</span></h3>
+        <p>By default <code>onSendHeaders</code> doesn't return headers the browser manages itself (Cookie, Referer, Origin). You only get a bare URL, and downloading it fails with 403.</p>
+        <div class="highlight">Fix: add <code>"extraHeaders"</code> to the listener's extraInfoSpec so Chrome exposes the hidden headers, then whitelist only the 4 that yt-dlp needs (referer/origin/cookie/user-agent) and store nothing more.</div>
+      </div>
+
+      <div class="hack-card arch" data-label="CORS">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg><span>Parsing the m3u8 needs a cross-origin fetch</span></h3>
+        <p>To know which qualities a master offers, you have to fetch the playlist and read it — but a normal cross-origin fetch gets blocked by CORS.</p>
+        <div class="highlight">Fix: declare <code>host_permissions: &lt;all_urls&gt;</code> in the manifest so the popup context can fetch across origins without CORS, then cache results per URL so it doesn't refetch on every re-render.</div>
+      </div>
+
+      <div class="hack-card platform" data-label="MV3 State">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg><span>The master must be parsed before the variants to know their quality</span></h3>
+        <p>The quality (1080p) lives in the master file, but at the network layer we only see bare variant URLs with no label.</p>
+        <div class="highlight">Fix: parse the master → store a <code>variantUrl → "1080p"</code> map in <code>variantRes</code> first, then draw the table. <code>Promise.all(analyze)</code> finishes parsing everything before a single render, so each variant can pick up its label from the already-parsed master.</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Tab Isolation">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></svg><span>Media from the old page carries over into the new one</span></h3>
+        <p>SPAs change pages without a reload, so old media stays in storage alongside the new page and the popup shows unrelated links.</p>
+        <div class="highlight">Fix: listen to <code>onBeforeRequest</code> for <code>main_frame</code> only — the signal that the page really changed → clear that tabId's items and reset the badge, plus clean up on <code>tabs.onRemoved</code>. Storage stays clean.</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Shell Safety">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span>Spaces and semicolons in cookies break the shell command</span></h3>
+        <p>Real cookie values are full of <code>;</code> and spaces. Appended straight into a shell command, they split the command or get misinterpreted.</p>
+        <div class="highlight">Fix: a <code>q()</code> function wraps every value in single quotes and escapes inner single quotes as <code>'\''</code> — the standard POSIX shell pattern, which makes a Cookie/Referer with special characters fully safe.</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Stability">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg><span>Sniffed YouTube links won't download</span></h3>
+        <p>Catching googlevideo gives you a real URL, but its token expires quickly and audio is split from video — actual downloads almost never succeed.</p>
+        <div class="highlight">Fix: change strategy — don't sniff googlevideo at all. Detect that you're on YouTube and let yt-dlp handle it from the page URL (it resolves the tracks and merges them), with <code>cleanYt()</code> stripping <code>&amp;list=</code> so you don't download a whole playlist by accident. Lesson: some problems are better solved by not doing something than by forcing it to work.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Deliberate design decisions</h2>
+      <p>The scope I chose not to build matters as much as what I built</p>
+    </section>
+    <figure class="shot"><img src="img/code-host.jpg" width="1400" height="809" loading="lazy" alt="Python code for the native messaging host that validates the URL and runs yt-dlp through subprocess.Popen in a separate session"><figcaption>The actual downloader is yt-dlp — the native host only validates the URL and hands the job on, in a process separate from Chrome, so the job keeps running after the popup closes</figcaption></figure>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>This tool does one job: it builds the command faster. It doesn't download on its own, doesn't decrypt DRM, and doesn't send data off the machine. The classifier only reports that segments are AES-128 encrypted (so you know a key is needed) and never touches any key. Setting the scope clearly from the start made the implementation simple and straightforward.</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <svg class="dd-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg><br>
+        <strong>Builds commands, doesn't download</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">yt-dlp does the downloading — the extension only prepares its input</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <svg class="dd-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><br>
+        <strong>Detect, don't decrypt</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Reports that AES-128 encryption is present but leaves the key alone</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <svg class="dd-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 19v-3"/><path d="M10 19v-3"/><path d="M14 19v-3"/><path d="M18 19v-3"/><path d="M8 11V9"/><path d="M16 11V9"/><path d="M12 11V9"/><path d="M2 15h20"/><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v1.1a2 2 0 0 0 0 3.837V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-5.1a2 2 0 0 0 0-3.837Z"/></svg><br>
+        <strong>Session storage only</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Data lives in memory and disappears on close; nothing is written to disk</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <svg class="dd-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z"/></svg><br>
+        <strong>Whitelist 4 header</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Stores only what yt-dlp needs, nothing more</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge I gained</h2>
+      <p>5 areas where my skills genuinely moved up through this project</p>
+    </section>
+    <figure class="shot"><img src="img/m3u8-aes.jpg" width="1400" height="795" loading="lazy" alt="A variant playlist with an EXT-X-KEY METHOD=AES-128 tag and an EXTINF entry for each segment"><figcaption>Reading every line of an m3u8: #EXT-X-KEY says the segments are AES-128 encrypted · #EXTINF is the length of each piece — the source of the "AES-128" label and the total duration in the popup</figcaption></figure>
+
+    <div class="learning-card">
+      <strong>1. Chrome Extension MV3 — from "heard of it" to "built one":</strong>
+      <p>I learned the service worker lifecycle (event-driven, no persistent background), when to use <code>chrome.storage.session</code> vs <code>local</code>, tying state to a <code>tabId</code>, and the badge API — going from zero to a complete extension I actually use. Lesson: MV3 forces event-driven thinking from the start.</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. HLS / streaming internals — reading every line of an m3u8:</strong>
+      <p>I learned the structure of master vs variant playlists and the tags <code>#EXT-X-STREAM-INF</code> (RESOLUTION/BANDWIDTH), <code>#EXT-X-MEDIA</code> (audio/subtitle tracks), <code>#EXTINF</code> (duration per segment) and <code>#EXT-X-KEY</code> (AES-128/SAMPLE-AES), and wrote my own parser that classifies streams accurately. Lesson: video streaming is no longer a black box.</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. HTTP header semantics — understanding where a 403 comes from:</strong>
+      <p>I learned how CDNs use <code>Referer/Origin/Cookie</code> to check access, why the browser hides some headers, and how <code>extraHeaders</code> exposes them — knowledge that carries straight over to debugging API auth and CORS. Lesson: headers are half the key to web security.</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Shell-safe string building — a security path you can't get wrong:</strong>
+      <p>I practiced writing quoting that is actually safe (the <code>'\''</code> escape) instead of gluing strings together, and learned that untrusted input (cookies from a website) must always be sanitized before it goes into a command. Lesson: correct quoting patterns prevent command injection.</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Scoping — knowing that what you leave out is good design:</strong>
+      <p>I chose not to sniff YouTube, not to decrypt and not to auto-download, which keeps the tool small, easy to understand and within sensible bounds. Lesson: a sharp scope makes implementation direct and maintenance easier than a tool that tries to do everything.</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">4</div>
+        <div class="label">Files — the whole extension (no build)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">5</div>
+        <div class="label">Media formats it catches</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">1</div>
+        <div class="label">Click — from network to a ready-to-run command</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">Data sent off the machine</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <h2>MP4/M3U8 Sniffer</h2>
+    <p>A personal Chrome extension (Manifest V3) that turns a tedious chore — opening DevTools to hunt for the m3u8 and copying headers into yt-dlp — into a single click. Built with plain vanilla JS: no backend, no build step, and no data leaves the machine.</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Manifest V3</span>
+      <span class="stack-icon">Service Worker</span>
+      <span class="stack-icon">webRequest API</span>
+      <span class="stack-icon">chrome.storage.session</span>
+      <span class="stack-icon">HLS (m3u8)</span>
+      <span class="stack-icon">DASH (mpd)</span>
+      <span class="stack-icon">yt-dlp</span>
+      <span class="stack-icon">Vanilla JS</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.work/">&#8592; Back to all projects</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "MP4/M3U8 Sniffer Portfolio",
+      "item": "https://projects.tanplanet.work/media-sniffer-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

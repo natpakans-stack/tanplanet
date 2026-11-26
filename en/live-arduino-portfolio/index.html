@@ -1,0 +1,888 @@
+<!DOCTYPE html><html data-wf-domain="www.tanplanet.work" data-wf-page="608d6278863727b47e80cb9c" data-wf-site="608d62778637273e1880cb8d" lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TanPlanet Live — an ESP32 desk screen that knows what matters today</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TanPlanet Live — an ESP32 desk screen that knows what matters today">
+  <meta name="twitter:description" content="Portfolio: a ฿640 3.5&quot; ESP32 screen + a backend on a Mac. Thai calendar, lunar phase, weather, investing horoscope, stock portfolio, AI quota and Claude Code status as tappable cards, built with LVGL 9 and a self-generated Thai font">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="Portfolio: a ฿640 3.5&quot; ESP32 screen + a backend on a Mac. Thai calendar, lunar phase, weather, investing horoscope, stock portfolio, AI quota and Claude Code status as tappable cards, built with LVGL 9 and a self-generated Thai font">
+  <meta property="og:title" content="TanPlanet Live — an ESP32 desk screen that knows what matters today">
+  <meta name="description" content="Portfolio: a ฿640 3.5&quot; ESP32 screen + a backend on a Mac. Thai calendar, lunar phase, weather, investing horoscope, stock portfolio, AI quota and Claude Code status as tappable cards, built with LVGL 9 and a self-generated Thai font">
+  <rect width='100' height='100' rx='24' fill='%230a0f1f'/><rect x='24' y='18' width='52' height='64' rx='7' fill='%23f59e0b'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  
+  
+  <script src="../../common/closing.js" defer></script>
+  <meta property="og:image" content="https://projects.tanplanet.work/pj/covers/live-arduino-portfolio-en-og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://projects.tanplanet.work/pj/covers/live-arduino-portfolio-en-og.jpg"><link rel="icon" type="image/png" href="https://myfolio.tanplanet.work/favicon.png"><link rel="apple-touch-icon" href="https://myfolio.tanplanet.work/apple-touch-icon.png"><link rel="canonical" href="https://projects.tanplanet.work/en/live-arduino-portfolio/"><meta property="og:url" content="https://projects.tanplanet.work/en/live-arduino-portfolio/"><meta property="og:locale" content="en_US"><link rel="alternate" hreflang="th" href="https://projects.tanplanet.work/live-arduino-portfolio/"><link rel="alternate" hreflang="en" href="https://projects.tanplanet.work/en/live-arduino-portfolio/"><link rel="alternate" hreflang="x-default" href="https://projects.tanplanet.work/live-arduino-portfolio/"><link rel="stylesheet" href="https://myfolio.tanplanet.work/tokens.css"/><link href="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/css/myfolio-tannie.webflow.shared.f00d552de.css?v=50" rel="stylesheet" type="text/css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap"><link rel="stylesheet" href="https://myfolio.tanplanet.work/blog/article.css"/><link rel="stylesheet" href="../../common/closing.css"><style>.cs *, .cs *::before, .cs *::after{ box-sizing: border-box; margin: 0; padding: 0; }
+.cs{
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #b45309;
+      --accent-light: #fef3c7;
+      --accent-dark: #78350f;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+.cs{
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+.cs .hero{
+      background: linear-gradient(135deg, #0a0f1f 0%, #121b36 40%, #3f2d12 78%, #78350f 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+.cs .hero::before{
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(251,191,36,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+@keyframes sway{
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+.cs .hero::after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #78350f, #f59e0b, #fde68a);
+    }
+.cs .hero-inner{
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+.cs .hero-mark{
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+.cs .hero-badge{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+.cs .hero-badge .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+@keyframes pulse-dot{
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+.cs .hero h1{
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+.cs .hero h1 .accent{ color: #fcd34d; }
+.cs .hero p{
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+.cs .hero-tags{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+.cs .hero-tag{
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+.cs .cta-row{
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+.cs .cta-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+.cs .cta-btn:hover{ transform: translateY(-2px); }
+.cs .cta-primary{
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+.cs .cta-primary:hover{ box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+.cs .cta-ghost{
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+.cs .cta-ghost:hover{ background: rgba(255,255,255,0.2); }
+.cs article{
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+.cs code{
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+.cs .dev-wrap{ display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.cs .dev-frame{
+      width: 348px;
+      max-width: 100%;
+      background: #1a1a1c;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 14px 40px rgba(10,15,31,0.35);
+    }
+.cs .dev-screen{
+      background: var(--navy);
+      border-radius: 6px;
+      overflow: hidden;
+      color: #f2f5ff;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+.cs .dev-hero{
+      background: #121b36;
+      padding: 12px 14px 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+.cs .dev-clock{ font-size: 2.4rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+.cs .dev-date{ color: #8492bc; font-size: 0.72rem; margin-top: 4px; }
+.cs .dev-hero-right{ text-align: right; font-size: 0.72rem; color: #8492bc; }
+.cs .dev-hero-right .t{ color: #f2f5ff; font-size: 1.05rem; font-weight: 600; }
+.cs .dev-list{ padding: 8px; display: flex; flex-direction: column; gap: 7px; }
+.cs .dev-card{
+      background: #161f3c;
+      border-radius: 8px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+.cs .dev-card .body{ flex: 1; min-width: 0; }
+.cs .dev-card .ttl{ color: #8492bc; font-size: 0.68rem; letter-spacing: 0.02em; }
+.cs .dev-card .val{ font-size: 0.95rem; font-weight: 600; }
+.cs .dev-card .sub{ color: #8492bc; font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cs .dev-card .up{ color: #4ade80; }
+.cs .dev-card .warn{ color: #fbbf24; }
+.cs .dev-card .down{ color: #f87171; }
+.cs .dev-blob{
+      width: 42px;
+      height: 34px;
+      border-radius: 6px;
+      background: #223056;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+.cs .dev-bar{ height: 5px; border-radius: 3px; background: #223056; margin-top: 6px; overflow: hidden; }
+.cs .dev-bar i{ display: block; height: 100%; background: #fbbf24; }
+.cs .dev-caption{ font-size: 0.8rem; color: var(--text-secondary); text-align: center; max-width: 420px; }
+.cs .back-nav{
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+.cs .back-nav:hover{ background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+.cs .back-nav svg{ flex-shrink: 0; }
+.cs .back-to-top{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+.cs .back-to-top.visible{ opacity: 1; visibility: visible; transform: translateY(0); }
+.cs .back-to-top:hover{ background: var(--accent-dark); }
+@media (max-width: 680px){.cs .hero{ padding: 80px 20px 56px; }
+.cs .hero h1{ font-size: 1.7rem; }
+.cs .back-nav{ top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+.cs .back-to-top{ bottom: 16px; right: 16px; width: 40px; height: 40px; }
+
+    }
+@media (prefers-reduced-motion: reduce){.cs *, .cs *::before, .cs *::after{ animation: none !important; transition: none !important; }
+
+    }
+.cs .ico{ width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+.cs .rung:last-child{ border-bottom: 0; }
+.cs .ledger--wide{ min-width: 780px; }
+.cs .ladder{ border-top: 1px solid var(--border); margin-top: 20px; }
+.cs .rung{
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+.cs .rung .cond{ display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+.cs .rung .cond .ico{ color: var(--text-muted); width: 15px; height: 15px; }
+.cs .rung .out{ font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+.cs .rung .note{ font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+.cs .rung.none .out{ color: var(--text-muted); }
+@media (min-width: 700px){.cs .rung{ grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+
+    }
+.cs .hero-mark .ico{ width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+.cs .hero-badge .ico{ width: 14px; height: 14px; }
+@media (max-width:640px){}
+
+</style><link rel="stylesheet" href="../../common/components.css?v=7"/><link rel="stylesheet" href="../../pj/case.css?v=12"/></head><body><div style="opacity:0" class="page-wrapper"><div data-collapse="medium" data-animation="default" data-duration="400" data-w-id="58db7844-5919-d71b-dd74-2323ed8dffe9" data-easing="ease" data-easing2="ease" role="banner" class="header w-nav"><div class="loader-wrapper"><div class="loader"></div></div><div class="container-header"><div class="split-content header-left"><a href="https://myfolio.tanplanet.work/" class="brand w-nav-brand"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><nav role="navigation" class="nav-menu w-nav-menu"><ul role="list" class="header-navigation"><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="nav-link">Home</a></li><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="nav-link">About</a></li><li class="nav-item-wrapper last"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a><a href="https://projects.tanplanet.work/en/" class="nav-link">Portfolio</a><a href="https://myfolio.tanplanet.work/en/contact" class="nav-link nav-contact">Contact</a></li></ul></nav></div><div class="split-content header-right"><a class="lang-switch" href="https://projects.tanplanet.work/live-arduino-portfolio/" hreflang="th" aria-label="TH EN – Switch to Thai"><span class="">TH</span> <span class="on">EN</span></a><div class="link-header-wrapper"><a data-w-id="a331bf6d-ae80-89ce-2301-aa6077024ef0" href="https://drive.google.com/file/d/1GjCCJ3XFU16-ceCq3MGVWRdezXm3GWxl/view?usp=sharing" target="_blank" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Resume</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="menu-button w-nav-button"><div class="menu-button-wrapper"><div class="menu-button-icon"><div class="menu-line-top"></div><div class="menu-line-middle"></div><div class="menu-line-bottom"></div></div></div></div></div></div><div class="container-default w-container"><div class="divider"></div></div></div><div class="section blog-post" role="main"><article class="ap cs-page" role="main"><div class="ap-band"><div class="ap-container"><header class="ap-head">
+<div class="ap-tags"><a href="https://projects.tanplanet.work/en/" class="ap-tag">Tooling</a><span class="ap-tag ap-tag--ghost">Projects</span></div>
+<h1 class="ap-title">TanPlanet Live</h1><p class="cs-sub">A personal ESP32 desk screen that replaced opening six apps every morning with a glance at the screen next to the keyboard — one ฿640 board and a Node backend running on the Mac I already had. No cloud, no keys on the board, and the data never leaves the house.</p>
+<p class="ap-meta"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><time datetime="2026-08-05">Aug 5, 2026</time></span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>12 min read</span></p>
+</header></div></div>
+<div class="ap-container ap-grid"><div class="ap-main">
+<figure class="ap-cover"><img src="../../pj/covers/live-arduino-portfolio-en.webp" alt="" width="1600" height="900" fetchpriority="high" decoding="async"></figure>
+<div class="ap-row"><aside class="ap-share" aria-label="Share this article"><span class="ap-share-title">SHARE</span><a href="https://www.facebook.com/sharer/sharer.php?u=https://projects.tanplanet.work/en/live-arduino-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a><a href="https://twitter.com/intent/tweet?url=https://projects.tanplanet.work/en/live-arduino-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on X"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.9 1.2h3.7l-8 9.1L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9Zm-1.3 19.4h2L6.5 3.2H4.3l13.3 17.4Z"/></svg></a><a href="https://social-plugins.line.me/lineit/share?url=https://projects.tanplanet.work/en/live-arduino-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LINE"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="3" width="21" height="18" rx="5.5" fill="currentColor"/><text x="12" y="15.2" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="7.2" font-weight="900" fill="#fff">LINE</text></svg></a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https://projects.tanplanet.work/en/live-arduino-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a><button type="button" class="ap-share-btn" data-tip-done="Copied" data-copy="https://projects.tanplanet.work/en/live-arduino-portfolio/" aria-label="Copy link"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button></aside><div class="ap-body"><div class="cs">
+<p class="cs-lead">A ฿640 3.5" screen on my desk that pulls the Thai calendar, lunar phase, weather, investing horoscope, stock portfolio, AI quota and Claude Code status into tappable cards. The ESP32 is only the "screen"; the brain lives on the Mac.</p><div class="cs-chips"><span class="cs-chip">ESP32</span><span class="cs-chip">LVGL 9</span><span class="cs-chip">TFT_eSPI</span><span class="cs-chip">XPT2046 Touch</span><span class="cs-chip">Node Backend</span><span class="cs-chip">launchd</span><span class="cs-chip">mDNS</span><span class="cs-chip">Custom Thai font</span></div>
+<article>
+
+    <!-- ===== Problem ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>The problem</h2>
+      <p>There are only a few things I check every morning, but they live in different places and none of them is ever "right in front of me"</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../live-arduino-portfolio/img/apps-phone.jpg" width="1400" height="788" loading="lazy" alt="A phone screen full of app icons and notification badges">
+      <figcaption>Information I look at for a few seconds, yet I have to unlock the phone and open one app after another &middot; Photo: Brian J. Tromp / Unsplash</figcaption>
+    </figure>
+
+
+    <div class="quote-block">
+      <p>Every morning I opened six things: the calendar for Buddhist holy days, a weather app, my portfolio in Dime, the coach card in LINE, how much Claude quota was left, and what the agents I had started were doing. All of it is "glance" information, not something worth opening an app to read. On the computer it was always buried under other windows.</p>
+      <div class="author">— The starting brief, before ordering the ESP32 board</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h3>Data spread across 6 apps, 3 seconds each</h3>
+        <p>Weather, holy days, watched stock prices, AI quota: less than a minute of reading in total, but it meant unlocking the phone, opening apps and switching tabs every day</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
+        <h3>A dashboard on the computer doesn't really exist</h3>
+        <p>A dashboard in another tab always ends up under work windows. Glanceable information needs its own space that doesn't compete with work.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+        <h3>Off-the-shelf screen modules can't speak Thai</h3>
+        <p>Almost every ready-made ESP32 screen firmware ships only Latin fonts. Thai comes out as boxes, and tone marks stack in the wrong place.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
+        <h3>The ESP32 can't do the thinking</h3>
+        <p>Calculating the solar-calendar horoscope, calling AI for summaries, reading the OAuth quota: these eat RAM and need secrets that shouldn't be baked into a board sitting on a desk</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M15 8V2"/><path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"/><path d="M9 8V2"/></svg>
+        <h3>New Wi-Fi network, new flash</h3>
+        <p>Firmware with the backend IP hardcoded dies silently when the Mac gets a new IP or the router changes, and has to be re-flashed over USB every time</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>The solution</h2>
+      <p>Draw a clear line between the "screen" and the "brain", and let them talk through one data contract</p>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m13.5 6.5-3.148-3.148a1.205 1.205 0 0 0-1.704 0L6.352 5.648a1.205 1.205 0 0 0 0 1.704L9.5 10.5"/><path d="M16.5 7.5 19 5"/><path d="m17.5 10.5 3.148 3.148a1.205 1.205 0 0 1 0 1.704l-2.296 2.296a1.205 1.205 0 0 1-1.704 0L13.5 14.5"/><path d="M9 21a6 6 0 0 0-6-6"/><path d="M9.352 10.648a1.205 1.205 0 0 0 0 1.704l2.296 2.296a1.205 1.205 0 0 0 1.704 0l4.296-4.296a1.205 1.205 0 0 0 0-1.704l-2.296-2.296a1.205 1.205 0 0 0-1.704 0z"/></svg>
+        <h3>The ESP32 is a thin client, not the brain</h3>
+        <p>The backend on the Mac gathers every source, does the calculations, and sends short card JSON for the screen to draw. The firmware doesn't know any API and holds no keys.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="12" height="12" x="2" y="10" rx="2" ry="2"/><path d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6"/><path d="M6 18h.01"/><path d="M10 14h.01"/><path d="M15 6h.01"/><path d="M18 9h.01"/></svg>
+        <h3>Everything is a "card" with the same shape</h3>
+        <p>Weather, stocks, horoscope or AI quota, every card uses the same contract <code>id / type / title / value / detail / tone / priority</code>. A new card = one new function in the backend, no change to the screen.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h3>Configure from the phone, no flashing</h3>
+        <p>The <code>/manage</code> page reorders cards, hides or shows them, picks watched stocks, sets the Pomodoro timer and day/night brightness. The screen pulls the config on its next cycle and updates right away.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg>
+        <h3>A self-generated Thai font with raised tone marks</h3>
+        <p>I built bitmap fonts from Anuphan in 5 sizes for the firmware, and made raised tone-mark glyphs stored in the Private Use Area, because LVGL doesn't read OpenType GPOS tables</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg>
+        <h3>Find the backend by name, not IP</h3>
+        <p>The screen resolves <code>Workspace-3.local</code> via mDNS and caches the IP. Moving the router, switching Wi-Fi bands or a new Mac IP: it still finds the backend without a cable.</p>
+      </div>
+    </div>
+
+    <figure class="shot shot-pair shot-phone">
+      <img src="../../live-arduino-portfolio/img/config-card-order.jpg" width="786" height="1400" loading="lazy" alt="The /manage page on mobile: the list of cards in screen order, with up/down buttons and a hide button for each card">
+      <img src="../../live-arduino-portfolio/img/config-focus.jpg" width="786" height="1400" loading="lazy" alt="The /manage focus and reminders section: Pomodoro minutes, break length, water reminders and the screen's refresh interval">
+      <figcaption>The <code>/manage</code> page opened on a phone &mdash; reorder cards, hide cards, set Pomodoro and brightness, and the screen follows on its next cycle (screenshots from the real device, personal data replaced with sample values)</figcaption>
+    </figure>
+
+    <hr class="divider">
+
+    <!-- ===== Flow ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>How it works — 4 steps</h2>
+      <p>From raw data sources to tappable cards on the screen, in a 60-second cycle</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../live-arduino-portfolio/img/device-summary-json.jpg" width="1200" height="989" loading="lazy" alt="A terminal showing JSON for the weather and investing horoscope cards, with fields id type title value detail tone priority">
+      <figcaption>What the screen receives is pre-digested cards &mdash; short text, numbers and a tone for picking colors (sample file following the data contract in the repo)</figcaption>
+    </figure>
+
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        <h4>Gather</h4>
+        <p>The backend pulls weather, the .ics calendar, stock prices, horoscope, Claude quota and the tail of the agent session files</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect x="14" y="2" width="8" height="8" rx="1"/></svg>
+        <h4>Digest into cards</h4>
+        <p>Everything is computed on the Mac, leaving only short text + numbers the screen can draw immediately</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h4>The screen pulls and draws</h4>
+        <p>The ESP32 makes an HTTP request every 60 s (the Claude card has its own 10 s channel) and renders with LVGL</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 14a8 8 0 0 1-8 8"/><path d="M18 11v-1a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1"/><path d="M10 9.5V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10"/><path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+        <h4>Tap to drill in</h4>
+        <p>Tap a card → a detail page: price chart, hourly rain chart, month calendar or price ladder</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>No cloud, no user accounts, no keys on the board — everything stays on the home LAN</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../live-arduino-portfolio/img/esp32-board.jpg" width="1400" height="788" loading="lazy" alt="An ESP32 development board on graph paper">
+      <figcaption>The ESP32 only fetches JSON and draws it &mdash; the brain is on the Mac &middot; Photo: Thorium / Unsplash</figcaption>
+    </figure>
+
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Data sources
+          <div class="arch-sub">
+            <span>Open-Meteo</span> <span>MegaCoach JSON</span> <span>Thai Astrology API</span> <span>Claude usage API</span> <span>~/.claude/projects/*.jsonl</span> <span>.ics calendar</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Node backend on the Mac (launchd) &mdash; port 8787
+          <div class="arch-sub">
+            <span>/api/device-summary</span>
+            <span>/api/claude</span>
+            <span>/manage</span>
+            <span>saju.mjs</span>
+            <span>thai-lunar.mjs</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Firmware (Arduino + LVGL 9)
+          <div class="arch-sub">
+            <span>mDNS resolve</span> <span>HTTP poll</span> <span>Thai font, 5 sizes</span> <span>touch + scroll</span> <span>auto-dim</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          ESP32-035 &mdash; ฿640
+          <div class="arch-sub">
+            <span>ST7796 320&times;480</span>
+            <span>XPT2046 resistive</span>
+            <span>LDR</span>
+            <span>RGB LED</span>
+            <span>audio amp</span>
+            <span>Flash 4MB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Why this stack?</strong>
+      <p><strong>ESP32-035</strong> has the screen, touch, LDR, RGB LED and audio amp on one ฿640 board, so no extra sensors at all &middot; <strong>LVGL 9</strong> gives production-grade scroll, touch and animation on an MCU &middot; <strong>The backend is plain Node with no dependencies</strong>, run by <code>launchd</code> so it starts with the machine &middot; <strong>Keeping it on the LAN</strong> means it can read local files (agent sessions, portfolio data) without uploading anything to the cloud</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>What I built — 12 cards</h2>
+      <p>Every card shows real data; no mocks are left on the screen</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../live-arduino-portfolio/img/mascot-states.jpg" width="1400" height="747" loading="lazy" alt="An orange pixel mascot in 6 poses: holding a magnifier while reading files, typing on a laptop while editing, wearing a hard hat with a hammer while running commands, holding a globe while searching the web, a speech bubble while thinking, and asleep">
+      <figcaption>The mascot in the Claude Code card changes pose based on the tool the agent is using &mdash; rendered from the same code as the firmware (tamaclaude, MIT)</figcaption>
+    </figure>
+
+
+    <div class="module-grid">
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <h3>Clock + Thai date</h3>
+        <p>NTP sync, drawn with a separate 48px numeral font, plus the full Buddhist Era date in the header bar</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v3"/><path d="M16 2v3"/><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+        <h3>Monthly calendar</h3>
+        <p>Scroll to other months · blue dot under holy days · red numbers for public holidays · can pull external calendars via .ics</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+        <h3>Lunar calendar / holy days</h3>
+        <p>Waxing and waning phases are calculated in the backend with the Thai solar-calendar formula, no external API</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>
+        <h3>Weather, Google Weather style</h3>
+        <p>Open-Meteo + a hand-drawn hourly rain-chance chart + Google-style icons embedded as RGB565A8 C arrays</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 3 8 9l4 13 4-13-2.5-6"/><path d="M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z"/><path d="M2 9h20"/></svg>
+        <h3>Today's investing horoscope</h3>
+        <p>Connected to the Thai Astrology engine from the MegaCoach project — a 0-100 score with a short explanation</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.341 6.484A10 10 0 0 1 10.266 21.85"/><path d="M3.659 17.516A10 10 0 0 1 13.74 2.152"/><circle cx="12" cy="12" r="3"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/></svg>
+        <h3>Today's energy (Saju)</h3>
+        <p>I wrote the engine myself in <code>saju.mjs</code> and checked it against a reference app for every time period — energy per period shown as a connected line chart</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>
+        <h3>Market Focus</h3>
+        <p>Watched stock prices with a 1-month chart; press &#9668; &#9658; to page through them, list chosen on the manage page</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 21 14 3"/><path d="M20.5 21 10 3"/><path d="M15.5 21 12 15l-3.5 6"/><path d="M2 21h20"/></svg>
+        <h3>Monthly Plan &amp; Price Ladder</h3>
+        <p>Shows the entry zone / stop / target against the current price as a ladder, so you see at once where you are in the plan</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+        <h3>North Star</h3>
+        <p>Long-term goals and the risk rule <code>Fear of Ruin &gt; FOMO</code> that I need to see every day</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        <h3>AI Status</h3>
+        <p>Claude quota for the 5-hour and 7-day windows as line bars with a pace marker — the color changes when % used runs ahead of time elapsed</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+        <h3>Claude Code + mascot</h3>
+        <p>Reads the tail of the session file to see which tool the agent is using, and the mascot acts it out. Refreshes every 10 seconds.</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>
+        <h3>Pomodoro + routine reminders</h3>
+        <p>Work/break timer plus reminders for water, lunch and end of day — tap while it blinks to dismiss in one move</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Device Mockup ===== -->
+    <section class="section-intro" id="screen">
+      <span class="eyebrow">Prototype</span>
+      <h2>On the screen</h2>
+      <p>320&times;480 portrait — a fixed header bar, with scrollable, tappable cards below</p>
+    </section>
+
+    <div class="dev-wrap">
+      <div class="dev-frame">
+        <div class="dev-screen">
+          <div class="dev-hero">
+            <div>
+              <div class="dev-clock">09:42</div>
+              <div class="dev-date">Tue 5 August 2026</div>
+            </div>
+            <div class="dev-hero-right">
+              <div class="t">31&deg;</div>
+              <div>Mostly cloudy</div>
+              <div>Waxing moon, 12th night, 9th month</div>
+            </div>
+          </div>
+          <div class="dev-list">
+            <div class="dev-card">
+              <div class="dev-blob"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#9fb3ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></div>
+              <div class="body">
+                <div class="ttl">CLAUDE CODE</div>
+                <div class="val">Editing a file</div>
+                <div class="sub">live-arduino &middot; app_main.cpp</div>
+              </div>
+            </div>
+            <div class="dev-card">
+              <div class="dev-blob"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#9fb3ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></div>
+              <div class="body">
+                <div class="ttl">AI STATUS</div>
+                <div class="val warn">5-hour window 62%</div>
+                <div class="dev-bar"><i style="width:62%"></i></div>
+              </div>
+            </div>
+            <div class="dev-card">
+              <div class="dev-blob"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#9fb3ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
+              <div class="body">
+                <div class="ttl">MARKET FOCUS</div>
+                <div class="val">NVDA <span class="up">$206.69 &#9650; 1.2%</span></div>
+                <div class="sub">1 month &middot; low $188 &middot; high $212</div>
+              </div>
+            </div>
+            <div class="dev-card">
+              <div class="dev-blob"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#9fb3ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
+              <div class="body">
+                <div class="ttl">Today's energy</div>
+                <div class="val">Fire element &middot; 71/100</div>
+                <div class="sub">Strong period 09:00-11:00</div>
+              </div>
+            </div>
+            <div class="dev-card">
+              <div class="dev-blob"><svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#9fb3ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg></div>
+              <div class="body">
+                <div class="ttl">Pomodoro</div>
+                <div class="val">18:24</div>
+                <div class="sub">Working &middot; water reminder in 12 min</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="dev-caption">The header bar never moves during the day, so time and weather can be "glanced" without focusing. The cards below follow the priority set from the phone.</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hacks ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hacks and problems</h2>
+      <p>7 problems that came up once the real thing was on the desk — most aren't in any documentation and had to be tracked down by hand</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../live-arduino-portfolio/img/board-tweezers.jpg" width="1400" height="788" loading="lazy" alt="Tweezers placing a small chip onto a green circuit board">
+      <figcaption>Most of the problems aren't documented and had to be traced from symptoms on the real board &middot; Photo: Vishnu Mohanan / Unsplash</figcaption>
+    </figure>
+
+
+    <div class="hack-grid">
+      <div class="hack-card perf" data-label="Memory">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="13" r="9"/><path d="M14.35 4.65 16.3 2.7a2.41 2.41 0 0 1 3.4 0l1.6 1.6a2.4 2.4 0 0 1 0 3.4l-1.95 1.95"/><path d="m22 2-1.5 1.5"/></svg><span>Freezes on tap, with 165KB of free heap</span></h3>
+        <p>Tapping a card froze the screen now and then. I assumed RAM ran out, but the ESP reported 165KB of free heap.</p>
+        <div class="highlight">Fix: LVGL doesn't use the system heap. It uses its own pool, <code>LV_MEM_SIZE</code> = 32KB, which was 89% full → switched to <code>LV_STDLIB_CLIB</code> so LVGL allocates from the real heap &mdash; lesson: on an MCU, ask "which memory block is full", not just "how much is free"</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Stack">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>The board reboots when opening a detail page</span></h3>
+        <p>Opening the mascot card's detail page rebooted the board instantly, even with 163KB of heap to spare</p>
+        <div class="highlight">Fix: a 1.7KB mascot image struct was declared as a local variable in the draw callback, so it lived on the task's <strong>stack</strong>, not the heap → made it static &mdash; lesson: a stack overflow on the ESP32 looks like "it just rebooted", with no error to read</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Fonts">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 12 2 2 4-4"/><path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"/><path d="M22 19H2"/></svg><span>Thai tone marks stacked in the wrong place</span></h3>
+        <p>Words with an upper vowel plus a tone mark, such as "ที่", collided into a blob, because LVGL doesn't read OpenType GPOS tables</p>
+        <div class="highlight">Fix: wrote <code>make_thai_font.py</code> to generate bitmap fonts in 5 sizes from Anuphan, and <strong>created raised tone-mark glyphs stored in the Private Use Area</strong>. At render time, characters are mapped to the PUA glyphs when the context needs raising &mdash; correct placement without a shaping engine</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Debug">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/></svg><span>Boxes on the screen weren't a loading state</span></h3>
+        <p>Clock digits showed up as boxes in some states — I spent a long time hunting a data-loading race condition</p>
+        <div class="highlight">Fix: they were glyphs missing from the font. The 48px clock font only has <code>0-9 : &deg;</code>, so sending <code>--:--</code> turned the dashes into boxes → now an empty string is sent until the time is known &mdash; lesson: boxes = font, not state</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Network">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg><span>No data on screen, but the backend wasn't down</span></h3>
+        <p>The screen showed an error while <code>curl</code> from the Mac returned a normal 200 — I lost a lot of time looking for the cause on the backend</p>
+        <div class="highlight">Fix: the firmware never called <code>MDNS.begin()</code>, so lwip couldn't resolve <code>.local</code> names → use <code>MDNS.queryHost()</code> to get the IP and cache it &mdash; <strong>the trap that misled me: curling the .local name from the Mac itself goes to 127.0.0.1; you have to curl the LAN IP to see the truth</strong></div>
+      </div>
+
+      <div class="hack-card ux" data-label="Text">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg><span>Long weather names overlapped the clock</span></h3>
+        <p>Even with <code>LV_LABEL_LONG_DOT</code> it still overlapped, because LVGL wraps to a second line first and only then adds the ellipsis</p>
+        <div class="highlight">Fix: wrote <code>setThaiTextFit()</code>, which measures the real width with <code>lv_text_get_size</code> and trims the text one <strong>UTF-8 character</strong> at a time until it fits &mdash; never trim byte by byte, or you cut a Thai character in half and get garbage</div>
+      </div>
+
+      <div class="hack-card arch" data-label="Refresh">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg><span>The Claude card was 5 minutes late</span></h3>
+        <p>The card that shows what the agent is doing has to be live, but it waited for the main 60-second/5-minute cycle, so it was always stale</p>
+        <div class="highlight">Fix: a separate <code>/api/claude</code> channel sends only that one card (~300 bytes) every 10 s, and <strong>overwrites the existing labels in place</strong> by keeping their pointers, instead of <code>lv_obj_clean</code> on the whole screen &mdash; clearing the screen would snap the scroll back to the top every 10 seconds</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Deliberate design decisions</h2>
+      <p>What I chose "not to do" matters as much as what I did</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../live-arduino-portfolio/img/desk-minimal.jpg" width="1400" height="788" loading="lazy" alt="A clean white desk with a single monitor by the window">
+      <figcaption>The screen has one job: display. A narrow scope makes it hard to break &middot; Photo: Andres Jasso / Unsplash</figcaption>
+    </figure>
+
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>This screen has one job: <strong>display</strong>. It doesn't calculate horoscopes, doesn't call AI, holds no keys, and doesn't reach the internet except to talk to the backend at home. With a scope this tight, the firmware is just "fetch JSON and draw", which is easy to debug and hard to break.</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <span style="display:inline-flex;color:var(--accent,#1e3a8a);margin-bottom:6px"><svg class="ico" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg></span><br>
+        <strong>A screen, not a brain</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">Heavy logic stays on the Mac; the screen just fetches JSON and draws</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <span style="display:inline-flex;color:var(--accent,#1e3a8a);margin-bottom:6px"><svg class="ico" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg></span><br>
+        <strong>No keys in the firmware</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">The board sits on a desk; anyone who picks it up gets nothing from it</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <span style="display:inline-flex;color:var(--accent,#1e3a8a);margin-bottom:6px"><svg class="ico" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span><br>
+        <strong>LAN only</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">Portfolio and session data never go to the cloud</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <span style="display:inline-flex;color:var(--accent,#1e3a8a);margin-bottom:6px"><svg class="ico" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></span><br>
+        <strong>Config without flashing</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">Everything is adjusted from the phone; the USB cable can go in a drawer</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge domains that got stronger</h2>
+      <p>5 areas where my level really moved up from this project</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../live-arduino-portfolio/img/circuit-board.jpg" width="1400" height="788" loading="lazy" alt="Close-up of a green circuit board and chips">
+      <figcaption>Hardware, fonts, networking and data design &mdash; what one screen taught me &middot; Photo: Chris Ried / Unsplash</figcaption>
+    </figure>
+
+
+    <div class="learning-card">
+      <strong>1. Embedded UI with LVGL 9 — from "drawing text" to "designing a card system":</strong>
+      <p>I learned the object tree, style selectors, scroll containers, draw callbacks, and how to update widgets in place instead of rebuilding the whole screen — the difference between a smooth UI and a jumpy one. Lesson: on an MCU, "not redrawing" matters more than drawing beautifully.</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Thai fonts on embedded systems — down to the glyph level:</strong>
+      <p>Thai rendering needs shaping (GPOS), which LVGL doesn't provide, so the fix has to happen in the font layer: generate raised glyphs into the PUA and map them at render time, plus UTF-8 handling that never cuts mid-byte. Lesson: language support isn't a finishing feature; it's a constraint from the moment you pick a library.</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. Memory on an MCU — telling stack, heap and library pools apart:</strong>
+      <p>I hit both an LVGL pool filling up while the heap was free, and a stack overflow that looked like a plain reboot. Now I can read the symptoms and size the draw buffer within the real DRAM limits. Lesson: "how much RAM is left" is too broad a question for embedded work.</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Home networking — mDNS, subnets and misleading debugging:</strong>
+      <p><code>.local</code> needs a responder on both sides, 2.4GHz and 5GHz devices may sit on different subnets and fail to see each other, and testing from your own machine often gives false results. Lesson: always test from the point of view of the device with the problem, not the convenient machine.</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Thin-client architecture — one data contract that makes extending easy:</strong>
+      <p>Forcing every feature into the same "card" shape let me add 12 things with almost no firmware changes, and always moved heavy logic to the side that's easier to change. Lesson: designing the data contract well up front is how you cut future flashing.</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">12</div>
+        <div class="label">Real data cards on the screen</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">25</div>
+        <div class="label">commits from bring-up to daily use</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">฿640</div>
+        <div class="label">Total hardware cost</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">keys stored on the board</div>
+      </div>
+    </div>
+
+  </article>
+</div><section class="ap-author" aria-label="Author"><img class="ap-author-avatar" src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/688f5899cad39483c4e11c49_Profile_Webflow.webp" alt="" width="88" height="88" loading="lazy"><div class="ap-author-body"><p class="ap-author-name">Tan · Natpakan Sirirat</p><p class="ap-author-bio">Product Designer &amp; AI Builder — designing user experiences and building AI tools that actually work.</p><ul class="ap-author-links"><li><a href="https://www.linkedin.com/in/natpakan/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a></li><li><a href="https://www.facebook.com/tan.natpakan" target="_blank" rel="noopener" aria-label="Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a></li><li><a href="https://www.instagram.com/npkant/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a></li></ul></div></section><nav class="ap-pn" aria-label="Previous and next project"><a href="../book-screenshot-portfolio/" class="ap-pn-item ap-pn-prev"><span class="ap-pn-label">← Previous project</span><span class="ap-pn-title">Book Screenshot</span></a><a href="../media-sniffer-portfolio/" class="ap-pn-item ap-pn-next"><span class="ap-pn-label">Next project →</span><span class="ap-pn-title">MP4/M3U8 Sniffer</span></a></nav></div></div></div>
+<aside class="ap-side"><div class="ap-side-inner"><section class="ap-widget"><h2 class="ap-widget-title"><span>Latest projects</span></h2><ol class="ap-rank"><li><a href="../content-engine-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/content-engine-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">1</span></span><span class="ap-rank-title"><span class="ap-rank-t">Auto-publishing content engine</span></span></a></li><li><a href="../tans-tools-devpanel-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tans-tools-devpanel-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">2</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan’s Tools · DEV panel</span></span></a></li><li><a href="../android-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/android-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">3</span></span><span class="ap-rank-title"><span class="ap-rank-t">TX98 TV Box</span></span></a></li><li><a href="../tools-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tools-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">4</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan&#x27;s Tools</span></span></a></li><li><a href="../shotdeck-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/shotdeck-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">5</span></span><span class="ap-rank-title"><span class="ap-rank-t">shotdeck-box: a laptop that posts clips</span></span></a></li></ol></section></div></aside>
+</div><div class="ap-progress" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" class="ap-progress-track"/><circle cx="32" cy="32" r="28" class="ap-progress-bar" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg><span>0%</span></div></article><footer class="footer"><div class="container-default w-container"><div class="divider"></div></div><div class="container-footer"><div class="footer-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-logo-container w-inline-block"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" loading="lazy" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><ul role="list" class="footer-navigation"><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-nav-link">Home</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="footer-nav-link">About</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a></li><li class="footer-nav-item-wrapper"><a href="https://projects.tanplanet.work/en/" class="footer-nav-link">Portfolio</a></li><li class="footer-nav-item-wrapper last"><a href="https://projects.tanplanet.work/preset/" class="footer-nav-link footer-nav-design">Design</a></li></ul><a data-w-id="2afa9a01-05cf-ade4-4d79-909445ba12f2" href="https://myfolio.tanplanet.work/contact" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Contact Me</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="divider"></div><div class="small-print">© 2026 Natpakan Sirirat · All rights reserved.</div></div></footer></div><script src="https://myfolio.tanplanet.work/_ext/d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8__site%3D608d62778637273e1880cb8d.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.1a807f015b216e46.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.8870a749f76b548c.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.9641f8cc.4fd3e4280b7acaf7.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/header-autohide.js" defer></script><script src="https://myfolio.tanplanet.work/blog/article.js" defer></script><div class="cs cs-extras">
+
+  <!-- ===== Closing ===== -->
+  
+
+  <!-- ===== Fixed UI ===== -->
+  
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  
+
+
+
+</div><script>try{
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  }catch(e){}</script><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "TanPlanet Live — ESP32 desk screen",
+      "item": "https://projects.tanplanet.work/live-arduino-portfolio/"
+    }
+  ]
+}
+</script></body></html>

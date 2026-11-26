@@ -1,0 +1,42 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=block">
+<style>
+/* ปกผลงาน tanplanet — 1600×900 · ขอบบน/ล่าง 30px ถูกตัดตอนทำ OG 1200×630 → ของสำคัญอยู่ในกรอบกลาง */
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1600px; height: 900px; overflow: hidden; }
+body { font-family: "Google Sans", sans-serif; background: var(--bg); color: #1f1f1f; position: relative; }
+.wrap { position: absolute; inset: 0; padding: 120px 0 0 120px; }
+.tags { display: flex; gap: 12px; }
+.tag { padding: 8px 18px; border-radius: 10px; background: #1f1f1f; color: #fff; font-size: 30px; font-weight: 500; letter-spacing: .02em; }
+h1 { width: 760px; margin-top: 44px; font-size: 92px; line-height: 1.08; font-weight: 700; letter-spacing: -.01em; }
+h1.th { font-size: 84px; line-height: 1.22; }
+.meta { position: absolute; left: 120px; bottom: 120px; display: flex; gap: 40px; }
+.meta .k { margin-bottom: 14px; font-size: 30px; font-weight: 500; color: rgba(31,31,31,.6); }
+.pill { display: inline-flex; align-items: center; gap: 12px; height: 72px; padding: 0 28px 0 22px; border-radius: 999px; font-size: 34px; font-weight: 700; }
+.pill svg { width: 36px; height: 36px; }
+.pill.type { background: #1f1f1f; color: #fff; }
+.pill.status { background: #fff; color: #1f1f1f; }
+.pill.status .dot { width: 14px; height: 14px; border-radius: 50%; background: #16a34a; margin: 0 4px; }
+.pill.status.wip .dot { background: #f59e0b; }
+.pill.me { background: #fff; color: #1f1f1f; padding-left: 8px; }
+.pill.me img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+.shot { position: absolute; left: 960px; top: 110px; width: 900px; border-radius: 24px; overflow: hidden; background: #fff;
+        box-shadow: 0 40px 80px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.06); }
+.shot .bar { height: 40px; display: flex; gap: 10px; align-items: center; padding-left: 18px; background: #f4f4f5; }
+.shot .bar i { width: 12px; height: 12px; border-radius: 50%; background: #d4d4d8; }
+.shot img { display: block; width: 100%; height: 640px; object-fit: cover; object-position: top left; }
+.shot.phone { left: 1060px; top: 90px; width: 360px; border-radius: 44px; border: 12px solid #1f1f1f; }
+.shot.phone .bar { display: none; }
+.shot.phone img { height: 740px; }
+</style></head><body style="--bg: {{BG}}">
+<div class="wrap">
+  <div class="tags">{{TAGS}}</div>
+  <h1 class="{{LANG}}">{{TITLE}}</h1>
+</div>
+<div class="meta">
+  <div><p class="k">{{K_TYPE}}</p><span class="pill type">{{TYPE_ICON}}{{TYPE}}</span></div>
+  <div><p class="k">{{K_STATUS}}</p><span class="pill status {{STATUS_CLS}}"><span class="dot"></span>{{STATUS}}</span></div>
+  <div><p class="k">{{K_ME}}</p><span class="pill me"><img src="{{AVATAR}}">Tan</span></div>
+</div>
+<div class="shot {{SHOT_CLS}}"><div class="bar"><i></i><i></i><i></i></div><img src="{{IMAGE}}"></div>
+</body></html>

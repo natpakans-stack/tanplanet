@@ -1,0 +1,130 @@
+/* components.css — คอมโพเนนต์เนื้อหาชุดเดียวของ tanplanet ทั้งแพลตฟอร์ม (แทนสั่ง 27 พ.ย. 2026: ห้ามสุ่มหน้าตาต่อหน้า)
+   ใช้ใน: case study (.cs) · หน้า preset (.tp-doc) · ดูรายการ + ตัวอย่างที่ /preset/ บน projects
+   ขาดอะไร → เพิ่มที่นี่ + ใน preset ก่อน แล้วค่อยใช้ · สี/ฟอนต์มาจาก tokens.css เท่านั้น
+   หมายเหตุ: tools/case-to-article.py ตัด CSS เดิมของหน้าที่แตะคลาสในไฟล์นี้ทิ้ง → หน้าตามาจากที่นี่ที่เดียว */
+
+:is(.cs, .tp-doc) { --c-gap: 16px; --c-radius: 14px; color: var(--tp-text-2); font-family: var(--tp-font); font-size: 17px; line-height: 1.75; }
+:is(.cs, .tp-doc) :is(h2, h3, h4, h5) { font-family: var(--tp-font-display); color: var(--tp-text); }
+:is(.cs, .tp-doc) :is(p, li, span, div, a, td, th, figcaption, strong, b, em, label, button, blockquote) { font-family: inherit; }  /* ทับฟอนต์เดิมของหน้า (IBM Plex) — มาทีหลังจึงชนะ */
+:is(.cs, .tp-doc) :is(code, pre, kbd, samp), :is(.cs, .tp-doc) :is(code, pre, kbd, samp) * { font-family: "SF Mono", ui-monospace, Menlo, monospace; }
+:is(.cs, .tp-doc) code { padding: 1px 6px; border-radius: 6px; background: var(--tp-surface-3); font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: .86em; color: var(--tp-text); }
+:is(.cs, .tp-doc) :where(svg.ico) { width: 18px; height: 18px; flex: none; color: var(--tp-text-3); }
+
+/* 1 · หัวช่วง (section-intro): ป้ายเล็ก + หัวข้อ + คำโปรย */
+:is(.cs, .tp-doc) .section-intro .eyebrow { display: block; margin: 0 0 10px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--tp-text-3); }
+:is(.cs, .tp-doc) .section-intro h2 { margin: 0 0 8px; font-size: 28px; line-height: 1.3; font-weight: 600; }
+:is(.cs, .tp-doc) .section-intro p { margin: 0; color: var(--tp-text-3); }
+:is(.cs, .tp-doc) .section-intro .nb { white-space: nowrap; }
+
+/* 2 · เส้นคั่น */
+:is(.cs, .tp-doc) hr.divider { height: 1px; margin: 40px 0; border: 0; background: var(--tp-border); }
+
+/* 3 · ภาพประกอบ (figure.shot) + ขนาด narrow · phone · pair */
+:is(.cs, .tp-doc) figure.shot { margin: 32px 0; }
+:is(.cs, .tp-doc) figure.shot img, :is(.cs, .tp-doc) figure.shot video { display: block; width: 100%; height: auto; border: 1px solid var(--tp-border); border-radius: 12px; background: var(--tp-surface-2); }
+:is(.cs, .tp-doc) figure.shot figcaption { margin-top: 10px; font-size: 14px; line-height: 1.6; color: var(--tp-text-3); }
+:is(.cs, .tp-doc) figure.shot:is(.shot-narrow, .narrow, .mid) { max-width: 560px; margin-inline: auto; }
+:is(.cs, .tp-doc) figure.shot:is(.shot-phone, .phone) { max-width: 320px; margin-inline: auto; }
+:is(.cs, .tp-doc) :is(.shot-pair, figure.shot.shot-pair) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--c-gap); align-items: start; }
+:is(.cs, .tp-doc) .shot .zoom-hint { margin-left: 6px; color: var(--tp-text-4); font-size: 13px; }
+
+/* 4 · คำพูด (quote-block) = หน้าตาเดียวกับคำโปรยหัวบทความ (blockquote.ap-lead): เส้นซ้ายดำหนา · เครื่องหมาย “ ใหญ่ · ตัวหนา */
+:is(.cs, .tp-doc) .quote-block { margin: 32px 0; padding: 0 0 0 20px; border-left: 4px solid var(--tp-text); background: none; border-radius: 0; }
+:is(.cs, .tp-doc) .quote-block::before { content: "\201C"; display: block; font-size: 56px; line-height: .8; font-weight: 700; color: var(--tp-text); }
+:is(.cs, .tp-doc) .quote-block p { margin: 8px 0 0; font-size: 19px; line-height: 1.7; font-weight: 600; color: var(--tp-text); }
+:is(.cs, .tp-doc) .quote-block .author { margin-top: 10px; font-size: 14px; font-weight: 400; color: var(--tp-text-3); }
+
+/* 5 · กล่องบทเรียน/หมายเหตุ (learning-card · .note · .ok) */
+:is(.cs, .tp-doc) .learning-card { margin: 32px 0; padding: 20px 24px; border: 1px solid var(--tp-border); border-radius: var(--c-radius); background: var(--tp-surface-2); }
+:is(.cs, .tp-doc) .learning-card > :first-child { margin-top: 0; }
+:is(.cs, .tp-doc) .learning-card > :last-child { margin-bottom: 0; }
+:is(.cs, .tp-doc) .learning-card strong { color: var(--tp-text); }
+:is(.cs, .tp-doc) .learning-card.note { background: var(--tp-surface); }
+:is(.cs, .tp-doc) .learning-card.ok { border-left: 3px solid var(--tp-text); }
+
+/* 6 · การ์ดในกริด (ปัญหา · ทางแก้ · โมดูล · พาร์ตเนอร์) — แบบเดียวกันทั้งหมด */
+:is(.cs, .tp-doc) :is(.pain-grid, .solution-grid, .module-grid, .partner-grid) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--c-gap); margin: 24px 0; }
+:is(.cs, .tp-doc) :is(.pain-card, .solution-card, .module-card, .partner-card) { padding: 20px; border: 1px solid var(--tp-border); border-radius: var(--c-radius); background: var(--tp-surface); }
+:is(.cs, .tp-doc) :is(.pain-card, .solution-card, .module-card, .partner-card) > svg.ico { display: block; width: 22px; height: 22px; margin-bottom: 12px; color: var(--tp-text); }
+:is(.cs, .tp-doc) :is(.pain-card, .solution-card, .module-card, .partner-card) h3 { margin: 0 0 6px; font-size: 17px; line-height: 1.45; font-weight: 600; }
+:is(.cs, .tp-doc) :is(.pain-card, .solution-card, .module-card, .partner-card) p { margin: 0; font-size: 15px; line-height: 1.65; color: var(--tp-text-3); }
+
+/* 7 · ปัญหาที่เจอ + วิธีแก้ (hack-card) — ข้อความเรียบ คั่นด้วยเส้น */
+:is(.cs, .tp-doc) .hack-grid { margin: 8px 0 24px; }
+:is(.cs, .tp-doc) .hack-card { padding: 24px 0; border-top: 1px solid var(--tp-border); }
+:is(.cs, .tp-doc) .hack-card:first-child { border-top: 0; padding-top: 8px; }
+:is(.cs, .tp-doc) .hack-card h3 { margin: 0 0 6px; font-size: 18px; line-height: 1.45; font-weight: 600; }
+:is(.cs, .tp-doc) .hack-card h3 > svg { display: none; }
+:is(.cs, .tp-doc) .hack-card p { margin: 0; }
+:is(.cs, .tp-doc) .hack-card .highlight { margin-top: 10px; color: var(--tp-text-2); }
+:is(.cs, .tp-doc) .hack-card .highlight > strong:first-child { color: var(--tp-text); }
+
+/* 8 · ขั้นตอน (flow-step) — เลข + หัวข้อ + คำอธิบาย */
+:is(.cs, .tp-doc) .flow-grid { margin: 16px 0 24px; }
+:is(.cs, .tp-doc) .flow-step { display: grid; grid-template-columns: 40px minmax(0, 1fr); column-gap: 8px; padding: 16px 0; border-top: 1px solid var(--tp-border); }
+:is(.cs, .tp-doc) .flow-step:first-child { border-top: 0; }
+:is(.cs, .tp-doc) .flow-step > svg { display: none; }
+:is(.cs, .tp-doc) .flow-step .step-num { grid-row: 1 / span 3; font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--tp-text-3); line-height: 1.6; }
+:is(.cs, .tp-doc) .flow-step :is(h3, h4) { grid-column: 2; margin: 0 0 2px; font-size: 16px; line-height: 1.5; font-weight: 600; }
+:is(.cs, .tp-doc) .flow-step p { grid-column: 2; margin: 0; font-size: 15px; color: var(--tp-text-3); }
+
+/* 9 · ตัวเลขผลลัพธ์ (metrics) — คอลัมน์ตามจำนวนช่อง แถวท้ายไม่แหว่ง */
+:is(.cs, .tp-doc) .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 24px 0; }
+:is(.cs, .tp-doc) .metrics:has(> :nth-child(2):last-child), :is(.cs, .tp-doc) .metrics:has(> :nth-child(4):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+:is(.cs, .tp-doc) .metrics:has(> :nth-child(8):last-child) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+:is(.cs, .tp-doc) .metric-card { padding: 20px 16px; border: 1px solid var(--tp-border); border-radius: var(--c-radius); background: var(--tp-surface); text-align: center; }
+:is(.cs, .tp-doc) .metric-card .num { font-family: var(--tp-font-display); font-size: 32px; line-height: 1.2; font-weight: 600; color: var(--tp-text); font-variant-numeric: tabular-nums; }
+:is(.cs, .tp-doc) .metric-card .label { margin-top: 6px; font-size: 14px; line-height: 1.55; color: var(--tp-text-3); }
+
+/* 10 · รายการมีไอคอน (ul.plain) */
+:is(.cs, .tp-doc) ul.plain { margin: 16px 0; padding: 0; list-style: none; }
+:is(.cs, .tp-doc) ul.plain li { display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid var(--tp-border); }
+:is(.cs, .tp-doc) ul.plain li:first-child { border-top: 0; }
+:is(.cs, .tp-doc) ul.plain li > svg { margin-top: 5px; }
+:is(.cs, .tp-doc) ul.plain b { color: var(--tp-text); }
+
+/* 11 · ตารางเปรียบเทียบ (ledger) — แถวที่เลือก = พื้นเทาทั้งแถว */
+:is(.cs, .tp-doc) .ledger-wrap { margin: 24px 0; overflow-x: auto; }
+:is(.cs, .tp-doc) table.ledger { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.6; }
+:is(.cs, .tp-doc) table.ledger th { padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 500; color: var(--tp-text-4); border-bottom: 1px solid var(--tp-border-strong); }
+:is(.cs, .tp-doc) table.ledger td { padding: 14px 12px; vertical-align: top; border-bottom: 1px solid var(--tp-border); color: var(--tp-text-2); }
+:is(.cs, .tp-doc) table.ledger td:first-child { font-weight: 600; color: var(--tp-text); }
+:is(.cs, .tp-doc) table.ledger tr[data-picked] > td { background: var(--tp-surface-2); color: var(--tp-text); }
+:is(.cs, .tp-doc) .pick { display: flex; align-items: center; gap: 4px; margin-top: 6px; font-size: 13px; font-weight: 500; color: var(--tp-text-3); }
+:is(.cs, .tp-doc) .pick svg { width: 14px; height: 14px; }
+
+/* 12 · ป้าย (chip · stack-icon) — ทึบ = ของเราเอง · ขอบ = ของภายนอก/ทั่วไป */
+:is(.cs, .tp-doc) :is(.chips, .stack-icons, .cs-chips) { display: flex; flex-wrap: wrap; gap: 6px; }
+:is(.cs, .tp-doc) :is(.chip, .stack-icon, .cs-chip) { display: inline-flex; align-items: center; padding: 3px 12px; border: 1px solid var(--tp-border-strong); border-radius: 999px; background: var(--tp-surface); font-size: 13px; font-weight: 500; line-height: 1.6; color: var(--tp-text-2); }
+:is(.cs, .tp-doc) .chip.own { background: var(--tp-text); border-color: var(--tp-text); color: var(--tp-on-brand); }
+:is(.cs, .tp-doc) .legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0; font-size: 14px; color: var(--tp-text-3); }
+
+@media (max-width: 640px) {
+  :is(.cs, .tp-doc) :is(.pain-grid, .solution-grid, .module-grid, .partner-grid, .shot-pair, figure.shot.shot-pair) { grid-template-columns: minmax(0, 1fr); }
+  :is(.cs, .tp-doc) .metrics:has(> :nth-child(8):last-child), :is(.cs, .tp-doc) .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  :is(.cs, .tp-doc) .section-intro h2 { font-size: 24px; }
+}
+:is(.cs, .tp-doc) code { overflow-wrap: anywhere; word-break: break-word; }  /* โค้ดยาวในบรรทัดไม่ดันจอมือถือ */
+
+/* บทความบล็อก myfolio (.ap-content) ใช้คอมโพเนนต์ชุดเดียวกัน: คำพูด · ภาพ+คำบรรยาย · ตาราง */
+.ap-content blockquote:not(.ap-lead) { margin: 32px 0; padding: 0 0 0 20px; border-left: 4px solid var(--tp-text); background: none; font-size: 19px; line-height: 1.7; font-weight: 600; color: var(--tp-text); font-style: normal; }
+.ap-content blockquote:not(.ap-lead)::before { content: "\201C"; display: block; font-size: 56px; line-height: .8; font-weight: 700; color: var(--tp-text); }
+.ap-content figure figcaption { margin-top: 10px; font-size: 14px; line-height: 1.6; color: var(--tp-text-3); text-align: left; }
+.ap-content table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.6; }
+.ap-content table th { padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 500; color: var(--tp-text-4); border-bottom: 1px solid var(--tp-border-strong); }
+.ap-content table td { padding: 14px 12px; vertical-align: top; border-bottom: 1px solid var(--tp-border); }
+
+/* 13 · แผนผังชั้น (arch-diagram) — การ์ดเรียงลง มีเลขชั้นในวงกลม + เส้นเชื่อม · ขาวดำ ไม่มีพื้นสีต่อชั้น */
+:is(.cs, .tp-doc) .arch-diagram { margin: 32px 0; padding: 24px; border: 1px solid var(--tp-border); border-radius: 20px; background: var(--tp-surface-2); }
+:is(.cs, .tp-doc) .arch-layers { counter-reset: arch; display: flex; flex-direction: column; }
+:is(.cs, .tp-doc) .arch-layer { counter-increment: arch; display: grid; grid-template-columns: 36px minmax(0, 1fr); column-gap: 16px; row-gap: 10px; align-items: center;
+  padding: 18px 20px; border: 1px solid var(--tp-border); border-radius: 14px; background: var(--tp-surface); box-shadow: var(--tp-shadow-sm);
+  font-family: var(--tp-font-display); font-size: 16px; line-height: 1.5; font-weight: 600; color: var(--tp-text); text-align: left; }
+:is(.cs, .tp-doc) .arch-layer::before { content: counter(arch); grid-row: 1 / span 2; align-self: start; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--tp-text); color: var(--tp-on-brand); font-size: 15px; font-weight: 600; }
+:is(.cs, .tp-doc) .arch-sub { grid-column: 2; display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
+:is(.cs, .tp-doc) .arch-sub span { padding: 3px 12px; border: 1px solid var(--tp-border); border-radius: 999px; background: var(--tp-surface-2); font-family: var(--tp-font); font-size: 13px; font-weight: 500; line-height: 1.6; color: var(--tp-text-2); }
+:is(.cs, .tp-doc) .arch-arrow { width: 0; height: 22px; margin-left: 37px; border-left: 2px solid var(--tp-border-strong); font-size: 0; overflow: hidden; }
+/* ภาพคู่: คำบรรยายคร่อมทั้งสองคอลัมน์ ชิดซ้าย (เดิมตกไปเป็นช่องที่ 3 แคบ ๆ) · ภาพชิดบนเท่ากัน */
+:is(.cs, .tp-doc) :is(.shot-pair, figure.shot.shot-pair) > :is(figcaption, .shot-cap) { grid-column: 1 / -1; margin-top: 2px; text-align: left; font-size: 14px; line-height: 1.6; color: var(--tp-text-3); }
+:is(.cs, .tp-doc) :is(.shot-pair, figure.shot.shot-pair) > img { width: 100%; height: auto; border: 1px solid var(--tp-border); border-radius: 12px; }
+:is(.cs, .tp-doc) figure.shot figcaption { text-align: left; }

@@ -1,0 +1,703 @@
+<!DOCTYPE html><html data-wf-domain="www.tanplanet.work" data-wf-page="608d6278863727b47e80cb9c" data-wf-site="608d62778637273e1880cb8d" lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tan's Tools · DEV panel — a remote control for a design engineer working with AI</title>
+  <meta name="description" content="Portfolio: getting AI to fix UI accurately in two layers — it reads the team's Design System first, then opens the real page on localhost itself, with a DEV panel beside the IDE used for 4 cases: a full-system audit · pointing at spots on the real page and sending them to the terminal · switching edge cases in one click · designing new components and proposing them to the system">
+  <meta property="og:title" content="Tan's Tools · DEV panel — a remote control for a design engineer working with AI">
+  <meta property="og:description" content="Portfolio: getting AI to fix UI accurately in two layers — it reads the team's Design System first, then opens the real page on localhost itself, with a DEV panel beside the IDE used for 4 cases: a full-system audit · pointing at spots on the real page and sending them to the terminal · switching edge cases in one click · designing new components and proposing them to the system">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tan's Tools · DEV panel — a remote control for a design engineer working with AI">
+  <meta name="twitter:description" content="Portfolio: getting AI to fix UI accurately in two layers — it reads the team's Design System first, then opens the real page on localhost itself, with a DEV panel beside the IDE used for 4 cases: a full-system audit · pointing at spots on the real page and sending them to the terminal · switching edge cases in one click · designing new components and proposing them to the system">
+  <rect width='100' height='100' rx='24' fill='%230a0f1f'/><path d='M50 22a18 18 0 0 0-18 18v12l-6 10h48l-6-10V40a18 18 0 0 0-18-18z' fill='none' stroke='%2334d399' stroke-width='6' stroke-linejoin='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  
+  
+  
+  <script src="../../common/closing.js" defer></script>
+<meta property="og:image" content="https://projects.tanplanet.work/pj/covers/tans-tools-devpanel-portfolio-en-og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://projects.tanplanet.work/pj/covers/tans-tools-devpanel-portfolio-en-og.jpg"><link rel="icon" type="image/png" href="https://myfolio.tanplanet.work/favicon.png"><link rel="apple-touch-icon" href="https://myfolio.tanplanet.work/apple-touch-icon.png"><link rel="canonical" href="https://projects.tanplanet.work/en/tans-tools-devpanel-portfolio/"><meta property="og:url" content="https://projects.tanplanet.work/en/tans-tools-devpanel-portfolio/"><meta property="og:locale" content="en_US"><link rel="alternate" hreflang="th" href="https://projects.tanplanet.work/tans-tools-devpanel-portfolio/"><link rel="alternate" hreflang="en" href="https://projects.tanplanet.work/en/tans-tools-devpanel-portfolio/"><link rel="alternate" hreflang="x-default" href="https://projects.tanplanet.work/tans-tools-devpanel-portfolio/"><link rel="stylesheet" href="https://myfolio.tanplanet.work/tokens.css"/><link href="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/css/myfolio-tannie.webflow.shared.f00d552de.css?v=50" rel="stylesheet" type="text/css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap"><link rel="stylesheet" href="https://myfolio.tanplanet.work/blog/article.css"/><link rel="stylesheet" href="../../common/closing.css"><style>.cs *, .cs *::before, .cs *::after{ box-sizing: border-box; margin: 0; padding: 0; }
+.cs{
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #b45309;
+      --accent-light: #fef3c7;
+      --accent-dark: #78350f;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+.cs{
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+.cs .hero{
+      background: linear-gradient(135deg, #0a0f1f 0%, #121b36 42%, #4a1d0c 80%, #9a3412 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+.cs .hero::before{
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(251,191,36,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+@keyframes sway{
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+.cs .hero::after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #78350f, #f59e0b, #fde68a);
+    }
+.cs .hero-inner{
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+.cs .hero-mark{
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+.cs .hero-badge{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+.cs .hero-badge .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+@keyframes pulse-dot{
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+.cs .hero h1{
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+.cs .hero h1 .accent{ color: #fcd34d; }
+.cs .hero p{
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+.cs .hero-tags{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+.cs .hero-tag{
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+.cs .cta-row{
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+.cs .cta-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+.cs .cta-btn:hover{ transform: translateY(-2px); }
+.cs .cta-primary{
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+.cs .cta-primary:hover{ box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+.cs .cta-ghost{
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+.cs .cta-ghost:hover{ background: rgba(255,255,255,0.2); }
+.cs article{
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+.cs code{
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+.cs .dev-wrap{ display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.cs .dev-frame{
+      width: 348px;
+      max-width: 100%;
+      background: #1a1a1c;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 14px 40px rgba(10,15,31,0.35);
+    }
+.cs .dev-screen{
+      background: var(--navy);
+      border-radius: 6px;
+      overflow: hidden;
+      color: #f2f5ff;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+.cs .dev-hero{
+      background: #121b36;
+      padding: 12px 14px 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+.cs .dev-clock{ font-size: 2.4rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+.cs .dev-date{ color: #8492bc; font-size: 0.72rem; margin-top: 4px; }
+.cs .dev-hero-right{ text-align: right; font-size: 0.72rem; color: #8492bc; }
+.cs .dev-hero-right .t{ color: #f2f5ff; font-size: 1.05rem; font-weight: 600; }
+.cs .dev-list{ padding: 8px; display: flex; flex-direction: column; gap: 7px; }
+.cs .dev-card{
+      background: #161f3c;
+      border-radius: 8px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+.cs .dev-card .body{ flex: 1; min-width: 0; }
+.cs .dev-card .ttl{ color: #8492bc; font-size: 0.68rem; letter-spacing: 0.02em; }
+.cs .dev-card .val{ font-size: 0.95rem; font-weight: 600; }
+.cs .dev-card .sub{ color: #8492bc; font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cs .dev-card .up{ color: #4ade80; }
+.cs .dev-card .warn{ color: #fbbf24; }
+.cs .dev-card .down{ color: #f87171; }
+.cs .dev-blob{
+      width: 42px;
+      height: 34px;
+      border-radius: 6px;
+      background: #223056;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+.cs .dev-bar{ height: 5px; border-radius: 3px; background: #223056; margin-top: 6px; overflow: hidden; }
+.cs .dev-bar i{ display: block; height: 100%; background: #fbbf24; }
+.cs .dev-caption{ font-size: 0.8rem; color: var(--text-secondary); text-align: center; max-width: 420px; }
+.cs .back-nav{
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+.cs .back-nav:hover{ background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+.cs .back-nav svg{ flex-shrink: 0; }
+.cs .back-to-top{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+.cs .back-to-top.visible{ opacity: 1; visibility: visible; transform: translateY(0); }
+.cs .back-to-top:hover{ background: var(--accent-dark); }
+@media (max-width: 680px){.cs .hero{ padding: 80px 20px 56px; }
+.cs .hero h1{ font-size: 1.7rem; }
+.cs .back-nav{ top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+.cs .back-to-top{ bottom: 16px; right: 16px; width: 40px; height: 40px; }
+
+    }
+@media (prefers-reduced-motion: reduce){.cs *, .cs *::before, .cs *::after{ animation: none !important; transition: none !important; }
+
+    }
+.cs .ico{ width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+.cs .rung:last-child{ border-bottom: 0; }
+.cs .ledger--wide{ min-width: 780px; }
+.cs .ladder{ border-top: 1px solid var(--border); margin-top: 20px; }
+.cs .rung{
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+.cs .rung .cond{ display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+.cs .rung .cond .ico{ color: var(--text-muted); width: 15px; height: 15px; }
+.cs .rung .out{ font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+.cs .rung .note{ font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+.cs .rung.none .out{ color: var(--text-muted); }
+@media (min-width: 700px){.cs .rung{ grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+
+    }
+.cs .hero-mark .ico{ width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+.cs .hero-badge .ico{ width: 14px; height: 14px; }
+@media (max-width:640px){}
+.cs .nobr{display:inline-block;white-space:nowrap}
+@media (max-width:420px){.cs .nobr{white-space:normal}}
+.cs .nb{white-space:nowrap}
+.cs .zoom-hint{display:inline-flex;align-items:center;gap:5px;margin-left:8px;opacity:.75;white-space:nowrap}
+.cs .zoom-hint svg{width:13px;height:13px}
+.cs .lb{border:0;padding:0;max-width:none;max-height:none;width:100vw;height:100vh;background:rgba(8,10,20,.97);display:none;place-items:center;cursor:zoom-out}
+.cs .lb[open]{display:grid}
+.cs .lb::backdrop{background:transparent}
+.cs .lb img{max-width:96vw;max-height:88vh;border-radius:12px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.cs .lb p{position:fixed;left:0;right:0;bottom:16px;margin:0;text-align:center;color:#d7dae2;font-size:.9rem;padding:0 24px}
+.cs .lb button{position:fixed;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:22px;cursor:pointer}</style><link rel="stylesheet" href="../../common/components.css?v=7"/><link rel="stylesheet" href="../../pj/case.css?v=12"/></head><body><div style="opacity:0" class="page-wrapper"><div data-collapse="medium" data-animation="default" data-duration="400" data-w-id="58db7844-5919-d71b-dd74-2323ed8dffe9" data-easing="ease" data-easing2="ease" role="banner" class="header w-nav"><div class="loader-wrapper"><div class="loader"></div></div><div class="container-header"><div class="split-content header-left"><a href="https://myfolio.tanplanet.work/" class="brand w-nav-brand"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><nav role="navigation" class="nav-menu w-nav-menu"><ul role="list" class="header-navigation"><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="nav-link">Home</a></li><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="nav-link">About</a></li><li class="nav-item-wrapper last"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a><a href="https://projects.tanplanet.work/en/" class="nav-link">Portfolio</a><a href="https://myfolio.tanplanet.work/en/contact" class="nav-link nav-contact">Contact</a></li></ul></nav></div><div class="split-content header-right"><a class="lang-switch" href="https://projects.tanplanet.work/tans-tools-devpanel-portfolio/" hreflang="th" aria-label="TH EN – Switch to Thai"><span class="">TH</span> <span class="on">EN</span></a><div class="link-header-wrapper"><a data-w-id="a331bf6d-ae80-89ce-2301-aa6077024ef0" href="https://drive.google.com/file/d/1GjCCJ3XFU16-ceCq3MGVWRdezXm3GWxl/view?usp=sharing" target="_blank" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Resume</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="menu-button w-nav-button"><div class="menu-button-wrapper"><div class="menu-button-icon"><div class="menu-line-top"></div><div class="menu-line-middle"></div><div class="menu-line-bottom"></div></div></div></div></div></div><div class="container-default w-container"><div class="divider"></div></div></div><div class="section blog-post" role="main"><article class="ap cs-page" role="main"><div class="ap-band"><div class="ap-container"><header class="ap-head">
+<div class="ap-tags"><a href="https://projects.tanplanet.work/en/" class="ap-tag">Tooling</a><span class="ap-tag ap-tag--ghost">Projects</span></div>
+<h1 class="ap-title">Tan’s Tools · DEV panel</h1><p class="cs-sub">The AI knows the rules from the Design System our team maintains and sees the real page on localhost itself &mdash; while the DEV panel beside the IDE puts the page into the case to check and sends fixes with numbered screenshots. So most of my time goes back to design decisions</p>
+<p class="ap-meta"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><time datetime="2026-11-11">Nov 11, 2026</time></span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>12 min read</span></p>
+</header></div></div>
+<div class="ap-container ap-grid"><div class="ap-main">
+<figure class="ap-cover"><img src="../../pj/covers/tans-tools-devpanel-portfolio-en.webp" alt="" width="1600" height="900" fetchpriority="high" decoding="async"></figure>
+<div class="ap-row"><aside class="ap-share" aria-label="Share this article"><span class="ap-share-title">SHARE</span><a href="https://www.facebook.com/sharer/sharer.php?u=https://projects.tanplanet.work/en/tans-tools-devpanel-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a><a href="https://twitter.com/intent/tweet?url=https://projects.tanplanet.work/en/tans-tools-devpanel-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on X"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.9 1.2h3.7l-8 9.1L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9Zm-1.3 19.4h2L6.5 3.2H4.3l13.3 17.4Z"/></svg></a><a href="https://social-plugins.line.me/lineit/share?url=https://projects.tanplanet.work/en/tans-tools-devpanel-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LINE"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="3" width="21" height="18" rx="5.5" fill="currentColor"/><text x="12" y="15.2" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="7.2" font-weight="900" fill="#fff">LINE</text></svg></a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https://projects.tanplanet.work/en/tans-tools-devpanel-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a><button type="button" class="ap-share-btn" data-tip-done="Copied" data-copy="https://projects.tanplanet.work/en/tans-tools-devpanel-portfolio/" aria-label="Copy link"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button></aside><div class="ap-body"><div class="cs">
+<p class="cs-lead">For AI to fix UI accurately, it has to know &ldquo;what right looks like&rdquo; and it has to &ldquo;see&rdquo; the real page it is changing, not guess from a screenshot &mdash; so I solved it in two layers: <b>AI reads the Design System our team maintains first</b>, then <b>AI in the terminal opens the real page on localhost itself</b>, with a DEV panel next to the terminal acting as a remote that puts the page into the case I want to check</p><div class="cs-chips"><span class="cs-chip">VS Code / Antigravity / Cursor</span><span class="cs-chip">Webview</span><span class="cs-chip">Shadow DOM</span><span class="cs-chip">SSE</span><span class="cs-chip">Playwright</span><span class="cs-chip">Design System</span><span class="cs-chip">Claude Code</span></div>
+<article>
+
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>AI has to know<span class="nb">&ldquo;what right looks like&rdquo;</span> and has to<span class="nb">&ldquo;see&rdquo; the real page</span></h2>
+      <p>At my day job I redesigned an entire desktop app together with Claude Code &mdash; if the AI doesn't know the team's rules, it picks colors and spacing on its own. If it only sees a screenshot, it guesses which element the red box means. And my time goes into explaining things again and steering the page into the case I want to look at</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../tans-tools-devpanel-portfolio/img/app-products-normal.jpg" width="1440" height="900" loading="lazy" alt="Inventory page of a live-selling app showing summary number cards, status tabs and a table of 3 products; the logo and account name are blurred">
+      <figcaption>The real app page running on the dev server's mock data &mdash; to see &ldquo;empty inventory&rdquo; I had to delete products one by one (logo and account name blurred)</figcaption>
+    </figure>
+
+    <div class="quote-block">
+      <p>To see what an empty inventory looks like, I had to delete items. To see 120 items, I had to create more. To check the dark theme, I had to go to settings. And when I found something wrong, I had to take a screenshot, draw a box, then type out for the AI where &ldquo;here&rdquo; actually is</p>
+      <div class="author">&mdash; The starting problem</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+        <h3>AI doesn't know what the team considers right</h3>
+        <p>Left alone, AI picks colors, spacing and buttons that look good by its own taste. The page looks nice but doesn't match the team's other products</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        <h3>Edge cases have to be built by hand every time</h3>
+        <p>Empty state, overflowing data, names that are too long, the system returning an error &mdash; no button takes you there directly. You edit real data, then delete it again</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+        <h3>No way to tell which page is still missing which case</h3>
+        <p>The checklist lives in someone's head or in a doc nobody opens, so we only check the cases we happen to think of</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        <h3>Handing fixes to AI with screenshots and descriptions</h3>
+        <p>A picture doesn't tell the component name, size or spacing, so the AI has to guess. And capturing a browser tab needs a permission click every time</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg>
+        <h3>Test panels float over the page under review</h3>
+        <p>Dev tools placed inside the page cover the content I want to look at, and use a different font from the design system</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="layers">
+      <span class="eyebrow">Ideate</span>
+      <h2>Two layers, applied to<span class="nb">4 real cases</span></h2>
+      <p>The first layer is the rules, the second is the eyes &mdash; without either one, the AI still has to guess</p>
+    </section>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><span><b>Layer 1 &middot; AI reads the Design System our team maintains first</b> &mdash; our team built this system and maintains it together. It is the shared language of every product on the team. AI reads its tokens, components and rules through a skill, then edits code using components from the system</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg><span><b>Layer 2 &middot; Ask the AI in the terminal to open localhost</b> &mdash; the AI sees the screenshot, the page structure and the real style values of the page it is editing, and re-checks the page itself when it's done</span></li>
+    </ul>
+
+    <figure class="shot">
+      <img src="../../tans-tools-devpanel-portfolio/img/four-cases.jpg" width="2400" height="1663" loading="lazy" alt="Overview of 4 cases: A full-system audit, shown as a fix list with P0 P1 P2 levels · B designer points at spots, shown as an app screen with numbered boxes next to the terminal · C edge cases, shown as an app screen switched to empty inventory · D what the system doesn't have yet, shown as status picker cards in light and dark themes">
+      <figcaption>4 real cases &mdash; details for each are in the following sections</figcaption>
+    </figure>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">A</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <h4>Full-system audit</h4>
+        <p>The audit skill scans every page against the system and produces a plan book with a P0 / P1 / P2 fix list and annotated screenshots <a href="#case-a">See the plan book &darr;</a></p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">B</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.034 12.681a.498.498 0 0 1 .647-.647l9 3.5a.5.5 0 0 1-.033.943l-3.444 1.068a1 1 0 0 0-.66.66l-1.067 3.443a.5.5 0 0 1-.943.033z"/><path d="M5 3a2 2 0 0 0-2 2"/><path d="M19 3a2 2 0 0 1 2 2"/><path d="M5 21a2 2 0 0 1-2-2"/><path d="M9 3h1"/><path d="M9 21h2"/><path d="M14 3h1"/><path d="M3 9v1"/><path d="M21 9v2"/><path d="M3 14v1"/></svg>
+        <h4>Designer points at spots</h4>
+        <p>Click an element on the real page, type a note, send a numbered screenshot to the terminal, with no permission prompt <a href="#case-b">See image &darr;</a></p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">C</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        <h4>Edge case</h4>
+        <p>One card click switches the real page to empty inventory &middot; 120 items &middot; long names &middot; system down (52 cases across 13 pages), then the AI checks that case <a href="#case-c">See image &darr;</a></p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">D</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        <h4>What the system doesn't have yet</h4>
+        <p>Design new components, such as a status picker card, and bring them back into the system for the whole team &mdash; a PR is currently open for team review <a href="#case-d">See image &darr;</a></p>
+      </div>
+    </div>
+
+    <div class="learning-card note ok">
+      <strong>Result</strong>
+      <p>The AI gets less work that requires guessing. I no longer explain the rules again or steer the page into each case myself &mdash; most of my time goes back to design decisions</p>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="case-a">
+      <span class="eyebrow">Layer 1 &middot; Case A</span>
+      <h2>AI reads the Design System first, then<span class="nb">audits every page against it</span></h2>
+      <p>The Design System is something our team built and maintains together &mdash; AI reads its tokens, components and rules through a skill, then uses the audit skill to check every page against the system. The output is a plan book made from the system's own template, so from day one I know what to fix, at what priority, and which stage of the work it's in</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../tans-tools-devpanel-portfolio/img/plan-phases.jpg" width="1890" height="960" loading="lazy" alt="Seven-stage workflow in the plan book: prepare, audit, decide the new structure, redesign and QA, cover edge cases, hand off and add to the Design System, wrap up lessons. Each stage shows a status of done, in progress or not started, plus the number of items done and pending">
+      <figcaption>The 7-stage workflow from a real plan book &mdash; a flowchart following the Design System template. Each stage shows its status and pending work (product name and ticket numbers blurred)</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span><b>Prepare &rarr; Audit &rarr; Decide the new structure</b> &mdash; checking every page against the Design System found 131 items, split into P0 1 &middot; P1 70 &middot; P2 60. Then I picked a Design System template for each page before drawing anything new</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg><span><b>Redesign and QA &rarr; Cover edge cases</b> &mdash; fix one page at a time on the running app, check both light/dark themes and 390 / 1024 / 1440 screens, then go through every state of the page &mdash; this is where the DEV panel came from</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg><span><b>Hand off + add to the Design System &rarr; Wrap up lessons</b> &mdash; new components that came up along the way go back into the system through a PR for team review (case D), and new rules from reviews become the checklist for the next round</span></li>
+    </ul>
+
+    <figure class="shot">
+      <img src="../../tans-tools-devpanel-portfolio/img/plan-items.jpg" width="1890" height="1140" loading="lazy" alt="Fix list in the plan book, with filters by page, type, status and source, and counters for open P0 P1 P2. Each item has a P1 or P2 level, a type tag such as off-DS or odd UI, the problem, the fix and a status">
+      <figcaption>Case A &mdash; every issue found goes into one list &mdash; level P0/P1/P2 &middot; type (off Design System &middot; odd UI) &middot; problem &middot; fix &middot; status &mdash; spots sent from the DEV panel land here too</figcaption>
+    </figure>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="case-c">
+      <span class="eyebrow">Layer 2 &middot; Case C</span>
+      <h2>Ask the AI to open localhost and control the real page<span class="nb">from outside</span></h2>
+      <p>The AI in the terminal can open the page it's editing by itself and see the screenshot, the page structure and the real style values, then re-check when it's done &mdash; and since most problems show up when pieces sit together on the real page, I control the real page to put it in the case I want to check, instead of pulling components out to look at one by one</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../tans-tools-devpanel-portfolio/img/desk-states.jpg" width="2560" height="1080" loading="lazy" alt="Two-sided workspace: on the left the app in a localhost browser, with the inventory page showing an Empty state; on the right the IDE with a terminal talking to Claude and the DEV panel with the empty inventory card selected">
+      <figcaption>Case C &mdash; the actual working screen &mdash; ① the app on localhost &middot; ② the terminal where I ask Claude to edit code &middot; ③ the DEV panel with the &ldquo;empty inventory&rdquo; case selected (laid out from real screenshots; terminal text is an example)</figcaption>
+    </figure>
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th>Option</th><th>What you see</th><th class="num">Cost</th><th>Why it was dropped / chosen</th></tr></thead>
+        <tbody>
+          <tr><td>A standalone component viewer (Storybook-style)</td><td>One piece at a time, out of context</td><td class="num">Write a story for every state</td><td>The piece looks fine, but you can't see what it collides with on the real page, and there are two places to maintain</td></tr>
+          <tr><td>Edit mock data by hand every time</td><td>The real page</td><td class="num">Several minutes per case</td><td>Real result, but slow, easy to forget to reset, and nobody else on the team can repeat it</td></tr>
+          <tr data-picked><td>A panel that controls the real page + an edge case file per project<span class="pick"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Chosen</span></td><td>The real page, every declared case</td><td class="num">Write one JSON file once</td><td>The dev server returns data for the selected case, the real page switches in one click, and the same file is the team's checklist</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Three parts that talk through a single <span class="nb">dev server</span></h2>
+      <p>The app is in Chrome, the panel is in the IDE, and the AI is in the terminal &mdash; none of them need to know each other directly</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../tans-tools-devpanel-portfolio/img/how-it-works.jpg" width="2400" height="1110" loading="lazy" alt="Infographic: on the left the app on localhost, in the middle the dev server, on the right the IDE with a terminal talking to Claude and the DEV panel. Blue line A: click a case card and the app switches immediately. Orange line B: point at a spot with a note, and a numbered screenshot plus a summary line go to the terminal. Green dashed line C: Claude edits the code and the app reloads to show the result">
+      <figcaption>How it works in one picture &mdash; A switch cases &middot; B hand work to AI &middot; C results come back to the real page</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg><span><b>IDE extension</b> — a webview in the right sidebar of Antigravity / Cursor / VS Code that embeds the panel, and the only part that can type into the terminal</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span><b>dev server</b> — an SSE message pipe so the panel and the app can talk across browsers &middot; answers the API according to the selected case &middot; receives fix reports and takes the screenshots itself</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg><span><b>Edge case file per project</b> — pages that follow the real menu &middot; the cases for each page with the data the API should return &middot; cases that can't be simulated yet, listed for manual checking &middot; a link to the redesign plan book</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span><b>Same design system as the app</b> — the panel uses fonts, colors and components from the same Design System as the app &mdash; the status picker card I designed is being brought into the system (PR open for team review)</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>How to use it &mdash; 5 steps, from picking a page to the AI making the fix</h2>
+      <p>Your hands never leave the IDE, and no permission window ever pops up</p>
+    </section>
+
+    <figure class="shot shot-pair">
+      <img src="../../tans-tools-devpanel-portfolio/img/app-products-empty.jpg" width="1440" height="900" loading="lazy" alt="Inventory page after clicking the empty inventory card: the table is empty and shows the Empty state illustration">
+      <img src="../../tans-tools-devpanel-portfolio/img/app-products-120.jpg" width="1440" height="900" loading="lazy" alt="Inventory page after clicking the 120-item card: the table is long and the summary numbers update to match">
+      <figcaption>One card click switches the real page to &ldquo;empty inventory&rdquo; or &ldquo;120 items&rdquo; immediately &mdash; click Normal to return to the original data</figcaption>
+    </figure>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+        <h4>Pick a page</h4>
+        <p>The page selector follows the app's real menu order. Click Next to walk through the whole flow page by page</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        <h4>Click an edge case card</h4>
+        <p>The dev server changes the API response for that case, then the app page reloads &mdash; the case clears itself when you change pages</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>
+        <h4>Switch the app theme</h4>
+        <p>Light &middot; dark &middot; system, written straight into the app's theme setting, so both themes can be checked from one place</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.034 12.681a.498.498 0 0 1 .647-.647l9 3.5a.5.5 0 0 1-.033.943l-3.444 1.068a1 1 0 0 0-.66.66l-1.067 3.443a.5.5 0 0 1-.943.033z"/><path d="M5 3a2 2 0 0 0-2 2"/><path d="M19 3a2 2 0 0 1 2 2"/><path d="M5 21a2 2 0 0 1-2-2"/><path d="M9 3h1"/><path d="M9 21h2"/><path d="M14 3h1"/><path d="M3 9v1"/><path d="M21 9v2"/><path d="M3 14v1"/></svg>
+        <h4>Point at what needs fixing</h4>
+        <p>Click an element on the real page, press &uarr; to expand to the parent box, get a numbered red outline, then type what to fix</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg>
+        <h4>Send to Claude</h4>
+        <p>Captures a screenshot with numbered boxes, adds it to the plan book, and types a summary line into the terminal with the image path &mdash; the AI starts working right away</p>
+      </div>
+    </div>
+
+    <figure class="shot" id="case-b">
+      <img src="../../tans-tools-devpanel-portfolio/img/desk-inspect.jpg" width="2560" height="1080" loading="lazy" alt="On the left, the app's banned-words page with red boxes numbered 1 to 3; on the right, the terminal receiving a three-spot review message while Claude reads the image and edits files, plus the spot review panel with a note for each spot">
+      <figcaption>Case B &mdash; point at 3 spots in the app on the left, type notes in the panel on the right, press send &mdash; a summary line with the image path shows up in the terminal and Claude starts fixing right away (laid out from real screenshots; terminal text is an example)</figcaption>
+    </figure>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="hacks">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Six things I ran into along the way</h2>
+      <p>Most are browser and IDE limits that only show up once the panel actually moves out of the app page</p>
+    </section>
+
+    <figure class="shot shot-phone">
+      <img src="../../tans-tools-devpanel-portfolio/img/panel-inspect-empty.jpg" width="840" height="1120" loading="lazy" alt="The spot review tab in the panel, with a button to pick a spot on the app page and three steps">
+      <figcaption>Spot review tab: one primary button, and when there are no spots yet it shows steps instead of a long paragraph</figcaption>
+    </figure>
+
+    <div class="hack-grid">
+      <div class="hack-card" data-label="Permission">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg><span>Capturing a browser tab needs<span class="nb">a permission click every time</span></span></h3>
+        <p>At first I used getDisplayMedia to capture the tab as it was, but Chrome asks for screen-sharing permission every time. With frequent sends, I was clicking Allow all day</p>
+        <div class="highlight"><strong>Fix:</strong> <strong>send the page's current DOM to the dev server to re-render</strong> in an invisible Chrome and capture it there &mdash; typed input values and scroll position come along, and so do open menus. The trade-off is that camera images don't come through</div>
+      </div>
+      <div class="hack-card" data-label="Messaging">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>BroadcastChannel only works<span class="nb">within one browser</span></span></h3>
+        <p>Once the panel moved into the IDE, the panel and the app were in different browsers. Clicking Next did nothing</p>
+        <div class="highlight"><strong>Fix:</strong> build a <strong>message pipe through the dev server</strong> (SSE to receive + POST to send) with the same interface as BroadcastChannel, so the rest of the code didn't need to change</div>
+      </div>
+      <div class="hack-card" data-label="Storage">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg><span>An iframe in the IDE webview gets isolated storage</span></h3>
+        <p>The panel used to remember the app's page in localStorage, but in the IDE the value didn't stick, so the panel kept reloading itself in a loop</p>
+        <div class="highlight"><strong>Fix:</strong> <strong>keep the app's page in the query of the panel's own url</strong>, with no storage at all</div>
+      </div>
+      <div class="hack-card" data-label="Multi-tab">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg><span>With the app open in two tabs, the panel reloads back and forth</span></h3>
+        <p>Both tabs report their url every second. The panel follows one tab, then the other pulls it back</p>
+        <div class="highlight"><strong>Fix:</strong> the panel <strong>only follows the url when the app changes page</strong>, or when it doesn't know the page yet</div>
+      </div>
+      <div class="hack-card" data-label="CSP">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span>The server-running check was blocked by<span class="nb">its own CSP</span></span></h3>
+        <p>The webview blocked fetch to localhost, so the check concluded the server wasn't running and hid the panel even though everything was ready</p>
+        <div class="highlight"><strong>Fix:</strong> add <code>connect-src</code> for localhost &mdash; the lesson: <strong>a misleading error message is worse than no message</strong></div>
+      </div>
+      <div class="hack-card" data-label="Hierarchy">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><span>A tickable checklist didn't make checking faster</span></h3>
+        <p>In the first round, edge cases were checkboxes with a &ldquo;view on page&rdquo; button. The user (me) said the information order was wrong, because what I wanted was a card that switches the real page when clicked, not something to tick</p>
+        <div class="highlight"><strong>Fix:</strong> <strong>selectable cards in 2 columns</strong> with icons for each case type, then proposed into the Design System as a status picker card (PR open for team review)</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Test</span>
+      <h2>The edge case file is a checklist<span class="nb">you can run</span></h2>
+      <p>Write the cases once and use them while designing, while reviewing, and when handing off to the team</p>
+    </section>
+
+    <figure class="shot" id="case-d">
+      <img src="../../tans-tools-devpanel-portfolio/img/ds-state-card.jpg" width="900" height="369" loading="lazy" alt="Status picker cards proposed for the Design System, in light and dark themes, six cards: normal, empty inventory, very long name, 120 items, near quota limit, failed to load">
+      <figcaption>Case D &mdash; the status picker card, something the system didn't have yet, designed along the way and now being added to the system (PR open for team review): icons for case type &middot; a check in the top-right corner &middot; dark theme without heavy solid blocks</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>Cases live in the project's file</b> — each project has different Empty states and edge cases, so the panel reads the file of the project that's open</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>Run every case automatically</b> — a script opens every card on every page, checks for errors, and makes one overview image of all cases</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>Fix reports go into the plan book</b> — 1 spot = 1 item, with a numbered screenshot in the same format as the automated scan results, so the team sees everything in one place</span></li>
+    </ul>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">13</div><div class="label">Pages with declared edge cases</div></div>
+      <div class="metric-card"><div class="num">52</div><div class="label">Cards that switch the real page</div></div>
+      <div class="metric-card"><div class="num">47</div><div class="label">Cases opened automatically with no errors</div></div>
+      <div class="metric-card"><div class="num">0</div><div class="label">Permission clicks when handing work to AI</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>What I chose not to build</h2>
+      <p>A tool for the people doing the work, not a product feature &mdash; and some parts are still incomplete</p>
+    </section>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><span><b>Not every piece is a system component yet</b> &mdash; fixes always use components from the system first, but the app still has its own styles that are gradually moving into the system. Pieces the team should share get a PR for team review, like the status picker card</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span><b>Only in the dev server</b> — not in the app that ships to customers &mdash; the panel and the stand-in API responses exist only during development</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg><span><b>No camera or video capture</b> — images rendered from the DOM don't include canvas/video content &mdash; cases that need a real camera stay on the manual check list</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg><span><b>Nothing leaves the machine</b> — reports and images stay in the project, messages go into the local terminal, with no external service involved</span></li>
+    </ul>
+  </article>
+</div><section class="ap-author" aria-label="Author"><img class="ap-author-avatar" src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/688f5899cad39483c4e11c49_Profile_Webflow.webp" alt="" width="88" height="88" loading="lazy"><div class="ap-author-body"><p class="ap-author-name">Tan · Natpakan Sirirat</p><p class="ap-author-bio">Product Designer &amp; AI Builder — designing user experiences and building AI tools that actually work.</p><ul class="ap-author-links"><li><a href="https://www.linkedin.com/in/natpakan/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a></li><li><a href="https://www.facebook.com/tan.natpakan" target="_blank" rel="noopener" aria-label="Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a></li><li><a href="https://www.instagram.com/npkant/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a></li></ul></div></section><nav class="ap-pn" aria-label="Previous and next project"><a href="../content-engine-portfolio/" class="ap-pn-item ap-pn-prev"><span class="ap-pn-label">← Previous project</span><span class="ap-pn-title">Auto-publishing content engine</span></a><a href="../android-box-portfolio/" class="ap-pn-item ap-pn-next"><span class="ap-pn-label">Next project →</span><span class="ap-pn-title">TX98 TV Box</span></a></nav></div></div></div>
+<aside class="ap-side"><div class="ap-side-inner"><section class="ap-widget"><h2 class="ap-widget-title"><span>Latest projects</span></h2><ol class="ap-rank"><li><a href="../content-engine-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/content-engine-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">1</span></span><span class="ap-rank-title"><span class="ap-rank-t">Auto-publishing content engine</span></span></a></li><li><a href="../android-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/android-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">2</span></span><span class="ap-rank-title"><span class="ap-rank-t">TX98 TV Box</span></span></a></li><li><a href="../tools-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tools-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">3</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan&#x27;s Tools</span></span></a></li><li><a href="../shotdeck-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/shotdeck-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">4</span></span><span class="ap-rank-title"><span class="ap-rank-t">shotdeck-box: a laptop that posts clips</span></span></a></li><li><a href="../motion-reel-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/motion-reel-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">5</span></span><span class="ap-rank-title"><span class="ap-rank-t">Motion Graphics for YouTube</span></span></a></li></ol></section></div></aside>
+</div><div class="ap-progress" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" class="ap-progress-track"/><circle cx="32" cy="32" r="28" class="ap-progress-bar" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg><span>0%</span></div></article><footer class="footer"><div class="container-default w-container"><div class="divider"></div></div><div class="container-footer"><div class="footer-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-logo-container w-inline-block"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" loading="lazy" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><ul role="list" class="footer-navigation"><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-nav-link">Home</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="footer-nav-link">About</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a></li><li class="footer-nav-item-wrapper"><a href="https://projects.tanplanet.work/en/" class="footer-nav-link">Portfolio</a></li><li class="footer-nav-item-wrapper last"><a href="https://projects.tanplanet.work/preset/" class="footer-nav-link footer-nav-design">Design</a></li></ul><a data-w-id="2afa9a01-05cf-ade4-4d79-909445ba12f2" href="https://myfolio.tanplanet.work/contact" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Contact Me</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="divider"></div><div class="small-print">© 2026 Natpakan Sirirat · All rights reserved.</div></div></footer></div><script src="https://myfolio.tanplanet.work/_ext/d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8__site%3D608d62778637273e1880cb8d.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.1a807f015b216e46.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.8870a749f76b548c.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.9641f8cc.4fd3e4280b7acaf7.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/header-autohide.js" defer></script><script src="https://myfolio.tanplanet.work/blog/article.js" defer></script><div class="cs cs-extras">
+
+  
+
+  <dialog class="lb" aria-label="Enlarged image"><button type="button" aria-label="Close enlarged image">&times;</button><img alt=""><p></p></dialog>
+  
+  
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  
+
+
+
+</div><script>try{
+  /* ไลท์บ็อกซ์: คลิกภาพประกอบ = ขยายเต็มจอ · คลิกที่ใดก็ได้ / Esc = ปิด */
+  (function(){
+    var d=document.querySelector('.lb'),im=d.querySelector('img'),cap=d.querySelector('p');
+    document.querySelectorAll('.shot img').forEach(function(i){
+      i.tabIndex=0; i.setAttribute('role','button'); i.setAttribute('aria-label','Enlarge image: '+i.alt);
+      function open(){im.src=i.currentSrc||i.src; im.alt=i.alt; var f=i.closest('figure').querySelector('figcaption'); cap.textContent=f?f.textContent:''; d.showModal();}
+      i.addEventListener('click',open); i.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
+    });
+    document.querySelectorAll('figure.shot figcaption').forEach(function(c){var h=document.createElement('span');h.className='zoom-hint';h.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>Click image to enlarge';c.appendChild(h);});
+    d.addEventListener('click',function(){d.close();});
+  })();
+  }catch(e){}</script><script>try{
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  }catch(e){}</script><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Natpakan Sirirat — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"Tan's Tools · DEV panel — a remote control for a design engineer","item":"https://projects.tanplanet.work/tans-tools-devpanel-portfolio/"}
+  ]
+}
+</script></body></html>

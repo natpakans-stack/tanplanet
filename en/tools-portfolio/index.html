@@ -1,0 +1,765 @@
+<!DOCTYPE html><html data-wf-domain="www.tanplanet.work" data-wf-page="608d6278863727b47e80cb9c" data-wf-site="608d62778637273e1880cb8d" lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tan's Tools — a document toolbox that runs on my own machine, no websites needed</title>
+  <meta name="description" content="Portfolio: a toolbox inside Tan's Tasks that puts my own PDF tools, a PDF unlocker for preparing files for AI, and 12 open-source apps from ArtCraft (Apache-2.0) in one place. It opens from my own machine, with no sign-up and no uploading files to a website.">
+  <meta property="og:title" content="Tan's Tools — a document toolbox that runs on my own machine, no websites needed">
+  <meta property="og:description" content="Portfolio: a toolbox inside Tan's Tasks that puts my own PDF tools, a PDF unlocker for preparing files for AI, and 12 open-source apps from ArtCraft (Apache-2.0) in one place. It opens from my own machine, with no sign-up and no uploading files to a website.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tan's Tools — a document toolbox that runs on my own machine, no websites needed">
+  <meta name="twitter:description" content="Portfolio: a toolbox inside Tan's Tasks that puts my own PDF tools, a PDF unlocker for preparing files for AI, and 12 open-source apps from ArtCraft (Apache-2.0) in one place. It opens from my own machine, with no sign-up and no uploading files to a website.">
+  <rect width='100' height='100' rx='24' fill='%230a0f1f'/><rect x='20' y='38' width='60' height='38' rx='6' fill='none' stroke='%23f59e0b' stroke-width='6'/><path d='M38 38v-8a4 4 0 0 1 4-4h16a4 4 0 0 1 4 4v8M20 54h60' fill='none' stroke='%23f59e0b' stroke-width='6'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  
+  
+  <script src="../../common/closing.js" defer></script>
+<meta property="og:image" content="https://projects.tanplanet.work/pj/covers/tools-portfolio-en-og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://projects.tanplanet.work/pj/covers/tools-portfolio-en-og.jpg"><link rel="icon" type="image/png" href="https://myfolio.tanplanet.work/favicon.png"><link rel="apple-touch-icon" href="https://myfolio.tanplanet.work/apple-touch-icon.png"><link rel="canonical" href="https://projects.tanplanet.work/en/tools-portfolio/"><meta property="og:url" content="https://projects.tanplanet.work/en/tools-portfolio/"><meta property="og:locale" content="en_US"><link rel="alternate" hreflang="th" href="https://projects.tanplanet.work/tools-portfolio/"><link rel="alternate" hreflang="en" href="https://projects.tanplanet.work/en/tools-portfolio/"><link rel="alternate" hreflang="x-default" href="https://projects.tanplanet.work/tools-portfolio/"><link rel="stylesheet" href="https://myfolio.tanplanet.work/tokens.css"/><link href="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/css/myfolio-tannie.webflow.shared.f00d552de.css?v=50" rel="stylesheet" type="text/css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap"><link rel="stylesheet" href="https://myfolio.tanplanet.work/blog/article.css"/><link rel="stylesheet" href="../../common/closing.css"><style>.cs *, .cs *::before, .cs *::after{ box-sizing: border-box; margin: 0; padding: 0; }
+.cs{
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #b45309;
+      --accent-light: #fef3c7;
+      --accent-dark: #78350f;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+.cs{
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+.cs .hero{
+      background: linear-gradient(135deg, #0a0f1f 0%, #121b36 40%, #3f2d12 78%, #78350f 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+.cs .hero::before{
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(251,191,36,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+@keyframes sway{
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+.cs .hero::after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #78350f, #f59e0b, #fde68a);
+    }
+.cs .hero-inner{
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+.cs .hero-mark{
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+.cs .hero-badge{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+.cs .hero-badge .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+@keyframes pulse-dot{
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+.cs .hero h1{
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+.cs .hero h1 .accent{ color: #fcd34d; }
+.cs .hero p{
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+.cs .hero-tags{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+.cs .hero-tag{
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+.cs .cta-row{
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+.cs .cta-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+.cs .cta-btn:hover{ transform: translateY(-2px); }
+.cs .cta-primary{
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+.cs .cta-primary:hover{ box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+.cs .cta-ghost{
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+.cs .cta-ghost:hover{ background: rgba(255,255,255,0.2); }
+.cs article{
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+.cs code{
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+.cs .back-nav{
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+.cs .back-nav:hover{ background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+.cs .back-nav svg{ flex-shrink: 0; }
+.cs .back-to-top{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+.cs .back-to-top.visible{ opacity: 1; visibility: visible; transform: translateY(0); }
+.cs .back-to-top:hover{ background: var(--accent-dark); }
+@media (max-width: 680px){.cs .hero{ padding: 80px 20px 56px; }
+.cs .hero h1{ font-size: 1.7rem; }
+.cs .back-nav{ top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+.cs .back-to-top{ bottom: 16px; right: 16px; width: 40px; height: 40px; }
+
+    }
+@media (prefers-reduced-motion: reduce){.cs *, .cs *::before, .cs *::after{ animation: none !important; transition: none !important; }
+
+    }
+.cs .ico{ width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+.cs .rung:last-child{ border-bottom: 0; }
+.cs .ledger--wide{ min-width: 780px; }
+.cs .ladder{ border-top: 1px solid var(--border); margin-top: 20px; }
+.cs .rung{
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+.cs .rung .cond{ display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+.cs .rung .cond .ico{ color: var(--text-muted); width: 15px; height: 15px; }
+.cs .rung .out{ font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+.cs .rung .note{ font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+.cs .rung.none .out{ color: var(--text-muted); }
+@media (min-width: 700px){.cs .rung{ grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+
+    }
+.cs .hero-mark .ico{ width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+.cs .hero-badge .ico{ width: 14px; height: 14px; }
+.cs .app-row{
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px 10px; margin-top: 8px;
+    }
+.cs .app-tile{ display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; min-width: 0; }
+.cs .app-ic{
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--accent-dark);
+    }
+.cs .app-ic .ico{ width: 24px; height: 24px; stroke-width: 1.8; color: var(--accent); }
+.cs .app-tile b{ font-size: 0.82rem; font-weight: 600; line-height: 1.3; }
+.cs .app-tile span{ font-size: 0.74rem; color: var(--text-secondary); line-height: 1.4; }
+.cs .credit{
+      margin-top: 24px; padding: 14px 16px;
+      border-left: 2px solid var(--accent); background: var(--surface);
+      font-size: 0.86rem; color: var(--text-secondary); line-height: 1.75;
+    }
+.cs .credit a{ color: var(--accent-dark); font-weight: 600; }
+.cs .credit img{ display: block; width: 100%; height: auto; border-radius: 8px; margin-bottom: 12px; }
+@media (max-width: 639px){ }
+.cs .grp-list{ border-top: 1px solid var(--border); }
+.cs .grp{
+      display: grid; grid-template-columns: 28px minmax(0, 1fr);
+      gap: 0 12px; padding: 20px 0; border-bottom: 1px solid var(--border);
+    }
+.cs .grp .n{ color: var(--accent); font-weight: 600; font-size: 0.88rem; line-height: 1.7; font-variant-numeric: tabular-nums; }
+.cs .grp h3{ font-size: 1rem; font-weight: 600; line-height: 1.6; }
+.cs .grp p{ font-size: 0.88rem; color: var(--text-secondary); margin-top: 2px; }
+.cs .tool-grid{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.cs .tool-card{
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px 16px;
+      display: flex; flex-direction: column; gap: 6px; min-width: 0;
+    }
+.cs .tool-card .top{ display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.cs .tool-card .num{ font-size: 0.76rem; font-weight: 600; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.cs .tool-card .top .ico{ color: var(--accent); width: 20px; height: 20px; }
+.cs .tool-card h3{ font-size: 0.95rem; font-weight: 600; line-height: 1.5; }
+.cs .tool-card p{ font-size: 0.82rem; color: var(--text-secondary); line-height: 1.65; flex: 1; }
+.cs .tool-card.feature{ border-color: rgba(180,83,9,0.35); }
+.cs .cmd{
+      margin-top: 16px; background: var(--navy); color: #e2e8f0;
+      border-radius: var(--radius); padding: 16px 18px;
+      font-family: var(--mono); font-size: 0.82rem; line-height: 1.8;
+      overflow-x: auto; white-space: pre;
+    }
+.cs .cmd .c{ color: #94a3b8; }
+.cs .way-list{ margin-top: 8px; }
+.cs .src-link{ display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; font-size: 0.88rem; font-weight: 600; color: var(--accent-dark); }
+.cs .src-link .ico{ width: 15px; height: 15px; }
+@media (min-width: 560px){.cs .app-row{ grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    }
+@media (min-width: 760px){.cs .app-row{ grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.cs .tool-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    }
+
+  </style><link rel="stylesheet" href="../../common/components.css?v=7"/><link rel="stylesheet" href="../../pj/case.css?v=12"/></head><body><div style="opacity:0" class="page-wrapper"><div data-collapse="medium" data-animation="default" data-duration="400" data-w-id="58db7844-5919-d71b-dd74-2323ed8dffe9" data-easing="ease" data-easing2="ease" role="banner" class="header w-nav"><div class="loader-wrapper"><div class="loader"></div></div><div class="container-header"><div class="split-content header-left"><a href="https://myfolio.tanplanet.work/" class="brand w-nav-brand"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><nav role="navigation" class="nav-menu w-nav-menu"><ul role="list" class="header-navigation"><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="nav-link">Home</a></li><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="nav-link">About</a></li><li class="nav-item-wrapper last"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a><a href="https://projects.tanplanet.work/en/" class="nav-link">Portfolio</a><a href="https://myfolio.tanplanet.work/en/contact" class="nav-link nav-contact">Contact</a></li></ul></nav></div><div class="split-content header-right"><a class="lang-switch" href="https://projects.tanplanet.work/tools-portfolio/" hreflang="th" aria-label="TH EN – Switch to Thai"><span class="">TH</span> <span class="on">EN</span></a><div class="link-header-wrapper"><a data-w-id="a331bf6d-ae80-89ce-2301-aa6077024ef0" href="https://drive.google.com/file/d/1GjCCJ3XFU16-ceCq3MGVWRdezXm3GWxl/view?usp=sharing" target="_blank" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Resume</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="menu-button w-nav-button"><div class="menu-button-wrapper"><div class="menu-button-icon"><div class="menu-line-top"></div><div class="menu-line-middle"></div><div class="menu-line-bottom"></div></div></div></div></div></div><div class="container-default w-container"><div class="divider"></div></div></div><div class="section blog-post" role="main"><article class="ap cs-page" role="main"><div class="ap-band"><div class="ap-container"><header class="ap-head">
+<div class="ap-tags"><a href="https://projects.tanplanet.work/en/" class="ap-tag">Tooling</a><span class="ap-tag ap-tag--ghost">Projects</span></div>
+<h1 class="ap-title">Tan&#x27;s Tools</h1><p class="cs-sub">A toolbox where I write only the missing pieces and place good open-source apps next to them. The result: daily document work gets done from my own machine, without opening unfamiliar websites.</p>
+<p class="ap-meta"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><time datetime="2026-10-20">Oct 20, 2026</time></span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>11 min read</span></p>
+</header></div></div>
+<div class="ap-container ap-grid"><div class="ap-main">
+<figure class="ap-cover"><img src="../../pj/covers/tools-portfolio-en.webp" alt="" width="1600" height="900" fetchpriority="high" decoding="async"></figure>
+<div class="ap-row"><aside class="ap-share" aria-label="Share this article"><span class="ap-share-title">SHARE</span><a href="https://www.facebook.com/sharer/sharer.php?u=https://projects.tanplanet.work/en/tools-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a><a href="https://twitter.com/intent/tweet?url=https://projects.tanplanet.work/en/tools-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on X"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.9 1.2h3.7l-8 9.1L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9Zm-1.3 19.4h2L6.5 3.2H4.3l13.3 17.4Z"/></svg></a><a href="https://social-plugins.line.me/lineit/share?url=https://projects.tanplanet.work/en/tools-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LINE"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="3" width="21" height="18" rx="5.5" fill="currentColor"/><text x="12" y="15.2" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="7.2" font-weight="900" fill="#fff">LINE</text></svg></a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https://projects.tanplanet.work/en/tools-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a><button type="button" class="ap-share-btn" data-tip-done="Copied" data-copy="https://projects.tanplanet.work/en/tools-portfolio/" aria-label="Copy link"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button></aside><div class="ap-body"><div class="cs">
+<p class="cs-lead">Add page numbers, write on a PDF, stamp a logo, shrink images, unlock a PDF before sending it to AI, and open full apps for photo editing, slides and video editing. All of it sits on one page of a tool I already open every day, with no sign-up and no uploading files to sites I don't know.</p><div class="cs-chips"><span class="cs-chip">Python http.server</span><span class="cs-chip">pdf-lib</span><span class="cs-chip">PDF.js</span><span class="cs-chip">qpdf</span><span class="cs-chip">Bun</span><span class="cs-chip">WebAssembly</span><span class="cs-chip">ArtCraft</span></div>
+<article>
+
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>Small document jobs come up every day, and each one sent me to someone else's website</h2>
+      <p>Each job takes a few minutes, but getting to the right tool always took longer than the job itself</p>
+    </section>
+
+    <figure class="shot narrow">
+      <img src="../../tools-portfolio/img/pagenum-tool.jpg" width="960" height="720" loading="lazy" alt="The extra PDF tools page in Tan's Tools on the page-number tab, with Thai numerals selected, the format 5 / 12 written in Thai digits and the bottom-center position. The heading notes that it runs in the browser, files are not sent to a server, and no sign-up is needed">
+      <figcaption>Three things typical file-conversion sites don't give you &mdash; files stay on the machine, no sign-up, and Thai numerals &mdash; became the first line of the tool page I built (the file shown is a sample document)</figcaption>
+    </figure>
+
+    <div class="quote-block">
+      <p>To add page numbers to one file, I had to search the web, pick the site that looked most trustworthy, upload the file, wait, and download it again, even though the file might contain an ID number, a signature or work documents. There are plenty of good free tools already. They just weren't within reach.</p>
+      <div class="author">— The starting problem</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 13v8"/><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="m8 17 4-4 4 4"/></svg>
+        <h3>Private files have to leave the machine first</h3>
+        <p>Most file-conversion sites run on their own servers, so a document with personal data has to be uploaded before you get the edited file back.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" x2="22" y1="8" y2="13"/><line x1="22" x2="17" y1="8" y2="13"/></svg>
+        <h3>A few files in, a sign-up page appears</h3>
+        <p>They are free only up to a certain size, number of files or number of days. Repeat the same job the next day and you are back to looking for another site.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg>
+        <h3>Hardly anyone supports Thai numerals and Thai fonts</h3>
+        <p>Many government and company documents number their pages with Thai digits. Typical tools only offer 1 2 3, and Thai text turns into empty boxes.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>Locked PDFs can't be sent to AI</h3>
+        <p>Files with a password or copy restriction can't be read by AI, so they have to be unlocked first, which leads back to uploading the file to a website again.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+        <h3>Heavier jobs meant installing apps one by one</h3>
+        <p>Layered photo editing, slides or short video edits meant installing large programs or paying for a monthly subscription, even for occasional use.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>Put the tools where I already am every day</h2>
+      <p>Tan's Tasks is a personal tool I open every morning to see today's work. It runs on my machine and already has its own small server, so adding one more page costs almost nothing.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../tools-portfolio/img/tans-tasks-sidebar.jpg" width="1200" height="466" loading="lazy" alt="The Tan's Tasks dashboard. The left menu has a tools section with the document tools item highlighted, and the dashboard content is blurred">
+      <figcaption>Tan's Tasks, open every morning &mdash; &ldquo;Document tools&rdquo; is just one more item in the left menu (personal data on the dashboard is blurred)</figcaption>
+    </figure>
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th>Option</th><th>What it takes each time</th><th>Where the file goes</th><th>Why it was dropped / picked</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Keep using conversion sites</td>
+            <td>Search, upload, wait, download</td>
+            <td>That site's server</td>
+            <td>Convenient the first time, but every time I had to decide again which site to trust, and I ran into free-account limits</td>
+          </tr>
+          <tr>
+            <td>Install separate apps one by one</td>
+            <td>Install, update, remember what lives where</td>
+            <td>On my machine</td>
+            <td>Files stay on the machine, but the dock fills up with icons and many of them are monthly subscriptions</td>
+          </tr>
+          <tr data-picked>
+            <td>One page inside Tan's Tasks<span class="pick"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Chosen</span></td>
+            <td>Open the tools page and pick a job</td>
+            <td>On my machine</td>
+            <td>Write only what nobody else has built, and use existing open-source apps for the heavy work: download them to the machine once, update with one command</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Rules set from the start</strong>
+      <p><strong>Write as little as possible</strong> — if a good open-source tool already exists, use it and credit its authors. Only fill the gaps nobody has filled, such as Thai-numeral page numbers or unlocking a PDF without uploading it</p>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="toolbox">
+      <span class="eyebrow">Prototype</span>
+      <h2>Group by &ldquo;the job to be done&rdquo;, not by who wrote the tool</h2>
+      <p>Someone adding a watermark doesn't care where the tool came from, so quick tools and full apps share the same section. Full apps carry a label and open in a new tab</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../tools-portfolio/tans-tools-screen.jpg" alt="The local Tan's Tools page: the PDF and signatures section, with quick tools next to the full PdfCraft app" width="990" height="800" loading="lazy">
+      <figcaption>The Tan's Tools page opened from my machine (localhost) &mdash; quick tools and full apps in the same section</figcaption>
+    </figure>
+
+    <div class="grp-list">
+      <div class="grp">
+        <span class="n">01</span>
+        <div>
+          <h3>PDF documents and signatures</h3>
+          <p>Page numbers, adding text, logo stamps, unlocking — for finer edits, open PdfCraft</p>
+          <div class="chips">
+            <span class="chip own">Page numbers (Thai numerals)</span>
+            <span class="chip own">Write on a document</span>
+            <span class="chip own">Logo watermark on PDF</span>
+            <span class="chip own">Unlock PDF</span>
+            <span class="chip app">PdfCraft</span>
+          </div>
+        </div>
+      </div>
+      <div class="grp">
+        <span class="n">02</span>
+        <div>
+          <h3>Office work</h3>
+          <p>Documents, spreadsheets and slides, like Word · Excel · PowerPoint</p>
+          <div class="chips">
+            <span class="chip app">WordCraft</span>
+            <span class="chip app">GridCraft</span>
+            <span class="chip app">DeckCraft</span>
+          </div>
+        </div>
+      </div>
+      <div class="grp">
+        <span class="n">03</span>
+        <div>
+          <h3>Images</h3>
+          <p>Shrink files, edit photos and handle RAW files</p>
+          <div class="chips">
+            <span class="chip own">Compress images</span>
+            <span class="chip app">PhotoCraft</span>
+            <span class="chip app">LightCraft</span>
+          </div>
+        </div>
+      </div>
+      <div class="grp">
+        <span class="n">04</span>
+        <div>
+          <h3>Graphics, print and drafting</h3>
+          <p>Vector drawing, print layout and 2D drafting</p>
+          <div class="chips">
+            <span class="chip app">VectorCraft</span>
+            <span class="chip app">DesignCraft</span>
+            <span class="chip app">CadCraft</span>
+          </div>
+        </div>
+      </div>
+      <div class="grp">
+        <span class="n">05</span>
+        <div>
+          <h3>Video and audio</h3>
+          <p>Video editing, effects and audio mixing</p>
+          <div class="chips">
+            <span class="chip app">FilmCraft</span>
+            <span class="chip app">EffectCraft</span>
+            <span class="chip app">SoundCraft</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><span class="chip own">Solid</span> Quick tools I wrote</span>
+      <span><span class="chip app">Outlined</span> Full apps from ArtCraft</span>
+    </div>
+
+    <div class="learning-card note">
+      <strong>This page covers only the parts I built</strong>
+      <p>The real toolbox also holds several basic free tools from other sources that I keep on my machine, such as merging, splitting and rotating PDF pages, and signatures. That part isn't my work, so it isn't shown here.</p>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>Quick tools I wrote — filling only the gaps nobody else filled</h2>
+      <p>One page, everything processed in the browser, files are not sent anywhere</p>
+    </section>
+
+    <figure class="shot narrow">
+      <img src="../../tools-portfolio/img/addcontent-tool.jpg" width="1000" height="900" loading="lazy" alt="The write-on-document tab with a 5-page sample file open, showing the first page with signature and requester text boxes placed at the top left, plus buttons to add text, add an image and change pages">
+      <figcaption>Write on a document &mdash; open a PDF and place text on the page right away. Everything is drawn in the browser, nothing is uploaded</figcaption>
+    </figure>
+
+    <div class="tool-grid">
+      <div class="tool-card">
+        <div class="top"><span class="num">01</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg></div>
+        <h3>Page numbers (Thai numerals)</h3>
+        <p>Writes a page number on every page in Thai or Arabic digits, with formats like &ldquo;Page 5&rdquo;, &ldquo;5 / 12&rdquo; or &ldquo;- 5 -&rdquo;</p>
+        <div class="chips"><span class="chip">Local browser</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="top"><span class="num">02</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg></div>
+        <h3>Write on a document</h3>
+        <p>Insert text or images onto a PDF page and drag them into place. Useful for forms you can't type into</p>
+        <div class="chips"><span class="chip">Local browser</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="top"><span class="num">03</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M19.27 13.73A2.5 2.5 0 0 0 17.5 13h-11A2.5 2.5 0 0 0 4 15.5V17a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1.5c0-.66-.26-1.3-.73-1.77Z"/><path d="M14 13V8.5C14 7 15 7 15 5a3 3 0 0 0-6 0c0 2 1 2 1 3.5V13"/></svg></div>
+        <h3>Logo watermark on PDF</h3>
+        <p>Places a faint logo across the middle of the page at 45°, or tiled over the whole page, on every page in one click</p>
+        <div class="chips"><span class="chip">Local browser</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="top"><span class="num">04</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 10 7-7"/><path d="M20 10h-6V4"/><path d="m3 21 7-7"/><path d="M4 14h6v6"/></svg></div>
+        <h3>Compress images</h3>
+        <p>Shrinks JPG, PNG and WEBP files in batches, with adjustable quality and pixel size</p>
+        <div class="chips"><span class="chip">Local browser</span></div>
+      </div>
+      <div class="tool-card feature">
+        <div class="top"><span class="num">05</span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg></div>
+        <h3>Unlock PDF</h3>
+        <p>Removes the password and copy restrictions from a PDF so it can be sent to AI. Works from the local web page or from the command line</p>
+        <div class="chips"><span class="chip">macOS</span><span class="chip">CLI</span><span class="chip">Local web page</span></div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="pdf-unlocked">
+      <span class="eyebrow">Prototype</span>
+      <h2>Unlocking PDFs before sending them to AI — just qpdf, no uploads</h2>
+      <p>The real work of this tool is one line. The rest is making sure nobody has to remember that line</p>
+    </section>
+
+    <figure class="shot narrow">
+      <div class="shot-pair">
+        <div><img src="../../tools-portfolio/img/unlock-wrong.jpg" width="520" height="580" loading="lazy" alt="The local PDF unlock page with a sample document selected and a wrong password entered. Red text under the button says the password is incorrect"><span class="lbl">Wrong password, explained in Thai</span></div>
+        <div><img src="../../tools-portfolio/img/unlock-done.jpg" width="520" height="580" loading="lazy" alt="The same page after the correct password. Green text under the button says it downloaded sample-document-unlocked.pdf"><span class="lbl">Correct password, you get -unlocked.pdf</span></div>
+      </div>
+      <figcaption>The local web page at <code>localhost:3777</code> &mdash; drop a file, enter a password if there is one, and press one button. Behind it is <code>qpdf --decrypt</code></figcaption>
+    </figure>
+
+    <ul class="plain way-list">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19h8"/><path d="m4 17 6-6-6-6"/></svg><span><b>From Terminal</b> — <code>unlock.sh</code> calls <code>qpdf --decrypt</code>. If the file only blocks copying, it unlocks right away; if it has an open password, add the password at the end. You get a new file named <code>-unlocked.pdf</code> in the same folder</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg><span><b>Drop a file on the local web page</b> — <code>bun server.js</code> opens a small page at <code>localhost:3777</code> with an optional password field, and says in Thai when the password is wrong</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4.1 12 6"/><path d="m5.1 8-2.9-.8"/><path d="m6 12-1.9 2"/><path d="M7.2 2.2 8 5.1"/><path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"/></svg><span><b>Double-click a single file</b> — a <code>.command</code> file on macOS starts the server and opens the browser for you, no Terminal needed</span></li>
+    </ul>
+
+    <div class="cmd"><span class="c"># unlock; the new file lands next to the original</span>
+./unlock.sh document.pdf [password]
+<span class="c"># → document-unlocked.pdf</span></div>
+
+    <a class="src-link" href="https://github.com/natpakans-stack/tanplanet/tree/main/pdf-unlocked" target="_blank" rel="noopener"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg> View the code on GitHub</a>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="apps">
+      <span class="eyebrow">Prototype</span>
+      <h2>12 full apps from ArtCraft — one script to download, one line to serve</h2>
+      <p>ArtCraft is a suite of open-source apps that also have browser versions built with WebAssembly. There was no need to rewrite these apps, only to bring the files onto the machine and route them correctly.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../tools-portfolio/img/apps-in-toolbox.jpg" width="1130" height="900" loading="lazy" alt="The images, graphics and video sections of the Tan's Tools page. App cards for PhotoCraft, LightCraft, VectorCraft, DesignCraft, CadCraft, FilmCraft, EffectCraft and SoundCraft use each app's real icon, with a full-app label and a link to open the app">
+      <figcaption>ArtCraft apps in the toolbox &mdash; the cards use the real icons the script fetched, carry a &ldquo;Full app&rdquo; label and sit alongside the quick tools in the same section</figcaption>
+    </figure>
+
+    <div class="app-row">
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4V20.5H7z"/><path d="M14 3.5v4h4M10 13h5M10 16.5h5"/></svg></span><b>PdfCraft</b><span>PDF editing</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M20.5 15.5 15 10l-8 9"/></svg></span><b>PhotoCraft</b><span>Photo editing</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4 4.5 19.5h15z"/><circle cx="12" cy="4" r="1.6"/><circle cx="4.5" cy="19.5" r="1.6"/><circle cx="19.5" cy="19.5" r="1.6"/></svg></span><b>VectorCraft</b><span>Vector drawing</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg></span><b>LightCraft</b><span>RAW files</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3.5" width="16" height="17" rx="1.5"/><path d="M4 9h16M10 9v11.5"/></svg></span><b>DesignCraft</b><span>Page layout</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4" width="17" height="11.5" rx="1.5"/><path d="M12 15.5v4M8.5 20h7"/></svg></span><b>DeckCraft</b><span>Slides</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4" width="17" height="16" rx="1.5"/><path d="M3.5 9.5h17M3.5 14.5h17M9.5 4v16"/></svg></span><b>GridCraft</b><span>Spreadsheets</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5h7l4 4V20.5H7z"/><path d="M14 3.5v4h4M9.5 12l1.2 5 1.3-4 1.3 4 1.2-5"/></svg></span><b>WordCraft</b><span>Documents</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20 20 4M4 20h16M4 20V4"/><path d="M4 14a6 6 0 0 1 6 6"/></svg></span><b>CadCraft</b><span>2D drafting</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="M3.5 9h17M3.5 15h17M8 5v4M16 5v4M8 15v4M16 15v4"/></svg></span><b>FilmCraft</b><span>Video editing</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.2 5.3 5.8.5-4.4 3.8 1.3 5.6L12 15.8 7.1 18.7l1.3-5.6L4 9.3l5.8-.5z"/></svg></span><b>EffectCraft</b><span>Motion graphics</span></div>
+      <div class="app-tile"><span class="app-ic"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2"/></svg></span><b>SoundCraft</b><span>Audio editing</span></div>
+    </div>
+
+    <div class="flow-grid" style="margin-top:32px">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>
+        <h4>Ask GitHub for the latest release</h4>
+        <p><code>craft-fetch.sh</code> checks each app in turn and takes only the zip file for the web version. If an app doesn't have one, it skips it and says so</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>
+        <h4>Unzip into that app's folder</h4>
+        <p>Delete the old files and put the new ones in place. Running it again is the update, so there's no need to remember which app is on which version</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        <h4>Fetch each app's real icon too</h4>
+        <p>Cards in the toolbox use the app's own icon. If one can't be found, it falls back to a line icon I drew</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+        <h4>The existing server serves them at <code>/craft/&lt;app&gt;/</code></h4>
+        <p>No new server and no build step. It uses the same Python server Tan's Tasks already runs</p>
+      </div>
+    </div>
+
+    <div class="credit"><img src="../../tools-portfolio/artcraft-apps.jpg" alt="Icons of all 12 ArtCraft apps" width="1280" height="720" loading="lazy"><p>All 12 apps are made by the <a href="https://getartcraft.com/apps" target="_blank" rel="noopener">ArtCraft</a> team and released as open source under the Apache-2.0 license. My part is the download script, serving them from the machine, and placing the apps into job-based sections of the toolbox.</p></div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="hacks">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Five things I ran into bringing other people's work into my own setup</h2>
+      <p>Reusing what already exists really does mean writing less, but what you do write is the glue, and the glue is where things break most quietly</p>
+    </section>
+
+    <figure class="shot narrow">
+      <img src="../../tools-portfolio/img/pagenum-output.jpg" width="911" height="300" loading="lazy" alt="The bottom of page 3 of the sample file after adding page numbers. The Thai text in the document reads normally, and the page number 3 / 5 appears in Thai digits at the bottom center">
+      <figcaption>The real result after embedding the Sarabun font &mdash; the page number &ldquo;3 / 5&rdquo; comes out in Thai digits instead of empty boxes</figcaption>
+    </figure>
+
+    <div class="hack-grid">
+
+      <div class="hack-card" data-label="Routing">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>The PDF unlocker stuck on &ldquo;Loading tool...&rdquo; forever</span></h3>
+        <p>The unlocker uses qpdf compiled to WebAssembly, and it requests <code>/wasm/qpdf.wasm</code> and chunk files under <code>/_next/</code> from the site root, not from the folder where it lives. The server quietly answered 404, so the screen just kept spinning with no error message to see</p>
+        <div class="highlight"><strong>Fix:</strong> have the server <strong>redirect those two paths into the correct folder</strong> before looking up files — two lines, without touching the tool's own files. The lesson: when a page hangs, open the Network tab before opening the code</div>
+      </div>
+
+      <div class="hack-card" data-label="Quality">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Merging or rotating a PDF made the text come out soft</span></h3>
+        <p>The basic PDF tools I keep around render every page as an image at most 1600 pixels on the long side and compress it to JPEG at a fixed quality, so every result was blurry, and PDF → image always produced large PNG files</p>
+        <div class="highlight"><strong>Fix:</strong> <strong>patch at serve time, not in the source files</strong> — the server exposes settings for resolution, quality and a JPEG option. Leave them unset and you get exactly the original behavior, and the patch survives when a new version is downloaded over it. Files patched while serving are marked no-cache, otherwise the browser keeps using the old copy</div>
+      </div>
+
+      <div class="hack-card" data-label="Thai">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Thai text on the PDF turned into empty boxes</span></h3>
+        <p>The PDF-writing library ships with standard fonts that have no Thai glyphs, so Thai-digit page numbers or the Thai word for &ldquo;page&rdquo; came out as empty boxes</p>
+        <div class="highlight"><strong>Fix:</strong> <strong>embed the Sarabun font in the file</strong>, loaded once and kept for reuse, with a backup source if the first one fails. Converting numbers to Thai numerals is just swapping characters digit by digit</div>
+      </div>
+
+      <div class="hack-card" data-label="Cache">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Large WebAssembly apps need to open fast the second time, but show the new version after an update</span></h3>
+        <p>Cache every file for a long time and you still see the old app after an update. Cache nothing and every launch downloads tens of megabytes again. And a <code>.wasm</code> file served with the wrong type stops the browser from using fast compilation</p>
+        <div class="highlight"><strong>Fix:</strong> <code>.js</code> and <code>.wasm</code> files already have a version hash in their names, so they <strong>can be cached for a year</strong>, while <code>index.html</code> is <strong>revalidated every time</strong>, and <code>.wasm</code> is served as <code>application/wasm</code></div>
+      </div>
+
+      <div class="hack-card" data-label="Safety">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>A server that opens files by the name in the URL can open other files on the machine too</span></h3>
+        <p>If the server takes a file name from the URL and joins it straight onto a path, typing <code>../</code> steps out of the app folder to read other files. And if the app hasn't been downloaded yet, the page is just blank with no explanation</p>
+        <div class="highlight"><strong>Fix:</strong> <strong>resolve to a real path first, and only open files that are still inside the app folder</strong>. Everything else gets a 404. If the app hasn't been downloaded yet, say plainly that <code>craft-fetch.sh</code> needs to run first</div>
+      </div>
+
+    </div>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">12</div><div class="label">Full ArtCraft apps opened from the machine</div></div>
+      <div class="metric-card"><div class="num">5</div><div class="label">Sections, organized by job</div></div>
+      <div class="metric-card"><div class="num">5</div><div class="label">Quick tools I wrote, including the PDF unlocker</div></div>
+      <div class="metric-card"><div class="num">0</div><div class="label">Accounts required before use</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>The rules for what gets into the box</h2>
+      <p>A good toolbox is one you can reach into right away, without worrying about where your files end up</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../tools-portfolio/img/pdfcraft-local.jpg" width="1200" height="750" loading="lazy" alt="The PdfCraft app opened from the local server. The Welcome to PdfCraft page has a tool list on the left, featured tool cards and a Privacy note saying it works offline, with no account and no cloud processing">
+      <figcaption>PdfCraft by the ArtCraft team (Apache-2.0), opened from a local folder via <code>/craft/pdfcraft/</code> &mdash; no account, no uploads, and the owner's source files are not modified</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg><span><b>A real, repeated job comes first, then the tool</b> — every tool in the box came from document work I kept running into myself, not from wanting a complete set of tools</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><span><b>Files stay on the machine</b> — quick tools run in the browser, the unlocker uses qpdf locally, and the ArtCraft apps are served from a local folder. There is no upload step</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" x2="22" y1="8" y2="13"/><line x1="22" x2="17" y1="8" y2="13"/></svg><span><b>No sign-up, no monthly fee</b> — open the page and use it. No account, no daily quota</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><span><b>Use what already exists, and credit the owners</b> — the full apps belong to ArtCraft, used under the Apache-2.0 license, and nobody's source files are modified. All adjustments happen at serve time</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg><span><b>Easy to hand off to AI</b> — an unlocked PDF opens and copies text normally, ready to drop into an AI chat</span></li>
+    </ul>
+
+    <div class="learning-card note">
+      <strong>Limitations, stated plainly</strong>
+      <p>The quick tools page loads the PDF library and a Thai font from a CDN the first time it opens, so it needs an internet connection, but the user's own files are not sent along · The ArtCraft apps add up to several hundred megabytes, so they are not kept in git; <code>craft-fetch.sh</code> has to be run on each machine that uses them</p>
+    </div>
+
+  </article>
+</div><section class="ap-author" aria-label="Author"><img class="ap-author-avatar" src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/688f5899cad39483c4e11c49_Profile_Webflow.webp" alt="" width="88" height="88" loading="lazy"><div class="ap-author-body"><p class="ap-author-name">Tan · Natpakan Sirirat</p><p class="ap-author-bio">Product Designer &amp; AI Builder — designing user experiences and building AI tools that actually work.</p><ul class="ap-author-links"><li><a href="https://www.linkedin.com/in/natpakan/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a></li><li><a href="https://www.facebook.com/tan.natpakan" target="_blank" rel="noopener" aria-label="Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a></li><li><a href="https://www.instagram.com/npkant/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a></li></ul></div></section><nav class="ap-pn" aria-label="Previous and next project"><a href="../android-box-portfolio/" class="ap-pn-item ap-pn-prev"><span class="ap-pn-label">← Previous project</span><span class="ap-pn-title">TX98 TV Box</span></a><a href="../shotdeck-box-portfolio/" class="ap-pn-item ap-pn-next"><span class="ap-pn-label">Next project →</span><span class="ap-pn-title">shotdeck-box: a laptop that posts clips</span></a></nav></div></div></div>
+<aside class="ap-side"><div class="ap-side-inner"><section class="ap-widget"><h2 class="ap-widget-title"><span>Latest projects</span></h2><ol class="ap-rank"><li><a href="../content-engine-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/content-engine-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">1</span></span><span class="ap-rank-title"><span class="ap-rank-t">Auto-publishing content engine</span></span></a></li><li><a href="../tans-tools-devpanel-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tans-tools-devpanel-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">2</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan’s Tools · DEV panel</span></span></a></li><li><a href="../android-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/android-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">3</span></span><span class="ap-rank-title"><span class="ap-rank-t">TX98 TV Box</span></span></a></li><li><a href="../shotdeck-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/shotdeck-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">4</span></span><span class="ap-rank-title"><span class="ap-rank-t">shotdeck-box: a laptop that posts clips</span></span></a></li><li><a href="../motion-reel-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/motion-reel-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">5</span></span><span class="ap-rank-title"><span class="ap-rank-t">Motion Graphics for YouTube</span></span></a></li></ol></section></div></aside>
+</div><div class="ap-progress" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" class="ap-progress-track"/><circle cx="32" cy="32" r="28" class="ap-progress-bar" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg><span>0%</span></div></article><footer class="footer"><div class="container-default w-container"><div class="divider"></div></div><div class="container-footer"><div class="footer-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-logo-container w-inline-block"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" loading="lazy" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><ul role="list" class="footer-navigation"><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-nav-link">Home</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="footer-nav-link">About</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a></li><li class="footer-nav-item-wrapper"><a href="https://projects.tanplanet.work/en/" class="footer-nav-link">Portfolio</a></li><li class="footer-nav-item-wrapper last"><a href="https://projects.tanplanet.work/preset/" class="footer-nav-link footer-nav-design">Design</a></li></ul><a data-w-id="2afa9a01-05cf-ade4-4d79-909445ba12f2" href="https://myfolio.tanplanet.work/contact" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Contact Me</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="divider"></div><div class="small-print">© 2026 Natpakan Sirirat · All rights reserved.</div></div></footer></div><script src="https://myfolio.tanplanet.work/_ext/d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8__site%3D608d62778637273e1880cb8d.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.1a807f015b216e46.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.8870a749f76b548c.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.9641f8cc.4fd3e4280b7acaf7.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/header-autohide.js" defer></script><script src="https://myfolio.tanplanet.work/blog/article.js" defer></script><div class="cs cs-extras">
+
+  
+
+  
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  
+
+
+
+</div><script>try{
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  }catch(e){}</script><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Natpakan Sirirat — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"Tan's Tools — a document toolbox that runs on my own machine","item":"https://projects.tanplanet.work/tools-portfolio/"}
+  ]
+}
+</script></body></html>

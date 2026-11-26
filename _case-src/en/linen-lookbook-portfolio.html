@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linen Lookbook Site — “Chat to Order”, No Cart, No Checkout</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Linen Lookbook Site — “Chat to Order”, No Cart, No Checkout">
+  <meta name="twitter:description" content="Portfolio: a catalog + lookbook site for a linen clothing brand — no cart, no checkout. Pick a color and size, tap order, and LINE opens with the message already written. The brand manages products itself in a headless CMS.">
+  <meta property="og:url" content="https://projects.tanplanet.work/linen-lookbook-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.work/linen-lookbook-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: a catalog + lookbook site for a linen clothing brand — no cart, no checkout. Pick a color and size, tap order, and LINE opens with the message already written. The brand manages products itself in a headless CMS.">
+  <meta property="og:title" content="Linen Lookbook Site — “Chat to Order”, No Cart, No Checkout">
+  <meta name="description" content="Portfolio: a catalog + lookbook site for a linen clothing brand — no cart, no checkout. Pick a color and size, tap order, and LINE opens with the message already written. The brand manages products itself in a headless CMS.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23831843'/><text x='50' y='62' text-anchor='middle' font-size='54'>🌸</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #be185d;
+      --accent-light: #fce7f3;
+      --accent-dark: #831843;
+      --accent-glow: rgba(190,24,93,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #831843 0%, #be185d 45%, #db2777 80%, #ec4899 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(252,231,243,0.22) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(190,24,93,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #be185d, #ec4899, #fce7f3);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #fbcfe8;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #831843, #be185d);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(236,72,153,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(190,24,93,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Product Buy-Panel Mockup ===== */
+    .ext-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 400px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+    .ext-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      align-items: center;
+    }
+    .ext-bar .ext-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    .ext-bar .ext-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 1px 9px;
+      font-size: 0.72rem;
+    }
+    .ext-yt {
+      margin: 12px;
+      padding: 10px 12px;
+      border: 1px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 8px;
+    }
+    .ext-yt b { color: #c00; }
+    .ext-yt .u { color: var(--text-muted); font-size: 0.72rem; word-break: break-all; margin: 3px 0 8px; font-family: 'SF Mono', monospace; }
+    .ext-yt .chip { display: inline-block; border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 3px 8px; font-size: 0.72rem; margin-right: 5px; color: var(--text-secondary); }
+    .ext-table { width: 100%; border-collapse: collapse; }
+    .ext-table th {
+      text-align: left; padding: 8px 12px; font-size: 0.68rem; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--border);
+    }
+    .ext-table td { padding: 9px 12px; border-bottom: 1px solid #f2f2f1; vertical-align: top; }
+    .ext-table .kind { font-weight: 700; white-space: nowrap; }
+    .ext-table .kind.master { color: #1e6b2e; }
+    .ext-table .kind.variant { color: #8a7a12; }
+    .ext-table .kind.file { color: var(--accent); }
+    .ext-table .q { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .ext-table .info { color: var(--text-secondary); font-size: 0.76rem; }
+    .ext-table .chip { display: inline-block; border: 1px solid var(--border); background: #fafafa; border-radius: 5px; padding: 1px 7px; font-size: 0.68rem; color: var(--text-secondary); font-family: 'SF Mono', monospace; }
+    .ext-cmd {
+      margin: 0 12px 12px;
+      padding: 10px 12px;
+      background: #0f172a;
+      color: #a5f3fc;
+      border-radius: 8px;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      font-size: 0.72rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .ext-cmd .flag { color: #fde047; }
+    .ext-cmd .cmt { color: #64748b; }
+
+    /* ===== Closing ===== */
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(131,24,67,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(131,24,67,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    /* ===== UI / Design Showcase (Product Designer craft) — scoped .ui-* ===== */
+    .ui-block-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--accent); margin: 30px 0 14px;
+    }
+    .ui-block-label:first-child { margin-top: 0; }
+    .ui-block-label .idx {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px; border-radius: 50%; background: var(--accent-light);
+      color: var(--accent-dark); font-size: 0.7rem; margin-right: 7px; vertical-align: middle;
+    }
+
+    /* --- Block A: Design Tokens --- */
+    .ui-tokens {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 24px;
+    }
+    .ui-tokens-cap { font-size: 0.74rem; color: var(--text-muted); margin-bottom: 12px; }
+    .ui-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(94px, 1fr)); gap: 10px; }
+    .ui-swatch { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: #fff; }
+    .ui-swatch .chip { height: 48px; border-bottom: 1px solid rgba(0,0,0,0.06); }
+    .ui-swatch .meta { padding: 6px 8px; }
+    .ui-swatch .name { font-size: 0.7rem; font-weight: 600; color: var(--text); line-height: 1.35; }
+    .ui-swatch .hex { font-size: 0.64rem; color: var(--text-muted); font-family: 'SF Mono', ui-monospace, Menlo, monospace; }
+    .ui-type { margin-top: 22px; border-top: 1px dashed var(--border); padding-top: 18px;
+      font-family: ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, 'Noto Sans Thai', sans-serif; }
+    .ui-type-row { display: flex; align-items: baseline; gap: 12px; padding: 7px 0; border-bottom: 1px solid #f4f3f1; }
+    .ui-type-row:last-child { border-bottom: none; }
+    .ui-type-row .tag { flex: 0 0 96px; font-size: 0.62rem; color: var(--text-muted);
+      font-family: 'SF Mono', monospace; text-transform: uppercase; letter-spacing: 0.03em; }
+    .ui-type-h1 { font-size: 1.65rem; font-weight: 800; line-height: 1.2; }
+    .ui-type-h1 em { color: var(--accent); font-style: normal; }
+    .ui-type-body { font-size: 1rem; font-weight: 400; color: var(--text-secondary); }
+    .ui-type-cap { font-size: 0.74rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.02em; }
+    .ui-chip-row { margin-top: 20px; border-top: 1px dashed var(--border); padding-top: 18px;
+      display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .ui-chip-row .grp { font-size: 0.68rem; font-weight: 700; color: var(--text-secondary); margin: 0 2px; }
+    .ui-token-chip { border: 1px solid var(--border); background: #fafafa; border-radius: 8px; padding: 4px 10px;
+      font-size: 0.72rem; color: var(--text-secondary); font-family: 'SF Mono', ui-monospace, Menlo, monospace; }
+
+    /* --- Block B: Screen Showcase (real dark/lime storefront) --- */
+    .ui-screens { display: flex; gap: 14px; overflow-x: auto; padding: 4px 2px 14px;
+      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; justify-content: center; }
+    .ui-screen { scroll-snap-align: center; flex: 0 0 auto; }
+    .ui-phone { width: 230px; background: #0d0d0d; border: 6px solid #1b1b1a; border-radius: 32px;
+      padding: 16px 11px 14px; box-shadow: 0 14px 36px rgba(0,0,0,0.22); position: relative; }
+    .ui-phone::before { content: ''; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+      width: 60px; height: 5px; border-radius: 5px; background: #333; z-index: 2; }
+    .ui-scr { color: #f4f1ea; font-size: 0.7rem; line-height: 1.5;
+      font-family: ui-sans-serif, system-ui, -apple-system, 'Noto Sans Thai', sans-serif;
+      height: 468px; overflow-y: auto; overflow-x: hidden; position: relative; scrollbar-width: none; }
+    .ui-scr::-webkit-scrollbar { display: none; }
+    .ui-buybar { position: sticky; bottom: 0; background: #0d0d0d; padding-top: 10px;
+      margin-top: 11px; box-shadow: 0 -10px 12px -6px #0d0d0d; }
+    .ui-buybar .ui-btn-line { margin-top: 0; }
+    .ui-nav { display: flex; align-items: center; justify-content: space-between; }
+    .ui-logo { font-weight: 700; letter-spacing: 0.5px; font-size: 0.78rem; }
+    .ui-nav .dots { color: #6f6d66; letter-spacing: 2px; font-size: 0.8rem; }
+    .ui-hero { background: #161615; border: 1px solid #262624; border-radius: 16px; padding: 13px 12px; margin-top: 10px; }
+    .ui-eyebrow { font-size: 0.5rem; letter-spacing: 0.22em; color: #8a887e; text-transform: uppercase; }
+    .ui-hl { font-size: 0.98rem; font-weight: 800; line-height: 1.2; margin-top: 4px; }
+    .ui-lime { color: #c8ff00; }
+    .ui-sub { font-size: 0.56rem; color: #b6b2a8; margin-top: 6px; }
+    .ui-cta { display: inline-block; margin-top: 9px; background: #c8ff00; color: #0d0d0d;
+      font-weight: 700; font-size: 0.58rem; padding: 6px 13px; border-radius: 50px; }
+    .ui-label { font-size: 0.6rem; font-weight: 700; margin: 12px 0 6px; color: #f4f1ea; }
+    .ui-catrow { display: flex; gap: 5px; flex-wrap: wrap; }
+    .ui-catchip { border: 1px solid #34332f; border-radius: 50px; padding: 2px 9px; font-size: 0.54rem; color: #cbc7bd; }
+    .ui-catchip.active { border-color: #c8ff00; color: #c8ff00; }
+    .ui-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 6px; }
+    .ui-pcard .ph { aspect-ratio: 3/4; border-radius: 9px; position: relative; overflow: hidden; }
+    .ui-badge-sale { position: absolute; top: 5px; right: 5px; background: #c8ff00; color: #0d0d0d;
+      font-size: 0.46rem; font-weight: 700; border-radius: 50px; padding: 1px 6px; }
+    .ui-badge-status { position: absolute; top: 5px; left: 5px; background: rgba(0,0,0,0.78); color: #fff;
+      font-size: 0.46rem; border-radius: 50px; padding: 1px 6px; }
+    .ui-pcard .pt { font-size: 0.54rem; color: #e6e3da; margin-top: 4px; overflow: hidden;
+      white-space: nowrap; text-overflow: ellipsis; }
+    .ui-pcard .pp { font-size: 0.56rem; font-weight: 700; margin-top: 1px; }
+    .ui-pcard .pp s { color: #7a786f; font-weight: 400; font-size: 0.5rem; }
+    .ui-detail-img { aspect-ratio: 4/5; border-radius: 12px; margin-top: 10px; }
+    .ui-dcat { font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8a887e; margin-top: 10px; }
+    .ui-dtitle { font-size: 0.82rem; font-weight: 700; margin-top: 2px; }
+    .ui-dprice { font-size: 0.66rem; font-weight: 700; margin-top: 2px; }
+    .ui-dprice s { color: #7a786f; font-weight: 400; font-size: 0.56rem; }
+    .ui-status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+      background: #22c55e; margin: 0 3px 0 5px; vertical-align: middle; }
+    .ui-status-txt { font-size: 0.52rem; color: #9be29b; }
+    .ui-vrow { display: flex; gap: 5px; margin-top: 5px; flex-wrap: wrap; }
+    .ui-vchip { border: 1px solid #34332f; border-radius: 50px; padding: 3px 11px; font-size: 0.54rem; color: #cbc7bd; }
+    .ui-vchip.active { background: #c8ff00; border-color: #c8ff00; color: #0d0d0d; font-weight: 700; }
+    .ui-tabs { display: flex; gap: 14px; margin-top: 13px; border-bottom: 1px solid #262624; }
+    .ui-tab { font-size: 0.54rem; padding-bottom: 5px; color: #8a887e; letter-spacing: 0.04em; }
+    .ui-tab.active { color: #f4f1ea; border-bottom: 2px solid #c8ff00; }
+    .ui-msg { margin-top: 11px; background: #161615; border: 1px solid #262624; border-radius: 9px;
+      padding: 8px 9px; font-size: 0.54rem; color: #cbc7bd; line-height: 1.55; }
+    .ui-msg .k { font-size: 0.46rem; text-transform: uppercase; letter-spacing: 0.05em; color: #6f6d66; display: block; margin-bottom: 3px; }
+    .ui-msg .mono { font-family: 'SF Mono', monospace; color: #7a786f; font-size: 0.5rem; }
+    .ui-btn-line { display: block; text-align: center; background: #06C755; color: #fff;
+      font-weight: 700; font-size: 0.62rem; padding: 9px; border-radius: 50px; margin-top: 9px; }
+    .ui-btn-tg { display: block; text-align: center; background: #229ED9; color: #fff;
+      font-weight: 700; font-size: 0.62rem; padding: 9px; border-radius: 50px; margin-top: 6px; }
+    .ui-screen .cap { margin-top: 12px; font-size: 0.78rem; color: var(--text-secondary); font-weight: 600; text-align: center; }
+    .ui-screen .cap span { display: block; font-size: 0.66rem; color: var(--text-muted); font-weight: 400;
+      font-family: 'SF Mono', monospace; margin-top: 2px; }
+
+    @media (max-width: 680px) {
+      .ui-swatches { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); }
+    }
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/tokens/fonts unchanged
+       only reworks the repeated "white card + color bar + emoji" components
+       into thin-divider lists + lucide icons
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--accent-dark); display: block; }
+    /* --- รูปสินค้าจริงใน mockup --- */
+    .ui-pcard .ph { background: #1b1b1a; }
+    .ui-pcard .ph img, .ui-detail-img img, .ext-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .ui-pcard .ph img { position: absolute; inset: 0; }
+    .ui-badge-sale, .ui-badge-status { z-index: 1; }
+    .ui-detail-img { overflow: hidden; background: #1b1b1a; }
+    .ext-photo { aspect-ratio: 5/4; overflow: hidden; background: var(--accent-light); }
+    .ext-photo img { object-position: center 30%; }
+    .ui-decisions li b { display: block; margin-bottom: 4px; line-height: 1.6; }
+    .photo-credit { margin-top: 6px; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.7; }
+    .photo-credit a { color: inherit; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--border); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+    /* ===== Figures (ภาพประกอบเซกชัน) ===== */
+    .shot { margin: 8px 0 32px; }
+    .shot img { display: block; width: 100%; height: auto; border-radius: var(--radius, 12px); box-shadow: 0 0 0 1px var(--border, #e7e5e4), 0 12px 32px rgba(0,0,0,.08); }
+    .shot figcaption { margin-top: 10px; font-size: .82rem; color: var(--text-secondary, #57534e); text-align: center; line-height: 1.6; }
+    .shot-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+    .shot-pair .lbl { display: block; margin-top: 8px; font-size: .78rem; font-weight: 600; color: var(--text); text-align: center; }
+    .shot.narrow { max-width: 560px; margin-left: auto; margin-right: auto; }
+    @media (max-width: 639px) { .shot-pair { grid-template-columns: 1fr; } }
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/linen-lookbook-portfolio/">
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 16.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 1 1 4.5 4.5 4.5 4.5 0 1 1-4.5 4.5"/><path d="M12 7.5V9"/><path d="M7.5 12H9"/><path d="M16.5 12H15"/><path d="M12 16.5V15"/><path d="m8 8 1.88 1.88"/><path d="M14.12 9.88 16 8"/><path d="m8 16 1.88-1.88"/><path d="M14.12 14.12 16 16"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Fashion Catalog &middot; Chat-to-Order &middot; Headless CMS
+      </div>
+      <h1>Pick a look, order via LINE<br><span class="accent">A linen brand lookbook with “chat to order” — no cart, no checkout</span></h1>
+      <p>A catalog + lookbook site for a premium linen clothing brand — moving it from selling through an Instagram feed to a storefront that is easy to browse. Customers pick a color and size, tap "Order", and land in <code>LINE</code> with the order message already filled in. The brand team edits products, prices and stock status themselves in a headless CMS.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Next.js 16</span>
+        <span class="hero-tag">React 19</span>
+        <span class="hero-tag">Payload CMS 3</span>
+        <span class="hero-tag">PostgreSQL</span>
+        <span class="hero-tag">Tailwind v4</span>
+        <span class="hero-tag">LINE Deep Link</span>
+        <span class="hero-tag">Webflow Rewire</span>
+        <span class="hero-tag">Chat-to-Order</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">How it works &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#stack">See the tech stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>The problem</h2>
+      <p>A linen clothing brand that grew on Instagram wanted a storefront that felt premium and was easier to browse than a feed — without committing to full e-commerce.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/template-checkout.jpg" width="1440" height="900" loading="lazy" alt="Checkout page of the original fashion template, with an email form, shipping address, order summary box and a Place Order button">
+      <figcaption>The fashion template (Avolin) the brand liked &mdash; good-looking, but it ships with a cart, address forms and a full checkout, none of which a brand that closes sales in chat ever uses</figcaption>
+    </figure>
+
+    <div class="quote-block">
+      <p>Customers spot a look on IG, but to order they have to scroll back through the feed and ask again: which item, what sizes, what colors, how much, is it still in stock — the brand answers the same questions every day. Meanwhile a cart and card payments are heavy and unnecessary for sales that already end with "let's talk on LINE".</p>
+      <div class="author">— The brief: move from an IG feed to a catalog site that still closes sales in chat</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h3>Selling only through the IG feed — no structured way to find products</h3>
+        <p>Customers scroll the feed to find a look they saw. There are no categories and no proper product pages, and older collections sink under new posts.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg>
+        <h3>The same chat questions every day</h3>
+        <p>Which size, what color, what is the fabric like, how much, is it sold out — the same questions come back because the information isn't in one place, and the admin answers them all by hand.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        <h3>A cart and card payments are heavy and unnecessary</h3>
+        <p>Real sales already end in a LINE conversation — checkout, a payment gateway and member accounts would be unused overhead and add more places for customers to drop off.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg>
+        <h3>The brand can't update products without a developer</h3>
+        <p>Adding a product, changing a price or marking something "sold out" would each mean paying someone to edit code — the brand team wanted to manage content without touching code.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+        <h3>The ready-made template looks good but is tied to its own commerce engine</h3>
+        <p>The fashion template they liked comes with a fixed cart and product system — it can't be connected directly to real data or a LINE channel.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>The solution</h2>
+      <p>Give the catalog real structure, turn the "order" button into a deep link into chat, drop checkout entirely, and let the brand control everything from the back office.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/cms-products.jpg" width="1440" height="860" loading="lazy" alt="Product list in the Thai-language back office: a table with image, product name, category, price, original price and status labels for in stock, pre-order and sold out, plus search and category/status filters">
+      <figcaption>The project's actual back office (sample seed data) &mdash; every product has a category, price and status instead of being answered one chat at a time. The brand logo and owner's name are blurred</figcaption>
+    </figure>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+        <h3>A structured catalog, easier to browse than a feed</h3>
+        <p>Products are grouped into categories, with collection pages filtered by category, a status (in stock / pre-order / sold out) and badges — customers find the look they saw in 2–3 clicks.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h3>Chat-to-Order: tap order → LINE opens with the message</h3>
+        <p>Pick a color and size, and the site builds an order message (product name + selected options + link), then deep-links into the brand's LINE OA with it pre-filled — the customer only taps send.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        <h3>No checkout — just "inquire"</h3>
+        <p>Cart, payment and member accounts are all removed, leaving a single inquiry flow — light, fast, and matching how sales actually close: in chat.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+        <h3>Headless CMS — the brand owns its content</h3>
+        <p>Payload CMS built in at <code>/admin</code> — add or edit products, prices, statuses, categories, images, and even the LINE channel and default message, without touching code.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h3>Rewire the template to be data-driven</h3>
+        <p>Split the fashion template into HTML/CSS/JS, then "inject" real product cards from the CMS in place of the demo ones — keeping the design and animations, discarding the original commerce engine.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>How it works — 4 steps</h2>
+      <p>From opening the site to the order message landing in chat</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/storefront-collection.jpg" width="1200" height="958" loading="lazy" alt="The storefront's All Collection page, with category tabs Dresses, Tops, Outerwear, Bottoms; product cards show category, name, price in baht, available sizes and a View Details button">
+      <figcaption>Step 1, Explore, on the live storefront &mdash; product cards come from the CMS and are injected into the template's design, filterable by category, with available sizes shown on the listing (sample product photos from the template)</figcaption>
+    </figure>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+        <h4>Explore</h4>
+        <p>Open the site, browse a collection, filter by category, and see each item's status</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+        <h4>Consider</h4>
+        <p>Open a product page to see photos from several angles, price, fabric and details</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1"/><circle cx="12" cy="8" r="2"/><path d="M12 10v12"/><path d="M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z"/><path d="M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z"/></svg>
+        <h4>Pick color / size</h4>
+        <p>Select a variant and the order message is built automatically in real time</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h4>Inquire via LINE</h4>
+        <p>Tap order → LINE opens with a pre-filled message, ready to send</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>An RSC-first storefront + headless CMS + deep links out to chat — no payment layer</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/cms-dashboard.jpg" width="1440" height="900" loading="lazy" alt="Inventory dashboard home: summary cards for total products, in stock, categories and media; a bar chart of products by category; a to-do box counting items without a price, on pre-order and sold out; and a row of recent products">
+      <figcaption>The Payload CMS layer as the brand sees it &mdash; the home screen shows right away what needs attention, such as sold-out or unpriced items, all read from the same PostgreSQL database as the storefront</figcaption>
+    </figure>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Storefront — Home / Collection / Product (any device)
+          <div class="arch-sub">
+            <span>Pick color / size</span>
+            <span>Check stock status</span>
+            <span>Tap "Order"</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Next.js 16 App Router (RSC) + Storefront Rewire Engine
+          <div class="arch-sub">
+            <span>readClonePage()</span>
+            <span>injectGrid()</span>
+            <span>buildProductDetail()</span>
+            <span>BuyPanel</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Payload CMS 3 — collections + BrandSettings + buyLink
+          <div class="arch-sub">
+            <span>Products</span>
+            <span>Categories</span>
+            <span>Media</span>
+            <span>lineBuyLink()</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          PostgreSQL (Neon) + Blob storage + LINE / Telegram deep-links
+          <div class="arch-sub">
+            <span>schema auto-push</span>
+            <span>media uploads</span>
+            <span>oaMessage://</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Why this stack?</strong>
+      <p>The original brief asked for a WordPress-style CMS — I chose <strong>Next.js 16 + Payload CMS 3</strong> instead, because Payload comes with a built-in admin UI (labels can be translated to Thai), automatic REST/GraphQL, and runs on the same serverless deployment as the storefront &middot; <strong>React Server Components</strong> read straight from the database with no API layer in between &middot; <strong>PostgreSQL</strong> keeps the schema tidy (auto-push in dev) &middot; and most importantly — <strong>there is no payment layer at all</strong>. The sale closes through a deep link into LINE, which keeps the whole system light and easy to maintain</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>What I built — 8 core capabilities</h2>
+      <p>The full loop, from the back-office catalog to the order message in chat</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/cms-edit.jpg" width="1440" height="900" loading="lazy" alt="Product edit screen in the back office: product name, SKU, a slug generated from the name, category, in-stock status, price, original price, image corner badge and a show-on-homepage checkbox">
+      <figcaption>The &ldquo;CMS Catalog&rdquo; capability on the real screen &mdash; status, badge, original price, featured flag, and a slug that can be left blank because it is generated from the name</figcaption>
+    </figure>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h3>Chat-to-Order Deep Link</h3>
+        <p>Builds the message from a template (<code>{product}</code>/<code>{url}</code>), then creates <code>line.me/R/oaMessage</code> and Telegram links with safe encoding</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1"/><circle cx="12" cy="8" r="2"/><path d="M12 10v12"/><path d="M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z"/><path d="M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z"/></svg>
+        <h3>Variant Picker → Message</h3>
+        <p>Color/size picker (client component) → appends "Product name (Color: …, Size: …)" to the order message in real time</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h3>Template Rewire Engine</h3>
+        <p>Reads the fashion template pages, splits out inline styles / body / scripts in order, and caches the result — parsed once, reused on every request</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
+        <h3>Balanced-Tag DOM Transforms</h3>
+        <p>Functions that replace an element's inner HTML by class/tab by counting the depth of opening and closing tags — so real data lands precisely in deeply nested markup</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
+        <h3>Commerce Stripper</h3>
+        <p>Removes the cart/add-to-cart nodes (<code>data-node-type</code>) from the template entirely and puts mount points for the LINE/Telegram buttons in their place</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+        <h3>CMS Catalog</h3>
+        <p>Products/Categories/Media — status, badge, featured, original price, multiple images, slug auto-generated from the name (beforeValidate hook)</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3>Brand Settings Global</h3>
+        <p>LINE OA / Telegram / Instagram / default order message / banner images — all editable from the back office, nothing hardcoded</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>
+        <h3>Runtime Re-init</h3>
+        <p>Loads the template's libraries once per session, re-fires the reveal animation on every page change, plus a safety net so no element stays hidden</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Product Buy-Panel Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>The product page + buy panel</h2>
+      <p>Pick color/size → the order message is built automatically → one tap opens the chat</p>
+    </section>
+
+    <div class="ext-mockup">
+      <div class="ext-bar">
+        <span style="font-weight:700; letter-spacing:1px; color:var(--accent-dark)">Linen Lookbook</span>
+        <span class="ext-btn">Lookbook</span>
+        <span class="ext-badge">New</span>
+      </div>
+      <div class="ext-photo"><img src="img/audrey-linen-midi-dress-wide.jpg" alt="Audrey Linen Midi Dress, a sand-colored linen dress" width="800" height="640" loading="lazy" decoding="async"></div>
+      <div style="padding:14px 16px 4px;">
+        <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted);">Dresses</div>
+        <div style="font-size:1.05rem; font-weight:700; margin:2px 0 4px;">Audrey Linen Midi Dress</div>
+        <div style="font-weight:700; color:var(--accent-dark);">฿1,890 <span style="color:var(--text-muted); font-weight:400; text-decoration:line-through; font-size:0.85rem;">฿2,400</span> <span style="color:var(--emerald-dark); font-weight:600; font-size:0.72rem;">&#9679; In stock</span></div>
+        <div style="margin-top:12px; font-size:0.76rem; color:var(--text-secondary);">Color</div>
+        <div style="margin-top:6px;">
+          <span class="chip" style="border:1px solid var(--accent); background:var(--accent); color:#fff; border-radius:50px; padding:3px 12px; font-size:0.74rem; margin-right:5px;">Sand</span>
+          <span class="chip" style="border:1px solid var(--border); border-radius:50px; padding:3px 12px; font-size:0.74rem; margin-right:5px; color:var(--text-secondary);">Sage</span>
+          <span class="chip" style="border:1px solid var(--border); border-radius:50px; padding:3px 12px; font-size:0.74rem; color:var(--text-secondary);">Ivory</span>
+        </div>
+        <div style="margin-top:10px; font-size:0.76rem; color:var(--text-secondary);">Size</div>
+        <div style="margin-top:6px;">
+          <span class="chip" style="border:1px solid var(--border); border-radius:50px; padding:3px 14px; font-size:0.74rem; margin-right:5px; color:var(--text-secondary);">S</span>
+          <span class="chip" style="border:1px solid var(--accent); background:var(--accent); color:#fff; border-radius:50px; padding:3px 14px; font-size:0.74rem; margin-right:5px;">M</span>
+          <span class="chip" style="border:1px solid var(--border); border-radius:50px; padding:3px 14px; font-size:0.74rem; color:var(--text-secondary);">L</span>
+        </div>
+      </div>
+      <div style="margin:12px 16px; padding:10px 12px; background:var(--accent-light); border-radius:10px; font-size:0.8rem; color:var(--accent-dark); line-height:1.6;">
+        <div style="font-size:0.66rem; text-transform:uppercase; letter-spacing:0.05em; opacity:0.6; margin-bottom:4px;">Message to be sent to LINE</div>
+        Hi, I'd like to order this item 🛍️<br>
+        Audrey Linen Midi Dress (Color: Sand, Size: M)<br>
+        <span style="opacity:0.55; font-family:'SF Mono',monospace; font-size:0.72rem;">…/products/audrey-linen-midi-dress</span>
+      </div>
+      <div style="padding:0 16px 16px; display:flex; gap:8px;">
+        <span style="flex:1; text-align:center; background:#06C755; color:#fff; border-radius:50px; padding:11px; font-weight:700; font-size:0.85rem;">Order via LINE</span>
+        <span style="flex:1; text-align:center; background:#229ED9; color:#fff; border-radius:50px; padding:11px; font-weight:700; font-size:0.85rem;">Telegram</span>
+      </div>
+    </div>
+    <p class="photo-credit">Sample photo: <a href="https://unsplash.com/photos/a-woman-poses-in-a-simple-linen-dress-dziVRZYOFpI" target="_blank" rel="noopener">Reistor</a> / Unsplash</p>
+
+    <hr class="divider">
+
+    <!-- ===== UI / Design Showcase (Product Designer) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype &middot; UI Craft</span>
+      <h2>UI design &amp; design system</h2>
+      <p>From a product designer's side — a sharp, high-contrast lime-on-dark design system, and a flow that takes customers from "that's the look" to "message to order" with as little friction as possible.</p>
+    </section>
+
+    <!-- Block A — Design Tokens -->
+    <div class="ui-block-label"><span class="idx">A</span>Design tokens — designed as a system, not page by page</div>
+    <div class="ui-tokens">
+      <div class="ui-tokens-cap">The storefront's real tokens (<code>--ln-*</code>) — a dark fashion look with a very bright accent so products and the order button stand out most</div>
+      <div class="ui-swatches">
+        <div class="ui-swatch">
+          <div class="chip" style="background:#c8ff00;"></div>
+          <div class="meta"><div class="name">Accent · CTA</div><div class="hex">#c8ff00</div></div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#0d0d0d;"></div>
+          <div class="meta"><div class="name">Background</div><div class="hex">#0d0d0d</div></div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#f4f1ea;"></div>
+          <div class="meta"><div class="name">Ink · Text</div><div class="hex">#f4f1ea</div></div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#262624;"></div>
+          <div class="meta"><div class="name">Surface / border</div><div class="hex">#262624</div></div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#06C755;"></div>
+          <div class="meta"><div class="name">LINE</div><div class="hex">#06C755</div></div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#229ED9;"></div>
+          <div class="meta"><div class="name">Telegram</div><div class="hex">#229ED9</div></div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#22c55e;"></div>
+          <div class="meta"><div class="name">In stock</div><div class="hex">#22c55e</div></div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#e11d48;"></div>
+          <div class="meta"><div class="name">Sold out</div><div class="hex">#e11d48</div></div>
+        </div>
+      </div>
+
+      <div class="ui-type">
+        <div class="ui-type-row">
+          <span class="tag">H1 / Hero</span>
+          <span class="ui-type-h1">Find the right piece, <em>order it in chat</em></span>
+        </div>
+        <div class="ui-type-row">
+          <span class="tag">Body</span>
+          <span class="ui-type-body">Browse, pick a size and color, then order through LINE or Telegram right away</span>
+        </div>
+        <div class="ui-type-row">
+          <span class="tag">Caption</span>
+          <span class="ui-type-cap">DRESSES · IN STOCK · SALE</span>
+        </div>
+      </div>
+
+      <div class="ui-chip-row">
+        <span class="grp">Radius</span>
+        <span class="ui-token-chip">pill · 50px</span>
+        <span class="ui-token-chip">card · rounded-xl 12px</span>
+        <span class="ui-token-chip">phone · 32px</span>
+      </div>
+      <div class="ui-chip-row" style="border-top:none; padding-top:0; margin-top:8px;">
+        <span class="grp">Spacing</span>
+        <span class="ui-token-chip">gap-2 · 8</span>
+        <span class="ui-token-chip">gap-3 · 12</span>
+        <span class="ui-token-chip">space-y-5 · 20</span>
+        <span class="ui-token-chip">image · aspect 3/4</span>
+      </div>
+    </div>
+
+    <!-- Block B — Screen Showcase -->
+    <div class="ui-block-label"><span class="idx">B</span>Key screens — 3 screens on one path (scroll sideways)</div>
+    <div class="ui-screens">
+
+      <!-- Screen 1: Home -->
+      <div class="ui-screen">
+        <div class="ui-phone">
+          <div class="ui-scr">
+            <div class="ui-nav"><span class="ui-logo">Li-ne</span><span class="dots">&#9776;</span></div>
+            <div class="ui-hero">
+              <div class="ui-eyebrow">Li-ne</div>
+              <div class="ui-hl">Find the right piece, <span class="ui-lime">order it in chat</span></div>
+              <div class="ui-sub">Browse, pick a size and color, then order through LINE or Telegram</div>
+              <span class="ui-cta">View all products</span>
+            </div>
+            <div class="ui-label">Categories</div>
+            <div class="ui-catrow">
+              <span class="ui-catchip">Dresses</span>
+              <span class="ui-catchip">Tops</span>
+              <span class="ui-catchip">Outerwear</span>
+              <span class="ui-catchip">Bottoms</span>
+            </div>
+            <div class="ui-label">Featured</div>
+            <div class="ui-grid2">
+              <div class="ui-pcard">
+                <div class="ph"><img src="img/audrey-linen-midi-dress.jpg" alt="Audrey Linen Dress, a sand-colored linen dress" width="600" height="800" loading="lazy" decoding="async"><span class="ui-badge-status">Pre-order</span></div>
+                <div class="pt">Audrey Linen Dress</div>
+                <div class="pp">฿1,890</div>
+              </div>
+              <div class="ui-pcard">
+                <div class="ph"><img src="img/sage-linen-top.jpg" alt="Sage Linen, a sage-green linen outfit" width="600" height="800" loading="lazy" decoding="async"><span class="ui-badge-sale">SALE</span></div>
+                <div class="pt">Sage Linen Top</div>
+                <div class="pp">฿890 <s>฿1,200</s></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap">Home<span>/</span></div>
+      </div>
+
+      <!-- Screen 2: Collection -->
+      <div class="ui-screen">
+        <div class="ui-phone">
+          <div class="ui-scr">
+            <div class="ui-nav"><span class="ui-logo">Li-ne</span><span class="dots">&#9776;</span></div>
+            <div class="ui-label" style="margin-top:12px;">All products</div>
+            <div class="ui-catrow">
+              <span class="ui-catchip active">All</span>
+              <span class="ui-catchip">Dresses</span>
+              <span class="ui-catchip">Tops</span>
+              <span class="ui-catchip">Bottoms</span>
+            </div>
+            <div class="ui-grid2" style="margin-top:9px;">
+              <div class="ui-pcard">
+                <div class="ph"><img src="img/audrey-linen-midi-dress.jpg" alt="Audrey Midi Dress, a sand-colored linen dress" width="600" height="800" loading="lazy" decoding="async"><span class="ui-badge-sale">SALE</span></div>
+                <div class="pt">Audrey Midi Dress</div>
+                <div class="pp">฿1,890 <s>฿2,400</s></div>
+              </div>
+              <div class="ui-pcard">
+                <div class="ph"><img src="img/peak-blazer.jpg" alt="Peak Blazer, a cream linen blazer" width="600" height="800" loading="lazy" decoding="async"></div>
+                <div class="pt">Peak Blazer</div>
+                <div class="pp">฿2,290</div>
+              </div>
+              <div class="ui-pcard">
+                <div class="ph"><img src="img/ruffle-maxi-dress.jpg" alt="Ruffle Maxi Dress, a long green ruffled dress" width="600" height="800" loading="lazy" decoding="async"><span class="ui-badge-status">Sold out</span></div>
+                <div class="pt">Ruffle Maxi Dress</div>
+                <div class="pp">฿1,690</div>
+              </div>
+              <div class="ui-pcard">
+                <div class="ph"><img src="img/twist-linen-top.jpg" alt="Twist Linen Top, a white linen top" width="600" height="800" loading="lazy" decoding="async"></div>
+                <div class="pt">Twist Linen Top</div>
+                <div class="pp">฿790</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap">Product listing<span>/products</span></div>
+      </div>
+
+      <!-- Screen 3: Product detail + Buy -->
+      <div class="ui-screen">
+        <div class="ui-phone">
+          <div class="ui-scr">
+            <div class="ui-nav"><span class="ui-logo">Li-ne</span><span class="dots">&#8592;</span></div>
+            <div class="ui-detail-img"><img src="img/audrey-linen-midi-dress-detail.jpg" alt="Audrey Linen Midi Dress, a sand-colored linen dress" width="600" height="750" loading="lazy" decoding="async"></div>
+            <div class="ui-dcat">Dresses</div>
+            <div class="ui-dtitle">Audrey Linen Midi Dress</div>
+            <div class="ui-dprice">฿1,890 <s>฿2,400</s><span class="ui-status-dot"></span><span class="ui-status-txt">In stock</span></div>
+            <div class="ui-label">Color</div>
+            <div class="ui-vrow">
+              <span class="ui-vchip active">Sand</span>
+              <span class="ui-vchip">Sage</span>
+              <span class="ui-vchip">Ivory</span>
+            </div>
+            <div class="ui-label">Size</div>
+            <div class="ui-vrow">
+              <span class="ui-vchip">S</span>
+              <span class="ui-vchip active">M</span>
+              <span class="ui-vchip">L</span>
+            </div>
+            <div class="ui-tabs">
+              <span class="ui-tab active">DETAILS</span>
+              <span class="ui-tab">MATERIALS &amp; CARE</span>
+            </div>
+            <div class="ui-msg">
+              <span class="k">Message to be sent to LINE</span>
+              Hi, I'd like to order this item 🛍️<br>
+              Audrey Linen Midi Dress (Color: Sand, Size: M)<br>
+              <span class="mono">…/products/audrey-linen-midi-dress</span>
+            </div>
+            <div class="ui-buybar">
+              <span class="ui-btn-line">Order via LINE</span>
+              <span class="ui-btn-tg">Order via Telegram</span>
+            </div>
+          </div>
+        </div>
+        <div class="cap">Product page + buy panel<span>/products/[slug]</span></div>
+      </div>
+
+    </div>
+
+    <p class="photo-credit">Sample product photos from Unsplash — <a href="https://unsplash.com/photos/a-woman-poses-in-a-simple-linen-dress-dziVRZYOFpI" target="_blank" rel="noopener">Reistor</a> · <a href="https://unsplash.com/photos/woman-in-light-green-dress-UbrPTBBxaE8" target="_blank" rel="noopener">engin akyurt</a> · <a href="https://unsplash.com/photos/BUahOWn2nBg" target="_blank" rel="noopener">Kawê Rodrigues</a> · <a href="https://unsplash.com/photos/woman-in-green-long-sleeve-dress-standing-on-brown-field-during-daytime-_vmoFgZc8c0" target="_blank" rel="noopener">Junior REIS</a> · <a href="https://unsplash.com/photos/woman-wearing-white-blouse-TPG-lDpSxaY" target="_blank" rel="noopener">Sincerely Media</a></p>
+
+    <!-- Block C — UI Decision Cards -->
+    <div class="ui-block-label"><span class="idx">C</span>UI decisions — why it works this way</div>
+    <ul class="plain ui-decisions">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span><b>Mobile-first — designed at 393 first, then expanded to 768 / 1440</b> Fashion customers mostly browse on their phones, so the base layout is a 2-column product grid with 3/4 images and a full-width order button. Larger screens expand to 3–4 columns, rather than shrinking a desktop layout down.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><span><b>UX writing — the order message is written in advance</b> The "Add to cart" button is replaced by "Order via LINE", which opens a real conversation with a pre-filled message (I'd like to order… + product name + color/size + link). The customer just taps send, cutting "I want this" down to one click.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="6" ry="6"/><circle cx="16" cy="12" r="2"/></svg><span><b>Component states — color/size buttons have clear default / active / sold-out states</b> The selected option gets a lime fill and bold text (active); the others have a faint outline (default), so the difference is the fill, not just the border. A "sold out" item can still open the chat to ask about the next batch instead of being a dead end.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></svg><span><b>Accessibility — high-contrast lime-on-dark + touch targets ≥ 44px</b> Cream text and the lime accent on a #0d0d0d black background exceed 4.5:1 contrast (WCAG AA). CTA buttons deliberately use black text on lime, not white, and the order button is about 44px tall, easy to hit with a thumb.</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Problems and hacks</h2>
+      <p>6 problems I had to solve myself while connecting a ready-made template to real data and chat channels</p>
+    </section>
+
+    <figure class="shot">
+      <div class="shot-pair">
+        <div><img src="img/buy-before.jpg" width="720" height="420" loading="lazy" alt="The original template's buy section, with a sale badge, prices in dollars, color and size options, a quantity field and an Add to Cart button"><span class="lbl">Before: original template</span></div>
+        <div><img src="img/buy-after.jpg" width="720" height="420" loading="lazy" alt="The buy section after the rewire: prices in baht from the CMS, size buttons S M L XL, and a green Order via LINE button in place of the quantity field and cart"><span class="lbl">After: rewired</span></div>
+      </div>
+      <figcaption>The Commerce Stripper on the live page &mdash; the quantity field and Add to Cart button are removed entirely and an Order via LINE button takes their place, while the surrounding design stays the template's</figcaption>
+    </figure>
+
+    <div class="hack-grid">
+      <div class="hack-card arch" data-label="HTML Parsing">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg><span>The template is tied to its commerce engine — it can't use real data</span></h3>
+        <p>The template's markup is deeply nested with cart nodes embedded in it — replacing product cards with a plain regex matches the wrong closing tag as soon as there is a nested <code>&lt;div&gt;</code>.</p>
+        <div class="highlight">Fix: I wrote my own DOM transform that balances opening and closing tags by counting depth (<code>&lt;div&gt;</code> +1, <code>&lt;/div&gt;</code> −1) to find the correct inner HTML before replacing it — so it can inject real cards, strip commerce nodes and swap the hero banner precisely, even in deeply nested markup.</div>
+      </div>
+
+      <div class="hack-card platform" data-label="Runtime">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg><span>The template's animations don't play after hydration</span></h3>
+        <p>The reveal animation sets elements to <code>opacity:0</code> and waits for the <code>load</code> event — but the script is injected after React hydrates (after <code>load</code> has fired), so on SPA navigation whole pages stayed hidden.</p>
+        <div class="highlight">Fix: load the library once per session, re-initialize the animation engine on every page mount and dispatch <code>load</code>/<code>readystatechange</code> manually — plus a safety net that reveals any element still hidden after 1 second.</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Deep Link">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span>Emoji / spaces / line breaks in the message → broken deep links</span></h3>
+        <p>The order message contains an emoji 🛍️, spaces and <code>\n</code> — appended to the URL as is, the LINE/Telegram links break immediately.</p>
+        <div class="highlight">Fix: wrap both the message and the OA id in <code>encodeURIComponent()</code> before building the deep link, and normalize the prefix (add <code>@</code> for LINE, strip <code>@</code> for Telegram) so it works however the brand types it.</div>
+      </div>
+
+      <div class="hack-card precision" data-label="API Collision">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18v-6a5 5 0 1 1 10 0v6"/><path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z"/><path d="M21 12h1"/><path d="M18.5 4.5 18 5"/><path d="M2 12h1"/><path d="M12 2v1"/><path d="m4.929 4.929.707.707"/><path d="M12 12v6"/></svg><span>The template's commerce code calls <code>/api/cart</code> and collides with the CMS</span></h3>
+        <p>The template's original runtime tries to fetch <code>/api/...</code> (the cart), which collides with the CMS's <code>/api</code> endpoint → CSRF errors and a "site unsecured" alert popping up in front of customers.</p>
+        <div class="highlight">Fix: intercept <code>window.alert</code> to drop cart/checkout/unsecured messages, and silence <code>unhandledrejection</code>/<code>error</code> noise from the commerce code (CSRF, Failed to fetch) — leaving only the flow I control.</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Caching">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg><span>Dynamic pages re-parse a large file on every visit</span></h3>
+        <p>Pages are <code>force-dynamic</code> (live data), but each navigation had to read and regex-parse template files of a few hundred KB — wasteful and slow.</p>
+        <div class="highlight">Fix: cache the parsed result per slug in an in-memory <code>Map</code> — the template files are static design that never changes, so they are parsed once and reused, while product data is still fetched fresh from the CMS on every request. The two are kept clearly separate.</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Scoping">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>The brief asked for WordPress and assumed e-commerce</span></h3>
+        <p>The initial expectation was a WordPress-style CMS with a cart — but real sales end in chat, so a checkout system would be dead weight.</p>
+        <div class="highlight">Fix: I proposed a new scope — Next.js + Payload (a built-in admin, so content is just as self-editable) and deliberately no checkout or payment, only chat-to-order. Lesson: cutting unnecessary requirements can give a client more value than building everything they asked for.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Deliberate design decisions</h2>
+      <p>What I deliberately left out matters as much as what I built</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/cms-settings.jpg" width="1440" height="900" loading="lazy" alt="Brand and contact settings in the back office: brand name, tagline, LINE OA ID, Telegram username and Instagram URL (blurred), and the default order message box using the product and url variables">
+      <figcaption>&ldquo;CMS-first, nothing hardcoded&rdquo; and &ldquo;deep links straight to the brand&rdquo; on one screen &mdash; the brand sets its own LINE OA and order message (the brand's real accounts are blurred)</figcaption>
+    </figure>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>The site has one job: a catalog that gets customers into a LINE conversation as quickly and smoothly as possible. It has no cart, no payment and stores no orders — the sale closes in the brand's chat. A tight scope from the start meant a direct, lightweight build the brand can genuinely maintain on its own.</p>
+    </div>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg><span><b>Chat-to-order, no checkout</b> — the sale closes in chat; the site just gets you there fast</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span><b>Rewire, don't rebuild</b> — keep the template's design, drop only the commerce engine</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg><span><b>CMS-first, nothing hardcoded</b> — products, channels and messages are all editable from the back office</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span><b>Deep links straight to the brand</b> — into the brand's own LINE OA, no middleman</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge I built up</h2>
+      <p>5 areas where this project genuinely moved my skills forward</p>
+    </section>
+
+    <figure class="shot narrow">
+      <img src="img/admin-login.jpg" width="560" height="420" loading="lazy" alt="The Li-ne Admin login page on the deployed site, with a Thai description saying to log in to manage the shop, email and password fields, and a login button">
+      <figcaption>The back-office entrance on the deployed site &mdash; every label is in Thai so the brand team can run the shop without calling a developer</figcaption>
+    </figure>
+
+    <div class="learning-card">
+      <strong>1. Conversational commerce — designing sales that close in chat:</strong>
+      <p>Understanding the non-e-commerce pattern of closing sales in chat — building pre-filled messages, deep-linking into LINE OA / Telegram, and UX that cuts the path from "I want this" to "message the shop" to one click. Lesson: for some businesses a cart isn't the answer — the conversation is what closes the sale.</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Payload CMS 3 (headless) — from schema to a Thai-language admin:</strong>
+      <p>Designing collections/globals, using field hooks (<code>beforeValidate</code> to generate slugs), access control, and localizing admin labels/descriptions into Thai for the brand team — seeing how a headless CMS gives you both the data model and the back office in one. Lesson: what's good for the client = editing content without calling a developer.</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. HTML rewiring — writing my own balanced-tag parser:</strong>
+      <p>Splitting head styles / body / scripts out of template pages and writing a transform that counts opening/closing tag depth to find the correct inner HTML, without a DOM library — and understanding why a plain regex breaks on nested markup. Lesson: parsing HTML correctly is about balancing, not pattern matching.</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Next.js 16 App Router + integrating 3rd-party runtime:</strong>
+      <p>Understanding RSC + <code>force-dynamic</code>, injecting external runtimes (jQuery/an animation engine) into the React lifecycle so they run in the right order after hydration and client-side navigation, and catching errors from code I didn't write. Lesson: bringing a legacy runtime into React means keeping tight control of the lifecycle.</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Client scoping — turning requirements into the right stack:</strong>
+      <p>Taking a "WordPress + sales system" brief and distilling what the client actually needed (a catalog + self-editing + closing sales in chat), choosing the stack and cutting unnecessary features. Lesson: my job isn't to follow every word of the request, but to deliver the result it's really asking for with the least complexity.</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">checkout steps — sales close in chat</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">2</div>
+        <div class="label">chat channels for ordering (LINE / Telegram)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">4</div>
+        <div class="label">collections in the back-office CMS</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">1</div>
+        <div class="label">click — from product page to chat message</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <h2>Linen Lookbook</h2>
+    <p>A catalog + lookbook site for a premium linen clothing brand that turns selling through an IG feed into an easy-to-browse storefront: pick a color and size, and one tap opens LINE with the order message. No cart, no checkout, everything managed by the brand in a headless CMS. Built with Next.js 16 + Payload CMS 3.</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Next.js 16</span>
+      <span class="stack-icon">React 19</span>
+      <span class="stack-icon">Payload CMS 3</span>
+      <span class="stack-icon">PostgreSQL</span>
+      <span class="stack-icon">Tailwind v4</span>
+      <span class="stack-icon">LINE Deep Link</span>
+      <span class="stack-icon">Webflow Rewire</span>
+      <span class="stack-icon">Chat-to-Order</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.work/">&#8592; Back to all projects</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Linen Lookbook Portfolio",
+      "item": "https://projects.tanplanet.work/linen-lookbook-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

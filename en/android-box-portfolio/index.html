@@ -1,0 +1,703 @@
+<!DOCTYPE html><html data-wf-domain="www.tanplanet.work" data-wf-page="608d6278863727b47e80cb9c" data-wf-site="608d62778637273e1880cb8d" lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TX98 TV Box: removing malware and designing a home screen for the family</title>
+  <meta name="description" content="Portfolio: removing malware from an Android TV box over ADB without root, then designing a new Thai launcher that opens the home Xiaomi camera stream full screen on the TV, plus Premier League data built for the remote">
+  <meta property="og:title" content="TX98 TV Box: removing malware and designing a home screen for the family">
+  <meta property="og:description" content="Portfolio: removing malware from an Android TV box over ADB without root, then designing a new Thai launcher that opens the home Xiaomi camera stream full screen on the TV, plus Premier League data built for the remote">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TX98 TV Box: removing malware and designing a home screen for the family">
+  <meta name="twitter:description" content="Portfolio: removing malware from an Android TV box over ADB without root, then designing a new Thai launcher that opens the home Xiaomi camera stream full screen on the TV, plus Premier League data built for the remote">
+  <rect width='100' height='100' rx='24' fill='%230a0f1f'/><rect x='14' y='34' width='72' height='48' rx='8' fill='none' stroke='%2334d399' stroke-width='6'/><path d='M36 18 50 34 64 18' fill='none' stroke='%2334d399' stroke-width='6' stroke-linecap='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  
+  
+  <script src="../../common/closing.js" defer></script>
+<meta property="og:image" content="https://projects.tanplanet.work/pj/covers/android-box-portfolio-en-og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://projects.tanplanet.work/pj/covers/android-box-portfolio-en-og.jpg"><link rel="icon" type="image/png" href="https://myfolio.tanplanet.work/favicon.png"><link rel="apple-touch-icon" href="https://myfolio.tanplanet.work/apple-touch-icon.png"><link rel="canonical" href="https://projects.tanplanet.work/en/android-box-portfolio/"><meta property="og:url" content="https://projects.tanplanet.work/en/android-box-portfolio/"><meta property="og:locale" content="en_US"><link rel="alternate" hreflang="th" href="https://projects.tanplanet.work/android-box-portfolio/"><link rel="alternate" hreflang="en" href="https://projects.tanplanet.work/en/android-box-portfolio/"><link rel="alternate" hreflang="x-default" href="https://projects.tanplanet.work/android-box-portfolio/"><link rel="stylesheet" href="https://myfolio.tanplanet.work/tokens.css"/><link href="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/css/myfolio-tannie.webflow.shared.f00d552de.css?v=50" rel="stylesheet" type="text/css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap"><link rel="stylesheet" href="https://myfolio.tanplanet.work/blog/article.css"/><link rel="stylesheet" href="../../common/closing.css"><style>.cs *, .cs *::before, .cs *::after{ box-sizing: border-box; margin: 0; padding: 0; }
+.cs{
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #047857;
+      --accent-light: #dcfce7;
+      --accent-dark: #14532d;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+.cs{
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+.cs .hero{
+      background: linear-gradient(135deg, #0a0f1f 0%, #0f1d33 42%, #0b3b35 78%, #065f46 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+.cs .hero::before{
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(52,211,153,0.18) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+@keyframes sway{
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+.cs .hero::after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #065f46, #10b981, #a7f3d0);
+    }
+.cs .hero-inner{
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+.cs .hero-mark{
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+.cs .hero-badge{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+.cs .hero-badge .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+@keyframes pulse-dot{
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+.cs .hero h1{
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+.cs .hero h1 .accent{ color: #86efac; }
+.cs .hero p{
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+.cs .hero-tags{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+.cs .hero-tag{
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+.cs .cta-row{
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+.cs .cta-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+.cs .cta-btn:hover{ transform: translateY(-2px); }
+.cs .cta-primary{
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+.cs .cta-primary:hover{ box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+.cs .cta-ghost{
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+.cs .cta-ghost:hover{ background: rgba(255,255,255,0.2); }
+.cs article{
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+.cs code{
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+.cs .back-nav{
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+.cs .back-nav:hover{ background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+.cs .back-nav svg{ flex-shrink: 0; }
+.cs .back-to-top{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+.cs .back-to-top.visible{ opacity: 1; visibility: visible; transform: translateY(0); }
+.cs .back-to-top:hover{ background: var(--accent-dark); }
+@media (max-width: 680px){.cs .hero{ padding: 80px 20px 56px; }
+.cs .hero h1{ font-size: 1.7rem; }
+.cs .back-nav{ top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+.cs .back-to-top{ bottom: 16px; right: 16px; width: 40px; height: 40px; }
+
+    }
+@media (prefers-reduced-motion: reduce){.cs *, .cs *::before, .cs *::after{ animation: none !important; transition: none !important; }
+
+    }
+.cs .ico{ width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+.cs .rung:last-child{ border-bottom: 0; }
+.cs .ledger--wide{ min-width: 780px; }
+.cs .ladder{ border-top: 1px solid var(--border); margin-top: 20px; }
+.cs .rung{
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+.cs .rung .cond{ display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+.cs .rung .cond .ico{ color: var(--text-muted); width: 15px; height: 15px; }
+.cs .rung .out{ font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+.cs .rung .note{ font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+.cs .rung.none .out{ color: var(--text-muted); }
+@media (min-width: 700px){.cs .rung{ grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+
+    }
+.cs .hero-mark .ico{ width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+.cs .hero-badge .ico{ width: 14px; height: 14px; }
+@media (max-width:640px){}
+
+</style><link rel="stylesheet" href="../../common/components.css?v=7"/><link rel="stylesheet" href="../../pj/case.css?v=12"/></head><body><div style="opacity:0" class="page-wrapper"><div data-collapse="medium" data-animation="default" data-duration="400" data-w-id="58db7844-5919-d71b-dd74-2323ed8dffe9" data-easing="ease" data-easing2="ease" role="banner" class="header w-nav"><div class="loader-wrapper"><div class="loader"></div></div><div class="container-header"><div class="split-content header-left"><a href="https://myfolio.tanplanet.work/" class="brand w-nav-brand"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><nav role="navigation" class="nav-menu w-nav-menu"><ul role="list" class="header-navigation"><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="nav-link">Home</a></li><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="nav-link">About</a></li><li class="nav-item-wrapper last"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a><a href="https://projects.tanplanet.work/en/" class="nav-link">Portfolio</a><a href="https://myfolio.tanplanet.work/en/contact" class="nav-link nav-contact">Contact</a></li></ul></nav></div><div class="split-content header-right"><a class="lang-switch" href="https://projects.tanplanet.work/android-box-portfolio/" hreflang="th" aria-label="TH EN – Switch to Thai"><span class="">TH</span> <span class="on">EN</span></a><div class="link-header-wrapper"><a data-w-id="a331bf6d-ae80-89ce-2301-aa6077024ef0" href="https://drive.google.com/file/d/1GjCCJ3XFU16-ceCq3MGVWRdezXm3GWxl/view?usp=sharing" target="_blank" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Resume</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="menu-button w-nav-button"><div class="menu-button-wrapper"><div class="menu-button-icon"><div class="menu-line-top"></div><div class="menu-line-middle"></div><div class="menu-line-bottom"></div></div></div></div></div></div><div class="container-default w-container"><div class="divider"></div></div></div><div class="section blog-post" role="main"><article class="ap cs-page" role="main"><div class="ap-band"><div class="ap-container"><header class="ap-head">
+<div class="ap-tags"><a href="https://projects.tanplanet.work/en/" class="ap-tag">Tooling</a><span class="ap-tag ap-tag--ghost">Projects</span></div>
+<h1 class="ap-title">TX98 TV Box</h1><p class="cs-sub">From a cheap box that lied about its specs and secretly sold the home connection, to a TV that opens to the 3 buttons the family actually uses. No root, and every step can be undone.</p>
+<p class="ap-meta"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><time datetime="2026-10-24">Oct 24, 2026</time></span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>12 min read</span></p>
+</header></div></div>
+<div class="ap-container ap-grid"><div class="ap-main">
+<figure class="ap-cover"><img src="../../pj/covers/android-box-portfolio-en.webp" alt="" width="1600" height="900" fetchpriority="high" decoding="async"></figure>
+<div class="ap-row"><aside class="ap-share" aria-label="Share this article"><span class="ap-share-title">SHARE</span><a href="https://www.facebook.com/sharer/sharer.php?u=https://projects.tanplanet.work/en/android-box-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a><a href="https://twitter.com/intent/tweet?url=https://projects.tanplanet.work/en/android-box-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on X"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.9 1.2h3.7l-8 9.1L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9Zm-1.3 19.4h2L6.5 3.2H4.3l13.3 17.4Z"/></svg></a><a href="https://social-plugins.line.me/lineit/share?url=https://projects.tanplanet.work/en/android-box-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LINE"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="3" width="21" height="18" rx="5.5" fill="currentColor"/><text x="12" y="15.2" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="7.2" font-weight="900" fill="#fff">LINE</text></svg></a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https://projects.tanplanet.work/en/android-box-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a><button type="button" class="ap-share-btn" data-tip-done="Copied" data-copy="https://projects.tanplanet.work/en/android-box-portfolio/" aria-label="Copy link"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button></aside><div class="ap-body"><div class="cs">
+<p class="cs-lead">It started with removing what was unsafe from an Android TV box, then designing a new experience that opens straight to YouTube, Netflix, the front door camera and the football data the family wants to see</p><div class="cs-chips"><span class="cs-chip">ADB</span><span class="cs-chip">Android 10</span><span class="cs-chip">CleanYourTV launcher</span><span class="cs-chip">Gradle</span><span class="cs-chip">Python + Pillow</span><span class="cs-chip">Claude Code</span><span class="cs-chip">Malware analysis</span></div>
+<article>
+
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>The family uses a handful of things, but the screen offers dozens</h2>
+      <p>Ever opened Netflix to watch one film and spent 20–30 minutes scrolling through options before picking something? That is almost half a movie gone. The problem is not a lack of things to watch. There is so much that choosing becomes a chore of its own.</p>
+      <p>This TV box's home screen worked the same way. The family turns it on to watch YouTube or Netflix or to check the front door camera, but first they get past ads, apps nobody uses and close to ten options before reaching what they want. More options did not make it more useful. It added time and hesitation every time the TV came on.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../android-box-portfolio/img/00-before-home.jpg" width="1280" height="720" loading="lazy" alt="The original TX98 home screen: a Google Play banner on top and nearly 12 preinstalled apps such as prime video, Downloader, MX Player and AirScreen">
+      <figcaption>The home screen as it arrived &mdash; only a few of these apps were ever used</figcaption>
+    </figure>
+
+    <div class="quote-block">
+      <p>I just want the 3–4 things we actually use: open YouTube, watch Netflix or check the front door camera right away, and a box that doesn't lag</p>
+      <div class="author">— The starting brief</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <h3>Press the remote, then wait</h3>
+        <p>Every app switch froze for several seconds. Getting to the front door camera meant waiting through several steps.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg>
+        <h3>Storage 95% full</h3>
+        <p>About 200 MB left, even though almost nothing had been installed by us</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        <h3>The home screen wasn't ours</h3>
+        <p>The top half was a movie promo banner and the bottom row was apps the shop had installed. Removing them from the menu didn't get rid of them all.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V8"/><path d="M22 4v16"/></svg>
+        <h3>No idea what came preinstalled</h3>
+        <p>The shop had filled the box with apps and nobody knew what each one did, until I looked at where they were connecting to</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>The specs on the box and the specs in the system don't match</h2>
+      <p>Before removing anything, I needed to know what this device really was. The answer was in the system properties, read over ADB.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../android-box-portfolio/img/specs-real.jpg" width="1600" height="550" loading="lazy" alt="Terminal showing getprop: release 15.0 but SDK 29, hardware sun50iw9p1, meminfo 16777216 kB while free -m reports a total of 970 MB">
+      <figcaption>The device reports itself as Android 15 with 16 GB of RAM &mdash; what the system actually runs on is Android 10 with less than 1 GB of RAM</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span><b>Android 15 → really Android 10</b> Only the version label was changed. The SDK is still 29, so every app behaves as on Android 10.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg><span><b>16 GB RAM → really about 1 GB</b> The number in /proc/meminfo was edited, but the free command still counts the real memory: 970 MB</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg><span><b>Allwinner H313 chip, 720p output</b> and a userdebug build, which should never ship on a consumer device</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Information Design &middot; TV UX</span>
+      <h2>Football data at two levels, without crowding the home screen</h2>
+      <p>The home screen answers the quick questions: who plays today, at what time, and what the latest standings are. The full data is one click deeper. That gives both speed and detail without cramming everything onto one screen.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../android-box-portfolio/img/football-home-netflix.png" width="1280" height="720" loading="lazy" alt="Thai-language Android TV home screen showing the time, Premier League fixtures, the league table and a row with YouTube, Netflix and the front door camera">
+      <figcaption>The glance view on the home screen: fixtures, kick-off times and standings, so you know what you need before deciding to open the detail page</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg><span><b>Ordered by the task</b> Kick-off times stand out over secondary details, the date appears once, and team names are readable from the sofa</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6v16H4zM14 4h6v16h-6z"/></svg><span><b>One system, two levels of data</b> Home is a glance view. The Detail page uses two equal columns for fixtures and the league table.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg><span><b>Designed for the remote</b> Every state has to show what is selected, without relying on a mouse or touch</span></li>
+    </ul>
+
+    <section class="section-intro">
+      <span class="eyebrow">Detail &middot; D-pad</span>
+      <h2>A full two-column page, without forcing tab switches</h2>
+      <p>Fixtures on the left, league table on the right, at equal widths. Users see both at once and can scroll each column with the D-pad right away.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../android-box-portfolio/img/football-detail-approved.png" width="1280" height="720" loading="lazy" alt="Thai-language Premier League detail page in two columns: fixtures on the left and the league table with team crests on the right">
+      <figcaption>The approved Detail page: a clear focus state, Thai team names, aligned crests and qualification bars flush with the table edge</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h18M3 12h18M3 19h18"/></svg><span><b>A table readable from TV distance</b> 3dp color bars mark the Champions League, European and relegation zones, with 10dp of space before the position number</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span><b>Kick-off time comes first</b> Team names drop to 14sp, while times use Medium weight so the eye finds the essential information first</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span><b>Load each crest once</b> The crest URL is the key, with a memory cache, a disk cache and merged requests for the same team. Even when API standings change, images don't need to reload.</span></li>
+    </ul>
+
+    <section class="section-intro">
+      <span class="eyebrow">Results &middot; Highlights</span>
+      <h2>Wake up to last night's results, then open the highlights</h2>
+      <p>The old page only showed the next fixtures, even though the first thing the family wants in the morning is last night's results. Results now appear before fixtures, and matches that Monomax Sports has posted clips for get a "Highlights" badge straddling the card edge. Press OK and the clip opens in the YouTube app.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../android-box-portfolio/img/football-highlights.png" width="1280" height="720" loading="lazy" alt="Premier League detail page showing five results from Saturday, October 24. Every match has a red highlights badge straddling the top edge of its card, the first row has a white focus ring, and there is a back button in the top right">
+      <figcaption>Results from the last 3 days sit at the top, the highlights badge shows the row is pressable, and the back button is now a real focusable button</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 5 3.5-5 3.5z"/></svg><span><b>One row, one action</b> A finished match can only do one thing: open the highlights. So the badge says both that a clip exists and that the row is pressable. No separate button needed.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h10M4 17h6"/></svg><span><b>Matching clips by title</b> Monomax names clips with one pattern (home team vs away team + Buddhist-era date). A Worker reads the highlights playlist every 10 minutes, using 1 unit of YouTube quota per check. Clips usually appear 45–60 minutes after full time.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg><span><b>Nothing kept long-term</b> Nobody goes back to last week's highlights. Every item on the Worker expires on its own after 4 days, and the box keeps only a few KB of JSON that gets overwritten each round.</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="malware">
+      <span class="eyebrow">Define</span>
+      <h2>The box was selling the home internet connection from day one</h2>
+      <p>The process list showed five oddly named programs from the same family, all holding connections to overseas servers on the same port</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../android-box-portfolio/img/malware-tunnel.jpg" width="1600" height="630" loading="lazy" alt="Terminal showing the sfsz process family, including st_plugin_tunnel, with 3 connections to Alibaba Cloud US and Zenlayer on port 9123, IPs hidden">
+      <figcaption>Evidence before the fix &mdash; st_plugin_tunnel relayed other people's traffic through the home connection (IPs hidden, full values kept in an internal log)</figcaption>
+    </figure>
+
+    <p>Boxes like this are used as a <b>residential proxy</b>: outsiders pay a middleman to route traffic through our home IP, so target sites see a regular user and don't block it. For the household, that means slower internet, an IP that may get blacklisted, and other people's activity that traces back to our home. The behavior matches networks like BadBox 2.0 / Vo1d reported on cheap Allwinner boxes.</p>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Layer 1 &mdash; baked into the firmware (/system)
+          <div class="arch-sub"><span>netservice disguised as a system service</span><span>An "app store" that silently installs apps</span><span>DNS-over-HTTPS to bypass the home filter</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Layer 2 &mdash; installers downloaded later
+          <div class="arch-sub"><span>6 apps with install rights that start at boot</span><span>Still installing new apps up to the month I checked</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Layer 3 &mdash; the money maker
+          <div class="arch-sub"><span>sfsz &rarr; st_plugin_tunnel</span><span>Outbound on port 9123</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Remote command system
+          <div class="arch-sub"><span>CDM with iperf3 to measure connection speed</span><span>Picks homes with connections fast enough to sell</span></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>Disabling over ADB beats reflashing or resetting</h2>
+      <p>The constraint: no clean firmware exists for this model, and the malware's source lives in a partition the user can't overwrite</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../android-box-portfolio/img/01-after-batch1.jpg" width="1280" height="720" loading="lazy" alt="Google TV home screen after the first batch was disabled: the apps are still there, but the malware processes have stopped">
+      <figcaption>After the first batch, the box looks the same, but the tunnel has stopped and there are no connections left on port 9123</figcaption>
+    </figure>
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th>Option</th><th>What you get</th><th class="num">Risk</th><th>Why rejected / chosen</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Factory reset</td>
+            <td>The box goes back to day one</td>
+            <td class="num">Low</td>
+            <td>The first malware layer lives in the firmware. A reset brings it back with the system, and it downloads the rest again.</td>
+          </tr>
+          <tr>
+            <td>Flash new firmware</td>
+            <td>Truly clean</td>
+            <td class="num">High</td>
+            <td>There is no official firmware for this model, the builds shared online have unknown origins, and a mistake could leave the box unable to boot</td>
+          </tr>
+          <tr data-picked>
+            <td>Disable and uninstall over ADB + new home screen<span class="pick"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Chosen</span></td>
+            <td>Only the apps in use remain, malware stops running</td>
+            <td class="num">Low</td>
+            <td>Follows the approach of the open-source project CleanYourTV. Every command can be reversed with <code>restore.sh</code>. The downside is that a factory reset means running it again.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Order matters more than count</strong>
+      <p><strong>Disable the installers first, then the workers.</strong> If you remove the workers first, the system installer downloads them again within minutes. Before every step, back up the app list and all system settings.</p>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>Clean in batches, check after every batch</h2>
+      <p>One group at a time, with a screenshot and a connection check after each batch. If something breaks, you know exactly which batch caused it.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../android-box-portfolio/img/03-after-debloat-home.jpg" width="1280" height="720" loading="lazy" alt="Google TV home screen after cleanup: the favorite apps row has only YouTube and Google Play Store">
+      <figcaption>After uninstalling unused apps, the favorites row has only what is needed &mdash; but the Google TV home screen is still full of ads</figcaption>
+    </figure>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+        <h4>Back up everything</h4>
+        <p>App list, system settings and device settings, saved before touching anything</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg>
+        <h4>Disable the installers first</h4>
+        <p>Use <code>pm disable-user</code>, which can be reversed, then disable the workers</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+        <h4>Confirm they really stopped</h4>
+        <p>Check processes and connections again. Don't trust a command just because it answered Success.</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+        <h4>Uninstall 23 apps</h4>
+        <p>11 unused apps and 12 malware apps outside the firmware</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        <h4>Make the box lighter</h4>
+        <p>Disable 10 more unused system apps and halve the animation speed</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">06</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        <h4>Write a way back</h4>
+        <p><code>restore.sh</code> re-enables everything that was disabled in one command</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="design">
+      <span class="eyebrow">Prototype &middot; Observe &middot; Iterate</span>
+      <h2>A home screen based on how the family actually uses the TV</h2>
+      <p>Instead of starting from a feature list, I started from what the family actually opens. That left three main paths: YouTube, Netflix and the front door camera, with football data as a glance view before entering any app.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../android-box-portfolio/img/football-home-netflix.png" width="1280" height="720" loading="lazy" alt="New home screen with YouTube, Netflix, the front door camera and Premier League data">
+      <figcaption>The latest home screen: everything used regularly is no more than two presses from the first button</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg><span><b>One row, 3 tiles</b> Sorted by how often they're used. Every app is at most two presses right of the first button.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span><b>The camera is a direct destination</b> No opening a phone app and hunting for the device. One press from Home goes straight to the front door view, full screen.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><span><b>The old home screen is disabled only after verification</b> The install script first checks that the Home button really points to the new screen. If not, it leaves the old launcher alone, so the TV never gets stuck on a black screen.</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Custom Camera Viewer</span>
+      <h2>Home camera feed straight on the TV</h2>
+      <p>Rather than forcing a phone APK onto the TV, I pulled the stream from the Xiaomi camera the family used to watch in Mi Home, served it as a local web stream inside the box, and built a viewer made for the TV. One press from Home shows the front door full screen.</p>
+    </section>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">Xiaomi camera on the home network</div>
+        <div class="arch-arrow">&#8595;</div>
+        <div class="arch-layer platform">Local stream on the Android box</div>
+        <div class="arch-arrow">&#8595;</div>
+        <div class="arch-layer infra">Full-screen viewer designed for the TV remote</div>
+      </div>
+    </div>
+
+    <figure class="shot">
+      <img src="../../android-box-portfolio/img/front-camera-viewer.png" width="1280" height="720" loading="lazy" alt="Live feed from the Xiaomi front door camera, full screen on the Android TV box">
+      <figcaption>The front door camera in the viewer app built for the TV. Press it on Home and it goes straight to full screen.</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg><span><b>A shorter path than the phone app</b> The device list, menus and status screens that aren't needed on a TV are gone. What's left is the picture you want to see.</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg><span><b>Designed around the box's limits</b> The old WebView can't play H.265 streams, so a hardware-decoding player is used instead to keep video smooth on less than 1 GB of real RAM</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg><span><b>Stays on the home network</b> The stream relay and player both run on the box, so opening the camera never routes the user through an outside service or website</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="hacks">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Problems along the way</h2>
+      <p>Most of them only showed up when testing on the real device</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../android-box-portfolio/img/football-detail-approved.png" width="1280" height="720" loading="lazy" alt="Football detail page with the fixtures column selected and the league table on the right">
+      <figcaption>Testing on the real TV meant several rounds of adjusting hierarchy, alignment and focus states before it read well from the sofa</figcaption>
+    </figure>
+
+    <div class="hack-grid">
+
+      <div class="hack-card" data-label="Reinstall">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>The malware came back after removal</span></h3>
+        <p>The installer in the firmware could install apps silently and started itself at boot</p>
+        <div class="highlight"><strong>Fix:</strong> <strong>always shut off the source first</strong>, then disable and uninstall what it had downloaded. No unknown apps have appeared since.</div>
+      </div>
+
+      <div class="hack-card" data-label="Launcher">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Two columns looked equal but felt unbalanced in use</span></h3>
+        <p>Team names, crests and numbers took up different amounts of space on each side, so even with equal-width containers the layout looked lopsided</p>
+        <div class="highlight"><strong>Fix:</strong> define a shared column system and alignment rules, then test with real data that has both short and long names</div>
+      </div>
+
+      <div class="hack-card" data-label="Alignment">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>A TV has no cursor to show what is selected</span></h3>
+        <p>A table that looked clear on a computer became confusing when controlled with a D-pad from across the room</p>
+        <div class="highlight"><strong>Fix:</strong> make the focus state part of the design system: column headers, the active line and scrolling within each side</div>
+      </div>
+
+      <div class="hack-card" data-label="API">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Mornings still showed yesterday's match as "Live"</span></h3>
+        <p>The football API answers from several servers, and about half still had yesterday's data cached. Results flipped back and forth: one request said full time, the next said still playing.</p>
+        <div class="highlight"><strong>Fix:</strong> the Worker remembers the latest version of each match and refuses to serve an older one. The app also ignores a "live" status more than 3 hours after kick-off.</div>
+      </div>
+
+      <div class="hack-card" data-label="Icon">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>The league table showed numbers but not what they meant</span></h3>
+        <p>Position alone doesn't tell you whether a team is heading for Europe or at risk of relegation</p>
+        <div class="highlight"><strong>Fix:</strong> add qualification zones along the table edge and a legend for the Champions League, European places and the relegation zone</div>
+      </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Test</span>
+      <h2>Before and after</h2>
+      <p>Measured on the real device over ADB, before starting and after finishing</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../android-box-portfolio/img/football-home-netflix.png" width="1280" height="720" loading="lazy" alt="Final home screen with YouTube, Netflix, the front door camera and football data">
+      <figcaption>The final home screen: three main apps, football data and the front door camera, all in one system</figcaption>
+    </figure>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">3</div><div class="label">Apps on the home screen, down from nearly 12</div></div>
+      <div class="metric-card"><div class="num">23</div><div class="label">Apps uninstalled (12 of them malware)</div></div>
+      <div class="metric-card"><div class="num">16</div><div class="label">System apps disabled, reversibly</div></div>
+      <div class="metric-card"><div class="num">50%</div><div class="label">Storage used, down from 95%</div></div>
+      <div class="metric-card"><div class="num">2.2×</div><div class="label">Free RAM 163 &rarr; 364 MB</div></div>
+      <div class="metric-card"><div class="num">0</div><div class="label">Malware connections remaining</div></div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>What I deliberately didn't do</h2>
+      <p>The whole family uses this box, so everything had to be reversible</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../android-box-portfolio/img/restore.jpg" width="1600" height="390" loading="lazy" alt="Terminal showing restore.sh: it loops through every package in disabled.txt, re-enables it with pm enable, then uninstalls the new home screen. disabled.txt lists 16 entries">
+      <figcaption>Every disabled app is recorded, 16 in total &mdash; to get the original box back, run one command</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span><b>No root, no flashing</b> No step risks leaving the box unable to boot</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg><span><b>System apps are disabled, not deleted</b> Every disabled app is on the list and can be re-enabled with <code>restore.sh</code></span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg><span><b>Static malware analysis only</b> Files were pulled off to read the code and inspect connections. Nothing was installed or run on another device.</span></li>
+    </ul>
+
+  </article>
+</div><section class="ap-author" aria-label="Author"><img class="ap-author-avatar" src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/688f5899cad39483c4e11c49_Profile_Webflow.webp" alt="" width="88" height="88" loading="lazy"><div class="ap-author-body"><p class="ap-author-name">Tan · Natpakan Sirirat</p><p class="ap-author-bio">Product Designer &amp; AI Builder — designing user experiences and building AI tools that actually work.</p><ul class="ap-author-links"><li><a href="https://www.linkedin.com/in/natpakan/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a></li><li><a href="https://www.facebook.com/tan.natpakan" target="_blank" rel="noopener" aria-label="Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a></li><li><a href="https://www.instagram.com/npkant/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a></li></ul></div></section><nav class="ap-pn" aria-label="Previous and next project"><a href="../tans-tools-devpanel-portfolio/" class="ap-pn-item ap-pn-prev"><span class="ap-pn-label">← Previous project</span><span class="ap-pn-title">Tan’s Tools · DEV panel</span></a><a href="../tools-portfolio/" class="ap-pn-item ap-pn-next"><span class="ap-pn-label">Next project →</span><span class="ap-pn-title">Tan&#x27;s Tools</span></a></nav></div></div></div>
+<aside class="ap-side"><div class="ap-side-inner"><section class="ap-widget"><h2 class="ap-widget-title"><span>Latest projects</span></h2><ol class="ap-rank"><li><a href="../content-engine-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/content-engine-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">1</span></span><span class="ap-rank-title"><span class="ap-rank-t">Auto-publishing content engine</span></span></a></li><li><a href="../tans-tools-devpanel-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tans-tools-devpanel-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">2</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan’s Tools · DEV panel</span></span></a></li><li><a href="../tools-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tools-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">3</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan&#x27;s Tools</span></span></a></li><li><a href="../shotdeck-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/shotdeck-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">4</span></span><span class="ap-rank-title"><span class="ap-rank-t">shotdeck-box: a laptop that posts clips</span></span></a></li><li><a href="../motion-reel-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/motion-reel-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">5</span></span><span class="ap-rank-title"><span class="ap-rank-t">Motion Graphics for YouTube</span></span></a></li></ol></section></div></aside>
+</div><div class="ap-progress" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" class="ap-progress-track"/><circle cx="32" cy="32" r="28" class="ap-progress-bar" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg><span>0%</span></div></article><footer class="footer"><div class="container-default w-container"><div class="divider"></div></div><div class="container-footer"><div class="footer-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-logo-container w-inline-block"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" loading="lazy" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><ul role="list" class="footer-navigation"><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-nav-link">Home</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="footer-nav-link">About</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a></li><li class="footer-nav-item-wrapper"><a href="https://projects.tanplanet.work/en/" class="footer-nav-link">Portfolio</a></li><li class="footer-nav-item-wrapper last"><a href="https://projects.tanplanet.work/preset/" class="footer-nav-link footer-nav-design">Design</a></li></ul><a data-w-id="2afa9a01-05cf-ade4-4d79-909445ba12f2" href="https://myfolio.tanplanet.work/contact" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Contact Me</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="divider"></div><div class="small-print">© 2026 Natpakan Sirirat · All rights reserved.</div></div></footer></div><script src="https://myfolio.tanplanet.work/_ext/d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8__site%3D608d62778637273e1880cb8d.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.1a807f015b216e46.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.8870a749f76b548c.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.9641f8cc.4fd3e4280b7acaf7.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/header-autohide.js" defer></script><script src="https://myfolio.tanplanet.work/blog/article.js" defer></script><div class="cs cs-extras">
+
+  
+
+  
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  
+
+
+
+</div><script>try{
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  }catch(e){}</script><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Natpakan Sirirat — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"TX98 TV Box: removing factory malware and building a new home screen","item":"https://projects.tanplanet.work/android-box-portfolio/"}
+  ]
+}
+</script></body></html>

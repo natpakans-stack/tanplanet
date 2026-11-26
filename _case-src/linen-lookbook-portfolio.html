@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เว็บ Lookbook แบรนด์เสื้อผ้าลินิน — “แชทเพื่อสั่ง” ไม่มีตะกร้า ไม่มี checkout</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="เว็บ Lookbook แบรนด์เสื้อผ้าลินิน — “แชทเพื่อสั่ง” ไม่มีตะกร้า ไม่มี checkout">
+  <meta name="twitter:description" content="Portfolio: เว็บ catalog + lookbook แบรนด์เสื้อผ้าลินิน — ไม่มีตะกร้า/ไม่มี checkout เลือกสี-ไซซ์แล้วกดสั่งเพื่อเด้งเข้า LINE พร้อมข้อความอัตโนมัติ จัดการสินค้าเองด้วย headless CMS">
+  <meta property="og:url" content="https://projects.tanplanet.work/linen-lookbook-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.work/linen-lookbook-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: เว็บ catalog + lookbook แบรนด์เสื้อผ้าลินิน — ไม่มีตะกร้า/ไม่มี checkout เลือกสี-ไซซ์แล้วกดสั่งเพื่อเด้งเข้า LINE พร้อมข้อความอัตโนมัติ จัดการสินค้าเองด้วย headless CMS">
+  <meta property="og:title" content="เว็บ Lookbook แบรนด์เสื้อผ้าลินิน — “แชทเพื่อสั่ง” ไม่มีตะกร้า ไม่มี checkout">
+  <meta name="description" content="Portfolio: เว็บ catalog + lookbook แบรนด์เสื้อผ้าลินิน — ไม่มีตะกร้า/ไม่มี checkout เลือกสี-ไซซ์แล้วกดสั่งเพื่อเด้งเข้า LINE พร้อมข้อความอัตโนมัติ จัดการสินค้าเองด้วย headless CMS">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23831843'/><text x='50' y='62' text-anchor='middle' font-size='54'>🌸</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #be185d;
+      --accent-light: #fce7f3;
+      --accent-dark: #831843;
+      --accent-glow: rgba(190,24,93,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #831843 0%, #be185d 45%, #db2777 80%, #ec4899 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(252,231,243,0.22) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(190,24,93,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #be185d, #ec4899, #fce7f3);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #fbcfe8;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #831843, #be185d);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(236,72,153,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(190,24,93,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Product Buy-Panel Mockup ===== */
+    .ext-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 400px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+    .ext-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      align-items: center;
+    }
+    .ext-bar .ext-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    .ext-bar .ext-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 1px 9px;
+      font-size: 0.72rem;
+    }
+    .ext-yt {
+      margin: 12px;
+      padding: 10px 12px;
+      border: 1px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 8px;
+    }
+    .ext-yt b { color: #c00; }
+    .ext-yt .u { color: var(--text-muted); font-size: 0.72rem; word-break: break-all; margin: 3px 0 8px; font-family: 'SF Mono', monospace; }
+    .ext-yt .chip { display: inline-block; border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 3px 8px; font-size: 0.72rem; margin-right: 5px; color: var(--text-secondary); }
+    .ext-table { width: 100%; border-collapse: collapse; }
+    .ext-table th {
+      text-align: left; padding: 8px 12px; font-size: 0.68rem; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--border);
+    }
+    .ext-table td { padding: 9px 12px; border-bottom: 1px solid #f2f2f1; vertical-align: top; }
+    .ext-table .kind { font-weight: 700; white-space: nowrap; }
+    .ext-table .kind.master { color: #1e6b2e; }
+    .ext-table .kind.variant { color: #8a7a12; }
+    .ext-table .kind.file { color: var(--accent); }
+    .ext-table .q { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .ext-table .info { color: var(--text-secondary); font-size: 0.76rem; }
+    .ext-table .chip { display: inline-block; border: 1px solid var(--border); background: #fafafa; border-radius: 5px; padding: 1px 7px; font-size: 0.68rem; color: var(--text-secondary); font-family: 'SF Mono', monospace; }
+    .ext-cmd {
+      margin: 0 12px 12px;
+      padding: 10px 12px;
+      background: #0f172a;
+      color: #a5f3fc;
+      border-radius: 8px;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      font-size: 0.72rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .ext-cmd .flag { color: #fde047; }
+    .ext-cmd .cmt { color: #64748b; }
+
+    /* ===== Closing ===== */
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(131,24,67,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(131,24,67,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    /* ===== UI / Design Showcase (Product Designer craft) — scoped .ui-* ===== */
+    .ui-block-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--accent); margin: 30px 0 14px;
+    }
+    .ui-block-label:first-child { margin-top: 0; }
+    .ui-block-label .idx {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 20px; height: 20px; border-radius: 50%; background: var(--accent-light);
+      color: var(--accent-dark); font-size: 0.7rem; margin-right: 7px; vertical-align: middle;
+    }
+
+    /* --- Block A: Design Tokens --- */
+    .ui-tokens {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 24px;
+    }
+    .ui-tokens-cap { font-size: 0.74rem; color: var(--text-muted); margin-bottom: 12px; }
+    .ui-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(94px, 1fr)); gap: 10px; }
+    .ui-swatch { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: #fff; }
+    .ui-swatch .chip { height: 48px; border-bottom: 1px solid rgba(0,0,0,0.06); }
+    .ui-swatch .meta { padding: 6px 8px; }
+    .ui-swatch .name { font-size: 0.7rem; font-weight: 600; color: var(--text); line-height: 1.35; }
+    .ui-swatch .hex { font-size: 0.64rem; color: var(--text-muted); font-family: 'SF Mono', ui-monospace, Menlo, monospace; }
+    .ui-type { margin-top: 22px; border-top: 1px dashed var(--border); padding-top: 18px;
+      font-family: ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, 'Noto Sans Thai', sans-serif; }
+    .ui-type-row { display: flex; align-items: baseline; gap: 12px; padding: 7px 0; border-bottom: 1px solid #f4f3f1; }
+    .ui-type-row:last-child { border-bottom: none; }
+    .ui-type-row .tag { flex: 0 0 96px; font-size: 0.62rem; color: var(--text-muted);
+      font-family: 'SF Mono', monospace; text-transform: uppercase; letter-spacing: 0.03em; }
+    .ui-type-h1 { font-size: 1.65rem; font-weight: 800; line-height: 1.2; }
+    .ui-type-h1 em { color: var(--accent); font-style: normal; }
+    .ui-type-body { font-size: 1rem; font-weight: 400; color: var(--text-secondary); }
+    .ui-type-cap { font-size: 0.74rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.02em; }
+    .ui-chip-row { margin-top: 20px; border-top: 1px dashed var(--border); padding-top: 18px;
+      display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .ui-chip-row .grp { font-size: 0.68rem; font-weight: 700; color: var(--text-secondary); margin: 0 2px; }
+    .ui-token-chip { border: 1px solid var(--border); background: #fafafa; border-radius: 8px; padding: 4px 10px;
+      font-size: 0.72rem; color: var(--text-secondary); font-family: 'SF Mono', ui-monospace, Menlo, monospace; }
+
+    /* --- Block B: Screen Showcase (real dark/lime storefront) --- */
+    .ui-screens { display: flex; gap: 14px; overflow-x: auto; padding: 4px 2px 14px;
+      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; justify-content: center; }
+    .ui-screen { scroll-snap-align: center; flex: 0 0 auto; }
+    .ui-phone { width: 230px; background: #0d0d0d; border: 6px solid #1b1b1a; border-radius: 32px;
+      padding: 16px 11px 14px; box-shadow: 0 14px 36px rgba(0,0,0,0.22); position: relative; }
+    .ui-phone::before { content: ''; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+      width: 60px; height: 5px; border-radius: 5px; background: #333; z-index: 2; }
+    .ui-scr { color: #f4f1ea; font-size: 0.7rem; line-height: 1.5;
+      font-family: ui-sans-serif, system-ui, -apple-system, 'Noto Sans Thai', sans-serif;
+      height: 468px; overflow-y: auto; overflow-x: hidden; position: relative; scrollbar-width: none; }
+    .ui-scr::-webkit-scrollbar { display: none; }
+    .ui-buybar { position: sticky; bottom: 0; background: #0d0d0d; padding-top: 10px;
+      margin-top: 11px; box-shadow: 0 -10px 12px -6px #0d0d0d; }
+    .ui-buybar .ui-btn-line { margin-top: 0; }
+    .ui-nav { display: flex; align-items: center; justify-content: space-between; }
+    .ui-logo { font-weight: 700; letter-spacing: 0.5px; font-size: 0.78rem; }
+    .ui-nav .dots { color: #6f6d66; letter-spacing: 2px; font-size: 0.8rem; }
+    .ui-hero { background: #161615; border: 1px solid #262624; border-radius: 16px; padding: 13px 12px; margin-top: 10px; }
+    .ui-eyebrow { font-size: 0.5rem; letter-spacing: 0.22em; color: #8a887e; text-transform: uppercase; }
+    .ui-hl { font-size: 0.98rem; font-weight: 800; line-height: 1.2; margin-top: 4px; }
+    .ui-lime { color: #c8ff00; }
+    .ui-sub { font-size: 0.56rem; color: #b6b2a8; margin-top: 6px; }
+    .ui-cta { display: inline-block; margin-top: 9px; background: #c8ff00; color: #0d0d0d;
+      font-weight: 700; font-size: 0.58rem; padding: 6px 13px; border-radius: 50px; }
+    .ui-label { font-size: 0.6rem; font-weight: 700; margin: 12px 0 6px; color: #f4f1ea; }
+    .ui-catrow { display: flex; gap: 5px; flex-wrap: wrap; }
+    .ui-catchip { border: 1px solid #34332f; border-radius: 50px; padding: 2px 9px; font-size: 0.54rem; color: #cbc7bd; }
+    .ui-catchip.active { border-color: #c8ff00; color: #c8ff00; }
+    .ui-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 6px; }
+    .ui-pcard .ph { aspect-ratio: 3/4; border-radius: 9px; position: relative; overflow: hidden; }
+    .ui-badge-sale { position: absolute; top: 5px; right: 5px; background: #c8ff00; color: #0d0d0d;
+      font-size: 0.46rem; font-weight: 700; border-radius: 50px; padding: 1px 6px; }
+    .ui-badge-status { position: absolute; top: 5px; left: 5px; background: rgba(0,0,0,0.78); color: #fff;
+      font-size: 0.46rem; border-radius: 50px; padding: 1px 6px; }
+    .ui-pcard .pt { font-size: 0.54rem; color: #e6e3da; margin-top: 4px; overflow: hidden;
+      white-space: nowrap; text-overflow: ellipsis; }
+    .ui-pcard .pp { font-size: 0.56rem; font-weight: 700; margin-top: 1px; }
+    .ui-pcard .pp s { color: #7a786f; font-weight: 400; font-size: 0.5rem; }
+    .ui-detail-img { aspect-ratio: 4/5; border-radius: 12px; margin-top: 10px; }
+    .ui-dcat { font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8a887e; margin-top: 10px; }
+    .ui-dtitle { font-size: 0.82rem; font-weight: 700; margin-top: 2px; }
+    .ui-dprice { font-size: 0.66rem; font-weight: 700; margin-top: 2px; }
+    .ui-dprice s { color: #7a786f; font-weight: 400; font-size: 0.56rem; }
+    .ui-status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+      background: #22c55e; margin: 0 3px 0 5px; vertical-align: middle; }
+    .ui-status-txt { font-size: 0.52rem; color: #9be29b; }
+    .ui-vrow { display: flex; gap: 5px; margin-top: 5px; flex-wrap: wrap; }
+    .ui-vchip { border: 1px solid #34332f; border-radius: 50px; padding: 3px 11px; font-size: 0.54rem; color: #cbc7bd; }
+    .ui-vchip.active { background: #c8ff00; border-color: #c8ff00; color: #0d0d0d; font-weight: 700; }
+    .ui-tabs { display: flex; gap: 14px; margin-top: 13px; border-bottom: 1px solid #262624; }
+    .ui-tab { font-size: 0.54rem; padding-bottom: 5px; color: #8a887e; letter-spacing: 0.04em; }
+    .ui-tab.active { color: #f4f1ea; border-bottom: 2px solid #c8ff00; }
+    .ui-msg { margin-top: 11px; background: #161615; border: 1px solid #262624; border-radius: 9px;
+      padding: 8px 9px; font-size: 0.54rem; color: #cbc7bd; line-height: 1.55; }
+    .ui-msg .k { font-size: 0.46rem; text-transform: uppercase; letter-spacing: 0.05em; color: #6f6d66; display: block; margin-bottom: 3px; }
+    .ui-msg .mono { font-family: 'SF Mono', monospace; color: #7a786f; font-size: 0.5rem; }
+    .ui-btn-line { display: block; text-align: center; background: #06C755; color: #fff;
+      font-weight: 700; font-size: 0.62rem; padding: 9px; border-radius: 50px; margin-top: 9px; }
+    .ui-btn-tg { display: block; text-align: center; background: #229ED9; color: #fff;
+      font-weight: 700; font-size: 0.62rem; padding: 9px; border-radius: 50px; margin-top: 6px; }
+    .ui-screen .cap { margin-top: 12px; font-size: 0.78rem; color: var(--text-secondary); font-weight: 600; text-align: center; }
+    .ui-screen .cap span { display: block; font-size: 0.66rem; color: var(--text-muted); font-weight: 400;
+      font-family: 'SF Mono', monospace; margin-top: 2px; }
+
+    @media (max-width: 680px) {
+      .ui-swatches { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); }
+    }
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--accent-dark); display: block; }
+    /* --- รูปสินค้าจริงใน mockup --- */
+    .ui-pcard .ph { background: #1b1b1a; }
+    .ui-pcard .ph img, .ui-detail-img img, .ext-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .ui-pcard .ph img { position: absolute; inset: 0; }
+    .ui-badge-sale, .ui-badge-status { z-index: 1; }
+    .ui-detail-img { overflow: hidden; background: #1b1b1a; }
+    .ext-photo { aspect-ratio: 5/4; overflow: hidden; background: var(--accent-light); }
+    .ext-photo img { object-position: center 30%; }
+    .ui-decisions li b { display: block; margin-bottom: 4px; line-height: 1.6; }
+    .photo-credit { margin-top: 6px; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.7; }
+    .photo-credit a { color: inherit; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--border); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+    /* ===== Figures (ภาพประกอบเซกชัน) ===== */
+    .shot { margin: 8px 0 32px; }
+    .shot img { display: block; width: 100%; height: auto; border-radius: var(--radius, 12px); box-shadow: 0 0 0 1px var(--border, #e7e5e4), 0 12px 32px rgba(0,0,0,.08); }
+    .shot figcaption { margin-top: 10px; font-size: .82rem; color: var(--text-secondary, #57534e); text-align: center; line-height: 1.6; }
+    .shot-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+    .shot-pair .lbl { display: block; margin-top: 8px; font-size: .78rem; font-weight: 600; color: var(--text); text-align: center; }
+    .shot.narrow { max-width: 560px; margin-left: auto; margin-right: auto; }
+    @media (max-width: 639px) { .shot-pair { grid-template-columns: 1fr; } }
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/linen-lookbook-portfolio/">
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 16.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 1 1 4.5 4.5 4.5 4.5 0 1 1-4.5 4.5"/><path d="M12 7.5V9"/><path d="M7.5 12H9"/><path d="M16.5 12H15"/><path d="M12 16.5V15"/><path d="m8 8 1.88 1.88"/><path d="M14.12 9.88 16 8"/><path d="m8 16 1.88-1.88"/><path d="M14.12 14.12 16 16"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Fashion Catalog &middot; Chat-to-Order &middot; Headless CMS
+      </div>
+      <h1>เว็บ Lookbook แบรนด์เสื้อผ้าลินิน<br><span class="accent">“แชทเพื่อสั่ง” ไม่มีตะกร้า ไม่มี checkout</span></h1>
+      <p>เว็บ catalog + lookbook สำหรับแบรนด์เสื้อผ้าลินินพรีเมียม — ยกระดับจากขายผ่าน Instagram feed มาเป็นหน้าร้านที่ค้นหาง่าย ลูกค้าเลือกสี/ไซซ์แล้วกด "สั่งซื้อ" เพื่อเด้งเข้า <code>LINE</code> พร้อมข้อความสั่งซื้อที่กรอกให้อัตโนมัติ ทีมแบรนด์แก้สินค้า/ราคา/สถานะเองได้จาก headless CMS หลังบ้าน</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Next.js 16</span>
+        <span class="hero-tag">React 19</span>
+        <span class="hero-tag">Payload CMS 3</span>
+        <span class="hero-tag">PostgreSQL</span>
+        <span class="hero-tag">Tailwind v4</span>
+        <span class="hero-tag">LINE Deep Link</span>
+        <span class="hero-tag">Webflow Rewire</span>
+        <span class="hero-tag">Chat-to-Order</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">ดูวิธีทำงาน &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#stack">ดู Tech Stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>ปัญหาที่เจอ</h2>
+      <p>แบรนด์เสื้อผ้าลินินที่โตมาจาก Instagram อยากมีหน้าร้านที่ดูพรีเมียมและค้นหาง่ายกว่า feed — แต่ยังไม่พร้อมทำ e-commerce เต็มรูปแบบ</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/template-checkout.jpg" width="1440" height="900" loading="lazy" alt="หน้า Checkout ของเทมเพลตแฟชั่นต้นฉบับ มีฟอร์มอีเมล ที่อยู่จัดส่ง กล่องสรุปคำสั่งซื้อ และปุ่ม Place Order">
+      <figcaption>เทมเพลตแฟชั่น (Avolin) ที่แบรนด์ถูกใจ &mdash; สวย แต่มาพร้อมตะกร้า ฟอร์มที่อยู่ และหน้า Checkout ทั้งชุด ซึ่งแบรนด์ที่ปิดการขายในแชทไม่ได้ใช้เลย</figcaption>
+    </figure>
+
+    <div class="quote-block">
+      <p>ลูกค้าเจอลุคสวยใน IG แต่พอจะสั่ง ต้องเลื่อน feed หากลับ ถามซ้ำว่ารุ่นไหน มีไซซ์อะไร สีอะไร ราคาเท่าไหร่ ของหมดยัง — แบรนด์ตอบเดิมทุกวัน ส่วนระบบตะกร้า/ตัดบัตร กลับหนักและเกินจำเป็นสำหรับการขายที่จบด้วยการ "คุยกันใน LINE" อยู่แล้ว</p>
+      <div class="author">— โจทย์ตั้งต้น: ยกระดับจาก IG feed เป็นเว็บ catalog ที่ยังปิดการขายผ่านแชท</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h3>ขายผ่าน IG feed อย่างเดียว — หาสินค้าไม่เป็นระบบ</h3>
+        <p>ลูกค้าต้องเลื่อน feed หาลุคที่เห็น ไม่มีหมวดหมู่ ไม่มีหน้าสินค้าเป็นเรื่องเป็นราว collection เก่าจมหายไปกับโพสต์ใหม่</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg>
+        <h3>ทักแชทถามซ้ำ ๆ ทุกวัน</h3>
+        <p>ไซซ์ไหน สีอะไร เนื้อผ้าเป็นยังไง ราคาเท่าไหร่ ของหมดยัง — คำถามเดิมวนซ้ำ เพราะข้อมูลไม่ได้อยู่รวมที่เดียว แอดมินตอบมือจนล้า</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+        <h3>ระบบตะกร้า/ตัดบัตร หนักและเกินจำเป็น</h3>
+        <p>การขายจริงจบที่การคุยใน LINE อยู่แล้ว — checkout, payment gateway, ระบบสมาชิก กลายเป็นภาระที่ไม่ได้ใช้ และเพิ่มจุดที่ลูกค้าหลุด</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg>
+        <h3>อัปเดตสินค้าเองไม่ได้ ต้องรอ dev</h3>
+        <p>เพิ่มสินค้าใหม่ แก้ราคา ปรับสถานะ "ของหมด" ทุกครั้งต้องจ้างคนแก้โค้ด — ทีมแบรนด์อยากคุมเนื้อหาเองแบบไม่ต้องแตะโค้ด</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+        <h3>เทมเพลตสำเร็จรูปสวย แต่ผูกกับ commerce engine ของมันเอง</h3>
+        <p>ดีไซน์ fashion template ที่ถูกใจ มากับระบบตะกร้า/สินค้าแบบตายตัว — เอามาต่อกับข้อมูลจริงและช่องทาง LINE ตรง ๆ ไม่ได้</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>วิธีแก้ปัญหา</h2>
+      <p>ทำ catalog ให้เป็นระบบ + เปลี่ยน "ปุ่มสั่งซื้อ" ให้เป็น deep-link เข้าแชท ตัด checkout ทิ้ง แล้วให้แบรนด์คุมทุกอย่างจากหลังบ้าน</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/cms-products.jpg" width="1440" height="860" loading="lazy" alt="หน้ารายการสินค้าในระบบหลังบ้านภาษาไทย ตารางมีรูป ชื่อสินค้า หมวดหมู่ ราคา ราคาก่อนลด และป้ายสถานะพร้อมขาย พรีออเดอร์ ของหมด มีช่องค้นหาและตัวกรองหมวดหมู่กับสถานะ">
+      <figcaption>หลังบ้านจริงของโปรเจกต์ (ข้อมูลตัวอย่างจาก seed) &mdash; สินค้าทุกชิ้นมีหมวด ราคา และสถานะ แทนการไล่ตอบในแชท โลโก้และชื่อเจ้าของแบรนด์ถูกเบลอไว้</figcaption>
+    </figure>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+        <h3>Catalog เป็นระบบ ค้นง่ายกว่า feed</h3>
+        <p>สินค้าแยกหมวดหมู่ มีหน้า collection กรองตามหมวด มีสถานะ (พร้อมขาย/พรีออเดอร์/ของหมด) และป้าย badge — ลูกค้าหาลุคที่เห็นเจอใน 2-3 คลิก</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h3>Chat-to-Order: กดสั่ง → เด้ง LINE พร้อมข้อความ</h3>
+        <p>เลือกสี+ไซซ์ ระบบประกอบเป็นข้อความสั่งซื้อ (ชื่อสินค้า + ตัวเลือกที่เลือก + ลิงก์) แล้ว deep-link เข้า LINE OA ของแบรนด์แบบ pre-filled — ลูกค้าแค่กดส่ง</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        <h3>ไม่มี checkout — เหลือแค่ "สอบถาม"</h3>
+        <p>ตัด cart / payment / ระบบสมาชิกทิ้งทั้งหมด เหลือ inquiry flow อย่างเดียว — เบา เร็ว และตรงกับพฤติกรรมจริงที่ปิดการขายในแชท</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+        <h3>Headless CMS — แบรนด์คุมเนื้อหาเอง</h3>
+        <p>Payload CMS ในตัว ที่ <code>/admin</code> — เพิ่ม/แก้สินค้า ราคา สถานะ หมวดหมู่ รูป และแม้แต่ช่องทาง LINE/ข้อความตั้งต้น ได้เองแบบไม่ต้องแตะโค้ด</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h3>Rewire เทมเพลตสวย ให้ data-driven</h3>
+        <p>เอา fashion template มาแยก HTML/CSS/JS ออก แล้ว "ฉีด" การ์ดสินค้าจริงจาก CMS เข้าไปแทน — เก็บดีไซน์และแอนิเมชันไว้ ทิ้ง commerce engine เดิม</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>วิธีทำงาน — 4 จังหวะ</h2>
+      <p>ตั้งแต่เปิดเว็บ จนถึงข้อความสั่งซื้อเด้งเข้าแชท</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/storefront-collection.jpg" width="1200" height="958" loading="lazy" alt="หน้ารวมสินค้า All Collection ของหน้าร้าน แท็บกรองหมวด Dresses Tops Outerwear Bottoms การ์ดสินค้าแสดงหมวด ชื่อ ราคาเป็นบาท ไซซ์ที่มี และปุ่ม View Details">
+      <figcaption>จังหวะที่ 1 Explore บนหน้าร้านจริง &mdash; การ์ดสินค้าดึงจาก CMS ฉีดลงดีไซน์ของเทมเพลต กรองตามหมวดได้ และบอกไซซ์ที่มีตั้งแต่หน้ารวม (ภาพสินค้าตัวอย่างจากเทมเพลต)</figcaption>
+    </figure>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+        <h4>Explore</h4>
+        <p>เปิดเว็บดูคอลเลกชัน กรองตามหมวดหมู่ เห็นสถานะสินค้าแต่ละชิ้น</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+        <h4>Consider</h4>
+        <p>เข้าหน้าสินค้า ดูรูปหลายมุม ราคา เนื้อผ้า และรายละเอียด</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1"/><circle cx="12" cy="8" r="2"/><path d="M12 10v12"/><path d="M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z"/><path d="M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z"/></svg>
+        <h4>เลือกสี / ไซซ์</h4>
+        <p>กดเลือก variant ระบบประกอบข้อความสั่งซื้ออัตโนมัติ real-time</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h4>Inquire ผ่าน LINE</h4>
+        <p>กดสั่งซื้อ → เด้งเข้า LINE พร้อมข้อความ pre-filled แค่กดส่ง</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>หน้าร้าน RSC-first + headless CMS + deep-link ออกแชท — ไม่มี payment layer</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/cms-dashboard.jpg" width="1440" height="900" loading="lazy" alt="หน้าหลักของระบบจัดการคลังสินค้า การ์ดสรุปจำนวนสินค้าทั้งหมด พร้อมขาย หมวดหมู่ และรูปในคลัง กราฟแท่งสินค้าแยกตามหมวด กล่องต้องจัดการที่นับสินค้ายังไม่ตั้งราคา พรีออเดอร์ และของหมด และแถวสินค้าล่าสุด">
+      <figcaption>ชั้น Payload CMS ในมุมที่แบรนด์เห็น &mdash; หน้าหลักบอกทันทีว่ามีอะไรต้องจัดการ เช่น ของหมดหรือยังไม่ตั้งราคา ทั้งหมดอ่านจาก PostgreSQL ชุดเดียวกับหน้าร้าน</figcaption>
+    </figure>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          หน้าร้าน — Home / Collection / Product (any device)
+          <div class="arch-sub">
+            <span>เลือกสี / ไซซ์</span>
+            <span>ดูสถานะสินค้า</span>
+            <span>กด "สั่งซื้อ"</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Next.js 16 App Router (RSC) + Storefront Rewire Engine
+          <div class="arch-sub">
+            <span>readClonePage()</span>
+            <span>injectGrid()</span>
+            <span>buildProductDetail()</span>
+            <span>BuyPanel</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Payload CMS 3 — collections + BrandSettings + buyLink
+          <div class="arch-sub">
+            <span>Products</span>
+            <span>Categories</span>
+            <span>Media</span>
+            <span>lineBuyLink()</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          PostgreSQL (Neon) + Blob storage + LINE / Telegram deep-links
+          <div class="arch-sub">
+            <span>schema auto-push</span>
+            <span>media uploads</span>
+            <span>oaMessage://</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>ทำไมเลือก stack นี้?</strong>
+      <p>โจทย์ตั้งต้นคือ CMS แบบ WordPress — แต่เลือก <strong>Next.js 16 + Payload CMS 3</strong> แทน เพราะ Payload ให้ admin UI ในตัว (ปรับ label เป็นภาษาไทยได้) พร้อม REST/GraphQL อัตโนมัติ และรันบน serverless เดียวกับหน้าร้าน &middot; <strong>React Server Components</strong> ดึงข้อมูลตรงจาก DB ไม่ต้องมี API กลาง &middot; <strong>PostgreSQL</strong> ให้ schema เป็นระเบียบ (auto-push ตอน dev) &middot; ที่สำคัญ — <strong>ไม่มี payment layer เลย</strong> จุดปิดการขายคือ deep-link ออก LINE ทำให้ทั้งระบบเบาและ maintain ง่าย</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>สิ่งที่สร้าง — 8 ความสามารถหลัก</h2>
+      <p>ครบ loop ตั้งแต่ catalog หลังบ้าน ถึงข้อความสั่งซื้อในแชท</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/cms-edit.jpg" width="1440" height="900" loading="lazy" alt="หน้าแก้ไขสินค้าในหลังบ้าน ช่องชื่อสินค้า รหัส SKU slug ที่สร้างจากชื่อได้ หมวดหมู่ สถานะพร้อมขาย ราคา ราคาก่อนลด ป้ายมุมรูป และติ๊กโชว์บนหน้าแรก">
+      <figcaption>ความสามารถ &ldquo;CMS Catalog&rdquo; ในหน้าจอจริง &mdash; สถานะ ป้าย badge ราคาก่อนลด สินค้าแนะนำ และ slug ที่เว้นว่างได้เพราะระบบสร้างจากชื่อให้</figcaption>
+    </figure>
+
+    <div class="module-grid">
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h3>Chat-to-Order Deep Link</h3>
+        <p>ประกอบข้อความจาก template (<code>{product}</code>/<code>{url}</code>) แล้วสร้างลิงก์ <code>line.me/R/oaMessage</code> + Telegram พร้อม encode ปลอดภัย</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1"/><circle cx="12" cy="8" r="2"/><path d="M12 10v12"/><path d="M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z"/><path d="M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z"/></svg>
+        <h3>Variant Picker → Message</h3>
+        <p>เลือกสี/ไซซ์ (client component) → ต่อเป็น "ชื่อสินค้า (สี: …, ไซซ์: …)" เข้าข้อความสั่งซื้อทันทีแบบ real-time</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h3>Template Rewire Engine</h3>
+        <p>อ่านหน้า fashion template มาแยก inline styles / body / scripts ตามลำดับ แล้ว cache ไว้ parse ครั้งเดียวใช้ซ้ำทุก request</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
+        <h3>Balanced-Tag DOM Transforms</h3>
+        <p>ชุดฟังก์ชันแทนที่ inner HTML ของ element ตาม class/tab แบบนับ depth ของ tag คู่เปิด-ปิด — ฉีดข้อมูลจริงลง markup ที่ nest ลึกได้แม่น</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
+        <h3>Commerce Stripper</h3>
+        <p>ตัด node ตะกร้า/add-to-cart (<code>data-node-type</code>) ออกจากเทมเพลตทั้งก้อน แล้วเสียบจุด mount ปุ่ม LINE/Telegram เข้าแทน</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+        <h3>CMS Catalog</h3>
+        <p>Products/Categories/Media — สถานะ, badge, สินค้าแนะนำ, ราคาก่อนลด, รูปหลายภาพ, slug auto จากชื่อ (hook beforeValidate)</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3>Brand Settings Global</h3>
+        <p>LINE OA / Telegram / Instagram / ข้อความสั่งซื้อตั้งต้น / รูป banner — แก้จากหลังบ้านทั้งหมด ไม่มีอะไร hardcode</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>
+        <h3>Runtime Re-init</h3>
+        <p>โหลด lib ของเทมเพลตครั้งเดียวต่อ session แล้ว re-fire reveal animation ทุกครั้งที่เปลี่ยนหน้า + safety net กัน element ค้างซ่อน</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Product Buy-Panel Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>หน้าตา Product + Buy Panel</h2>
+      <p>เลือกสี/ไซซ์ → ข้อความสั่งซื้อประกอบให้อัตโนมัติ → กดปุ่มเดียวเด้งเข้าแชท</p>
+    </section>
+
+    <div class="ext-mockup">
+      <div class="ext-bar">
+        <span style="font-weight:700; letter-spacing:1px; color:var(--accent-dark)">เว็บ Lookbook</span>
+        <span class="ext-btn">Lookbook</span>
+        <span class="ext-badge">New</span>
+      </div>
+      <div class="ext-photo"><img src="img/audrey-linen-midi-dress-wide.jpg" alt="Audrey Linen Midi Dress ชุดเดรสลินินสีทราย" width="800" height="640" loading="lazy" decoding="async"></div>
+      <div style="padding:14px 16px 4px;">
+        <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted);">Dresses</div>
+        <div style="font-size:1.05rem; font-weight:700; margin:2px 0 4px;">Audrey Linen Midi Dress</div>
+        <div style="font-weight:700; color:var(--accent-dark);">฿1,890 <span style="color:var(--text-muted); font-weight:400; text-decoration:line-through; font-size:0.85rem;">฿2,400</span> <span style="color:var(--emerald-dark); font-weight:600; font-size:0.72rem;">&#9679; พร้อมขาย</span></div>
+        <div style="margin-top:12px; font-size:0.76rem; color:var(--text-secondary);">สี</div>
+        <div style="margin-top:6px;">
+          <span class="chip" style="border:1px solid var(--accent); background:var(--accent); color:#fff; border-radius:50px; padding:3px 12px; font-size:0.74rem; margin-right:5px;">Sand</span>
+          <span class="chip" style="border:1px solid var(--border); border-radius:50px; padding:3px 12px; font-size:0.74rem; margin-right:5px; color:var(--text-secondary);">Sage</span>
+          <span class="chip" style="border:1px solid var(--border); border-radius:50px; padding:3px 12px; font-size:0.74rem; color:var(--text-secondary);">Ivory</span>
+        </div>
+        <div style="margin-top:10px; font-size:0.76rem; color:var(--text-secondary);">ไซซ์</div>
+        <div style="margin-top:6px;">
+          <span class="chip" style="border:1px solid var(--border); border-radius:50px; padding:3px 14px; font-size:0.74rem; margin-right:5px; color:var(--text-secondary);">S</span>
+          <span class="chip" style="border:1px solid var(--accent); background:var(--accent); color:#fff; border-radius:50px; padding:3px 14px; font-size:0.74rem; margin-right:5px;">M</span>
+          <span class="chip" style="border:1px solid var(--border); border-radius:50px; padding:3px 14px; font-size:0.74rem; color:var(--text-secondary);">L</span>
+        </div>
+      </div>
+      <div style="margin:12px 16px; padding:10px 12px; background:var(--accent-light); border-radius:10px; font-size:0.8rem; color:var(--accent-dark); line-height:1.6;">
+        <div style="font-size:0.66rem; text-transform:uppercase; letter-spacing:0.05em; opacity:0.6; margin-bottom:4px;">ข้อความที่จะส่งเข้า LINE</div>
+        สวัสดีค่ะ สนใจสั่งซื้อสินค้าชิ้นนี้ค่ะ 🛍️<br>
+        Audrey Linen Midi Dress (สี: Sand, ไซซ์: M)<br>
+        <span style="opacity:0.55; font-family:'SF Mono',monospace; font-size:0.72rem;">…/products/audrey-linen-midi-dress</span>
+      </div>
+      <div style="padding:0 16px 16px; display:flex; gap:8px;">
+        <span style="flex:1; text-align:center; background:#06C755; color:#fff; border-radius:50px; padding:11px; font-weight:700; font-size:0.85rem;">สั่งซื้อผ่าน LINE</span>
+        <span style="flex:1; text-align:center; background:#229ED9; color:#fff; border-radius:50px; padding:11px; font-weight:700; font-size:0.85rem;">Telegram</span>
+      </div>
+    </div>
+    <p class="photo-credit">ภาพตัวอย่าง: <a href="https://unsplash.com/photos/a-woman-poses-in-a-simple-linen-dress-dziVRZYOFpI" target="_blank" rel="noopener">Reistor</a> / Unsplash</p>
+
+    <hr class="divider">
+
+    <!-- ===== UI / Design Showcase (Product Designer) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype &middot; UI Craft</span>
+      <h2>งานออกแบบ UI &amp; Design System</h2>
+      <p>มองจากมุม Product Designer — วางระบบดีไซน์ lime-on-dark ที่คมและคอนทราสต์สูง แล้วออกแบบ flow ให้ลูกค้าเดินจาก "เห็นลุคที่ใช่" ไปถึง "ทักแชทสั่ง" ด้วยแรงเสียดทานน้อยที่สุด</p>
+    </section>
+
+    <!-- Block A — Design Tokens -->
+    <div class="ui-block-label"><span class="idx">A</span>Design Tokens — คิดเป็นระบบ ไม่ใช่แต่งทีละหน้า</div>
+    <div class="ui-tokens">
+      <div class="ui-tokens-cap">โทเคนจริงของ storefront (<code>--ln-*</code>) — ดีไซน์แฟชั่นดาร์ก + accent สว่างจัด เพื่อให้สินค้าและปุ่มสั่งเด่นที่สุด</div>
+      <div class="ui-swatches">
+        <div class="ui-swatch">
+          <div class="chip" style="background:#c8ff00;"></div>
+          <div class="meta"><div class="name">Accent · CTA</div><div class="hex">#c8ff00</div></div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#0d0d0d;"></div>
+          <div class="meta"><div class="name">Background</div><div class="hex">#0d0d0d</div></div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#f4f1ea;"></div>
+          <div class="meta"><div class="name">Ink · Text</div><div class="hex">#f4f1ea</div></div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#262624;"></div>
+          <div class="meta"><div class="name">Surface / เส้นขอบ</div><div class="hex">#262624</div></div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#06C755;"></div>
+          <div class="meta"><div class="name">LINE</div><div class="hex">#06C755</div></div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#229ED9;"></div>
+          <div class="meta"><div class="name">Telegram</div><div class="hex">#229ED9</div></div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#22c55e;"></div>
+          <div class="meta"><div class="name">พร้อมขาย</div><div class="hex">#22c55e</div></div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#e11d48;"></div>
+          <div class="meta"><div class="name">ของหมด</div><div class="hex">#e11d48</div></div>
+        </div>
+      </div>
+
+      <div class="ui-type">
+        <div class="ui-type-row">
+          <span class="tag">H1 / Hero</span>
+          <span class="ui-type-h1">เลือกชิ้นที่ใช่ <em>ทักแชทสั่งได้เลย</em></span>
+        </div>
+        <div class="ui-type-row">
+          <span class="tag">Body</span>
+          <span class="ui-type-body">ดูสินค้า เลือกไซซ์/สี แล้วกดสั่งผ่าน LINE หรือ Telegram ได้ทันที</span>
+        </div>
+        <div class="ui-type-row">
+          <span class="tag">Caption</span>
+          <span class="ui-type-cap">DRESSES · พร้อมขาย · SALE</span>
+        </div>
+      </div>
+
+      <div class="ui-chip-row">
+        <span class="grp">Radius</span>
+        <span class="ui-token-chip">pill · 50px</span>
+        <span class="ui-token-chip">card · rounded-xl 12px</span>
+        <span class="ui-token-chip">phone · 32px</span>
+      </div>
+      <div class="ui-chip-row" style="border-top:none; padding-top:0; margin-top:8px;">
+        <span class="grp">Spacing</span>
+        <span class="ui-token-chip">gap-2 · 8</span>
+        <span class="ui-token-chip">gap-3 · 12</span>
+        <span class="ui-token-chip">space-y-5 · 20</span>
+        <span class="ui-token-chip">image · aspect 3/4</span>
+      </div>
+    </div>
+
+    <!-- Block B — Screen Showcase -->
+    <div class="ui-block-label"><span class="idx">B</span>Key Screens — 3 จอในเส้นทางเดียว (เลื่อนดูได้)</div>
+    <div class="ui-screens">
+
+      <!-- Screen 1: Home -->
+      <div class="ui-screen">
+        <div class="ui-phone">
+          <div class="ui-scr">
+            <div class="ui-nav"><span class="ui-logo">Li-ne</span><span class="dots">&#9776;</span></div>
+            <div class="ui-hero">
+              <div class="ui-eyebrow">Li-ne</div>
+              <div class="ui-hl">เลือกชิ้นที่ใช่ <span class="ui-lime">ทักแชทสั่งได้เลย</span></div>
+              <div class="ui-sub">ดูสินค้า เลือกไซซ์/สี แล้วกดสั่งผ่าน LINE หรือ Telegram</div>
+              <span class="ui-cta">ดูสินค้าทั้งหมด</span>
+            </div>
+            <div class="ui-label">หมวดหมู่</div>
+            <div class="ui-catrow">
+              <span class="ui-catchip">Dresses</span>
+              <span class="ui-catchip">Tops</span>
+              <span class="ui-catchip">Outerwear</span>
+              <span class="ui-catchip">Bottoms</span>
+            </div>
+            <div class="ui-label">สินค้าแนะนำ</div>
+            <div class="ui-grid2">
+              <div class="ui-pcard">
+                <div class="ph"><img src="img/audrey-linen-midi-dress.jpg" alt="Audrey Linen Dress ชุดเดรสลินินสีทราย" width="600" height="800" loading="lazy" decoding="async"><span class="ui-badge-status">พรีออเดอร์</span></div>
+                <div class="pt">Audrey Linen Dress</div>
+                <div class="pp">฿1,890</div>
+              </div>
+              <div class="ui-pcard">
+                <div class="ph"><img src="img/sage-linen-top.jpg" alt="Sage Linen ชุดลินินสีเขียวเสจ" width="600" height="800" loading="lazy" decoding="async"><span class="ui-badge-sale">SALE</span></div>
+                <div class="pt">Sage Linen Top</div>
+                <div class="pp">฿890 <s>฿1,200</s></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap">หน้าแรก<span>/</span></div>
+      </div>
+
+      <!-- Screen 2: Collection -->
+      <div class="ui-screen">
+        <div class="ui-phone">
+          <div class="ui-scr">
+            <div class="ui-nav"><span class="ui-logo">Li-ne</span><span class="dots">&#9776;</span></div>
+            <div class="ui-label" style="margin-top:12px;">สินค้าทั้งหมด</div>
+            <div class="ui-catrow">
+              <span class="ui-catchip active">ทั้งหมด</span>
+              <span class="ui-catchip">Dresses</span>
+              <span class="ui-catchip">Tops</span>
+              <span class="ui-catchip">Bottoms</span>
+            </div>
+            <div class="ui-grid2" style="margin-top:9px;">
+              <div class="ui-pcard">
+                <div class="ph"><img src="img/audrey-linen-midi-dress.jpg" alt="Audrey Midi Dress ชุดเดรสลินินสีทราย" width="600" height="800" loading="lazy" decoding="async"><span class="ui-badge-sale">SALE</span></div>
+                <div class="pt">Audrey Midi Dress</div>
+                <div class="pp">฿1,890 <s>฿2,400</s></div>
+              </div>
+              <div class="ui-pcard">
+                <div class="ph"><img src="img/peak-blazer.jpg" alt="Peak Blazer เบลเซอร์ลินินสีครีม" width="600" height="800" loading="lazy" decoding="async"></div>
+                <div class="pt">Peak Blazer</div>
+                <div class="pp">฿2,290</div>
+              </div>
+              <div class="ui-pcard">
+                <div class="ph"><img src="img/ruffle-maxi-dress.jpg" alt="Ruffle Maxi Dress เดรสยาวระบายสีเขียว" width="600" height="800" loading="lazy" decoding="async"><span class="ui-badge-status">ของหมด</span></div>
+                <div class="pt">Ruffle Maxi Dress</div>
+                <div class="pp">฿1,690</div>
+              </div>
+              <div class="ui-pcard">
+                <div class="ph"><img src="img/twist-linen-top.jpg" alt="Twist Linen Top เสื้อลินินสีขาว" width="600" height="800" loading="lazy" decoding="async"></div>
+                <div class="pt">Twist Linen Top</div>
+                <div class="pp">฿790</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="cap">หน้ารวมสินค้า<span>/products</span></div>
+      </div>
+
+      <!-- Screen 3: Product detail + Buy -->
+      <div class="ui-screen">
+        <div class="ui-phone">
+          <div class="ui-scr">
+            <div class="ui-nav"><span class="ui-logo">Li-ne</span><span class="dots">&#8592;</span></div>
+            <div class="ui-detail-img"><img src="img/audrey-linen-midi-dress-detail.jpg" alt="Audrey Linen Midi Dress ชุดเดรสลินินสีทราย" width="600" height="750" loading="lazy" decoding="async"></div>
+            <div class="ui-dcat">Dresses</div>
+            <div class="ui-dtitle">Audrey Linen Midi Dress</div>
+            <div class="ui-dprice">฿1,890 <s>฿2,400</s><span class="ui-status-dot"></span><span class="ui-status-txt">พร้อมขาย</span></div>
+            <div class="ui-label">สี</div>
+            <div class="ui-vrow">
+              <span class="ui-vchip active">Sand</span>
+              <span class="ui-vchip">Sage</span>
+              <span class="ui-vchip">Ivory</span>
+            </div>
+            <div class="ui-label">ไซซ์</div>
+            <div class="ui-vrow">
+              <span class="ui-vchip">S</span>
+              <span class="ui-vchip active">M</span>
+              <span class="ui-vchip">L</span>
+            </div>
+            <div class="ui-tabs">
+              <span class="ui-tab active">DETAILS</span>
+              <span class="ui-tab">MATERIALS &amp; CARE</span>
+            </div>
+            <div class="ui-msg">
+              <span class="k">ข้อความที่จะส่งเข้า LINE</span>
+              สวัสดีค่ะ สนใจสั่งซื้อสินค้าชิ้นนี้ค่ะ 🛍️<br>
+              Audrey Linen Midi Dress (สี: Sand, ไซซ์: M)<br>
+              <span class="mono">…/products/audrey-linen-midi-dress</span>
+            </div>
+            <div class="ui-buybar">
+              <span class="ui-btn-line">สั่งซื้อผ่าน LINE</span>
+              <span class="ui-btn-tg">สั่งซื้อผ่าน Telegram</span>
+            </div>
+          </div>
+        </div>
+        <div class="cap">หน้าสินค้า + Buy Panel<span>/products/[slug]</span></div>
+      </div>
+
+    </div>
+
+    <p class="photo-credit">ภาพสินค้าตัวอย่างจาก Unsplash — <a href="https://unsplash.com/photos/a-woman-poses-in-a-simple-linen-dress-dziVRZYOFpI" target="_blank" rel="noopener">Reistor</a> · <a href="https://unsplash.com/photos/woman-in-light-green-dress-UbrPTBBxaE8" target="_blank" rel="noopener">engin akyurt</a> · <a href="https://unsplash.com/photos/BUahOWn2nBg" target="_blank" rel="noopener">Kawê Rodrigues</a> · <a href="https://unsplash.com/photos/woman-in-green-long-sleeve-dress-standing-on-brown-field-during-daytime-_vmoFgZc8c0" target="_blank" rel="noopener">Junior REIS</a> · <a href="https://unsplash.com/photos/woman-wearing-white-blouse-TPG-lDpSxaY" target="_blank" rel="noopener">Sincerely Media</a></p>
+
+    <!-- Block C — UI Decision Cards -->
+    <div class="ui-block-label"><span class="idx">C</span>UI Decisions — ทำไมถึงเลือกแบบนี้</div>
+    <ul class="plain ui-decisions">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg><span><b>Mobile-first — ออกแบบจอ 393 ก่อน แล้วค่อยขยายไป 768 / 1440</b> ลูกค้าแฟชั่นเลื่อนดูจากมือถือเป็นหลัก เลย์เอาต์ตั้งต้นจึงเป็นกริดสินค้า 2 คอลัมน์ รูป aspect 3/4 และปุ่มสั่งซื้อเต็มความกว้าง จอใหญ่ค่อยขยายเป็น 3–4 คอลัมน์ ไม่ใช่ย่อ desktop ลงมา</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><span><b>UX Writing — ประกอบข้อความสั่งซื้อให้ล่วงหน้า</b> แทนปุ่ม "หยิบใส่ตะกร้า" ด้วย "สั่งซื้อผ่าน LINE" ที่พาไปถึงบทสนทนาจริง พร้อมข้อความ pre-filled (สนใจสั่งซื้อ… + ชื่อสินค้า + สี/ไซซ์ + ลิงก์) ลูกค้าแค่กดส่ง ลด friction จาก "อยากได้" เหลือคลิกเดียว</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="12" x="2" y="6" rx="6" ry="6"/><circle cx="16" cy="12" r="2"/></svg><span><b>Component States — ปุ่มเลือกสี/ไซซ์มี default / active / sold-out ชัดเจน</b> ตัวที่เลือกเป็นพื้น lime ตัวหนา (active) ตัวอื่นเป็นเส้นขอบจาง (default) ต่างกันที่สีพื้น ไม่ใช่แค่เส้นขอบ ส่วนสถานะ "ของหมด" ยังกดทักแชทถามรอบหน้าได้ ไม่ปิดตาย</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></svg><span><b>Accessibility — lime-on-dark คอนทราสต์สูง + touch target ≥ 44px</b> ตัวหนังสือครีมและ accent lime บนพื้นดำ #0d0d0d คอนทราสต์เกิน 4.5:1 (ผ่าน WCAG AA) ปุ่ม CTA จงใจใช้ตัวหนังสือดำบนพื้น lime ไม่ใช่ขาว และปุ่มสั่งซื้อสูงราว 44px กดง่ายด้วยนิ้วโป้ง</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hack กับปัญหา</h2>
+      <p>6 โจทย์ที่ต้องคิดทางแก้เอง — ระหว่างเอาเทมเพลตสำเร็จรูปมาเชื่อมกับข้อมูลจริง + ช่องทางแชท</p>
+    </section>
+
+    <figure class="shot">
+      <div class="shot-pair">
+        <div><img src="img/buy-before.jpg" width="720" height="420" loading="lazy" alt="ส่วนซื้อสินค้าของเทมเพลตต้นฉบับ มีป้ายลดราคา ราคาเป็นดอลลาร์ ตัวเลือกสีและไซซ์ ช่องจำนวน และปุ่ม Add to Cart"><span class="lbl">ก่อน: เทมเพลตต้นฉบับ</span></div>
+        <div><img src="img/buy-after.jpg" width="720" height="420" loading="lazy" alt="ส่วนซื้อสินค้าหลัง rewire ราคาเป็นบาทจาก CMS ปุ่มเลือกไซซ์ S M L XL และปุ่มสีเขียว Order via LINE แทนช่องจำนวนและตะกร้า"><span class="lbl">หลัง: rewire แล้ว</span></div>
+      </div>
+      <figcaption>ผลของ Commerce Stripper ในหน้าจริง &mdash; ช่องจำนวนกับปุ่ม Add to Cart ถูกตัดออกทั้งก้อน แล้วเสียบปุ่มสั่งผ่าน LINE ลงจุดเดิม โดยดีไซน์รอบ ๆ ยังเป็นของเทมเพลต</figcaption>
+    </figure>
+
+    <div class="hack-grid">
+      <div class="hack-card arch" data-label="HTML Parsing">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg><span>เทมเพลตผูกกับ commerce — เอามาใช้กับข้อมูลจริงไม่ได้</span></h3>
+        <p>markup ของเทมเพลตซ้อนกันลึกและมี node ตะกร้าฝังอยู่ — จะแทนที่การ์ดสินค้าด้วย regex ธรรมดามันจับ tag ปิดผิดตัวทันทีเมื่อมี <code>&lt;div&gt;</code> ซ้อน</p>
+        <div class="highlight">แก้: เขียน DOM transform เอง โดยนับ depth ของ tag เปิด-ปิดให้ balance (เจอ <code>&lt;div&gt;</code> +1, <code>&lt;/div&gt;</code> −1) หา inner ที่ถูกต้องแล้วค่อยแทน — ฉีดการ์ดจริง, ตัด commerce node, สลับ hero banner ได้แม่นแม้ markup nest ลึก</div>
+      </div>
+
+      <div class="hack-card platform" data-label="Runtime">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg><span>แอนิเมชันของเทมเพลตไม่เล่นหลัง hydration</span></h3>
+        <p>reveal animation ตั้ง element เป็น <code>opacity:0</code> แล้วรอ event <code>load</code> — แต่เราฉีด script หลัง React hydrate (เลย <code>load</code> ไปแล้ว) พอเปลี่ยนหน้าแบบ SPA element เลยค้างซ่อนทั้งหน้า</p>
+        <div class="highlight">แก้: โหลด lib ครั้งเดียวต่อ session แล้ว re-init เอนจิน animation ใหม่ทุกครั้งที่ mount หน้า + ยิง event <code>load</code>/<code>readystatechange</code> เอง — บวก safety net ที่กวาด reveal ทุก element ที่ยังซ่อนภายใน 1 วินาที กันพลาด</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Deep Link">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span>ข้อความมี emoji / ช่องว่าง / ขึ้นบรรทัดใหม่ → deep-link พัง</span></h3>
+        <p>ข้อความสั่งซื้อมี emoji 🛍️ เว้นวรรค และ <code>\n</code> — เอาต่อท้าย URL ตรง ๆ ลิงก์ LINE/Telegram แตกทันที</p>
+        <div class="highlight">แก้: ห่อทั้งข้อความและ OA id ด้วย <code>encodeURIComponent()</code> ก่อนประกอบเป็น deep-link + normalize prefix (<code>@</code> ของ LINE, ตัด <code>@</code> ของ Telegram) ให้แบรนด์กรอกแบบไหนก็ทำงาน</div>
+      </div>
+
+      <div class="hack-card precision" data-label="API Collision">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18v-6a5 5 0 1 1 10 0v6"/><path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z"/><path d="M21 12h1"/><path d="M18.5 4.5 18 5"/><path d="M2 12h1"/><path d="M12 2v1"/><path d="m4.929 4.929.707.707"/><path d="M12 12v6"/></svg><span>commerce ของเทมเพลตยิง <code>/api/cart</code> ชนกับ CMS</span></h3>
+        <p>runtime เดิมของเทมเพลตพยายาม fetch <code>/api/...</code> (ตะกร้า) ซึ่งชน endpoint <code>/api</code> ของ CMS → เด้ง error CSRF + alert "site unsecured" โผล่หน้าลูกค้า</p>
+        <div class="highlight">แก้: intercept <code>window.alert</code> กรองข้อความ cart/checkout/unsecured ทิ้ง + ดัก <code>unhandledrejection</code>/<code>error</code> ที่เป็น noise ของ commerce (CSRF, Failed to fetch) ให้เงียบ — เหลือแต่ flow จริงที่เราคุม</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Caching">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg><span>หน้า dynamic re-parse ไฟล์ใหญ่ทุกครั้งที่เปิด</span></h3>
+        <p>หน้าเป็น <code>force-dynamic</code> (ข้อมูลสด) แต่ต้องอ่าน + regex แกะไฟล์เทมเพลตหลักร้อย KB ทุก navigation — เปลืองและช้า</p>
+        <div class="highlight">แก้: cache ผล parse ต่อ slug ไว้ใน <code>Map</code> (in-memory) — ไฟล์เทมเพลตเป็น static design ที่ไม่เปลี่ยน parse ครั้งเดียวใช้ซ้ำ ส่วนข้อมูลสินค้ายังดึงสดจาก CMS ทุก request แยกกันชัดเจน</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Scoping">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>โจทย์ขอ WordPress + คิดว่าต้องมี e-commerce</span></h3>
+        <p>ความคาดหวังตั้งต้นคือ CMS แบบ WordPress พร้อมระบบตะกร้า — แต่การขายจริงจบในแชท ระบบ checkout จะกลายเป็น dead weight</p>
+        <div class="highlight">แก้: เสนอ scope ใหม่ — Next.js + Payload (admin ในตัว แก้เนื้อหาเองได้เหมือนกัน) และ "ไม่ทำ" checkout/payment เลย เหลือ chat-to-order — บทเรียน: การตัด requirement ที่ไม่จำเป็นออก คือคุณค่าที่ให้ลูกค้าได้มากกว่าการทำทุกอย่างตามคำขอ</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Design Decision ที่ตั้งใจเลือก</h2>
+      <p>ขอบเขตที่จงใจ "ไม่ทำ" สำคัญพอ ๆ กับสิ่งที่ทำ</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/cms-settings.jpg" width="1440" height="900" loading="lazy" alt="หน้าตั้งค่าแบรนด์และช่องทางติดต่อในหลังบ้าน ช่องชื่อแบรนด์ สโลแกน LINE OA ID Telegram username Instagram URL ที่ถูกเบลอไว้ และกล่องข้อความตั้งต้นตอนกดสนใจสั่งซื้อที่ใช้ตัวแปร product กับ url">
+      <figcaption>&ldquo;CMS-first ไม่ hardcode&rdquo; และ &ldquo;deep-link ตรงถึงแบรนด์&rdquo; อยู่ในหน้าเดียว &mdash; แบรนด์ตั้ง LINE OA และข้อความสั่งซื้อเองได้ (เบลอบัญชีจริงของแบรนด์ไว้)</figcaption>
+    </figure>
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>เว็บนี้ทำหน้าที่เดียว: เป็น catalog ที่พาลูกค้าเข้าสู่บทสนทนาใน LINE ให้เร็วและเนียนที่สุด — มันไม่มีตะกร้า ไม่มี payment ไม่เก็บ order เอง จุดปิดการขายคือแชทของแบรนด์ ขอบเขตที่คมตั้งแต่ต้น = implement ตรง เบา และส่งมอบให้แบรนด์ดูแลต่อเองได้จริง</p>
+    </div>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg><span><b>Chat-to-order ไม่มี checkout</b> — ปิดการขายในแชท เว็บแค่พาไปให้ถึงเร็วที่สุด</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span><b>Rewire ไม่ rebuild</b> — เก็บดีไซน์เทมเพลตไว้ ทิ้งแค่ commerce engine</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg><span><b>CMS-first ไม่ hardcode</b> — สินค้า ช่องทาง และข้อความ แก้จากหลังบ้านได้หมด</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span><b>Deep-link ตรงถึงแบรนด์</b> — เข้า LINE OA ของแบรนด์เอง ไม่มีตัวกลาง</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge Domain ที่แข็งขึ้น</h2>
+      <p>5 พื้นที่ความรู้ที่ระดับเราขยับขึ้นจริงจากการทำโปรเจกต์นี้</p>
+    </section>
+
+    <figure class="shot narrow">
+      <img src="img/admin-login.jpg" width="560" height="420" loading="lazy" alt="หน้าเข้าสู่ระบบ Li-ne Admin บนเว็บที่ deploy จริง คำอธิบายภาษาไทยว่าเข้าสู่ระบบเพื่อจัดการร้าน ช่องอีเมล รหัสผ่าน และปุ่มเข้าสู่ระบบ">
+      <figcaption>ทางเข้าหลังบ้านบนเว็บที่ deploy จริง &mdash; label ภาษาไทยทั้งหมด เพื่อให้ทีมแบรนด์ดูแลร้านเองได้โดยไม่ต้องเรียก dev</figcaption>
+    </figure>
+
+    <div class="learning-card">
+      <strong>1. Conversational commerce — ออกแบบการขายที่จบในแชท:</strong>
+      <p>เข้าใจ pattern ของ non e-commerce ที่ปิดการขายผ่าน chat — การประกอบข้อความ pre-filled, deep-link เข้า LINE OA / Telegram, และ UX ที่ลด friction จาก "อยากได้" ถึง "ทักแชท" ให้เหลือคลิกเดียว บทเรียน: บางธุรกิจ "ตะกร้า" ไม่ใช่คำตอบ — บทสนทนาต่างหากที่ปิดการขาย</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Payload CMS 3 (headless) — จาก schema ถึง admin ภาษาไทย:</strong>
+      <p>ออกแบบ collections/globals, ใช้ field hooks (<code>beforeValidate</code> สร้าง slug อัตโนมัติ), access control, และปรับ label/description ของ admin ให้ทีมแบรนด์ใช้เป็นภาษาไทย — เข้าใจว่า headless CMS ให้ทั้ง data model และ back-office ในตัวเดียว บทเรียน: ของดีสำหรับลูกค้า = แก้เนื้อหาเองได้โดยไม่ต้องเรียก dev</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. HTML rewiring — เขียน balanced-tag parser เอง:</strong>
+      <p>ฝึกแยก head styles / body / scripts จากหน้าเทมเพลต และเขียน transform ที่นับ depth ของ tag เปิด-ปิดเพื่อหา inner HTML ที่ถูกต้อง แทนการพึ่ง DOM library — เข้าใจว่าทำไม regex ธรรมดาแตกกับ markup ที่ nest บทเรียน: การแกะ HTML ให้ถูกต้องคือเรื่องของ balancing ไม่ใช่ pattern matching</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Next.js 16 App Router + integrating 3rd-party runtime:</strong>
+      <p>เข้าใจ RSC + <code>force-dynamic</code>, การ inject runtime ภายนอก (jQuery/animation engine) เข้า React lifecycle ให้ทำงานถูกลำดับหลัง hydration และ client-side navigation รวมถึงการดัก error ของโค้ดที่เราไม่ได้เขียนเอง บทเรียน: การพา legacy runtime มาอยู่ในโลก React ต้องคุม lifecycle ให้ขาด</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Client scoping — แปลง requirement เป็น stack ที่เหมาะ:</strong>
+      <p>รับโจทย์ "WordPress + ระบบขาย" แล้วกลั่นเป็นสิ่งที่ลูกค้าต้องการจริง (catalog + แก้เองได้ + ปิดการขายในแชท) เลือก stack และ "ตัด" ฟีเจอร์ที่ไม่จำเป็นออก บทเรียน: หน้าที่ของเราไม่ใช่ทำตามคำขอทุกตัวอักษร แต่คือส่งมอบผลลัพธ์ที่ตอบโจทย์ด้วยความซับซ้อนที่น้อยที่สุด</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">ขั้นตอน checkout — ปิดการขายในแชท</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">2</div>
+        <div class="label">ช่องทางแชทสั่งซื้อ (LINE / Telegram)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">4</div>
+        <div class="label">collection ใน CMS หลังบ้าน</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">1</div>
+        <div class="label">คลิก — จากหน้าสินค้าถึงข้อความในแชท</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <h2>เว็บ Lookbook</h2>
+    <p>เว็บ catalog + lookbook สำหรับแบรนด์เสื้อผ้าลินินพรีเมียม ที่เปลี่ยนการขายผ่าน IG feed — ให้กลายเป็นหน้าร้านค้นหาง่าย เลือกสี/ไซซ์แล้วกดเดียวเด้งเข้า LINE พร้อมข้อความสั่งซื้อ ไม่มีตะกร้า ไม่มี checkout จัดการทุกอย่างเองด้วย headless CMS สร้างด้วย Next.js 16 + Payload CMS 3</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Next.js 16</span>
+      <span class="stack-icon">React 19</span>
+      <span class="stack-icon">Payload CMS 3</span>
+      <span class="stack-icon">PostgreSQL</span>
+      <span class="stack-icon">Tailwind v4</span>
+      <span class="stack-icon">LINE Deep Link</span>
+      <span class="stack-icon">Webflow Rewire</span>
+      <span class="stack-icon">Chat-to-Order</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.work/">&#8592; กลับหน้ารวมโปรเจกต์</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="กลับด้านบน" title="กลับด้านบน" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ณัฐปคัลภ์ ศิริรัตน์ (Natpakan Sirirat) — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "เว็บ Lookbook Portfolio",
+      "item": "https://projects.tanplanet.work/linen-lookbook-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

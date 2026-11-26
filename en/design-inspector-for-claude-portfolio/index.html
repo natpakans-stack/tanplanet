@@ -1,0 +1,519 @@
+<!DOCTYPE html><html data-wf-domain="www.tanplanet.work" data-wf-page="608d6278863727b47e80cb9c" data-wf-site="608d62778637273e1880cb8d" lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Inspector for Claude — Chrome Extension Portfolio</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Design Inspector for Claude — Chrome Extension Portfolio">
+  <meta name="twitter:description" content="A Chrome extension that lets a UX designer inspect any element and copy it as Markdown for Claude in one click">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="A Chrome extension that lets a UX designer inspect any element and copy it as Markdown for Claude in one click">
+  <meta property="og:title" content="Design Inspector for Claude — Chrome Extension Portfolio">
+  <meta name="description" content="A Chrome extension that lets a UX designer inspect any element and copy it as Markdown for Claude in one click">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"></noscript>
+  
+  
+  <script src="../../common/closing.js" defer></script>
+  <meta property="og:image" content="https://projects.tanplanet.work/pj/covers/design-inspector-for-claude-portfolio-en-og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://projects.tanplanet.work/pj/covers/design-inspector-for-claude-portfolio-en-og.jpg"><link rel="icon" type="image/png" href="https://myfolio.tanplanet.work/favicon.png"><link rel="apple-touch-icon" href="https://myfolio.tanplanet.work/apple-touch-icon.png"><link rel="canonical" href="https://projects.tanplanet.work/en/design-inspector-for-claude-portfolio/"><meta property="og:url" content="https://projects.tanplanet.work/en/design-inspector-for-claude-portfolio/"><meta property="og:locale" content="en_US"><link rel="alternate" hreflang="th" href="https://projects.tanplanet.work/design-inspector-for-claude-portfolio/"><link rel="alternate" hreflang="en" href="https://projects.tanplanet.work/en/design-inspector-for-claude-portfolio/"><link rel="alternate" hreflang="x-default" href="https://projects.tanplanet.work/design-inspector-for-claude-portfolio/"><link rel="stylesheet" href="https://myfolio.tanplanet.work/tokens.css"/><link href="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/css/myfolio-tannie.webflow.shared.f00d552de.css?v=50" rel="stylesheet" type="text/css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap"><link rel="stylesheet" href="https://myfolio.tanplanet.work/blog/article.css"/><link rel="stylesheet" href="../../common/closing.css"><style>.cs{
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --text: #1a1a2e;
+      --text-secondary: #64748b;
+      --accent: #7aa2f7;
+      --accent-dark: #5b83d8;
+      --accent-light: #eef2ff;
+      --border: #e2e8f0;
+      --code-bg: #1e1e2e;
+      --code-text: #cdd6f4;
+      --tag-bg: #f1f5f9;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.08);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --max-w: 800px;
+    }
+.cs *{ margin: 0; padding: 0; box-sizing: border-box; }
+.cs{
+      font-family: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+.cs .hero{
+      background: linear-gradient(135deg, #1e1e2e 0%, #2d2b55 50%, #1e1e2e 100%);
+      color: #fff;
+      padding: 80px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+.cs .hero::before{
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at 30% 70%, rgba(122,162,247,0.1) 0%, transparent 50%);
+    }
+.cs .hero-inner{ position: relative; max-width: var(--max-w); margin: 0 auto; }
+.cs .hero-badge{
+      display: inline-block;
+      background: rgba(122,162,247,0.2);
+      backdrop-filter: blur(10px);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: var(--accent);
+    }
+.cs .hero-icon{
+      font-size: 3rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+.cs .hero-icon svg{
+      width: 56px;
+      height: 56px;
+    }
+.cs .hero h1{
+      font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+.cs .hero .hero-sub{
+      font-size: 1.1rem;
+      font-weight: 600;
+      opacity: 0.95;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+.cs .hero p{
+      font-size: 1rem;
+      opacity: 0.75;
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+.cs .section{ padding: 48px 24px; max-width: var(--max-w); margin: 0 auto; }
+.cs .section h2{
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+.cs .section h2 .material-symbols-outlined{
+      color: var(--accent);
+      font-size: 1.6rem;
+    }
+.cs .section + .section{ border-top: 1px solid var(--border); }
+.cs .dt-process{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+.cs .dt-card{
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+.cs .dt-card-phase{
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+.cs .dt-card h3{
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+.cs .dt-card p, .cs .dt-card ul{
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+.cs .dt-card ul{
+      padding-left: 18px;
+    }
+.cs .dt-card ul li + li{
+      margin-top: 4px;
+    }
+.cs .feature-list{
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+.cs .feature-item{
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+.cs .feature-icon{
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      background: var(--accent-light);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-dark);
+      font-size: 1.2rem;
+    }
+.cs .feature-text h3{
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+.cs .feature-text p{
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+.cs .code-demo{
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      font-family: 'Fira Code', ui-monospace, monospace;
+      font-size: 0.82rem;
+      line-height: 1.8;
+      overflow-x: auto;
+      margin-top: 16px;
+      box-shadow: var(--shadow-md);
+    }
+.cs .code-demo .dim{ opacity: 0.45; }
+.cs .code-demo .key{ color: #cba6f7; }
+.cs .code-demo .val{ color: #a6e3a1; }
+.cs .code-demo .str{ color: #f9e2af; }
+.cs .code-demo .comment{ color: #585b70; font-style: italic; }
+.cs .decision-table{
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 0.88rem;
+    }
+.cs .decision-table th{
+      text-align: left;
+      font-weight: 700;
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--border);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--text-secondary);
+    }
+.cs .decision-table td{
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+.cs .decision-table tr:last-child td{ border-bottom: none; }
+.cs .tags{ display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.cs .tag{
+      display: inline-block;
+      background: var(--tag-bg);
+      padding: 4px 12px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+.cs .iteration-list{
+      margin-top: 16px;
+    }
+.cs .iteration-item{
+      display: flex;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+.cs .iteration-item:last-child{ border-bottom: none; }
+.cs .iteration-num{
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      background: var(--accent-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-dark);
+    }
+.cs .iteration-text h3{
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+.cs .iteration-text p{
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+.cs .learning-grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+.cs .back-nav{
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(122,162,247,0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+.cs .back-nav:hover{ background: rgba(122,162,247,0.95); transform: translateY(-1px); }
+.cs .back-nav svg{ flex-shrink: 0; }
+.cs .back-to-top{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+.cs .back-to-top.visible{ opacity: 1; visibility: visible; transform: translateY(0); }
+.cs .back-to-top:hover{ background: var(--accent-dark); }
+@media (max-width: 640px){.cs .hero{ padding: 60px 20px 48px; }
+.cs .hero h1{ font-size: 1.5rem; }
+.cs .section{ padding: 36px 20px; }
+.cs .dt-process{ grid-template-columns: 1fr; }
+
+    }
+.cs .ico{ width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+.cs .rung:last-child{ border-bottom: 0; }
+.cs .ledger--wide{ min-width: 780px; }
+.cs .ladder{ border-top: 1px solid var(--border); margin-top: 20px; }
+.cs .rung{
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+.cs .rung .cond{ display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+.cs .rung .cond .ico{ color: var(--text-muted); width: 15px; height: 15px; }
+.cs .rung .out{ font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+.cs .rung .note{ font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+.cs .rung.none .out{ color: var(--text-muted); }
+@media (min-width: 700px){.cs .rung{ grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+
+    }
+.cs .hero-mark .ico{ width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+.cs .hero-badge .ico{ width: 14px; height: 14px; }
+@media (max-width:640px){}
+
+</style><link rel="stylesheet" href="../../common/components.css?v=7"/><link rel="stylesheet" href="../../pj/case.css?v=12"/></head><body><div style="opacity:0" class="page-wrapper"><div data-collapse="medium" data-animation="default" data-duration="400" data-w-id="58db7844-5919-d71b-dd74-2323ed8dffe9" data-easing="ease" data-easing2="ease" role="banner" class="header w-nav"><div class="loader-wrapper"><div class="loader"></div></div><div class="container-header"><div class="split-content header-left"><a href="https://myfolio.tanplanet.work/" class="brand w-nav-brand"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><nav role="navigation" class="nav-menu w-nav-menu"><ul role="list" class="header-navigation"><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="nav-link">Home</a></li><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="nav-link">About</a></li><li class="nav-item-wrapper last"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a><a href="https://projects.tanplanet.work/en/" class="nav-link">Portfolio</a><a href="https://myfolio.tanplanet.work/en/contact" class="nav-link nav-contact">Contact</a></li></ul></nav></div><div class="split-content header-right"><a class="lang-switch" href="https://projects.tanplanet.work/design-inspector-for-claude-portfolio/" hreflang="th" aria-label="TH EN – Switch to Thai"><span class="">TH</span> <span class="on">EN</span></a><div class="link-header-wrapper"><a data-w-id="a331bf6d-ae80-89ce-2301-aa6077024ef0" href="https://drive.google.com/file/d/1GjCCJ3XFU16-ceCq3MGVWRdezXm3GWxl/view?usp=sharing" target="_blank" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Resume</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="menu-button w-nav-button"><div class="menu-button-wrapper"><div class="menu-button-icon"><div class="menu-line-top"></div><div class="menu-line-middle"></div><div class="menu-line-bottom"></div></div></div></div></div></div><div class="container-default w-container"><div class="divider"></div></div></div><div class="section blog-post" role="main"><article class="ap cs-page" role="main"><div class="ap-band"><div class="ap-container"><header class="ap-head">
+<div class="ap-tags"><a href="https://projects.tanplanet.work/en/" class="ap-tag">Tooling</a><span class="ap-tag ap-tag--ghost">Projects</span></div>
+<h1 class="ap-title">Design Inspector for Claude</h1><p class="cs-sub">Design Inspector for Claude came from noticing my own pain point and solving it with Design Thinking: empathize, prototype, then iterate through real use</p>
+<p class="ap-meta"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><time datetime="2026-04-13">Apr 13, 2026</time></span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>6 min read</span></p>
+</header></div></div>
+<div class="ap-container ap-grid"><div class="ap-main">
+<figure class="ap-cover"><img src="../../pj/covers/design-inspector-for-claude-portfolio-en.webp" alt="" width="1600" height="900" fetchpriority="high" decoding="async"></figure>
+<div class="ap-row"><aside class="ap-share" aria-label="Share this article"><span class="ap-share-title">SHARE</span><a href="https://www.facebook.com/sharer/sharer.php?u=https://projects.tanplanet.work/en/design-inspector-for-claude-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a><a href="https://twitter.com/intent/tweet?url=https://projects.tanplanet.work/en/design-inspector-for-claude-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on X"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.9 1.2h3.7l-8 9.1L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9Zm-1.3 19.4h2L6.5 3.2H4.3l13.3 17.4Z"/></svg></a><a href="https://social-plugins.line.me/lineit/share?url=https://projects.tanplanet.work/en/design-inspector-for-claude-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LINE"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="3" width="21" height="18" rx="5.5" fill="currentColor"/><text x="12" y="15.2" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="7.2" font-weight="900" fill="#fff">LINE</text></svg></a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https://projects.tanplanet.work/en/design-inspector-for-claude-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a><button type="button" class="ap-share-btn" data-tip-done="Copied" data-copy="https://projects.tanplanet.work/en/design-inspector-for-claude-portfolio/" aria-label="Copy link"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button></aside><div class="ap-body"><div class="cs">
+<p class="cs-lead"><b>Inspect → Copy → Paste to Claude</b>: a Chrome extension that lets a UX designer inspect an element on any web page and copy its details as Markdown for Claude AI in a single click</p><div class="cs-chips"><span class="cs-chip">Chrome Extension</span><span class="cs-chip">Manifest V3</span><span class="cs-chip">Shadow DOM</span><span class="cs-chip">Offscreen API</span><span class="cs-chip">Design Thinking</span><span class="cs-chip">AI Workflow</span></div>
+<article>
+
+    <section class="section-intro">
+      <span class="eyebrow">Background</span>
+      <h2>Every time I wanted to tell Claude "fix this element", I had to gather the details by hand</h2>
+      <p>As a UX designer who uses Claude as a design assistant, I hit the same problem every day: to say "please fix this element", I had to <strong>open DevTools → find the details → copy the CSS → format it → paste it into the prompt</strong> every single time</p>
+    </section>
+    <p>That took 2–3 minutes per element and happened dozens of times a day. It added up to far more time than I expected.</p>
+    <figure class="shot"><img src="../../design-inspector-for-claude-portfolio/img/di-bg-unsplash.jpg" width="1200" height="800" loading="lazy" alt="A dark-theme code editor with a terminal and project files"><figcaption>Before the tool: switching between DevTools, the editor and the prompt every time I needed to say which element to fix · Photo: Bernd Dittrich / Unsplash</figcaption></figure>
+
+    <section class="section-intro">
+      <span class="eyebrow">Design Thinking Process</span>
+      <h2>From my own pain point to an extension I use every day</h2>
+      <p>Five Design Thinking stages, from watching my own workflow to refining through real use</p>
+    </section>
+    <figure class="shot shot-narrow" style="--shot-max:300px"><img src="../../design-inspector-for-claude-portfolio/img/di-popup.jpg" width="480" height="520" loading="lazy" alt="The extension popup: Active status, a Disable button and Copy Sections options"><figcaption>The actual popup: turn the inspector on or off and choose what to copy (Element &amp; Path · CSS Styles · Classname)</figcaption></figure>
+    <div class="flow-grid">
+      <div class="flow-step"><div class="step-num">01</div><h4>Empathize: understand the pain point</h4><p>Watched my own workflow with Claude · The slowest step was preparing element details for Claude · Constant switching between DevTools, code editor and Claude prompt</p></div>
+      <div class="flow-step"><div class="step-num">02</div><h4>Define: a clear problem</h4><p><strong>HMW:</strong> How might we let a designer send element details to Claude in one click, without opening DevTools?</p></div>
+      <div class="flow-step"><div class="step-num">03</div><h4>Ideate: explore the options</h4><p>Bookmarklet: simple, but lacks the permissions it needs · Chrome extension: full API access, works on every site · Studied the Element Inspector extension as a reference</p></div>
+      <div class="flow-step"><div class="step-num">04</div><h4>Prototype: build and test</h4><p>v1: hover inspect + detail panel · v2: auto-copy Markdown on click · v3: ⌘+C shortcut + toast feedback</p></div>
+      <div class="flow-step"><div class="step-num">05</div><h4>Test &amp; Iterate: use it for real, then improve</h4><p>Markdown too long → trimmed to ~200 tokens · Screenshots slowed the flow → removed, text only · Clipboard API failed in the content script → moved to an offscreen document</p></div>
+    </div>
+
+    <section class="section-intro">
+      <span class="eyebrow">Features</span>
+      <h2>Point · click · get Markdown ready to paste</h2>
+      <p>Four core features that get element details to Claude in one click</p>
+    </section>
+    <figure class="shot"><img src="../../design-inspector-for-claude-portfolio/img/di-hover-c.jpg" width="1400" height="470" loading="lazy" alt="Hovering over an &quot;awaiting payment&quot; status box shows a colored box-model overlay and a tooltip with the tag, size and font"><figcaption>Real hover inspect: colored overlay for margin / padding / content + a tooltip with tag, size and font (sample page)</figcaption></figure>
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 12.586 19 19"/><path d="M3.688 3.037a.497.497 0 0 0-.651.651l6.5 15.999a.501.501 0 0 0 .947-.062l1.569-6.083a2 2 0 0 1 1.448-1.479l6.124-1.579a.5.5 0 0 0 .063-.947z"/></svg><span><b>Hover Inspect</b> Point at an element to see a colored box-model overlay (margin/padding/content) with a tooltip showing tag, size and font</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg><span><b>Detail Panel</b> Click an element to open a right-hand panel with a box-model diagram, computed styles, an HTML snippet and CSS variables</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span><b>Auto Copy Markdown</b> Click or press ⌘+C to copy the element's details to the clipboard as Markdown, ready to paste into a Claude prompt</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg><span><b>Visual Feedback</b> A blue flash highlight + a floating toast pill at the bottom confirm whether the copy worked</span></li>
+    </ul>
+
+    <section class="section-intro">
+      <span class="eyebrow">Output</span>
+      <h2>The output</h2>
+      <p>One click on one element gives the full picture. Claude can tell right away which element it is, which file it lives in and how it is styled:</p>
+    </section>
+    <figure class="shot"><img src="../../design-inspector-for-claude-portfolio/img/di-md.jpg" width="1600" height="334" loading="lazy" alt="The Markdown the extension actually copies to the clipboard, pasted into the input with a design-change instruction"><figcaption>Real Markdown from a single click (you can follow it with an instruction in any language)</figcaption></figure>
+    <div class="code-demo">
+      <span class="key">**Element:**</span> <span class="val">`div.vd-status-hero--warning`</span> <span class="dim">(844×132)</span><br> <span class="key">**File:**</span> <span class="str">http://localhost/voucher-detail.html</span><br> <span class="key">**Path:**</span> <span class="val">`div.real-content > div#status-hero > div.vd-status-hero`</span><br> <span class="key">**Styles:**</span> <span class="dim">padding: 14px 16px | font: 400 16px/26px IBM Plex Sans Thai | bg: #FEF9EB | radius: 12px</span><br> <span class="comment">```html</span><br> <span class="dim">&lt;div class="vd-status-hero vd-status-hero--warning"&gt;</span><br> <span class="dim">&nbsp;&nbsp;&lt;div class="vd-status-hero__title"&gt;รอชำระเงิน&lt;/div&gt;</span><br> <span class="dim">&nbsp;&nbsp;...</span><br> <span class="dim">&lt;/div&gt;</span><br> <span class="comment">```</span>
+    </div>
+
+    <div class="learning-card note"><p>~200 tokens per element: compact enough for Claude to understand without eating the context window</p></div>
+
+    <section class="section-intro">
+      <span class="eyebrow">Design Decisions</span>
+      <h2>What I decided, and why</h2>
+      <p>Five key decisions that keep the extension working on any site without breaking</p>
+    </section>
+    <figure class="shot"><img src="../../design-inspector-for-claude-portfolio/img/di-panel.jpg" width="1600" height="900" loading="lazy" alt="Dark-theme detail panel on the right showing box model, layout, typography and a Copy for Claude button"><figcaption>Detail panel inside Shadow DOM with a dark #1e1e2e theme, so it never clashes with the CSS of the page being inspected</figcaption></figure>
+    <div class="ledger-wrap"><table class="ledger">
+      <thead><tr><th>Decision</th><th>Choice</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td><strong>UI Isolation</strong></td><td>Shadow DOM</td><td>Prevents style clashes with the inspected site. Whatever CSS the site uses, nothing breaks.</td></tr>
+        <tr><td><strong>Panel Theme</strong></td><td>Dark (#1e1e2e)</td><td>Less visual conflict with the site, and it looks like the dev tools designers already know</td></tr>
+        <tr><td><strong>Clipboard</strong></td><td>Offscreen Document</td><td>The content script has no clipboard permission → send through background → an offscreen document with a full DOM</td></tr>
+        <tr><td><strong>Output Format</strong></td><td>Compact Markdown</td><td>Claude reads structured text better than images: fewer tokens, easier to edit</td></tr>
+        <tr><td><strong>Drop screenshots</strong></td><td>Text-only</td><td>Testing showed the image clipboard is unreliable across browsers. Text works 100% of the time.</td></tr>
+      </tbody>
+    </table></div>
+
+    <section class="section-intro">
+      <span class="eyebrow">Iteration Journey</span>
+      <h2>Five rounds of refinement, from usable to good</h2>
+      <p>Each round came from real use. Some added things, some cut them.</p>
+    </section>
+    <figure class="shot"><img src="../../design-inspector-for-claude-portfolio/img/di-toast-c.jpg" width="1120" height="900" loading="lazy" alt="The selected element highlighted in blue, with a &quot;Copied to clipboard&quot; toast at the bottom"><figcaption>The v3 result: a blue flash on the element + a "Copied to clipboard" toast that confirms the status immediately</figcaption></figure>
+    <div class="flow-grid">
+      <div class="flow-step"><div class="step-num">01</div><h4>v1.0 — Hover + Panel + Manual Copy</h4><p>Could inspect elements, but copying still needed a button press → slower than it should be</p></div>
+      <div class="flow-step"><div class="step-num">02</div><h4>v1.0 + Screenshot: removed</h4><p>Added auto-screenshot + element highlight capture → the image clipboard was unreliable, slowed the flow and made file downloads messy → removed</p></div>
+      <div class="flow-step"><div class="step-num">03</div><h4>Clipboard Fix — Offscreen Document</h4><p>navigator.clipboard did not work in the content script because the user gesture expires after an async call → fixed by sending the copy to an offscreen document via background</p></div>
+      <div class="flow-step"><div class="step-num">04</div><h4>Shorter Markdown: from verbose to compact</h4><p>The original Markdown had a table + ASCII box model, about 400 tokens → condensed to one-line styles, about 200 tokens, saving 50% of context</p></div>
+      <div class="flow-step"><div class="step-num">05</div><h4>v1.1 — Cleanup &amp; Ship</h4><p>Removed 224 lines of dead code (screenshot.js, styles.css), made error handling consistent, cut the file count from 7 to 5</p></div>
+    </div>
+
+    <section class="section-intro">
+      <span class="eyebrow">Architecture</span>
+      <h2>Content script → background → offscreen</h2>
+      <p>Responsibilities split into three layers so clipboard copy works on every site</p>
+    </section>
+    <figure class="shot"><img src="../../design-inspector-for-claude-portfolio/img/di-offscreen.jpg" width="1600" height="578" loading="lazy" alt="Actual code from background.js and offscreen.js that relays the message and copies in the offscreen document"><figcaption>Real code: the content script sends a message → background → an offscreen document that can write to the clipboard</figcaption></figure>
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer">Content Scripts (injected per page)
+          <div class="arch-sub"><span>overlay.js — hover/click visual</span><span>panel.js — detail panel UI</span><span>markdown.js — generate output</span><span>inspector.js — controller/state</span></div>
+        </div>
+        <div class="arch-arrow">chrome.runtime.sendMessage</div>
+        <div class="arch-layer">background.js (service worker)
+          <div class="arch-sub"><span>route messages, manage offscreen</span></div>
+        </div>
+        <div class="arch-arrow">↓</div>
+        <div class="arch-layer">offscreen.js (clipboard access)
+          <div class="arch-sub"><span>execCommand('copy') → clipboard</span></div>
+        </div>
+      </div>
+    </div>
+    <p>Content scripts talk to background via <code>chrome.runtime.sendMessage</code>, and background hands off to the offscreen document to do the copy</p>
+
+
+    <section class="section-intro">
+      <span class="eyebrow">Tech Stack</span>
+      <h2>Tech Stack</h2>
+      <p>Pure Manifest V3, no framework</p>
+    </section>
+    <figure class="shot"><img src="../../design-inspector-for-claude-portfolio/img/di-manifest.jpg" width="1600" height="438" loading="lazy" alt="A Manifest V3 manifest.json file with its list of permissions"><figcaption>manifest.json (Manifest V3): only 5 permissions requested · organization name blurred</figcaption></figure>
+    <div class="chips"><span class="chip">Chrome Extension Manifest V3</span><span class="chip">Shadow DOM</span><span class="chip">Offscreen API</span><span class="chip">Content Scripts</span><span class="chip">Service Worker</span><span class="chip">Clipboard API</span><span class="chip">getComputedStyle()</span><span class="chip">CSS Variable Detection</span></div>
+
+    <section class="section-intro">
+      <span class="eyebrow">Learnings</span>
+      <h2>What I learned</h2>
+      <p>Four lessons from building a tool for myself</p>
+    </section>
+    <figure class="shot"><img src="../../design-inspector-for-claude-portfolio/img/di-learn-unsplash.jpg" width="1200" height="900" loading="lazy" alt="Paper wireframe sketches of several mobile screens on a desk"><figcaption>Good tools start from watching your own workflow · Photo: Amélie Mourichon / Unsplash</figcaption></figure>
+    <div class="learning-card"><p><strong>Clipboard ≠ Simple:</strong> Content scripts have no direct clipboard permission. You need to understand the user gesture lifecycle and use an offscreen document as a proxy.</p></div>
+    <div class="learning-card"><p><strong>Less &gt; More:</strong> The screenshot feature looked good on paper but was slow and unreliable in practice. The tool is better without it.</p></div>
+    <div class="learning-card"><p><strong>Shadow DOM Isolation:</strong> If you inject UI into a page, use Shadow DOM. Otherwise the site's CSS and the extension's CSS will clash, guaranteed.</p></div>
+    <div class="learning-card"><p><strong>Design for AI Context:</strong> Output for AI has to respect a token budget. More data is not better; it needs to be compact and structured.</p></div>
+
+  </article>
+</div><section class="ap-author" aria-label="Author"><img class="ap-author-avatar" src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/688f5899cad39483c4e11c49_Profile_Webflow.webp" alt="" width="88" height="88" loading="lazy"><div class="ap-author-body"><p class="ap-author-name">Tan · Natpakan Sirirat</p><p class="ap-author-bio">Product Designer &amp; AI Builder — designing user experiences and building AI tools that actually work.</p><ul class="ap-author-links"><li><a href="https://www.linkedin.com/in/natpakan/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a></li><li><a href="https://www.facebook.com/tan.natpakan" target="_blank" rel="noopener" aria-label="Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a></li><li><a href="https://www.instagram.com/npkant/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a></li></ul></div></section><nav class="ap-pn" aria-label="Previous and next project"><a href="../Legal-AI/" class="ap-pn-item ap-pn-prev"><span class="ap-pn-label">← Previous project</span><span class="ap-pn-title">Legal AI</span></a><a href="../claude-skills-registry/" class="ap-pn-item ap-pn-next"><span class="ap-pn-label">Next project →</span><span class="ap-pn-title">Claude Code Skills Registry</span></a></nav></div></div></div>
+<aside class="ap-side"><div class="ap-side-inner"><section class="ap-widget"><h2 class="ap-widget-title"><span>Latest projects</span></h2><ol class="ap-rank"><li><a href="../content-engine-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/content-engine-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">1</span></span><span class="ap-rank-title"><span class="ap-rank-t">Auto-publishing content engine</span></span></a></li><li><a href="../tans-tools-devpanel-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tans-tools-devpanel-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">2</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan’s Tools · DEV panel</span></span></a></li><li><a href="../android-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/android-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">3</span></span><span class="ap-rank-title"><span class="ap-rank-t">TX98 TV Box</span></span></a></li><li><a href="../tools-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tools-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">4</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan&#x27;s Tools</span></span></a></li><li><a href="../shotdeck-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/shotdeck-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">5</span></span><span class="ap-rank-title"><span class="ap-rank-t">shotdeck-box: a laptop that posts clips</span></span></a></li></ol></section></div></aside>
+</div><div class="ap-progress" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" class="ap-progress-track"/><circle cx="32" cy="32" r="28" class="ap-progress-bar" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg><span>0%</span></div></article><footer class="footer"><div class="container-default w-container"><div class="divider"></div></div><div class="container-footer"><div class="footer-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-logo-container w-inline-block"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" loading="lazy" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><ul role="list" class="footer-navigation"><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-nav-link">Home</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="footer-nav-link">About</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a></li><li class="footer-nav-item-wrapper"><a href="https://projects.tanplanet.work/en/" class="footer-nav-link">Portfolio</a></li><li class="footer-nav-item-wrapper last"><a href="https://projects.tanplanet.work/preset/" class="footer-nav-link footer-nav-design">Design</a></li></ul><a data-w-id="2afa9a01-05cf-ade4-4d79-909445ba12f2" href="https://myfolio.tanplanet.work/contact" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Contact Me</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="divider"></div><div class="small-print">© 2026 Natpakan Sirirat · All rights reserved.</div></div></footer></div><script src="https://myfolio.tanplanet.work/_ext/d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8__site%3D608d62778637273e1880cb8d.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.1a807f015b216e46.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.8870a749f76b548c.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.9641f8cc.4fd3e4280b7acaf7.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/header-autohide.js" defer></script><script src="https://myfolio.tanplanet.work/blog/article.js" defer></script><div class="cs cs-extras">
+
+  
+
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+
+  
+
+
+</div><script>try{
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  }catch(e){}</script><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Design Inspector for Claude",
+      "item": "https://projects.tanplanet.work/design-inspector-for-claude-portfolio/"
+    }
+  ]
+}
+</script></body></html>

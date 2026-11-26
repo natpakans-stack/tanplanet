@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital site with a hiring system — a bilingual pre-opening website and careers platform</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hospital site with a hiring system — a bilingual pre-opening website and careers platform">
+  <meta name="twitter:description" content="Portfolio: a bilingual pre-opening website and applicant tracking system (ATS) for a specialty hospital — Next.js 16, Sanity CMS, application PDFs rendered with headless Chrome, designed around calm and patient dignity">
+  <meta property="og:url" content="https://projects.tanplanet.work/hospital-site-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.work/hospital-site-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: a bilingual pre-opening website and applicant tracking system (ATS) for a specialty hospital — Next.js 16, Sanity CMS, application PDFs rendered with headless Chrome, designed around calm and patient dignity">
+  <meta property="og:title" content="Hospital site with a hiring system — a bilingual pre-opening website and careers platform">
+  <meta name="description" content="Portfolio: a bilingual pre-opening website and applicant tracking system (ATS) for a specialty hospital — Next.js 16, Sanity CMS, application PDFs rendered with headless Chrome, designed around calm and patient dignity">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%230369a1'/><text x='50' y='62' text-anchor='middle' font-size='54'>🏥</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #0369a1;
+      --accent-light: #e0f2fe;
+      --accent-dark: #0c4a6e;
+      --accent-glow: rgba(3,105,161,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #082f49 0%, #0369a1 45%, #0284c7 80%, #0ea5e9 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(224,242,254,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(3,105,161,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #0369a1, #0ea5e9, #e0f2fe);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #bae6fd;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0c4a6e, #0369a1);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(3,105,161,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #0ea5e9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(3,105,161,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Extension Popup Mockup ===== */
+    .ext-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 440px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+    .ext-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      align-items: center;
+    }
+    .ext-bar .ext-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    .ext-bar .ext-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 1px 9px;
+      font-size: 0.72rem;
+    }
+    .ext-yt {
+      margin: 12px;
+      padding: 10px 12px;
+      border: 1px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 8px;
+    }
+    .ext-yt b { color: #c00; }
+    .ext-yt .u { color: var(--text-muted); font-size: 0.72rem; word-break: break-all; margin: 3px 0 8px; font-family: 'SF Mono', monospace; }
+    .ext-yt .chip { display: inline-block; border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 3px 8px; font-size: 0.72rem; margin-right: 5px; color: var(--text-secondary); }
+    .ext-table { width: 100%; border-collapse: collapse; }
+    .ext-table th {
+      text-align: left; padding: 8px 12px; font-size: 0.68rem; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--border);
+    }
+    .ext-table td { padding: 9px 12px; border-bottom: 1px solid #f2f2f1; vertical-align: top; }
+    .ext-table .kind { font-weight: 700; white-space: nowrap; }
+    .ext-table .kind.master { color: #1e6b2e; }
+    .ext-table .kind.variant { color: #8a7a12; }
+    .ext-table .kind.file { color: var(--accent); }
+    .ext-table .q { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .ext-table .info { color: var(--text-secondary); font-size: 0.76rem; }
+    .ext-table .chip { display: inline-block; border: 1px solid var(--border); background: #fafafa; border-radius: 5px; padding: 1px 7px; font-size: 0.68rem; color: var(--text-secondary); font-family: 'SF Mono', monospace; }
+    .ext-cmd {
+      margin: 0 12px 12px;
+      padding: 10px 12px;
+      background: #0f172a;
+      color: #a5f3fc;
+      border-radius: 8px;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      font-size: 0.72rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .ext-cmd .flag { color: #fde047; }
+    .ext-cmd .cmt { color: #64748b; }
+
+    /* ===== Careers Mockup (browser preview) ===== */
+    .mk-tabs { margin: 0; }
+    .mk-dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+    .mk-url { flex: 1; text-align: center; background: #fff; border: 1px solid var(--border); border-radius: 50px; padding: 3px 12px; font-size: 0.72rem; color: var(--text-muted); font-family: 'SF Mono', monospace; }
+    .mk-body { padding: 16px 14px; background: #fdfbf6; }
+    .mk-lead { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); }
+    .mk-h { font-size: 1.05rem; font-weight: 700; margin: 4px 0 14px; color: var(--text); }
+    .mk-job {
+      display: flex; align-items: center; gap: 12px;
+      background: #fff; border: 1px solid var(--border); border-radius: 12px;
+      padding: 13px 14px; margin-bottom: 10px;
+    }
+    .mk-job .mk-ic { width: 40px; height: 40px; flex: 0 0 auto; border-radius: 10px; background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; }
+    .mk-job .mk-info { flex: 1; min-width: 0; }
+    .mk-job .mk-role { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+    .mk-job .mk-meta { font-size: 0.74rem; color: var(--text-secondary); margin-top: 2px; }
+    .mk-tag { font-size: 0.66rem; font-weight: 700; border-radius: 50px; padding: 2px 9px; white-space: nowrap; }
+    .mk-tag.urgent { background: var(--red-light); color: var(--red); }
+    .mk-tag.high { background: var(--orange-light); color: var(--orange); }
+    .mk-tag.brand { background: var(--accent-light); color: var(--accent-dark); }
+    .mk-apply { flex: 0 0 auto; background: var(--accent); color: #fff; font-size: 0.74rem; font-weight: 600; border-radius: 50px; padding: 6px 14px; }
+    .mk-foot { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 9px 12px; border: 1px dashed var(--border); border-radius: 10px; background: #fff; font-size: 0.74rem; color: var(--text-secondary); }
+    .mk-foot .mk-pill { font-size: 0.66rem; font-weight: 700; color: #fff; background: var(--accent-dark); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
+
+    /* ===== Closing ===== */
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(12,74,110,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(12,74,110,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    /* ============================================================
+       UI / Design Showcase (scoped .ui-*) — Product Designer craft
+       ============================================================ */
+
+    /* --- Block A: Design Tokens --- */
+    .ui-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+    .ui-panel-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .ui-panel-head .ui-kicker {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .ui-panel-head .ui-note {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+    .ui-swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .ui-swatch { text-align: left; }
+    .ui-swatch .chip {
+      height: 52px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+    }
+    .ui-swatch .name {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 7px;
+      line-height: 1.3;
+    }
+    .ui-swatch .hex {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      text-transform: uppercase;
+    }
+    .ui-type-scale { display: flex; flex-direction: column; gap: 14px; }
+    .ui-type-row {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed var(--border);
+    }
+    .ui-type-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .ui-type-sample { color: var(--text); flex: 1; min-width: 200px; }
+    .ui-type-sample.display { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; font-size: 1.75rem; line-height: 1.28; letter-spacing: 0.01em; }
+    .ui-type-sample.body { font-size: 1rem; line-height: 1.6; color: var(--text-secondary); letter-spacing: 0.01em; }
+    .ui-type-sample.caption { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+    .ui-type-meta {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      white-space: nowrap;
+    }
+    .ui-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ui-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      border-radius: 8px;
+      font-size: 0.74rem;
+      font-weight: 600;
+    }
+    .ui-chip .val { font-family: 'SF Mono', ui-monospace, Menlo, monospace; opacity: 0.85; font-weight: 500; }
+
+    /* --- Block B: Screen Showcase --- */
+    .ui-screens {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding: 4px 4px 14px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .ui-screens::-webkit-scrollbar { height: 6px; }
+    .ui-screens::-webkit-scrollbar-thumb { background: var(--border); border-radius: 50px; }
+    .ui-frame { scroll-snap-align: start; flex: 0 0 auto; display: flex; flex-direction: column; }
+    .ui-screens { align-items: stretch; }
+    .ui-frame > .ui-win, .ui-frame > .ui-phone { flex: 1 0 auto; }
+    .ui-cap {
+      font-size: 0.74rem;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      text-align: center;
+      line-height: 1.45;
+    }
+    .ui-cap b { color: var(--accent-dark); font-weight: 600; }
+    .ui-subhead { display: flex; align-items: center; gap: 10px; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 4px 2px 12px; }
+    .ui-subhead::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .ui-screens + .ui-subhead { margin-top: 26px; }
+
+    /* browser window frame */
+    .ui-win {
+      width: 340px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 8px 26px rgba(0,0,0,0.10);
+      background: #fff;
+    }
+    .ui-win-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 12px;
+      background: #f5f4f2;
+      border-bottom: 1px solid var(--border);
+    }
+    .ui-win-bar .d { width: 9px; height: 9px; border-radius: 50%; }
+    .ui-win-url {
+      flex: 1;
+      text-align: center;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 2px 10px;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* เว็บโรงพยาบาล real palette (screen content only) */
+    .ui-เว็บโรงพยาบาล-forest { background: #4A342D; color: #F3ECE5; }
+    .ui-เว็บโรงพยาบาล-ivory  { background: #FAF6F1; color: #35231F; }
+
+    /* Screen 1 — homepage */
+    .ui-home { padding: 26px 22px 30px; }
+    .ui-home .eb { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #6ec6bf; }
+    .ui-home h4 {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-weight: 400;
+      font-size: 1.5rem;
+      line-height: 1.32;
+      color: #F3ECE5;
+      margin: 12px 0 12px;
+    }
+    .ui-home p { font-size: 0.78rem; line-height: 1.6; color: rgba(243,236,229,0.72); margin-bottom: 18px; }
+    .ui-home .btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .ui-btn {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 9px 16px; border-radius: 2px;
+    }
+    .ui-btn.line { border: 1px solid rgba(243,236,229,0.6); color: #F3ECE5; }
+    .ui-btn.fill { background: #F3ECE5; color: #4A342D; }
+
+    /* Screen 2 — mobile application form (phone) */
+    .ui-phone {
+      width: 264px;
+      border: 9px solid #201D1D;
+      border-radius: 34px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+      background: #FAF6F1;
+    }
+    .ui-phone .notch { height: 22px; background: #201D1D; position: relative; }
+    .ui-phone .notch::after {
+      content: ''; position: absolute; left: 50%; top: 6px; transform: translateX(-50%);
+      width: 74px; height: 6px; border-radius: 50px; background: #35231F;
+    }
+    .ui-form { padding: 14px 14px 16px; }
+    .ui-form .fhead { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .ui-form .fhead .ic { width: 26px; height: 26px; border-radius: 8px; background: #E9F3F1; color: #1d7d77; display: flex; align-items: center; justify-content: center; font-size: 0.82rem; }
+    .ui-form .fhead .t { font-size: 0.86rem; font-weight: 700; color: #35231F; }
+    .ui-steps { display: flex; gap: 5px; margin: 10px 0 14px; }
+    .ui-steps i { height: 4px; border-radius: 50px; flex: 1; background: #E4DAD0; }
+    .ui-steps i.on { background: #259B94; }
+    .ui-steps i.done { background: #AF9C84; }
+    .ui-fld { margin-bottom: 11px; }
+    .ui-fld label { display: block; font-size: 0.68rem; font-weight: 500; color: rgba(53,35,31,0.75); margin-bottom: 4px; }
+    .ui-fld .box {
+      border: 1px solid rgba(96,64,54,0.15); background: #fff; border-radius: 12px;
+      padding: 9px 11px; font-size: 0.74rem; color: #35231F; min-height: 38px; display: flex; align-items: center;
+    }
+    .ui-fld .box.ph { color: rgba(53,35,31,0.45); }
+    .ui-fld .box.focus { border-color: #AF9C84; box-shadow: 0 0 0 3px rgba(175,156,132,0.25); }
+    .ui-fld .box.err { border-color: #b4452f; box-shadow: 0 0 0 3px rgba(180,69,47,0.18); }
+    .ui-fld .msg { font-size: 0.62rem; color: #b4452f; margin-top: 4px; }
+    .ui-state-tag { float: right; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); }
+    .ui-wheel {
+      margin-top: 4px; border: 1px solid rgba(96,64,54,0.12); border-radius: 12px; background: #fff; overflow: hidden;
+    }
+    .ui-wheel .wt { display: flex; font-size: 0.6rem; color: rgba(53,35,31,0.55); border-bottom: 1px solid rgba(96,64,54,0.1); }
+    .ui-wheel .wt span { flex: 1; text-align: center; padding: 5px 0; }
+    .ui-wheel .wt span.on { color: #35231F; font-weight: 700; border-bottom: 2px solid #259B94; }
+    .ui-wheel .wv { display: flex; }
+    .ui-wheel .wv div { flex: 1; text-align: center; padding: 4px 0; font-size: 0.66rem; }
+    .ui-wheel .wv .a { color: rgba(53,35,31,0.35); }
+    .ui-wheel .wv .b { color: #35231F; font-weight: 700; background: rgba(175,156,132,0.14); }
+    .ui-fsubmit { margin-top: 6px; text-align: center; background: #4A342D; color: #F3ECE5; border-radius: 12px; padding: 10px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; }
+
+    /* Screen 3 — generated PDF cover */
+    .ui-pdf { padding: 20px 18px; background: #fff; }
+    .ui-pdf .pbrand { display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 2px solid #4A342D; }
+    .ui-pdf .pmark { width: 28px; height: 28px; border-radius: 7px; background: #4A342D; color: #F3ECE5; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
+    .ui-pdf .pbrand .pn { font-family: Georgia, serif; font-size: 0.92rem; color: #35231F; }
+    .ui-pdf .pbrand .pn small { display: block; font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: #259B94; font-family: var(--font); }
+    .ui-pdf h4 { font-family: Georgia, serif; font-weight: 400; font-size: 1.05rem; color: #35231F; margin: 14px 0 12px; }
+    .ui-pdf .prow { display: flex; font-size: 0.68rem; padding: 5px 0; border-bottom: 1px dashed rgba(96,64,54,0.16); }
+    .ui-pdf .prow .k { width: 92px; color: rgba(53,35,31,0.55); flex: 0 0 auto; }
+    .ui-pdf .prow .v { color: #35231F; font-weight: 500; }
+    .ui-pdf .pfoot { margin-top: 14px; font-size: 0.6rem; color: rgba(53,35,31,0.5); text-align: center; letter-spacing: 0.02em; }
+
+    @media (max-width: 680px) {
+      .ui-swatch-grid { grid-template-columns: repeat(3, 1fr); }
+      .ui-type-sample.display { font-size: 1.45rem; }
+    }
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* shot figures (รูปประกอบ) */
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:16px;align-items:start}
+    .shot-pair.even{grid-template-columns:1fr 1fr}
+    .shot-pair figcaption{grid-column:1/-1}
+    .shot.phone img{max-width:360px;margin:0 auto}
+    .shot.doc img{max-width:520px;margin:0 auto}
+    .dd-ico{display:inline-flex;color:var(--accent);margin-bottom:6px}.dd-ico .ico{width:24px;height:24px}
+    @media (max-width:639px){.shot-pair,.shot-pair.even{grid-template-columns:1fr}.shot-pair img+img{max-width:300px;margin:0 auto}}
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/hospital-site-portfolio/">
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M14 9h-4"/><path d="M18 11h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2"/><path d="M18 21V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Next.js 16 &middot; Sanity CMS &middot; i18n TH / EN
+      </div>
+      <h1>Hospital site with a hiring system<br><span class="accent">A bilingual pre-opening site with a built-in careers system</span></h1>
+      <p>A bilingual full-stack website for a specialty hospital still under construction. It tells the pre-opening story calmly and with dignity, and includes a built-in applicant tracking system (ATS) that takes applications, stores them in the CMS, then <code>generates a PDF</code> of each Thai application and emails it to HR automatically</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Next.js 16 (App Router)</span>
+        <span class="hero-tag">React 19</span>
+        <span class="hero-tag">next-intl</span>
+        <span class="hero-tag">Sanity CMS</span>
+        <span class="hero-tag">Tailwind v4</span>
+        <span class="hero-tag">Motion</span>
+        <span class="hero-tag">Puppeteer + pdf-lib</span>
+        <span class="hero-tag">Resend</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">See how it works &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#stack">See the tech stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>The problem</h2>
+      <p>A website for a hospital that "isn't open yet": it has to build trust without overpromising, and it has to start hiring staff before opening day</p>
+    </section>
+    <figure class="shot shot-pair"><img src="img/home-hero-desktop.jpg" width="1440" height="900" loading="lazy" alt="Hospital homepage on desktop: building video with the headline Hope with dignity and a button to talk to the care team"><img src="img/home-hero-mobile.jpg" width="600" height="1301" loading="lazy" alt="Hospital homepage on mobile"><figcaption>The live homepage (desktop + mobile): it introduces a specialty hospital that is on its way, without pretending to be fully open · brand name and logo blurred</figcaption></figure>
+
+
+    <div class="quote-block">
+      <p>A specialty cancer hospital is still under construction. The website must not act as if the hospital is already fully open, yet it has to say "this will be a place that understands you" in a way that feels warm and credible. At the same time it has to start <strong>recruiting doctors, nurses and staff</strong> before opening. All of this had to ship fast on a limited pre-opening budget, while keeping sensitive applicant data safe</p>
+      <div class="author">— The starting brief, before work on the hospital website began</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="8" rx="1"/><path d="M17 14v7"/><path d="M7 14v7"/><path d="M17 3v3"/><path d="M7 3v3"/><path d="M10 14 2.3 6.3"/><path d="m14 6 7.7 7.7"/><path d="m8 6 8 8"/></svg>
+        <h3>The hospital isn't open yet, which is hard to communicate</h3>
+        <p>Acting as if it were open would cost credibility, but showing only "under construction" feels cold. The site had to be honest that it is still being built while letting people feel that real help is coming</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+        <h3>Hiring had to start before opening, with no system in place</h3>
+        <p>The hospital needed doctors, nurses and pharmacists before opening. Without a system, applications end up scattered across email and chat, with no central store and no standard format for HR to read</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>Applicant data is sensitive (PII)</h3>
+        <p>Applications contain ID numbers, phone numbers, professional license numbers and emergency contacts. Storing them in the wrong place or leaking them through a public API is a risk both under PDPA and for trust</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        <h3>Two audiences and a distinct brand</h3>
+        <p>The site serves both Thai visitors and an international audience (doctors and partners), under strict brand rules: a loopless Thai typeface to match the logo, and no red crosses or battle language about cancer</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg>
+        <h3>Fast to deploy, on a limited pre-opening budget</h3>
+        <p>There was no budget for a separate backend, and no CMS or email keys at the start, yet the site had to go live in time to start publicity and open applications. It also couldn't be tied to so many vendors that it became hard to change</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>The solution</h2>
+      <p>An honest pre-opening site with a built-in ATS, fully serverless, so the CMS and email can be connected later without breaking the site</p>
+    </section>
+    <figure class="shot"><img src="img/home-why.jpg" width="1440" height="790" loading="lazy" alt="The You don't need all the answers to begin section on a dark brown background, with three cards"><figcaption>The "You don't need all the answers to begin" section: reassuring copy that doesn't push anyone to decide</figcaption></figure>
+
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
+        <h3>A pre-opening site that tells the truth warmly</h3>
+        <p>A light, water and shade mood, "breathing" motion (slow fades and reveals) and low-pressure CTAs ("Talk to our care team" / "Get advice"). It builds trust without pretending the hospital is already open</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+        <h3>Careers and ATS inside the same site</h3>
+        <p>Job listings, a multi-section application form and automatic storage in the CMS. HR reviews everything in one place in Studio instead of collecting it from email and chat</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>Applications stored as "drafts" so PII can't leak</h3>
+        <p>Documents are saved as drafts (<code>drafts.&lt;uuid&gt;</code>), which the public API can't read but HR can see in Studio. The write token is server-only, and only the necessary fields are stored</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        <h3>Thai application PDFs for HR, generated automatically</h3>
+        <p>When someone applies, the system renders the application cover page (with correct Thai text) in headless Chrome, merges it with the résumé into a single PDF and attaches it to an email to HR, ready to read</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg>
+        <h3>Fully serverless, with a fallback at every step</h3>
+        <p>Next.js + Sanity + Resend (called with fetch, no extra dependency). Without a CMS connection it uses seed data; without email set up it returns a stubbed success. The site worked from the first deploy</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>How it works: 4 steps (the path of an application)</h2>
+      <p>From the moment an applicant hits submit until the PDF reaches HR</p>
+    </section>
+    <figure class="shot shot-pair"><img src="img/apply-form-desktop.jpg" width="1260" height="800" loading="lazy" alt="Application form on desktop, with an 8-section menu on the left and the email field outlined in red when the format is wrong"><img src="img/apply-datewheel-mobile.jpg" width="600" height="1301" loading="lazy" alt="Application form on mobile, with a bottom sheet for picking the Buddhist-era year, month and day"><figcaption>Step 1 in the real product: the 8-section form (errors appear after leaving a field) and the bottom-sheet date wheel on mobile · filled with sample data</figcaption></figure>
+
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 21h8"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
+        <h4>Applicant fills in the form</h4>
+        <p>Multi-section form, bottom sheets on mobile, built-in date wheel and photo cropping</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h4>Validate and save a draft</h4>
+        <p>Checked on the server, then saved as a draft in the CMS that the public can't read</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        <h4>Build the PDF in the background</h4>
+        <p>Headless Chrome renders the cover page and merges the résumé (without making the applicant wait)</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+        <h4>Notify HR with the PDF</h4>
+        <p>Sends an email with the PDF attached and a link to open it in Studio</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>Fully serverless: no separate backend, no self-managed database, and services can be connected later without breaking the site</p>
+    </section>
+    <figure class="shot shot-pair even"><img src="img/careers-th.jpg" width="1000" height="625" loading="lazy" alt="The Careers page in Thai at /th/careers"><img src="img/careers-en.jpg" width="1000" height="625" loading="lazy" alt="The same page in English at /en/careers"><figcaption>next-intl: /th ↔ /en share one page structure; only the text dictionary changes</figcaption></figure>
+
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Visitors &amp; applicants (2 languages · /th · /en)
+          <div class="arch-sub">
+            <span>Patients/families</span>
+            <span>Doctors/partners</span>
+            <span>Applicants</span>
+            <span>HR team</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Next.js 16 App Router — RSC + Route Handlers
+          <div class="arch-sub">
+            <span>Server Components</span>
+            <span>/api/apply</span>
+            <span>/api/contact</span>
+            <span>after() background</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Services — i18n · CMS · PDF · Mail
+          <div class="arch-sub">
+            <span>next-intl</span>
+            <span>Sanity Studio</span>
+            <span>Puppeteer + pdf-lib</span>
+            <span>Resend (fetch)</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Serverless (Vercel) + Sanity dataset + draft docs
+          <div class="arch-sub">
+            <span>@sparticuz/chromium</span>
+            <span>seed fallback</span>
+            <span>server-only token</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Why this stack?</strong>
+      <p><strong>Next.js 16 + RSC</strong> — renders bilingual content on the server quickly with good SEO, and route handlers act as the API in the same app, so no separate backend &middot; <strong>Sanity CMS</strong> — lets HR edit job posts and read applications in a Thai-language Studio without a developer touching code &middot; <strong>next-intl</strong> — keeps the "text" (dictionary) separate from the "page structure" (code), so adding or editing a language doesn't affect layout &middot; <strong>Puppeteer + pdf-lib</strong> — renders the Thai cover page in a real browser, then merges the résumé, producing a PDF with correct Thai text &middot; <strong>Resend via fetch</strong> — sends email without adding a dependency &middot; every service has a <strong>fallback</strong>, so the site could deploy before all the keys existed</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>What I built: 8 core features</h2>
+      <p>From the brand-facing pages to the back-office hiring system</p>
+    </section>
+    <figure class="shot"><img src="img/contact-chat.jpg" width="1440" height="1333" loading="lazy" alt="Contact page with a contact form on a white card, a lobby photo and a floating chat button"><figcaption>The live Contact page: a contact form (saved as a draft, with an email alert) and a "Talk to our care team" chat button · hospital email blurred</figcaption></figure>
+
+
+    <div class="module-grid">
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        <h3>Bilingual i18n (TH / EN)</h3>
+        <p>next-intl + App Router, URL prefix <code>/th</code> · <code>/en</code>, Thai as the default. Text lives in dictionaries, separate from layout</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
+        <h3>Pre-opening Homepage</h3>
+        <p>Video hero with slow reveals, and story sections (who/why/healing/services/process/FAQ) in a calm, dignified tone</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+        <h3>Careers Listing</h3>
+        <p>Job listings with demand badges (urgent/high), pulled from the CMS when connected and from seed data otherwise</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 21h8"/><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
+        <h3>Multi-section Application Form</h3>
+        <p>A multi-section form with 30+ fields: bottom sheets on mobile, a date wheel for birth dates, in-browser photo cropping and nationality search</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
+        <h3>Sanity CMS (Thai Studio)</h3>
+        <p>8 content models (jobs, categories, departments, locations, applications, contact messages, etc.), document-level i18n, custom inputs and an export-PDF button</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        <h3>Auto PDF Generation</h3>
+        <p>Renders the application cover page in headless Chrome (correct Thai), merges the résumé (PDF or image) into one file with pdf-lib, and stamps the footer and page numbers</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+        <h3>Email Notify</h3>
+        <p>Alerts HR to every application and contact message via Resend (REST called with fetch), with the PDF attached and a branded header</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg>
+        <h3>Contact Form + Chat Widget</h3>
+        <p>A contact form (saved as a draft, with an email alert) and a floating "Talk to our care team" button linked to the hospital's chat channel</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Careers Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>What it looks like: Careers</h2>
+      <p>The job listings applicants see: position cards with demand badges; applying opens the multi-section form</p>
+    </section>
+
+    <figure class="shot"><img src="img/careers-listing.jpg" width="1440" height="1150" loading="lazy" alt="Open positions page with a search box, filters on the left and position cards with urgent/high-demand badges"><figcaption>The live open-positions page: search plus filters by job family and department; cards show the demand level</figcaption></figure>
+
+    <hr class="divider">
+
+    <!-- ===== UI / Design Showcase (Prototype · UI Craft) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype &middot; UI Craft</span>
+      <h2>UI design &amp; design system</h2>
+      <p>From a product designer's side: turning "a cancer hospital before it opens" into a design system that is calm and dignified, and that actually handles a 30+ field bilingual application form</p>
+    </section>
+
+    <!-- Block A: Design Tokens -->
+    <div class="ui-panel">
+      <div class="ui-panel-head">
+        <span class="ui-kicker">Design Tokens</span>
+        <span class="ui-note">Taken from the real logo · Hospital Brand Book v1.0</span>
+      </div>
+      <div class="ui-swatch-grid">
+        <div class="ui-swatch">
+          <div class="chip" style="background:#259B94"></div>
+          <div class="name">Healing Green</div>
+          <div class="hex">#259B94</div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#AF9C84"></div>
+          <div class="name">Humility Gold</div>
+          <div class="hex">#AF9C84</div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#7FA6A2"></div>
+          <div class="name">Quiet Water</div>
+          <div class="hex">#7FA6A2</div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#4A342D"></div>
+          <div class="name">Deep Bark</div>
+          <div class="hex">#4A342D</div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#604036"></div>
+          <div class="name">Hospital Brown</div>
+          <div class="hex">#604036</div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#F3ECE5"></div>
+          <div class="name">Hope Beige</div>
+          <div class="hex">#F3ECE5</div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#D9D1C8"></div>
+          <div class="name">Warm Mist</div>
+          <div class="hex">#D9D1C8</div>
+        </div>
+        <div class="ui-swatch">
+          <div class="chip" style="background:#35231F"></div>
+          <div class="name">Ink (text)</div>
+          <div class="hex">#35231F</div>
+        </div>
+      </div>
+
+      <div style="height:1px; background:var(--border); margin:20px 0;"></div>
+
+      <div class="ui-type-scale">
+        <div class="ui-type-row">
+          <span class="ui-type-sample display">Care that starts with you, not the disease</span>
+          <span class="ui-type-meta">Display · Marcellus / Anuphan · 300</span>
+        </div>
+        <div class="ui-type-row">
+          <span class="ui-type-sample body">Thai body text uses a looped typeface for sustained reading, keeping the tone warm and clear</span>
+          <span class="ui-type-meta">Body · Garuda / Acumin · 400 · 1.06rem</span>
+        </div>
+        <div class="ui-type-row">
+          <span class="ui-type-sample caption">Careers · Join our team</span>
+          <span class="ui-type-meta">Eyebrow · 0.825rem · tracking 0.14em</span>
+        </div>
+      </div>
+
+      <div style="height:1px; background:var(--border); margin:20px 0;"></div>
+
+      <div class="ui-chip-row">
+        <span class="ui-chip">card radius <span class="val">20px</span></span>
+        <span class="ui-chip">field radius <span class="val">12px</span></span>
+        <span class="ui-chip">container <span class="val">90rem</span></span>
+        <span class="ui-chip">heading tracking <span class="val">0.14em</span></span>
+        <span class="ui-chip">heading weight <span class="val">300</span></span>
+        <span class="ui-chip">shadow <span class="val">card</span></span>
+      </div>
+    </div>
+
+    <!-- Block B: Real screens -->
+    <figure class="shot"><img src="img/brandbook-board.jpg" width="1440" height="900" loading="lazy" alt="A 9-panel brand guidelines board: logo, radiance mark, digital, color, typography and usage examples"><figcaption>The identity system board in the project (public/brandbook), the source of the color and font tokens above · logo and domain blurred</figcaption></figure>
+
+    <figure class="shot"><img src="img/home-services.jpg" width="1440" height="1168" loading="lazy" alt="Services section on the homepage with tabs for cancer treatment, symptom care and palliative care, and a photo of a doctor talking with a patient"><figcaption>The tokens in use on the services section: light-weight serif headings, a beige background and tabs for 3 services</figcaption></figure>
+
+    <!-- Block C: UI Decision Cards -->
+    <div class="ui-decisions" style="margin-top:24px;">
+      <div class="learning-card note">
+        <strong>Mobile-first: a 30+ field form that never overwhelms the screen (393 → 768 → 1440)</strong>
+        <p>On mobile, a long form means people quit halfway, so it is split into a section stepper, with <strong>bottom sheets</strong> for choices, a <strong>date wheel</strong> for birth dates (Buddhist era) and in-browser photo cropping. Applicants see one section at a time instead of a wall of fields. At ≥768 it expands to popovers and two columns</p>
+      </div>
+      <div class="learning-card note">
+        <strong>Component states: show errors at the right moment, not while typing</strong>
+        <p>Every field has the full set of states: default / focus (gold ring <code>#AF9C84</code>) / invalid (red <code>#b4452f</code>). Using <code>:not(:placeholder-shown):invalid</code>, errors appear <strong>only after the user fills in a field and leaves it</strong>, not the moment they start typing. That makes it feel less like being scolded, and each error explains the fix in Thai</p>
+      </div>
+      <div class="learning-card note">
+        <strong>Accessibility &amp; brand: reduce fear, don't add to it</strong>
+        <p>A deliberate choice of <strong>no red crosses and no battle language</strong>. Healing Green is a quiet accent, not a warning color; contrast passes AA on the beige background; touch targets are ≥44px; <code>:focus-visible</code> uses a green outline; and the "breathing" motion respects <code>prefers-reduced-motion</code></p>
+      </div>
+      <div class="learning-card note">
+        <strong>Bilingual typography: fonts chosen by role</strong>
+        <p>Thai uses two typefaces with different jobs: <strong>Anuphan</strong> (loopless, matching the logo) for headings and display, and <strong>Garuda</strong> (looped) for body text that's easy to read at length. English pairs them with Marcellus (serif) · <code>line-height 1.28</code> leaves room for Thai vowels and tone marks · text is kept separate from layout so the two languages stay in sync</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hacks and fixes</h2>
+      <p>6 problems I had to solve myself: Thai text in PDFs, a browser on serverless, and PII safety</p>
+    </section>
+    <figure class="shot doc"><img src="img/application-pdf-cover.jpg" width="900" height="1362" loading="lazy" alt="Thai PDF application cover page with a brown header bar, applicant name, a green position badge and 5 sections of details"><figcaption>The application PDF cover rendered from the real template in Chrome, with Thai vowels and tone marks intact · all data is sample data</figcaption></figure>
+
+
+    <div class="hack-grid">
+      <div class="hack-card precision" data-label="Rendering">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>Thai PDFs with correct characters</span></h3>
+        <p>pdf-lib's standard fonts can't draw Thai (vowels and tone marks break), but HR needs Thai applications that are 100% correct</p>
+        <div class="highlight">Fix: render the cover page in <strong>headless Chrome (puppeteer)</strong> with the real Anuphan font loaded to get a cover PDF, then merge it with the résumé using <code>pdf-lib</code> &middot; the footer stamped on every page is <strong>captured as a screenshot image</strong> and embedded, so Thai glyphs don't break during stamping</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Serverless">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span>You can't just launch a browser on serverless</span></h3>
+        <p>Puppeteer needs a Chrome binary. The dev machine already has Chrome, but serverless doesn't, and full Chrome is over the size limit</p>
+        <div class="highlight">Fix: check the env (<code>VERCEL</code> / <code>AWS_REGION</code>). On serverless, load <code>@sparticuz/chromium</code> (a binary trimmed small enough); on the dev machine, point to the installed Chrome. The same code runs in both environments</div>
+      </div>
+
+      <div class="hack-card platform" data-label="PII Safety">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Applications contain PII and must not reach the public API</span></h3>
+        <p>Published Sanity documents can be read through the public API. Stored the normal way, anyone could query applicants' ID and phone numbers</p>
+        <div class="highlight">Fix: save as a <strong>draft</strong> (<code>_id = drafts.&lt;uuid&gt;</code>), which the public API can't see but HR can in Studio &middot; the write token is <strong>server-only</strong> (no <code>NEXT_PUBLIC_</code> prefix) &middot; every field is validated on the server before saving</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Non-blocking">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z"/></svg><span>Generating the PDF and sending email is slow, so applicants wait</span></h3>
+        <p>If the response waits for the PDF render and the email, applicants stare at a spinner for several seconds, which is a bad experience</p>
+        <div class="highlight">Fix: use Next.js <code>after()</code> to <strong>tell the applicant "success" right away</strong> once the data is saved, then generate the PDF and email HR as a background task (with <code>maxDuration = 60</code> for heavy jobs). The applicant doesn't wait</div>
+      </div>
+
+      <div class="hack-card arch" data-label="Graceful Fallback">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg><span>The site had to go live before all the keys existed</span></h3>
+        <p>At the start there was no Sanity project, Resend key or write token, but the site had to be published in time for publicity</p>
+        <div class="highlight">Fix: every service connection has a fallback. With no CMS, it uses <strong>seed data</strong> (sample job posts); with no email, it returns a <strong>stub</strong> and logs; the form still works end to end. Once the env vars are added, the system "switches to the real thing" automatically, with no code changes</div>
+      </div>
+
+      <div class="hack-card ux" data-label="i18n Content">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Keeping icons and images separate from bilingual text</span></h3>
+        <p>Homepage sections mix icons, images and text. Keeping all of it in the dictionary makes translations hard to edit and the layout easy to break</p>
+        <div class="highlight">Fix: keep the <strong>text</strong> in the dictionary (translatable), but bind <strong>icons and image order</strong> in code as metadata, then map them together by index at render time. Translators edit only the text, and the page structure stays the same in both languages</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Deliberate design decisions</h2>
+      <p>For a cancer hospital website, what you deliberately "don't do" matters as much as what you do</p>
+    </section>
+    <figure class="shot"><img src="img/home-room-to-breathe.jpg" width="1440" height="505" loading="lazy" alt="The Room to breathe section, with photos of wood-toned interiors, natural light and copy about healing spaces"><figcaption>"Room to breathe": images of space, light and shade instead of medical symbols, and no red crosses</figcaption></figure>
+
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>This site has to reduce fear, not add to it. So it uses <strong>no red crosses</strong>, no battle language about cancer, doesn't act as if the hospital is fully open while it's still under construction, and <strong>never stores applicant data where the public can reach it</strong>. Every decision puts calm, dignity and data safety ahead of marketing tricks</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <span class="dd-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></span><br>
+        <strong>Tell the truth, don't oversell</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Say "under construction" warmly, without pretending to be open</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <span class="dd-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg></span><br>
+        <strong>No red crosses or battle language</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Credibility comes from typography &amp; layout, not urgent symbols</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <span class="dd-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><br>
+        <strong>PII stored only as drafts</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Not readable by the public API · token stays on the server</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <span class="dd-ico"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.8 19.6A2 2 0 1 0 14 16H2"/><path d="M17.5 8a2.5 2.5 0 1 1 2 4H2"/><path d="M9.8 4.4A2 2 0 1 1 11 8H2"/></svg></span><br>
+        <strong>Breathing motion</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Slow, soft reveals that respect reduced-motion, nothing flashy</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge domains I got stronger in</h2>
+      <p>5 areas where this project genuinely moved my level up</p>
+    </section>
+    <figure class="shot"><img src="img/home-care-process.jpg" width="1440" height="811" loading="lazy" alt="The How we care, every step of the way section: 5 step cards, from telling us your story to ongoing care"><figcaption>Healthcare UX in practice: the 5-step care journey explained in reassuring language, so patients can see what happens next</figcaption></figure>
+
+
+    <div class="learning-card">
+      <strong>1. i18n architecture: a bilingual site that's actually maintainable:</strong>
+      <p>Learned next-intl on the App Router: <code>routing</code>/URL prefixes, <code>setRequestLocale</code> in RSC, separating "text" (dictionary) from "page structure" (code) and mapping icons and images by index. Lesson: good i18n lets translators edit only the text, without touching layout and without the two languages drifting apart</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Headless-browser PDF pipeline: from zero to generating documents myself:</strong>
+      <p>Built the pipeline: puppeteer renders HTML→PDF (with correct Thai fonts) + <code>pdf-lib</code> merges multiple files + embeds images and stamps footers and page numbers + handles two environments (local Chrome vs <code>@sparticuz/chromium</code> on serverless). Lesson: producing send-ready documents isn't magic once you know each tool's strengths and chain them together</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. Structured content / headless CMS: designing a schema other people can run with:</strong>
+      <p>8 content types in Sanity (jobs, categories, departments, locations, applications, messages, etc.), draft vs published separation, document-level i18n, custom Studio inputs and an export button. Lesson: good back-office work hands over "a system HR can run on its own", not screens that need a developer every time the copy changes</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Data safety on serverless: security from the design stage:</strong>
+      <p>Set the system up to keep PII safe: stored as drafts the public API can't read, server-only tokens kept away from the client, every input validated on the server, and <code>after()</code> for heavy background work without slowing the user. Lesson: with sensitive data, "where it's stored" and "who can read it" have to be designed in from the start, not patched on later</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Healthcare UX / brand for vulnerable users: design that reduces fear:</strong>
+      <p>Turned a mood &amp; tone (light, water, shade, dignity) into real UI: copy that reassures rather than pressures, no urgent symbols, contrast that passes on beige and brown, and breathing motion that respects reduced-motion. Lesson: for patients and families, "calm and clarity" is a feature, not decoration</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">2</div>
+        <div class="label">languages: Thai/English (full-site i18n)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">8</div>
+        <div class="label">content models in Sanity CMS</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">30+</div>
+        <div class="label">application form fields → automatic PDF</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">PII readable through the public API</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <h2>Hospital website</h2>
+    <p>A bilingual full-stack website for a specialty hospital under construction. It tells the pre-opening story calmly and with dignity, with a built-in hiring system that takes applications, stores them safely in the CMS and sends HR a Thai application PDF automatically. Built with Next.js 16, Sanity and a fully serverless setup</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Next.js 16</span>
+      <span class="stack-icon">React 19</span>
+      <span class="stack-icon">next-intl</span>
+      <span class="stack-icon">Sanity CMS</span>
+      <span class="stack-icon">Tailwind v4</span>
+      <span class="stack-icon">Motion</span>
+      <span class="stack-icon">Puppeteer + pdf-lib</span>
+      <span class="stack-icon">Resend</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.work/">&#8592; Back to all projects</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Hospital Website Portfolio",
+      "item": "https://projects.tanplanet.work/hospital-site-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

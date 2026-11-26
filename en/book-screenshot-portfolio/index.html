@@ -1,0 +1,741 @@
+<!DOCTYPE html><html data-wf-domain="www.tanplanet.work" data-wf-page="608d6278863727b47e80cb9c" data-wf-site="608d62778637273e1880cb8d" lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Screenshot — capture a web-viewer book page by page into one PDF</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Book Screenshot — capture a web-viewer book page by page into one PDF">
+  <meta name="twitter:description" content="Portfolio: a Chrome extension (Manifest V3) that captures book pages from what is actually visible on screen, turns the pages itself, checks for duplicate pages at two levels, and assembles a PDF in memory. 4 capture modes, no PDF library, no DRM bypass.">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="Portfolio: a Chrome extension (Manifest V3) that captures book pages from what is actually visible on screen, turns the pages itself, checks for duplicate pages at two levels, and assembles a PDF in memory. 4 capture modes, no PDF library, no DRM bypass.">
+  <meta property="og:title" content="Book Screenshot — capture a web-viewer book page by page into one PDF">
+  <meta name="description" content="Portfolio: a Chrome extension (Manifest V3) that captures book pages from what is actually visible on screen, turns the pages itself, checks for duplicate pages at two levels, and assembles a PDF in memory. 4 capture modes, no PDF library, no DRM bypass.">
+  <rect width='100' height='100' rx='24' fill='%234c1d95'/><rect x='26' y='20' width='48' height='60' rx='5' fill='%23d8b4fe'/><rect x='26' y='20' width='11' height='60' fill='%23a78bfa'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  
+  
+  <script src="../../common/closing.js" defer></script>
+  <meta property="og:image" content="https://projects.tanplanet.work/pj/covers/book-screenshot-portfolio-en-og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://projects.tanplanet.work/pj/covers/book-screenshot-portfolio-en-og.jpg"><link rel="icon" type="image/png" href="https://myfolio.tanplanet.work/favicon.png"><link rel="apple-touch-icon" href="https://myfolio.tanplanet.work/apple-touch-icon.png"><link rel="canonical" href="https://projects.tanplanet.work/en/book-screenshot-portfolio/"><meta property="og:url" content="https://projects.tanplanet.work/en/book-screenshot-portfolio/"><meta property="og:locale" content="en_US"><link rel="alternate" hreflang="th" href="https://projects.tanplanet.work/book-screenshot-portfolio/"><link rel="alternate" hreflang="en" href="https://projects.tanplanet.work/en/book-screenshot-portfolio/"><link rel="alternate" hreflang="x-default" href="https://projects.tanplanet.work/book-screenshot-portfolio/"><link rel="stylesheet" href="https://myfolio.tanplanet.work/tokens.css"/><link href="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/css/myfolio-tannie.webflow.shared.f00d552de.css?v=50" rel="stylesheet" type="text/css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap"><link rel="stylesheet" href="https://myfolio.tanplanet.work/blog/article.css"/><link rel="stylesheet" href="../../common/closing.css"><style>.cs *, .cs *::before, .cs *::after{ box-sizing: border-box; margin: 0; padding: 0; }
+.cs{
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #7c3aed;
+      --accent-light: #f3e8ff;
+      --accent-dark: #4c1d95;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+.cs{
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+.cs .hero{
+      background: linear-gradient(135deg, #2e1065 0%, #4c1d95 42%, #6d28d9 78%, #8b5cf6 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+.cs .hero::before{
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(216,180,254,0.22) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(76,29,149,0.45) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+@keyframes sway{
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+.cs .hero::after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #4c1d95, #8b5cf6, #ede9fe);
+    }
+.cs .hero-inner{ position: relative; z-index: 2; max-width: var(--max-w); margin: 0 auto; }
+.cs .hero-mark{
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+.cs .hero-badge{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+.cs .hero-badge .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #d8b4fe;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+@keyframes pulse-dot{
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+.cs .hero h1{ font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 700; line-height: 1.25; margin-bottom: 12px; }
+.cs .hero h1 .accent{ color: #e9d5ff; }
+.cs .hero p{ font-size: 1.05rem; opacity: 0.92; max-width: 580px; margin: 0 auto 24px; }
+.cs .hero-tags{ display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 28px; }
+.cs .hero-tag{
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+.cs .cta-row{ display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+.cs .cta-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+.cs .cta-btn:hover{ transform: translateY(-2px); }
+.cs .cta-primary{ background: #fff; color: var(--accent-dark); box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
+.cs .cta-primary:hover{ box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+.cs .cta-ghost{ background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.28); }
+.cs .cta-ghost:hover{ background: rgba(255,255,255,0.2); }
+.cs article{ max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+.cs code{
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+.cs .ext-mockup{
+      background: oklch(97.5% 0.008 300);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 400px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(46,16,101,0.14);
+      font-size: 0.82rem;
+      color: oklch(27% 0.02 300);
+      padding: 16px;
+    }
+.cs .ext-title{ font-weight: 700; font-size: 0.95rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.cs .ext-step{ margin-bottom: 14px; }
+.cs .ext-step-head{
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 600; font-size: 0.82rem; margin-bottom: 8px;
+    }
+.cs .ext-num{
+      width: 20px; height: 20px; border-radius: 50%;
+      background: oklch(79% 0.13 300); color: oklch(22% 0.07 300);
+      font-size: 0.7rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+.cs .ext-field{
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      background: oklch(99.2% 0.004 300);
+      border: 1px solid oklch(88% 0.014 300);
+      border-radius: 8px; padding: 7px 11px; margin-bottom: 6px;
+      font-size: 0.78rem;
+    }
+.cs .ext-field .k{ color: oklch(51% 0.02 300); }
+.cs .ext-field .v{ font-weight: 600; }
+.cs .ext-toggle{ width: 32px; height: 18px; border-radius: 50px; background: oklch(79% 0.13 300); position: relative; flex-shrink: 0; }
+.cs .ext-toggle::after{ content: ''; position: absolute; top: 2px; right: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+.cs .ext-crop{
+      display: flex; align-items: center; gap: 10px;
+      background: oklch(96.5% 0.03 300); border: 1.5px solid oklch(79% 0.13 300);
+      border-radius: 8px; padding: 8px 11px; margin-bottom: 6px; font-size: 0.76rem;
+    }
+.cs .ext-thumb{ width: 44px; height: 32px; border-radius: 4px; background: linear-gradient(160deg,#ddd6fe,#a78bfa); flex-shrink: 0; }
+.cs .ext-start{
+      width: 100%; text-align: center; padding: 9px;
+      background: oklch(79% 0.13 300); color: oklch(22% 0.07 300);
+      border: 1px solid oklch(66% 0.18 300); border-radius: 8px;
+      font-weight: 700; font-size: 0.85rem; margin-top: 4px;
+    }
+.cs .ext-status{ text-align: center; font-size: 0.74rem; color: oklch(52% 0.19 300); margin-top: 9px; }
+.cs .back-nav{
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(46,16,101,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+.cs .back-nav:hover{ background: rgba(46,16,101,0.96); transform: translateY(-1px); }
+.cs .back-nav svg{ flex-shrink: 0; }
+.cs .back-to-top{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+.cs .back-to-top.visible{ opacity: 1; visibility: visible; transform: translateY(0); }
+.cs .back-to-top:hover{ background: var(--accent-dark); }
+@media (max-width: 680px){.cs .hero{ padding: 80px 20px 56px; }
+.cs .hero h1{ font-size: 1.7rem; }
+.cs .back-nav{ top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+.cs .back-to-top{ bottom: 16px; right: 16px; width: 40px; height: 40px; }
+
+    }
+@media (prefers-reduced-motion: reduce){.cs *, .cs *::before, .cs *::after{ animation: none !important; transition: none !important; }
+
+    }
+.cs .ico{ width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+.cs .rung:last-child{ border-bottom: 0; }
+.cs .ledger--wide{ min-width: 780px; }
+.cs .ladder{ border-top: 1px solid var(--border); margin-top: 20px; }
+.cs .rung{
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+.cs .rung .cond{ display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+.cs .rung .cond .ico{ color: var(--text-muted); width: 15px; height: 15px; }
+.cs .rung .out{ font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+.cs .rung .note{ font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+.cs .rung.none .out{ color: var(--text-muted); }
+@media (min-width: 700px){.cs .rung{ grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+
+    }
+.cs .hero-mark .ico{ width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
+.cs .hero-badge .ico{ width: 14px; height: 14px; }
+@media (max-width:640px){}
+
+</style><link rel="stylesheet" href="../../common/components.css?v=7"/><link rel="stylesheet" href="../../pj/case.css?v=12"/></head><body><div style="opacity:0" class="page-wrapper"><div data-collapse="medium" data-animation="default" data-duration="400" data-w-id="58db7844-5919-d71b-dd74-2323ed8dffe9" data-easing="ease" data-easing2="ease" role="banner" class="header w-nav"><div class="loader-wrapper"><div class="loader"></div></div><div class="container-header"><div class="split-content header-left"><a href="https://myfolio.tanplanet.work/" class="brand w-nav-brand"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><nav role="navigation" class="nav-menu w-nav-menu"><ul role="list" class="header-navigation"><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="nav-link">Home</a></li><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="nav-link">About</a></li><li class="nav-item-wrapper last"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a><a href="https://projects.tanplanet.work/en/" class="nav-link">Portfolio</a><a href="https://myfolio.tanplanet.work/en/contact" class="nav-link nav-contact">Contact</a></li></ul></nav></div><div class="split-content header-right"><a class="lang-switch" href="https://projects.tanplanet.work/book-screenshot-portfolio/" hreflang="th" aria-label="TH EN – Switch to Thai"><span class="">TH</span> <span class="on">EN</span></a><div class="link-header-wrapper"><a data-w-id="a331bf6d-ae80-89ce-2301-aa6077024ef0" href="https://drive.google.com/file/d/1GjCCJ3XFU16-ceCq3MGVWRdezXm3GWxl/view?usp=sharing" target="_blank" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Resume</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="menu-button w-nav-button"><div class="menu-button-wrapper"><div class="menu-button-icon"><div class="menu-line-top"></div><div class="menu-line-middle"></div><div class="menu-line-bottom"></div></div></div></div></div></div><div class="container-default w-container"><div class="divider"></div></div></div><div class="section blog-post" role="main"><article class="ap cs-page" role="main"><div class="ap-band"><div class="ap-container"><header class="ap-head">
+<div class="ap-tags"><a href="https://projects.tanplanet.work/en/" class="ap-tag">Tooling</a><span class="ap-tag ap-tag--ghost">Projects</span></div>
+<h1 class="ap-title">Book Screenshot</h1><p class="cs-sub">A personal Chrome extension (Manifest V3) that turns three hundred manual captures, one page at a time, into set it up and leave it. It writes the PDF itself without a library, leaves no images on disk, sends nothing off the machine, and is for DRM-free content only.</p>
+<p class="ap-meta"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><time datetime="2026-08-05">Aug 5, 2026</time></span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>12 min read</span></p>
+</header></div></div>
+<div class="ap-container ap-grid"><div class="ap-main">
+<figure class="ap-cover"><img src="../../pj/covers/book-screenshot-portfolio-en.webp" alt="" width="1600" height="900" fetchpriority="high" decoding="async"></figure>
+<div class="ap-row"><aside class="ap-share" aria-label="Share this article"><span class="ap-share-title">SHARE</span><a href="https://www.facebook.com/sharer/sharer.php?u=https://projects.tanplanet.work/en/book-screenshot-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a><a href="https://twitter.com/intent/tweet?url=https://projects.tanplanet.work/en/book-screenshot-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on X"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.9 1.2h3.7l-8 9.1L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9Zm-1.3 19.4h2L6.5 3.2H4.3l13.3 17.4Z"/></svg></a><a href="https://social-plugins.line.me/lineit/share?url=https://projects.tanplanet.work/en/book-screenshot-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LINE"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="3" width="21" height="18" rx="5.5" fill="currentColor"/><text x="12" y="15.2" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="7.2" font-weight="900" fill="#fff">LINE</text></svg></a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https://projects.tanplanet.work/en/book-screenshot-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a><button type="button" class="ap-share-btn" data-tip-done="Copied" data-copy="https://projects.tanplanet.work/en/book-screenshot-portfolio/" aria-label="Copy link"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button></aside><div class="ap-body"><div class="cs">
+<p class="cs-lead">A Chrome extension that turns the pages on its own, captures only what is <strong>actually visible on screen</strong>, checks for duplicate pages at two levels, then assembles a PDF in memory. It works with any kind of reader, from epub.js inside an iframe to Google Docs drawn onto a canvas.</p><div class="cs-chips"><span class="cs-chip">Manifest V3</span><span class="cs-chip">Service Worker</span><span class="cs-chip">Offscreen Document</span><span class="cs-chip">captureVisibleTab</span><span class="cs-chip">Hand-written PDF writer</span><span class="cs-chip">OKLCH</span><span class="cs-chip">adb (Android)</span></div>
+<article>
+
+    <!-- ===== Problem ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>The problem</h2>
+      <p>Books read through a web viewer usually have no download button. Capturing them by hand, page by page, is not just tiring. It produces files you can't use.</p>
+    </section>
+
+    <figure class="shot"><img src="../../book-screenshot-portfolio/img/problem-reading-laptop.jpg" width="1200" height="800" loading="lazy" alt="A person reading a book on a web page on a laptop"><figcaption>Many books can only be read through an on-screen web viewer, with no download button · Photo: Annie Spratt / Unsplash</figcaption></figure>
+
+
+    <div class="quote-block">
+      <p>I tried capturing by hand first. I ended up with 300-plus images piled on the desktop, with duplicate pages and missing pages, because pressing the right arrow didn't always make the reader turn the page. Then I still had to sort them and merge them into a PDF myself. A ten-minute job took the whole evening.</p>
+      <div class="author">— The starting brief, before building Book Screenshot</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>The reader lives in an iframe, so the DOM is out of reach</h3>
+        <p>Readers like epub.js put the content in a <code>blob:</code> / <code>srcdoc</code> iframe that an extension can't read directly. Tools that work by pulling text out of the DOM simply don't work here.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h3>Pressing next doesn't always turn the page</h3>
+        <p>In some readers the right arrow scrolls down one screen instead of moving to the next section. Sometimes the page hasn't finished loading. The result is the same page captured twice, or content skipped without noticing.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+        <h3>Hundreds of images to merge by hand</h3>
+        <p>Capturing is only half the job. The images still need sorting, cropping, compressing and merging into a PDF, and meanwhile the originals are scattered all over the disk.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        <h3>A document hundreds of screens long kills the tab</h3>
+        <p>For documents captured one screen at a time, holding every image in memory until the end means RAM grows until the tab crashes before you get a file.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg>
+        <h3>Some books are off-limits</h3>
+        <p>Library apps with DRM capture as black images, and some viewers embed a forensic watermark with the account owner's email on every page. These two cases aren't technical problems. They are a line to stop at.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>The solution</h2>
+      <p>Stop trying to understand each reader's structure. Work at the one layer every reader shares: "the image on screen".</p>
+    </section>
+
+    <figure class="shot"><img src="../../book-screenshot-portfolio/img/crop-overlay.jpg" width="1440" height="900" loading="lazy" alt="The Book Screenshot area-selection overlay framing a book page in a reader, with four corner handles and a save-area button"><figcaption>The real area-selection overlay: drag a frame around the content only, with the actual size shown, then save the area (sample reader page, public domain text)</figcaption></figure>
+
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        <h3>Capture what the eye sees, not the DOM</h3>
+        <p><code>captureVisibleTab</code> takes a screenshot of the visible tab, just like pressing the screenshot key. Whether the reader is an iframe, a canvas, epub.js or anything else, it can be captured the same way, because they all end up as pixels on the same screen.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg>
+        <h3>Check "did the page really change?" with two-level signatures</h3>
+        <p>A <strong>screen</strong>-level signature (scroll position + text) is used when the reader scrolls on its own. A <strong>section</strong>-level signature (text only) is used when we do the scrolling. Different modes need different levels, or you get a whole section of duplicate pages.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"/><path d="M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"/><path d="M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1"/></svg>
+        <h3>4 capture modes for every page shape</h3>
+        <p>Single page · long scroll as one continuous image · long scroll split into equal pages · one long document with no next button (Google Docs / single-page web novels)</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>
+        <h3>PDF assembled in memory, no leftover files</h3>
+        <p>Every page is kept as jpeg bytes in an offscreen document, and the PDF is written by hand with <code>DCTDecode</code> (the jpeg is embedded as-is, with no decode and re-encode). The result is a single file, with no images left on disk.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
+        <h3>Select the area, then confirm by eye</h3>
+        <p>Drag a frame on the actual page, adjust it with four corner handles, hold <code>Shift</code> to lock a square or an axis, and the popup comes back with a preview card showing the real size. You can see whether the crop is right before starting.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Flow ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>How it works — 4 steps</h2>
+      <p>The popup is a vertical wizard. Follow steps 1 → 2 → 3, then let it capture on its own.</p>
+    </section>
+
+    <figure class="shot"><img src="../../book-screenshot-portfolio/img/sidepanel-running.jpg" width="1440" height="900" loading="lazy" alt="Chrome with a reader page on the left and the Book Screenshot side panel on the right, capturing page 12 with a crop-area preview"><figcaption>The side panel stays open beside the page for the whole run, showing a preview of the selected area and the status "Page 12…" while it turns the pages itself</figcaption></figure>
+
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+        <h4>Set up the book</h4>
+        <p>Choose a capture mode, enter the title, the page count (leave blank to capture until the end) and the resolution</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
+        <h4>Select the area</h4>
+        <p>Drag a frame around the content only, cut out the reader's toolbars, and check the preview</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
+        <h4>Let it capture</h4>
+        <p>Capture → check the page really changed → press next → repeat, with randomized page-turn timing like a human reader</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        <h4>Get the PDF</h4>
+        <p>All pages are bound into one file with the title and downloaded automatically. Stopping midway still gives you a file.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>Pure Manifest V3: no backend, no build step, no PDF library</p>
+    </section>
+
+    <figure class="shot"><img src="../../book-screenshot-portfolio/img/code-manifest.jpg" width="1600" height="715" loading="lazy" alt="The Book Screenshot manifest.json showing permissions, the service worker and the side panel"><figcaption>The real manifest.json — pure MV3: service worker + side panel + offscreen, no backend</figcaption></figure>
+
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Popup — 3-step wizard + crop-selection overlay
+          <div class="arch-sub">
+            <span>Anuphan</span>
+            <span>Lucide</span>
+            <span>OKLCH tokens</span>
+            <span>base-select</span>
+            <span>crop preview</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Service Worker (background.js) — runs the capture loop
+          <div class="arch-sub">
+            <span>captureVisibleTab</span>
+            <span>goNext()</span>
+            <span>duplicate-page detector</span>
+            <span>chrome.scripting</span>
+            <span>badge</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Offscreen Document — crop + bind + write PDF
+          <div class="arch-sub">
+            <span>OffscreenCanvas</span>
+            <span>createImageBitmap</span>
+            <span>DCTDecode</span>
+            <span>/Title UTF-16BE</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Scripts injected into the web page
+          <div class="arch-sub">
+            <span>bsPageSig</span>
+            <span>bsDocProbe</span>
+            <span>bsDocGoPage</span>
+            <span>bsDocPageBand</span>
+            <span>walks contentDocument</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Why an Offscreen Document?</strong>
+      <p>A service worker in MV3 has no DOM, so it can't use <code>canvas</code> at all. But all the work here is cropping, resizing and binding images into pages, which needs a canvas. An <strong>Offscreen Document</strong> is an invisible HTML page the extension keeps open as a dedicated image workroom, so it can crop images and assemble the PDF without opening a visible tab.</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>What I built — 8 core capabilities</h2>
+      <p>The full loop, from selecting the area to a PDF that's ready to read</p>
+    </section>
+
+    <figure class="shot shot-phone"><img src="../../book-screenshot-portfolio/img/panel-modes.jpg" width="760" height="1040" loading="lazy" alt="The capture-mode dropdown in the side panel showing 5 options"><figcaption>The capture-mode dropdown (custom-drawn with base-select so it uses the Anuphan font). Pick the one that matches the page shape.</figcaption></figure>
+
+
+    <div class="module-grid">
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2h-4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8"/><path d="M16.706 2.706A2.4 2.4 0 0 0 15 2v5a1 1 0 0 0 1 1h5a2.4 2.4 0 0 0-.706-1.706z"/><path d="M5 7a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 1.732-1"/></svg>
+        <h3>4 capture modes</h3>
+        <p>Single page / continuous long scroll / long scroll split into equal pages / one long document with no next button</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/></svg>
+        <h3>Two-layer duplicate-page detector</h3>
+        <p>The first layer compares the top of the image byte for byte (no false positives). The second compares text signatures, in case the image shifts slightly but the content is the same.</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>
+        <h3>goNext — press until the page really changes</h3>
+        <p>It doesn't press once and trust it. It keeps pressing until the content signature changes, which means a new section. If nothing changes at all, the book is finished.</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        <h3>Hand-written PDF writer</h3>
+        <p>No library. It writes the PDF objects directly, embeds jpeg with <code>DCTDecode</code>, and stores Thai titles in <code>/Title</code> as UTF-16BE.</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>
+        <h3>Bind as it goes, free up RAM</h3>
+        <p>Long documents are bound into PDF pages every 8 screens, then the bitmaps are released. The number on the badge is the real PDF page count, not the screen count.</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></svg>
+        <h3>Google Docs mode</h3>
+        <p>Reads the real paper edges from the DOM, scrolls so the top of each page meets the top edge, and captures a full page in one shot. No grey gaps, no crop to select.</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12"/><path d="M20 4 8.12 15.88"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/></svg>
+        <h3>Crop overlay + preview</h3>
+        <p>Four corner handles, drag the middle to move, <code>Shift</code> to lock a square or an axis, then it comes back with a thumbnail and the real size</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h3>phone-capture.sh</h3>
+        <p>A script does the same job on Android through <code>adb</code>: swipe the page, capture, compress, and merge into a titled PDF</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Popup Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>The popup</h2>
+      <p>A paper theme in OKLCH purple. Everything happens on one screen, with no hidden settings page.</p>
+    </section>
+
+    <div class="shot-pair"><figure class="shot"><img src="../../book-screenshot-portfolio/img/panel-idle.jpg" width="760" height="1280" loading="lazy" alt="The Book Screenshot side panel after setup, before an area is selected"><figcaption>Setup done. No area selected = capture the full screen</figcaption></figure><figure class="shot"><img src="../../book-screenshot-portfolio/img/panel-running.jpg" width="760" height="2054" loading="lazy" alt="The Book Screenshot side panel during a capture, with a preview card of a 1040 × 1436 crop area"><figcaption>Capturing: preview card + real size, and the start button locks to "Capturing…"</figcaption></figure></div>
+
+    <hr class="divider">
+
+    <!-- ===== Hacks ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hacks and problems</h2>
+      <p>7 problems that came up with real books. Almost all of them showed up as "some books work, some don't".</p>
+    </section>
+
+    <figure class="shot"><img src="../../book-screenshot-portfolio/img/code-clicknext.jpg" width="1400" height="1033" loading="lazy" alt="The clickNext function in background.js dispatching keyboard events into an iframe"><figcaption>The real clickNext(): it fires the right arrow both outside and, by walking contentDocument, inside the iframe. This was the real cause of the duplicate pages.</figcaption></figure>
+
+
+    <div class="hack-grid">
+      <div class="hack-card platform" data-label="iframe">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Pressing the right arrow does nothing</span></h3>
+        <p>Readers like epub.js put the content in an iframe and <strong>listen for keyboard events inside it</strong>, so keys fired at the outer document have no effect. This was the real cause of the duplicate pages.</p>
+        <div class="highlight">Fix: the key has to reach inside the iframe too, but <code>chrome.scripting</code> can't enter <code>blob:</code>/<code>srcdoc</code> iframes → walk <code>contentDocument</code> from the parent page manually and dispatch the event directly.</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Zoom">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg><span>1 unit of scrollTop is not 1 pixel on screen</span></h3>
+        <p>Readers that zoom with CSS <code>transform</code> make a box look bigger or smaller than its real layout size. Scrolling by the layout numbers alone overshoots (missing content) or undershoots (duplicate content), depending on each book's zoom level.</p>
+        <div class="highlight">Fix: compute the ratio between on-screen size and layout size every time, then convert the scroll distance accordingly &mdash; this explained the most annoying symptom of all, "some books work, some don't".</div>
+      </div>
+
+      <div class="hack-card arch" data-label="Lazy load">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>The page quietly moves its own scroll while waiting</span></h3>
+        <p>Scroll to 1200 and wait for the delay. Meanwhile the reader lazy-loads more content and shifts the scroll itself, so the capture isn't at the position requested, and every overlap trim is wrong.</p>
+        <div class="highlight">Fix: <strong>measure the real position before every capture</strong> and compute the overlap from the measured value, not the requested one · and if the position hasn't moved since the last round, the site is pulling the scroll back (scroll-snap / virtual list), so give up instead of capturing the same spot over and over.</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Detection">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg><span>Image-only pages have zero characters of text</span></h3>
+        <p>At first I found the content box by counting characters. With scanned-image books the content box has zero characters, so it wasn't found, and the fallback guessed the biggest box = the wrong box every time.</p>
+        <div class="highlight">Fix: measure mainly by <strong>on-screen size</strong>, not by amount of text · and the duplicate-page signature no longer looks only at "scrollable boxes", because a page too short to scroll gives an empty signature = the detector is silently switched off entirely.</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Memory">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="13" r="9"/><path d="M14.35 4.65 16.3 2.7a2.41 2.41 0 0 1 3.4 0l1.6 1.6a2.4 2.4 0 0 1 0 3.4l-1.95 1.95"/><path d="m22 2-1.5 1.5"/></svg><span>A hundred-screen document kills the tab before the file is ready</span></h3>
+        <p>Keeping every screen's bitmap until binding at the end meant that on a really long document RAM grew until the tab was killed, leaving nothing.</p>
+        <div class="highlight">Fix: bind into PDF pages every 8 screens, then release the bitmaps · but <strong>lock the page height from the first screen of the book only</strong>, because re-measuring each batch measures screens whose overlap has already been trimmed, giving pages 906 and 899 tall mixed in one book.</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Paging">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg><span>Blank pages appear in the middle of reading</span></h3>
+        <p>Binding midway every 8 screens closed off the leftover tail that didn't fill a page as a page of its own, so a nearly blank page appeared at every bind, like a misprinted book.</p>
+        <div class="highlight">Fix: separate <code>final=false</code> (bind only to free RAM) from <code>final=true</code> (actually close the book). The leftover tail of a batch must <strong>always carry over to the start of the next batch</strong>, never be closed off as a page.</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Timing">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg><span>Google Docs is "settled" but hasn't finished drawing</span></h3>
+        <p>The settle check watched scrollTop/scrollHeight, which had stopped changing. But Docs renders virtualized and hadn't finished drawing the text yet, so a capture at that moment gave a white page.</p>
+        <div class="highlight">Fix: allow extra drawing time only in the modes that need it, then <strong>measure the position again after waiting</strong>, because if the document moves on its own in the meantime the earlier measurement is off and the overlap trim is wrong · plus a minimum 700ms delay so it doesn't hit the <code>captureVisibleTab</code> quota of about 2 calls per second.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions / Scope ===== -->
+    <section class="section-intro" id="scope">
+      <span class="eyebrow">Define</span>
+      <h2>Scope I chose not to cover</h2>
+      <p>The hardest decision in this project wasn't code. It was the line I chose not to cross.</p>
+    </section>
+
+    <figure class="shot"><img src="../../book-screenshot-portfolio/img/scope-library.jpg" width="1200" height="798" loading="lazy" alt="An aisle between bookshelves in a library"><figcaption>Content its owners deliberately protect is not what this tool is for · Photo: Zetong Li / Unsplash</figcaption></figure>
+
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>Along the way I hit two cases where I stopped and went no further. A library app that sets <code>FLAG_SECURE</code> captures only as black images, which is the content owner saying clearly that capture isn't allowed. Another web viewer layered its content against capture and embedded a forensic watermark with the account owner's email on every page. Both had technical workarounds, but working around them means bypassing measures someone put there on purpose. So the tool states plainly that it is for DRM-free content only.</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <svg class="ico" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--accent)"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg><br>
+        <strong>No DRM bypass</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">Hit a protection measure = stop, no workaround</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <svg class="ico" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--accent)"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg><br>
+        <strong>Only what is visible</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">No decryption, no pulling source files from the server</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <svg class="ico" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--accent)"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg><br>
+        <strong>No leftover files</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">Images stay in memory until they become a PDF, then they're gone</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <svg class="ico" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--accent)"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><br>
+        <strong>Always a minimum delay</strong>
+        <p style="font-size:0.85rem; margin-top:4px;">700ms + random timing, easy on both the quota and the server</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge domains that got stronger</h2>
+      <p>5 areas where my level actually went up through this project</p>
+    </section>
+
+    <figure class="shot"><img src="../../book-screenshot-portfolio/img/code-buildpdf.jpg" width="1300" height="1135" loading="lazy" alt="The buildPdf function in offscreen.js writing the PDF structure by hand"><figcaption>The real buildPdf(): Catalog / Pages / Page / XObject DCTDecode and a UTF-16BE /Title, every object written by hand</figcaption></figure>
+
+
+    <div class="learning-card">
+      <strong>1. Chrome Extension MV3 — all three contexts talking to each other:</strong>
+      <p>I learned how the popup, the service worker and the offscreen document differ: which ones have a DOM, when each one dies, and why canvas work has to move to offscreen. Plus the limits of <code>chrome.scripting</code>, which can't enter some kinds of iframe. Lesson: MV3 forces you to be clear about where each piece of code runs.</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Real-world web rendering — virtualized, lazy-load, transform zoom:</strong>
+      <p>I ran into all of it: modern sites don't draw everything up front. They draw only what's near the viewport, move the scroll on their own, and zoom with transforms until the coordinates you read don't match what you see. Lesson: don't trust the value you requested; trust the value you measure at the moment you use it.</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. PDF file structure — writable by hand without a library:</strong>
+      <p>I learned which objects a minimal PDF needs (Catalog / Pages / Page / Contents / XObject), that embedding jpeg with <code>DCTDecode</code> avoids decoding and re-encoding images, and that Thai metadata has to be a UTF-16BE hex string. Lesson: formats that look scary often have a much smaller core than you think.</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Work under limited memory — stream it, don't pile it up:</strong>
+      <p>I practiced designing a streaming pipeline: collect in batches, bind and release, carry the leftover tail to the next round. It's the same pattern as ordinary batch processing. Lesson: the "tab crashed" problem is solved by the order of work, not by compressing harder.</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Setting a tool's scope — saying what it won't do as clearly as what it does:</strong>
+      <p>Choosing to stop at DRM meant writing the scope plainly in the README: what kind of content it works with. That turned out to be what makes the tool easy to explain and comfortable to use. Lesson: a tool with no limits isn't more powerful. It's a tool nobody dares to use.</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">4</div>
+        <div class="label">capture modes covering every page shape</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">2</div>
+        <div class="label">layers of duplicate-page detection</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">PDF libraries</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">image files left on disk</div>
+      </div>
+    </div>
+
+  </article>
+</div><section class="ap-author" aria-label="Author"><img class="ap-author-avatar" src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/688f5899cad39483c4e11c49_Profile_Webflow.webp" alt="" width="88" height="88" loading="lazy"><div class="ap-author-body"><p class="ap-author-name">Tan · Natpakan Sirirat</p><p class="ap-author-bio">Product Designer &amp; AI Builder — designing user experiences and building AI tools that actually work.</p><ul class="ap-author-links"><li><a href="https://www.linkedin.com/in/natpakan/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a></li><li><a href="https://www.facebook.com/tan.natpakan" target="_blank" rel="noopener" aria-label="Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a></li><li><a href="https://www.instagram.com/npkant/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a></li></ul></div></section><nav class="ap-pn" aria-label="Previous and next project"><a href="../shotdeck-portfolio/" class="ap-pn-item ap-pn-prev"><span class="ap-pn-label">← Previous project</span><span class="ap-pn-title">Shotdeck</span></a><a href="../live-arduino-portfolio/" class="ap-pn-item ap-pn-next"><span class="ap-pn-label">Next project →</span><span class="ap-pn-title">TanPlanet Live</span></a></nav></div></div></div>
+<aside class="ap-side"><div class="ap-side-inner"><section class="ap-widget"><h2 class="ap-widget-title"><span>Latest projects</span></h2><ol class="ap-rank"><li><a href="../content-engine-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/content-engine-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">1</span></span><span class="ap-rank-title"><span class="ap-rank-t">Auto-publishing content engine</span></span></a></li><li><a href="../tans-tools-devpanel-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tans-tools-devpanel-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">2</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan’s Tools · DEV panel</span></span></a></li><li><a href="../android-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/android-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">3</span></span><span class="ap-rank-title"><span class="ap-rank-t">TX98 TV Box</span></span></a></li><li><a href="../tools-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tools-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">4</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan&#x27;s Tools</span></span></a></li><li><a href="../shotdeck-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/shotdeck-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">5</span></span><span class="ap-rank-title"><span class="ap-rank-t">shotdeck-box: a laptop that posts clips</span></span></a></li></ol></section></div></aside>
+</div><div class="ap-progress" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" class="ap-progress-track"/><circle cx="32" cy="32" r="28" class="ap-progress-bar" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg><span>0%</span></div></article><footer class="footer"><div class="container-default w-container"><div class="divider"></div></div><div class="container-footer"><div class="footer-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-logo-container w-inline-block"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" loading="lazy" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><ul role="list" class="footer-navigation"><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-nav-link">Home</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="footer-nav-link">About</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a></li><li class="footer-nav-item-wrapper"><a href="https://projects.tanplanet.work/en/" class="footer-nav-link">Portfolio</a></li><li class="footer-nav-item-wrapper last"><a href="https://projects.tanplanet.work/preset/" class="footer-nav-link footer-nav-design">Design</a></li></ul><a data-w-id="2afa9a01-05cf-ade4-4d79-909445ba12f2" href="https://myfolio.tanplanet.work/contact" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Contact Me</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="divider"></div><div class="small-print">© 2026 Natpakan Sirirat · All rights reserved.</div></div></footer></div><script src="https://myfolio.tanplanet.work/_ext/d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8__site%3D608d62778637273e1880cb8d.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.1a807f015b216e46.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.8870a749f76b548c.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.9641f8cc.4fd3e4280b7acaf7.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/header-autohide.js" defer></script><script src="https://myfolio.tanplanet.work/blog/article.js" defer></script><div class="cs cs-extras">
+
+  <!-- ===== Closing ===== -->
+  
+
+  <!-- ===== Fixed UI ===== -->
+  
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  
+
+
+
+</div><script>try{
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  }catch(e){}</script><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Book Screenshot — capture a book into one PDF",
+      "item": "https://projects.tanplanet.work/book-screenshot-portfolio/"
+    }
+  ]
+}
+</script></body></html>

@@ -1,0 +1,811 @@
+<!DOCTYPE html><html data-wf-domain="www.tanplanet.work" data-wf-page="608d6278863727b47e80cb9c" data-wf-site="608d62778637273e1880cb8d" lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drive Auto-Sort: skipping iCloud and teaching an HDD to sort photos</title>
+  <meta name="description" content="Portfolio: a macOS tool that sorts photos dropped into one Inbox folder into subfolders on its own (slips, screenshots, dogs, cats, plants, sky) using the on-device Vision framework. Photos never leave the machine.">
+  <meta property="og:title" content="Drive Auto-Sort: skipping iCloud and teaching an HDD to sort photos">
+  <meta property="og:description" content="Portfolio: a macOS tool that sorts photos dropped into one Inbox folder into subfolders on its own (slips, screenshots, dogs, cats, plants, sky) using the on-device Vision framework. Photos never leave the machine.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Drive Auto-Sort: skipping iCloud and teaching an HDD to sort photos">
+  <meta name="twitter:description" content="Portfolio: a macOS tool that sorts photos dropped into one Inbox folder into subfolders on its own (slips, screenshots, dogs, cats, plants, sky) using the on-device Vision framework. Photos never leave the machine.">
+  <rect width='100' height='100' rx='24' fill='%230a0f1f'/><path d='M26 40h16l6 8h26v24a4 4 0 0 1-4 4H30a4 4 0 0 1-4-4V44a4 4 0 0 1 0-4z' fill='none' stroke='%23f59e0b' stroke-width='6' stroke-linejoin='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  
+  
+  <script src="../../common/closing.js" defer></script>
+  <meta property="og:image" content="https://projects.tanplanet.work/pj/covers/drive-autosort-portfolio-en-og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://projects.tanplanet.work/pj/covers/drive-autosort-portfolio-en-og.jpg"><link rel="icon" type="image/png" href="https://myfolio.tanplanet.work/favicon.png"><link rel="apple-touch-icon" href="https://myfolio.tanplanet.work/apple-touch-icon.png"><link rel="canonical" href="https://projects.tanplanet.work/en/drive-autosort-portfolio/"><meta property="og:url" content="https://projects.tanplanet.work/en/drive-autosort-portfolio/"><meta property="og:locale" content="en_US"><link rel="alternate" hreflang="th" href="https://projects.tanplanet.work/drive-autosort-portfolio/"><link rel="alternate" hreflang="en" href="https://projects.tanplanet.work/en/drive-autosort-portfolio/"><link rel="alternate" hreflang="x-default" href="https://projects.tanplanet.work/drive-autosort-portfolio/"><link rel="stylesheet" href="https://myfolio.tanplanet.work/tokens.css"/><link href="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/css/myfolio-tannie.webflow.shared.f00d552de.css?v=50" rel="stylesheet" type="text/css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Google+Sans:wght@400;500;600&display=swap"><link rel="stylesheet" href="https://myfolio.tanplanet.work/blog/article.css"/><link rel="stylesheet" href="../../common/closing.css"><style>.cs *, .cs *::before, .cs *::after{ box-sizing: border-box; margin: 0; padding: 0; }
+.cs{
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #b45309;
+      --accent-light: #fef3c7;
+      --accent-dark: #78350f;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+.cs{
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+.cs .hero{
+      background: linear-gradient(135deg, #0a0f1f 0%, #121b36 40%, #3f2d12 78%, #78350f 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+.cs .hero::before{
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(251,191,36,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+@keyframes sway{
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+.cs .hero::after{
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #78350f, #f59e0b, #fde68a);
+    }
+.cs .hero-inner{
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+.cs .hero-mark{
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+.cs .hero-badge{
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+.cs .hero-badge .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+@keyframes pulse-dot{
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+.cs .hero h1{
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+.cs .hero h1 .accent{ color: #fcd34d; }
+.cs .hero p{
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+.cs .hero-tags{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+.cs .hero-tag{
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+.cs .cta-row{
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+.cs .cta-btn{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+.cs .cta-btn:hover{ transform: translateY(-2px); }
+.cs .cta-primary{
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+.cs .cta-primary:hover{ box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+.cs .cta-ghost{
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+.cs .cta-ghost:hover{ background: rgba(255,255,255,0.2); }
+.cs article{
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+.cs code{
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+.cs .dev-wrap{ display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.cs .dev-frame{
+      width: 348px;
+      max-width: 100%;
+      background: #1a1a1c;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 14px 40px rgba(10,15,31,0.35);
+    }
+.cs .dev-screen{
+      background: var(--navy);
+      border-radius: 6px;
+      overflow: hidden;
+      color: #f2f5ff;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+.cs .dev-hero{
+      background: #121b36;
+      padding: 12px 14px 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+.cs .dev-clock{ font-size: 2.4rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+.cs .dev-date{ color: #8492bc; font-size: 0.72rem; margin-top: 4px; }
+.cs .dev-hero-right{ text-align: right; font-size: 0.72rem; color: #8492bc; }
+.cs .dev-hero-right .t{ color: #f2f5ff; font-size: 1.05rem; font-weight: 600; }
+.cs .dev-list{ padding: 8px; display: flex; flex-direction: column; gap: 7px; }
+.cs .dev-card{
+      background: #161f3c;
+      border-radius: 8px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+.cs .dev-card .body{ flex: 1; min-width: 0; }
+.cs .dev-card .ttl{ color: #8492bc; font-size: 0.68rem; letter-spacing: 0.02em; }
+.cs .dev-card .val{ font-size: 0.95rem; font-weight: 600; }
+.cs .dev-card .sub{ color: #8492bc; font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cs .dev-card .up{ color: #4ade80; }
+.cs .dev-card .warn{ color: #fbbf24; }
+.cs .dev-card .down{ color: #f87171; }
+.cs .dev-blob{
+      width: 42px;
+      height: 34px;
+      border-radius: 6px;
+      background: #223056;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+.cs .dev-bar{ height: 5px; border-radius: 3px; background: #223056; margin-top: 6px; overflow: hidden; }
+.cs .dev-bar i{ display: block; height: 100%; background: #fbbf24; }
+.cs .dev-caption{ font-size: 0.8rem; color: var(--text-secondary); text-align: center; max-width: 420px; }
+.cs .back-nav{
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+.cs .back-nav:hover{ background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+.cs .back-nav svg{ flex-shrink: 0; }
+.cs .back-to-top{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+.cs .back-to-top.visible{ opacity: 1; visibility: visible; transform: translateY(0); }
+.cs .back-to-top:hover{ background: var(--accent-dark); }
+@media (max-width: 680px){.cs .hero{ padding: 80px 20px 56px; }
+.cs .hero h1{ font-size: 1.7rem; }
+.cs .back-nav{ top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+.cs .back-to-top{ bottom: 16px; right: 16px; width: 40px; height: 40px; }
+
+    }
+@media (prefers-reduced-motion: reduce){.cs *, .cs *::before, .cs *::after{ animation: none !important; transition: none !important; }
+
+    }
+.cs .ico{ width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+.cs .rung:last-child{ border-bottom: 0; }
+.cs .ledger--wide{ min-width: 780px; }
+.cs .ladder{ border-top: 1px solid var(--border); margin-top: 20px; }
+.cs .rung{
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+.cs .rung .cond{ display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+.cs .rung .cond .ico{ color: var(--text-muted); width: 15px; height: 15px; }
+.cs .rung .out{ font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+.cs .rung .note{ font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+.cs .rung.none .out{ color: var(--text-muted); }
+@media (min-width: 700px){.cs .rung{ grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+
+    }
+.cs .hero-mark .ico{ width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+.cs .hero-badge .ico{ width: 14px; height: 14px; }
+@media (max-width:640px){}
+
+</style><link rel="stylesheet" href="../../common/components.css?v=7"/><link rel="stylesheet" href="../../pj/case.css?v=12"/></head><body><div style="opacity:0" class="page-wrapper"><div data-collapse="medium" data-animation="default" data-duration="400" data-w-id="58db7844-5919-d71b-dd74-2323ed8dffe9" data-easing="ease" data-easing2="ease" role="banner" class="header w-nav"><div class="loader-wrapper"><div class="loader"></div></div><div class="container-header"><div class="split-content header-left"><a href="https://myfolio.tanplanet.work/" class="brand w-nav-brand"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><nav role="navigation" class="nav-menu w-nav-menu"><ul role="list" class="header-navigation"><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="nav-link">Home</a></li><li class="nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="nav-link">About</a></li><li class="nav-item-wrapper last"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a><a href="https://projects.tanplanet.work/en/" class="nav-link">Portfolio</a><a href="https://myfolio.tanplanet.work/en/contact" class="nav-link nav-contact">Contact</a></li></ul></nav></div><div class="split-content header-right"><a class="lang-switch" href="https://projects.tanplanet.work/drive-autosort-portfolio/" hreflang="th" aria-label="TH EN – Switch to Thai"><span class="">TH</span> <span class="on">EN</span></a><div class="link-header-wrapper"><a data-w-id="a331bf6d-ae80-89ce-2301-aa6077024ef0" href="https://drive.google.com/file/d/1GjCCJ3XFU16-ceCq3MGVWRdezXm3GWxl/view?usp=sharing" target="_blank" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Resume</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="menu-button w-nav-button"><div class="menu-button-wrapper"><div class="menu-button-icon"><div class="menu-line-top"></div><div class="menu-line-middle"></div><div class="menu-line-bottom"></div></div></div></div></div></div><div class="container-default w-container"><div class="divider"></div></div></div><div class="section blog-post" role="main"><article class="ap cs-page" role="main"><div class="ap-band"><div class="ap-container"><header class="ap-head">
+<div class="ap-tags"><a href="https://projects.tanplanet.work/en/" class="ap-tag">Automation</a><span class="ap-tag ap-tag--ghost">Projects</span></div>
+<h1 class="ap-title">Drive Auto-Sort</h1><p class="cs-sub">Today it runs quietly every 5 minutes, with no screen, no notifications and nothing to press. Drop photos into Inbox, go do something else, and when you come back they're already in their folders.</p>
+<p class="ap-meta"><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><time datetime="2026-09-01">Sep 1, 2026</time></span><span><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>12 min read</span></p>
+</header></div></div>
+<div class="ap-container ap-grid"><div class="ap-main">
+<figure class="ap-cover"><img src="../../pj/covers/drive-autosort-portfolio-en.webp" alt="" width="1600" height="900" fetchpriority="high" decoding="async"></figure>
+<div class="ap-row"><aside class="ap-share" aria-label="Share this article"><span class="ap-share-title">SHARE</span><a href="https://www.facebook.com/sharer/sharer.php?u=https://projects.tanplanet.work/en/drive-autosort-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a><a href="https://twitter.com/intent/tweet?url=https://projects.tanplanet.work/en/drive-autosort-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on X"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.9 1.2h3.7l-8 9.1L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L0 1.2h7.6l5.2 6.9 6.1-6.9Zm-1.3 19.4h2L6.5 3.2H4.3l13.3 17.4Z"/></svg></a><a href="https://social-plugins.line.me/lineit/share?url=https://projects.tanplanet.work/en/drive-autosort-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LINE"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="3" width="21" height="18" rx="5.5" fill="currentColor"/><text x="12" y="15.2" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="7.2" font-weight="900" fill="#fff">LINE</text></svg></a><a href="https://www.linkedin.com/sharing/share-offsite/?url=https://projects.tanplanet.work/en/drive-autosort-portfolio/" target="_blank" rel="noopener" class="ap-share-btn" aria-label="Share on LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a><button type="button" class="ap-share-btn" data-tip-done="Copied" data-copy="https://projects.tanplanet.work/en/drive-autosort-portfolio/" aria-label="Copy link"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></button></aside><div class="ap-body"><div class="cs">
+<p class="cs-lead">Drop photos into a single <code>Inbox</code> folder and the Mac works out which ones are bank transfer slips, which are screenshots and which are cats, using the Vision framework that already ships with macOS. Photos travel from the iPhone to the hard drive at home over Tailscale: no cable, no port opened to the internet, no monthly fee.</p><div class="cs-chips"><span class="cs-chip">Bash</span><span class="cs-chip">Swift</span><span class="cs-chip">C</span><span class="cs-chip">Vision.framework</span><span class="cs-chip">Thai OCR</span><span class="cs-chip">Tailscale</span><span class="cs-chip">SMB</span><span class="cs-chip">launchd</span><span class="cs-chip">on-device</span></div>
+<article>
+
+    <!-- ===== Problem ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>The real pain point wasn't the storage fee</h2>
+      <p>The starting brief was &ldquo;I don't want to pay for iCloud.&rdquo; But one more question, what am I actually paying for, reshaped the whole problem.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../drive-autosort-portfolio/img/hdd-platter.jpg" width="1400" height="788" loading="lazy" alt="Hard drive with the cover off, showing the platter inside">
+      <figcaption>A hard drive that's already paid for, with plenty of space, but nobody to put things away &middot; Photo: Nick / Unsplash</figcaption>
+    </figure>
+
+
+    <div class="quote-block">
+      <p>I already had a big enough, fully paid-for hard drive plugged into my Mac, but it was just <strong>a place to dump files</strong>, not <strong>a library where I can find things</strong>. What iCloud really sells isn't gigabytes. It's things landing in the right place without me doing anything.</p>
+      <div class="author">— The point of view that changed the whole brief</div>
+    </div>
+
+    <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.8; margin-bottom: 4px;">Once the problem was framed this way, the most sensible-looking fix, &ldquo;just drag the files onto the HDD,&rdquo; turned out to be worse. It swaps a monthly fee for manual effort paid every time a file comes in.</p>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>
+        <h3>The real cost is the labor of sorting, not the space</h3>
+        <p>A subscription is paid once per billing cycle. Sorting by hand costs attention every time something arrives, and that's a cost nobody keeps paying for long.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.97 12.92A2 2 0 0 0 2 14.63v3.24a2 2 0 0 0 .97 1.71l3 1.8a2 2 0 0 0 2.06 0L12 19v-5.5l-5-3-4.03 2.42Z"/><path d="m7 16.5-4.74-2.85"/><path d="m7 16.5 5-3"/><path d="M7 16.5v5.17"/><path d="M12 13.5V19l3.97 2.38a2 2 0 0 0 2.06 0l3-1.8a2 2 0 0 0 .97-1.71v-3.24a2 2 0 0 0-.97-1.71L17 10.5l-5 3Z"/><path d="m17 16.5-5-3"/><path d="m17 16.5 4.74-2.85"/><path d="M17 16.5v5.17"/><path d="M7.97 4.42A2 2 0 0 0 7 6.13v4.37l5 3 5-3V6.13a2 2 0 0 0-.97-1.71l-3-1.8a2 2 0 0 0-2.06 0l-3 1.8Z"/><path d="M12 8 7.26 5.15"/><path d="m12 8 4.74-2.85"/><path d="M12 13.5V8"/></svg>
+        <h3>A folder nobody sorts becomes a folder nobody opens</h3>
+        <p>Moving files to the HDD without anything to sort them leaves one pile of thousands of files you can't search. In the end you don't dare delete them and never open them, which is worse than leaving them on the phone.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M12 17h.01"/><path d="M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3"/></svg>
+        <h3>A file extension tells you it's a photo, not what the photo is</h3>
+        <p>My existing sorter could only send <code>.jpg</code> to Photos and <code>.pdf</code> to Documents. That's enough for documents but not for photos: with thousands of photos in one folder, I still couldn't find last month's slip.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>Every existing solution asks you to upload private photos to the cloud</h3>
+        <p>The services that are genuinely good at photo search all run on the provider's servers. Financial slips and photos of home have to leave the machine before you get the convenience back.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Ideate ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>Four options weighed honestly before deciding to build it myself</h2>
+      <p>Three criteria: sort photos by what's in them · no ongoing cost · photos never leave the machine</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../drive-autosort-portfolio/img/phone-photo.jpg" width="1400" height="788" loading="lazy" alt="iPhone taking a photo of mountains by a lake">
+      <figcaption>Photos are taken on the phone every day. The task is getting them to the hard drive on their own without trading that for a cloud upload &middot; Photo: Josh Power / Unsplash</figcaption>
+    </figure>
+
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead>
+          <tr><th>Option</th><th>Sorts by content</th><th class="num">Cost</th><th>Why it was rejected / chosen</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>iCloud+</td>
+            <td>Searchable, but doesn't organize folders</td>
+            <td class="num">Monthly, forever</td>
+            <td>Photos live on Apple's servers · paying still doesn't give a folder structure I can reuse, and it's the very thing the brief wanted to avoid</td>
+          </tr>
+          <tr>
+            <td>Google Photos</td>
+            <td>Best search of the group</td>
+            <td class="num">Monthly once over quota</td>
+            <td>All financial slips and private photos have to go up to Google's servers, a price I don't want to pay in a different sense</td>
+          </tr>
+          <tr>
+            <td>NAS + photo app</td>
+            <td>Yes, with extra plugins</td>
+            <td class="num">Hardware + upkeep</td>
+            <td>It stays at home, but means buying a whole new set of hardware to solve a problem my existing HDD and Mac can already handle</td>
+          </tr>
+          <tr data-picked>
+            <td>Extend my existing sorter<span class="pick"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Chosen</span></td>
+            <td>Yes, with Vision built into macOS</td>
+            <td class="num">None</td>
+            <td>Photos stay on the HDD I already have · an extension-based sorter already runs, it just needs one more layer that looks at the content</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="learning-card note">
+      <strong>The deciding factor</strong>
+      <p>The Vision framework already ships with macOS. It can classify images into <strong>1,303 categories</strong> and read text in <strong>30 languages, Thai included</strong>. It runs on the device, with no internet, no API key and no per-call cost. Everything needed was already on the machine; it only had to be wired up correctly.</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== เส้นทางจากมือถือถึงฮาร์ดดิสก์ ===== -->
+    <section class="section-intro" id="path">
+      <span class="eyebrow">Ideate &middot; Prototype</span>
+      <h2>To really replace iCloud, photos have to get from the phone to the hard drive on their own</h2>
+      <p>However smart the sorter is, it means nothing if I have to plug the iPhone into the computer every time. The piece that makes the whole system a real cloud replacement is this path.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../drive-autosort-portfolio/img/iphone-files.jpg" width="1440" height="1047" loading="lazy" alt="Mockup of the Files app on iPhone: connecting to the home Mac's smb server and dropping 6 photos into the Inbox folder">
+      <figcaption>Mockup of the steps on iPhone: Connect to Server over Tailscale, then drop photos into Inbox (the real machine name is replaced with a sample one)</figcaption>
+    </figure>
+
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l-6-6-2.3 2.3a2.4 2.4 0 0 0 0 3.4Z"/><path d="m2 22 3-3"/><path d="M7.5 13.5 10 11"/><path d="M10.5 16.5 13 14"/><path d="m18 3-4 4h6l-4 4"/></svg>
+        <h3>Plug in a cable and transfer every time</h3>
+        <p>This is the old workflow that meant nobody actually did it. If you have to wait until you're home and find a cable, the photos just keep piling up on the phone.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6.01 18H6"/><path d="M10.01 18H10"/><path d="M15 10v4"/><path d="M17.84 7.17a4 4 0 0 0-5.66 0"/><path d="M20.66 4.34a8 8 0 0 0-11.31 0"/></svg>
+        <h3>Forward port 445 to the internet on the router</h3>
+        <p>SMB is one of the most heavily scanned ports on the internet. Opening it directly for personal convenience is a bad trade, and it also needs dynamic DNS to keep up when the home IP changes.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg>
+        <h3>Set up my own VPN into the house</h3>
+        <p>The right result, but it means touching router settings, opening ports and managing keys and certificates myself. That's ongoing sysadmin work just to move photos.</p>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>The chosen route &mdash; Tailscale</strong>
+      <p>A mesh VPN built on WireGuard that lets the iPhone and Mac talk directly over the tailnet's private IP, which <strong>stays the same no matter which network either device is on</strong>. No port forwarding, no dynamic DNS, not a single line of router config, and nothing exposed to the public internet.</p>
+    </div>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          iPhone &mdash; from anywhere
+          <div class="arch-sub"><span>Files app</span><span>Connect to Server</span><span>Pick photos and drop</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Tailscale &mdash; WireGuard mesh
+          <div class="arch-sub"><span>Fixed private IP</span><span>No relay server in between</span><span>No port forwarding</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          macOS File Sharing &mdash; a share named Drive
+          <div class="arch-sub"><span>SMB on port 445</span><span>Listens on the tailnet only</span><span>Guest access off</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          HDD at home &mdash; Drive/Inbox
+          <div class="arch-sub"><span>launchd picks it up within 5 minutes</span><span>Vision assigns a category</span><span>Into Photos/&lt;category&gt;</span></div>
+        </div>
+      </div>
+    </div>
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><span><b>Port 445 never appears on the public internet</b> — it listens on the tailnet only, which is entirely different from forwarding a port on the router</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span><b>Guest access is off</b> — you have to log in with the machine's account; being on the tailnet alone isn't enough</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg><span><b>No <code>tailscale serve</code> or funnel set up at all</b> — not a single service is exposed outside the tailnet</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 16h.01"/><path d="M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><path d="M21.946 12.013H2.054"/><path d="M6 16h.01"/></svg><span><b>HDD not plugged in = the share simply disappears</b> — the sorter also exits quietly, as designed, with no errors to chase</span></li>
+    </ul>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Three files, each with a reason to be separate</h2>
+      <p>They're not split to look systematic. macOS limitations forced the split.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../drive-autosort-portfolio/img/selftest.jpg" width="1440" height="520" loading="lazy" alt="Terminal showing line counts for three files: drive 178 lines, drivesort.c 10 lines, imgclass.swift 28 lines, and drive selftest passing">
+      <figcaption>Three files, 216 lines in total &mdash; real output of <code>wc -l</code> and <code>drive selftest</code></figcaption>
+    </figure>
+
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19h8"/><path d="m4 17 6-6-6-6"/></svg>
+        <h3>drive &mdash; bash</h3>
+        <p>All the logic lives here · <code>sort</code> sorts files · <code>offload</code> moves things to the HDD and leaves a symlink behind · <code>selftest</code> checks itself before any change</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>drivesort &mdash; C, 8 lines</h3>
+        <p>macOS won't grant Full Disk Access to a shell script, so a real binary is needed to hold the permission. Only this binary gets disk access, instead of granting it to <code>/bin/bash</code> system-wide.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3>imgclass &mdash; Swift</h3>
+        <p>bash can't call system frameworks itself. This does one job: open Vision and print the raw result, either labels for what's in the photo or the text it can read.</p>
+      </div>
+    </div>
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          launchd &mdash; wakes every 5 minutes
+          <div class="arch-sub"><span>No real-time folder watching</span><span>HDD not plugged in = quiet exit, not an error</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          drive sort &mdash; first pass by extension
+          <div class="arch-sub"><span>Photos</span><span>Videos</span><span>Documents</span><span>Design</span><span>Unknown = stays in Inbox</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          imgclass &mdash; on-device Vision
+          <div class="arch-sub"><span>VNClassifyImageRequest</span><span>VNRecognizeTextRequest</span><span>th-TH + en-US</span></div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          Photos/ &mdash; 7 subfolders
+          <div class="arch-sub"><span>slip</span><span>screenshot</span><span>dog</span><span>cat</span><span>food</span><span>plant</span><span>sky</span></div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Flow ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>How it works &mdash; 5 steps</h2>
+      <p>From a file that just landed in Inbox to its destination folder, without anyone pressing anything</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../drive-autosort-portfolio/img/vision-labels.jpg" width="1440" height="769" loading="lazy" alt="Orange cat next to a terminal running imgclass, which returns the labels animal cat feline mammal, and a plant photo returning plant foliage">
+      <figcaption>Real output of <code>imgclass</code> (on-device Vision, offline) &mdash; labels sorted from most to least confident, then <code>drive</code> maps them to folder names &middot; Cat photo: Amber Kipp / Unsplash</figcaption>
+    </figure>
+
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <h4>Wake every 5 minutes</h4>
+        <p>No real-time folder watching. This job doesn't need second-level speed, and waking on a schedule is cheaper than keeping a process running all the time.</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        <h4>Only pick up files untouched for over 1 minute</h4>
+        <p>Skip recently modified files so a photo the phone is still uploading doesn't get moved half-finished into the wrong place.</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2.5a1 1 0 0 1-.8-.4l-.9-1.2A1 1 0 0 0 15 3h-2a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M20 21a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-2.9a1 1 0 0 1-.88-.55l-.42-.85a1 1 0 0 0-.92-.6H13a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M3 5a2 2 0 0 0 2 2h3"/><path d="M3 3v13a2 2 0 0 0 2 2h3"/></svg>
+        <h4>First pass by extension</h4>
+        <p>Photos · Videos · Documents · Design — unknown extensions aren't guessed; they stay in Inbox for a person to decide</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+        <h4>Only photos go to Vision</h4>
+        <p>Returns labels for what's in the photo, ordered by confidence · only if it looks like a screenshot does OCR run to read the text, since OCR is several times slower</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"/><path d="m15 9 6-6"/></svg>
+        <h4>Into a subfolder, or nowhere</h4>
+        <p>Not confident = no guessing. It stays in <code>Photos/</code> for a person to decide, the same rule as unknown extensions.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Decision order ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>The order of the checks decides the result, not the model's accuracy</h2>
+      <p>A photo always gets several labels at once. Which folder it ends up in depends on which question is asked first.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../drive-autosort-portfolio/img/slip-ocr.jpg" width="1440" height="590" loading="lazy" alt="Sample slip next to a terminal: Vision returns document and screenshot, then OCR finds the Thai words for transfer successful, recipient and transaction number, so it goes to the slip folder">
+      <figcaption>To Vision a slip is just a &ldquo;screenshot&rdquo; &mdash; it has to read the text and check slip before screenshot (real run on a mock slip made for this, not a real one)</figcaption>
+    </figure>
+
+
+    <div class="ladder">
+      <div class="rung">
+        <div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 8h8"/><path d="M7 12h10"/><path d="M7 16h6"/></svg> Screenshot + finance words found</div>
+        <div class="out">&rarr; slip</div>
+        <div class="note">A slip captured from an app matches both slip and screenshot, so slip has to be checked first</div>
+      </div>
+      <div class="rung">
+        <div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg> Screenshot</div>
+        <div class="out">&rarr; screenshot</div>
+        <div class="note">Whatever's left after the step above is an ordinary screenshot</div>
+      </div>
+      <div class="rung">
+        <div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.25 16.25h1.5L12 17z"/><path d="M16 14v.5"/><path d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309"/><path d="M8 14v.5"/><path d="M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5"/></svg> Has a dog label</div>
+        <div class="out">&rarr; dog</div>
+        <div class="note">Animals are always checked before plants</div>
+      </div>
+      <div class="rung">
+        <div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/></svg> Has a cat label</div>
+        <div class="out">&rarr; cat</div>
+        <div class="note">A cat standing in front of a bush gets both cat and plant. If plants were checked first, every cat photo would vanish into the plant folder.</div>
+      </div>
+      <div class="rung">
+        <div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg> Has a food label</div>
+        <div class="out">&rarr; food</div>
+        <div class="note">Vision already tags every dish with <code>food</code>, so there's no need to list menu items one by one &mdash; and it's checked before plants for the same reason as animals: a dish with a leaf garnish is still a food photo</div>
+      </div>
+      <div class="rung">
+        <div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg> Has a plant label</div>
+        <div class="out">&rarr; plant</div>
+        <div class="note">&mdash;</div>
+      </div>
+      <div class="rung">
+        <div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg> Sky, and only in the top 2 labels</div>
+        <div class="out">&rarr; sky</div>
+        <div class="note">Almost every outdoor photo comes with sky. Without requiring it to be prominent, everything would become a sky photo.</div>
+      </div>
+      <div class="rung none">
+        <div class="cond"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="9" x2="15" y1="15" y2="9"/></svg> Matches nothing</div>
+        <div class="out">&rarr; not moved</div>
+        <div class="note">Stays in <code>Photos/</code> for a person to decide</div>
+      </div>
+    </div>
+
+    <div class="learning-card note ok">
+      <strong>Tested on a real photo</strong>
+      <p>For a black cat standing in front of a shrub, Vision returns <code>animal</code> <code>mammal</code> <code>cat</code> <code>feline</code> together, and because cats are checked before plants, the file lands in <code>Photos/cat</code>, not <code>Photos/plant</code></p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hacks ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Three things I only learned by measuring against real files</h2>
+      <p>Each one was an assumption that sounded reasonable on paper and turned out wrong when measured</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../drive-autosort-portfolio/img/receipt.jpg" width="1400" height="788" loading="lazy" alt="Crumpled paper receipt on a white surface">
+      <figcaption>Having receipt in the label list doesn't mean Vision recognizes slips from banking apps &middot; Photo: Michael Walter / Unsplash</figcaption>
+    </figure>
+
+
+    <div class="hack-grid">
+      <div class="hack-card" data-label="Wrong assumption">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>I assumed Vision would recognize slips because its list has a label called receipt</span></h3>
+        <p>Tested on 60 real slips, the <code>receipt</code> label never came back once. 59 of them got <code>document</code> and <code>screenshot</code>, all the same, because real slips aren't paper receipts photographed with a camera. They're screen captures from banking apps, which look exactly like screenshots.</p>
+        <div class="highlight"><strong>Fix:</strong> if the image can't tell them apart, read the text on it instead. Vision supports Thai OCR, so it reads the image and looks for Thai words meaning <code>reference code</code>, <code>PromptPay</code> and <code>amount paid</code>. Because OCR is much slower than image classification, it only runs on images already classified as screenshots.</div>
+      </div>
+
+      <div class="hack-card" data-label="Keyword too broad">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>The word &ldquo;fee&rdquo; pulled stock purchase confirmations in as slips</span></h3>
+        <p>When I built the list of words that mark a slip, I included the Thai word for <code>fee</code> because transfer slips often have it. Measured against 25 ordinary screenshots, 3 stock purchase confirmations were pulled in as slips because they also contain the word fee.</p>
+        <div class="highlight"><strong>Fix:</strong> drop that word and keep only words specific enough not to show up in other kinds of financial documents. Measured again after the change, no ordinary screenshot was misfiled as a slip &mdash; lesson: a word that &ldquo;usually appears&rdquo; is not the same as a word that &ldquo;only appears here.&rdquo;</div>
+      </div>
+
+      <div class="hack-card" data-label="Trap in the taxonomy">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Among the 1,303 labels are words that look alike but mean different things</span></h3>
+        <p>Vision's list includes <code>hotdog</code> <code>prairie_dog</code> <code>eggplant</code> <code>cauliflower</code> <code>sunflower_seeds</code> <code>bobcat</code> <code>goldfish</code> <code>jellyfish</code>. With substring matching, a hot dog photo becomes a dog photo, an eggplant becomes a plant, and an aquarium becomes dinner.</p>
+        <div class="highlight"><strong>Fix:</strong> match whole lines only, never substrings. The fix took under a minute, but without reading through the entire label list first, there would have been no way to know it was needed.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Result ===== -->
+    <section class="section-intro" id="result">
+      <span class="eyebrow">Test</span>
+      <h2>Measured against my own files, not a sample dataset</h2>
+      <p>Folders I had already sorted by hand became a free answer key to check results against</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../drive-autosort-portfolio/img/sort-result.jpg" width="1600" height="1161" loading="lazy" alt="Terminal running drive sort, moving 8 files from Inbox into Photos/cat plant slip screenshot, next to a Finder window showing the subfolders and 4 cat photos">
+      <figcaption>Real run on 8 sample files: <code>drive sort</code> moves everything into subfolders and Inbox is empty &mdash; the Finder window shows the actual result on disk</figcaption>
+    </figure>
+
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th>Test set</th><th class="num">Count</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Hand-sorted slip folder</td><td class="num">67 photos</td><td>53 as slip · 8 as screenshot · 1 unsorted — opening the 8 misses showed they were chats, TikTok clips and signatures that had actually been mixed into the folder, not slips</td></tr>
+          <tr><td>Hand-sorted screenshot folder</td><td class="num">5 photos</td><td>All correct, 5 of 5</td></tr>
+          <tr><td>Ordinary screenshots outside the drive</td><td class="num">25 photos</td><td>None misclassified as a slip</td></tr>
+          <tr data-picked><td>Real Inbox, on the real run</td><td class="num">18 files</td><td>All 18 files matched the dry run before moving — cat 8 · slip 8 · plant 1 · screenshot 1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">18/18</div><div class="label">Files sorted into the right folder on the real Inbox run</div></div>
+      <div class="metric-card"><div class="num">0</div><div class="label">Ordinary screenshots misfiled as slips</div></div>
+      <div class="metric-card"><div class="num">5/5</div><div class="label">Hand-sorted screenshot answer key</div></div>
+      <div class="metric-card"><div class="num">1</div><div class="label">Category with no real photos to test yet: dogs</div></div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>The most valuable number in this table is zero</strong>
+      <p>A sorter that occasionally gets things wrong is tolerable, since you'll find them when you open the folder. A tool that <strong>hides things in the wrong place</strong> is worse than no tool at all. So one rule held throughout the project: if it's not sure, it doesn't guess.</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Scope ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Scope I deliberately left out</h2>
+      <p>What was cut matters more to the tool's reliability than what was added</p>
+    </section>
+
+    <figure class="shot">
+      <img src="../../drive-autosort-portfolio/img/hdd-bw.jpg" width="1400" height="788" loading="lazy" alt="Black and white photo of a hard drive">
+      <figcaption>Not sure, don't guess &mdash; files that don't meet the criteria always wait for a person to decide &middot; Photo: Frank R / Unsplash</figcaption>
+    </figure>
+
+
+    <ul class="plain">
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg><span><b>No guessing when unsure</b> — a file staying where it is beats being moved somewhere its owner can't find</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h.01"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></svg><span><b>No external services at all</b> — financial slips and private photos shouldn't be uploaded anywhere in exchange for tidy folders</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg><span><b>No sorting logic in Swift</b> — the classifier just prints raw output and the mapping to folder names lives in the script, so adding a category doesn't need a recompile</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 16h.01"/><path d="M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><path d="M21.946 12.013H2.054"/><path d="M6 16h.01"/></svg><span><b>A missing HDD isn't treated as a failure</b> — the job ends quietly and tries again next round, with no warning every 5 minutes</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/></svg><span><b>Already-sorted old files are left alone</b> — it only handles new arrivals in Inbox; sorting the backlog is a call the owner should make</span></li>
+    </ul>
+
+  </article>
+</div><section class="ap-author" aria-label="Author"><img class="ap-author-avatar" src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/688f5899cad39483c4e11c49_Profile_Webflow.webp" alt="" width="88" height="88" loading="lazy"><div class="ap-author-body"><p class="ap-author-name">Tan · Natpakan Sirirat</p><p class="ap-author-bio">Product Designer &amp; AI Builder — designing user experiences and building AI tools that actually work.</p><ul class="ap-author-links"><li><a href="https://www.linkedin.com/in/natpakan/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45Z"/></svg></a></li><li><a href="https://www.facebook.com/tan.natpakan" target="_blank" rel="noopener" aria-label="Facebook"><svg class="ic ic-fill" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 8h3V4h-3c-2.9 0-4.5 1.9-4.5 4.6V11H7v4h2.5v9h4v-9h3.1l.6-4h-3.7V8.9c0-.5.3-.9.9-.9Z"/></svg></a></li><li><a href="https://www.instagram.com/npkant/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a></li></ul></div></section><nav class="ap-pn" aria-label="Previous and next project"><a href="../motion-reel-portfolio/" class="ap-pn-item ap-pn-prev"><span class="ap-pn-label">← Previous project</span><span class="ap-pn-title">Motion Graphics for YouTube</span></a><a href="../jira-tasks-portfolio/" class="ap-pn-item ap-pn-next"><span class="ap-pn-label">Next project →</span><span class="ap-pn-title">Tan&#x27;s Tasks</span></a></nav></div></div></div>
+<aside class="ap-side"><div class="ap-side-inner"><section class="ap-widget"><h2 class="ap-widget-title"><span>Latest projects</span></h2><ol class="ap-rank"><li><a href="../content-engine-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/content-engine-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">1</span></span><span class="ap-rank-title"><span class="ap-rank-t">Auto-publishing content engine</span></span></a></li><li><a href="../tans-tools-devpanel-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tans-tools-devpanel-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">2</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan’s Tools · DEV panel</span></span></a></li><li><a href="../android-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/android-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">3</span></span><span class="ap-rank-title"><span class="ap-rank-t">TX98 TV Box</span></span></a></li><li><a href="../tools-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/tools-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">4</span></span><span class="ap-rank-title"><span class="ap-rank-t">Tan&#x27;s Tools</span></span></a></li><li><a href="../shotdeck-box-portfolio/" class="ap-rank-item"><span class="ap-rank-thumb"><img src="../../pj/covers/shotdeck-box-portfolio-en.webp" alt="" loading="lazy" width="112" height="63"><span class="ap-rank-no" aria-hidden="true">5</span></span><span class="ap-rank-title"><span class="ap-rank-t">shotdeck-box: a laptop that posts clips</span></span></a></li></ol></section></div></aside>
+</div><div class="ap-progress" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" class="ap-progress-track"/><circle cx="32" cy="32" r="28" class="ap-progress-bar" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg><span>0%</span></div></article><footer class="footer"><div class="container-default w-container"><div class="divider"></div></div><div class="container-footer"><div class="footer-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-logo-container w-inline-block"><img src="https://myfolio.tanplanet.work/logo-header.png?v=3" loading="lazy" alt="Natpakan Sirirat — Home" width="82" height="40" class="logo" /></a><ul role="list" class="footer-navigation"><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/" class="footer-nav-link">Home</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/about" class="footer-nav-link">About</a></li><li class="footer-nav-item-wrapper"><a href="https://myfolio.tanplanet.work/blog" class="nav-link">Blog</a></li><li class="footer-nav-item-wrapper"><a href="https://projects.tanplanet.work/en/" class="footer-nav-link">Portfolio</a></li><li class="footer-nav-item-wrapper last"><a href="https://projects.tanplanet.work/preset/" class="footer-nav-link footer-nav-design">Design</a></li></ul><a data-w-id="2afa9a01-05cf-ade4-4d79-909445ba12f2" href="https://myfolio.tanplanet.work/contact" class="link-primary w-inline-block"><div class="link-primary-wrapper"><div class="link-primary-text">Contact Me</div><div class="link-primary-text-arrow">   <span class="link-primary-arrow"></span></div></div></a></div><div class="divider"></div><div class="small-print">© 2026 Natpakan Sirirat · All rights reserved.</div></div></footer></div><script src="https://myfolio.tanplanet.work/_ext/d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8__site%3D608d62778637273e1880cb8d.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.1a807f015b216e46.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.schunk.8870a749f76b548c.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/_ext/cdn.prod.website-files.com/608d62778637273e1880cb8d/js/webflow.9641f8cc.4fd3e4280b7acaf7.js" type="text/javascript"></script><script src="https://myfolio.tanplanet.work/header-autohide.js" defer></script><script src="https://myfolio.tanplanet.work/blog/article.js" defer></script><div class="cs cs-extras">
+
+  <!-- ===== Closing ===== -->
+  
+
+  
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  
+
+
+
+</div><script>try{
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  }catch(e){}</script><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Natpakan Sirirat — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"Drive Auto-Sort — automatic photo sorting into folders with Vision","item":"https://projects.tanplanet.work/drive-autosort-portfolio/"}
+  ]
+}
+</script></body></html>

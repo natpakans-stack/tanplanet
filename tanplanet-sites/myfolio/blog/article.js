@@ -22,3 +22,14 @@
     });
   });
 })();
+
+/* รูปในบทความที่ไม่เต็มกรอบ: พื้นหลังเป็นรูปเดียวกันแบบเบลอ (สีอิงจากรูป) แทนขอบเทา */
+document.querySelectorAll(".ap-content figure img").forEach(function (img) {
+  var box = img.parentElement;
+  if (box.tagName === "FIGURE") { box = document.createElement("div"); img.before(box); box.append(img); }
+  box.classList.add("ap-blurbox");
+  box.style.setProperty("--ap-bg", 'url("' + img.getAttribute("src") + '")');
+});
+document.querySelectorAll(".ap-cover > img").forEach(function (img) {
+  img.parentElement.style.setProperty("--ap-bg", 'url("' + img.getAttribute("src") + '")');
+});

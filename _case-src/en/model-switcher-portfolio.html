@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Shift — switch Claude Code models with a gear stick (VS Code extension)</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Model Shift — switch Claude Code models with a gear stick (VS Code extension)">
+  <meta name="twitter:description" content="Portfolio: a VS Code extension with an H-pattern gear stick for switching Claude Code models. It sends /model to the terminal, syncs the real state from the transcript, and has a switch to mute task-done sounds.">
+  <meta property="og:url" content="https://projects.tanplanet.work/model-switcher-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.work/model-switcher-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: a VS Code extension with an H-pattern gear stick for switching Claude Code models. It sends /model to the terminal, syncs the real state from the transcript, and has a switch to mute task-done sounds.">
+  <meta property="og:title" content="Model Shift — switch Claude Code models with a gear stick (VS Code extension)">
+  <meta name="description" content="Portfolio: a VS Code extension with an H-pattern gear stick for switching Claude Code models. It sends /model to the terminal, syncs the real state from the transcript, and has a switch to mute task-done sounds.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23a21caf'/><text x='50' y='62' text-anchor='middle' font-size='54'>🔀</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #a21caf;
+      --accent-light: #fae8ff;
+      --accent-dark: #701a75;
+      --accent-glow: rgba(162,28,175,0.14);
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --red-light: #fff1f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #4a044e 0%, #701a75 45%, #a21caf 80%, #d946ef 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(250,232,255,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(162,28,175,0.30) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #a21caf, #d946ef, #fae8ff);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fde047;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent {
+      color: #f0abfc;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #701a75, #a21caf);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+
+    /* ===== Pain Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--red);
+    }
+    .pain-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(162,28,175,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #d946ef);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .arch-layer {
+      padding: 14px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      position: relative;
+    }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(162,28,175,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: #f5f5f4; color: var(--text-secondary); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+    .arch-sub {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ===== Extension Popup Mockup ===== */
+    .ext-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      max-width: 440px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+      font-size: 0.82rem;
+    }
+    .ext-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      background: #fafafa;
+      align-items: center;
+    }
+    .ext-bar .ext-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+    .ext-bar .ext-badge {
+      margin-left: auto;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      border-radius: 50px;
+      padding: 1px 9px;
+      font-size: 0.72rem;
+    }
+    .ext-yt {
+      margin: 12px;
+      padding: 10px 12px;
+      border: 1px solid #fecaca;
+      background: #fff5f5;
+      border-radius: 8px;
+    }
+    .ext-yt b { color: #c00; }
+    .ext-yt .u { color: var(--text-muted); font-size: 0.72rem; word-break: break-all; margin: 3px 0 8px; font-family: 'SF Mono', monospace; }
+    .ext-yt .chip { display: inline-block; border: 1px solid var(--border); background: #fff; border-radius: 6px; padding: 3px 8px; font-size: 0.72rem; margin-right: 5px; color: var(--text-secondary); }
+    .ext-table { width: 100%; border-collapse: collapse; }
+    .ext-table th {
+      text-align: left; padding: 8px 12px; font-size: 0.68rem; color: var(--text-muted);
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; border-bottom: 1px solid var(--border);
+    }
+    .ext-table td { padding: 9px 12px; border-bottom: 1px solid #f2f2f1; vertical-align: top; }
+    .ext-table .kind { font-weight: 700; white-space: nowrap; }
+    .ext-table .kind.master { color: #1e6b2e; }
+    .ext-table .kind.variant { color: #8a7a12; }
+    .ext-table .kind.file { color: var(--accent); }
+    .ext-table .q { white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .ext-table .info { color: var(--text-secondary); font-size: 0.76rem; }
+    .ext-table .chip { display: inline-block; border: 1px solid var(--border); background: #fafafa; border-radius: 5px; padding: 1px 7px; font-size: 0.68rem; color: var(--text-secondary); font-family: 'SF Mono', monospace; }
+    .ext-cmd {
+      margin: 0 12px 12px;
+      padding: 10px 12px;
+      background: #0f172a;
+      color: #a5f3fc;
+      border-radius: 8px;
+      font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+      font-size: 0.72rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .ext-cmd .flag { color: #fde047; }
+    .ext-cmd .cmt { color: #64748b; }
+
+    /* ===== Gear Panel Mockup ===== */
+    .gear-panel {
+      max-width: 440px;
+      margin: 0 auto;
+      background: linear-gradient(160deg, #241a29, #14101a);
+      border: 1px solid #3b2a42;
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+      color: #f0abfc;
+      font-size: 0.82rem;
+    }
+    .gear-panel .gp-head {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      letter-spacing: 0.18em; font-weight: 700; color: #f5d0fe;
+      text-transform: uppercase; font-size: 0.82rem; margin-bottom: 16px;
+    }
+    .gear-panel .gp-readout {
+      display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center;
+      background: #0f0b14; border: 1px solid #2e2036; border-radius: 10px;
+      padding: 12px 14px; margin-bottom: 16px;
+    }
+    .gear-panel .gp-gauge { text-align: center; }
+    .gear-panel .gp-gauge svg { width: 92px; height: 52px; overflow: visible; }
+    .gear-panel .gp-gauge .cap { font-size: 8px; letter-spacing: 0.12em; color: #7c5a86; margin-top: 2px; }
+    .gear-panel .gp-cmd { font-family: 'SF Mono', ui-monospace, Menlo, monospace; font-size: 0.72rem; color: #c084fc; }
+    .gear-panel .gp-name-row { display: flex; align-items: baseline; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+    .gear-panel .gp-num { font-size: 1.9rem; font-weight: 700; color: #fbbf24; line-height: 1; }
+    .gear-panel .gp-name { font-size: 1rem; font-weight: 700; color: #f5d0fe; letter-spacing: 0.05em; }
+    .gear-panel .gp-gate {
+      background: #0d0912; border: 1px solid #2e2036; border-radius: 12px;
+      padding: 16px; display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; position: relative;
+    }
+    .gear-panel .gp-cell {
+      border: 1px solid #35263d; border-radius: 8px; background: #17101d;
+      padding: 12px 8px; text-align: center;
+    }
+    .gear-panel .gp-cell .g { display: block; font-size: 0.7rem; color: #8a6d94; font-weight: 700; }
+    .gear-panel .gp-cell .m { display: block; font-size: 0.78rem; color: #d8b4fe; font-weight: 600; margin-top: 2px; }
+    .gear-panel .gp-cell.active {
+      border-color: #fbbf24; background: linear-gradient(160deg, #3a2a12, #2a1e0c);
+      box-shadow: 0 0 0 1px rgba(251,191,36,0.4), 0 0 18px rgba(251,191,36,0.25);
+    }
+    .gear-panel .gp-cell.active .g { color: #fcd34d; }
+    .gear-panel .gp-cell.active .m { color: #fde68a; }
+    .gear-panel .gp-mute {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 16px; padding: 12px 14px; background: #0f0b14;
+      border: 1px solid #2e2036; border-radius: 10px;
+    }
+    .gear-panel .gp-mute .lab { color: #d8b4fe; font-size: 0.8rem; }
+    .gear-panel .gp-sw {
+      width: 46px; height: 26px; border-radius: 50px; background: #a21caf;
+      position: relative; flex-shrink: 0;
+    }
+    .gear-panel .gp-sw .knob {
+      position: absolute; top: 3px; right: 3px; width: 20px; height: 20px;
+      border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    .gear-panel .gp-sw .on { position: absolute; left: 8px; top: 5px; font-size: 0.62rem; color: rgba(255,255,255,0.85); font-weight: 700; }
+
+    /* ===== Closing ===== */
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(112,26,117,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(112,26,117,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy, #1c1917); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+  .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center;line-height:1.5}.shot-pair .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;max-width:var(--shot-max,100%);margin:0 auto}@media (max-width:640px){.shot-pair .pair{grid-template-columns:1fr}}.shot-narrow img{max-width:min(100%,var(--shot-max,520px));margin:0 auto}
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/model-switcher-portfolio/">
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 14 4 4-4 4"/><path d="m18 2 4 4-4 4"/><path d="M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22"/><path d="M2 6h1.972a4 4 0 0 1 3.6 2.2"/><path d="M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        VS Code Extension &middot; Claude Code &middot; Bun
+      </div>
+      <h1>Model Shift<br><span class="accent">Switch Claude Code models with a car gear stick: shift gear = change model</span></h1>
+      <p>A VS Code / Cursor extension that takes typing <code>/model</code> out into a separate panel shaped like a car gear stick (H-pattern). Shift to switch models instantly while talking to Claude Code, with the real state synced from the transcript and one switch to mute or unmute task-done sounds.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">VS Code Extension API</span>
+        <span class="hero-tag">Webview</span>
+        <span class="hero-tag">Bun.serve</span>
+        <span class="hero-tag">tmux</span>
+        <span class="hero-tag">Shell hooks</span>
+        <span class="hero-tag">TTS</span>
+        <span class="hero-tag">Web Audio</span>
+        <span class="hero-tag">Vanilla JS</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#how">See how it works &#8595;</a> <a class="cta-btn cta-ghost" href="#stack">See the tech stack</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Problem (Empathize + Define) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>The problem</h2>
+      <p>Why is switching models back and forth while working with Claude Code more annoying than it should be?</p>
+    </section>
+    <figure class="shot"><img src="img/ms-problem.jpg" width="1600" height="530" loading="lazy" alt="Claude Code in a terminal, where the user has to type /model and the flag name mid-conversation"><figcaption>Before Model Shift: switching models meant typing <code>/model</code> and remembering the flag name mid-conversation (terminal mockup)</figcaption></figure>
+
+
+    <div class="quote-block">
+      <p>Claude Code can switch models with <code>/model &lt;name&gt;</code>, but you have to type it and remember the flag name (<code>sonnet[1m]</code>, <code>fable</code>) every time. The list keeps growing (Haiku / Sonnet / Sonnet 1M / Opus / Fable), and I switch often to balance cost, quality and speed. Typing commands mid-conversation breaks the flow, and the state ("which model is active, how much context is left") is plain text with nothing visual.</p>
+      <div class="author">— The starting brief, before building Model Shift</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg>
+        <h3>Typing <code>/model</code> every time is slow, and you have to remember flags</h3>
+        <p>Flag names don't match the names you see (<code>sonnet[1m]</code>, <code>fable</code>) and change between Claude Code versions. Get one wrong and the switch fails, so you type it again.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>
+        <h3>More models means more switching</h3>
+        <p>Haiku / Sonnet / Sonnet 1M / Opus / Fable: light tasks get the cheap model, hard ones move up. Switching back and forth to balance cost and quality happens many times per session.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg>
+        <h3>I wanted to switch from a separate panel, not the input area</h3>
+        <p>Typing a command in the middle of a prompt breaks the flow. I wanted a control "outside" the TUI that switches with one click without leaving the conversation.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+        <h3>No visual state</h3>
+        <p>Which model is active? Is the context almost full? It's all text. I wanted a car-dashboard readout you understand at a glance.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>
+        <h3>Task-done sounds are hard to silence in meetings</h3>
+        <p>I set up sounds for when a task finishes, but they need to go quiet fast when a meeting starts. Editing config or restarting claude is too slow.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Solution (Ideate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Ideate</span>
+      <h2>The solution</h2>
+      <p>Turn the typed command into a gear stick: one shift = one model switch, with the state shown visually like a car dashboard</p>
+    </section>
+    <figure class="shot shot-narrow" style="--shot-max:480px"><img src="img/ms-solution.jpg" width="1600" height="1260" loading="lazy" alt="The real Model Shift panel: 5H/7D quota bars, the current gear, a VU meter, a context gauge and the H-pattern gear stick"><figcaption>The real panel (rendered from the extension's webview): quota, current gear, context gauge and gear stick on one screen</figcaption></figure>
+
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3>An H-pattern gear stick in its own panel</h3>
+        <p>A panel in the activity bar shaped like a 6-position car gear stick. Drag the knob or click a label to switch models instantly without interrupting your prompt.</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+        <h3>Send <code>/model</code> straight into the terminal</h3>
+        <p>Claude Code has no API for switching from outside, so the control sends <code>terminal.sendText("/model opus")</code> into the integrated terminal where claude is running (the web surface uses <code>tmux send-keys</code>)</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+        <h3>Show the state visually</h3>
+        <p>The current gear + a VU meter (model strength) + a fuel-style E&rarr;F context gauge: one glance tells you which model is active and whether the context is nearly full</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h3>Sync the real model from the transcript</h3>
+        <p>Polls the session <code>*.jsonl</code> file, reads the actual <code>message.model</code> and quietly moves the gear to match, so the UI stays in sync even if the user types <code>/model</code> manually</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
+        <h3>One switch to mute sounds</h3>
+        <p>The switch runs <code>touch</code>/<code>rm</code> on a <code>.tts-muted</code> flag file that the TTS hooks check. All sounds go quiet or come back at once, with no claude restart, in time for a meeting.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== How it works / Flow (Prototype) ===== -->
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>How it works, in 4 steps</h2>
+      <p>From opening the panel to the model actually switching in the conversation</p>
+    </section>
+    <figure class="shot"><img src="img/ms-how.jpg" width="1600" height="942" loading="lazy" alt="A VS Code window with the Model Shift panel in the sidebar and a terminal receiving the /model opus command sent by the panel"><figcaption>Shift into gear 4 → the panel sends <code>/model opus</code> to the integrated terminal where claude runs (real panel · the VS Code window and terminal are a mockup)</figcaption></figure>
+
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+        <h4>Open the panel</h4>
+        <p>Click the gear icon in the activity bar → the H-pattern gear stick panel appears in the sidebar</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+        <h4>Shift gear</h4>
+        <p>Drag the knob / click a label → <code>sendText("/model opus")</code> goes into the terminal, with a ka-chunk sound</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h4>Panel sync</h4>
+        <p>Polls the transcript every 5 seconds, reads the real model and tokens → moves the gear and updates the context gauge</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">4</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
+        <h4>Flip the sound switch</h4>
+        <p>touch/rm <code>.tts-muted</code> → task-done sounds mute or unmute instantly, no restart</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Architecture / Stack ===== -->
+    <section class="section-intro" id="stack">
+      <span class="eyebrow">Prototype</span>
+      <h2>Tech Stack &amp; Architecture</h2>
+      <p>Two surfaces on the same mechanism: zero npm dependencies, no data leaves the machine</p>
+    </section>
+    <figure class="shot shot-narrow" style="--shot-max:620px"><img src="img/ms-web.jpg" width="1600" height="1120" loading="lazy" alt="The localhost web version of Model Shift using Bun.serve and tmux send-keys"><figcaption>Surface 2: a localhost web page (Bun.serve) for people who run claude in a plain terminal, controlled via <code>tmux send-keys</code></figcaption></figure>
+
+
+    <div class="arch-diagram">
+      <div class="arch-layers">
+        <div class="arch-layer users">
+          Claude Code user: shifts gear / flips the sound switch
+          <div class="arch-sub">
+            <span>Surface A: VS Code webview</span> <span>Surface B: Web panel</span> <span>H-pattern gear stick</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer platform">
+          Extension core (extension.js + webview) — sendText / poll / fs
+          <div class="arch-sub">
+            <span>activeTerminal.sendText()</span>
+            <span>poll *.jsonl</span>
+            <span>GEARS[]</span>
+            <span>injection guard</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer services">
+          Claude Code terminal + TTS hooks (Stop &rarr; speak-done.sh)
+          <div class="arch-sub">
+            <span>/model &lt;name&gt;</span>
+            <span>tmux send-keys (B)</span>
+            <span>tts-lib.sh</span>
+            <span>gpt-4o-mini-tts / say</span>
+          </div>
+        </div>
+        <div class="arch-arrow">&#8597;</div>
+        <div class="arch-layer infra">
+          ~/.claude: transcript (read-only) + flag + cache
+          <div class="arch-sub">
+            <span>projects/*.jsonl</span>
+            <span>hooks/.tts-muted</span>
+            <span>.tts-cache/*.mp3</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="learning-card note">
+      <strong>Why this stack?</strong>
+      <p><strong>VS Code Extension API</strong> puts the control genuinely "outside" the TUI, and <code>sendText</code> sends <code>/model</code> into the integrated terminal without needing an API Claude Code doesn't have &middot; <strong>Bun.serve + tmux</strong> is a fallback surface for plain-terminal users &mdash; native, no express &middot; <strong>A flag file</strong> (<code>.tts-muted</code>) mutes every hook from one place without a restart &middot; <strong>Plain vanilla JS + zero npm dependencies</strong> &mdash; as a designer I can edit the UI in one file, with no build step</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Features ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>What I built: 8 core capabilities</h2>
+      <p>Everything from shifting gear and sending the command to the task-done sound</p>
+    </section>
+    <figure class="shot shot-narrow" style="--shot-max:560px"><img src="img/ms-readout.jpg" width="1520" height="532" loading="lazy" alt="Panel header: 5-hour and 7-day quota bars, gear 2 Sonnet, a VU meter and a context gauge at 63%"><figcaption>A car-dashboard readout: 5H/7D quota bars, a VU meter for model strength and an E→F context gauge</figcaption></figure>
+
+
+    <div class="module-grid">
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3>H-Pattern Gear Shifter</h3>
+        <p>A 6-position gear stick (1–5 + R). Drag the knob and it snaps to the nearest gear, or click a label directly. It feels like shifting a real car.</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+        <h3>Model Switcher</h3>
+        <p>Sends <code>sendText("/model &lt;name&gt;")</code> into the integrated terminal (surface B uses <code>tmux send-keys</code>), so you switch models without typing</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+        <h3>Real-Model Sync</h3>
+        <p>Polls <code>*.jsonl</code> every 5 seconds, reads the real <code>message.model</code> → quietly moves the gear to match, so the UI never drifts out of sync</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5"/><path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16"/><path d="M2 21h13"/><path d="M3 9h11"/></svg>
+        <h3>Context Gauge</h3>
+        <p>A fuel gauge E&rarr;F calculated from <code>input + cache_read + cache_creation</code> of the latest message against a 200K window</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+        <h3>VU Meter</h3>
+        <p>The bars show how "strong" the model is, based on an rpm value mapped to each gear, so you can tell whether you're on a light or heavy model</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/></svg>
+        <h3>Ka-chunk Sound</h3>
+        <p>The click when you change gear is generated live with Web Audio (<code>clack()</code>). No audio files, just the feel of a gear stick.</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg>
+        <h3>17 task-done voice personas</h3>
+        <p>A Stop hook picks 1 of 17 personas at random each time a task finishes (news anchor / robot / butler, and so on) via TTS, with a <code>say</code> fallback</p>
+      </div>
+      <div class="module-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
+        <h3>Mute Switch</h3>
+        <p>A switch in the panel runs touch/rm on the <code>.tts-muted</code> file the hooks check, muting or unmuting every sound instantly without restarting claude</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Gear Panel Mockup ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Prototype</span>
+      <h2>The panel</h2>
+      <p>Click the gear icon in the activity bar → see the current gear, context gauge and sound switch on one screen</p>
+    </section>
+    <figure class="shot shot-narrow" style="--shot-max:640px"><img src="img/ms-pair.jpg" width="1600" height="1084" loading="lazy" alt="Two panel states side by side: gear 1 Haiku with low context, and gear 4 Opus at 86% context with a red gauge and sound muted"><figcaption>Two real states: left, Haiku on a light task · right, Opus with the context nearly full, the gauge red and the sound switch muted</figcaption></figure>
+
+
+    <div class="gear-panel">
+      <div class="gp-head"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> Model Shift</div>
+      <div class="gp-readout">
+        <div class="gp-gauge">
+          <svg viewBox="0 0 92 52">
+            <path d="M8 48 A38 38 0 0 1 84 48" fill="none" stroke="#3b2a42" stroke-width="5" stroke-linecap="round"/>
+            <path d="M8 48 A38 38 0 0 1 58 15" fill="none" stroke="#a21caf" stroke-width="5" stroke-linecap="round"/>
+            <g transform="rotate(28 46 48)"><rect x="45" y="16" width="2" height="34" rx="1" fill="#fbbf24"/></g>
+            <circle cx="46" cy="48" r="3" fill="#f5d0fe"/>
+          </svg>
+          <div class="cap">CONTEXT &middot; TOKENS &times;1000</div>
+        </div>
+        <div>
+          <div class="gp-cmd">/model opus</div>
+          <div class="gp-name-row"><span class="gp-num">4</span><span class="gp-name">OPUS</span></div>
+        </div>
+      </div>
+      <div class="gp-gate">
+        <div class="gp-cell"><span class="g">1</span><span class="m">HAIKU</span></div>
+        <div class="gp-cell"><span class="g">3</span><span class="m">SONNET 1M</span></div>
+        <div class="gp-cell"><span class="g">5</span><span class="m">FABLE</span></div>
+        <div class="gp-cell"><span class="g">2</span><span class="m">SONNET</span></div>
+        <div class="gp-cell active"><span class="g">4</span><span class="m">OPUS</span></div>
+        <div class="gp-cell"><span class="g">R</span><span class="m">DEFAULT</span></div>
+      </div>
+      <div class="gp-mute">
+        <span class="lab"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg> Task-done sounds</span> <span class="gp-sw"><span class="on">ON</span><span class="knob"></span></span>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack (Test & Iterate) ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Hacking the problems</h2>
+      <p>6 problems I had to solve myself: tooling limits and building commands safely</p>
+    </section>
+    <figure class="shot"><img src="img/ms-code.jpg" width="1600" height="686" loading="lazy" alt="Two real code snippets: the regex that blocks injection before sendText, and the line in tts-lib.sh that checks the .tts-muted file"><figcaption>Real code from extension.js and tts-lib.sh: whitelisting model names before sending them to the terminal, and muting everything with a single flag file</figcaption></figure>
+
+
+    <div class="hack-grid">
+      <div class="hack-card arch" data-label="No API">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg><span>Claude Code has no API for switching models from outside</span></h3>
+        <p>I wanted a button to switch models, but there is no endpoint or SDK to call. How do you control it from a separate panel?</p>
+        <div class="highlight">Fix: the control lives "outside" the TUI and sends <code>/model &lt;name&gt; + Enter</code> into the terminal where claude runs. The main surface uses VS Code's <code>activeTerminal.sendText()</code> (no tmux needed); the fallback surface uses <code>tmux send-keys</code> for plain-terminal users.</div>
+      </div>
+
+      <div class="hack-card precision" data-label="Injection">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span>Sending model names into a shell/terminal risks injection</span></h3>
+        <p>Values concatenated into a <code>send-keys</code> / <code>sendText</code> command could smuggle in other commands if they aren't checked first.</p>
+        <div class="highlight">Fix: whitelist with the regex <code>^[\w\[\]-]+$</code> before every send (on both surfaces), allowing only a–z 0–9 <code>[</code> <code>]</code> <code>-</code>. The web side also uses <code>Bun.$</code> interpolation, which escapes automatically and passes the value as a single arg.</div>
+      </div>
+
+      <div class="hack-card platform" data-label="One-way Sync">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg><span>The UI was one-way and didn't know the real model</span></h3>
+        <p>It could set the model, but if the user typed <code>/model</code> in the conversation, the gear on the panel fell out of sync with reality.</p>
+        <div class="highlight">Fix: every 5 seconds, poll the last 128KB of the most recently modified <code>*.jsonl</code>, read <code>message.model</code> → quietly move the gear (no repeat <code>/model</code>, no sound). After a manual shift, sync pauses for 30 seconds so a not-yet-updated transcript doesn't pull the gear back.</div>
+      </div>
+
+      <div class="hack-card ux" data-label="Feel">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg><span>The gear stick had to feel real</span></h3>
+        <p>A plain button would be no different from the built-in <code>/model</code> picker. It needed the "feel" of shifting gears.</p>
+        <div class="highlight">Fix: drag the knob with the mouse and it snaps to the nearest gear by distance (<code>(g.x-px)&sup2;+(g.y-py)&sup2;</code>), with a ka-chunk sound generated live by Web Audio on each shift. The visual layer sits on top of the existing logic without touching the command mechanism.</div>
+      </div>
+
+      <div class="hack-card devops" data-label="Mute">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg><span>Sound had to be quick to mute, without a restart</span></h3>
+        <p>Task-done sounds come from several hooks that run separately. How do you silence all of them quickly for a meeting?</p>
+        <div class="highlight">Fix: every hook sources a shared <code>tts-lib.sh</code>, with a guard <code>[ -f ~/.claude/hooks/.tts-muted ] &amp;&amp; return 0</code> at the top of the speak function. The switch only touches/removes the flag file, so everything mutes or unmutes at once without restarting claude.</div>
+      </div>
+
+      <div class="hack-card perf" data-label="Cost / Cache">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19v3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><rect x="9" y="2" width="6" height="13" rx="3"/></svg><span>Calling the TTS API every time was expensive and slow</span></h3>
+        <p>Generating new audio each time a task finishes costs money, needs a connection and adds delay, and each persona played at a different volume.</p>
+        <div class="highlight">Fix: a per-persona cache keyed by <code>md5(voice+instructions+text)</code>. If the file exists, it just runs <code>afplay</code> (0 API calls, $0); if not, it generates once and saves. Every clip is normalized with <code>ffmpeg loudnorm</code> to <strong>-16 LUFS</strong> so they play at the same volume (without ffmpeg it skips this step and still works).</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Design Decisions ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Define</span>
+      <h2>Deliberate design decisions</h2>
+      <p>What I chose not to build matters as much as what I built</p>
+    </section>
+    <figure class="shot"><img src="img/ms-gear-unsplash.jpg" width="1400" height="933" loading="lazy" alt="A 5-speed H-pattern car gear knob with reverse"><figcaption>UI inspiration: the H-pattern gear stick, which everyone knows how to use without a manual · Photo: Alok Sharma / Unsplash</figcaption></figure>
+
+
+    <div class="quote-block" style="margin-bottom: 24px;">
+      <p>This tool does one job: switch models faster and show the state visually. It doesn't replace Claude Code's built-in <code>/model</code> picker (its value is "faster, visual, no flags to remember"), the sync only reads from the transcript and never writes back, and no data leaves the machine. A clear scope from the start meant a direct implementation that's easy to maintain.</p>
+    </div>
+
+    <div class="partner-grid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:24px;">
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg></strong><br>
+        <strong>Sends the command, doesn't replace the picker</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Its value is speed and visibility, not filling a missing feature</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></strong><br>
+        <strong>Read-only sync</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Reads the transcript for display, never writes back or touches the session</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg></strong><br>
+        <strong>Mute = one flag file</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Controls every hook with a single file, no restart needed</p>
+      </div>
+      <div class="learning-card" style="text-align:center; padding:20px;">
+        <strong style="font-size:1.5rem;"><svg class="ico-i" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-0.15em;"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg></strong><br>
+        <strong>Zero npm dependency</strong>
+        <p style="font-size:0.85rem; color:#475569; margin-top:4px;">Vanilla JS + Bun: edit the UI in one file, no build step</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Knowledge Domain Level Up ===== -->
+    <section class="section-intro">
+      <span class="eyebrow">Level Up &middot; Reflect</span>
+      <h2>Knowledge domains that got stronger</h2>
+      <p>5 areas where my skills actually moved up through this project</p>
+    </section>
+    <figure class="shot"><img src="img/ms-jsonl.jpg" width="1600" height="542" loading="lazy" alt="Sample structure of an assistant line in a Claude Code transcript jsonl file: model and usage tokens"><figcaption>What I had to learn to read: <code>message.model</code> and token usage in the <code>*.jsonl</code> transcript (sample values)</figcaption></figure>
+
+
+    <div class="learning-card">
+      <strong>1. VS Code extension development: from "using extensions" to "writing one":</strong>
+      <p>I learned activity bar view containers and webview providers, messaging between the extension host and the webview, using <code>vscode.window.activeTerminal.sendText()</code> to send commands to the terminal, reading and writing files with <code>fs</code>, and packaging a <code>.vsix</code> to install permanently in Cursor. From zero to a complete, working extension. Lesson: a webview is just HTML/JS, but you have to think the host↔view boundary through.</p>
+    </div>
+    <div class="learning-card">
+      <strong>2. Terminal automation without an API: sending commands across boundaries:</strong>
+      <p>I learned that when a tool has no API for outside control, you can still integrate by "typing" commands into the terminal. <code>sendText</code> (VS Code) and <code>tmux send-keys</code> are two patterns of the same idea. Lesson: automation doesn't always have to wait for an official API, but you have to accept that it's one-way and design a separate sync.</p>
+    </div>
+    <div class="learning-card">
+      <strong>3. Claude Code internals: reading every field of the transcript:</strong>
+      <p>I learned the structure of session <code>*.jsonl</code> files: <code>message.model</code> gives the actual model, token usage is split into <code>input / cache_read / cache_creation</code>, and the Stop hook fires when a task finishes. I used these for both the gear sync and the context gauge. Lesson: Claude Code's state can be read from files, if you know where to look.</p>
+    </div>
+    <div class="learning-card">
+      <strong>4. Shell / audio pipeline: building a sound system with controlled cost:</strong>
+      <p>I wrote bash hooks that source a shared library, connected OpenAI TTS (<code>gpt-4o-mini-tts</code>) with an offline fallback (<code>say</code>), cached by <code>md5</code> hash to avoid repeat API calls, and normalized loudness with <code>ffmpeg loudnorm</code> → -16 LUFS. Lesson: caching plus a fallback lets a feature that depends on an external API degrade gracefully and cheaply.</p>
+    </div>
+    <div class="learning-card">
+      <strong>5. Injection-safe command building: untrusted input must be sanitized:</strong>
+      <p>I practiced whitelisting with regex before using values to build shell/terminal commands, and used <code>Bun.$</code>, which escapes automatically, instead of concatenating strings. Lesson: every place input flows into a command is a place to think about injection, and the right validate + escape pattern prevents it.</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">2</div>
+        <div class="label">surface — VS Code extension + Web/tmux</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">6</div>
+        <div class="label">Models on the gear stick (1–5 + R)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">17</div>
+        <div class="label">Task-done voice personas (random)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">0</div>
+        <div class="label">npm dependency</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <h2>Model Shift</h2>
+    <p>A VS Code / Cursor extension that turns typing <code>/model</code> into shifting a gear stick: switch Claude Code models instantly, see the state visually, and mute task-done sounds with one switch. Built with vanilla JS + Bun, no npm dependencies, and no data leaves the machine.</p>
+    <div class="stack-icons">
+      <span class="stack-icon">VS Code Extension API</span>
+      <span class="stack-icon">Webview</span>
+      <span class="stack-icon">Bun.serve</span>
+      <span class="stack-icon">tmux</span>
+      <span class="stack-icon">Shell hooks</span>
+      <span class="stack-icon">TTS</span>
+      <span class="stack-icon">Web Audio</span>
+      <span class="stack-icon">Vanilla JS</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.work/">&#8592; Back to all projects</a>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "ModelSwitcher Portfolio",
+      "item": "https://projects.tanplanet.work/model-switcher-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>

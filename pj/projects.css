@@ -1,0 +1,108 @@
+/* หน้า "ผลงาน" ของ myfolio — การ์ดชุดเดียวกับ projects.tanplanet.work ในโทนหน้าบ้าน (tokens.css) */
+.pj-head { max-width: 640px; margin-bottom: 32px; }
+.pj-title { margin: 0 0 12px; font-family: var(--tp-font-display); font-size: 48px; line-height: 1.15; color: var(--tp-text); }
+.pj-lead { margin: 0; font-size: 17px; line-height: 1.7; color: var(--tp-text-3); }
+.pj-search { position: relative; margin-bottom: 20px; }
+.pj-search svg { position: absolute; left: 18px; top: 50%; width: 20px; height: 20px; transform: translateY(-50%); color: var(--tp-text-4); pointer-events: none; }
+.pj-search input { width: 100%; height: 56px; padding: 0 20px 0 50px; border: 1px solid var(--tp-border-strong); border-radius: 16px; background: var(--tp-surface); font: inherit; font-size: 16px; color: var(--tp-text); box-shadow: var(--tp-shadow-sm); }
+.pj-search input:focus { outline: 2px solid var(--tp-text); outline-offset: 1px; }
+.pj-bar { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+.pj-chips { display: flex; gap: 8px; flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.pj-chips::-webkit-scrollbar { display: none; }
+.pj-chip { flex: none; height: 36px; padding: 0 16px; border: 1px solid var(--tp-border-strong); border-radius: 999px; background: var(--tp-surface); font: inherit; font-size: 14px; font-weight: 500; color: var(--tp-text-3); cursor: pointer; }
+.pj-chip:hover { color: var(--tp-text); border-color: var(--tp-text); }
+.pj-chip.on { background: var(--tp-text); border-color: var(--tp-text); color: var(--tp-on-brand); }
+.pj-count { flex: none; font-size: 14px; color: var(--tp-text-4); }
+.pj-count b { color: var(--tp-text); font-weight: 600; }
+.pj-views { flex: none; display: flex; border: 1px solid var(--tp-border-strong); border-radius: 10px; overflow: hidden; }
+.pj-view { display: grid; place-items: center; width: 40px; height: 36px; border: 0; background: var(--tp-surface); color: var(--tp-text-4); cursor: pointer; }
+.pj-view + .pj-view { border-left: 1px solid var(--tp-border-strong); }
+.pj-view.on { background: var(--tp-text); color: var(--tp-on-brand); }
+.pj-view svg { width: 16px; height: 16px; }
+
+.pj-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.pj .card { position: relative; display: flex; flex-direction: column; background: var(--tp-surface); border: 1px solid var(--tp-border); border-radius: 16px; overflow: hidden; color: inherit; text-decoration: none; transition: transform .25s, border-color .25s, box-shadow .25s; }
+.pj .card:hover { transform: translateY(-3px); border-color: var(--tp-border-strong); box-shadow: var(--tp-shadow-md); }
+.pj .card[hidden] { display: none; }
+.pj .card-visual { position: relative; height: 160px; display: flex; align-items: center; justify-content: center; background: var(--tp-surface-2); overflow: hidden; }
+.pj .card-visual .icon { display: inline-flex; color: var(--tp-text); }
+.pj .card-visual .icon svg { width: 46px; height: 46px; }
+.pj .card-visual .icon img { display: block; width: 64px; height: 64px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.pj .badge-new { display: none; position: absolute; top: 12px; right: 12px; padding: 3px 10px; border-radius: 999px; background: var(--tp-text); color: var(--tp-on-brand); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.pj .card.is-new .badge-new { display: block; }
+.pj .card-body { flex: 1; display: flex; flex-direction: column; padding: 20px 24px 24px; }
+.pj .card-type { margin-bottom: 8px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--tp-text-3); }
+.pj .card h3 { margin: 0 0 8px; font-size: 18px; line-height: 1.4; color: var(--tp-text); }
+.pj .card p { flex: 1; margin: 0; font-size: 15px; line-height: 1.65; color: var(--tp-text-3); }
+.pj .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+.pj .tag { padding: 4px 10px; border-radius: 6px; background: var(--tp-surface-2); border: 1px solid var(--tp-border); font-size: 12px; color: var(--tp-text-3); }
+.pj .card-footer { display: flex; align-items: center; gap: 8px; padding: 14px 24px; border-top: 1px solid var(--tp-border); font-size: 13px; color: var(--tp-text-3); }
+.pj .card-footer svg { flex: none; width: 14px; height: 14px; }
+/* พื้นปกการ์ดตามสีเดิมของแต่ละงาน (อ่อน) — ตัวหนังสือ/ป้ายเป็นขาวดำตามหน้าบ้าน */
+.pj .card--magenta .card-visual { background: linear-gradient(135deg, #fdf2f8, #fce7f3); }
+.pj .card--blue .card-visual { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+.pj .card--cyan .card-visual { background: linear-gradient(135deg, #ecfeff, #cffafe); }
+.pj .card--green .card-visual { background: linear-gradient(135deg, #ecfdf5, #d1fae5); }
+.pj .card--orange .card-visual { background: linear-gradient(135deg, #fff7ed, #ffedd5); }
+.pj .card--purple .card-visual { background: linear-gradient(135deg, #f5f3ff, #ede9fe); }
+.pj .card--yellow .card-visual { background: linear-gradient(135deg, #fefce8, #fef9c3); }
+.pj .card--red .card-visual { background: linear-gradient(135deg, #fef2f2, #fee2e2); }
+.pj .card--gold .card-visual { background: linear-gradient(135deg, #fdf8ef, #f5e6c8); }
+
+/* มุมมองรายการ */
+.pj-grid.is-list { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.pj-grid.is-list .card { flex-direction: row; }
+.pj-grid.is-list .card-visual { width: 140px; height: auto; min-height: 120px; flex: none; }
+.pj-grid.is-list .card-body { padding: 18px 24px; }
+.pj-grid.is-list .card-footer { width: 240px; flex: none; border-top: 0; border-left: 1px solid var(--tp-border); }
+
+.pj-empty { padding: 64px 24px; text-align: center; border: 1px dashed var(--tp-border-strong); border-radius: 20px; background: var(--tp-surface-2); color: var(--tp-text-3); }
+.pj-empty-t { margin: 0 0 6px; font-size: 18px; font-weight: 600; color: var(--tp-text); }
+.pj-empty p { margin: 0; }
+
+@media (max-width: 991px) { .pj-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pj-grid.is-list .card-footer { display: none; } }
+@media (max-width: 640px) {
+  .pj-title { font-size: 36px; }
+  .pj-grid { grid-template-columns: minmax(0, 1fr); }
+  .pj-bar { flex-wrap: wrap; }
+  .pj-chips { flex-basis: 100%; order: 1; }
+  .pj-count { margin-right: auto; }
+  .pj-grid.is-list .card-visual { width: 88px; min-height: 0; }
+  .pj-grid.is-list .card-visual .icon svg { width: 32px; height: 32px; }
+  .pj-grid.is-list .card p, .pj-grid.is-list .card-tags { display: none; }
+}
+.pj-empty-ico { display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%; background: var(--tp-surface); color: var(--tp-text); box-shadow: var(--tp-shadow-sm); }
+.pj-empty-ico svg { width: 28px; height: 28px; }
+.pj mark { background: #fde68a; color: inherit; border-radius: 3px; padding: 0 1px; }
+.pj .card-match { margin-top: 12px; font-size: 12px; color: var(--tp-text-3); }
+.pj .card-footer { line-height: 1.45; }
+.pj .card-footer span { min-width: 0; }
+.pj-grid.is-list .card-footer { align-items: center; }
+.pj .tag { line-height: 1.4; }
+.pj .card.pj-off { display: none; }
+.pj-bar { scroll-margin-top: 110px; }
+.pj-pager { display: flex; justify-content: center; gap: 8px; margin-top: 40px; }
+.pj-pager:empty { display: none; }
+.pj-pg { min-width: 40px; height: 40px; padding: 0 12px; border: 1px solid var(--tp-border-strong); border-radius: 999px; background: var(--tp-surface); font: inherit; font-size: 14px; font-weight: 500; color: var(--tp-text-2); cursor: pointer; }
+.pj-pg:hover:not(:disabled) { border-color: var(--tp-text); color: var(--tp-text); }
+.pj-pg.on { background: var(--tp-text); border-color: var(--tp-text); color: var(--tp-on-brand); }
+.pj-pg:disabled { opacity: .35; cursor: default; }
+.pj-pg-nav { font-size: 18px; }
+/* ระยะหัวเพจให้ตรงหน้าบล็อก (ออดิท) */
+.pj-head { margin-bottom: 32px; }
+.pj-lead { margin-top: 12px; }
+.pj-title { margin-bottom: 0; }
+.pj-search { margin-bottom: 16px; }
+.pj-bar { margin-bottom: 32px; }
+/* การ์ดที่มีปกจาก engine (tools/cover) */
+.pj .card-visual.has-cover { height: auto; aspect-ratio: 16 / 9; }
+.pj .card-visual.has-cover .card-cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.pj .card-visual.has-cover .icon { display: none; }
+.pj-grid.is-list .card-visual.has-cover { aspect-ratio: auto; }
+/* มุมมองรายการ + ปก: ปกคง 16:9 ชิดบน ไม่ยืดตามความสูงการ์ด (เดิมถูก crop) */
+.pj-grid.is-list .card-visual.has-cover { width: 280px; height: auto; min-height: 0; aspect-ratio: 16 / 9; align-self: flex-start; margin: 16px 0 16px 16px; border-radius: 10px; }
+@media (max-width: 640px) {
+  .pj-grid.is-list .card { flex-wrap: wrap; }
+  .pj-grid.is-list .card-visual.has-cover { width: calc(100% - 32px); margin: 16px 16px 0; }
+}
+.pj-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }  /* หัวข้อ h2 สำหรับ screen reader (ลำดับหัวข้อ h1 → h2 → h3) */

@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Motion Graphics — storytelling techniques for YouTube videos</title>
+  <meta name="description" content="Portfolio: motion graphics for YouTube videos, cut into short clips one technique at a time: document zooms, counting numbers, stacked headlines, and 2.5D Thai mural-style scenes with a moving camera. Built with Remotion.">
+  <meta property="og:title" content="Motion Graphics — storytelling techniques for YouTube videos">
+  <meta property="og:description" content="Portfolio: motion graphics for YouTube videos, cut into short clips one technique at a time: document zooms, counting numbers, stacked headlines, and 2.5D Thai mural-style scenes with a moving camera. Built with Remotion.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://projects.tanplanet.work/motion-reel-portfolio/">
+  <meta property="og:image" content="https://projects.tanplanet.work/motion-reel-portfolio/clips/jar-dive.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Motion Graphics — storytelling techniques for YouTube videos">
+  <meta name="twitter:description" content="Portfolio: motion graphics for YouTube videos, cut into short clips one technique at a time: document zooms, counting numbers, stacked headlines, and 2.5D Thai mural-style scenes with a moving camera. Built with Remotion.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0f1f'/><rect x='18' y='26' width='64' height='48' rx='8' fill='none' stroke='%23f59e0b' stroke-width='6'/><path d='M44 40l16 10-16 10z' fill='%23f59e0b'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #fdfbf6;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-secondary: #57534e;
+      --text-muted: #a8a29e;
+      --border: #e7e5e4;
+      --accent: #b45309;
+      --accent-light: #fef3c7;
+      --accent-dark: #78350f;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --emerald-dark: #047857;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --orange: #ea580c;
+      --orange-light: #ffedd5;
+      --red: #e11d48;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+      --teal: #0d9488;
+      --teal-light: #ccfbf1;
+      --navy: #0a0f1f;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'SF Mono', ui-monospace, Menlo, monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #0a0f1f 0%, #121b36 40%, #3f2d12 78%, #78350f 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 70% 30%, rgba(251,191,36,0.20) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(34,48,86,0.55) 0%, transparent 50%);
+      animation: sway 10s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-20px, 15px); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #78350f, #f59e0b, #fde68a);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: #fff;
+      font-size: 2.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .accent { color: #fcd34d; }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-primary {
+      background: #fff;
+      color: var(--accent-dark);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    }
+    .cta-primary:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.25); }
+    .cta-ghost {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.28);
+    }
+    .cta-ghost:hover { background: rgba(255,255,255,0.2); }
+
+    /* ===== Main ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section-intro { padding: 56px 0 32px; }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 3px 12px;
+      border-radius: 50px;
+      margin-bottom: 12px;
+    }
+    .section-intro h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 8px; }
+    .section-intro p { color: var(--text-secondary); font-size: 1rem; }
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+    code {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 0.86em;
+      font-family: var(--mono);
+    }
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #0a0f1f, #223056);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block code { background: rgba(255,255,255,0.14); color: #fcd34d; }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.18;
+      font-family: Georgia, serif;
+    }
+    .quote-block p { font-size: 1.05rem; line-height: 1.7; position: relative; z-index: 1; }
+    .quote-block .author { margin-top: 12px; font-size: 0.82rem; opacity: 0.78; }
+
+    /* ===== Pain / Solution Cards ===== */
+    .pain-grid, .solution-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .pain-card, .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .pain-card { border-left: 4px solid var(--red); }
+    .solution-card { border-left: 4px solid var(--accent); }
+    .pain-card .emoji, .solution-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .pain-card h3, .solution-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .pain-card p, .solution-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* ===== Module Cards ===== */
+    .module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(180,83,9,0.14);
+      border-color: var(--accent);
+    }
+    .module-card .emoji { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+    .module-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--accent-dark); }
+    .module-card p { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
+    /* ===== Flow Steps ===== */
+    .flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .flow-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .flow-step .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .flow-step .emoji { font-size: 1.5rem; display: block; margin-bottom: 6px; }
+    .flow-step h4 { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-step p { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.ux::before { background: var(--accent-light); color: var(--accent-dark); }
+    .hack-card.perf::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.arch::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card.platform::before { background: var(--emerald-light); color: var(--emerald-dark); }
+    .hack-card.precision::before { background: var(--purple-light); color: var(--purple); }
+    .hack-card.devops::before { background: var(--teal-light); color: var(--teal); }
+    .hack-card .emoji { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+    .hack-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; padding-right: 110px; }
+    .hack-card p { color: var(--text-secondary); font-size: 0.9rem; }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), #f59e0b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong { color: var(--accent-dark); }
+    .learning-card p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+
+    /* ===== Arch Diagram ===== */
+    .arch-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .arch-layers { display: flex; flex-direction: column; gap: 12px; max-width: 560px; margin: 0 auto; }
+    .arch-layer { padding: 14px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; }
+    .arch-layer.users { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(180,83,9,0.25); }
+    .arch-layer.platform { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: #fff; font-size: 1rem; padding: 20px; }
+    .arch-layer.services { background: var(--emerald-light); color: var(--emerald-dark); border: 1px solid rgba(16,185,129,0.3); }
+    .arch-layer.infra { background: var(--navy); color: #cbd5e1; border: 1px solid #223056; }
+    .arch-arrow { text-align: center; color: var(--text-muted); font-size: 1.2rem; line-height: 1; }
+    .arch-sub { display: flex; justify-content: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .arch-sub span {
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .arch-layer.infra .arch-sub span { background: rgba(255,255,255,0.10); }
+
+    /* ===== Device Mockup (320x480 @ scale) ===== */
+    .dev-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .dev-frame {
+      width: 348px;
+      max-width: 100%;
+      background: #1a1a1c;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 14px 40px rgba(10,15,31,0.35);
+    }
+    .dev-screen {
+      background: var(--navy);
+      border-radius: 6px;
+      overflow: hidden;
+      color: #f2f5ff;
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+    .dev-hero {
+      background: #121b36;
+      padding: 12px 14px 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .dev-clock { font-size: 2.4rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+    .dev-date { color: #8492bc; font-size: 0.72rem; margin-top: 4px; }
+    .dev-hero-right { text-align: right; font-size: 0.72rem; color: #8492bc; }
+    .dev-hero-right .t { color: #f2f5ff; font-size: 1.05rem; font-weight: 600; }
+    .dev-list { padding: 8px; display: flex; flex-direction: column; gap: 7px; }
+    .dev-card {
+      background: #161f3c;
+      border-radius: 8px;
+      padding: 9px 11px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dev-card .body { flex: 1; min-width: 0; }
+    .dev-card .ttl { color: #8492bc; font-size: 0.68rem; letter-spacing: 0.02em; }
+    .dev-card .val { font-size: 0.95rem; font-weight: 600; }
+    .dev-card .sub { color: #8492bc; font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dev-card .up { color: #4ade80; }
+    .dev-card .warn { color: #fbbf24; }
+    .dev-card .down { color: #f87171; }
+    .dev-blob {
+      width: 42px;
+      height: 34px;
+      border-radius: 6px;
+      background: #223056;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .dev-bar { height: 5px; border-radius: 3px; background: #223056; margin-top: 6px; overflow: hidden; }
+    .dev-bar i { display: block; height: 100%; background: #fbbf24; }
+    .dev-caption { font-size: 0.8rem; color: var(--text-secondary); text-align: center; max-width: 420px; }
+
+    /* ===== Closing ===== */
+
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(10,15,31,0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(10,15,31,0.96); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .module-grid { grid-template-columns: 1fr; }
+      .flow-grid { grid-template-columns: repeat(2, 1fr); }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .arch-sub { gap: 4px; }
+      .hack-card h3 { padding-right: 90px; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* ===== Clips (เฉพาะหน้านี้) — คลิปสั้นเล่นวนเองเมื่อเลื่อนมาเห็น ===== */
+    .clip-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 16px; margin-top: 8px; }
+    @media (min-width: 720px) { .clip-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    .clip { display: grid; gap: 8px; align-content: start; }
+    .clip video { width: 100%; max-width: 100%; aspect-ratio: 16 / 9; display: block; border-radius: 10px; background: var(--navy); box-shadow: 0 0 0 1px var(--border); cursor: pointer; }
+    .clip figcaption { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; }
+    .clip figcaption b { display: block; color: var(--text); font-weight: 600; font-size: 0.9rem; }
+    /* ===== Figures (ภาพประกอบเซกชัน) ===== */
+    .shot { margin: 8px 0 32px; }
+    .shot img { display: block; width: 100%; height: auto; border-radius: var(--radius, 12px); box-shadow: 0 0 0 1px var(--border, #e7e5e4), 0 12px 32px rgba(0,0,0,.08); }
+    .shot figcaption { margin-top: 10px; font-size: .82rem; color: var(--text-secondary, #57534e); text-align: center; line-height: 1.6; }
+    .shot-pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+    .shot-pair .lbl { display: block; margin-top: 8px; font-size: .78rem; font-weight: 600; color: var(--text); text-align: center; }
+    @media (max-width: 639px) { .shot-pair { grid-template-columns: 1fr; } }
+  </style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/motion-reel-portfolio/">
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-mark"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m10 9 5 3-5 3z"/></svg></div>
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Remotion &middot; AI Art Direction &middot; 2.5D Motion
+      </div>
+      <h1>Motion Graphics for YouTube<br><span class="accent">Telling hard stories in YouTube videos so people watch to the end</span></h1>
+      <p>Explainer videos built from still images and narration lose viewers in the first second. This set uses motion to carry the story: Thai mural-style scenes with a moving camera, number cards, and stacked news headlines. It is built as a system so every episode comes out in the same style.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Remotion</span>
+        <span class="hero-tag">2.5D Animation</span>
+        <span class="hero-tag">Kinetic Typography</span>
+        <span class="hero-tag">AI Image</span>
+        <span class="hero-tag">Thai TTS</span>
+        <span class="hero-tag">Art Direction</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-primary" href="#long">See the work &#8595;</a>
+        <a class="cta-btn cta-ghost" href="#jar">2.5D scenes</a>
+      </div>
+    </div>
+  </header>
+
+  <article>
+
+    <section class="section-intro">
+      <span class="eyebrow">Empathize &middot; Define</span>
+      <h2>Explainer videos don't lose on content. They lose on the first frame</h2>
+      <p>However good the content is, if the picture doesn't move, viewers leave before the interesting part.</p>
+    </section>
+
+    <figure class="shot">
+      <div class="shot-pair">
+        <div><img src="img/still-frame.jpg" width="1200" height="676" loading="lazy" alt="A single Thai mural-style painting of a clay jar full of silver bars buried underground among tree roots, shown as a still image with no motion"><span class="lbl">One still image</span></div>
+        <div><img src="img/motion-frames.jpg" width="1200" height="676" loading="lazy" alt="Four frames from the same scene with a moving camera: it starts on a field, dives through the grass and underground, and ends on the jar full of silver bars"><span class="lbl">The same scene, with the camera telling the story</span></div>
+      </div>
+      <figcaption>The same image from &ldquo;The Silver Jar Underground&rdquo; &mdash; left is the version viewers scroll past, right is four frames from the clip where the camera dives down to the jar. Viewers see the answer before the narrator says it.</figcaption>
+    </figure>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        <h3>Stills and text get scrolled past</h3>
+        <p>A still image with narration over it looks like a slide. Viewers leave before the story gets going.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h16"/><path d="M4 15h16"/><path d="M10 3 8 21"/><path d="M16 3l-2 18"/></svg>
+        <h3>Key numbers pass too fast to remember</h3>
+        <p>A comparison like "500,000 baht a month versus 16 billion baht", if only spoken, never lets viewers see how big the gap really is.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+        <h3>AI images that look like AI</h3>
+        <p>Undirected AI images all look alike. Viewers spot them right away and stop trusting the content too.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+        <h3>Designing per episode means no consistent style</h3>
+        <p>Redesigning every episode leaves the channel without its own look, and each video takes too long to keep up a regular schedule.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="long">
+      <span class="eyebrow">Prototype</span>
+      <h2>Reusable techniques &mdash; documents, numbers and type</h2>
+      <p>Short clips, one technique each, cut from the long-form videos of the ShotDeck project. Each one is a template: swap the content and it works for a new episode.</p>
+    </section>
+
+    <div class="clip-grid">
+      <figure class="clip">
+        <video src="clips/doc-zoom.mp4" poster="clips/doc-zoom.jpg" muted loop playsinline preload="none" aria-label="Document zoom"></video>
+        <figcaption><b>Document zoom</b>Pulls up an old newspaper, then highlights the line being cited</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/count-up.mp4" poster="clips/count-up.jpg" muted loop playsinline preload="none" aria-label="Count-up number"></video>
+        <figcaption><b>Count-up number</b>The number counts up and ends with a highlight bar</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/compare.mp4" poster="clips/compare.jpg" muted loop playsinline preload="none" aria-label="Then-and-now comparison"></video>
+        <figcaption><b>Then-and-now comparison</b>Left and right come in one side at a time to show how far apart they are</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/stats.mp4" poster="clips/stats.jpg" muted loop playsinline preload="none" aria-label="Multi-stat panel"></video>
+        <figcaption><b>Multi-stat panel</b>Three figures appear in time with the narration</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/quote.mp4" poster="clips/quote.jpg" muted loop playsinline preload="none" aria-label="Pull quote"></video>
+        <figcaption><b>Pull quote</b>Underlines the key sentence, then shows who said it</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/headlines.mp4" poster="clips/headlines.jpg" muted loop playsinline preload="none" aria-label="Stacked headlines"></video>
+        <figcaption><b>Stacked headlines</b>Headlines from different years layered like clippings</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/title.mp4" poster="clips/title.jpg" muted loop playsinline preload="none" aria-label="Opening title"></video>
+        <figcaption><b>Opening title</b>Text appears word by word, then the key word is highlighted</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/cutout.mp4" poster="clips/cutout.jpg" muted loop playsinline preload="none" aria-label="Cutout + callout labels"></video>
+        <figcaption><b>Cutout + callout labels</b>An old painting moves in, then name labels point to each figure</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/portrait.mp4" poster="clips/portrait.jpg" muted loop playsinline preload="none" aria-label="Person card"></video>
+        <figcaption><b>Person card</b>Portrait, name and title appear together</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/cartoon.mp4" poster="clips/cartoon.jpg" muted loop playsinline preload="none" aria-label="Old cartoon zoom"></video>
+        <figcaption><b>Old cartoon zoom</b>The camera slowly zooms in and circles the word that matters</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/ep-card.mp4" poster="clips/ep-card.jpg" muted loop playsinline preload="none" aria-label="Episode card"></video>
+        <figcaption><b>Episode card</b>Change the episode number and title and it is ready</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/intro.mp4" poster="clips/intro.jpg" muted loop playsinline preload="none" aria-label="Channel intro"></video>
+        <figcaption><b>Channel intro</b>An opening title reused in every episode</figcaption>
+      </figure>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="jar">
+      <span class="eyebrow">Prototype</span>
+      <h2>2.5D scenes &mdash; Thai mural paintings with a moving camera</h2>
+      <p>From "The Silver Jar Underground": one visual style for the whole story, with the camera doing the telling.</p>
+    </section>
+
+    <div class="clip-grid">
+      <figure class="clip">
+        <video src="clips/jar-dive.mp4" poster="clips/jar-dive.jpg" muted loop playsinline preload="none" aria-label="Camera dives underground"></video>
+        <figcaption><b>Camera dives underground</b>From the open field down to the buried silver jar</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/crowd.mp4" poster="clips/crowd.jpg" muted loop playsinline preload="none" aria-label="Lottery-house crowd"></video>
+        <figcaption><b>Lottery-house crowd</b>A crowded scene where the whole frame still moves</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/boat.mp4" poster="clips/boat.jpg" muted loop playsinline preload="none" aria-label="Morning canal"></video>
+        <figcaption><b>Morning canal</b>The camera tracks a boat along the canal</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/tiles.mp4" poster="clips/tiles.jpg" muted loop playsinline preload="none" aria-label="Chinese character tiles"></video>
+        <figcaption><b>Chinese character tiles</b>A pan across the tile boards in the lottery hall</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/dream.mp4" poster="clips/dream.jpg" muted loop playsinline preload="none" aria-label="The dream"></video>
+        <figcaption><b>The dream</b>Clouds and dream images float around the character</figcaption>
+      </figure>
+      <figure class="clip">
+        <video src="clips/burden.mp4" poster="clips/burden.jpg" muted loop playsinline preload="none" aria-label="The burden"></video>
+        <figcaption><b>The burden</b>A figure carries a stack of paper through a storm</figcaption>
+      </figure>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="how">
+      <span class="eyebrow">Prototype</span>
+      <h2>How it works &mdash; 5 steps from script to a clip ready to post</h2>
+      <p>The parts that need a human eye, I do myself. The repetitive parts go to the machine.</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/remotion-studio.jpg" width="1440" height="900" loading="lazy" alt="Remotion Studio previewing the silver jar scene full screen, with a timeline below where that scene's clip follows other shots and the red playhead stopped at second 12">
+      <figcaption>Step 03 on the real screen &mdash; Remotion Studio with the project's actual composition, paused on the underground dive. Scrub the playhead to preview without rendering.</figcaption>
+    </figure>
+
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg>
+        <h4>Script and narration</h4>
+        <p>Record the Thai voiceover line by line, then transcribe it back to check every word was read correctly before laying in visuals.</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+        <h4>Direct the visuals as one set</h4>
+        <p>Lock the visual style for the whole story first, then generate each scene to match, color-grade them together, and reject anything that looks obviously AI.</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/></svg>
+        <h4>Compose in Remotion Studio</h4>
+        <p>Time the cards, text and camera moves to the audio, with a live preview and no render needed.</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="8" x="2" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6 6h.01"/><path d="M6 18h.01"/></svg>
+        <h4>Render on an always-on machine</h4>
+        <p>Renders are sent to a home server. A clip of about 1 minute takes around 8 minutes, and I can keep working in the meantime.</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+        <h4>Check before release</h4>
+        <p>Check that text stays inside the safe area, no frames flicker, and every line has the same loudness before it goes into the posting queue.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <section class="section-intro" id="hacks">
+      <span class="eyebrow">Test &amp; Iterate</span>
+      <h2>Four lessons from cutting real videos</h2>
+      <p>Most came from watching finished clips and feeling "not quite there yet".</p>
+    </section>
+
+    <figure class="shot">
+      <img src="img/scene-sheet.jpg" width="1200" height="506" loading="lazy" alt="Twelve painted scenes from The Silver Jar Underground in a grid: the silver jar, a riverside market, the lottery hall, the Chinese character boards, a ministry, the dream, and a figure carrying stacks of paper. All share the same warm palette and Thai mural linework">
+      <figcaption>12 of the 13 scenes from &ldquo;The Silver Jar Underground&rdquo; side by side &mdash; the result of locking the style before generating the first image, so color, linework and paper texture match across the whole story.</figcaption>
+    </figure>
+
+    <div class="hack-grid">
+
+      <div class="hack-card" data-label="Shot selection">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>The prettiest shot isn't always the best shot</span></h3>
+        <p>The first showreel used shots with nice images and clear text, but cut together they looked like slides. Nothing said this was motion work.</p>
+        <div class="highlight"><strong>Fix:</strong> pick moments <strong>where something happens</strong>, like a document being pulled up and highlighted, a number counting up, or the camera diving, and cut so each clip reaches the moment that pays the viewer off.</div>
+      </div>
+
+      <div class="hack-card" data-label="Pacing">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>The camera moves most at the start of a scene</span></h3>
+        <p>Most painted scenes move the camera hardest early on, then slow down. Cutting from the middle gets you only the near-still part.</p>
+        <div class="highlight"><strong>Fix:</strong> <strong>cut in from the first second of the scene</strong> to get the full motion, and cut out before the image settles.</div>
+      </div>
+
+      <div class="hack-card" data-label="Art direction">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>Each scene looked good, but together they weren't one story</span></h3>
+        <p>Generating scenes one at a time with no shared rules produced images with such different colors and linework that it felt like watching different stories.</p>
+        <div class="highlight"><strong>Fix:</strong> <strong>lock the style before the first image</strong> (palette, linework and texture) and apply the same rules to every scene. All 13 scenes of The Silver Jar Underground now read as one set of paintings.</div>
+      </div>
+
+      <div class="hack-card" data-label="Thai voice">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg><span>The Thai voiceover mispronounced words and varied in loudness</span></h3>
+        <p>The synthetic voice misread proper names and some Thai words, and each line came out at a different volume, which made it jarring to listen to.</p>
+        <div class="highlight"><strong>Fix:</strong> keep a reusable <strong>pronunciation dictionary</strong>, <strong>transcribe every line back and compare it to the script</strong>, and normalize every line to the same loudness.</div>
+      </div>
+
+    </div>
+
+    <div class="metrics">
+      <div class="metric-card"><div class="num">12</div><div class="label">techniques turned into reusable templates</div></div>
+      <div class="metric-card"><div class="num">13</div><div class="label">painted scenes in The Silver Jar Underground</div></div>
+      <div class="metric-card"><div class="num">~8</div><div class="label">minutes to render a clip of about 1 minute</div></div>
+      <div class="metric-card"><div class="num">1080p</div><div class="label">source resolution for every piece</div></div>
+    </div>
+
+  </article>
+
+  <div class="closing">
+
+    <h2>Motion graphics for YouTube videos</h2>
+    <p>Motion that moves the story forward, not just decoration, built as templates so every episode takes less time and looks consistent.</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Remotion</span>
+      <span class="stack-icon">React</span>
+      <span class="stack-icon">AI Image</span>
+      <span class="stack-icon">Thai TTS</span>
+      <span class="stack-icon">Speech-to-text QA</span>
+      <span class="stack-icon">FFmpeg</span>
+    </div>
+    <div class="links">
+      <a href="https://projects.tanplanet.work/">&#8592; Back to all projects</a>
+    </div>
+  </div>
+
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+  })();
+  </script>
+  <script>
+  // คลิปสั้นเล่นวนเองเฉพาะตอนอยู่ในจอ · ผู้ใช้ที่ตั้งลดการเคลื่อนไหว ต้องกดเล่นเอง
+  (function(){
+    var vids=document.querySelectorAll('.clip video');
+    var still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    vids.forEach(function(v){ v.addEventListener('click',function(){ v.paused?v.play():v.pause(); }); });
+    if(still||!('IntersectionObserver' in window)) return;
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ e.isIntersecting?e.target.play().catch(function(){}):e.target.pause(); }); },{threshold:0.4});
+    vids.forEach(function(v){ v.preload='metadata'; io.observe(v); });
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type":"ListItem","position":1,"name":"Natpakan Sirirat — Portfolio","item":"https://projects.tanplanet.work/"},
+    {"@type":"ListItem","position":2,"name":"Motion graphics for YouTube videos","item":"https://projects.tanplanet.work/motion-reel-portfolio/"}
+  ]
+}
+</script>
+
+</body>
+</html>

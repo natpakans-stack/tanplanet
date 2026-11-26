@@ -60,18 +60,30 @@ def write_sitemap(items):
         "    <priority>1.0</priority>\n"
         "  </url>"
     ]
+    def alt(th, en):  # hreflang คู่ไทย/อังกฤษ (ใส่ทั้งในแถวไทยและแถวอังกฤษ)
+        return (f'    <xhtml:link rel="alternate" hreflang="th" href="{th}"/>\n'
+                f'    <xhtml:link rel="alternate" hreflang="en" href="{en}"/>\n'
+                f'    <xhtml:link rel="alternate" hreflang="x-default" href="{th}"/>\n')
+    rows[0] = rows[0].replace("  </url>", alt(BASE, BASE + "en/") + "  </url>")
+    rows.append(f"  <url>\n    <loc>{BASE}en/</loc>\n    <lastmod>{today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n{alt(BASE, BASE + 'en/')}  </url>")
     for it in items:
+        slug = it["path"].strip("/")
+        en_url = BASE + "en/" + slug + "/"
+        has_en = (ROOT / "en" / slug / "index.html").exists()
+        a = alt(it["url"], en_url) if has_en else ""
         rows.append(
             "  <url>\n"
             f"    <loc>{it['url']}</loc>\n"
             f"    <lastmod>{lastmod(it['path'])}</lastmod>\n"
             "    <changefreq>monthly</changefreq>\n"
             "    <priority>0.8</priority>\n"
-            "  </url>"
+            f"{a}  </url>"
         )
+        if has_en:
+            rows.append(f"  <url>\n    <loc>{en_url}</loc>\n    <lastmod>{lastmod('en/' + slug)}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n{a}  </url>")
     (ROOT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
         + "\n".join(rows)
         + "\n</urlset>\n"
     )

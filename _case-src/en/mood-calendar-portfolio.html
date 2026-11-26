@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood Calendar That Gets You — a mood journal that blends astrology with AI</title>
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Mood Calendar That Gets You — a mood journal that blends astrology with AI">
+  <meta name="twitter:description" content="Portfolio: Mood Calendar — a daily fortune app that pairs traditional fortune-telling with AI: birth-chart readings, tarot, Siam Si fortune sticks and dream interpretation">
+  <meta property="og:url" content="https://projects.tanplanet.work/mood-calendar-portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://projects.tanplanet.work/mood-calendar-portfolio/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:description" content="Portfolio: Mood Calendar — a daily fortune app that pairs traditional fortune-telling with AI: birth-chart readings, tarot, Siam Si fortune sticks and dream interpretation">
+  <meta property="og:title" content="Mood Calendar That Gets You — a mood journal that blends astrology with AI">
+  <meta name="description" content="Portfolio: Mood Calendar — a daily fortune app that pairs traditional fortune-telling with AI: birth-chart readings, tarot, Siam Si fortune sticks and dream interpretation">
+  <link rel="icon" type="image/png" href="https://framerusercontent.com/images/c0z2TLP8Vruh4UchIrSxQOCMIk.png?width=64&height=64">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&display=swap"></noscript>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --accent: #7c3aed;
+      --accent-light: #ede9fe;
+      --accent-dark: #6d28d9;
+      --accent-glow: rgba(124,58,237,0.15);
+      --pink: #ec4899;
+      --pink-light: #fce7f3;
+      --blue: #3b82f6;
+      --blue-light: #dbeafe;
+      --green: #10b981;
+      --green-light: #d1fae5;
+      --orange: #f97316;
+      --orange-light: #ffedd5;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --max-w: 780px;
+      --font: 'IBM Plex Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Hero ===== */
+    .hero {
+      background: linear-gradient(135deg, #1a1025 0%, #2d1b69 40%, #5b21b6 70%, #7c3aed 100%);
+      color: #fff;
+      padding: 100px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 60% 40%, rgba(236,72,153,0.12) 0%, transparent 50%),
+                  radial-gradient(circle at 30% 70%, rgba(124,58,237,0.15) 0%, transparent 50%);
+      animation: aurora 12s ease-in-out infinite alternate;
+    }
+    @keyframes aurora {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(-30px, 20px) rotate(3deg); }
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ec4899, #7c3aed, #3b82f6);
+    }
+
+    /* Stars */
+    .stars {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle var(--dur, 3s) ease-in-out infinite alternate;
+      opacity: 0;
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.1; transform: scale(0.5); }
+      50% { opacity: 0.8; transform: scale(1.2); }
+      100% { opacity: 0.2; transform: scale(0.8); }
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 20px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #fbbf24;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .hero h1 .glow {
+      background: linear-gradient(135deg, #ec4899, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.85;
+      max-width: 560px;
+      margin: 0 auto 24px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .hero-tag {
+      padding: 4px 14px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.75);
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-secondary {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+    }
+    .cta-secondary:hover { background: rgba(255,255,255,0.18); }
+
+    /* ===== Main Content ===== */
+    article {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section-intro {
+      padding: 56px 0 32px;
+    }
+    .section-intro h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-intro p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+
+    /* ===== Pain Point Cards ===== */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .pain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid #ef4444;
+    }
+    .pain-card .emoji {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .pain-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .pain-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* ===== Solution Cards ===== */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      border-left: 4px solid var(--accent);
+    }
+    .solution-card .emoji {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .solution-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .solution-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* ===== Hack Cards ===== */
+    .hack-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .hack-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hack-card::before {
+      content: attr(data-label);
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 3px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hack-card.workaround::before { background: var(--orange-light); color: var(--orange); }
+    .hack-card.creative::before { background: var(--accent-light); color: var(--accent); }
+    .hack-card.teamwork::before { background: var(--blue-light); color: var(--blue); }
+    .hack-card .emoji {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .hack-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      padding-right: 80px;
+    }
+    .hack-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    .hack-card .highlight {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    /* ===== Team Section ===== */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .team-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      text-align: center;
+    }
+    .team-card .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 auto 12px;
+    }
+    .team-card:nth-child(1) .avatar { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+    .team-card:nth-child(2) .avatar { background: linear-gradient(135deg, #ec4899, #f472b6); }
+    .team-card:nth-child(3) .avatar { background: linear-gradient(135deg, #3b82f6, #60a5fa); }
+    .team-card .name {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+    .team-card .tasks {
+      list-style: none;
+      padding: 0;
+    }
+    .team-card .tasks li {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      padding: 3px 0;
+    }
+    .team-card .tasks li::before {
+      content: '·';
+      margin-right: 6px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    /* ===== Collab Timeline ===== */
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--pink), var(--blue));
+      border-radius: 2px;
+    }
+    .timeline-item {
+      position: relative;
+      padding-bottom: 28px;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid var(--bg);
+    }
+    .timeline-item .week {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .timeline-item h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .timeline-item p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    /* ===== Tarot Card Flip ===== */
+    .tarot-section {
+      text-align: center;
+      padding: 40px 0;
+    }
+    .tarot-section .subtitle {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 32px;
+    }
+    .tarot-grid {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      perspective: 1200px;
+    }
+    .tarot-card {
+      width: 160px;
+      height: 240px;
+      cursor: pointer;
+      perspective: 800px;
+    }
+    .tarot-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+    }
+    .tarot-card.flipped .tarot-card-inner {
+      transform: rotateY(180deg);
+    }
+    .tarot-card-front, .tarot-card-back {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow: hidden;
+    }
+    .tarot-card-front {
+      background: linear-gradient(145deg, #1a1025, #2d1b69);
+      border: 2px solid rgba(124,58,237,0.3);
+      box-shadow: 0 4px 24px rgba(124,58,237,0.15);
+    }
+    .tarot-card-front::before {
+      content: '';
+      position: absolute;
+      top: 8px; left: 8px; right: 8px; bottom: 8px;
+      border: 1px solid rgba(167,139,250,0.2);
+      border-radius: 10px;
+      pointer-events: none;
+    }
+    .tarot-card-front .card-symbol {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 0 8px rgba(124,58,237,0.5));
+    }
+    .tarot-card-front .card-label {
+      font-size: 0.65rem;
+      color: rgba(167,139,250,0.6);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .tarot-card-back {
+      background: linear-gradient(145deg, #faf5ff, #ede9fe);
+      border: 2px solid var(--accent);
+      transform: rotateY(180deg);
+      text-align: center;
+    }
+    .tarot-card-back .card-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      color: var(--accent);
+      display: inline-flex;
+    }
+    .tarot-card-back .card-icon svg { width: 32px; height: 32px; }
+    .tarot-card-back .card-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent-dark);
+      margin-bottom: 4px;
+    }
+    .tarot-card-back .card-desc {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+    .tarot-hint {
+      margin-top: 20px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* Shimmer on hover */
+    .tarot-card:not(.flipped) .tarot-card-front::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      transition: left 0.6s ease;
+    }
+    .tarot-card:not(.flipped):hover .tarot-card-front::after {
+      left: 120%;
+    }
+
+    /* ===== Feature Grid ===== */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .feature-card .emoji {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .feature-card h3 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .feature-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    /* ===== Learning Cards ===== */
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .learning-card strong {
+      color: var(--accent-dark);
+    }
+    .learning-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* ===== Metrics ===== */
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .metric-card .label {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* ===== Closing ===== */
+
+    /* ===== Quote ===== */
+    .quote-block {
+      background: linear-gradient(135deg, #1a1025, #2d1b69);
+      color: #fff;
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 8px;
+      left: 20px;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.15;
+      font-family: Georgia, serif;
+    }
+    .quote-block p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-block .author {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      opacity: 0.6;
+    }
+
+    /* ===== Back Nav ===== */
+    .back-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(91,33,182,0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .back-nav:hover { background: rgba(91,33,182,0.95); transform: translateY(-1px); }
+    .back-nav svg { flex-shrink: 0; }
+
+    /* ===== Back to Top ===== */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.3s, visibility 0.3s, transform 0.3s, background 0.2s;
+    }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--accent-dark); }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 680px) {
+      .hero { padding: 80px 20px 56px; }
+      .hero h1 { font-size: 1.7rem; }
+      .team-grid { grid-template-columns: 1fr; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .tarot-card { width: 130px; height: 195px; }
+      .tarot-card-front .card-symbol { font-size: 2rem; }
+      .back-nav { top: 10px; left: 10px; padding: 6px 12px; font-size: 0.78rem; }
+      .back-to-top { bottom: 16px; right: 16px; width: 40px; height: 40px; }
+    }
+
+    @media (max-width: 420px) {
+      .tarot-card { width: 110px; height: 165px; }
+      .tarot-card-back .card-desc { font-size: 0.65rem; }
+    }
+  
+    /* component-refresh v1 */
+
+    /* ============================================================
+       Component refresh — layout/token/ฟอนต์เดิมทั้งหมด
+       แก้เฉพาะ component ที่เป็น "การ์ดขาว + แถบสี + อีโมจิ" เรียงซ้ำ
+       เปลี่ยนเป็นรายการคั่นเส้นบาง + ไอคอน lucide
+       ============================================================ */
+
+    .ico { width: 17px; height: 17px; flex: none; stroke-width: 1.6; }
+
+    /* --- ปัญหา / วิธีแก้ : เลิกเป็นการ์ด --- */
+    .pain-grid, .solution-grid {
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .pain-card, .solution-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 22px 0;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 14px;
+      align-items: start;
+    }
+    .pain-card .ico, .solution-card .ico { margin-top: 0.34em; }
+    .pain-card .ico { color: var(--red); }
+    .solution-card .ico { color: var(--accent); }
+    .pain-card h3, .solution-card h3 {
+      grid-column: 2; margin: 0;
+      font-size: 1rem; font-weight: 600; line-height: 1.55;
+    }
+    .pain-card p, .solution-card p { grid-column: 2; margin-top: 6px; line-height: 1.75; }
+
+    .pain-card:last-child, .solution-card:last-child,
+    .flow-step:last-child, .hack-card:last-child,
+    .plain li:last-child, .rung:last-child { border-bottom: 0; }
+
+    /* --- ขั้นตอน : เลิกเป็นการ์ดกลางจอ --- */
+    .flow-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid var(--border);
+    }
+    .flow-step {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 18px 0;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 26px 20px minmax(0, 1fr);
+      gap: 0 12px;
+      align-items: start;
+    }
+    .flow-step .step-num {
+      width: auto; height: auto; margin: 0;
+      background: none; color: var(--accent);
+      border-radius: 0; display: block;
+      font-size: 0.88rem; font-weight: 600; line-height: 1.7;
+      font-variant-numeric: tabular-nums;
+    }
+    .flow-step .ico { color: var(--text-muted); margin-top: 0.3em; }
+    .flow-step h4 { grid-column: 3; margin: 0; font-size: 0.95rem; font-weight: 600; line-height: 1.6; }
+    .flow-step p { grid-column: 3; font-size: 0.86rem; margin-top: 5px; line-height: 1.72; }
+
+    /* --- Hack : เลิกเป็นการ์ด + ป้ายสี --- */
+    .hack-grid { gap: 0; border-top: 1px solid var(--border); }
+    .hack-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 26px 0;
+      overflow: visible;
+    }
+    .hack-card::before {
+      position: static;
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 0;
+      border-radius: 0;
+      background: none !important;
+      color: var(--text-muted) !important;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+    .hack-card h3 {
+      padding-right: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.55;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 0 13px;
+      align-items: start;
+    }
+    .hack-card h3 .ico { color: var(--red); margin-top: 0.3em; }
+    .hack-card > p { margin-top: 8px; line-height: 1.75; }
+    .hack-card .highlight {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 0;
+      border-left: 2px solid var(--emerald);
+      background: var(--bg);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.75;
+    }
+    .hack-card .highlight strong, .hack-card .highlight b { color: var(--text); font-weight: 600; }
+
+    /* --- ตัวเลขสรุป : เลิก gradient text --- */
+    .metric-card .num {
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      color: var(--accent);
+    }
+
+    /* --- learning-card: ลดความเป็นการ์ด --- */
+    .learning-card {
+      background: none;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 20px 0;
+      margin-bottom: 0;
+    }
+    .learning-card:last-of-type { border-bottom: 0; }
+
+    /* กล่องหมายเหตุ มีแถบสีด้านซ้าย — ใช้ class แทน inline style จะได้คุม padding ครบด้าน */
+    .learning-card.note {
+      background: var(--bg);
+      border: 0;
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      padding: 18px 22px 20px;
+      margin: 22px 0 0;
+    }
+    .learning-card.note.ok { border-left-color: var(--emerald); }
+    .learning-card.note strong { display: block; margin-bottom: 6px; color: var(--accent-dark); }
+    .learning-card.note.ok strong { color: var(--emerald-dark); }
+    .learning-card.note p { margin-top: 0; }
+
+    /* --- ตารางเทียบทางเลือก (ของใหม่ ใช้ token เดิม) --- */
+    .ledger-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 20px; }
+    .ledger { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 520px; }
+    .ledger--wide { min-width: 780px; }
+    .ledger .num { width: 1%; white-space: nowrap; }
+    .ledger th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+      padding: 0 22px 10px 0; border-bottom: 1px solid var(--border); vertical-align: bottom;
+    }
+    .ledger td {
+      padding: 14px 22px 14px 0; border-bottom: 1px solid var(--border);
+      vertical-align: top; color: var(--text-secondary); line-height: 1.7;
+    }
+    .ledger td:first-child { color: var(--text); font-weight: 600; }
+    .ledger th:first-child, .ledger td:first-child { width: 22%; min-width: 120px; }
+    .ledger th:last-child, .ledger td:last-child { padding-right: 0; }
+    .ledger tr[data-picked] td { background: var(--accent-light); }
+    .ledger tr[data-picked] td:first-child { padding-left: 12px; }
+    .ledger tr[data-picked] td:last-child { padding-right: 12px; }
+    .ledger tr[data-picked] td:first-child { color: var(--accent-dark); }
+    .ledger .pick { display: inline-flex; white-space: nowrap; align-items: center; gap: 5px; color: var(--accent); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-left: 6px; }
+    .ledger .pick .ico { width: 13px; height: 13px; }
+
+    /* --- ลำดับการตัดสิน --- */
+    .ladder { border-top: 1px solid var(--border); margin-top: 20px; }
+    .rung {
+      display: grid; grid-template-columns: 1fr;
+      gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--border);
+      align-items: baseline;
+    }
+    .rung .cond { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text); }
+    .rung .cond .ico { color: var(--text-muted); width: 15px; height: 15px; }
+    .rung .out { font-family: var(--mono); font-size: 0.82rem; color: var(--accent-dark); }
+    .rung .note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+    .rung.none .out { color: var(--text-muted); }
+
+    /* --- รายการธรรมดา มีไอคอนนำ --- */
+    .plain { list-style: none; border-top: 1px solid var(--border); margin-top: 20px; }
+    .plain li {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 0 14px;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.92rem; color: var(--text-secondary); line-height: 1.75;
+    }
+    .plain li .ico { color: var(--text-muted); margin-top: 0.32em; }
+    .plain li b { color: var(--text); font-weight: 600; }
+
+    @media (min-width: 700px) {
+      .rung { grid-template-columns: minmax(0, 1.1fr) 140px minmax(0, 1.2fr); gap: 0 20px; }
+    }
+
+    .hero-mark .ico { width: 34px; height: 34px; stroke-width: 1.5; color: var(--navy); }
+    .hero-badge .ico { width: 14px; height: 14px; }
+
+    /* shot figures (รูปประกอบ) */
+    .shot{margin:8px 0 32px}.shot img{display:block;width:100%;height:auto;border-radius:var(--radius,12px);box-shadow:0 0 0 1px var(--border,#e7e5e4),0 12px 32px rgba(0,0,0,.08)}.shot figcaption{margin-top:10px;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:16px;align-items:start}
+    .shot-pair.even{grid-template-columns:1fr 1fr}
+    .shot-pair figcaption{grid-column:1/-1}
+    .shot.phone img{max-width:360px;margin:0 auto}
+    @media (max-width:639px){.shot-pair,.shot-pair.even{grid-template-columns:1fr}.shot-pair img+img{max-width:300px;margin:0 auto}}
+    .shot-pair{margin:20px 0 8px}.shot-pair .shot{margin:0}.shot-cap{grid-column:1/-1;margin:-6px 0 0;font-size:.82rem;color:var(--text-secondary,#57534e);text-align:center}
+    .shot-pair.phones{max-width:620px;margin-left:auto;margin-right:auto}
+    .section-intro .shot{margin-top:20px;margin-bottom:8px}
+    @media (max-width:639px){.shot-pair .shot+.shot img{max-width:300px;margin:0 auto}.shot-pair.phones{grid-template-columns:1fr 1fr}.shot-pair.phones .shot+.shot img{max-width:none}}
+</style>
+  <link rel="stylesheet" href="../common/closing.css">
+  <script src="../common/closing.js" defer></script>
+  <link rel="canonical" href="https://projects.tanplanet.work/mood-calendar-portfolio/">
+</head>
+<body>
+
+  <!-- ===== Hero ===== -->
+  <header class="hero">
+    <div class="stars" id="stars"></div>
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Phase 1 Complete — Coming Soon
+      </div>
+      <h1>Mood Calendar That Gets You<br><span class="accent">A mood journal that blends astrology with AI</span></h1>
+      <p>A daily fortune app that combines "traditional fortune-telling" with "AI analysis" — tarot, Siam Si fortune sticks and dream reading, all in one place</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Figma</span>
+        <span class="hero-tag">Design System</span>
+        <span class="hero-tag">UX/UI</span>
+        <span class="hero-tag">AI-Powered</span>
+        <span class="hero-tag">Team Collab</span>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn cta-secondary" href="https://natpakans-stack.github.io/Muniverse/Slide/dailymu-phase1-landing.html" target="_blank" rel="noopener">
+          View the Phase 1 showcase
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l6 5-6 5"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Content ===== -->
+  <article>
+
+    <!-- ===== Empathize ===== -->
+    <section class="section-intro">
+      <h2>The problem</h2>
+      <p>Why build Mood Calendar?</p>
+      <figure class="shot"><img src="img/app-overview.jpg" width="1440" height="966" loading="lazy" alt="Three app screens side by side: the birth profile, today's fortune with a lucky color, and a tarot card reveal"><figcaption>The answer to "fortune apps are scattered" — birth profile, today's fortune and tarot in one app (sample data)</figcaption></figure>
+    </section>
+
+    <div class="quote-block">
+      <p>Sound familiar? You want today's fortune, but you have to open several apps — daily horoscope in one, tarot in another, dream reading somewhere else. And none of them is personalized to your birthday.</p>
+      <div class="author">— The Mood Calendar team, from conversations with target users</div>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 3 8 9l4 13 4-13-2.5-6"/><path d="M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z"/><path d="M2 9h20"/></svg>
+        <h3>Traditional fortune-telling is stuck with fortune tellers</h3>
+        <p>The traditional way means visiting a fortune teller, which many people can't easily do — it takes money, time and the nerve to go. Younger people curious about "spiritual things" have no convenient option.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+        <h3>Fortune apps are scattered</h3>
+        <p>Daily horoscope in one app, tarot in another, fortune sticks on a website, dream meanings via a Google search — nothing brings it all together in one place that actually "knows" you.</p>
+      </div>
+      <div class="pain-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        <h3>Not personalized — everyone gets the same reading</h3>
+        <p>Most horoscope apps give broad zodiac-sign readings and ignore your birth date, time and place — so the reading never feels like "mine".</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Define + Ideate ===== -->
+    <section class="section-intro">
+      <h2>The solution</h2>
+      <p>Every practice in one app — personalized with a Birth Profile + AI</p>
+      <div class="shot-pair even phones">
+        <figure class="shot"><img src="img/birth-profile.jpg" width="560" height="1196" loading="lazy" alt="Birth chart setup: a 3-step form for birth date, birth time and province of birth"></figure>
+        <figure class="shot"><img src="img/today-home.jpg" width="560" height="1072" loading="lazy" alt="Home screen with today's fortune summarized by AI, a lucky color, and things to do and avoid"></figure>
+        <div class="shot-cap">Left: creating the birth chart during onboarding · Right: the home screen where AI sums up today's fortune + lucky color</div>
+      </div>
+    </section>
+
+    <div class="solution-grid">
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+        <h3>Birth Profile — knowing you from onboarding</h3>
+        <p>We collect birth date, birth time, birthplace and zodiac sign up front, so every day's reading is "truly yours".</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg>
+        <h3>Every practice in one place</h3>
+        <p>Daily horoscope, 22 tarot cards (Major Arcana), digital Siam Si fortune sticks and AI dream reading — all in one app</p>
+      </div>
+      <div class="solution-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+        <h3>AI makes the reading easy to understand</h3>
+        <p>No need to study the texts yourself — AI analyzes and sums it up as easy-to-read daily advice, plus a lucky color for the day</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Interactive: Tarot Card Flip ===== -->
+    <section class="section-intro">
+      <h2>What we built</h2>
+      <p>Flip the cards — each one is a real feature in Mood Calendar</p>
+      <div class="shot-pair">
+        <figure class="shot"><img src="img/feature-grid.jpg" width="1440" height="1060" loading="lazy" alt="Grid of six Phase 1 feature cards: Authentication, Onboarding, Home Dashboard, daily horoscope, tarot and Siam Si fortune sticks"></figure>
+        <figure class="shot"><img src="img/siam-si.jpg" width="560" height="1181" loading="lazy" alt="Online Siam Si screen with a fortune-stick cylinder and a button to start shaking"></figure>
+        <div class="shot-cap">All Phase 1 features with the owner of each flow · Right: the online Siam Si screen</div>
+      </div>
+    </section>
+
+    <div class="tarot-section">
+      <p class="subtitle">Tap a card to flip it</p>
+      <div class="tarot-grid">
+        <div class="tarot-card" onclick="this.classList.toggle('flipped')">
+          <div class="tarot-card-inner">
+            <div class="tarot-card-front">
+              <span class="card-symbol">I</span>
+              <span class="card-label">Mood Calendar</span>
+            </div>
+            <div class="tarot-card-back">
+              <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></span>
+              <span class="card-title">Daily Horoscope</span>
+              <span class="card-desc">Daily reading by zodiac sign, with an AI summary + lucky color of the day</span>
+            </div>
+          </div>
+        </div>
+        <div class="tarot-card" onclick="this.classList.toggle('flipped')">
+          <div class="tarot-card-inner">
+            <div class="tarot-card-front">
+              <span class="card-symbol">II</span>
+              <span class="card-label">Mood Calendar</span>
+            </div>
+            <div class="tarot-card-back">
+              <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></svg></span>
+              <span class="card-title">Tarot Cards</span>
+              <span class="card-desc">All 22 Major Arcana with meanings + a personal reading</span>
+            </div>
+          </div>
+        </div>
+        <div class="tarot-card" onclick="this.classList.toggle('flipped')">
+          <div class="tarot-card-inner">
+            <div class="tarot-card-front">
+              <span class="card-symbol">III</span>
+              <span class="card-label">Mood Calendar</span>
+            </div>
+            <div class="tarot-card-back">
+              <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg></span>
+              <span class="card-title">Siam Si</span>
+              <span class="card-desc">Interactive digital fortune sticks with a cylinder-shaking animation</span>
+            </div>
+          </div>
+        </div>
+        <div class="tarot-card" onclick="this.classList.toggle('flipped')">
+          <div class="tarot-card-inner">
+            <div class="tarot-card-front">
+              <span class="card-symbol">IV</span>
+              <span class="card-label">Mood Calendar</span>
+            </div>
+            <div class="tarot-card-back">
+              <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 16a3 3 0 0 1 0 6H7a5 5 0 1 1 4.9-6Z"/><path d="M10.1 9A6 6 0 0 1 16 4a4 4 0 0 0 6 6 6 6 0 0 1-3 5.197"/></svg></span>
+              <span class="card-title">Dream Reading</span>
+              <span class="card-desc">Type in your dream, and AI interprets it + suggests lucky numbers</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="tarot-hint">Tap the card again to close it</p>
+    </div>
+
+    <!-- Feature Grid -->
+    <div class="feature-grid">
+      <div class="feature-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h3>Authentication</h3>
+        <p>Social Login, Email/Password, OTP Recovery + Account Management</p>
+      </div>
+      <div class="feature-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <h3>Home Dashboard</h3>
+        <p>AI Summary Cards + Daily Fortune + Time-based Greetings + lucky colors</p>
+      </div>
+      <div class="feature-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <h3>Birth Profile</h3>
+        <p>Collects birth date, birth time, birthplace and zodiac sign to personalize readings</p>
+      </div>
+      <div class="feature-card">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg>
+        <h3>Push Notifications</h3>
+        <p>Notifications for daily fortunes, auspicious days and special events</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Hack & Problem Solving ===== -->
+    <section class="section-intro">
+      <h2>Hacking the problems</h2>
+      <p>The behind-the-scenes wasn't always pretty — but every problem made us better</p>
+      <figure class="shot"><img src="img/design-specs.jpg" width="1600" height="1000" loading="lazy" alt="Dev handoff preview page: a screen menu on the left, the login screen in the middle, and design specs on the right covering typography, color and spacing"><figcaption>A design system from zero — every screen goes to dev with specs: typography, WCAG-compliant colors, spacing and states</figcaption></figure>
+    </section>
+
+    <div class="hack-grid">
+      <div class="hack-card workaround" data-label="Workaround">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>A design system built from zero</span></h3>
+        <p>The team had no design system, so we had to define every token — color, typography, spacing, radius. The whole first week went into laying the foundation.</p>
+        <div class="highlight">Building design tokens systematically made weeks 2–3 three times faster</div>
+      </div>
+      <div class="hack-card creative" data-label="Creative">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg><span>A tarot animation you can "feel"</span></h3>
+        <p>Tarot cards aren't just open and close — they need a 3D flip, shimmer and glow to feel "sacred". We tried CSS 3D transforms many times until the feel was right.</p>
+        <div class="highlight">CSS perspective + preserve-3d + cubic-bezier give a smooth 3D flip without a JS library</div>
+      </div>
+      <div class="hack-card teamwork" data-label="Teamwork">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg><span>3 people, 3 styles — how do we merge?</span></h3>
+        <p>Each person designed a different flow, with different spacing and color choices. Without rules, the output would never look like one product.</p>
+        <div class="highlight">Solved with a shared design token sheet + component library everyone uses — and a review every week</div>
+      </div>
+      <div class="hack-card workaround" data-label="Workaround">
+        <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg><span>Responsive that works at every breakpoint</span></h3>
+        <p>A fortune app carries a lot of content — fortune cards, 22 tarot cards, a dashboard. The layout has to hold up on mobile, tablet and desktop without losing anything.</p>
+        <div class="highlight">CSS Grid + clamp() + container queries, designed mobile first and scaled up</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Team Collaboration ===== -->
+    <section class="section-intro">
+      <h2>Our team</h2>
+      <p>3 people, 3 strengths — split by flow, merged into one</p>
+      <figure class="shot"><img src="img/figma-flows.jpg" width="1600" height="1031" loading="lazy" alt="The shared Figma file, split into flows: sign up, log in, set password, forgot password and T&C"><figcaption>The Figma file three of us worked in at once — split by flow (Register, Login, Set/Forgot Password, T&C) · team profile photos blurred</figcaption></figure>
+    </section>
+
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="avatar">T</div>
+        <div class="name">TAN</div>
+        <ul class="tasks">
+          <li>Authentication Flow</li>
+          <li>Home Dashboard</li>
+          <li>Siam Si (fortune sticks)</li>
+          <li>Design System Lead</li>
+        </ul>
+      </div>
+      <div class="team-card">
+        <div class="avatar">P</div>
+        <div class="name">PIM</div>
+        <ul class="tasks">
+          <li>Daily Horoscope</li>
+          <li>Tarot Cards</li>
+          <li>Zodiac Screens</li>
+        </ul>
+      </div>
+      <div class="team-card">
+        <div class="avatar">J</div>
+        <div class="name">JED</div>
+        <ul class="tasks">
+          <li>Dream Interpretation</li>
+          <li>Profile / Settings</li>
+          <li>Push Notifications</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <section class="section-intro">
+      <h2>Timeline</h2>
+      <p>From plan to reality — 4 intense weeks</p>
+      <figure class="shot"><img src="img/timeline.jpg" width="1440" height="740" loading="lazy" alt="Phase 1 Journey page: a 4-stage timeline from Planning and Design System to Phase 1 Complete"><figcaption>The "Phase 1 Journey" section of the showcase, which the team updated every week</figcaption></figure>
+    </section>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="week">Week 1 — Feb 2026</div>
+        <h3>Planning & Design System</h3>
+        <p>Set the scope, create design tokens, lay out the component library, assign flows to each person</p>
+      </div>
+      <div class="timeline-item">
+        <div class="week">Week 2 — Feb 2026</div>
+        <h3>Core Screens & Auth</h3>
+        <p>Onboarding, Login/Register, Home Dashboard — the app's foundation</p>
+      </div>
+      <div class="timeline-item">
+        <div class="week">Week 3 — Feb–Mar 2026</div>
+        <h3>Fortune Features & Animations</h3>
+        <p>Tarot, Siam Si, dream reading, daily horoscope — with animation that adds some magic</p>
+      </div>
+      <div class="timeline-item">
+        <div class="week">Mar 2026 — Present</div>
+        <h3>Phase 1 Complete + QA</h3>
+        <p>Check every screen, every flow, every breakpoint — ready to hand the design to dev</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ===== Key Takeaways ===== -->
+    <section class="section-intro">
+      <h2>Key Takeaways</h2>
+      <p>What the team learned building Mood Calendar</p>
+      <figure class="shot"><img src="img/figma-states.jpg" width="1400" height="1201" loading="lazy" alt="Figma frames of the sign-up screen in 2 states: password visible, and errors when fields are empty"><figcaption>Every state designed in Figma before handoff — password visible, and errors on empty fields (sample data)</figcaption></figure>
+    </section>
+
+    <div class="learning-card">
+      <strong>A design system really helps — but you pay up front:</strong>
+      <p>The first week felt very slow because the time went into tokens and components. By weeks 2–3 everyone was much faster, because no one had to decide on colors or spacing again.</p>
+    </div>
+    <div class="learning-card">
+      <strong>Collaboration = Communication:</strong>
+      <p>With 3 people working at once, the output won't feel like one product unless we talk — weekly reviews + shared design tokens made merging smooth</p>
+    </div>
+    <div class="learning-card">
+      <strong>Animation has to "feel", not just "move":</strong>
+      <p>Tarot and Siam Si need to feel "special" to the user — not a plain transition, but timing, easing and glow that create an emotional moment</p>
+    </div>
+    <div class="learning-card">
+      <strong>Mobile first prevents responsive problems:</strong>
+      <p>Design for mobile first, then scale up — content doesn't disappear on small screens, and the layout doesn't break with real data</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="num">40+</div>
+        <div class="label">Screens designed</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">3</div>
+        <div class="label">Team members</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">4</div>
+        <div class="label">Weeks in Phase 1</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">22</div>
+        <div class="label">Major Arcana cards</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- ===== Closing ===== -->
+  <div class="closing">
+    <h2>Good fortune, good design</h2>
+    <p>Mood Calendar hasn't launched yet — but thinking, building and solving problems together as a team is the most valuable thing we got out of Phase 1</p>
+    <div class="stack-icons">
+      <span class="stack-icon">Figma</span>
+      <span class="stack-icon">Design System</span>
+      <span class="stack-icon">AI-Powered</span>
+      <span class="stack-icon">Team Collab</span>
+      <span class="stack-icon">CSS Animation</span>
+    </div>
+  </div>
+
+  <!-- ===== Fixed UI ===== -->
+  <a class="back-nav" href="https://projects.tanplanet.work/" rel="noopener">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 3L5 8l5 5"/></svg>
+    Projects
+  </a>
+  <button class="back-to-top" aria-label="Back to top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 10l5-5 5 5"/></svg>
+  </button>
+  <script>
+  (function(){
+    // Back to top
+    var btn=document.querySelector('.back-to-top');
+    window.addEventListener('scroll',function(){btn.classList.toggle('visible',window.scrollY>300)},{passive:true});
+    // Stars
+    var s=document.getElementById('stars');
+    for(var i=0;i<60;i++){
+      var d=document.createElement('span');
+      d.className='star';
+      d.style.left=Math.random()*100+'%';
+      d.style.top=Math.random()*100+'%';
+      d.style.setProperty('--dur',(2+Math.random()*4)+'s');
+      d.style.animationDelay=Math.random()*4+'s';
+      d.style.width=d.style.height=(1+Math.random()*2)+'px';
+      s.appendChild(d);
+    }
+  })();
+  </script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Natpakan Sirirat — Portfolio",
+      "item": "https://projects.tanplanet.work/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "MU Calendar",
+      "item": "https://projects.tanplanet.work/mood-calendar-portfolio/"
+    }
+  ]
+}
+</script>
+</body>
+</html>
