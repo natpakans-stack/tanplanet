@@ -25,7 +25,7 @@ description: เขียนหน้า case study ของโปรเจก�
 - **footer:** เขียนแค่ `<div class="closing"><h2>…</h2><p>…</p><div class="stack-icons"><span class="stack-icon">…</span></div></div>` + ใน head
   `<link rel="stylesheet" href="../common/closing.css">` `<script src="../common/closing.js" defer></script>`
   ห้ามก๊อป CSS `.closing`/`.mascot-half`/`.stack-icon` มาซ้ำ (มาสคอต + ลิงก์กลับ JS ใส่ให้เอง)
-- meta title/description/og/twitter/canonical ชี้ `https://projects.tanplanet.work/<slug>-portfolio/`
+- meta title/description/og/twitter/canonical ชี้ `https://projects.tanplanet.work/<slug>-portfolio/` — **canonical ห้ามขาด** (ขาดแล้ว GSC ขึ้น "Duplicate without user-selected canonical") · `gen-seo.py` จะ assert ล้มถ้าหน้าไหนไม่มี
 - งานวิดีโอ/motion → คลิปสั้น 3–6 วิ ทีละเทคนิค การ์ดเล็กเล่นวนเอง (ดู `motion-reel-portfolio/`) ไม่ใช่คลิปยาว
 - **ทุก section ต้องมีภาพประกอบอย่างน้อย 1 รูป** (อ่านลื่นแบบบทความ Medium): UI จริงของแพลตฟอร์มก่อนเสมอ > รูปในโปรเจกต์ > mockup > Unsplash (สุดท้าย, ดาวน์โหลดเก็บใน `img/` + เครดิต) · ใช้ `<figure class="shot">` · งานลูกค้า/บริษัท ใช้ภาพจริงแล้วเบลอโลโก้/ชื่อแบรนด์ · งานส่วนตัวไม่ต้องเบลอ · เบลอข้อมูลอ่อนไหวเสมอ (เงิน เลขบัญชี ชื่อคนจริง อีเมล key)
 - ภาษาไทยเรียบ ๆ ประโยคสั้น เหมือนหน้าอ้างอิง

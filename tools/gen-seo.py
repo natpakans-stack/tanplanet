@@ -97,5 +97,10 @@ if __name__ == "__main__":
     items = list(cards())
     assert items, "หาการ์ดใน index.html ไม่เจอ — โครง HTML เปลี่ยนไปหรือเปล่า"
     assert all(i["name"] and i["desc"] for i in items), "มีการ์ดที่ไม่มีชื่อหรือคำอธิบาย"
+    # ไม่มี canonical = GSC ขึ้น "Duplicate without user-selected canonical"
+    no_canon = [i["path"] for i in items
+                if (p := ROOT / i["path"].strip("/") / "index.html").exists()
+                and f'rel="canonical" href="{i["url"]}"' not in p.read_text()]
+    assert not no_canon, f"หน้าเหล่านี้ไม่มี canonical ชี้ตัวเอง: {no_canon}"
     print(f"sitemap.xml: {write_sitemap(items)} urls")
     print(f"llms.txt: {write_llms(items)} projects")
