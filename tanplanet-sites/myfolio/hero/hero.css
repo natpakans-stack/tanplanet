@@ -1,0 +1,66 @@
+/* hero แบบการ์ดลอยรอบหัวข้อ — ต้นแบบ motion: fastwork.com/th/selling (วัดใน .reanimate/hero/spec.md)
+   section สูง 2 จอ · ชั้นใน sticky 1 จอ · การ์ดกระจายออกจากกลางจอตามระยะเลื่อน (hero.js) */
+/* hero เริ่มที่ขอบบนจอ (ซ้อนใต้ navbar แบบต้นแบบ) — ไม่งั้น sticky เริ่มช้าไปเท่าความสูง navbar */
+.fh { position: relative; height: 200vh; margin-top: calc(-1 * var(--hdr, 96px)); }
+.header.w-nav { position: relative; z-index: 10; }
+.fh-stage { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+.fh-center {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center; padding: 0 24px; z-index: 2;
+  pointer-events: none;
+}
+.fh-center > * { pointer-events: auto; }
+.fh-title {
+  margin: 0; font-size: clamp(36px, 3.8vw, 64px); line-height: 1.08; font-weight: 700;
+  letter-spacing: -0.02em; color: #111;
+}
+.fh-sub { margin: 20px 0 0; max-width: 440px; font-size: 18px; line-height: 1.6; color: #52525b; }
+.fh-cta { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; justify-content: center; }
+.fh-btn {
+  display: inline-flex; align-items: center; height: 48px; padding: 0 24px; border-radius: 999px;
+  font-size: 16px; font-weight: 600; text-decoration: none; transition: transform .15s ease, background .15s ease;
+}
+.fh-btn:hover { transform: translateY(-1px); }
+.fh-btn--solid { background: #111; color: #fff; }
+.fh-btn--ghost { border: 1px solid #d4d4d8; color: #111; background: #fff; }
+.fh-cue {
+  position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 2;
+  font-size: 13px; color: #71717a; text-align: center; text-decoration: none;
+}
+.fh-cue::after { content: ""; display: block; width: 8px; height: 8px; margin: 6px auto 0;
+  border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); }
+
+/* การ์ด: ตำแหน่งเริ่มเป็น % ของจอ (ถอดจากต้นแบบที่ 1728×997) · หมุนคงที่ · JS เติม translate */
+.fh-card {
+  position: absolute; left: var(--x); top: var(--y); width: var(--w);
+  background: #fff; border-radius: 10px; overflow: hidden; text-decoration: none; color: #111;
+  box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 12px 32px rgba(0,0,0,.10);
+  rotate: var(--r); will-change: transform; z-index: 1;
+}
+.fh-card img { display: block; width: 100%; aspect-ratio: 4 / 3.4; object-fit: cover; object-position: 8% center; /* ชื่องานใน og image อยู่ชิดซ้าย */ background: #f4f4f5; }
+.fh-card b { display: block; padding: 10px 12px 0; font-size: 13px; font-weight: 600; line-height: 1.35; }
+.fh-card span { display: block; padding: 2px 12px 12px; font-size: 11px; color: #71717a; }
+.fh-card:hover { z-index: 3; }
+
+/* ponytail: จอแคบ — เหลือ 4 ใบไว้ 4 มุม (บน 2 ล่าง 2) ให้หัวข้อกลางจอโล่ง · ไม่ทำ motion แยกสำหรับมือถือ */
+@media (max-width: 767px) {
+  .fh { height: 100vh; }
+  .fh-card { width: 34vw; }
+  .fh-card:nth-child(n+5) { display: none; }
+  .fh-card:nth-child(1) { left: 3%; top: 13%; }
+  .fh-card:nth-child(2) { left: 62%; top: 12%; }
+  .fh-card:nth-child(3) { left: 5%; top: 71%; }
+  .fh-card:nth-child(4) { left: 60%; top: 72%; }
+  .fh-card b { font-size: 11px; padding: 6px 8px 0; }
+  .fh-card span { font-size: 10px; padding: 2px 8px 8px; }
+  .fh-sub { font-size: 15px; margin-top: 14px; }
+  .fh-cta { margin-top: 20px; }
+  .fh-btn { height: 44px; padding: 0 18px; font-size: 15px; }
+}
+@media (prefers-reduced-motion: reduce) { .fh { height: 100vh; } }
+
+/* section Projects บนหน้าแรก — การ์ดดึงงานจาก projects.tanplanet.work ใช้ thumbnail เต็มกว้างแทนไอคอนแอป */
+.pp-thumb { display: block; width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; object-position: 8% center;
+  border-radius: 14px; margin-bottom: 24px; background: #f4f4f5; }
+.pp-more { margin-top: 32px; font-size: 15px; color: #71717a; }
+.pp-more a { color: #111; text-decoration: underline; }
