@@ -214,3 +214,23 @@ p.title.category { margin-top: 0; font-family: var(--tp-font-display, "Google Sa
 .tp-privacy::before { content: "·"; margin-right: 8px; color: var(--tp-text-4); }
 .tp-privacy { color: var(--tp-text-3); text-decoration: none; }
 .tp-privacy:hover { color: var(--tp-text); text-decoration: underline; }
+
+/* navbar มือถือ (ชุดเดียวกับ myfolio/components.css ข้อ 21 — แก้ต้องแก้ทั้งสองที่). เมนูมือถือ (≤991px): ปุ่มแฮมเบอร์เกอร์กลายเป็น X จริง (Webflow IX เลื่อนเส้นอย่างเดียว ไม่หมุน) + ระยะห่างเมนูเท่ากันทุกข้อ */
+@media (max-width: 991px) {
+  .header .menu-button, .header .menu-button:hover, .header .menu-button.w--open { background: transparent; width: 40px; height: 40px; min-width: 40px; margin-right: -8px; }
+  .header .menu-button-icon > div { transition: transform .3s cubic-bezier(.22, 1, .36, 1), opacity .2s; transform-origin: center; }
+  .header .menu-button.w--open .menu-line-top { transform: translateY(6.5px) rotate(45deg) !important; background-color: var(--neutral-900) !important; }
+  .header .menu-button.w--open .menu-line-bottom { transform: translateY(-6.5px) rotate(-45deg) !important; background-color: var(--neutral-900) !important; }
+  .header .menu-button.w--open .menu-line-middle { opacity: 0; }
+  .header .nav-menu { padding: 8px 0 0 11px; }
+  .header .header-navigation { display: flex; flex-direction: column; }
+  .header .nav-item-wrapper { display: contents; }
+  .header .nav-menu .nav-link { padding: 16px 0; font-size: 20px; border-bottom: 1px solid var(--tp-border, #eee); }
+  /* แคปซูลตอนเลื่อน (header-autohide.js ใส่ .is-pill): เว้นขอบจอ 12px + ขวาไม่ชนปุ่ม · เปิดเมนูอยู่ = กลับเป็นแถบเต็มให้ต่อกับแผ่นเมนู */
+  .header.is-pill .container-header { margin: 12px 12px 0 !important; padding: 6px 10px 6px 20px !important; }
+  .header.is-pill:not(:has(.w--open)) .menu-button { margin-right: 0; }
+  .header.is-pill:has(.w--open) .container-header { margin: 0 !important; padding: 6px 16px !important; border-radius: 0 !important; border-color: transparent !important; box-shadow: none !important; background: var(--neutral-100, #fff) !important; }
+}
+/* เมนูของหน้าปัจจุบัน/หมวดที่อยู่ = ตัวเข้ม (ชุดเดียวกับ myfolio ข้อ 22) · เปิดเมนูมือถือ = ซ่อนปุ่มกลับขึ้นบนสุดที่ลอยทับ */
+.header .nav-link[aria-current] { color: var(--tp-text); }
+body:has(.w-nav-button.w--open) .back-to-top { display: none; }
