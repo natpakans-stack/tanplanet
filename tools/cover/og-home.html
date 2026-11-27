@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="{{LANG}}">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@500;600&display=swap">
+<style>
+  /* OG หน้าแรก myfolio (1200×630) — ตัวแทนเอง: คำ tanplanet · มาสคอตแอบหลังเส้น (แบบ footer) · โลโก้พระอาทิตย์ขวา · เรนเดอร์ด้วย og-home.mjs */
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: #fff; }
+  body { font-family: "Google Sans", "IBM Plex Sans Thai", sans-serif; color: #1f1f1f; position: relative; }
+  .top { position: absolute; left: 72px; right: 72px; top: 64px; display: flex; align-items: center; justify-content: space-between; }
+  .who { font: 600 30px/1.25 "Google Sans", "IBM Plex Sans Thai", sans-serif; }
+  .who small { display: block; margin-top: 6px; font-weight: 500; font-size: 24px; color: #6b6b6b; }
+  .sun { height: 68px; width: auto; }
+  .word { position: absolute; left: 0; right: 0; text-align: center; top: 168px; font: 700 236px/1 "Google Sans", sans-serif; letter-spacing: -.05em;
+    background: linear-gradient(180deg, #1f1f1f 35%, #b9b9c0 100%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: .12em; }
+  .line { position: absolute; left: 72px; right: 72px; top: 548px; height: 2px; background: #ececec; }
+  .peek { position: absolute; left: 50%; top: 548px; width: 230px; height: 150px; overflow: hidden; transform: translate(-50%, -100%); }
+  .peek img { width: 100%; height: auto; display: block; }
+  .url { position: absolute; left: 72px; right: 72px; top: 570px; display: flex; justify-content: space-between; font: 500 22px/1 "Google Sans", sans-serif; color: #6b6b6b; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <p class="who">{{NAME}}<small>{{ROLE}}</small></p>
+    <img class="sun" src="{{LOGO}}" alt="">
+  </div>
+  <p class="word">tanplanet</p>
+  <div class="peek"><img src="{{MASCOT}}" alt=""></div>
+  <div class="line"></div>
+  <div class="url"><span>myfolio.tanplanet.work</span><span>{{TAG}}</span></div>
+</body>
+</html>
