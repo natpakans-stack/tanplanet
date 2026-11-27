@@ -207,7 +207,7 @@ if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
 /* ลิงก์ "จัดการหลังบ้าน": เครื่อง dev → admin บน :5179 · เว็บจริงยังไม่มีที่รันหลังบ้าน (meta tp-cms ว่าง) → ซ่อนทั้งช่อง ไม่ให้กดแล้วเจอ 404 */
 document.querySelectorAll(".footer-nav-admin").forEach(function (a) {
   if (location.hostname === "localhost") a.href = "http://localhost:5179/admin/";
-  else a.href = window.TP_CMS + "/admin/";
+  else a.href = "https://tanplanet.work/admin/";
 });
 
 /* หลังบ้าน tanplanet-cms — ponytail: ใส่ URL api จริงตรงนี้เมื่อเลือกที่รันแล้ว (ว่าง = เว็บจริงไม่ส่งอะไร) */
