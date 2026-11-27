@@ -1,11 +1,56 @@
 {
   "redirects": [
-    { "source": "/admin", "destination": "/admin/", "permanent": false }
+    {
+      "source": "/admin",
+      "destination": "/admin/",
+      "permanent": false
+    }
   ],
   "rewrites": [
-    { "source": "/hangun", "destination": "https://hangun.vercel.app/hangun" },
-    { "source": "/hangun/(.*)", "destination": "https://hangun.vercel.app/hangun/$1" },
-    { "source": "/admin/(.*)", "destination": "https://tanplanet-cms.vercel.app/admin/$1" },
-    { "source": "/api/(.*)", "destination": "https://tanplanet-cms.vercel.app/api/$1" }
+    {
+      "source": "/hangun",
+      "destination": "https://hangun.vercel.app/hangun"
+    },
+    {
+      "source": "/hangun/(.*)",
+      "destination": "https://hangun.vercel.app/hangun/$1"
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "https://tanplanet-cms.vercel.app/admin/$1"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "https://tanplanet-cms.vercel.app/api/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/carpark/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/carpark",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/admin/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
   ]
 }
