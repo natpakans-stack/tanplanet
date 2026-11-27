@@ -1,5 +1,5 @@
-/* หลังบ้าน tanplanet-cms (ใช้ทั้งไฟล์) — ponytail: เว็บจริงอ่านจาก <meta name="tp-cms"> · ว่าง = ไม่ส่งอะไรเข้าหลังบ้าน */
-window.TP_CMS = location.hostname === "localhost" ? "http://localhost:4100" : (document.querySelector('meta[name="tp-cms"]') || {}).content || "";
+/* หลังบ้าน tanplanet-cms (ใช้ทั้งไฟล์) — เว็บจริง = Vercel project tanplanet-cms · ย้ายที่รันเปลี่ยนบรรทัดนี้ที่เดียว */
+window.TP_CMS = location.hostname === "localhost" ? "http://localhost:4100" : "https://tanplanet-cms.vercel.app";
 // navbar sticky ของ Webflow เดิมบังหัวข้อเวลาเลื่อนบนมือถือ → จอ ≤991px: เลื่อนลงซ่อน เลื่อนขึ้นโผล่
 (function () {
   var h = document.querySelector(".header.w-nav");
@@ -207,7 +207,7 @@ if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
 /* ลิงก์ "จัดการหลังบ้าน": เครื่อง dev → admin บน :5179 · เว็บจริงยังไม่มีที่รันหลังบ้าน (meta tp-cms ว่าง) → ซ่อนทั้งช่อง ไม่ให้กดแล้วเจอ 404 */
 document.querySelectorAll(".footer-nav-admin").forEach(function (a) {
   if (location.hostname === "localhost") a.href = "http://localhost:5179/admin/";
-  else if (!window.TP_CMS) (a.closest("li") || a).remove();
+  else a.href = window.TP_CMS + "/admin/";
 });
 
 /* หลังบ้าน tanplanet-cms — ponytail: ใส่ URL api จริงตรงนี้เมื่อเลือกที่รันแล้ว (ว่าง = เว็บจริงไม่ส่งอะไร) */
@@ -229,3 +229,13 @@ document.querySelectorAll(".footer-nav-admin").forEach(function (a) {
     document.querySelectorAll("a[data-channel]").forEach(function (a) { var u = ch[a.dataset.channel]; if (u) a.href = u; });
   }).catch(function () {});
 })();
+
+/* เหตุการณ์สำคัญ: กดลิงก์ช่องทาง (data-channel) = ch_<id> · ฟอร์มติดต่อเรียก tpEvent("lead_submit") เอง — ไม่มีคุกกี้ เหมือนตัวนับ */
+window.tpEvent = function (name) {
+  if (!window.TP_CMS || !navigator.sendBeacon) return;
+  navigator.sendBeacon(window.TP_CMS + "/api/track", JSON.stringify({ type: "event", path: location.pathname, events: [{ name: name }] }));
+};
+document.addEventListener("click", function (e) {
+  var a = e.target.closest && e.target.closest("a[data-channel]");
+  if (a) window.tpEvent("ch_" + a.dataset.channel);
+});

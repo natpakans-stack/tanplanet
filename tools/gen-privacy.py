@@ -28,7 +28,8 @@ TH = f"""<h1>นโยบายความเป็นส่วนตัว</h1
 <li>เก็บ 13 เดือนแล้วลบ</li></ul>
 <h2>3. คุกกี้และบริการภายนอก</h2>
 <ul><li>เว็บนี้ไม่ใช้คุกกี้ติดตามหรือโฆษณา จึงไม่มีแถบขอความยินยอมคุกกี้</li>
-<li>ฟอนต์บางส่วนโหลดจาก Google Fonts และเว็บฝากไว้ที่ Vercel และ GitHub Pages ผู้ให้บริการเหล่านี้อาจเห็น IP ตามปกติของการโหลดไฟล์ ตามนโยบายของแต่ละราย</li></ul>
+<li>ฟอนต์บางส่วนโหลดจาก Google Fonts และเว็บฝากไว้ที่ Vercel และ GitHub Pages ผู้ให้บริการเหล่านี้อาจเห็น IP ตามปกติของการโหลดไฟล์ ตามนโยบายของแต่ละราย</li>
+<li>ตัวนับและข้อความติดต่อส่งไปที่หลังบ้านของเว็บ (Vercel) และเก็บในฐานข้อมูล Neon</li></ul>
 <h2>4. สิทธิ์ของคุณ</h2>
 <p>ตาม พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล (PDPA) คุณขอดู แก้ไข หรือลบข้อมูลที่ส่งผ่านฟอร์มติดต่อได้ ส่งอีเมลมาที่ <a href="mailto:{EMAIL}" data-channel="email">{EMAIL}</a> ผมจะตอบภายใน 30 วัน</p>"""
 
@@ -48,7 +49,8 @@ EN = f"""<h1>Privacy policy</h1>
 <li>Kept for 13 months, then deleted.</li></ul>
 <h2>3. Cookies and third parties</h2>
 <ul><li>The sites use no tracking or advertising cookies, so there is no cookie banner.</li>
-<li>Some fonts load from Google Fonts, and the sites are hosted on Vercel and GitHub Pages. These providers may see your IP address as part of serving files, under their own policies.</li></ul>
+<li>Some fonts load from Google Fonts, and the sites are hosted on Vercel and GitHub Pages. These providers may see your IP address as part of serving files, under their own policies.</li>
+<li>Visit counts and contact messages go to the site's own backend (Vercel) and are stored in a Neon database.</li></ul>
 <h2>4. Your rights</h2>
 <p>Under Thailand's Personal Data Protection Act (PDPA) you can ask to see, correct or delete what you sent through the contact form. Email <a href="mailto:{EMAIL}" data-channel="email">{EMAIL}</a> and I will reply within 30 days.</p>"""
 
